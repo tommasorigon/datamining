@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.335">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Tommaso Rigon">
+
+<title>Data mining</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="index_files/libs/clipboard/clipboard.min.js"></script>
+<script src="index_files/libs/quarto-html/quarto.js"></script>
+<script src="index_files/libs/quarto-html/popper.min.js"></script>
+<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="index_files/libs/quarto-html/anchor.min.js"></script>
+<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="index_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#materiale-didattico" id="toc-materiale-didattico" class="nav-link active" data-scroll-target="#materiale-didattico">Materiale didattico</a>
+  <ul class="collapse">
+  <li><a href="#testo-di-riferimento" id="toc-testo-di-riferimento" class="nav-link" data-scroll-target="#testo-di-riferimento">Testo di riferimento</a></li>
+  <li><a href="#testi-di-consultazione" id="toc-testi-di-consultazione" class="nav-link" data-scroll-target="#testi-di-consultazione">Testi di consultazione</a></li>
+  <li><a href="#materiale-didattico-1" id="toc-materiale-didattico-1" class="nav-link" data-scroll-target="#materiale-didattico-1">Materiale didattico</a></li>
+  <li><a href="#approfondimenti" id="toc-approfondimenti" class="nav-link" data-scroll-target="#approfondimenti">Approfondimenti</a></li>
+  <li><a href="#altro" id="toc-altro" class="nav-link" data-scroll-target="#altro">Altro</a></li>
+  </ul></li>
+  <li><a href="#modalità-desame" id="toc-modalità-desame" class="nav-link" data-scroll-target="#modalità-desame">Modalità d’esame</a></li>
+  <li><a href="#propedeuticità" id="toc-propedeuticità" class="nav-link" data-scroll-target="#propedeuticità">Propedeuticità</a></li>
+  <li><a href="#ricevimento" id="toc-ricevimento" class="nav-link" data-scroll-target="#ricevimento">Ricevimento</a></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Data mining</h1>
+<p class="subtitle lead">CdL in Scienze Statistiche ed Economiche, Università Milano-Bicocca</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    Tommaso Rigon 
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            DEMS
+          </p>
+      </div>
+    </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<p>L’obiettivo primario del Corso <em>Statistica I</em> (6 CFU) consiste nel fornire agli studenti i principali strumenti della <strong>statistica descrittiva</strong> univariata e bivariata per l’analisi di dati riguardanti fenomeni di varia natura, inclusi quelli economici, aziendali e sociali.</p>
+<section id="materiale-didattico" class="level2">
+<h2 class="anchored" data-anchor-id="materiale-didattico">Materiale didattico</h2>
+<p>Il materiale didattico di ciascuna lezione è scaricabile utilizzando i <a href="">collegamenti ipertestuali</a>. Si precisa che questa pagina web è soggetta a modifiche, quindi si prega di controllare l’ultima versione aggiornata.</p>
+<section id="testo-di-riferimento" class="level3">
+<h3 class="anchored" data-anchor-id="testo-di-riferimento">Testo di riferimento</h3>
+<ul>
+<li>Piccolo, D. (2010), <em>Statistica</em>, Terza edizione, Il Mulino.</li>
+</ul>
+</section>
+<section id="testi-di-consultazione" class="level3">
+<h3 class="anchored" data-anchor-id="testi-di-consultazione">Testi di consultazione</h3>
+<ul>
+<li>Cicchitelli, G. (2012), <em>Statistica principi e metodi</em>, Seconda edizione, Pearson.</li>
+<li>Piccolo, D. (2020), <em>Statistica per le decisioni</em>, Terza edizione, Il Mulino.</li>
+</ul>
+</section>
+<section id="materiale-didattico-1" class="level3">
+<h3 class="anchored" data-anchor-id="materiale-didattico-1">Materiale didattico</h3>
+<p><strong>Nota</strong>: la dicitura §2.1 — §2.4 indica che vanno considerate le Sezioni §2.1, §2.2, §2.3 e §2.4 del libro di testo.</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Argomenti</th>
+<th>Materiale didattico</th>
+<th>Ulteriore materiale</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Introduzione al corso</td>
+<td><a href="slides/sl_intro.pdf">Slides introduzione</a></td>
+<td>§1.1 — §1.8</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>STATISTICA UNIVARIATA</strong></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Sommatorie</td>
+<td><a href="slides/sl_A1.pdf">Slides unità A.1</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><em>Esercizi</em></td>
+<td><a href="exe/exe_0.html">Esercizi 0</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Concetti preliminari</td>
+<td><a href="slides/sl_A2.pdf">Slides unità A.2</a></td>
+<td>§2.1 — §2.4, §2.6</td>
+</tr>
+<tr class="even">
+<td>Distribuzioni di frequenza</td>
+<td><a href="slides/sl_B.pdf">Slides unità B</a></td>
+<td>§3.1 — §3.5</td>
+</tr>
+<tr class="odd">
+<td><strong>Esercitazione</strong></td>
+<td><a href="exe/exe_1.html">Esercitazione 1</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><em>Esercizi</em></td>
+<td><a href="exe/exe_1_bis.html">Esercizi 1</a></td>
+<td><a href="exe/sol_exe_1.html">Soluzione 1</a></td>
+</tr>
+<tr class="odd">
+<td>Indici di posizione</td>
+<td><a href="slides/sl_C.pdf">Slides unità C</a></td>
+<td>§4.1 — §4.4, §4.6, §4.9</td>
+</tr>
+<tr class="even">
+<td><strong>Applicazioni</strong></td>
+<td><a href="slides/sl_D.pdf">Slides unità D</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><a href="slides/sl_E.pdf">Slides unità E</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>Esercitazione</strong></td>
+<td><a href="exe/exe_2.html">Esercitazione 2</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><em>Esercizi</em></td>
+<td><a href="exe/exe_2_bis.html">Esercizi 2</a></td>
+<td><a href="exe/sol_exe_2.html">Soluzione 2</a></td>
+</tr>
+<tr class="even">
+<td>Indici di variabilità</td>
+<td><a href="slides/sl_F.pdf">Slides unità F</a></td>
+<td>§5.1 — §5.3</td>
+</tr>
+<tr class="odd">
+<td>Istogrammi &amp; boxplot</td>
+<td><a href="slides/sl_G.pdf">Slides unità G</a></td>
+<td>§3.4, §6.4, §6.5</td>
+</tr>
+<tr class="even">
+<td>Simmetria, curtosi, multimodalità</td>
+<td><a href="slides/sl_H.pdf">Slides unità H</a></td>
+<td>§6.1 — §6.3</td>
+</tr>
+<tr class="odd">
+<td><strong>Esercitazione</strong></td>
+<td><a href="exe/exe_3.html">Esercitazione 3</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><em>Esercizi</em></td>
+<td><a href="exe/exe_3_bis.html">Esercizi 3</a></td>
+<td><a href="exe/sol_exe_3.html">Soluzione 3</a></td>
+</tr>
+<tr class="odd">
+<td>Dati qualitativi, eterogeneità</td>
+<td><a href="slides/sl_I.pdf">Slides unità I</a></td>
+<td>§5.7</td>
+</tr>
+<tr class="even">
+<td><strong>Esercitazione</strong></td>
+<td><a href="exe/exe_4.html">Esercitazione 4</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><em>Esercizi</em></td>
+<td><a href="exe/exe_4_bis.html">Esercizi 4</a></td>
+<td><a href="exe/sol_exe_4.html">Soluzione 4</a></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>STATISTICA BIVARIATA</strong></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Covarianza e correlazione</td>
+<td><a href="slides/sl_J.pdf">Slides unità J</a></td>
+<td>§7.1, §7.6 — §7.7</td>
+</tr>
+<tr class="even">
+<td>Regressione lineare semplice</td>
+<td><a href="slides/sl_K.pdf">Slides unità K</a></td>
+<td>§22.1 — §22.4, §22.8</td>
+</tr>
+<tr class="odd">
+<td><strong>Applicazione</strong></td>
+<td><a href="slides/sl_L.pdf">Slides unità L</a></td>
+<td>§22.9</td>
+</tr>
+<tr class="even">
+<td>Correlazione parziale</td>
+<td><a href="slides/sl_M.pdf">Slides unità M</a></td>
+<td>§7.6</td>
+</tr>
+<tr class="odd">
+<td><strong>Esercitazione</strong></td>
+<td><a href="exe/exe_5.html">Esercitazione 5</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><em>Esercizi</em></td>
+<td><a href="exe/exe_5_bis.html">Esercizi 5</a></td>
+<td><a href="exe/sol_exe_5.html">Soluzione 5</a></td>
+</tr>
+<tr class="odd">
+<td>Analisi della varianza</td>
+<td><a href="slides/sl_N.pdf">Slides unità N</a></td>
+<td>§7.4</td>
+</tr>
+<tr class="even">
+<td><strong>Esercitazione</strong></td>
+<td><a href="exe/exe_6.html">Esercitazione 6</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><em>Esercizi</em></td>
+<td><a href="exe/exe_6_bis.html">Esercizi 6</a></td>
+<td><a href="exe/sol_exe_6.html">Soluzione 6</a></td>
+</tr>
+<tr class="even">
+<td>Tabelle di contingenza</td>
+<td><a href="slides/sl_O.pdf">Slides unità O</a></td>
+<td>§7.1 — §7.5</td>
+</tr>
+<tr class="odd">
+<td>La dipendenza tra variabili</td>
+<td><a href="slides/sl_P.pdf">Slides unità P</a></td>
+<td>§7.4</td>
+</tr>
+<tr class="even">
+<td><strong>Esercitazione</strong></td>
+<td><a href="exe/exe_7.html">Esercitazione 7</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><em>Esercizi</em></td>
+<td><a href="exe/exe_7_bis.html">Esercizi 7</a></td>
+<td><a href="exe/sol_exe_7.html">Soluzione 7</a></td>
+</tr>
+<tr class="even">
+<td><strong>Simulazione d’esame</strong></td>
+<td><a href="exe/exe_8.html">Esercitazione 8</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><strong>LEZIONI AGGIUNTIVE</strong></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>La pandemia di COVID-19 in Lombardia</td>
+<td><a href="slides/sl_Q.pdf">Slides unità Q</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Mutua variabilità e concentrazione</td>
+<td><a href="slides/sl_R.pdf">Slides unità R</a></td>
+<td>§5.4 — §5.5</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><strong>ESAMI PASSATI</strong></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><a href="exe/exe_8_bis.html">Esami passati</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="approfondimenti" class="level3">
+<h3 class="anchored" data-anchor-id="approfondimenti">Approfondimenti</h3>
+<section id="quotidiani" class="level4">
+<h4 class="anchored" data-anchor-id="quotidiani">Quotidiani</h4>
+<ul>
+<li><p><a href="https://www.corriere.it/esteri/20_giugno_25/vera-america-qui-noi-italiani-piu-ricchi-d4cc4256-b64b-11ea-9dea-5ac3c9ec7c08.shtml">La vera America è qui da noi: italiani più ricchi</a>. <em>Corriere della Sera</em> del 25 Giugno 2020.</p></li>
+<li><p><a href="https://nova.ilsole24ore.com/nova24-tech/a-caccia-di-un-milione-di-scienziati-dei-dati-inizia-la-democratizzazione-della-data-science/">A caccia di un milione di scienziati dei dati. Inizia la democratizzazione della data science</a>. <em>Nóva, de Il Sole 24 ore</em> del 20 Marzo 2019.</p></li>
+</ul>
+</section>
+<section id="articoli-scientifici-in-inglese" class="level4">
+<h4 class="anchored" data-anchor-id="articoli-scientifici-in-inglese">Articoli scientifici (in inglese)</h4>
+<ul>
+<li><p><a href="approfondimenti/Azzalini1990.pdf">Azzalini, A. (1990)</a>. A look at some data on the Old Faithful geyser. <em>Journal of the Royal Statistical Society. Series C (Applied Statistics)</em> <strong>39</strong>(3), 357–365.</p></li>
+<li><p><a href="approfondimenti/Hyndman1996.pdf">Hyndman, R. J. and Yanan, F. (1996)</a>. Sample quantiles in statistical packages. <em>The American Statistician</em> <strong>50</strong>(4), 361–365.</p></li>
+<li><p><a href="approfondimenti/Muliere1993.pdf">Muliere, P. and Parmigiani, G. (1993)</a>. Utility and means in the 1930s. <em>Statistical Science</em> <strong>8</strong>(4), 421–432.</p></li>
+<li><p><a href="approfondimenti/Schwertman1990.pdf">Schwertman, N. C., Gilks, A. J., and Cameron, J. (1990)</a>. A simple noncalculus proof that the median minimizes the sum of the absolute deviations. <em>The American Statistician</em> <strong>44</strong>(1), 38–38.</p></li>
+<li><p><a href="approfondimenti/Wainer1984.pdf">Wainer, H. (1984)</a>. How to display data badly. <em>The American Statistician</em> <strong>38</strong>(2), 137–147.</p></li>
+</ul>
+</section>
+</section>
+<section id="altro" class="level3">
+<h3 class="anchored" data-anchor-id="altro">Altro</h3>
+<ul>
+<li><a href="approfondimenti/cronistoria.pdf">Cronistoria della statistica</a></li>
+</ul>
+</section>
+</section>
+<section id="modalità-desame" class="level2">
+<h2 class="anchored" data-anchor-id="modalità-desame">Modalità d’esame</h2>
+<p>La modalità di verifica delle conoscenze acquisite durante il corso è basata su una <strong>prova scritta</strong> e su una eventuale <strong>prova orale</strong>. La prova d’esame comprende esercizi simili a quelli visti nelle esercitazioni e quesiti di carattere teorico.</p>
+<p>La <strong>prova orale</strong> è <strong>obbligatoria</strong> per coloro che ottengano nella prova scritta una <strong>votazione compresa tra 27 e 30</strong> (estremi inclusi). In tutti gli altri casi, non è prevista una prova orale.</p>
+</section>
+<section id="propedeuticità" class="level2">
+<h2 class="anchored" data-anchor-id="propedeuticità">Propedeuticità</h2>
+<p>Il Corso non prevede propedeuticità. È caldamente consigliata, tuttavia, la conoscenza di nozioni di matematica di base previste dai programmi delle scuole secondarie superiori.</p>
+</section>
+<section id="ricevimento" class="level2">
+<h2 class="anchored" data-anchor-id="ricevimento">Ricevimento</h2>
+<p>Per fissare un appuntamento, si prega di contattare il docente in anticipo via posta elettronica all’indirizzo <code>tommaso.rigon@unimib.it</code>. Il ricevimento è fissato ogni <strong>martedì alle ore 17.30</strong>.</p>
+<hr>
+<section id="ringraziamenti" class="level4">
+<h4 class="anchored" data-anchor-id="ringraziamenti">Ringraziamenti</h4>
+<p>Si ringrazia Matteo Borrotti, Guido Masarotto e Bruno Scarpa per aver reso disponibile gran parte del materiale su cui questo corso è basato.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="index_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

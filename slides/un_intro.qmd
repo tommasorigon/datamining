@@ -5,10 +5,11 @@ execute:
   cache: true
 format:
   revealjs:
+    output-file: un_intro_slides.html
     smaller: true
     slide-number: true
     callout-appearance: minimal
-    theme: night # alternative themes (subset): default, night, dark
+    theme: default # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: true
     # incremental: true  # Remove comment if you like incremental bullet points
@@ -83,4 +84,4 @@ Media aritmetica
 
 :   Prova uno due tre
 
-    Banana
+    Banana 234234234

@@ -1,11 +1,27 @@
 ---
 title: "Data mining"
 subtitle: "CdL in Scienze Statistiche ed Economiche, Università Milano-Bicocca"
-lang: it
+lang: en
 author:
   name: Tommaso Rigon
   affiliation: DEMS
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-title: Table of contents
+    embed-resources: false
+    code-line-numbers: true
+    smooth-scroll: true
 ---
+
+```{r}
+#| echo: false
+#| message: false
+#| output: false
+quarto::quarto_render("slides/un_intro.qmd")
+```
+
 
 L'obiettivo primario del Corso *Statistica I* (6 CFU) consiste nel fornire agli studenti i principali strumenti della **statistica descrittiva** univariata e bivariata per l'analisi di dati riguardanti fenomeni di varia natura, inclusi quelli economici, aziendali e sociali.
 
