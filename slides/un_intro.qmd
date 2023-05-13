@@ -1,0 +1,86 @@
+---
+title: "Introduction to the course"
+subtitle: Data mining
+execute:
+  cache: true
+format:
+  revealjs:
+    smaller: true
+    slide-number: true
+    callout-appearance: minimal
+    theme: night # alternative themes (subset): default, night, dark
+    embed-resources: false
+    echo: true
+    # incremental: true  # Remove comment if you like incremental bullet points
+    # logo: https://datasciencebocconi.github.io/Images/Other/logoBocconi.png
+    footer: "[Home page](https://tommasorigon.github.io/datamining)"
+  html:
+    theme: cosmo
+    toc: true
+    toc-title: Table of contents
+    embed-resources: false
+    code-line-numbers: true
+    smooth-scroll: true
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+## The Ames housing problem
+
+![](https://datasciencebocconi.github.io/Images/ames_housing/housesbanner.png){fig-align="center"}
+
+-   Suppose you are interested in [buying a new
+    house]{style="color:DarkOrange"} in the town of Ames, which is
+    located in the US state of Iowa.
+
+-   You want to focus your search on houses that you expect to be able
+    to afford.
+
+-   Can you [predict]{style="color:DarkOrange"} the price of the house
+    based on its characteristics?
+
+-   This is a
+    [**Kaggle**](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)
+    playground competition[^1]. You can join the competition, if you
+    like. Keep in mind that the full dataset, including the test set, is
+    public...
+
+[^1]: De Cock, D. 2011. "Ames, Iowa: Alternative to the Boston Housing
+    Data as an End of Semester Regression Project." Journal of
+    Statistics Education 19 (3).
+
+## Problem description
+
+-   This is a prediction problem, in which the **sale price** is the
+    [output]{style="color:DarkOrange"} variable (response).
+
+-   You have some information from all of the houses sold over the past
+    few years, including the number of bedrooms, the size of the house,
+    the year the house was built, etc.
+
+-   This unit is organized into two sections:
+
+    1.  We clean the data and perform some [exploratory data
+        analysis]{style="color:DarkOrange"} to gain some preliminary
+        understanding of the data;
+    2.  We exploit advanced regression techniques to predict the price
+        of the house using all the remaining
+        [input]{style="color:DarkOrange"} variables (covariates).
+
+-   In other words, we will try to estimate a function $f(\cdot)$ such
+    that $$
+    (\texttt{SalePrice}) = f(\texttt{GarageArea},\texttt{Neighborhood}, \dots) + \epsilon.
+    $$
+
+## Test for defining a quantity
+
+-   This is a test
+
+Media aritmetica
+
+:   Prova uno due tre
+
+    Banana
