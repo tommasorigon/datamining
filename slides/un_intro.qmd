@@ -60,9 +60,9 @@ editor_options:
 
 ## Slide per caterina
 
-- Quanto fa 156 * 2867?
+- Quanto fa 15 + 18?
 
-- Risposta: `r 156 * 286`
+- Risposta: `r 15 +  18`
 
 ## Another slide
 
