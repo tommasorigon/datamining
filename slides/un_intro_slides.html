@@ -9,7 +9,8 @@
 <link href="un_intro_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.335">
 
-  <title>Introduction to the course</title>
+  <meta name="author" content="Tommaso Rigon">
+  <title>Introduction</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -29,6 +30,22 @@
     }
   </style>
   <link rel="stylesheet" href="un_intro_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
   <link href="un_intro_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="un_intro_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="un_intro_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -323,59 +340,55 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Introduction to the course</h1>
-  <p class="subtitle">Data mining</p>
+  <h1 class="title">Introduction</h1>
+  <p class="subtitle">Data mining - CdL CLAMSES</p>
 
 <div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+<span class="orange">Tommaso Rigon</span> 
+</div>
+        <p class="quarto-title-affiliation">
+            <em>Università degli Studi di Milano-Bicocca</em>
+          </p>
+    </div>
 </div>
 
 </section>
-<section id="the-ames-housing-problem" class="slide level2">
-<h2>The Ames housing problem</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="https://datasciencebocconi.github.io/Images/ames_housing/housesbanner.png"></p>
-</figure>
-</div>
+<section id="errore-quadratico-medio-di-previsione" class="slide level2">
+<h2>Errore quadratico medio di previsione</h2>
 <ul>
-<li><p>Suppose you are interested in <span style="color:DarkOrange">buying a new house</span> in the town of Ames, which is located in the US state of Iowa.</p></li>
-<li><p>You want to focus your search on houses that you expect to be able to afford.</p></li>
-<li><p>Can you <span style="color:DarkOrange">predict</span> the price of the house based on its characteristics?</p></li>
-<li><p>This is a <a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques"><strong>Kaggle</strong></a> playground competition<sup>1</sup>. You can join the competition, if you like. Keep in mind that the full dataset, including the test set, is public…</p></li>
-</ul>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>De Cock, D. 2011. “Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester Regression Project.” Journal of Statistics Education 19 (3).</p></li></ol></aside></section>
-<section id="problem-description" class="slide level2">
-<h2>Problem description</h2>
-<ul>
-<li><p>This is a prediction problem, in which the <strong>sale price</strong> is the <span style="color:DarkOrange">output</span> variable (response).</p></li>
-<li><p>You have some information from all of the houses sold over the past few years, including the number of bedrooms, the size of the house, the year the house was built, etc.</p></li>
-<li><p>This unit is organized into two sections:</p>
-<ol type="1">
-<li>We clean the data and perform some <span style="color:DarkOrange">exploratory data analysis</span> to gain some preliminary understanding of the data;</li>
-<li>We exploit advanced regression techniques to predict the price of the house using all the remaining <span style="color:DarkOrange">input</span> variables (covariates).</li>
-</ol></li>
-<li><p>In other words, we will try to estimate a function <span class="math inline">\(f(\cdot)\)</span> such that <span class="math display">\[
-(\texttt{SalePrice}) = f(\texttt{GarageArea},\texttt{Neighborhood}, \dots) + \epsilon.
-\]</span></p></li>
+<li><p>Si consideri un vettore di variabili esplicative a valori reali <span class="math inline">x \in \mathbb{R}^p</span>.</p></li>
+<li><p>Interessa penalizzare gli errori di previsione utilizzando la <span class="blue">funzione di perdita quadratica</span> <span class="math display">
+\mathscr{L}(y, f(x)) = (y - f(x))^2.
+</span></p></li>
+<li><p>Il criterio di scelta di <span class="math inline">f</span> risulta essere l’<span class="orange">errore quadratico medio</span> di previsione <span class="math display">
+\mathbb{E}\{(y - f(x))^2 \}.
+</span></p></li>
+<li><p>La cui soluzione di minimo è <span class="math display">
+f(x) = \mathbb{E}\{y \mid x = x_0\},
+</span> il valore atteso condizionato, ovvero la <span class="blue">funzione di regressione</span>.</p></li>
 </ul>
 </section>
-<section id="test-for-defining-a-quantity" class="slide level2">
-<h2>Test for defining a quantity</h2>
+<section id="slide-per-caterina" class="slide level2">
+<h2>Slide per caterina</h2>
 <ul>
-<li>This is a test</li>
+<li><p>Quanto fa 156 * 2867?</p></li>
+<li><p>Risposta: 4.4616^{4}</p></li>
 </ul>
-<dl>
-<dt>Media aritmetica</dt>
-<dd>
-<p>Prova uno due tre</p>
-<p>Banana 234234234</p>
-</dd>
-</dl>
+</section>
+<section id="another-slide" class="slide level2">
+<h2>Another slide</h2>
+<div class="cell" data-hash="un_intro_cache/revealjs/unnamed-chunk-1_cb68ff528b50c8d55a7333d6794bc4e5">
+<div class="cell-output-display">
+<p><img data-src="un_intro_files/figure-revealjs/unnamed-chunk-1-1.png" width="2500"></p>
+</div>
+</div>
+<p><img src="img/logoB.png" class="slide-logo"></p>
 <div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
 </div>
 </section>
-
     </div>
   </div>
 
@@ -392,7 +405,6 @@
   <script src="un_intro_files/libs/revealjs/plugin/notes/notes.js"></script>
   <script src="un_intro_files/libs/revealjs/plugin/search/search.js"></script>
   <script src="un_intro_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="un_intro_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -402,13 +414,13 @@
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': true,
+'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'smaller': true,
+'smaller': false,
  
         // Display controls in the bottom right corner
         controls: false,
@@ -533,7 +545,7 @@
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'none',
+        transition: 'slide',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',
@@ -560,33 +572,53 @@
         // Factor of the display size that should remain empty around the content
         margin: 0.1,
 
-        math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
-          config: 'TeX-AMS_HTML-full',
-          tex2jax: {
-            inlineMath: [['\\(','\\)']],
-            displayMath: [['\\[','\\]']],
-            balanceBraces: true,
-            processEscapes: false,
-            processRefs: true,
-            processEnvironments: true,
-            preview: 'TeX',
-            skipTags: ['script','noscript','style','textarea','pre','code'],
-            ignoreClass: 'tex2jax_ignore',
-            processClass: 'tex2jax_process'
-          },
-        },
-
         // reveal.js plugins
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
 
-          RevealMath,
           RevealNotes,
           RevealSearch,
           RevealZoom
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

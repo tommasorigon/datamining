@@ -1,0 +1,47 @@
+/*-- scss:defaults --*/
+
+@import url(https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;700&display=swap);
+
+
+// fonts
+$font-family-sans-serif: "Source Sans Pro", sans-serif !default; 
+$presentation-font-size-root: 27px;
+$presentation-font-smaller: 1;
+
+// colors
+//$body-bg: #fff !default;
+//$body-color: #fff !default;
+//$selection-bg: #26351c !default;
+$link-color: Darkblue; 
+
+// headings
+$presentation-heading-line-height: 2.3;
+$presentation-heading-color: Darkblue !default;
+$presentation-heading-font: "Source Sans Pro", sans-serif !default; 
+
+/*-- scss:rules --*/
+ul {
+  list-style-type: square;
+}
+
+.reveal ul {
+  list-style-type: square;
+}
+
+.math.inline {
+  font-size: 85%;
+}
+.math.display {
+  font-size: 85%;
+}
+
+.orange{
+   color:#e6a019;
+   font-weight: bold;
+}
+
+.blue{
+   color:#50b3e4;
+   font-weight: bold;
+}
+
