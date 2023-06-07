@@ -1,10 +1,27 @@
 ---
-title: "Statistica I"
-subtitle: "CdL in Scienze Statistiche ed Economiche, Università Milano-Bicocca"
-lang: it
-author:
-  name: Tommaso Rigon
-  affiliation: DEMS
+title: "Data mining"
+subtitle: "CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+execute:
+  cache: true
+format:
+  html:
+    html-math-method: katex
+    echo: true
+    callout-appearance: minimal
+    theme: [cosmo, template.css]
+    toc: true
+    toc-title: Table of contents
+    embed-resources: true
+    code-line-numbers: true
+    smooth-scroll: true
+    fig-dpi: 250
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
 ---
 
 L'obiettivo primario del Corso *Data mining* (6 CFU) consiste nel fornire agli studenti i principali strumenti della **statistica descrittiva** univariata e bivariata per l'analisi di dati riguardanti fenomeni di varia natura, inclusi quelli economici, aziendali e sociali.
