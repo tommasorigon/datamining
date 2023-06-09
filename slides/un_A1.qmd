@@ -52,14 +52,14 @@ editor_options:
 
 . . .
 
--   ... but you should be [very familiar]{.orange} with linear models
+-   ... but you should be already [very familiar]{.orange} with linear models
     and GLMs!
 
 -   If do not remember much about them, use this first week of lectures
     to catch up (or study) from the material of previous courses.
 
 -   A [short introduction]{.blue} to the topic is also offered in
-    Azzalini & Scarpa (2011), Chapter 2 and Appendix A.3. 
+    Azzalini & Scarpa (2011), Chapter 2 and Appendix A.3.
 
 # Old friends: linear models
 
@@ -125,8 +125,9 @@ p0
 -   ... but the next plot clearly suggests that the relationship between
     `city.distance` and `engine.size` is [not]{.orange} well
     approximated by a [linear]{.orange} function.
-    
-- ... and also that `fuel` has an non-negligible effect on the response.
+
+-   ... and also that `fuel` has an non-negligible effect on the
+    response.
 
 ## Scatterplot of the data
 
@@ -152,10 +153,11 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) + geom_
 -   To estimate the unknown parameters $\beta$, a possibility is to rely
     on [least squares criterion]{.blue}: we seek the [minimum]{.orange}
     of the objective function $$
-    \ell(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
-    $$ using $n$ pairs of observations $(\bm{x}_i, y_i)$,
-    for $i = 1,\dots,n$. 
-- The solution to this minimization problem is denoted by $\hat{\beta}$.
+    D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
+    $$ using $n$ pairs of observations $(\bm{x}_i, y_i)$, for
+    $i = 1,\dots,n$.
+-   The solution to this minimization problem is denoted by
+    $\hat{\beta}$.
 
 . . .
 
@@ -169,7 +171,7 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) + geom_
 
 -   For instance, we could consider a [polynomial term]{.orange}
     combined with a [dummy variable]{.blue} $$
-    f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{diesel}).
+    f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
     $$
 
 -   [Remark]{.orange}. This model is [linear in the parameters]{.blue},
@@ -177,60 +179,143 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) + geom_
 
 . . .
 
-::: {.callout-note}
+::: callout-note
 -   The above specification is a special instance of [linear
     model]{.blue}, in which $$
     f(\bm{x}; \beta) = \beta_0  + \beta_1 x_1 + \cdots + \beta_p x_{p-1} = \bm{x}_i^T\beta,
-    $$ where $\bm{x} = (1, x_1, \dots,x_{p-1})^T$ is a $p$-dimensional vector of [covariates]{.orange} and
-    $\beta = (\beta_0,\dots,\beta_{p-1})^T$ is the corresponding vector of
-    [coefficients]{.orange}.
+    $$ where $\bm{x} = (1, x_1, \dots,x_{p-1})^T$ is a $p$-dimensional
+    vector of [covariates]{.orange} and
+    $\beta = (\beta_0,\dots,\beta_{p-1})^T$ is the corresponding vector
+    of [coefficients]{.orange}.
 :::
 
 ## Matrix notation
 
-- It is often convenient to express the quantities of linear models in [matrix notation]{.orange}.
+-   It is often convenient to express the quantities of linear models in
+    [matrix notation]{.orange}.
 
-- The [response values]{.blue} are $\bm{y} = (y_1,\dots,y_n)^T$.
+-   The [response values]{.blue} are $\bm{y} = (y_1,\dots,y_n)^T$.
 
-- The [design matrix]{.blue} is a $n \times p$ matrix, comprising the covariate's values, defined by
-$$
-\bm{X} = (\bm{x}_1, \dots,\bm{x}_n)^T = 
-\begin{bmatrix} 
-1 & x_{1,1} & \cdots & x_{1,p-1}\\
-\vdots & \vdots & \ddots & \vdots \\
-1 & x_{n, 1} & \cdots & x_{n, p-1}
-\end{bmatrix}.
-$$
-- Thus, the linear model can be written using the compact notation:
-$$
-\bm{y} = \bm{X}\beta + \bm{\epsilon},
-$$
-where $\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T$ is a vector of iid error terms with zero mean and variance $\sigma^2$.
+-   The [design matrix]{.blue} is a $n \times p$ matrix, comprising the
+    covariate's values, defined by $$
+    \bm{X} = (\bm{x}_1, \dots,\bm{x}_n)^T = 
+    \begin{bmatrix} 
+    1 & x_{1,1} & \cdots & x_{1,p-1}\\
+    \vdots & \vdots & \ddots & \vdots \\
+    1 & x_{n, 1} & \cdots & x_{n, p-1}
+    \end{bmatrix}.
+    $$
+
+-   Thus, the linear model can be written using the compact notation: $$
+    \bm{y} = \bm{X}\beta + \bm{\epsilon},
+    $$ where $\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T$ is a
+    vector of iid error terms with zero mean and variance $\sigma^2$.
 
 ## Linear regression: estimation I
 
-- The optimal set of coefficients $\hat{\beta}$ is the minimizer of the least squared criterion $$
-\ell(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
-$$
-where $||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2}$ is the [Euclidean norm]{.blue}. 
+-   The optimal set of coefficients $\hat{\beta}$ is the minimizer of
+    the least squared criterion $$
+    D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
+    $$ where $||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2}$ is the
+    [Euclidean norm]{.blue}.
+
+-   The quantity $D(\beta)$ is also known as [residual sum of squares
+    (RSS)]{.orange}.
 
 . . .
 
-:::{.callout-note}
-- If the design matrix has [full rank]{.blue}, that is if $\text{rk}(\bm{X}^T\bm{X}) = p$, then the [least square estimate]{.orange} has an explicit solution:
-$$
-\hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y}.
-$$
+::: callout-note
+-   If the design matrix has [full rank]{.blue}, that is if
+    $\text{rk}(\bm{X}^T\bm{X}) = p$, then the [least square
+    estimate]{.orange} has an explicit solution: $$
+    \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y}.
+    $$
 :::
 
 ## Linear regression: estimation II
 
-- Consequently, the predicted values are
+-   Consequently, the predicted values are $$
+    \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{P}\bm{y}, \qquad \bm{P} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
+    $$
+
+-   $\bm{P}$ is a $n \times n$ [projection matrix]{.orange} matrix
+    sometimes called [hat matrix]{.blue}.
+
+-   It can be shown that $\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p$.
+    Moreover, it holds $\bm{P} = \bm{P}^T$ and $\bm{P}^2 = \bm{P}$.
+
+-   The quantity $D(\hat{\beta})$ is the [deviance]{.blue}, which is
+    equal to $$
+    D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{P})\bm{y}.
+    $$
+
+-   A typical estimate for the residual variance $\sigma^2$ is then
+    given by $$
+    s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
+    $$
+
+## Linear regression: inference
+
+- Let us additionally assume that the errors follow a Gaussian distribution: $\epsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$. 
+
+- This implies that the distribution of the estimator $\hat{\beta}$ is
 $$
-\hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{P}\bm{y}, \qquad \bm{P} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
+\hat{\beta} \sim N_p(\beta, \sigma^2 (X^TX)^{-1}).
 $$
-- $\bm{P}$ is a $n \times n$ matrix called [projection matrix]{.orange} such that $\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p$. It also holds that $\bm{P} = \bm{P}^T$ and $\bm{P}^2 = \bm{P}$.  
+- Hence, the estimator $\hat{\beta}$ is [unbiased]{.orange} and its [variance]{.blue} can be estimated by
+$$
+\widehat{\text{var}}(\hat{\beta}) = s^2 (X^TX)^{-1}.
+$$
+- The [standard errors]{.orange} of the components of beta correspond to the square root of the diagonal of the above covariance matrix. 
+
+- Confidence interval and Wald's tests can be obtained through classical inferential theory. 
+
+## Car data: a first model
+
+- A first model to predict `city.distance` ($y$) via
+    `engine.size` ($x$) and `fuel` ($z$) is $$
+    f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
+    $$
+- Intuition...
+
+## Car data: estimated coefficients
+
+- We obtain following [summary]{.orange} for the regression coefficients $\hat{\beta}$. 
+
+```{r}
+library(broom)
+library(knitr)
+m1 <- lm(city.distance ~ engine.size + I(engine.size^2) + I(engine.size^3) + fuel, data = auto)
+kable(tidy(m1, conf.int = TRUE), digits = 3)
+```
+
+## Car data: fitted value
+
+```{r}
+augmented_m1 <- augment(m1)
+ggplot(data = augmented_m1, aes(x = engine.size, y = city.distance, col = fuel)) + geom_point() + geom_line(aes(y = .fitted)) +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Engine size (L)") +
+  ylab("Urban distance (km/L)")
+```
+
+## Car data: graphical diagnostics
+
+```{r}
+ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) + geom_point() + geom_hline(aes(yintercept = 0), linetype = "dotted") +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Fitted values") +
+  ylab("Residuals")
+```
+
+## Comments
+
+## Variable transformation
 
 # Computational aspects
+
+## How to obtain the least squares estimate
 
 # Generalized linear models
