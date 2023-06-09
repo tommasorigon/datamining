@@ -41,6 +41,23 @@ editor_options:
   chunk_output_type: console
 ---
 
+## About this unit
+
+- In this unit we will cover three important [topics]{.orange}:
+  - Linear models and modelling process
+  - Computational aspects
+  - Generalized linear models (GLMs)
+
+- The [computational aspects]{.blue} of linear models will be novel to most of you...
+
+. . .
+
+- ... but you should be [very familiar]{.orange} with linear models and GLMs! 
+
+- If do not remember much about them, use this first week of lectures to catch up (or study) from the material of previous courses. 
+
+- A [short introduction]{.blue} to the topic is also offered in Azzalini & Scarpa (2011), Chapter 2.
+
 # Old friends: linear models
 
 ## Car data
@@ -80,7 +97,7 @@ p0
 
 ## Linear regression
 
-- At the moment, let us focus on `city.distance` ($y$) and `engine.size` ($x$).
+- At the moment, let us focus on `city.distance` ($y$), `engine.size` ($x$) and `fuel` ($z$).
 
 - The simplest model we can come up with is a [linear regression]{.orange} line:
 $$
@@ -90,7 +107,7 @@ where $\epsilon$ is a non-observable "error" term, having zero mean and variance
 
 . . .
 
-- We are looking for an estimate for the [unknown regression parameters]{.blue} $\beta_0$ and $\beta_1$, using $n$ pairs of observations, denoted by $(x_i, y_i)$, for $i = 1,\dots,n$.
+- We are looking for an estimate for the [unknown regression parameters]{.blue} $\beta_0$ and $\beta_1$.
 
 - Such an estimate could be obtained by ordinary least squares (OLS)...
 
@@ -98,7 +115,7 @@ where $\epsilon$ is a non-observable "error" term, having zero mean and variance
 
 - ... but the next plot clearly suggests that the relationship between `city.distance` and `engine.size` is [not]{.orange} well approximated by a [linear]{.orange} function.
 
-## Scatterplot raw data
+## Scatterplot of the data
 
 ```{r}
 ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) + geom_point()+
@@ -109,6 +126,47 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) + geom_
 ```
 
 ## Regression models
+
+- A more [general formulation]{.orange} for modeling the relationship between a vector of covariates $\bm{x} = (x_1,\dots,x_p)^T \in \mathbb{R}^p$ and a response $y \in \mathbb{R}$ is
+$$
+y = f(\bm{x}; \beta) + \epsilon.
+$$
+
+. . .
+
+- To estimate the unknown parameters $\beta$, a possibility is to rely on [least squares criterion]{.blue}: we seek the [minimum]{.orange} of the objective function
+$$
+D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
+$$
+using $n$ pairs of observations, denoted by $(\bm{x}_i, y_i)$, for $i = 1,\dots,n$. The solution to this minimization problem is denoted with $\hat{\beta}$.
+
+. . .
+
+- The [predicted values]{.blue} $\hat{y}_i$ are then obtained as $\hat{y}_i = f(\bm{x}_i; \hat{\beta})$, for $i=1,\dots,n.$
+
+## Linear models
+
+- There are several directions to model `city.distance` ($y$), `engine.size` ($x$) and `fuel` ($z$) in a more flexible way. 
+
+- For instance, we could consider a [polynomial term]{.orange} combined with a [dummy variable]{.blue}
+$$
+f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{diesel}).
+$$
+- The above proposal is special instance of [linear model]{.blue}, in which
+$$
+f(\bm{x}; \beta) = \beta_0  + \beta_2 x_2 + \cdots + \beta_p x_{p-1} = \bm{x}_i^T\beta,
+$$
+where $\bm{x} = (1, x_1, \dots,x_{p-1})^T$ and $\beta = (\beta_0,\dots,\beta_{p-1})^T$.
+
+## Matrix notation
+
+- It is often convenient to express this problem using the matrix notation
+
+- where in the last expression we are using matrix notation, so that
+  - The vector $\bm{y} = (y_1,\dots,y_n)^T$
+  - The vector $f(\bm{x}; \beta) = (f(x_1,\beta), \dots, f(x_n; \beta))^T$
+  - The symbol $||\cdot||$ represents the Euclidean norm
+- The 
 
 ## Linear regression: estimation
 
