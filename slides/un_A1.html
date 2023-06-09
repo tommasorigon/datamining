@@ -73,8 +73,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#regression-models" id="toc-regression-models" class="nav-link" data-scroll-target="#regression-models">Regression models</a></li>
   <li><a href="#linear-models" id="toc-linear-models" class="nav-link" data-scroll-target="#linear-models">Linear models</a></li>
   <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation">Matrix notation</a></li>
-  <li><a href="#linear-regression-estimation" id="toc-linear-regression-estimation" class="nav-link" data-scroll-target="#linear-regression-estimation">Linear regression: estimation</a></li>
-  <li><a href="#linear-regression-estimation-1" id="toc-linear-regression-estimation-1" class="nav-link" data-scroll-target="#linear-regression-estimation-1">Linear regression: estimation</a></li>
+  <li><a href="#linear-regression-estimation-i" id="toc-linear-regression-estimation-i" class="nav-link" data-scroll-target="#linear-regression-estimation-i">Linear regression: estimation I</a></li>
+  <li><a href="#linear-regression-estimation-ii" id="toc-linear-regression-estimation-ii" class="nav-link" data-scroll-target="#linear-regression-estimation-ii">Linear regression: estimation II</a></li>
   </ul></li>
   <li><a href="#computational-aspects" id="toc-computational-aspects" class="nav-link" data-scroll-target="#computational-aspects">Computational aspects</a></li>
   <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a></li>
@@ -129,7 +129,7 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><p>… but you should be <span class="orange">very familiar</span> with linear models and GLMs!</p></li>
 <li><p>If do not remember much about them, use this first week of lectures to catch up (or study) from the material of previous courses.</p></li>
-<li><p>A <span class="blue">short introduction</span> to the topic is also offered in Azzalini &amp; Scarpa (2011), Chapter 2.</p></li>
+<li><p>A <span class="blue">short introduction</span> to the topic is also offered in Azzalini &amp; Scarpa (2011), Chapter 2 and Appendix A.3.</p></li>
 </ul>
 </div>
 </section>
@@ -174,7 +174,8 @@ y = \beta_0 + \beta_1 x + \epsilon,
 </div>
 <div class="incremental">
 <ul>
-<li>… but the next plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</li>
+<li><p>… but the next plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
+<li><p>… and also that <code>fuel</code> has an non-negligible effect on the response.</p></li>
 </ul>
 </div>
 </section>
@@ -196,8 +197,9 @@ y = f(\bm{x}; \beta) + \epsilon.
 <div class="incremental">
 <ul>
 <li>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
-D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
-</span> using <span class="math inline">n</span> pairs of observations, denoted by <span class="math inline">(\bm{x}_i, y_i)</span>, for <span class="math inline">i = 1,\dots,n</span>. The solution to this minimization problem is denoted with <span class="math inline">\hat{\beta}</span>.</li>
+\ell(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
+</span> using <span class="math inline">n</span> pairs of observations <span class="math inline">(\bm{x}_i, y_i)</span>, for <span class="math inline">i = 1,\dots,n</span>.</li>
+<li>The solution to this minimization problem is denoted by <span class="math inline">\hat{\beta}</span>.</li>
 </ul>
 </div>
 <div class="incremental">
@@ -213,34 +215,75 @@ D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
 <li><p>For instance, we could consider a <span class="orange">polynomial term</span> combined with a <span class="blue">dummy variable</span> <span class="math display">
 f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{diesel}).
 </span></p></li>
-<li><p>The above proposal is special instance of <span class="blue">linear model</span>, in which <span class="math display">
-f(\bm{x}; \beta) = \beta_0  + \beta_2 x_2 + \cdots + \beta_p x_{p-1} = \bm{x}_i^T\beta,
-</span> where <span class="math inline">\bm{x} = (1, x_1, \dots,x_{p-1})^T</span> and <span class="math inline">\beta = (\beta_0,\dots,\beta_{p-1})^T</span> is the vector of <span class="orange">coefficients</span> of the model.</p></li>
+<li><p><span class="orange">Remark</span>. This model is <span class="blue">linear in the parameters</span>, but it can capture non-linear patterns!</p></li>
 </ul>
 <div class="incremental">
+<div class="callout-note callout callout-style-simple no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
 <ul>
-<li><span class="orange">Remark</span>. A linear model is linear in the parameters, but it can capture non-linear behaviour!</li>
+<li>The above specification is a special instance of <span class="blue">linear model</span>, in which <span class="math display">
+f(\bm{x}; \beta) = \beta_0  + \beta_1 x_1 + \cdots + \beta_p x_{p-1} = \bm{x}_i^T\beta,
+</span> where <span class="math inline">\bm{x} = (1, x_1, \dots,x_{p-1})^T</span> is a <span class="math inline">p</span>-dimensional vector of <span class="orange">covariates</span> and <span class="math inline">\beta = (\beta_0,\dots,\beta_{p-1})^T</span> is the corresponding vector of <span class="orange">coefficients</span>.</li>
 </ul>
+</div>
+</div>
+</div>
 </div>
 </section>
 <section id="matrix-notation" class="level2">
 <h2 class="anchored" data-anchor-id="matrix-notation">Matrix notation</h2>
 <ul>
-<li><p>It is often convenient to express this problem using the matrix notation</p></li>
-<li><p>where in the last expression we are using matrix notation, so that</p>
-<ul>
-<li>The vector <span class="math inline">\bm{y} = (y_1,\dots,y_n)^T</span></li>
-<li>The vector <span class="math inline">f(\bm{x}; \beta) = (f(x_1,\beta), \dots, f(x_n; \beta))^T</span></li>
-<li>The symbol <span class="math inline">||\cdot||</span> represents the Euclidean norm</li>
-</ul></li>
-<li><p>The</p></li>
+<li><p>It is often convenient to express the quantities of linear models in <span class="orange">matrix notation</span>.</p></li>
+<li><p>The <span class="blue">response values</span> are <span class="math inline">\bm{y} = (y_1,\dots,y_n)^T</span>.</p></li>
+<li><p>The <span class="blue">design matrix</span> is a <span class="math inline">n \times p</span> matrix, comprising the covariate’s values, defined by <span class="math display">
+\bm{X} = (\bm{x}_1, \dots,\bm{x}_n)^T =
+\begin{bmatrix}
+1 &amp; x_{1,1} &amp; \cdots &amp; x_{1,p-1}\\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; x_{n, 1} &amp; \cdots &amp; x_{n, p-1}
+\end{bmatrix}.
+</span></p></li>
+<li><p>Thus, the linear model can be written using the compact notation: <span class="math display">
+\bm{y} = \bm{X}\beta + \bm{\epsilon},
+</span> where <span class="math inline">\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T</span> is a vector of iid error terms with zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
 </ul>
 </section>
-<section id="linear-regression-estimation" class="level2">
-<h2 class="anchored" data-anchor-id="linear-regression-estimation">Linear regression: estimation</h2>
+<section id="linear-regression-estimation-i" class="level2">
+<h2 class="anchored" data-anchor-id="linear-regression-estimation-i">Linear regression: estimation I</h2>
+<ul>
+<li>The optimal set of coefficients <span class="math inline">\hat{\beta}</span> is the minimizer of the least squared criterion <span class="math display">
+\ell(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
+</span> where <span class="math inline">||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2}</span> is the <span class="blue">Euclidean norm</span>.</li>
+</ul>
+<div class="incremental">
+<div class="callout-note callout callout-style-simple no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<ul>
+<li>If the design matrix has <span class="blue">full rank</span>, that is if <span class="math inline">\text{rk}(\bm{X}^T\bm{X}) = p</span>, then the <span class="orange">least square estimate</span> has an explicit solution: <span class="math display">
+\hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y}.
+</span></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section id="linear-regression-estimation-1" class="level2">
-<h2 class="anchored" data-anchor-id="linear-regression-estimation-1">Linear regression: estimation</h2>
+<section id="linear-regression-estimation-ii" class="level2">
+<h2 class="anchored" data-anchor-id="linear-regression-estimation-ii">Linear regression: estimation II</h2>
+<ul>
+<li>Consequently, the predicted values are <span class="math display">
+\hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{P}\bm{y}, \qquad \bm{P} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
+</span></li>
+<li><span class="math inline">\bm{P}</span> is a <span class="math inline">n \times n</span> matrix called <span class="orange">projection matrix</span> such that <span class="math inline">\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p</span>. It also holds that <span class="math inline">\bm{P} = \bm{P}^T</span> and <span class="math inline">\bm{P}^2 = \bm{P}</span>.</li>
+</ul>
 </section>
 </section>
 <section id="computational-aspects" class="level1">
