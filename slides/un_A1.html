@@ -63,13 +63,16 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#old-friends-linear-models" id="toc-old-friends-linear-models" class="nav-link active" data-scroll-target="#old-friends-linear-models">Old friends: linear models</a>
+  <li><a href="#about-this-unit" id="toc-about-this-unit" class="nav-link active" data-scroll-target="#about-this-unit">About this unit</a></li>
+  <li><a href="#old-friends-linear-models" id="toc-old-friends-linear-models" class="nav-link" data-scroll-target="#old-friends-linear-models">Old friends: linear models</a>
   <ul class="collapse">
   <li><a href="#car-data" id="toc-car-data" class="nav-link" data-scroll-target="#car-data">Car data</a></li>
   <li><a href="#car-data-diesel-or-gas" id="toc-car-data-diesel-or-gas" class="nav-link" data-scroll-target="#car-data-diesel-or-gas">Car data (<span class="blue">diesel</span> or <span class="orange">gas</span>)</a></li>
   <li><a href="#linear-regression" id="toc-linear-regression" class="nav-link" data-scroll-target="#linear-regression">Linear regression</a></li>
-  <li><a href="#scatterplot-raw-data" id="toc-scatterplot-raw-data" class="nav-link" data-scroll-target="#scatterplot-raw-data">Scatterplot raw data</a></li>
+  <li><a href="#scatterplot-of-the-data" id="toc-scatterplot-of-the-data" class="nav-link" data-scroll-target="#scatterplot-of-the-data">Scatterplot of the data</a></li>
   <li><a href="#regression-models" id="toc-regression-models" class="nav-link" data-scroll-target="#regression-models">Regression models</a></li>
+  <li><a href="#linear-models" id="toc-linear-models" class="nav-link" data-scroll-target="#linear-models">Linear models</a></li>
+  <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation">Matrix notation</a></li>
   <li><a href="#linear-regression-estimation" id="toc-linear-regression-estimation" class="nav-link" data-scroll-target="#linear-regression-estimation">Linear regression: estimation</a></li>
   <li><a href="#linear-regression-estimation-1" id="toc-linear-regression-estimation-1" class="nav-link" data-scroll-target="#linear-regression-estimation-1">Linear regression: estimation</a></li>
   </ul></li>
@@ -111,6 +114,25 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<section id="about-this-unit" class="level2">
+<h2 class="anchored" data-anchor-id="about-this-unit">About this unit</h2>
+<ul>
+<li>In this unit we will cover three important <span class="orange">topics</span>:
+<ul>
+<li>Linear models and modelling process</li>
+<li>Computational aspects</li>
+<li>Generalized linear models (GLMs)</li>
+</ul></li>
+<li>The <span class="blue">computational aspects</span> of linear models will be novel to most of you…</li>
+</ul>
+<div class="incremental">
+<ul>
+<li><p>… but you should be <span class="orange">very familiar</span> with linear models and GLMs!</p></li>
+<li><p>If do not remember much about them, use this first week of lectures to catch up (or study) from the material of previous courses.</p></li>
+<li><p>A <span class="blue">short introduction</span> to the topic is also offered in Azzalini &amp; Scarpa (2011), Chapter 2.</p></li>
+</ul>
+</div>
+</section>
 <section id="old-friends-linear-models" class="level1">
 <h1>Old friends: linear models</h1>
 <section id="car-data" class="level2">
@@ -139,14 +161,14 @@ ul.task-list li input[type="checkbox"] {
 <section id="linear-regression" class="level2">
 <h2 class="anchored" data-anchor-id="linear-regression">Linear regression</h2>
 <ul>
-<li><p>At the moment, let us focus on <code>city.distance</code> (<span class="math inline">y</span>) and <code>engine.size</code> (<span class="math inline">x</span>).</p></li>
+<li><p>At the moment, let us focus on <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
 <li><p>The simplest model we can come up with is a <span class="orange">linear regression</span> line: <span class="math display">
 y = \beta_0 + \beta_1 x + \epsilon,
 </span> where <span class="math inline">\epsilon</span> is a non-observable “error” term, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
 </ul>
 <div class="incremental">
 <ul>
-<li><p>We are looking for an estimate for the <span class="blue">unknown regression parameters</span> <span class="math inline">\beta_0</span> and <span class="math inline">\beta_1</span>, using <span class="math inline">n</span> pairs of observations, denoted by <span class="math inline">(x_i, y_i)</span>, for <span class="math inline">i = 1,\dots,n</span>.</p></li>
+<li><p>We are looking for an estimate for the <span class="blue">unknown regression parameters</span> <span class="math inline">\beta_0</span> and <span class="math inline">\beta_1</span>.</p></li>
 <li><p>Such an estimate could be obtained by ordinary least squares (OLS)…</p></li>
 </ul>
 </div>
@@ -156,8 +178,8 @@ y = \beta_0 + \beta_1 x + \epsilon,
 </ul>
 </div>
 </section>
-<section id="scatterplot-raw-data" class="level2">
-<h2 class="anchored" data-anchor-id="scatterplot-raw-data">Scatterplot raw data</h2>
+<section id="scatterplot-of-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="scatterplot-of-the-data">Scatterplot of the data</h2>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="un_A1_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="2100"></p>
@@ -166,6 +188,53 @@ y = \beta_0 + \beta_1 x + \epsilon,
 </section>
 <section id="regression-models" class="level2">
 <h2 class="anchored" data-anchor-id="regression-models">Regression models</h2>
+<ul>
+<li>A more <span class="orange">general formulation</span> for modeling the relationship between a vector of covariates <span class="math inline">\bm{x} = (x_1,\dots,x_p)^T \in \mathbb{R}^p</span> and a response <span class="math inline">y \in \mathbb{R}</span> is <span class="math display">
+y = f(\bm{x}; \beta) + \epsilon.
+</span></li>
+</ul>
+<div class="incremental">
+<ul>
+<li>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
+D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
+</span> using <span class="math inline">n</span> pairs of observations, denoted by <span class="math inline">(\bm{x}_i, y_i)</span>, for <span class="math inline">i = 1,\dots,n</span>. The solution to this minimization problem is denoted with <span class="math inline">\hat{\beta}</span>.</li>
+</ul>
+</div>
+<div class="incremental">
+<ul>
+<li>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are then obtained as <span class="math inline">\hat{y}_i = f(\bm{x}_i; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></li>
+</ul>
+</div>
+</section>
+<section id="linear-models" class="level2">
+<h2 class="anchored" data-anchor-id="linear-models">Linear models</h2>
+<ul>
+<li><p>There are several directions to model <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>) in a more flexible way.</p></li>
+<li><p>For instance, we could consider a <span class="orange">polynomial term</span> combined with a <span class="blue">dummy variable</span> <span class="math display">
+f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{diesel}).
+</span></p></li>
+<li><p>The above proposal is special instance of <span class="blue">linear model</span>, in which <span class="math display">
+f(\bm{x}; \beta) = \beta_0  + \beta_2 x_2 + \cdots + \beta_p x_{p-1} = \bm{x}_i^T\beta,
+</span> where <span class="math inline">\bm{x} = (1, x_1, \dots,x_{p-1})^T</span> and <span class="math inline">\beta = (\beta_0,\dots,\beta_{p-1})^T</span> is the vector of <span class="orange">coefficients</span> of the model.</p></li>
+</ul>
+<div class="incremental">
+<ul>
+<li><span class="orange">Remark</span>. A linear model is linear in the parameters, but it can capture non-linear behaviour!</li>
+</ul>
+</div>
+</section>
+<section id="matrix-notation" class="level2">
+<h2 class="anchored" data-anchor-id="matrix-notation">Matrix notation</h2>
+<ul>
+<li><p>It is often convenient to express this problem using the matrix notation</p></li>
+<li><p>where in the last expression we are using matrix notation, so that</p>
+<ul>
+<li>The vector <span class="math inline">\bm{y} = (y_1,\dots,y_n)^T</span></li>
+<li>The vector <span class="math inline">f(\bm{x}; \beta) = (f(x_1,\beta), \dots, f(x_n; \beta))^T</span></li>
+<li>The symbol <span class="math inline">||\cdot||</span> represents the Euclidean norm</li>
+</ul></li>
+<li><p>The</p></li>
+</ul>
 </section>
 <section id="linear-regression-estimation" class="level2">
 <h2 class="anchored" data-anchor-id="linear-regression-estimation">Linear regression: estimation</h2>

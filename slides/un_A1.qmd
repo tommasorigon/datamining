@@ -156,7 +156,11 @@ $$
 $$
 f(\bm{x}; \beta) = \beta_0  + \beta_2 x_2 + \cdots + \beta_p x_{p-1} = \bm{x}_i^T\beta,
 $$
-where $\bm{x} = (1, x_1, \dots,x_{p-1})^T$ and $\beta = (\beta_0,\dots,\beta_{p-1})^T$.
+where $\bm{x} = (1, x_1, \dots,x_{p-1})^T$ and $\beta = (\beta_0,\dots,\beta_{p-1})^T$ is the vector of [coefficients]{.orange} of the model.
+
+. . .
+
+- [Remark]{.orange}. A linear model is linear in the parameters, but it can capture non-linear behaviour!
 
 ## Matrix notation
 
