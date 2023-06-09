@@ -98,7 +98,7 @@ where $\epsilon$ is a non-observable "error" term, having zero mean and variance
 
 - ... but the next plot clearly suggests that the relationship between `city.distance` and `engine.size` is [not]{.orange} well approximated by a [linear]{.orange} function.
 
-## Scatterplot
+## Scatterplot raw data
 
 ```{r}
 ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) + geom_point()+

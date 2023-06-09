@@ -48,7 +48,7 @@ please check the latest updated version.
 | Topic                                  | Teaching material                | Slides                                      |
 |--------------------------------|----------------------|--------------|
 | Introduction                           | [Intro](slides/un_intro.html)    | [Slides intro](slides/un_intro_slides.html) |
-| **A-B-C**                              | [Unit A.1](slides/un_A1.html)                     | [Slides Unit A.1](un_A1_slides.html)                         |
+| **A-B-C**                              | [Unit A.1](slides/un_A1.html)                     | [Slides Unit A.1](slides/un_A1_slides.html)                         |
 | **Classification methods**             | [Unit A.2]()                     | [Slides Unit A.2]()                         |
 | *Exercises*                            | [Exercises 1]()                  |                                             |
 | **Optimism, conflicts and trade-offs** | [Unit B]()                       | [Slides Unit B]()                           |
