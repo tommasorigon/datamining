@@ -75,8 +75,18 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation">Matrix notation</a></li>
   <li><a href="#linear-regression-estimation-i" id="toc-linear-regression-estimation-i" class="nav-link" data-scroll-target="#linear-regression-estimation-i">Linear regression: estimation I</a></li>
   <li><a href="#linear-regression-estimation-ii" id="toc-linear-regression-estimation-ii" class="nav-link" data-scroll-target="#linear-regression-estimation-ii">Linear regression: estimation II</a></li>
+  <li><a href="#linear-regression-inference" id="toc-linear-regression-inference" class="nav-link" data-scroll-target="#linear-regression-inference">Linear regression: inference</a></li>
+  <li><a href="#car-data-a-first-model" id="toc-car-data-a-first-model" class="nav-link" data-scroll-target="#car-data-a-first-model">Car data: a first model</a></li>
+  <li><a href="#car-data-estimated-coefficients" id="toc-car-data-estimated-coefficients" class="nav-link" data-scroll-target="#car-data-estimated-coefficients">Car data: estimated coefficients</a></li>
+  <li><a href="#car-data-fitted-value" id="toc-car-data-fitted-value" class="nav-link" data-scroll-target="#car-data-fitted-value">Car data: fitted value</a></li>
+  <li><a href="#car-data-graphical-diagnostics" id="toc-car-data-graphical-diagnostics" class="nav-link" data-scroll-target="#car-data-graphical-diagnostics">Car data: graphical diagnostics</a></li>
+  <li><a href="#comments" id="toc-comments" class="nav-link" data-scroll-target="#comments">Comments</a></li>
+  <li><a href="#variable-transformation" id="toc-variable-transformation" class="nav-link" data-scroll-target="#variable-transformation">Variable transformation</a></li>
   </ul></li>
-  <li><a href="#computational-aspects" id="toc-computational-aspects" class="nav-link" data-scroll-target="#computational-aspects">Computational aspects</a></li>
+  <li><a href="#computational-aspects" id="toc-computational-aspects" class="nav-link" data-scroll-target="#computational-aspects">Computational aspects</a>
+  <ul class="collapse">
+  <li><a href="#how-to-obtain-the-least-squares-estimate" id="toc-how-to-obtain-the-least-squares-estimate" class="nav-link" data-scroll-target="#how-to-obtain-the-least-squares-estimate">How to obtain the least squares estimate</a></li>
+  </ul></li>
   <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a></li>
   </ul>
 </nav>
@@ -127,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <div class="incremental">
 <ul>
-<li><p>… but you should be <span class="orange">very familiar</span> with linear models and GLMs!</p></li>
+<li><p>… but you should be already <span class="orange">very familiar</span> with linear models and GLMs!</p></li>
 <li><p>If do not remember much about them, use this first week of lectures to catch up (or study) from the material of previous courses.</p></li>
 <li><p>A <span class="blue">short introduction</span> to the topic is also offered in Azzalini &amp; Scarpa (2011), Chapter 2 and Appendix A.3.</p></li>
 </ul>
@@ -197,7 +207,7 @@ y = f(\bm{x}; \beta) + \epsilon.
 <div class="incremental">
 <ul>
 <li>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
-\ell(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
+D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
 </span> using <span class="math inline">n</span> pairs of observations <span class="math inline">(\bm{x}_i, y_i)</span>, for <span class="math inline">i = 1,\dots,n</span>.</li>
 <li>The solution to this minimization problem is denoted by <span class="math inline">\hat{\beta}</span>.</li>
 </ul>
@@ -213,7 +223,7 @@ y = f(\bm{x}; \beta) + \epsilon.
 <ul>
 <li><p>There are several directions to model <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>) in a more flexible way.</p></li>
 <li><p>For instance, we could consider a <span class="orange">polynomial term</span> combined with a <span class="blue">dummy variable</span> <span class="math display">
-f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{diesel}).
+f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
 </span></p></li>
 <li><p><span class="orange">Remark</span>. This model is <span class="blue">linear in the parameters</span>, but it can capture non-linear patterns!</p></li>
 </ul>
@@ -255,9 +265,10 @@ f(\bm{x}; \beta) = \beta_0  + \beta_1 x_1 + \cdots + \beta_p x_{p-1} = \bm{x}_i^
 <section id="linear-regression-estimation-i" class="level2">
 <h2 class="anchored" data-anchor-id="linear-regression-estimation-i">Linear regression: estimation I</h2>
 <ul>
-<li>The optimal set of coefficients <span class="math inline">\hat{\beta}</span> is the minimizer of the least squared criterion <span class="math display">
-\ell(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
-</span> where <span class="math inline">||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2}</span> is the <span class="blue">Euclidean norm</span>.</li>
+<li><p>The optimal set of coefficients <span class="math inline">\hat{\beta}</span> is the minimizer of the least squared criterion <span class="math display">
+D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
+</span> where <span class="math inline">||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2}</span> is the <span class="blue">Euclidean norm</span>.</p></li>
+<li><p>The quantity <span class="math inline">D(\beta)</span> is also known as <span class="orange">residual sum of squares (RSS)</span>.</p></li>
 </ul>
 <div class="incremental">
 <div class="callout-note callout callout-style-simple no-icon">
@@ -279,15 +290,149 @@ f(\bm{x}; \beta) = \beta_0  + \beta_1 x_1 + \cdots + \beta_p x_{p-1} = \bm{x}_i^
 <section id="linear-regression-estimation-ii" class="level2">
 <h2 class="anchored" data-anchor-id="linear-regression-estimation-ii">Linear regression: estimation II</h2>
 <ul>
-<li>Consequently, the predicted values are <span class="math display">
+<li><p>Consequently, the predicted values are <span class="math display">
 \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{P}\bm{y}, \qquad \bm{P} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
-</span></li>
-<li><span class="math inline">\bm{P}</span> is a <span class="math inline">n \times n</span> matrix called <span class="orange">projection matrix</span> such that <span class="math inline">\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p</span>. It also holds that <span class="math inline">\bm{P} = \bm{P}^T</span> and <span class="math inline">\bm{P}^2 = \bm{P}</span>.</li>
+</span></p></li>
+<li><p><span class="math inline">\bm{P}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>.</p></li>
+<li><p>It can be shown that <span class="math inline">\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p</span>. Moreover, it holds <span class="math inline">\bm{P} = \bm{P}^T</span> and <span class="math inline">\bm{P}^2 = \bm{P}</span>.</p></li>
+<li><p>The quantity <span class="math inline">D(\hat{\beta})</span> is the <span class="blue">deviance</span>, which is equal to <span class="math display">
+D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{P})\bm{y}.
+</span></p></li>
+<li><p>A typical estimate for the residual variance <span class="math inline">\sigma^2</span> is then given by <span class="math display">
+s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
+</span></p></li>
 </ul>
+</section>
+<section id="linear-regression-inference" class="level2">
+<h2 class="anchored" data-anchor-id="linear-regression-inference">Linear regression: inference</h2>
+<ul>
+<li><p>Let us additionally assume that the errors follow a Gaussian distribution: <span class="math inline">\epsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)</span>.</p></li>
+<li><p>This implies that the distribution of the estimator <span class="math inline">\hat{\beta}</span> is <span class="math display">
+\hat{\beta} \sim N_p(\beta, \sigma^2 (X^TX)^{-1}).
+</span></p></li>
+<li><p>Hence, the estimator <span class="math inline">\hat{\beta}</span> is <span class="orange">unbiased</span> and its <span class="blue">variance</span> can be estimated by <span class="math display">
+\widehat{\text{var}}(\hat{\beta}) = s^2 (X^TX)^{-1}.
+</span></p></li>
+<li><p>The <span class="orange">standard errors</span> of the components of beta correspond to the square root of the diagonal of the above covariance matrix.</p></li>
+<li><p>Confidence interval and Wald’s tests can be obtained through classical inferential theory.</p></li>
+</ul>
+</section>
+<section id="car-data-a-first-model" class="level2">
+<h2 class="anchored" data-anchor-id="car-data-a-first-model">Car data: a first model</h2>
+<ul>
+<li>A first model to predict <code>city.distance</code> (<span class="math inline">y</span>) via <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>) is <span class="math display">
+  f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
+  </span></li>
+<li>Intuition…</li>
+</ul>
+</section>
+<section id="car-data-estimated-coefficients" class="level2">
+<h2 class="anchored" data-anchor-id="car-data-estimated-coefficients">Car data: estimated coefficients</h2>
+<ul>
+<li>We obtain following <span class="orange">summary</span> for the regression coefficients <span class="math inline">\hat{\beta}</span>.</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 12%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 12%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">28.045</td>
+<td style="text-align: right;">3.076</td>
+<td style="text-align: right;">9.119</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">21.980</td>
+<td style="text-align: right;">34.110</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">engine.size</td>
+<td style="text-align: right;">-10.980</td>
+<td style="text-align: right;">3.531</td>
+<td style="text-align: right;">-3.109</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">-17.943</td>
+<td style="text-align: right;">-4.016</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">I(engine.size^2)</td>
+<td style="text-align: right;">2.098</td>
+<td style="text-align: right;">1.271</td>
+<td style="text-align: right;">1.651</td>
+<td style="text-align: right;">0.100</td>
+<td style="text-align: right;">-0.409</td>
+<td style="text-align: right;">4.604</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">I(engine.size^3)</td>
+<td style="text-align: right;">-0.131</td>
+<td style="text-align: right;">0.139</td>
+<td style="text-align: right;">-0.939</td>
+<td style="text-align: right;">0.349</td>
+<td style="text-align: right;">-0.406</td>
+<td style="text-align: right;">0.144</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fuelgas</td>
+<td style="text-align: right;">-3.214</td>
+<td style="text-align: right;">0.427</td>
+<td style="text-align: right;">-7.523</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">-4.057</td>
+<td style="text-align: right;">-2.372</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="car-data-fitted-value" class="level2">
+<h2 class="anchored" data-anchor-id="car-data-fitted-value">Car data: fitted value</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="un_A1_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="2100"></p>
+</div>
+</div>
+</section>
+<section id="car-data-graphical-diagnostics" class="level2">
+<h2 class="anchored" data-anchor-id="car-data-graphical-diagnostics">Car data: graphical diagnostics</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="un_A1_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="2100"></p>
+</div>
+</div>
+</section>
+<section id="comments" class="level2">
+<h2 class="anchored" data-anchor-id="comments">Comments</h2>
+</section>
+<section id="variable-transformation" class="level2">
+<h2 class="anchored" data-anchor-id="variable-transformation">Variable transformation</h2>
 </section>
 </section>
 <section id="computational-aspects" class="level1">
 <h1>Computational aspects</h1>
+<section id="how-to-obtain-the-least-squares-estimate" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-obtain-the-least-squares-estimate">How to obtain the least squares estimate</h2>
+</section>
 </section>
 <section id="generalized-linear-models" class="level1">
 <h1>Generalized linear models</h1>
