@@ -36,12 +36,17 @@ ul {
 }
 
 .orange{
-   color:#e6a019;
+   color:#fc7d0b;
    font-weight: bold;
 }
 
 .blue{
-   color:#50b3e4;
+   color:#1170aa;
+   font-weight: bold;
+}
+
+.grey{
+   color:#a3acb9;
    font-weight: bold;
 }
 

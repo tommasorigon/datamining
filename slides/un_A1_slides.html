@@ -30,6 +30,22 @@
     }
   </style>
   <link rel="stylesheet" href="un_A1_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
   <link href="un_A1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="un_A1_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="un_A1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -339,10 +355,75 @@
 </div>
 
 </section>
-<section id="old-friends-linear-models" class="slide level2">
-<h2>Old friends: linear models</h2>
+<section>
+<section id="old-friends-linear-models" class="title-slide slide level1 center">
+<h1>Old friends: linear models</h1>
 
-<img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
+</section>
+<section id="car-data" class="slide level2">
+<h2>Car data</h2>
+<ul>
+<li>We consider data for <span class="math inline">n = 203</span> models of cars in circulation in 1985 in the USA.</li>
+<li>We want to identify a relationship that allows to <span class="blue">predict</span> the distance covered per unit of fuel, as a function of the vehicle characteristics.</li>
+<li>We consider the following <span class="orange">continuous variables</span>:
+<ul>
+<li>The city distance per unit of fuel (km/L, <code>city.distance</code>)</li>
+<li>The engine size (L, <code>engine.size</code>)</li>
+<li>The number of cylinders (<code>n.cylinders</code>)</li>
+<li>The curb weight (kg, <code>curb.weight</code>).</li>
+</ul></li>
+<li>We also considered the <span class="orange">categorical variable</span> fuel type (gasoline or diesel, <code>fuel</code>).</li>
+</ul>
+</section>
+<section id="car-data-diesel-or-gas" class="slide level2">
+<h2>Car data (<span class="blue">diesel</span> or <span class="orange">gas</span>)</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-1-1.png" width="3000"></p>
+</div>
+</div>
+</section>
+<section id="linear-regression" class="slide level2">
+<h2>Linear regression</h2>
+<ul>
+<li><p>At the moment, let us focus on <code>city.distance</code> (<span class="math inline">y</span>) and <code>engine.size</code> (<span class="math inline">x</span>).</p></li>
+<li><p>The simplest model we can come up with is a <span class="orange">linear regression</span> line: <span class="math display">
+y = \beta_0 + \beta_1 x + \epsilon,
+</span> where <span class="math inline">\epsilon</span> is a non-observable “error” term, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>We are looking for an estimate for the <span class="blue">unknown regression parameters</span> <span class="math inline">\beta_0</span> and <span class="math inline">\beta_1</span>, using <span class="math inline">n</span> pairs of observations, denoted by <span class="math inline">(x_i, y_i)</span>, for <span class="math inline">i = 1,\dots,n</span>.</p></li>
+<li><p>Such an estimate could be obtained by ordinary least squares (OLS)…</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>… but the next plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</li>
+</ul>
+</div>
+</section>
+<section id="scatterplot" class="slide level2">
+<h2>Scatterplot</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-2-1.png" width="3000"></p>
+</div>
+</div>
+</section>
+<section id="regression-models" class="slide level2">
+<h2>Regression models</h2>
+</section>
+<section id="linear-regression-estimation" class="slide level2">
+<h2>Linear regression: estimation</h2>
+</section>
+<section id="linear-regression-estimation-1" class="slide level2">
+<h2>Linear regression: estimation</h2>
+</section></section>
+<section id="computational-aspects" class="title-slide slide level1 center">
+<h1>Computational aspects</h1>
+<p><img src="img/logoB.png" class="slide-logo"></p>
+<div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
 </div>
 </section>
@@ -538,6 +619,44 @@
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

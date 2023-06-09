@@ -7,6 +7,7 @@ execute:
   cache: false
 format:
   revealjs:
+    auto-stretch: false
     html-math-method: katex
     transition: slide
     output-file: un_A1_slides.html
@@ -15,14 +16,14 @@ format:
     code-line-numbers: true
     theme: [default, template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
-    fig-dpi: 250
     echo: false
+    fig-dpi: 300
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
   html:
     html-math-method: katex
-    echo: true
+    echo: false
     callout-appearance: minimal
     theme: [cosmo, template.css]
     toc: true
@@ -30,7 +31,9 @@ format:
     embed-resources: false
     code-line-numbers: true
     smooth-scroll: true
-    fig-dpi: 250
+    code-fold: true
+    code-summary: "Show the code"
+    fig-dpi: 300
 editor: 
   markdown: 
     wrap: 72
@@ -38,4 +41,79 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Old friends: linear models
+# Old friends: linear models
+
+## Car data
+
+-   We consider data for $n = 203$ models of cars in circulation in 1985
+    in the USA.
+-   We want to identify a relationship that allows to [predict]{.blue} the distance covered per unit of fuel, as a function of the vehicle characteristics.
+- We consider the following [continuous variables]{.orange}: 
+  - The city distance per unit of fuel (km/L, `city.distance`)
+  - The engine size (L, `engine.size`)
+  - The number of cylinders (`n.cylinders`)
+  - The curb weight (kg, `curb.weight`). 
+- We also considered the [categorical variable]{.orange} fuel type (gasoline or diesel, `fuel`).
+
+## Car data ([diesel]{.blue} or [gas]{.orange})
+
+```{r, message=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(GGally)
+library(ggthemes)
+
+auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
+
+p0 <- ggpairs(auto,
+  columns = 1:4, aes(colour = fuel),
+  lower = list(continuous = wrap("points", size = 0.9)),
+  upper = list(continuous = wrap("points", size = 0.9)),
+  diag = "blank"
+) +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("") +
+  ylab("")
+p0
+```
+
+## Linear regression
+
+- At the moment, let us focus on `city.distance` ($y$) and `engine.size` ($x$).
+
+- The simplest model we can come up with is a [linear regression]{.orange} line:
+$$
+y = \beta_0 + \beta_1 x + \epsilon,
+$$
+where $\epsilon$ is a non-observable "error" term, having zero mean and variance $\sigma^2$.
+
+. . .
+
+- We are looking for an estimate for the [unknown regression parameters]{.blue} $\beta_0$ and $\beta_1$, using $n$ pairs of observations, denoted by $(x_i, y_i)$, for $i = 1,\dots,n$.
+
+- Such an estimate could be obtained by ordinary least squares (OLS)...
+
+. . .
+
+- ... but the next plot clearly suggests that the relationship between `city.distance` and `engine.size` is [not]{.orange} well approximated by a [linear]{.orange} function.
+
+## Scatterplot
+
+```{r}
+ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) + geom_point()+
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Engine size (L)") +
+  ylab("Urban distance (km/L)")
+```
+
+## Regression models
+
+## Linear regression: estimation
+
+## Linear regression: estimation
+
+# Computational aspects
+
+# Generalized linear models
