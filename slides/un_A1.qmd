@@ -1,10 +1,10 @@
 ---
 title: "A-B-C"
-subtitle: "Data mining - CdL CLAMSES"
+subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
 execute:
-  cache: false
+  cache: true
 format:
   revealjs:
     auto-stretch: false
@@ -42,6 +42,14 @@ editor_options:
 ---
 
 ## About this unit
+:::: {.columns}
+
+::: {.column width="40%"}
+![](img/ABC.png)
+*"Everything should be made as simple as possible, but not simpler"* Attributed to Albert Einstein
+:::
+
+::: {.column width="60%"}
 
 -   In this unit we will cover three important [topics]{.orange}:
     -   Linear models and modelling process
@@ -50,16 +58,17 @@ editor_options:
 -   The [computational aspects]{.blue} of linear models will be novel to
     most of you...
 
-. . .
+-   ... but you should be already [very familiar]{.orange} with linear
+    models and GLMs!
 
--   ... but you should be already [very familiar]{.orange} with linear models
-    and GLMs!
+-   If do not remember much about them, use this first week of lectures to catch up (or study) from the material of previous courses. 
 
--   If do not remember much about them, use this first week of lectures
-    to catch up (or study) from the material of previous courses.
+<!-- -   A [short introduction]{.blue} to the topic is also offered in -->
+<!--     Azzalini & Scarpa (2011), Chapter 2 and Appendix A.3. -->
 
--   A [short introduction]{.blue} to the topic is also offered in
-    Azzalini & Scarpa (2011), Chapter 2 and Appendix A.3.
+:::
+
+::::
 
 # Old friends: linear models
 
@@ -74,7 +83,7 @@ editor_options:
     -   The city distance per unit of fuel (km/L, `city.distance`)
     -   The engine size (L, `engine.size`)
     -   The number of cylinders (`n.cylinders`)
-    -   The curb weight (kg, `curb.weight`).
+    -   The curb weight (kg, `curb.weight`)
 -   We also considered the [categorical variable]{.orange} fuel type
     (gasoline or diesel, `fuel`).
 
@@ -132,7 +141,8 @@ p0
 ## Scatterplot of the data
 
 ```{r}
-ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) + geom_point()+
+ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
+  geom_point() +
   theme_light() +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Engine size (L)") +
@@ -239,48 +249,69 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) + geom_
     $$
 
 -   $\bm{P}$ is a $n \times n$ [projection matrix]{.orange} matrix
-    sometimes called [hat matrix]{.blue}.
-
--   It can be shown that $\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p$.
-    Moreover, it holds $\bm{P} = \bm{P}^T$ and $\bm{P}^2 = \bm{P}$.
+    sometimes called [hat matrix]{.blue}. It can be shown that
+    $\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p$. Moreover, it holds
+    $\bm{P} = \bm{P}^T$ and $\bm{P}^2 = \bm{P}$.
 
 -   The quantity $D(\hat{\beta})$ is the [deviance]{.blue}, which is
     equal to $$
     D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{P})\bm{y}.
     $$
 
--   A typical estimate for the residual variance $\sigma^2$ is then
-    given by $$
+-   A typical estimate for the [residual variance]{.orange} $\sigma^2$
+    is then given by $$
     s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
     $$
 
 ## Linear regression: inference
 
-- Let us additionally assume that the errors follow a Gaussian distribution: $\epsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$. 
+-   Let us additionally assume that the errors follow a Gaussian
+    distribution:
+    $\epsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$.
 
-- This implies that the distribution of the estimator $\hat{\beta}$ is
-$$
-\hat{\beta} \sim N_p(\beta, \sigma^2 (X^TX)^{-1}).
-$$
-- Hence, the estimator $\hat{\beta}$ is [unbiased]{.orange} and its [variance]{.blue} can be estimated by
-$$
-\widehat{\text{var}}(\hat{\beta}) = s^2 (X^TX)^{-1}.
-$$
-- The [standard errors]{.orange} of the components of beta correspond to the square root of the diagonal of the above covariance matrix. 
-
-- Confidence interval and Wald's tests can be obtained through classical inferential theory. 
-
-## Car data: a first model
-
-- A first model to predict `city.distance` ($y$) via
-    `engine.size` ($x$) and `fuel` ($z$) is $$
-    f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
+-   This implies that the distribution of the estimator $\hat{\beta}$ is
     $$
-- Intuition...
+    \hat{\beta} \sim N_p(\beta, \sigma^2 (X^TX)^{-1}).
+    $$
 
-## Car data: estimated coefficients
+-   Hence, the estimator $\hat{\beta}$ is [unbiased]{.orange} and its
+    [variance]{.blue} can be estimated by $$
+    \widehat{\text{var}}(\hat{\beta}) = s^2 (X^TX)^{-1}.
+    $$
 
-- We obtain following [summary]{.orange} for the regression coefficients $\hat{\beta}$. 
+-   The [standard errors]{.orange} of the components of beta correspond
+    to the square root of the diagonal of the above covariance matrix.
+
+-   Confidence interval and Wald's tests can be obtained through
+    classical inferential theory.
+
+## Car data, a preliminary model
+
+-   A first model to predict `city.distance` ($y$) via `engine.size`
+    ($x$) and `fuel` ($z$) is $$
+      f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
+      $$
+
+-   By looking at the plot of the data, it is plausible that we need a
+    [polynomial]{.orange} of degree $3$ or $4$
+
+-   It is also clear from the plot that `fuel` is a relevant variable.
+    Categorical variable should be [encoded]{.orange} using [indicator
+    variables]{.blue}.
+
+. . .
+
+-   To evaluate the goodness of fit, we can calculate the [coefficient
+    of determination]{.orange}:
+
+$$
+R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\sum_{i=1}^n(y_i - \bar{y})^2}.
+$$
+
+## A first model: estimated coefficients
+
+-   We obtain the following [summary]{.orange} for the regression
+    coefficients $\hat{\beta}$.
 
 ```{r}
 library(broom)
@@ -289,33 +320,364 @@ m1 <- lm(city.distance ~ engine.size + I(engine.size^2) + I(engine.size^3) + fue
 kable(tidy(m1, conf.int = TRUE), digits = 3)
 ```
 
-## Car data: fitted value
+-   The coefficient $R^2$ and $s$ are estimated as follows:
+
+```{r}
+kable(glance(m1)[c(1, 3, 10)])
+```
+
+## A first model: fitted values
 
 ```{r}
 augmented_m1 <- augment(m1)
-ggplot(data = augmented_m1, aes(x = engine.size, y = city.distance, col = fuel)) + geom_point() + geom_line(aes(y = .fitted)) +
+ggplot(data = augmented_m1, aes(x = engine.size, y = city.distance, col = fuel)) +
+  geom_point() +
+  geom_line(aes(y = .fitted)) +
   theme_light() +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Engine size (L)") +
   ylab("Urban distance (km/L)")
 ```
 
-## Car data: graphical diagnostics
+## A first model: graphical diagnostics
 
 ```{r}
-ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) + geom_point() + geom_hline(aes(yintercept = 0), linetype = "dotted") +
+ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
+  geom_point() +
+  geom_hline(aes(yintercept = 0), linetype = "dotted") +
   theme_light() +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Fitted values") +
   ylab("Residuals")
 ```
 
-## Comments
+## Comments and criticisms
+
+-   The overall fit [seems satisfactory]{.blue} at first glance,
+    especially if we aim at predicting the urban distance of cars when
+    average engine size (i.e., between $1.5L$ and $3L$).
+
+. . .
+
+-   However, the plot of the [residuals]{.orange}
+    $r_i = y_i - \hat{y}_i$ suggests that there the homoschedasticity
+    assumption, i.e. $\mathbb{E}(\epsilon_i) = \sigma^2$, might be
+    violated.
+
+. . .
+
+-   Also, this model in not suitable for [extrapolation]{.orange}.
+    Indeed:
+
+-   It has no grounding in physics or engineering, which leads to
+    difficulties in the interpretation of the trend and/or paradoxical
+    situations.
+
+-   For example, the curve of the set of gasoline cars shows a local
+    minimum around $4.6 L$ and then rises again!
 
 ## Variable transformation
 
+-   A major advantage of linear models is that they can exploit
+    non-linear relationship via [variable transformations]{.blue}.
+
+-   This gives the statistician an lot of modelling flexibility, for
+    instance:
+
+$$
+\log{y} = \beta_0 + \beta_1 \log{x} + \beta_2 I(z = \texttt{gas}).
+$$
+
+. . .
+
+-   This specification is [linear in the parameters]{.orange}, it fixes
+    the domain issues, and imposes a monotone relationship between
+    engine size and consumption.
+
+```{r}
+m2 <- lm(log(city.distance) ~ I(log(engine.size)) + fuel, data = auto)
+kable(tidy(m2, conf.int = TRUE), digits = 3)
+```
+
+## Second model: fitted values
+
+```{r}
+augmented_m2 <- augment(m2, data = auto)
+ggplot(data = augmented_m2, aes(x = engine.size, y = city.distance, col = fuel)) +
+  geom_point() +
+  geom_line(aes(y = exp(.fitted))) +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Engine size (L)") +
+  ylab("Urban distance (km/L)")
+```
+
+## Second model: graphical diagnostics
+
+```{r}
+ggplot(data = augmented_m2, aes(x = .fitted, y = .resid, col = fuel)) +
+  geom_point() +
+  geom_hline(aes(yintercept = 0), linetype = "dotted") +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Fitted values") +
+  ylab("Residuals")
+```
+
+## Comments and criticisms
+
+-   The [goodness of fit]{.blue} indices are the following:
+
+```{r}
+r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m2)))^2)) / sum(mean((auto$city.distance - mean(auto$city.distance))^2))
+kable(data.frame(r.squared.original = r.squared.original, glance(m2)[c(1, 3, 10)]))
+```
+
+-   [Apple]{.blue} and [oranges]{.orange}: the $R^2$ must be computed
+    and compared using the same scale!
+
+. . .
+
+-   This second model is [more parsimonious]{.blue} and yet it reaches
+    similar predictive performance.
+
+-   It is also more coherent with the nature of the data: the
+    predictions cannot be negative and the relationship between engine
+    size and the consumption is monotone.
+
+-   There is still some heteroschedasticity in the residuals --- is this
+    due to a missing covariate that has not been included into the
+    model?
+
+## A third model: additional variables
+
+-   Let us consider [two additional variables]{.orange}: `curb.weight`
+    ($w$) and `n.cylinders` ($v$). A modified model could be: $$
+    \log{y} = \beta_0 + \beta_1 \log{x} +  \beta_2 \log{w} + \beta_3 I(z = \texttt{gas}) + \beta_4 I(v = 2).
+    $$
+
+. . .
+
+```{r}
+auto$cylinders2 <- factor(auto$n.cylinders == 2)
+m3 <- lm(log(city.distance) ~ I(log(engine.size)) + I(log(curb.weight)) + fuel + cylinders2, data = auto)
+kable(tidy(m3, conf.int = TRUE), digits = 3)
+```
+
+## A third model: graphical diagnostics
+
+```{r}
+augmented_m3 <- augment(m3, data = auto)
+ggplot(data = augmented_m3, aes(x = .fitted, y = .resid, col = fuel)) +
+  geom_point() +
+  geom_hline(aes(yintercept = 0), linetype = "dotted") +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Fitted values") +
+  ylab("Residuals")
+```
+
+## Comments and criticisms
+
+-   The goodness of fit greatly [improved]{.blue}:
+
+```{r}
+r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m3)))^2)) / sum(mean((auto$city.distance - mean(auto$city.distance))^2))
+kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)]))
+```
+
+-   We took care of the [outliers]{.orange}, which it turns out are
+    identified by the group of cars having 2 cylinders.
+
+-   The diagnostic plots are also very much improved, although still not
+    perfect.
+
+. . .
+
+-   The estimates are coherent with our expectations, based on common
+    knowledge. Have a look at the textbook (A&S) for a detailed
+    explaination about $\beta_4$!
+
 # Computational aspects
 
-## How to obtain the least squares estimate
+## How to obtain the least squares estimate?
+
+-   In undergraduate courses it is often suggested that the least square
+    estimate should be computed using the formula $$
+    \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y},
+    $$ that is, using the R code `solve(t(X) %*% X) %*% t(X) %*% y`.
+
+-   This is [theoretically correct]{.orange} and it works reasonably
+    well in many simple cases.
+
+. . .
+
+-   However, in real life, when we have a lot of data (large $n$) and
+    correlated variables, the above code is [computationally
+    inefficient]{.orange} and [numerically inaccurate]{.blue}.
+
+-   The main computational bottleneck is about obtaining the inverse of
+    $\bm{X}^T\bm{X}$, which is very costly and often numerically
+    unstable, especially when the predictors are almost collinear.
+
+## The normal equations
+
+-   Consider the following system of equations ([normal
+    equations]{.orange}):$$
+    \bm{X}^T\bm{X} \beta = \bm{X}^T \bm{y}.
+    $$
+
+-   This system could be solved using
+    `solve(crossprod(X), crossprod(X, y))`.
+
+-   The above R command avoids the computation of
+    $(\bm{X}^T\bm{X})^{-1}$ and it is preferable compared to the "direct
+    solution". However, it does not exploit the properties of the matrix
+    $\bm{X}^T\bm{X}$.
+
+. . .
+
+::: callout-note
+#### Proposition A.1
+
+Suppose $\bm{X} \in \mathbb{R}^{n \times p}$ with $n \ge p$ has full
+rank, that is $\text{rk}(\bm{X}) = p$. Then, the matrix $$
+\bm{X}^T\bm{X}
+$$ is [symmetric]{.blue} and [positive definite]{.orange}.
+:::
+
+## Cholesky factorization
+
+-   Recall (from your favorite linear algebra textbook) that a
+    [symmetric]{.blue} matrix $\bm{A} \in \mathbb{R}^{p \times p}$ is
+    [positive definite]{.orange} if and only if one the following
+    properties is satisfied
+    -   The quadratic form $\bm{x}^T \bm{A} \bm{x} > 0$ for all
+        $\bm{x} \in \mathbb{R}^p \neq 0$.
+    -   The eigenvalues $\lambda_1,\dots,\lambda_p$ of $\bm{A}$ are all
+        strictly positive.
+
+::: callout-note
+#### Theorem (Cholesky factorization)
+
+Let $\bm{A} \in \mathbb{R}^{p \times p}$ be a symmetric and positive
+definite matrix. Then, there exists a unique [upper triangular]{.orange}
+$p \times p$ matrix $\bm{R}$ with positive entries such that $$
+\bm{A} = \bm{R}^T\bm{R}.
+$$
+:::
+
+## Cholesky factorization and least squares
+
+-   Let $\bm{R}^T\bm{R}$ be the Cholesky factorization of the matrix
+    $\bm{X}^T\bm{X}$. Then, the [normal equations]{.orange} can be
+    written as $$
+    \bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y},
+    $$ which can be can be solved in two steps.
+
+-   [Step 1 (Forwardsolve)]{.blue}. Solve with respect to $z$ the system
+    of equations $$
+    \bm{R}^T z = \bm{X}^T \bm{y}.
+    $$
+
+-   [Step 2 (Backsolve)]{.blue}. Given $z$, now solve with respect to
+    $\beta$ the system of equations $$
+    \bm{R} \beta = z.
+    $$
+
+## Forward and backward substitutions
+
+-   The solution of [triangular systems]{.blue} is
+    [straightforward]{.orange}.
+
+-   As an example, consider the following $3 \times 3$ lower triangular
+    system: $$
+    \begin{bmatrix} 
+    l_{11} & 0 & 0 \\
+    l_{21} & l_{22} & 0 \\
+    l_{31} & l_{32} & l_{33} \\
+    \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix} = \begin{bmatrix}
+    b_1 \\ b_2 \\ b_3
+    \end{bmatrix}.
+    $$
+
+-   The solution for $x_1,x_2,x_3$ can be found sequentially: $$
+    x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x_3 = \frac{b_3 - l_{31}x_1 - l_{32}x_2}{l_{33}}.
+    $$
+
+. . .
+
+-   Finding the inverse $\bm{R}^{-1}$ is simple, again because $\bm{R}$
+    is upper triangular. Also note that $$
+    (\bm{X}^T \bm{X})^{-1} = (\bm{R}^T \bm{R})^{-1} = \bm{R}^{-1} (\bm{R}^{-1})^T.
+    $$
+
+## Computational complexity
+
+-   The solution via Cholesky factorization is a [fast direct
+    approach]{.blue} for finding $\hat{\beta}$.
+
+-   The expensive steps are:
+
+    -   The formation of the matrix $\bm{X}^T\bm{X}$ requires
+        $\sim n p^2$ elementary operations
+    -   The Cholesky factorization of $\bm{X}^T\bm{X}$ requires
+        $\sim p^3 / 3$ elementary operations.
+
+. . .
+
+-   This gives an overall computational complexity of order $$
+    \sim n p^2 + p^3 /3,
+    $$ which corrects the typographical error of the A&S textbook.
+
+-   This means that in [high-dimensional]{.orange} settings (large $p$)
+    computations become rapidly [very costly]{.orange}, being cubic in
+    $p$.
+
+## Error propagation in normal equations
+
+-   The normal equations method is typically [quicker]{.blue} than other
+    algorithms, as it removes the dependency on $n$, but it is in
+    general numerically more [unstable]{.orange}.
+
+. . .
+
+-   Consider for example the following matrix: $$
+    \bm{X} = \begin{bmatrix}1 & 1 \\
+    \epsilon & 0 \\
+    0 & \epsilon \end{bmatrix},
+    $$ for a small value $\epsilon > 0$. Then, we obtain that
+    $$\bm{X}^T \bm{X} = \begin{bmatrix}1 + \epsilon^2& 1 \\
+    1 & 1 + \epsilon^2 \end{bmatrix}.
+    $$
+
+-   The numerical computation of $\epsilon^2$ in $\bm{X}^T\bm{X}$
+    requires a higher precision compared to $\epsilon$, leading to
+    numerical instabilities and/or a [loss in accuracy]{.orange}.
+
+## Condition numbers and normal equations
+
+-   Suppose $\bm{X} \in \mathbb{R}^{n \times p}$ with $n \ge p$ has full
+    rank and singular values $d_1 \ge d_2 \ge \dots \ge d_p$. Then its
+    [condition number]{.orange} is $$
+    \kappa(\bm{X}) = ||\bm{X}|| \cdot ||\bm{X}^+|| = \frac{d_1}{d_p},
+    $$ where $\bm{X}^+$ is the Moore-Penrose pseudo-inverse. Note that
+    $\kappa(\bm{X}) \ge 1$.
+
+-   If $\kappa(\bm{X})$ is small, the matrix $\bm{X}$ is
+    [well-conditioned]{.blue}. Otherwise, it is
+    [ill-conditioned]{.orange}.
+
+-   The condition number determines how accurately we can solve linear
+    systems.
+
+-   An important fact is: $$
+    \kappa(\bm{X}^T\bm{X}) = \kappa(\bm{X})^2, 
+    $$ implying that there is a clear loss of numerical accuracy when
+    using normal equations.
+
+## The QR decomposition
+
+# Iterative methods
 
 # Generalized linear models

@@ -341,7 +341,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">A-B-C</h1>
-  <p class="subtitle">Data mining - CdL CLAMSES</p>
+  <p class="subtitle">Data Mining - CdL CLAMSES</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -357,21 +357,24 @@
 </section>
 <section id="about-this-unit" class="slide level2">
 <h2>About this unit</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><img data-src="img/ABC.png"> <em>“Everything should be made as simple as possible, but not simpler”</em> Attributed to Albert Einstein</p>
+</div><div class="column" style="width:60%;">
 <ul>
-<li>In this unit we will cover three important <span class="orange">topics</span>:
+<li><p>In this unit we will cover three important <span class="orange">topics</span>:</p>
 <ul>
 <li>Linear models and modelling process</li>
 <li>Computational aspects</li>
 <li>Generalized linear models (GLMs)</li>
 </ul></li>
-<li>The <span class="blue">computational aspects</span> of linear models will be novel to most of you…</li>
-</ul>
-<div class="fragment">
-<ul>
+<li><p>The <span class="blue">computational aspects</span> of linear models will be novel to most of you…</p></li>
 <li><p>… but you should be already <span class="orange">very familiar</span> with linear models and GLMs!</p></li>
 <li><p>If do not remember much about them, use this first week of lectures to catch up (or study) from the material of previous courses.</p></li>
-<li><p>A <span class="blue">short introduction</span> to the topic is also offered in Azzalini &amp; Scarpa (2011), Chapter 2 and Appendix A.3.</p></li>
 </ul>
+<!-- -   A [short introduction]{.blue} to the topic is also offered in -->
+<!--     Azzalini & Scarpa (2011), Chapter 2 and Appendix A.3. -->
+</div>
 </div>
 </section>
 <section>
@@ -389,14 +392,14 @@
 <li>The city distance per unit of fuel (km/L, <code>city.distance</code>)</li>
 <li>The engine size (L, <code>engine.size</code>)</li>
 <li>The number of cylinders (<code>n.cylinders</code>)</li>
-<li>The curb weight (kg, <code>curb.weight</code>).</li>
+<li>The curb weight (kg, <code>curb.weight</code>)</li>
 </ul></li>
 <li>We also considered the <span class="orange">categorical variable</span> fuel type (gasoline or diesel, <code>fuel</code>).</li>
 </ul>
 </section>
 <section id="car-data-diesel-or-gas" class="slide level2">
 <h2>Car data (<span class="blue">diesel</span> or <span class="orange">gas</span>)</h2>
-<div class="cell">
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-1_3b2f496c61142123593d1b884f17fc20">
 <div class="cell-output-display">
 <p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-1-1.png" width="3000"></p>
 </div>
@@ -425,7 +428,7 @@ y = \beta_0 + \beta_1 x + \epsilon,
 </section>
 <section id="scatterplot-of-the-data" class="slide level2">
 <h2>Scatterplot of the data</h2>
-<div class="cell">
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-2_1e00e3bb3866d819037b827757f0958b">
 <div class="cell-output-display">
 <p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-2-1.png" width="3000"></p>
 </div>
@@ -521,12 +524,11 @@ D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\be
 <li><p>Consequently, the predicted values are <span class="math display">
 \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{P}\bm{y}, \qquad \bm{P} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
 </span></p></li>
-<li><p><span class="math inline">\bm{P}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>.</p></li>
-<li><p>It can be shown that <span class="math inline">\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p</span>. Moreover, it holds <span class="math inline">\bm{P} = \bm{P}^T</span> and <span class="math inline">\bm{P}^2 = \bm{P}</span>.</p></li>
+<li><p><span class="math inline">\bm{P}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>. It can be shown that <span class="math inline">\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p</span>. Moreover, it holds <span class="math inline">\bm{P} = \bm{P}^T</span> and <span class="math inline">\bm{P}^2 = \bm{P}</span>.</p></li>
 <li><p>The quantity <span class="math inline">D(\hat{\beta})</span> is the <span class="blue">deviance</span>, which is equal to <span class="math display">
 D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{P})\bm{y}.
 </span></p></li>
-<li><p>A typical estimate for the residual variance <span class="math inline">\sigma^2</span> is then given by <span class="math display">
+<li><p>A typical estimate for the <span class="orange">residual variance</span> <span class="math inline">\sigma^2</span> is then given by <span class="math display">
 s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
 </span></p></li>
 </ul>
@@ -545,21 +547,30 @@ s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\
 <li><p>Confidence interval and Wald’s tests can be obtained through classical inferential theory.</p></li>
 </ul>
 </section>
-<section id="car-data-a-first-model" class="slide level2">
-<h2>Car data: a first model</h2>
+<section id="car-data-a-preliminary-model" class="slide level2">
+<h2>Car data, a preliminary model</h2>
 <ul>
-<li>A first model to predict <code>city.distance</code> (<span class="math inline">y</span>) via <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>) is <span class="math display">
+<li><p>A first model to predict <code>city.distance</code> (<span class="math inline">y</span>) via <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>) is <span class="math display">
   f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
-  </span></li>
-<li>Intuition…</li>
+  </span></p></li>
+<li><p>By looking at the plot of the data, it is plausible that we need a <span class="orange">polynomial</span> of degree <span class="math inline">3</span> or <span class="math inline">4</span></p></li>
+<li><p>It is also clear from the plot that <code>fuel</code> is a relevant variable. Categorical variable should be <span class="orange">encoded</span> using <span class="blue">indicator variables</span>.</p></li>
 </ul>
-</section>
-<section id="car-data-estimated-coefficients" class="slide level2">
-<h2>Car data: estimated coefficients</h2>
+<div class="fragment">
 <ul>
-<li>We obtain following <span class="orange">summary</span> for the regression coefficients <span class="math inline">\hat{\beta}</span>.</li>
+<li>To evaluate the goodness of fit, we can calculate the <span class="orange">coefficient of determination</span>:</li>
 </ul>
-<div class="cell">
+<p><span class="math display">
+R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\sum_{i=1}^n(y_i - \bar{y})^2}.
+</span></p>
+</div>
+</section>
+<section id="a-first-model-estimated-coefficients" class="slide level2">
+<h2>A first model: estimated coefficients</h2>
+<ul>
+<li>We obtain the following <span class="orange">summary</span> for the regression coefficients <span class="math inline">\hat{\beta}</span>.</li>
+</ul>
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-3_21c65b81ccc6d1134f6a4f4de54e1000">
 <div class="cell-output-display">
 <table style="width:100%;">
 <colgroup>
@@ -632,28 +643,315 @@ s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\
 </table>
 </div>
 </div>
-</section>
-<section id="car-data-fitted-value" class="slide level2">
-<h2>Car data: fitted value</h2>
-<div class="cell">
+<ul>
+<li>The coefficient <span class="math inline">R^2</span> and <span class="math inline">s</span> are estimated as follows:</li>
+</ul>
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-4_2d932bd0b2b42c1063fcc10c11347040">
 <div class="cell-output-display">
-<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-4-1.png" width="3000"></p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">r.squared</th>
+<th style="text-align: right;">sigma</th>
+<th style="text-align: right;">deviance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.5973454</td>
+<td style="text-align: right;">1.790362</td>
+<td style="text-align: right;">634.6687</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </section>
-<section id="car-data-graphical-diagnostics" class="slide level2">
-<h2>Car data: graphical diagnostics</h2>
-<div class="cell">
+<section id="a-first-model-fitted-values" class="slide level2">
+<h2>A first model: fitted values</h2>
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-5_33cc7063ff11d2509678538530b233d0">
 <div class="cell-output-display">
 <p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-5-1.png" width="3000"></p>
 </div>
 </div>
 </section>
-<section id="comments" class="slide level2">
-<h2>Comments</h2>
+<section id="a-first-model-graphical-diagnostics" class="slide level2">
+<h2>A first model: graphical diagnostics</h2>
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-6_76b9ff274bb69a69e7dabbc622cf7414">
+<div class="cell-output-display">
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-6-1.png" width="3000"></p>
+</div>
+</div>
+</section>
+<section id="comments-and-criticisms" class="slide level2">
+<h2>Comments and criticisms</h2>
+<ul>
+<li>The overall fit <span class="blue">seems satisfactory</span> at first glance, especially if we aim at predicting the urban distance of cars when average engine size (i.e., between <span class="math inline">1.5L</span> and <span class="math inline">3L</span>).</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>However, the plot of the <span class="orange">residuals</span> <span class="math inline">r_i = y_i - \hat{y}_i</span> suggests that there the homoschedasticity assumption, i.e.&nbsp;<span class="math inline">\mathbb{E}(\epsilon_i) = \sigma^2</span>, might be violated.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Also, this model in not suitable for <span class="orange">extrapolation</span>. Indeed:</p></li>
+<li><p>It has no grounding in physics or engineering, which leads to difficulties in the interpretation of the trend and/or paradoxical situations.</p></li>
+<li><p>For example, the curve of the set of gasoline cars shows a local minimum around <span class="math inline">4.6 L</span> and then rises again!</p></li>
+</ul>
+</div>
 </section>
 <section id="variable-transformation" class="slide level2">
 <h2>Variable transformation</h2>
+<ul>
+<li><p>A major advantage of linear models is that they can exploit non-linear relationship via <span class="blue">variable transformations</span>.</p></li>
+<li><p>This gives the statistician an lot of modelling flexibility, for instance:</p></li>
+</ul>
+<p><span class="math display">
+\log{y} = \beta_0 + \beta_1 \log{x} + \beta_2 I(z = \texttt{gas}).
+</span></p>
+<div class="fragment">
+<ul>
+<li>This specification is <span class="orange">linear in the parameters</span>, it fixes the domain issues, and imposes a monotone relationship between engine size and consumption.</li>
+</ul>
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-7_e785d5596eb06f10cdd5c6d7fc36fd24">
+<div class="cell-output-display">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">3.060</td>
+<td style="text-align: right;">0.047</td>
+<td style="text-align: right;">64.865</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2.967</td>
+<td style="text-align: right;">3.153</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">I(log(engine.size))</td>
+<td style="text-align: right;">-0.682</td>
+<td style="text-align: right;">0.040</td>
+<td style="text-align: right;">-17.129</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.760</td>
+<td style="text-align: right;">-0.603</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">fuelgas</td>
+<td style="text-align: right;">-0.278</td>
+<td style="text-align: right;">0.038</td>
+<td style="text-align: right;">-7.344</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">-0.353</td>
+<td style="text-align: right;">-0.203</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="second-model-fitted-values" class="slide level2">
+<h2>Second model: fitted values</h2>
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-8_76b5b1c345aad8f19e932f3fce6d99af">
+<div class="cell-output-display">
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-8-1.png" width="3000"></p>
+</div>
+</div>
+</section>
+<section id="second-model-graphical-diagnostics" class="slide level2">
+<h2>Second model: graphical diagnostics</h2>
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-9_bcd7812ce578a7c19471479a02f64dbe">
+<div class="cell-output-display">
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-9-1.png" width="3000"></p>
+</div>
+</div>
+</section>
+<section id="comments-and-criticisms-1" class="slide level2">
+<h2>Comments and criticisms</h2>
+<ul>
+<li>The <span class="blue">goodness of fit</span> indices are the following:</li>
+</ul>
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-10_b7f4b9d92665f73fb788030de6eefbea">
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">r.squared.original</th>
+<th style="text-align: right;">r.squared</th>
+<th style="text-align: right;">sigma</th>
+<th style="text-align: right;">deviance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.5847555</td>
+<td style="text-align: right;">0.6196093</td>
+<td style="text-align: right;">0.1600278</td>
+<td style="text-align: right;">5.121777</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li><span class="blue">Apple</span> and <span class="orange">oranges</span>: the <span class="math inline">R^2</span> must be computed and compared using the same scale!</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>This second model is <span class="blue">more parsimonious</span> and yet it reaches similar predictive performance.</p></li>
+<li><p>It is also more coherent with the nature of the data: the predictions cannot be negative and the relationship between engine size and the consumption is monotone.</p></li>
+<li><p>There is still some heteroschedasticity in the residuals — is this due to a missing covariate that has not been included into the model?</p></li>
+</ul>
+</div>
+</section>
+<section id="a-third-model-additional-variables" class="slide level2">
+<h2>A third model: additional variables</h2>
+<ul>
+<li>Let us consider <span class="orange">two additional variables</span>: <code>curb.weight</code> (<span class="math inline">w</span>) and <code>n.cylinders</code> (<span class="math inline">v</span>). A modified model could be: <span class="math display">
+\log{y} = \beta_0 + \beta_1 \log{x} +  \beta_2 \log{w} + \beta_3 I(z = \texttt{gas}) + \beta_4 I(v = 2).
+</span></li>
+</ul>
+<div class="fragment">
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-11_a4e6dd8611316de7f79748cadbcd730f">
+<div class="cell-output-display">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 26%">
+<col style="width: 11%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 11%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+<th style="text-align: right;">conf.low</th>
+<th style="text-align: right;">conf.high</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">9.423</td>
+<td style="text-align: right;">0.482</td>
+<td style="text-align: right;">19.549</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">8.472</td>
+<td style="text-align: right;">10.373</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">I(log(engine.size))</td>
+<td style="text-align: right;">-0.180</td>
+<td style="text-align: right;">0.051</td>
+<td style="text-align: right;">-3.504</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">-0.281</td>
+<td style="text-align: right;">-0.079</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">I(log(curb.weight))</td>
+<td style="text-align: right;">-0.943</td>
+<td style="text-align: right;">0.072</td>
+<td style="text-align: right;">-13.066</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">-1.085</td>
+<td style="text-align: right;">-0.800</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">fuelgas</td>
+<td style="text-align: right;">-0.353</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">-15.934</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">-0.396</td>
+<td style="text-align: right;">-0.309</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">cylinders2TRUE</td>
+<td style="text-align: right;">-0.481</td>
+<td style="text-align: right;">0.052</td>
+<td style="text-align: right;">-9.301</td>
+<td style="text-align: right;">0.000</td>
+<td style="text-align: right;">-0.584</td>
+<td style="text-align: right;">-0.379</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="a-third-model-graphical-diagnostics" class="slide level2">
+<h2>A third model: graphical diagnostics</h2>
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-12_e23051a2c579d39cd0a0ae22c21d2483">
+<div class="cell-output-display">
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-12-1.png" width="3000"></p>
+</div>
+</div>
+</section>
+<section id="comments-and-criticisms-2" class="slide level2">
+<h2>Comments and criticisms</h2>
+<ul>
+<li>The goodness of fit greatly <span class="blue">improved</span>:</li>
+</ul>
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-13_7871f5e868d8b6f8b5347127c10c8cc4">
+<div class="cell-output-display">
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">r.squared.original</th>
+<th style="text-align: right;">r.squared</th>
+<th style="text-align: right;">sigma</th>
+<th style="text-align: right;">deviance</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.869048</td>
+<td style="text-align: right;">0.8819199</td>
+<td style="text-align: right;">0.0896089</td>
+<td style="text-align: right;">1.589891</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li><p>We took care of the <span class="orange">outliers</span>, which it turns out are identified by the group of cars having 2 cylinders.</p></li>
+<li><p>The diagnostic plots are also very much improved, although still not perfect.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>The estimates are coherent with our expectations, based on common knowledge. Have a look at the textbook (A&amp;S) for a detailed explaination about <span class="math inline">\beta_4</span>!</li>
+</ul>
+</div>
 </section></section>
 <section>
 <section id="computational-aspects" class="title-slide slide level1 center">
@@ -661,8 +959,163 @@ s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\
 
 </section>
 <section id="how-to-obtain-the-least-squares-estimate" class="slide level2">
-<h2>How to obtain the least squares estimate</h2>
+<h2>How to obtain the least squares estimate?</h2>
+<ul>
+<li><p>In undergraduate courses it is often suggested that the least square estimate should be computed using the formula <span class="math display">
+\hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y},
+</span> that is, using the R code <code>solve(t(X) %*% X) %*% t(X) %*% y</code>.</p></li>
+<li><p>This is <span class="orange">theoretically correct</span> and it works reasonably well in many simple cases.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>However, in real life, when we have a lot of data (large <span class="math inline">n</span>) and correlated variables, the above code is <span class="orange">computationally inefficient</span> and <span class="blue">numerically inaccurate</span>.</p></li>
+<li><p>The main computational bottleneck is about obtaining the inverse of <span class="math inline">\bm{X}^T\bm{X}</span>, which is very costly and often numerically unstable, especially when the predictors are almost collinear.</p></li>
+</ul>
+</div>
+</section>
+<section id="the-normal-equations" class="slide level2">
+<h2>The normal equations</h2>
+<ul>
+<li><p>Consider the following system of equations (<span class="orange">normal equations</span>):<span class="math display">
+\bm{X}^T\bm{X} \beta = \bm{X}^T \bm{y}.
+</span></p></li>
+<li><p>This system could be solved using <code>solve(crossprod(X), crossprod(X, y))</code>.</p></li>
+<li><p>The above R command avoids the computation of <span class="math inline">(\bm{X}^T\bm{X})^{-1}</span> and it is preferable compared to the “direct solution”. However, it does not exploit the properties of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>.</p></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-note no-icon callout-captioned callout-style-simple">
+<div class="callout-body">
+<div class="callout-caption">
+<p><strong>Proposition A.1</strong></p>
+</div>
+<div class="callout-content">
+<p>Suppose <span class="math inline">\bm{X} \in \mathbb{R}^{n \times p}</span> with <span class="math inline">n \ge p</span> has full rank, that is <span class="math inline">\text{rk}(\bm{X}) = p</span>. Then, the matrix <span class="math display">
+\bm{X}^T\bm{X}
+</span> is <span class="blue">symmetric</span> and <span class="orange">positive definite</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="cholesky-factorization" class="slide level2">
+<h2>Cholesky factorization</h2>
+<ul>
+<li>Recall (from your favorite linear algebra textbook) that a <span class="blue">symmetric</span> matrix <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> is <span class="orange">positive definite</span> if and only if one the following properties is satisfied
+<ul>
+<li>The quadratic form <span class="math inline">\bm{x}^T \bm{A} \bm{x} &gt; 0</span> for all <span class="math inline">\bm{x} \in \mathbb{R}^p \neq 0</span>.</li>
+<li>The eigenvalues <span class="math inline">\lambda_1,\dots,\lambda_p</span> of <span class="math inline">\bm{A}</span> are all strictly positive.</li>
+</ul></li>
+</ul>
+<div class="callout callout-note no-icon callout-captioned callout-style-simple">
+<div class="callout-body">
+<div class="callout-caption">
+<p><strong>Theorem (Cholesky factorization)</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> be a symmetric and positive definite matrix. Then, there exists a unique <span class="orange">upper triangular</span> <span class="math inline">p \times p</span> matrix <span class="math inline">\bm{R}</span> with positive entries such that <span class="math display">
+\bm{A} = \bm{R}^T\bm{R}.
+</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="cholesky-factorization-and-least-squares" class="slide level2">
+<h2>Cholesky factorization and least squares</h2>
+<ul>
+<li><p>Let <span class="math inline">\bm{R}^T\bm{R}</span> be the Cholesky factorization of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>. Then, the <span class="orange">normal equations</span> can be written as <span class="math display">
+\bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y},
+</span> which can be can be solved in two steps.</p></li>
+<li><p><span class="blue">Step 1 (Forwardsolve)</span>. Solve with respect to <span class="math inline">z</span> the system of equations <span class="math display">
+\bm{R}^T z = \bm{X}^T \bm{y}.
+</span></p></li>
+<li><p><span class="blue">Step 2 (Backsolve)</span>. Given <span class="math inline">z</span>, now solve with respect to <span class="math inline">\beta</span> the system of equations <span class="math display">
+\bm{R} \beta = z.
+</span></p></li>
+</ul>
+</section>
+<section id="forward-and-backward-substitutions" class="slide level2">
+<h2>Forward and backward substitutions</h2>
+<ul>
+<li><p>The solution of <span class="blue">triangular systems</span> is <span class="orange">straightforward</span>.</p></li>
+<li><p>As an example, consider the following <span class="math inline">3 \times 3</span> lower triangular system: <span class="math display">
+\begin{bmatrix}
+l_{11} &amp; 0 &amp; 0 \\
+l_{21} &amp; l_{22} &amp; 0 \\
+l_{31} &amp; l_{32} &amp; l_{33} \\
+\end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix} = \begin{bmatrix}
+b_1 \\ b_2 \\ b_3
+\end{bmatrix}.
+</span></p></li>
+<li><p>The solution for <span class="math inline">x_1,x_2,x_3</span> can be found sequentially: <span class="math display">
+x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x_3 = \frac{b_3 - l_{31}x_1 - l_{32}x_2}{l_{33}}.
+</span></p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Finding the inverse <span class="math inline">\bm{R}^{-1}</span> is simple, again because <span class="math inline">\bm{R}</span> is upper triangular. Also note that <span class="math display">
+(\bm{X}^T \bm{X})^{-1} = (\bm{R}^T \bm{R})^{-1} = \bm{R}^{-1} (\bm{R}^{-1})^T.
+</span></li>
+</ul>
+</div>
+</section>
+<section id="computational-complexity" class="slide level2">
+<h2>Computational complexity</h2>
+<ul>
+<li><p>The solution via Cholesky factorization is a <span class="blue">fast direct approach</span> for finding <span class="math inline">\hat{\beta}</span>.</p></li>
+<li><p>The expensive steps are:</p>
+<ul>
+<li>The formation of the matrix <span class="math inline">\bm{X}^T\bm{X}</span> requires <span class="math inline">\sim n p^2</span> elementary operations</li>
+<li>The Cholesky factorization of <span class="math inline">\bm{X}^T\bm{X}</span> requires <span class="math inline">\sim p^3 / 3</span> elementary operations.</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>This gives an overall computational complexity of order <span class="math display">
+\sim n p^2 + p^3 /3,
+</span> which corrects the typographical error of the A&amp;S textbook.</p></li>
+<li><p>This means that in <span class="orange">high-dimensional</span> settings (large <span class="math inline">p</span>) computations become rapidly <span class="orange">very costly</span>, being cubic in <span class="math inline">p</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="error-propagation-in-normal-equations" class="slide level2">
+<h2>Error propagation in normal equations</h2>
+<ul>
+<li>The normal equations method is typically <span class="blue">quicker</span> than other algorithms, as it removes the dependency on <span class="math inline">n</span>, but it is in general numerically more <span class="orange">unstable</span>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>Consider for example the following matrix: <span class="math display">
+\bm{X} = \begin{bmatrix}1 &amp; 1 \\
+\epsilon &amp; 0 \\
+0 &amp; \epsilon \end{bmatrix},
+</span> for a small value <span class="math inline">\epsilon &gt; 0</span>. Then, we obtain that <span class="math display">\bm{X}^T \bm{X} = \begin{bmatrix}1 + \epsilon^2&amp; 1 \\
+1 &amp; 1 + \epsilon^2 \end{bmatrix}.
+</span></p></li>
+<li><p>The numerical computation of <span class="math inline">\epsilon^2</span> in <span class="math inline">\bm{X}^T\bm{X}</span> requires a higher precision compared to <span class="math inline">\epsilon</span>, leading to numerical instabilities and/or a <span class="orange">loss in accuracy</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="condition-numbers-and-normal-equations" class="slide level2">
+<h2>Condition numbers and normal equations</h2>
+<ul>
+<li><p>Suppose <span class="math inline">\bm{X} \in \mathbb{R}^{n \times p}</span> with <span class="math inline">n \ge p</span> has full rank and singular values <span class="math inline">d_1 \ge d_2 \ge \dots \ge d_p</span>. Then its <span class="orange">condition number</span> is <span class="math display">
+\kappa(\bm{X}) = ||\bm{X}|| \cdot ||\bm{X}^+|| = \frac{d_1}{d_p},
+</span> where <span class="math inline">\bm{X}^+</span> is the Moore-Penrose pseudo-inverse. Note that <span class="math inline">\kappa(\bm{X}) \ge 1</span>.</p></li>
+<li><p>If <span class="math inline">\kappa(\bm{X})</span> is small, the matrix <span class="math inline">\bm{X}</span> is <span class="blue">well-conditioned</span>. Otherwise, it is <span class="orange">ill-conditioned</span>.</p></li>
+<li><p>The condition number determines how accurately we can solve linear systems.</p></li>
+<li><p>An important fact is: <span class="math display">
+\kappa(\bm{X}^T\bm{X}) = \kappa(\bm{X})^2,
+</span> implying that there is a clear loss of numerical accuracy when using normal equations.</p></li>
+</ul>
+</section>
+<section id="the-qr-decomposition" class="slide level2">
+<h2>The QR decomposition</h2>
 </section></section>
+<section id="iterative-methods" class="title-slide slide level1 center">
+<h1>Iterative methods</h1>
+
+</section>
+
 <section id="generalized-linear-models" class="title-slide slide level1 center">
 <h1>Generalized linear models</h1>
 <p><img src="img/logoB.png" class="slide-logo"></p>
