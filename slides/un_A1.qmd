@@ -42,33 +42,34 @@ editor_options:
 ---
 
 ## About this unit
-:::: {.columns}
 
+::: columns
 ::: {.column width="40%"}
-![](img/ABC.png)
-*"Everything should be made as simple as possible, but not simpler"* Attributed to Albert Einstein
+![](img/ABC.png) *"Everything should be made as simple as possible, but
+not simpler"* Attributed to Albert Einstein
 :::
 
 ::: {.column width="60%"}
-
 -   In this unit we will cover three important [topics]{.orange}:
+
     -   Linear models and modelling process
     -   Computational aspects
     -   Generalized linear models (GLMs)
+
 -   The [computational aspects]{.blue} of linear models will be novel to
     most of you...
 
 -   ... but you should be already [very familiar]{.orange} with linear
     models and GLMs!
 
--   If do not remember much about them, use this first week of lectures to catch up (or study) from the material of previous courses. 
+-   If do not remember much about them, use this first week of lectures
+    to catch up (or study) from the material of previous courses.
 
 <!-- -   A [short introduction]{.blue} to the topic is also offered in -->
+
 <!--     Azzalini & Scarpa (2011), Chapter 2 and Appendix A.3. -->
-
 :::
-
-::::
+:::
 
 # Old friends: linear models
 
@@ -117,8 +118,8 @@ p0
 
 -   The simplest model we can come up with is a [linear
     regression]{.orange} line: $$
-    y = \beta_0 + \beta_1 x + \epsilon,
-    $$ where $\epsilon$ is a non-observable "error" term, having zero
+    y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
+    $$ where the "errors" $\epsilon_i$ are iid random variables, having zero
     mean and variance $\sigma^2$.
 
 . . .
@@ -151,37 +152,37 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 
 ## Regression models
 
+::: {.incremental}
+
 -   A more [general formulation]{.orange} for modeling the relationship
     between a vector of covariates
-    $\bm{x} = (x_1,\dots,x_p)^T \in \mathbb{R}^p$ and a response
+    $(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p$ and a response
     $y \in \mathbb{R}$ is $$
-    y = f(\bm{x}; \beta) + \epsilon.
+    y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n.
     $$
 
-. . .
-
 -   To estimate the unknown parameters $\beta$, a possibility is to rely
-    on [least squares criterion]{.blue}: we seek the [minimum]{.orange}
+    on the [least squares criterion]{.blue}: we seek the [minimum]{.orange}
     of the objective function $$
-    D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
-    $$ using $n$ pairs of observations $(\bm{x}_i, y_i)$, for
+    D(\beta) = \sum_{i=1}^n\{y_i - f(x_{i1},\dots, x_{ip}; \beta)\}^2,
+    $$ using $n$ pairs of observations $(x_{i1},\dots,x_{ip})^T$ and $y_i$, for
     $i = 1,\dots,n$.
 -   The solution to this minimization problem is denoted by
     $\hat{\beta}$.
 
-. . .
-
 -   The [predicted values]{.blue} $\hat{y}_i$ are then obtained as
-    $\hat{y}_i = f(\bm{x}_i; \hat{\beta})$, for $i=1,\dots,n.$
+    $\hat{y}_i = f(x_{i1},\dots,x_{ip}; \hat{\beta})$, for $i=1,\dots,n.$
+
+:::
 
 ## Linear models
 
--   There are several directions to model `city.distance` ($y$),
-    `engine.size` ($x$) and `fuel` ($z$) in a more flexible way.
+-   We can more flexibly model `city.distance` ($y$),
+    `engine.size` ($x$) and `fuel` ($z$).
 
 -   For instance, we could consider a [polynomial term]{.orange}
     combined with a [dummy variable]{.blue} $$
-    f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
+    f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}).
     $$
 
 -   [Remark]{.orange}. This model is [linear in the parameters]{.blue},
@@ -190,68 +191,74 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 . . .
 
 ::: callout-note
--   The above specification is a special instance of [linear
-    model]{.blue}, in which $$
-    f(\bm{x}; \beta) = \beta_0  + \beta_1 x_1 + \cdots + \beta_p x_{p-1} = \bm{x}_i^T\beta,
-    $$ where $\bm{x} = (1, x_1, \dots,x_{p-1})^T$ is a $p$-dimensional
-    vector of [covariates]{.orange} and
-    $\beta = (\beta_0,\dots,\beta_{p-1})^T$ is the corresponding vector
+#### Definition (Linear model)
+In a [linear
+    model]{.blue} the response variable $y$ is related to the covariates through the function$$
+    f(x_1,\dots,x_p; \beta) = \beta_1 x_1 + \cdots + \beta_p x_p = \tilde{\bm{x}}^T\beta,
+    $$ where $\tilde{\bm{x}} = (x_1, \dots,x_p)^T$ is a vector of [covariates]{.orange} and
+    $\beta = (\beta_1,\dots,\beta_p)^T$ is the corresponding vector
     of [coefficients]{.orange}.
 :::
 
 ## Matrix notation
 
--   It is often convenient to express the quantities of linear models in
-    [matrix notation]{.orange}.
+::: {.incremental}
 
--   The [response values]{.blue} are $\bm{y} = (y_1,\dots,y_n)^T$.
+- The [response values]{.orange} are collected in the vector $\bm{y} = (y_1,\dots,y_n)^T$.
 
 -   The [design matrix]{.blue} is a $n \times p$ matrix, comprising the
     covariate's values, defined by $$
-    \bm{X} = (\bm{x}_1, \dots,\bm{x}_n)^T = 
+    \bm{X} = 
     \begin{bmatrix} 
-    1 & x_{1,1} & \cdots & x_{1,p-1}\\
-    \vdots & \vdots & \ddots & \vdots \\
-    1 & x_{n, 1} & \cdots & x_{n, p-1}
+    x_{11} & \cdots & x_{1p}\\
+    \vdots & \ddots & \vdots \\
+    x_{n1} & \cdots & x_{np}
     \end{bmatrix}.
     $$
 
--   Thus, the linear model can be written using the compact notation: $$
+-   The linear model can be written using the [compact notation]{.orange}: $$
     \bm{y} = \bm{X}\beta + \bm{\epsilon},
     $$ where $\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T$ is a
     vector of iid error terms with zero mean and variance $\sigma^2$.
+
+- The $j$th variable (column) is denoted with $\bm{x}_j$, whereas the $i$th observation (row) is $\tilde{\bm{x}}_i$:
+$$
+\bm{X} = (\bm{x}_1,\dots,\bm{x}_p) = (\tilde{\bm{x}}_1, \dots,\tilde{\bm{x}}_n)^T.
+$$
+
+:::
 
 ## Linear regression: estimation I
 
 -   The optimal set of coefficients $\hat{\beta}$ is the minimizer of
     the least squared criterion $$
     D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
-    $$ where $||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2}$ is the
-    [Euclidean norm]{.blue}.
-
--   The quantity $D(\beta)$ is also known as [residual sum of squares
-    (RSS)]{.orange}.
-
-. . .
-
+    $$ known also as [residual sum of squares
+    (RSS)]{.orange}, where $$
+    ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2}.$$ 
+  
 ::: callout-note
--   If the design matrix has [full rank]{.blue}, that is if
+#### Least square estimate (OLS)
+If the design matrix has [full rank]{.blue}, that is if
     $\text{rk}(\bm{X}^T\bm{X}) = p$, then the [least square
     estimate]{.orange} has an explicit solution: $$
     \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y}.
     $$
 :::
 
+
 ## Linear regression: estimation II
+
+::: {.incremental}
 
 -   Consequently, the predicted values are $$
     \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{P}\bm{y}, \qquad \bm{P} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
     $$
 
 -   $\bm{P}$ is a $n \times n$ [projection matrix]{.orange} matrix
-    sometimes called [hat matrix]{.blue}. It can be shown that
-    $\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p$. Moreover, it holds
-    $\bm{P} = \bm{P}^T$ and $\bm{P}^2 = \bm{P}$.
+    sometimes called [hat matrix]{.blue}. 
+
+- It can be shown that $\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p$. Moreover, it holds $\bm{P} = \bm{P}^T$ and $\bm{P}^2 = \bm{P}$.
 
 -   The quantity $D(\hat{\beta})$ is the [deviance]{.blue}, which is
     equal to $$
@@ -260,10 +267,14 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 
 -   A typical estimate for the [residual variance]{.orange} $\sigma^2$
     is then given by $$
-    s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
+    s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \tilde{\bm{x}}_i^T\hat{\beta})^2.
     $$
 
+:::
+
 ## Linear regression: inference
+
+:::{.incremental}
 
 -   Let us additionally assume that the errors follow a Gaussian
     distribution:
@@ -271,12 +282,12 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 
 -   This implies that the distribution of the estimator $\hat{\beta}$ is
     $$
-    \hat{\beta} \sim N_p(\beta, \sigma^2 (X^TX)^{-1}).
+    \hat{\beta} \sim N_p(\beta, \sigma^2 (\bm{X}^T\bm{X})^{-1}).
     $$
 
 -   Hence, the estimator $\hat{\beta}$ is [unbiased]{.orange} and its
     [variance]{.blue} can be estimated by $$
-    \widehat{\text{var}}(\hat{\beta}) = s^2 (X^TX)^{-1}.
+    \widehat{\text{var}}(\hat{\beta}) = s^2 (\bm{X}^T\bm{X})^{-1}.
     $$
 
 -   The [standard errors]{.orange} of the components of beta correspond
@@ -285,11 +296,15 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 -   Confidence interval and Wald's tests can be obtained through
     classical inferential theory.
 
+:::
+
 ## Car data, a preliminary model
+
+:::{.incremental}
 
 -   A first model to predict `city.distance` ($y$) via `engine.size`
     ($x$) and `fuel` ($z$) is $$
-      f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
+      f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}).
       $$
 
 -   By looking at the plot of the data, it is plausible that we need a
@@ -299,14 +314,12 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
     Categorical variable should be [encoded]{.orange} using [indicator
     variables]{.blue}.
 
-. . .
-
 -   To evaluate the goodness of fit, we can calculate the [coefficient
-    of determination]{.orange}:
-
-$$
+    of determination]{.orange}: $$
 R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\sum_{i=1}^n(y_i - \bar{y})^2}.
 $$
+
+:::
 
 ## A first model: estimated coefficients
 
@@ -353,18 +366,16 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
 
 ## Comments and criticisms
 
+:::{.incremental}
+
 -   The overall fit [seems satisfactory]{.blue} at first glance,
     especially if we aim at predicting the urban distance of cars when
     average engine size (i.e., between $1.5L$ and $3L$).
 
-. . .
-
 -   However, the plot of the [residuals]{.orange}
     $r_i = y_i - \hat{y}_i$ suggests that there the homoschedasticity
-    assumption, i.e. $\mathbb{E}(\epsilon_i) = \sigma^2$, might be
+    assumption, i.e. $\text{var}(\epsilon_i) = \sigma^2$, might be
     violated.
-
-. . .
 
 -   Also, this model in not suitable for [extrapolation]{.orange}.
     Indeed:
@@ -376,16 +387,18 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
 -   For example, the curve of the set of gasoline cars shows a local
     minimum around $4.6 L$ and then rises again!
 
+:::
+
 ## Variable transformation
 
 -   A major advantage of linear models is that they can exploit
     non-linear relationship via [variable transformations]{.blue}.
 
--   This gives the statistician an lot of modelling flexibility, for
+-   This gives the statistician a lot of modelling flexibility, for
     instance:
 
 $$
-\log{y} = \beta_0 + \beta_1 \log{x} + \beta_2 I(z = \texttt{gas}).
+\log{y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
 $$
 
 . . .
@@ -453,8 +466,9 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m2)[c(1, 3, 10)
 
 -   Let us consider [two additional variables]{.orange}: `curb.weight`
     ($w$) and `n.cylinders` ($v$). A modified model could be: $$
-    \log{y} = \beta_0 + \beta_1 \log{x} +  \beta_2 \log{w} + \beta_3 I(z = \texttt{gas}) + \beta_4 I(v = 2).
+    \log{y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
     $$
+for $i=1,\dots,n$.
 
 . . .
 
@@ -491,8 +505,6 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 
 -   The diagnostic plots are also very much improved, although still not
     perfect.
-
-. . .
 
 -   The estimates are coherent with our expectations, based on common
     knowledge. Have a look at the textbook (A&S) for a detailed
@@ -562,12 +574,15 @@ $$ is [symmetric]{.blue} and [positive definite]{.orange}.
 
 Let $\bm{A} \in \mathbb{R}^{p \times p}$ be a symmetric and positive
 definite matrix. Then, there exists a unique [upper triangular]{.orange}
-$p \times p$ matrix $\bm{R}$ with positive entries such that $$
+$p \times p$ matrix $\bm{R}$ with positive entries such that 
+$$
 \bm{A} = \bm{R}^T\bm{R}.
 $$
 :::
 
 ## Cholesky factorization and least squares
+
+:::{.incremental}
 
 -   Let $\bm{R}^T\bm{R}$ be the Cholesky factorization of the matrix
     $\bm{X}^T\bm{X}$. Then, the [normal equations]{.orange} can be
@@ -584,8 +599,11 @@ $$
     $\beta$ the system of equations $$
     \bm{R} \beta = z.
     $$
+:::
 
 ## Forward and backward substitutions
+
+:::{.incremental}
 
 -   The solution of [triangular systems]{.blue} is
     [straightforward]{.orange}.
@@ -605,14 +623,15 @@ $$
     x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x_3 = \frac{b_3 - l_{31}x_1 - l_{32}x_2}{l_{33}}.
     $$
 
-. . .
-
 -   Finding the inverse $\bm{R}^{-1}$ is simple, again because $\bm{R}$
     is upper triangular. Also note that $$
     (\bm{X}^T \bm{X})^{-1} = (\bm{R}^T \bm{R})^{-1} = \bm{R}^{-1} (\bm{R}^{-1})^T.
     $$
+:::
 
 ## Computational complexity
+
+:::{.incremental}
 
 -   The solution via Cholesky factorization is a [fast direct
     approach]{.blue} for finding $\hat{\beta}$.
@@ -624,23 +643,22 @@ $$
     -   The Cholesky factorization of $\bm{X}^T\bm{X}$ requires
         $\sim p^3 / 3$ elementary operations.
 
-. . .
-
 -   This gives an overall computational complexity of order $$
     \sim n p^2 + p^3 /3,
     $$ which corrects the typographical error of the A&S textbook.
 
 -   This means that in [high-dimensional]{.orange} settings (large $p$)
-    computations become rapidly [very costly]{.orange}, being cubic in
-    $p$.
+    computations become rapidly [very costly]{.orange}, since the
+    complexity is cubic in $p$.
+:::
 
 ## Error propagation in normal equations
+
+:::{.incremental}
 
 -   The normal equations method is typically [quicker]{.blue} than other
     algorithms, as it removes the dependency on $n$, but it is in
     general numerically more [unstable]{.orange}.
-
-. . .
 
 -   Consider for example the following matrix: $$
     \bm{X} = \begin{bmatrix}1 & 1 \\
@@ -654,8 +672,11 @@ $$
 -   The numerical computation of $\epsilon^2$ in $\bm{X}^T\bm{X}$
     requires a higher precision compared to $\epsilon$, leading to
     numerical instabilities and/or a [loss in accuracy]{.orange}.
+:::
 
 ## Condition numbers and normal equations
+
+:::{.incremental}
 
 -   Suppose $\bm{X} \in \mathbb{R}^{n \times p}$ with $n \ge p$ has full
     rank and singular values $d_1 \ge d_2 \ge \dots \ge d_p$. Then its
@@ -675,8 +696,31 @@ $$
     \kappa(\bm{X}^T\bm{X}) = \kappa(\bm{X})^2, 
     $$ implying that there is a clear loss of numerical accuracy when
     using normal equations.
+:::
 
-## The QR decomposition
+## Orthogonal predictors
+
+-   Let us have a look at what happens when the [predictors]{.blue}  are
+    mutually [orthogonal]{.orange}.
+
+-   In other words, consider a linear model of the form $$
+    \bm{y} = \bm{Z}\bm{\gamma} + \bm{\epsilon},
+    $$
+where $\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)$ and $\bm{\gamma} = (\gamma_1,\dots,\gamma_p)^T$.
+
+- [Orthogonality]{.orange} means that $\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)$. 
+    
+::: callout-note
+#### Proposition A.2. OLS with orthogonal predictors
+
+The least square estimate $\hat{\bm{\gamma}} = (\hat{\gamma}_1,\dots,\hat{\gamma}_p)^T$ of a linear model with orthogonal predictors is
+
+$$
+\hat{\gamma}_j = \frac{\bm{z}_j^T\bm{y}}{\bm{z}_j^T\bm{z}_j}, \qquad j=1,\dots,p.
+$$
+:::
+
+## Regression by successive orthogonalization
 
 # Iterative methods
 

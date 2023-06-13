@@ -99,7 +99,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#computational-complexity" id="toc-computational-complexity" class="nav-link" data-scroll-target="#computational-complexity">Computational complexity</a></li>
   <li><a href="#error-propagation-in-normal-equations" id="toc-error-propagation-in-normal-equations" class="nav-link" data-scroll-target="#error-propagation-in-normal-equations">Error propagation in normal equations</a></li>
   <li><a href="#condition-numbers-and-normal-equations" id="toc-condition-numbers-and-normal-equations" class="nav-link" data-scroll-target="#condition-numbers-and-normal-equations">Condition numbers and normal equations</a></li>
-  <li><a href="#the-qr-decomposition" id="toc-the-qr-decomposition" class="nav-link" data-scroll-target="#the-qr-decomposition">The QR decomposition</a></li>
+  <li><a href="#orthogonal-predictors" id="toc-orthogonal-predictors" class="nav-link" data-scroll-target="#orthogonal-predictors">Orthogonal predictors</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   </ul></li>
   <li><a href="#iterative-methods" id="toc-iterative-methods" class="nav-link" data-scroll-target="#iterative-methods">Iterative methods</a></li>
   <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a></li>
@@ -191,8 +192,8 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><p>At the moment, let us focus on <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
 <li><p>The simplest model we can come up with is a <span class="orange">linear regression</span> line: <span class="math display">
-y = \beta_0 + \beta_1 x + \epsilon,
-</span> where <span class="math inline">\epsilon</span> is a non-observable “error” term, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
+y_i = \beta_0 + \beta_1 x_i + \epsilon_i, \qquad i=1,\dots,n,
+</span> where the “errors” <span class="math inline">\epsilon_i</span> are iid random variables, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
 </ul>
 <div class="incremental">
 <ul>
@@ -217,22 +218,16 @@ y = \beta_0 + \beta_1 x + \epsilon,
 </section>
 <section id="regression-models" class="level2">
 <h2 class="anchored" data-anchor-id="regression-models">Regression models</h2>
-<ul>
-<li>A more <span class="orange">general formulation</span> for modeling the relationship between a vector of covariates <span class="math inline">\bm{x} = (x_1,\dots,x_p)^T \in \mathbb{R}^p</span> and a response <span class="math inline">y \in \mathbb{R}</span> is <span class="math display">
-y = f(\bm{x}; \beta) + \epsilon.
-</span></li>
-</ul>
 <div class="incremental">
-<ul>
-<li>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
-D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
-</span> using <span class="math inline">n</span> pairs of observations <span class="math inline">(\bm{x}_i, y_i)</span>, for <span class="math inline">i = 1,\dots,n</span>.</li>
-<li>The solution to this minimization problem is denoted by <span class="math inline">\hat{\beta}</span>.</li>
-</ul>
-</div>
-<div class="incremental">
-<ul>
-<li>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are then obtained as <span class="math inline">\hat{y}_i = f(\bm{x}_i; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></li>
+<ul class="incremental">
+<li><p>A more <span class="orange">general formulation</span> for modeling the relationship between a vector of covariates <span class="math inline">(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p</span> and a response <span class="math inline">y \in \mathbb{R}</span> is <span class="math display">
+y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n.
+</span></p></li>
+<li><p>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on the <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
+D(\beta) = \sum_{i=1}^n\{y_i - f(x_{i1},\dots, x_{ip}; \beta)\}^2,
+</span> using <span class="math inline">n</span> pairs of observations <span class="math inline">(x_{i1},\dots,x_{ip})^T</span> and <span class="math inline">y_i</span>, for <span class="math inline">i = 1,\dots,n</span>.</p></li>
+<li><p>The solution to this minimization problem is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
+<li><p>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are then obtained as <span class="math inline">\hat{y}_i = f(x_{i1},\dots,x_{ip}; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></p></li>
 </ul>
 </div>
 </section>
@@ -241,115 +236,121 @@ D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
 <ul>
 <li><p>There are several directions to model <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>) in a more flexible way.</p></li>
 <li><p>For instance, we could consider a <span class="orange">polynomial term</span> combined with a <span class="blue">dummy variable</span> <span class="math display">
-f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
+f(x, z; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
 </span></p></li>
 <li><p><span class="orange">Remark</span>. This model is <span class="blue">linear in the parameters</span>, but it can capture non-linear patterns!</p></li>
 </ul>
 <div class="incremental">
-<div class="callout-note callout callout-style-simple no-icon">
-<div class="callout-body d-flex">
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-body-container">
-<ul>
-<li>The above specification is a special instance of <span class="blue">linear model</span>, in which <span class="math display">
-f(\bm{x}; \beta) = \beta_0  + \beta_1 x_1 + \cdots + \beta_p x_{p-1} = \bm{x}_i^T\beta,
-</span> where <span class="math inline">\bm{x} = (1, x_1, \dots,x_{p-1})^T</span> is a <span class="math inline">p</span>-dimensional vector of <span class="orange">covariates</span> and <span class="math inline">\beta = (\beta_0,\dots,\beta_{p-1})^T</span> is the corresponding vector of <span class="orange">coefficients</span>.</li>
-</ul>
+<div class="callout-caption-container flex-fill">
+Definition (Linear model)
 </div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In a <span class="blue">linear model</span> the response variable <span class="math inline">y</span> is related to the covariates through the function<span class="math display">
+    f(x_1,\dots,x_{p-1}; \beta) = \beta_0  + \beta_1 x_1 + \cdots + \beta_p x_{p-1} = \tilde{\bm{x}}^T\beta,
+    </span> where <span class="math inline">\tilde{\bm{x}} = (1, x_1, \dots,x_{p-1})^T</span> is a <span class="math inline">p</span>-dimensional vector of <span class="orange">covariates</span> and <span class="math inline">\beta = (\beta_0,\dots,\beta_{p-1})^T</span> is the corresponding vector of <span class="orange">coefficients</span>.</p>
 </div>
 </div>
 </div>
 </section>
 <section id="matrix-notation" class="level2">
 <h2 class="anchored" data-anchor-id="matrix-notation">Matrix notation</h2>
-<ul>
-<li><p>It is often convenient to express the quantities of linear models in <span class="orange">matrix notation</span>.</p></li>
-<li><p>The <span class="blue">response values</span> are <span class="math inline">\bm{y} = (y_1,\dots,y_n)^T</span>.</p></li>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The <span class="orange">response values</span> are collected in the vector <span class="math inline">\bm{y} = (y_1,\dots,y_n)^T</span>.</p></li>
 <li><p>The <span class="blue">design matrix</span> is a <span class="math inline">n \times p</span> matrix, comprising the covariate’s values, defined by <span class="math display">
-\bm{X} = (\bm{x}_1, \dots,\bm{x}_n)^T =
+\bm{X} =
 \begin{bmatrix}
 1 &amp; x_{1,1} &amp; \cdots &amp; x_{1,p-1}\\
 \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
 1 &amp; x_{n, 1} &amp; \cdots &amp; x_{n, p-1}
 \end{bmatrix}.
 </span></p></li>
-<li><p>Thus, the linear model can be written using the compact notation: <span class="math display">
+<li><p>The linear model can be written using the <span class="orange">compact notation</span>: <span class="math display">
 \bm{y} = \bm{X}\beta + \bm{\epsilon},
 </span> where <span class="math inline">\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T</span> is a vector of iid error terms with zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
+<li><p>The <span class="math inline">j</span>th variable (column) is denoted with <span class="math inline">\bm{x}_j</span>, whereas the <span class="math inline">i</span>th observation (row) is <span class="math inline">\tilde{\bm{x}}_i</span>: <span class="math display">
+\bm{X} = (\bm{1}, \bm{x}_1,\dots,\bm{x}_{p-1}) = (\tilde{\bm{x}}_1, \dots,\tilde{\bm{x}}_n)^T.
+</span></p></li>
 </ul>
+</div>
 </section>
 <section id="linear-regression-estimation-i" class="level2">
 <h2 class="anchored" data-anchor-id="linear-regression-estimation-i">Linear regression: estimation I</h2>
 <ul>
-<li><p>The optimal set of coefficients <span class="math inline">\hat{\beta}</span> is the minimizer of the least squared criterion <span class="math display">
+<li>The optimal set of coefficients <span class="math inline">\hat{\beta}</span> is the minimizer of the least squared criterion <span class="math display">
 D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
-</span> where <span class="math inline">||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2}</span> is the <span class="blue">Euclidean norm</span>.</p></li>
-<li><p>The quantity <span class="math inline">D(\beta)</span> is also known as <span class="orange">residual sum of squares (RSS)</span>.</p></li>
+</span> known also as <span class="orange">residual sum of squares (RSS)</span>, where <span class="math display">
+||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2}.</span></li>
 </ul>
-<div class="incremental">
-<div class="callout-note callout callout-style-simple no-icon">
-<div class="callout-body d-flex">
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-body-container">
-<ul>
-<li>If the design matrix has <span class="blue">full rank</span>, that is if <span class="math inline">\text{rk}(\bm{X}^T\bm{X}) = p</span>, then the <span class="orange">least square estimate</span> has an explicit solution: <span class="math display">
-\hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y}.
-</span></li>
-</ul>
+<div class="callout-caption-container flex-fill">
+Least square estimate (OLS)
 </div>
 </div>
+<div class="callout-body-container callout-body">
+<p>If the design matrix has <span class="blue">full rank</span>, that is if <span class="math inline">\text{rk}(\bm{X}^T\bm{X}) = p</span>, then the <span class="orange">least square estimate</span> has an explicit solution: <span class="math display">
+    \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y}.
+    </span></p>
 </div>
 </div>
 </section>
 <section id="linear-regression-estimation-ii" class="level2">
 <h2 class="anchored" data-anchor-id="linear-regression-estimation-ii">Linear regression: estimation II</h2>
-<ul>
+<div class="incremental">
+<ul class="incremental">
 <li><p>Consequently, the predicted values are <span class="math display">
 \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{P}\bm{y}, \qquad \bm{P} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
 </span></p></li>
-<li><p><span class="math inline">\bm{P}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>. It can be shown that <span class="math inline">\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p</span>. Moreover, it holds <span class="math inline">\bm{P} = \bm{P}^T</span> and <span class="math inline">\bm{P}^2 = \bm{P}</span>.</p></li>
+<li><p><span class="math inline">\bm{P}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>.</p></li>
+<li><p>It can be shown that <span class="math inline">\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p</span>. Moreover, it holds <span class="math inline">\bm{P} = \bm{P}^T</span> and <span class="math inline">\bm{P}^2 = \bm{P}</span>.</p></li>
 <li><p>The quantity <span class="math inline">D(\hat{\beta})</span> is the <span class="blue">deviance</span>, which is equal to <span class="math display">
 D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{P})\bm{y}.
 </span></p></li>
 <li><p>A typical estimate for the <span class="orange">residual variance</span> <span class="math inline">\sigma^2</span> is then given by <span class="math display">
-s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
+s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \tilde{\bm{x}}_i^T\hat{\beta})^2.
 </span></p></li>
 </ul>
+</div>
 </section>
 <section id="linear-regression-inference" class="level2">
 <h2 class="anchored" data-anchor-id="linear-regression-inference">Linear regression: inference</h2>
-<ul>
+<div class="incremental">
+<ul class="incremental">
 <li><p>Let us additionally assume that the errors follow a Gaussian distribution: <span class="math inline">\epsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)</span>.</p></li>
 <li><p>This implies that the distribution of the estimator <span class="math inline">\hat{\beta}</span> is <span class="math display">
-\hat{\beta} \sim N_p(\beta, \sigma^2 (X^TX)^{-1}).
+\hat{\beta} \sim N_p(\beta, \sigma^2 (\bm{X}^T\bm{X})^{-1}).
 </span></p></li>
 <li><p>Hence, the estimator <span class="math inline">\hat{\beta}</span> is <span class="orange">unbiased</span> and its <span class="blue">variance</span> can be estimated by <span class="math display">
-\widehat{\text{var}}(\hat{\beta}) = s^2 (X^TX)^{-1}.
+\widehat{\text{var}}(\hat{\beta}) = s^2 (\bm{X}^T\bm{X})^{-1}.
 </span></p></li>
 <li><p>The <span class="orange">standard errors</span> of the components of beta correspond to the square root of the diagonal of the above covariance matrix.</p></li>
 <li><p>Confidence interval and Wald’s tests can be obtained through classical inferential theory.</p></li>
 </ul>
+</div>
 </section>
 <section id="car-data-a-preliminary-model" class="level2">
 <h2 class="anchored" data-anchor-id="car-data-a-preliminary-model">Car data, a preliminary model</h2>
-<ul>
+<div class="incremental">
+<ul class="incremental">
 <li><p>A first model to predict <code>city.distance</code> (<span class="math inline">y</span>) via <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>) is <span class="math display">
-  f(\bm{x}; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
+  f(x, z; \beta) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 I(z = \texttt{gas}).
   </span></p></li>
 <li><p>By looking at the plot of the data, it is plausible that we need a <span class="orange">polynomial</span> of degree <span class="math inline">3</span> or <span class="math inline">4</span></p></li>
 <li><p>It is also clear from the plot that <code>fuel</code> is a relevant variable. Categorical variable should be <span class="orange">encoded</span> using <span class="blue">indicator variables</span>.</p></li>
-</ul>
-<div class="incremental">
-<ul>
-<li>To evaluate the goodness of fit, we can calculate the <span class="orange">coefficient of determination</span>:</li>
-</ul>
-<p><span class="math display">
+<li><p>To evaluate the goodness of fit, we can calculate the <span class="orange">coefficient of determination</span>: <span class="math display">
 R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\sum_{i=1}^n(y_i - \bar{y})^2}.
-</span></p>
+</span></p></li>
+</ul>
 </div>
 </section>
 <section id="a-first-model-estimated-coefficients" class="level2">
@@ -472,16 +473,10 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="comments-and-criticisms" class="level2">
 <h2 class="anchored" data-anchor-id="comments-and-criticisms">Comments and criticisms</h2>
-<ul>
-<li>The overall fit <span class="blue">seems satisfactory</span> at first glance, especially if we aim at predicting the urban distance of cars when average engine size (i.e., between <span class="math inline">1.5L</span> and <span class="math inline">3L</span>).</li>
-</ul>
 <div class="incremental">
-<ul>
-<li>However, the plot of the <span class="orange">residuals</span> <span class="math inline">r_i = y_i - \hat{y}_i</span> suggests that there the homoschedasticity assumption, i.e.&nbsp;<span class="math inline">\mathbb{E}(\epsilon_i) = \sigma^2</span>, might be violated.</li>
-</ul>
-</div>
-<div class="incremental">
-<ul>
+<ul class="incremental">
+<li><p>The overall fit <span class="blue">seems satisfactory</span> at first glance, especially if we aim at predicting the urban distance of cars when average engine size (i.e., between <span class="math inline">1.5L</span> and <span class="math inline">3L</span>).</p></li>
+<li><p>However, the plot of the <span class="orange">residuals</span> <span class="math inline">r_i = y_i - \hat{y}_i</span> suggests that there the homoschedasticity assumption, i.e.&nbsp;<span class="math inline">\mathbb{E}(\epsilon_i) = \sigma^2</span>, might be violated.</p></li>
 <li><p>Also, this model in not suitable for <span class="orange">extrapolation</span>. Indeed:</p></li>
 <li><p>It has no grounding in physics or engineering, which leads to difficulties in the interpretation of the trend and/or paradoxical situations.</p></li>
 <li><p>For example, the curve of the set of gasoline cars shows a local minimum around <span class="math inline">4.6 L</span> and then rises again!</p></li>
@@ -492,10 +487,10 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <h2 class="anchored" data-anchor-id="variable-transformation">Variable transformation</h2>
 <ul>
 <li><p>A major advantage of linear models is that they can exploit non-linear relationship via <span class="blue">variable transformations</span>.</p></li>
-<li><p>This gives the statistician an lot of modelling flexibility, for instance:</p></li>
+<li><p>This gives the statistician a lot of modelling flexibility, for instance:</p></li>
 </ul>
 <p><span class="math display">
-\log{y} = \beta_0 + \beta_1 \log{x} + \beta_2 I(z = \texttt{gas}).
+\log{y_i} = \beta_0 + \beta_1 \log{x_i} + \beta_2 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
 </span></p>
 <div class="incremental">
 <ul>
@@ -616,8 +611,8 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <h2 class="anchored" data-anchor-id="a-third-model-additional-variables">A third model: additional variables</h2>
 <ul>
 <li>Let us consider <span class="orange">two additional variables</span>: <code>curb.weight</code> (<span class="math inline">w</span>) and <code>n.cylinders</code> (<span class="math inline">v</span>). A modified model could be: <span class="math display">
-\log{y} = \beta_0 + \beta_1 \log{x} +  \beta_2 \log{w} + \beta_3 I(z = \texttt{gas}) + \beta_4 I(v = 2).
-</span></li>
+\log{y_i} = \beta_0 + \beta_1 \log{x_i} +  \beta_2 \log{w_i} + \beta_3 I(z_i = \texttt{gas}) + \beta_4 I(v_i = 2) + \epsilon_i,
+</span> for <span class="math inline">i=1,\dots,n</span>.</li>
 </ul>
 <div class="incremental">
 <div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-11_53680696a65b5dcde91782e4649fd3e0">
@@ -733,12 +728,8 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li><p>We took care of the <span class="orange">outliers</span>, which it turns out are identified by the group of cars having 2 cylinders.</p></li>
 <li><p>The diagnostic plots are also very much improved, although still not perfect.</p></li>
+<li><p>The estimates are coherent with our expectations, based on common knowledge. Have a look at the textbook (A&amp;S) for a detailed explaination about <span class="math inline">\beta_4</span>!</p></li>
 </ul>
-<div class="incremental">
-<ul>
-<li>The estimates are coherent with our expectations, based on common knowledge. Have a look at the textbook (A&amp;S) for a detailed explaination about <span class="math inline">\beta_4</span>!</li>
-</ul>
-</div>
 </section>
 </section>
 <section id="computational-aspects" class="level1">
@@ -864,7 +855,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <li><p>This gives an overall computational complexity of order <span class="math display">
 \sim n p^2 + p^3 /3,
 </span> which corrects the typographical error of the A&amp;S textbook.</p></li>
-<li><p>This means that in <span class="orange">high-dimensional</span> settings (large <span class="math inline">p</span>) computations become rapidly <span class="orange">very costly</span>, being cubic in <span class="math inline">p</span>.</p></li>
+<li><p>This means that in <span class="orange">high-dimensional</span> settings (large <span class="math inline">p</span>) computations become rapidly <span class="orange">very costly</span>, since the complexity is cubic in <span class="math inline">p</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -899,8 +890,33 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </span> implying that there is a clear loss of numerical accuracy when using normal equations.</p></li>
 </ul>
 </section>
-<section id="the-qr-decomposition" class="level2">
-<h2 class="anchored" data-anchor-id="the-qr-decomposition">The QR decomposition</h2>
+<section id="orthogonal-predictors" class="level2">
+<h2 class="anchored" data-anchor-id="orthogonal-predictors">Orthogonal predictors</h2>
+<ul>
+<li><p>Let us have a look at what happens when the <span class="blue">predictors</span> are mutually <span class="orange">orthogonal</span>.</p></li>
+<li><p>In other words, consider a linear model of the form <span class="math display">
+\bm{y} = \bm{Z}\bm{\gamma} + \bm{\epsilon},
+</span> where <span class="math inline">\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)</span>. In statistical terms: <span class="math inline">\text{cor}(\bm{z}_j, \bm{z}_{j'}) = 0</span>, for any <span class="math inline">j \neq j'</span>.</p></li>
+</ul>
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Proposition A.2. OLS with orthogonal predictors
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The least square estimate <span class="math inline">\hat{\bm{\gamma}} = (\hat{\gamma}_1,\dots,\hat{\gamma}_p)^T</span> of a linear model with orthogonal predictors is</p>
+<p><span class="math display">
+\hat{\gamma}_j = \frac{\bm{z}_j^T\bm{y}}{\bm{z}_j^T\bm{z}_j}, \qquad j=1,\dots,p.
+</span></p>
+</div>
+</div>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
 </section>
 </section>
 <section id="iterative-methods" class="level1">
