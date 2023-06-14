@@ -57,8 +57,12 @@ editor_options:
     - Optimism
 
 -   You may have seem some of these notions before... 
-- ...but it is worth carefully exploring the details of ideas once again. 
+- ...but it is worth discussing the details of these ideas once again. 
 
 - They are the [foundations]{.blue} of [statistical learning]{.orange}.
 :::
 :::
+
+## Yesterday's data
+
+
