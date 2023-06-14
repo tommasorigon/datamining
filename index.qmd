@@ -24,8 +24,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-The primary objective of the **Data Mining** course (6 CFU) is to
-provide students with the main tools of ...
+Website of the **Data Mining** course (6 CFU) of *Corso di Laurea Magistrale in Scienze Statistiche ed Economiche* (CLAMSES), Università degli Studi di Milano-Bicocca.
 
 ## Teaching material
 
@@ -33,15 +32,15 @@ The teaching material for each lesson can be downloaded using the
 [hyperlinks](). Please note that this web page is subject to changes, so
 please check the latest updated version.
 
-### Reference textbook
+### Reference textbooks
 
 -   Azzalini, A. and Scarpa, B. (2011), [*Data Analysis and Data Mining*](http://azzalini.stat.unipd.it/Book-DM/),
     Oxford University Press.
+-   Hastie, T., Tibshirani, R. and Friedman, J. (2009), [*The Elements of Statistical Learning*](https://hastie.su.domains/ElemStatLearn/), Second Edition, Springer.
 
-### Additional textbook
+### Additional references
 
 -   Efron, B. and Hastie, T. (2016), [*Computer Age Statistical Inference*](https://hastie.su.domains/CASI/), Cambridge University Press.
--   Hastie, T., Tibshirani, R. and Friedman, J. (2009), [*The Elements of Statistical Learning*](https://hastie.su.domains/ElemStatLearn/), Second Edition, Springer.
 
 ### Teaching material
 

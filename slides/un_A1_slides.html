@@ -1262,13 +1262,131 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 </ul>
 </div>
 </section></section>
+<section>
 <section id="iterative-methods" class="title-slide slide level1 center">
 <h1>Iterative methods</h1>
+
+</section>
+<section id="when-n-is-very-large" class="slide level2">
+<h2>When <span class="math inline">n</span> is very large…</h2>
+<div>
+<ul>
+<li class="fragment"><p>When the sample size <span class="math inline">n</span> is extremely large, as it is common in data mining problems, then the QR factorization cannot be computed.</p></li>
+<li class="fragment"><p>Indeed, even <span class="orange">loading</span> <span class="math inline">\bm{X}</span> into <span class="orange">memory</span> could be problematic.</p></li>
+<li class="fragment"><p>In the normal equations approach, we only need to compute the <span class="blue">sufficient statistics</span>: <span class="math display">
+\bm{W} = \bm{X}^T\bm{X}, \qquad \bm{u} = \bm{X}^T\bm{y},
+</span> which are of dimension <span class="math inline">p\times p</span> and <span class="math inline">p \times 1</span>, respectively.</p></li>
+<li class="fragment"><p>Using <span class="math inline">\bm{W}</span> and <span class="math inline">\bm{u}</span> one can obtain the least square estimate <span class="math inline">\hat{\beta}</span> using the Cholesky factorization.</p></li>
+<li class="fragment"><p>However, when <span class="math inline">n</span> is extremely large, the difficult part is indeed computing <span class="math inline">\bm{W}</span> and <span class="math inline">\bm{u}</span>!</p></li>
+</ul>
+</div>
+</section>
+<section id="recursive-data-import" class="slide level2">
+<h2>Recursive data import</h2>
+<div>
+<ul>
+<li class="fragment"><p>Using matrix notation, we express <span class="math inline">\bm{W} = \bm{W}_{(n)}</span> and <span class="math inline">\bm{u} = \bm{u}_{(n)}</span> as follows <span class="math display">
+\bm{W}_{(n)} = \sum_{i=1}^n \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(n)} = \sum_{i=1}^n\tilde{\bm{x}}_i y_i.
+</span></p></li>
+<li class="fragment"><p>Let us define the <span class="blue">initial conditions</span> <span class="math inline">\bm{W}_{(1)} = \tilde{\bm{x}}_1 \tilde{\bm{x}}_1^T</span> and <span class="math inline">\bm{u}_{(1)} = \tilde{\bm{x}}_1 y_1</span>.</p></li>
+<li class="fragment"><p>Then, the following <span class="orange">recursive relationship</span> holds: <span class="math display">
+\bm{W}_{(i)} = \bm{W}_{(i-1)} +  \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(i)} = \bm{u}_{(i-1)} + \tilde{\bm{x}}_i y_i, \qquad i=2,\dots,n,
+</span> where <span class="math inline">\bm{W}_{(i)}</span> is the matrix formed by the first <span class="math inline">i</span> summands of <span class="math inline">\bm{W}_{(n)}</span> and analogously <span class="math inline">\bm{u}_{(i)}</span>.</p></li>
+<li class="fragment"><p>Hence <span class="math inline">\bm{W}_{(n)}</span> and <span class="math inline">\bm{u}_{(n)}</span> can be calculated by <span class="blue">importing a single record</span> at a time, which does not create memory issues.</p></li>
+</ul>
+</div>
+</section>
+<section id="recursive-estimates" class="slide level2">
+<h2>Recursive estimates</h2>
+<div>
+<ul>
+<li class="fragment"><p>In many occasions, the data flow continuously, meaning that we get a new pair of observations <span class="math inline">(\tilde{\bm{x}}_{n+1}, y_{n+1})</span> every minute, or even every second.</p></li>
+<li class="fragment"><p>We would like to <span class="orange">update</span> the current least square estimate <span class="math inline">\hat{\beta}_{(n)}</span> with the new information <span class="math inline">(\tilde{\bm{x}}_{n+1}, y_{n+1})</span>, but ideally without re-doing all the calculations.</p></li>
+<li class="fragment"><p>The <span class="blue">recursive data import</span> of the <a href="#/recursive-data-import">previous slide</a> is partially unsatisfactory, because one would need to invert (or factorize) a <span class="math inline">p \times p</span> matrix every time, which could be costly.</p></li>
+<li class="fragment"><p>Let us define some useful quantity: <span class="math display">
+\bm{V}_{(n)} = \bm{W}_{(n)}^{-1} = (\bm{X}_{(n)}^T\bm{X}_{(n)})^{-1},
+</span> where <span class="math inline">\bm{X}_{(n)}</span> denotes the design matrix with <span class="math inline">n</span> observations and analogously <span class="math inline">\bm{y}_{(n)}</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="sherman-morrison-formula" class="slide level2">
+<h2>Sherman-Morrison formula</h2>
+<ul>
+<li><p>When the new data points arrive, we can write the updated quantities <span class="math display">
+\bm{X}_{(n+1)} = (\bm{X}_{(n)}, \tilde{\bm{x}}_{(n + 1)})^T, \quad \bm{W}_{(n + 1)} = (\bm{X}_{(n+1)}^T\bm{X}_{(n + 1)}) = (\bm{X}_{(n)}^T\bm{X}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} \tilde{\bm{x}}_{(n + 1)}^T).
+</span></p></li>
+<li><p>The difficult part is to <span class="orange">efficiently</span> compute <span class="math inline">\bm{V}_{(n+1)} = \bm{W}_{(n + 1)}^{-1}</span>. The following result of linear algebra is of incredible help in this regard.</p></li>
+</ul>
+<div class="callout callout-note no-icon callout-captioned callout-style-simple">
+<div class="callout-body">
+<div class="callout-caption">
+<p><strong>Sherman-Morrison formula</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\bm{A} \in \mathbb{R}^{p\times p}</span> be an invertible matrix and let <span class="math inline">\bm{b},\bm{d}</span> be <span class="math inline">p</span>-dimensional vectors. Then <span class="math display">
+(\bm{A} + \bm{b} \bm{d}^T)^{-1} = \bm{A}^{-1} - \frac{1}{1 + \bm{d}^T \bm{A}^{-1}\bm{b}}\bm{A}^{-1}\bm{b}\bm{d}^T\bm{A}^{-1}.
+</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="the-recursive-least-squares-algorithm-i" class="slide level2">
+<h2>The recursive least squares algorithm I</h2>
+<div>
+<ul>
+<li class="fragment"><p>Using the Sherman-Morrison formula, then we can express the new matrix <span class="math inline">\bm{V}_{(n + 1)}</span> as a function of previously computed quantities: <span class="math display">
+\bm{V}_{(n + 1)} = \bm{V}_{(n)} - v_{(n)}\bm{V}_{(n)} \tilde{\bm{x}}_{(n + 1)}\tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}, \quad v_{(n)} = \frac{1}{(1 + \tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)})}.
+</span></p></li>
+<li class="fragment"><p>The <span class="orange">updated least square estimate</span> therefore becomes <span class="math display">
+\begin{aligned}
+\hat{\beta}_{(n+1)} &amp;= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} y_{n+1}) \\
+&amp;=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)}}_{k_n}\underbrace{(y_{n+1} - \tilde{\bm{x}}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
+&amp;= \hat{\beta}_{(n)} + k_n e_{n+1}.
+\end{aligned}
+</span></p></li>
+<li class="fragment"><p>The quantity <span class="math inline">e_{n+1}</span> is the <span class="blue">prediction error</span> of <span class="math inline">y_{n+1}</span> based on the previous estimate <span class="math inline">\hat{\beta}_{(n)}</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="the-recursive-least-squares-algorithm-ii" class="slide level2">
+<h2>The recursive least squares algorithm II</h2>
+<ul>
+<li><p>The recursive estimation <span class="math inline">\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + k_n e_{n+1}</span> takes the form of a <span class="orange">linear filter</span>, in which the new estimate <span class="math inline">\hat{\beta}_{(n+1)}</span> is obtained by modifying the old one <span class="math inline">\hat{\beta}_{(n+1)}</span>.</p></li>
+<li><p>This is performed according to the <span class="blue">prediction error</span> <span class="math inline">\epsilon_{n+1}</span> and the <span class="orange">gain</span> <span class="math inline">k_n</span> of the filter.</p></li>
+<li><p>Using a terminology typical of the machine learning field, we say that the estimator “learns from its errors”.</p></li>
+<li><p>If <span class="math inline">n</span> is sufficiently high, it is also possible to get an <span class="orange">approximate</span> solution by initializing the algorithm by setting <span class="math inline">\bm{V}_{(0)} = I_p</span>, to avoid any matrix inversion / factorization.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>With further algebraic steps, we also obtain a <span class="blue">recursive formula</span> for the <span class="blue">deviance</span></li>
+</ul>
+<p><span class="math display">
+||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n + 1)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2.
+</span></p>
+<ul>
+<li>The full algorithm is provided in A&amp;S, Algorithm 2.2.</li>
+</ul>
+</div>
+</section>
+<section id="references" class="slide level2">
+<h2>References</h2>
+<ul>
+<li><span class="blue">Main references</span>
+<ul>
+<li><strong>Chapter 2</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
+<li><strong>Chapter 3</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+</ul></li>
+<li><span class="orange">Advanced references</span>
+<ul>
+<li><strong>Chapters 1–3</strong> of Quarteroni, Sacco &amp; Saleri (2007). <em>Numerical mathematics</em>. Second Edition, Springer.</li>
+<li><strong>Chapters 1–5</strong> of Golub &amp; Van Loan (1983). <em>Matrix computations</em>. Hopkins University Press.</li>
+</ul></li>
+</ul>
 <p><img src="img/logoB.png" class="slide-logo"></p>
 <div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 

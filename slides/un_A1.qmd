@@ -694,15 +694,16 @@ $$
 
 -   In other words, consider a linear model of the form $$
     \bm{y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
-    $$ where $\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)$. [Orthogonality]{.orange} means that
+    $$ where $\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)$.
+    [Orthogonality]{.orange} means that
     $\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)$.
 
 ::: callout-note
 #### Proposition A.2. OLS with orthogonal predictors
 
 The least square estimate
-$\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T$ of a
-linear model with orthogonal predictors is
+$\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T$ of a linear
+model with orthogonal predictors is
 
 $$
 \hat{\gamma}_j = \frac{\bm{z}_j^T\bm{y}}{\bm{z}_j^T\bm{z}_j}, \qquad j=1,\dots,p.
@@ -711,153 +712,304 @@ $$
 
 ## Regression by successive orthogonalization
 
--   The predictors of $\bm{X}$ are generally not orthogonal. We
-    want to find a suitable transformation $\bm{Z} = \bm{X} \bm{\Gamma}^{-1}$ that
-    [orthogonalize]{.blue} the [predictors]{.orange}.
+-   The predictors of $\bm{X}$ are generally not orthogonal. We want to
+    find a suitable transformation $\bm{Z} = \bm{X} \bm{\Gamma}^{-1}$
+    that [orthogonalize]{.blue} the [predictors]{.orange}.
 
 . . .
 
-- Suppose for example that $p = 2$. We set [first orthogonal predictor]{.orange} $\bm{z}_1 = \bm{x}_1$.
+-   Suppose for example that $p = 2$. We set [first orthogonal
+    predictor]{.orange} $\bm{z}_1 = \bm{x}_1$.
 
-- We then consider the following [univariate]{.blue} regression problem
-$$
-\bm{x}_2 = \gamma \bm{z}_1 + \bm{\epsilon}, \qquad \text{which leads} \qquad \hat{\gamma} = \frac{\bm{z}_1^T\bm{x}_2}{\bm{z}_1^T\bm{z}_1}.
-$$
--  The [second orthogonal predictor]{.orange} is obtained as the [residual term]{.blue}: $$
-\bm{z}_2 = \bm{x}_2 - \hat{\gamma}\bm{z}_1.
-$$
-- The geometry of linear models guarantees that $\bm{z}_1^T\bm{z}_2 = 0$.
+-   We then consider the following [univariate]{.blue} regression
+    problem $$
+    \bm{x}_2 = \gamma \bm{z}_1 + \bm{\epsilon}, \qquad \text{which leads} \qquad \hat{\gamma} = \frac{\bm{z}_1^T\bm{x}_2}{\bm{z}_1^T\bm{z}_1}.
+    $$
+
+-   The [second orthogonal predictor]{.orange} is obtained as the
+    [residual term]{.blue}: $$
+    \bm{z}_2 = \bm{x}_2 - \hat{\gamma}\bm{z}_1.
+    $$
+
+-   The geometry of linear models guarantees that
+    $\bm{z}_1^T\bm{z}_2 = 0$.
 
 ## Gram-Schmidt algorithm
 
-- Let us now consider the [general case]{.orange}, for any value of $p$.
+-   Let us now consider the [general case]{.orange}, for any value of
+    $p$.
 
-- [Initialization]{.blue}. Set $\bm{z}_1 = \bm{x}_1$.
+-   [Initialization]{.blue}. Set $\bm{z}_1 = \bm{x}_1$.
 
-- [For $j= 2,\dots,p$]{.blue}. Consider the regression problem with $j-1$ orthogonal predictors
-$$
-\bm{x}_j = \sum_{k=1}^{j-1}\gamma_{kj} \bm{z}_k + \bm{\epsilon}_j, \quad \text{which leads} \quad \hat{\gamma}_{kj} = \frac{\bm{z}_k^T\bm{x}_j}{\bm{z}_k^T\bm{z}_k}, \quad k=1,\dots,j-1,
-$$
-Then, compute the new vector $\bm{z}_j$ as the [residual]{.orange} term
-  $$
-  \bm{z}_j = \bm{x}_j - \sum_{k=1}^{j-1}\hat{\gamma}_{kj} \bm{z}_k
-  $$
-- The geometry of linear models guarantees [orthogonality]{.orange}, that is $\bm{z}_j^T \bm{z}_{j'} = 0$ for any $j \neq j'$. 
+-   [For $j= 2,\dots,p$]{.blue}. Consider the regression problem with
+    $j-1$ orthogonal predictors $$
+    \bm{x}_j = \sum_{k=1}^{j-1}\gamma_{kj} \bm{z}_k + \bm{\epsilon}_j, \quad \text{which leads} \quad \hat{\gamma}_{kj} = \frac{\bm{z}_k^T\bm{x}_j}{\bm{z}_k^T\bm{z}_k}, \quad k=1,\dots,j-1,
+    $$ Then, compute the new vector $\bm{z}_j$ as the
+    [residual]{.orange} term $$
+    \bm{z}_j = \bm{x}_j - \sum_{k=1}^{j-1}\hat{\gamma}_{kj} \bm{z}_k
+    $$
 
+-   The geometry of linear models guarantees [orthogonality]{.orange},
+    that is $\bm{z}_j^T \bm{z}_{j'} = 0$ for any $j \neq j'$.
 
 ## The QR decomposition I
 
 ::: incremental
+-   By construction, the Gram-Schmidt algorithm produces the following
+    decomposition $$
+    \bm{X} = \bm{Z} \bm{\Gamma}, \qquad \bm{\Gamma} = 
+    \begin{bmatrix}
+    1 & \hat{\gamma}_{12} & \hat{\gamma}_{13} &\cdots & \hat{\gamma}_{1p} \\
+    0 &  1 & \hat{\gamma}_{23} &\cdots & \hat{\gamma}_{2p} \\
+    \vdots & \vdots & \vdots &\ddots & \vdots\\
+    0 & 0 & 0 & \cdots & 1
+    \end{bmatrix}, \qquad \bm{Z} = (\bm{z}_1,\dots,\bm{z}_p).
+    $$
 
-- By construction, the Gram-Schmidt algorithm produces the following decomposition $$
-\bm{X} = \bm{Z} \bm{\Gamma}, \qquad \bm{\Gamma} = 
-\begin{bmatrix}
-1 & \hat{\gamma}_{12} & \hat{\gamma}_{13} &\cdots & \hat{\gamma}_{1p} \\
-0 &  1 & \hat{\gamma}_{23} &\cdots & \hat{\gamma}_{2p} \\
-\vdots & \vdots & \vdots &\ddots & \vdots\\
-0 & 0 & 0 & \cdots & 1
-\end{bmatrix}, \qquad \bm{Z} = (\bm{z}_1,\dots,\bm{z}_p).
-$$
-- The $p \times p$ matrix $\bm{\Gamma}$ is [upper triangular]{.orange}, whereas the columns of the $n \times p$ matrix $\bm{Z}$ are [mutually orthogonal]{.blue}.
+-   The $p \times p$ matrix $\bm{\Gamma}$ is [upper
+    triangular]{.orange}, whereas the columns of the $n \times p$ matrix
+    $\bm{Z}$ are [mutually orthogonal]{.blue}.
 
-- It is often convenient to [standardize]{.orange} the columns of $\bm{Z}$, dividing them by their norm $||\bm{z}_j||$. Let $\bm{D} = \text{diag}(||\bm{z}_1||, \dots, ||\bm{z}_p||)$, then in matrix notation:
-$$
-\bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}.
-$$
-- [Remark]{.orange}. Note that $\bm{Q}^T \bm{Q} = I_p$, i.e. the columns of $\bm{Q}$ are [orthonormal]{.blue}.
+-   It is often convenient to [standardize]{.orange} the columns of
+    $\bm{Z}$, dividing them by their norm $||\bm{z}_j||$. Let
+    $\bm{D} = \text{diag}(||\bm{z}_1||, \dots, ||\bm{z}_p||)$, then in
+    matrix notation: $$
+    \bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}.
+    $$
 
+-   [Remark]{.orange}. Note that $\bm{Q}^T \bm{Q} = I_p$, i.e. the
+    columns of $\bm{Q}$ are [orthonormal]{.blue}.
 :::
 
 ## The QR decomposition II
 
 ::: callout-note
 #### Theorem (QR factorization)
+
 Suppose $\bm{X} \in \mathbb{R}^{n \times p}$ with $n \ge p$ has full
-rank, that is $\text{rk}(\bm{X}) = p$. Then there exists a factorization of the form
-$$
+rank, that is $\text{rk}(\bm{X}) = p$. Then there exists a factorization
+of the form $$
 \bm{X} = \bm{Q} \bm{R},
-$$
-where $\bm{Q} \in \mathbb{R}^{n \times p}$ has [orthonormal columns]{.orange} and $\bm{R} \in \mathbb{R}^{p \times p}$ is an [upper triangular]{.blue} matrix. 
+$$ where $\bm{Q} \in \mathbb{R}^{n \times p}$ has [orthonormal
+columns]{.orange} and $\bm{R} \in \mathbb{R}^{p \times p}$ is an [upper
+triangular]{.blue} matrix.
 :::
 
 ::: callout-tip
 #### Corollary (QR factorization)
-The QR decomposition is [unique]{.blue} up to [sign flips]{.blue} of the columns of $\bm{Q}$ and the rows of $\bm{R}$. Moreover, if $\bm{R}$ has positive diagonal entries, as the one obtained using Gram-Schmidt, then it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
+
+The QR decomposition is [unique]{.blue} up to [sign flips]{.blue} of the
+columns of $\bm{Q}$ and the rows of $\bm{R}$. Moreover, if $\bm{R}$ has
+positive diagonal entries, as the one obtained using Gram-Schmidt, then
+it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 :::
 
 ## The QR decomposition and least squares
 
 ::: incremental
+-   The QR decomposition greatly facilitates computations for linear
+    models. Indeed: $$
+    \begin{aligned}
+    \hat{\beta} &= (\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{y} = [(\bm{Q}\bm{R})^T\bm{Q}\bm{R}]^{-1}(\bm{Q}\bm{R})^T\bm{y}\\
+    &= (\bm{R}^T\bm{Q}^T\bm{Q}\bm{R})^{-1}\bm{R}^T\bm{Q}^T\bm{y} \\
+    &= \bm{R}^{-1} (\bm{R}^T)^{-1} \bm{R}^T\bm{Q}^T\bm{y} \\
+    &= \bm{R}^{-1}\bm{Q}^T \bm{y}.
+    \end{aligned}
+    $$
 
-- The QR decomposition greatly facilitates computations for linear models. Indeed: 
-$$
-\begin{aligned}
-\hat{\beta} &= (\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{y} = [(\bm{Q}\bm{R})^T\bm{Q}\bm{R}]^{-1}(\bm{Q}\bm{R})^T\bm{y}\\
-&= (\bm{R}^T\bm{Q}^T\bm{Q}\bm{R})^{-1}\bm{R}^T\bm{Q}^T\bm{y} \\
-&= \bm{R}^{-1} (\bm{R}^T)^{-1} \bm{R}^T\bm{Q}^T\bm{y} \\
-&= \bm{R}^{-1}\bm{Q}^T \bm{y}.
-\end{aligned}
-$$
-- Hence, the least square estimate is obtained as the solution of the [triangular system]{.blue}
-$$
-\bm{R}\beta = \bm{Q}^T\bm{y},
-$$
-which can be easily solved via [backward substitution]{.orange}. 
+-   Hence, the least square estimate is obtained as the solution of the
+    [triangular system]{.blue} $$
+    \bm{R}\beta = \bm{Q}^T\bm{y},
+    $$ which can be easily solved via [backward substitution]{.orange}.
 
-- As a special case of the above equation, one gets $\hat{\beta}_p = (\bm{z}_p^T\bm{y}) / (\bm{z}_p^T \bm{z}_p)$.
-
+-   As a special case of the above equation, one gets
+    $\hat{\beta}_p = (\bm{z}_p^T\bm{y}) / (\bm{z}_p^T \bm{z}_p)$.
 :::
 
 ## The QR decomposition and linear models
 
 ::: incremental
+-   An important advantage of the QR factorization is that many other
+    useful quantities can be readily computed. For example, the
+    [covariance matrix]{.orange} is obtained as: $$
+      s^2 (\bm{X}^T \bm{X})^{-1} = s^2 \bm{R}^{-1} (\bm{R}^{-1})^T.
+      $$
 
-- An important advantage of the QR factorization is that many other useful quantities can be readily computed. For example, the [covariance matrix]{.orange} is obtained as:
-$$
-    s^2 (\bm{X}^T \bm{X})^{-1} = s^2 \bm{R}^{-1} (\bm{R}^{-1})^T.
+-   The [predicted values]{.orange} and the [projection matrix]{.blue}
+    are also easily obtained as $$
+    \hat{\bm{y}} = \bm{H}\bm{y} = \bm{Q}\bm{Q}^T\bm{y}.
     $$
 
-- The [predicted values]{.orange} and the [projection matrix]{.blue} are also easily obtained as
-$$
-\hat{\bm{y}} = \bm{H}\bm{y} = \bm{Q}\bm{Q}^T\bm{y}.
-$$
-
-- The diagonal elements $h_i = [\bm{H}]_{ii}$ of the hat matrix $\bm{H}$ are called [leverages]{.orange} and one may want to compute them without evaluating the full $n \times n$ matrix, using
-$$
-h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
-$$
-where $q_{ij}$ are the entries of $\bm{Q}$. 
-
+-   The diagonal elements $h_i = [\bm{H}]_{ii}$ of the hat matrix
+    $\bm{H}$ are called [leverages]{.orange} and one may want to compute
+    them without evaluating the full $n \times n$ matrix, using $$
+    h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
+    $$ where $q_{ij}$ are the entries of $\bm{Q}$.
 :::
 
 ## Computational complexity
 
 ::: incremental
--   The solution via QR factorization is [numerically reliable]{.orange} and it facilitates the computation of other quantities of interest. 
+-   The solution via QR factorization is [numerically reliable]{.orange}
+    and it facilitates the computation of other quantities of interest.
 
-- In practice, the QR is computed via a [modified Gram-Schmidt]{.blue}, that fixes the instabilities of the naïve Gram-Schmidt algorithm, or via [Householder reflections]{.orange}.
+-   In practice, the QR is computed via a [modified
+    Gram-Schmidt]{.blue}, that fixes the instabilities of the naïve
+    Gram-Schmidt algorithm, or via [Householder reflections]{.orange}.
 
--   The expensive step is the QR factorization itself. This gives an overall computational complexity of order $$
-    \sim 2 n p^2$$
-    which is about twice that of the Cholesky, when $n$ is much larger than $p$, and about the same when $p \approx n$. 
+-   The expensive step is the QR factorization itself. This gives an
+    overall computational complexity of order $$
+    \sim 2 n p^2$$ which is about twice that of the Cholesky, when $n$
+    is much larger than $p$, and about the same when $p \approx n$.
 
-- Depending on the context, we may prefer the Cholesky or the QR. The default approach in R, i.e. the one implemented in the `lm` function, is the QR factorization.  
+-   Depending on the context, we may prefer the Cholesky or the QR. The
+    default approach in R, i.e. the one implemented in the `lm`
+    function, is the QR factorization.\
 :::
 
-## ☠️ - Pivoting and rank deficiencies
+## ☠️ - Pivoting and rank deficiencies 
 
 ::: incremental
-- If $\text{rk}(\bm{X}) = k <  p$ ([rank deficiency]{.orange}) then it is still possibile to obtain a "QR" factorization of the form
-$$
-\bm{X}\bm{P} = \bm{Q}\begin{bmatrix}\bm{R}_{11} & \bm{R}_{12} \\
-0 & 0\end{bmatrix},
-$$
-where $\bm{P}$ is a $p × p$ permutation matrix and $\bm{R}_{11}$ is an $k \times k$ upper triangular and non-singular matrix.
+-   If $\text{rk}(\bm{X}) = k < p$ ([rank deficiency]{.orange}) then it
+    is still possibile to obtain a "QR" factorization of the form $$
+    \bm{X}\bm{P} = \bm{Q}\begin{bmatrix}\bm{R}_{11} & \bm{R}_{12} \\
+    0 & 0\end{bmatrix},
+    $$ where $\bm{P}$ is a $p × p$ permutation matrix and $\bm{R}_{11}$
+    is an $k \times k$ upper triangular and non-singular matrix.
 
-- This operation is sometimes called [pivoting]{.blue} and it is particularly important even when $\text{rk}(\bm{X}) = p$ to prevent numerical issues when the condition number $\kappa(\bm{X})$ is high. 
+-   This operation is sometimes called [pivoting]{.blue} and it is
+    particularly important even when $\text{rk}(\bm{X}) = p$ to prevent
+    numerical issues when the condition number $\kappa(\bm{X})$ is high.
 
-- In presence of perfect collinarity, the implementation of the QR decomposition in R (`qr`) relies on  pivoting. This is why the `lm` function is able to automatically "omit" a predictor. 
-
+-   In presence of perfect collinarity, the implementation of the QR
+    decomposition in R (`qr`) relies on pivoting. This is why the `lm`
+    function is able to automatically "omit" a predictor.
 :::
 
 # Iterative methods
+
+## When $n$ is very large...
+
+::: incremental
+
+- When the sample size $n$ is extremely large, as it is common in data mining problems, then the QR factorization cannot be computed.
+
+- Indeed, even [loading]{.orange} $\bm{X}$ into [memory]{.orange} could be problematic.
+
+- In the normal equations approach, we only need to compute the [sufficient statistics]{.blue}:
+$$
+\bm{W} = \bm{X}^T\bm{X}, \qquad \bm{u} = \bm{X}^T\bm{y},
+$$
+which are of dimension $p\times p$ and $p \times 1$, respectively. 
+
+- Using $\bm{W}$ and $\bm{u}$ one can obtain the least square estimate $\hat{\beta}$ using the Cholesky factorization. 
+
+- However, when $n$ is extremely large, the difficult part is indeed computing $\bm{W}$ and $\bm{u}$!
+
+:::
+
+## Recursive data import
+
+::: incremental
+
+- Using matrix notation, we express $\bm{W} = \bm{W}_{(n)}$ and $\bm{u} = \bm{u}_{(n)}$ as follows
+$$
+\bm{W}_{(n)} = \sum_{i=1}^n \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(n)} = \sum_{i=1}^n\tilde{\bm{x}}_i y_i.
+$$
+- Let us define the [initial conditions]{.blue} $\bm{W}_{(1)} = \tilde{\bm{x}}_1 \tilde{\bm{x}}_1^T$ and $\bm{u}_{(1)} = \tilde{\bm{x}}_1 y_1$.
+
+- Then, the following [recursive relationship]{.orange} holds:
+$$
+\bm{W}_{(i)} = \bm{W}_{(i-1)} +  \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(i)} = \bm{u}_{(i-1)} + \tilde{\bm{x}}_i y_i, \qquad i=2,\dots,n,
+$$
+where $\bm{W}_{(i)}$ is the matrix formed by the first $i$ summands of $\bm{W}_{(n)}$ and analogously $\bm{u}_{(i)}$.
+
+- Hence $\bm{W}_{(n)}$ and $\bm{u}_{(n)}$ can be calculated by [importing a single record]{.blue} at a time, which does not create memory issues. 
+:::
+
+## Recursive estimates
+
+::: incremental
+
+- In many occasions, the data flow continuously, meaning that we get a new pair of observations $(\tilde{\bm{x}}_{n+1}, y_{n+1})$ every minute, or even every second. 
+
+- We would like to [update]{.orange} the current least square estimate $\hat{\beta}_{(n)}$ with the new information $(\tilde{\bm{x}}_{n+1}, y_{n+1})$, but ideally without re-doing all the calculations.
+
+- The [recursive data import]{.blue} of the [previous slide](#recursive-data-import) is partially unsatisfactory, because one would need to invert (or factorize) a $p \times p$ matrix every time, which could be costly. 
+
+- Let us define some useful quantity:
+$$
+\bm{V}_{(n)} = \bm{W}_{(n)}^{-1} = (\bm{X}_{(n)}^T\bm{X}_{(n)})^{-1},
+$$
+where $\bm{X}_{(n)}$ denotes the design matrix with $n$ observations and analogously $\bm{y}_{(n)}$.
+:::
+
+## Sherman-Morrison formula
+
+- When the new data points arrive, we can write the updated quantities $$
+\bm{X}_{(n+1)} = (\bm{X}_{(n)}, \tilde{\bm{x}}_{(n + 1)})^T, \quad \bm{W}_{(n + 1)} = (\bm{X}_{(n+1)}^T\bm{X}_{(n + 1)}) = (\bm{X}_{(n)}^T\bm{X}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} \tilde{\bm{x}}_{(n + 1)}^T).
+$$
+
+- The difficult part is to [efficiently]{.orange} compute $\bm{V}_{(n+1)} = \bm{W}_{(n + 1)}^{-1}$. The following result of linear algebra is of incredible help in this regard. 
+
+::: callout-note
+#### Sherman-Morrison formula
+
+Let $\bm{A} \in \mathbb{R}^{p\times p}$ be an invertible matrix and let $\bm{b},\bm{d}$ be $p$-dimensional vectors. Then
+$$
+(\bm{A} + \bm{b} \bm{d}^T)^{-1} = \bm{A}^{-1} - \frac{1}{1 + \bm{d}^T \bm{A}^{-1}\bm{b}}\bm{A}^{-1}\bm{b}\bm{d}^T\bm{A}^{-1}.
+$$
+:::
+
+## The recursive least squares algorithm I
+
+::: incremental
+
+- Using the Sherman-Morrison formula, then we can express the new matrix $\bm{V}_{(n + 1)}$ as a function of previously computed quantities:
+$$
+\bm{V}_{(n + 1)} = \bm{V}_{(n)} - v_{(n)}\bm{V}_{(n)} \tilde{\bm{x}}_{(n + 1)}\tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}, \quad v_{(n)} = \frac{1}{(1 + \tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)})}.
+$$
+
+- The [updated least square estimate]{.orange} therefore becomes
+$$
+\begin{aligned}
+\hat{\beta}_{(n+1)} &= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} y_{n+1}) \\
+&=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)}}_{k_n}\underbrace{(y_{n+1} - \tilde{\bm{x}}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
+&= \hat{\beta}_{(n)} + k_n e_{n+1}.
+\end{aligned}
+$$
+- The quantity $e_{n+1}$ is the [prediction error]{.blue} of $y_{n+1}$ based on the previous estimate $\hat{\beta}_{(n)}$.
+:::
+
+## The recursive least squares algorithm II
+
+- The recursive estimation $\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + k_n e_{n+1}$ takes the form of a [linear filter]{.orange}, in which the new estimate $\hat{\beta}_{(n+1)}$ is obtained by modifying the old  one $\hat{\beta}_{(n+1)}$.
+
+- This is performed according to the [prediction error]{.blue} $\epsilon_{n+1}$ and the [gain]{.orange} $k_n$ of the filter.
+
+- Using a terminology typical of the machine learning field, we say that the estimator "learns from its errors".
+
+- If $n$ is sufficiently high, it is also possible to get an [approximate]{.orange} solution by initializing the algorithm by setting $\bm{V}_{(0)} = I_p$, to avoid any matrix inversion / factorization. 
+
+. . .
+
+- With further algebraic steps, we also obtain a [recursive formula]{.blue} for the [deviance]{.blue}
+
+$$
+||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n + 1)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2.
+$$
+
+- The full algorithm is provided in A&S, Algorithm 2.2.
+
+## References
+
+
+
+- [Main references]{.blue}
+  - **Chapter 2** of Azzalini, A. and Scarpa, B. (2011), [*Data Analysis and Data Mining*](http://azzalini.stat.unipd.it/Book-DM/),
+    Oxford University Press.
+  - **Chapter 3** of Hastie, T., Tibshirani, R. and Friedman, J. (2009), [*The Elements of Statistical Learning*](https://hastie.su.domains/ElemStatLearn/), Second Edition, Springer.
+- [Advanced references]{.orange}
+  - **Chapters 1--3** of Quarteroni, Sacco \& Saleri (2007). *Numerical mathematics*. Second Edition, Springer. 
+  - **Chapters 1--5** of Golub \& Van Loan (1983). *Matrix computations*. Hopkins University Press.
+
