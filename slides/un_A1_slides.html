@@ -362,14 +362,15 @@
 <p><img data-src="img/ABC.png"> <em>“Everything should be made as simple as possible, but not simpler”</em> Attributed to Albert Einstein</p>
 </div><div class="column" style="width:60%;">
 <ul>
-<li><p>In this unit we will cover three important <span class="orange">topics</span>:</p>
+<li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
 <ul>
-<li>Linear models and modelling process</li>
-<li>Computational aspects</li>
-<li>Generalized linear models (GLMs)</li>
+<li>Linear models and the modelling process</li>
+<li>Cholesky factorization</li>
+<li>Orthogonalization and QR decomposition</li>
+<li>Iterative methods</li>
 </ul></li>
 <li><p>The <span class="blue">computational aspects</span> of linear models will be novel to most of you…</p></li>
-<li><p>… but you should be already <span class="orange">very familiar</span> with linear models and GLMs!</p></li>
+<li><p>… but you should be already <span class="orange">very familiar</span> with linear models !</p></li>
 <li><p>If do not remember much about them, use this first week of lectures to catch up (or study) from the material of previous courses.</p></li>
 </ul>
 <!-- -   A [short introduction]{.blue} to the topic is also offered in -->
@@ -521,12 +522,12 @@ D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\be
 <div>
 <ul>
 <li class="fragment"><p>Consequently, the predicted values are <span class="math display">
-\hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{P}\bm{y}, \qquad \bm{P} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
+\hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{H}\bm{y}, \qquad \bm{H} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
 </span></p></li>
-<li class="fragment"><p><span class="math inline">\bm{P}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>.</p></li>
-<li class="fragment"><p>It can be shown that <span class="math inline">\text{tr}(\bm{P}) = \text{rk}(\bm{P}) = p</span>. Moreover, it holds <span class="math inline">\bm{P} = \bm{P}^T</span> and <span class="math inline">\bm{P}^2 = \bm{P}</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\bm{H}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>.</p></li>
+<li class="fragment"><p>It can be shown that <span class="math inline">\text{tr}(\bm{H}) = \text{rk}(\bm{H}) = p</span>. Moreover, it holds <span class="math inline">\bm{H} = \bm{H}^T</span> and <span class="math inline">\bm{H}^2 = \bm{H}</span>.</p></li>
 <li class="fragment"><p>The quantity <span class="math inline">D(\hat{\beta})</span> is the <span class="blue">deviance</span>, which is equal to <span class="math display">
-D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{P})\bm{y}.
+D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{H})\bm{y}.
 </span></p></li>
 <li class="fragment"><p>A typical estimate for the <span class="orange">residual variance</span> <span class="math inline">\sigma^2</span> is then given by <span class="math display">
 s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \tilde{\bm{x}}_i^T\hat{\beta})^2.
@@ -944,8 +945,8 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 </section></section>
 <section>
-<section id="computational-aspects" class="title-slide slide level1 center">
-<h1>Computational aspects</h1>
+<section id="cholesky-factorization" class="title-slide slide level1 center">
+<h1>Cholesky factorization</h1>
 
 </section>
 <section id="how-to-obtain-the-least-squares-estimate" class="slide level2">
@@ -958,7 +959,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 <div class="fragment">
 <ul>
-<li><p>However, in real life, when we have a lot of data (large <span class="math inline">n</span>) and correlated variables, the above code is <span class="orange">computationally inefficient</span> and <span class="blue">numerically inaccurate</span>.</p></li>
+<li><p>However, in realistic problems, when we have a lot of data (large <span class="math inline">n</span>) and correlated variables, the above code is <span class="orange">computationally inefficient</span> and <span class="blue">numerically inaccurate</span>.</p></li>
 <li><p>The main computational bottleneck is about obtaining the inverse of <span class="math inline">\bm{X}^T\bm{X}</span>, which is very costly and often numerically unstable, especially when the predictors are almost collinear.</p></li>
 </ul>
 </div>
@@ -987,7 +988,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 </section>
-<section id="cholesky-factorization" class="slide level2">
+<section id="cholesky-factorization-1" class="slide level2">
 <h2>Cholesky factorization</h2>
 <ul>
 <li>Recall (from your favorite linear algebra textbook) that a <span class="blue">symmetric</span> matrix <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> is <span class="orange">positive definite</span> if and only if one the following properties is satisfied
@@ -1066,7 +1067,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </div>
 </section>
 <section id="error-propagation-in-normal-equations" class="slide level2">
-<h2>Error propagation in normal equations</h2>
+<h2>☠️ - Error propagation in normal equations</h2>
 <div>
 <ul>
 <li class="fragment"><p>The normal equations method is typically <span class="blue">quicker</span> than other algorithms, as it removes the dependency on <span class="math inline">n</span>, but it is in general numerically more <span class="orange">unstable</span>.</p></li>
@@ -1082,28 +1083,32 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </div>
 </section>
 <section id="condition-numbers-and-normal-equations" class="slide level2">
-<h2>Condition numbers and normal equations</h2>
+<h2>☠️ - Condition numbers and normal equations</h2>
 <div>
 <ul>
 <li class="fragment"><p>Suppose <span class="math inline">\bm{X} \in \mathbb{R}^{n \times p}</span> with <span class="math inline">n \ge p</span> has full rank and singular values <span class="math inline">d_1 \ge d_2 \ge \dots \ge d_p</span>. Then its <span class="orange">condition number</span> is <span class="math display">
 \kappa(\bm{X}) = ||\bm{X}|| \cdot ||\bm{X}^+|| = \frac{d_1}{d_p},
 </span> where <span class="math inline">\bm{X}^+</span> is the Moore-Penrose pseudo-inverse. Note that <span class="math inline">\kappa(\bm{X}) \ge 1</span>.</p></li>
-<li class="fragment"><p>If <span class="math inline">\kappa(\bm{X})</span> is small, the matrix <span class="math inline">\bm{X}</span> is <span class="blue">well-conditioned</span>. Otherwise, it is <span class="orange">ill-conditioned</span>.</p></li>
+<li class="fragment"><p>If <span class="math inline">\kappa(\bm{X})</span> is small, the matrix <span class="math inline">\bm{X}</span> is <span class="blue">well conditioned</span>. Otherwise, we say it is <span class="orange">ill conditioned</span>.</p></li>
 <li class="fragment"><p>The condition number determines how accurately we can solve linear systems.</p></li>
 <li class="fragment"><p>An important fact is: <span class="math display">
 \kappa(\bm{X}^T\bm{X}) = \kappa(\bm{X})^2,
 </span> implying that there is a clear loss of numerical accuracy when using normal equations.</p></li>
 </ul>
 </div>
+</section></section>
+<section>
+<section id="the-qr-decomposition" class="title-slide slide level1 center">
+<h1>The QR decomposition</h1>
+
 </section>
 <section id="orthogonal-predictors" class="slide level2">
 <h2>Orthogonal predictors</h2>
 <ul>
-<li><p>Let us have a look at what happens when the <span class="blue">predictors</span> are mutually <span class="orange">orthogonal</span>.</p></li>
+<li><p>When the <span class="blue">predictors</span> are mutually <span class="orange">orthogonal</span>, the problem is significantly simpler.</p></li>
 <li><p>In other words, consider a linear model of the form <span class="math display">
-\bm{y} = \bm{Z}\bm{\gamma} + \bm{\epsilon},
-</span> where <span class="math inline">\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)</span> and <span class="math inline">\bm{\gamma} = (\gamma_1,\dots,\gamma_p)^T</span>.</p></li>
-<li><p><span class="orange">Orthogonality</span> means that <span class="math inline">\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)</span>.</p></li>
+\bm{y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
+</span> where <span class="math inline">\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)</span>. <span class="orange">Orthogonality</span> means that <span class="math inline">\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)</span>.</p></li>
 </ul>
 <div class="callout callout-note no-icon callout-captioned callout-style-simple">
 <div class="callout-body">
@@ -1111,7 +1116,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <p><strong>Proposition A.2. OLS with orthogonal predictors</strong></p>
 </div>
 <div class="callout-content">
-<p>The least square estimate <span class="math inline">\hat{\bm{\gamma}} = (\hat{\gamma}_1,\dots,\hat{\gamma}_p)^T</span> of a linear model with orthogonal predictors is</p>
+<p>The least square estimate <span class="math inline">\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T</span> of a linear model with orthogonal predictors is</p>
 <p><span class="math display">
 \hat{\gamma}_j = \frac{\bm{z}_j^T\bm{y}}{\bm{z}_j^T\bm{z}_j}, \qquad j=1,\dots,p.
 </span></p>
@@ -1121,14 +1126,144 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </section>
 <section id="regression-by-successive-orthogonalization" class="slide level2">
 <h2>Regression by successive orthogonalization</h2>
+<ul>
+<li>The predictors of <span class="math inline">\bm{X}</span> are generally not orthogonal. We want to find a suitable transformation <span class="math inline">\bm{Z} = \bm{X} \bm{\Gamma}^{-1}</span> that <span class="blue">orthogonalize</span> the <span class="orange">predictors</span>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>Suppose for example that <span class="math inline">p = 2</span>. We set <span class="orange">first orthogonal predictor</span> <span class="math inline">\bm{z}_1 = \bm{x}_1</span>.</p></li>
+<li><p>We then consider the following <span class="blue">univariate</span> regression problem <span class="math display">
+\bm{x}_2 = \gamma \bm{z}_1 + \bm{\epsilon}, \qquad \text{which leads} \qquad \hat{\gamma} = \frac{\bm{z}_1^T\bm{x}_2}{\bm{z}_1^T\bm{z}_1}.
+</span></p></li>
+<li><p>The <span class="orange">second orthogonal predictor</span> is obtained as the <span class="blue">residual term</span>: <span class="math display">
+\bm{z}_2 = \bm{x}_2 - \hat{\gamma}\bm{z}_1.
+</span></p></li>
+<li><p>The geometry of linear models guarantees that <span class="math inline">\bm{z}_1^T\bm{z}_2 = 0</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="gram-schmidt-algorithm" class="slide level2">
+<h2>Gram-Schmidt algorithm</h2>
+<ul>
+<li><p>Let us now consider the <span class="orange">general case</span>, for any value of <span class="math inline">p</span>.</p></li>
+<li><p><span class="blue">Initialization</span>. Set <span class="math inline">\bm{z}_1 = \bm{x}_1</span>.</p></li>
+<li><p><span class="blue">For <span class="math inline">j= 2,\dots,p</span></span>. Consider the regression problem with <span class="math inline">j-1</span> orthogonal predictors <span class="math display">
+\bm{x}_j = \sum_{k=1}^{j-1}\gamma_{kj} \bm{z}_k + \bm{\epsilon}_j, \quad \text{which leads} \quad \hat{\gamma}_{kj} = \frac{\bm{z}_k^T\bm{x}_j}{\bm{z}_k^T\bm{z}_k}, \quad k=1,\dots,j-1,
+</span> Then, compute the new vector <span class="math inline">\bm{z}_j</span> as the <span class="orange">residual</span> term <span class="math display">
+\bm{z}_j = \bm{x}_j - \sum_{k=1}^{j-1}\hat{\gamma}_{kj} \bm{z}_k
+</span></p></li>
+<li><p>The geometry of linear models guarantees <span class="orange">orthogonality</span>, that is <span class="math inline">\bm{z}_j^T \bm{z}_{j'} = 0</span> for any <span class="math inline">j \neq j'</span>.</p></li>
+</ul>
+</section>
+<section id="the-qr-decomposition-i" class="slide level2">
+<h2>The QR decomposition I</h2>
+<div>
+<ul>
+<li class="fragment"><p>By construction, the Gram-Schmidt algorithm produces the following decomposition <span class="math display">
+\bm{X} = \bm{Z} \bm{\Gamma}, \qquad \bm{\Gamma} =
+\begin{bmatrix}
+1 &amp; \hat{\gamma}_{12} &amp; \hat{\gamma}_{13} &amp;\cdots &amp; \hat{\gamma}_{1p} \\
+0 &amp;  1 &amp; \hat{\gamma}_{23} &amp;\cdots &amp; \hat{\gamma}_{2p} \\
+\vdots &amp; \vdots &amp; \vdots &amp;\ddots &amp; \vdots\\
+0 &amp; 0 &amp; 0 &amp; \cdots &amp; 1
+\end{bmatrix}, \qquad \bm{Z} = (\bm{z}_1,\dots,\bm{z}_p).
+</span></p></li>
+<li class="fragment"><p>The <span class="math inline">p \times p</span> matrix <span class="math inline">\bm{\Gamma}</span> is <span class="orange">upper triangular</span>, whereas the columns of the <span class="math inline">n \times p</span> matrix <span class="math inline">\bm{Z}</span> are <span class="blue">mutually orthogonal</span>.</p></li>
+<li class="fragment"><p>It is often convenient to <span class="orange">standardize</span> the columns of <span class="math inline">\bm{Z}</span>, dividing them by their norm <span class="math inline">||\bm{z}_j||</span>. Let <span class="math inline">\bm{D} = \text{diag}(||\bm{z}_1||, \dots, ||\bm{z}_p||)</span>, then in matrix notation: <span class="math display">
+\bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}.
+</span></p></li>
+<li class="fragment"><p><span class="orange">Remark</span>. Note that <span class="math inline">\bm{Q}^T \bm{Q} = I_p</span>, i.e.&nbsp;the columns of <span class="math inline">\bm{Q}</span> are <span class="blue">orthonormal</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="the-qr-decomposition-ii" class="slide level2">
+<h2>The QR decomposition II</h2>
+<div class="callout callout-note no-icon callout-captioned callout-style-simple">
+<div class="callout-body">
+<div class="callout-caption">
+<p><strong>Theorem (QR factorization)</strong></p>
+</div>
+<div class="callout-content">
+<p>Suppose <span class="math inline">\bm{X} \in \mathbb{R}^{n \times p}</span> with <span class="math inline">n \ge p</span> has full rank, that is <span class="math inline">\text{rk}(\bm{X}) = p</span>. Then there exists a factorization of the form <span class="math display">
+\bm{X} = \bm{Q} \bm{R},
+</span> where <span class="math inline">\bm{Q} \in \mathbb{R}^{n \times p}</span> has <span class="orange">orthonormal columns</span> and <span class="math inline">\bm{R} \in \mathbb{R}^{p \times p}</span> is an <span class="blue">upper triangular</span> matrix.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-tip no-icon callout-captioned callout-style-simple">
+<div class="callout-body">
+<div class="callout-caption">
+<p><strong>Corollary (QR factorization)</strong></p>
+</div>
+<div class="callout-content">
+<p>The QR decomposition is <span class="blue">unique</span> up to <span class="blue">sign flips</span> of the columns of <span class="math inline">\bm{Q}</span> and the rows of <span class="math inline">\bm{R}</span>. Moreover, if <span class="math inline">\bm{R}</span> has positive diagonal entries, as the one obtained using Gram-Schmidt, then it coincides with the <span class="orange">Cholesky factor</span> of <span class="math inline">\bm{X}^T\bm{X}</span>.</p>
+</div>
+</div>
+</div>
+</section>
+<section id="the-qr-decomposition-and-least-squares" class="slide level2">
+<h2>The QR decomposition and least squares</h2>
+<div>
+<ul>
+<li class="fragment"><p>The QR decomposition greatly facilitates computations for linear models. Indeed: <span class="math display">
+\begin{aligned}
+\hat{\beta} &amp;= (\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{y} = [(\bm{Q}\bm{R})^T\bm{Q}\bm{R}]^{-1}(\bm{Q}\bm{R})^T\bm{y}\\
+&amp;= (\bm{R}^T\bm{Q}^T\bm{Q}\bm{R})^{-1}\bm{R}^T\bm{Q}^T\bm{y} \\
+&amp;= \bm{R}^{-1} (\bm{R}^T)^{-1} \bm{R}^T\bm{Q}^T\bm{y} \\
+&amp;= \bm{R}^{-1}\bm{Q}^T \bm{y}.
+\end{aligned}
+</span></p></li>
+<li class="fragment"><p>Hence, the least square estimate is obtained as the solution of the <span class="blue">triangular system</span> <span class="math display">
+\bm{R}\beta = \bm{Q}^T\bm{y},
+</span> which can be easily solved via <span class="orange">backward substitution</span>.</p></li>
+<li class="fragment"><p>As a special case of the above equation, one gets <span class="math inline">\hat{\beta}_p = (\bm{z}_p^T\bm{y}) / (\bm{z}_p^T \bm{z}_p)</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="the-qr-decomposition-and-linear-models" class="slide level2">
+<h2>The QR decomposition and linear models</h2>
+<div>
+<ul>
+<li class="fragment"><p>An important advantage of the QR factorization is that many other useful quantities can be readily computed. For example, the <span class="orange">covariance matrix</span> is obtained as: <span class="math display">
+  s^2 (\bm{X}^T \bm{X})^{-1} = s^2 \bm{R}^{-1} (\bm{R}^{-1})^T.
+  </span></p></li>
+<li class="fragment"><p>The <span class="orange">predicted values</span> and the <span class="blue">projection matrix</span> are also easily obtained as <span class="math display">
+\hat{\bm{y}} = \bm{H}\bm{y} = \bm{Q}\bm{Q}^T\bm{y}.
+</span></p></li>
+<li class="fragment"><p>The diagonal elements <span class="math inline">h_i = [\bm{H}]_{ii}</span> of the hat matrix <span class="math inline">\bm{H}</span> are called <span class="orange">leverages</span> and one may want to compute them without evaluating the full <span class="math inline">n \times n</span> matrix, using <span class="math display">
+h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
+</span> where <span class="math inline">q_{ij}</span> are the entries of <span class="math inline">\bm{Q}</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="computational-complexity-1" class="slide level2">
+<h2>Computational complexity</h2>
+<div>
+<ul>
+<li class="fragment"><p>The solution via QR factorization is <span class="orange">numerically reliable</span> and it facilitates the computation of other quantities of interest.</p></li>
+<li class="fragment"><p>In practice, the QR is computed via a <span class="blue">modified Gram-Schmidt</span>, that fixes the instabilities of the naïve Gram-Schmidt algorithm, or via <span class="orange">Householder reflections</span>.</p></li>
+<li class="fragment"><p>The expensive step is the QR factorization itself. This gives an overall computational complexity of order <span class="math display">
+\sim 2 n p^2</span> which is about twice that of the Cholesky, when <span class="math inline">n</span> is much larger than <span class="math inline">p</span>, and about the same when <span class="math inline">p \approx n</span>.</p></li>
+<li class="fragment"><p>Depending on the context, we may prefer the Cholesky or the QR. The default approach in R, i.e.&nbsp;the one implemented in the <code>lm</code> function, is the QR factorization.<br>
+</p></li>
+</ul>
+</div>
+</section>
+<section id="pivoting-and-rank-deficiencies" class="slide level2">
+<h2>☠️ - Pivoting and rank deficiencies</h2>
+<div>
+<ul>
+<li class="fragment"><p>If <span class="math inline">\text{rk}(\bm{X}) = k &lt; p</span> (<span class="orange">rank deficiency</span>) then it is still possibile to obtain a “QR” factorization of the form <span class="math display">
+\bm{X}\bm{P} = \bm{Q}\begin{bmatrix}\bm{R}_{11} &amp; \bm{R}_{12} \\
+0 &amp; 0\end{bmatrix},
+</span> where <span class="math inline">\bm{P}</span> is a <span class="math inline">p × p</span> permutation matrix and <span class="math inline">\bm{R}_{11}</span> is an <span class="math inline">k \times k</span> upper triangular and non-singular matrix.</p></li>
+<li class="fragment"><p>This operation is sometimes called <span class="blue">pivoting</span> and it is particularly important even when <span class="math inline">\text{rk}(\bm{X}) = p</span> to prevent numerical issues when the condition number <span class="math inline">\kappa(\bm{X})</span> is high.</p></li>
+<li class="fragment"><p>In presence of perfect collinarity, the implementation of the QR decomposition in R (<code>qr</code>) relies on pivoting. This is why the <code>lm</code> function is able to automatically “omit” a predictor.</p></li>
+</ul>
+</div>
 </section></section>
 <section id="iterative-methods" class="title-slide slide level1 center">
 <h1>Iterative methods</h1>
-
-</section>
-
-<section id="generalized-linear-models" class="title-slide slide level1 center">
-<h1>Generalized linear models</h1>
 <p><img src="img/logoB.png" class="slide-logo"></p>
 <div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
