@@ -558,7 +558,7 @@ $$ is [symmetric]{.blue} and [positive definite]{.orange}.
     [positive definite]{.orange} if and only if one the following
     properties is satisfied
     -   The quadratic form $\bm{x}^T \bm{A} \bm{x} > 0$ for all
-        $\bm{x} \in \mathbb{R}^p \neq 0$.
+        $\bm{x} \in \mathbb{R}^p$ such that $\bm{x} \neq 0$.
     -   The eigenvalues $\lambda_1,\dots,\lambda_p$ of $\bm{A}$ are all
         strictly positive.
 
