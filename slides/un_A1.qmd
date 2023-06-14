@@ -61,7 +61,7 @@ not simpler"* Attributed to Albert Einstein
     most of you...
 
 -   ... but you should be already [very familiar]{.orange} with linear
-    models !
+    models!
 
 -   If do not remember much about them, use this first week of lectures
     to catch up (or study) from the material of previous courses.
@@ -867,7 +867,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     function, is the QR factorization.\
 :::
 
-## ☠️ - Pivoting and rank deficiencies 
+## ☠️ - Pivoting and rank deficiencies
 
 ::: incremental
 -   If $\text{rk}(\bm{X}) = k < p$ ([rank deficiency]{.orange}) then it
@@ -891,72 +891,86 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 ## When $n$ is very large...
 
 ::: incremental
+-   When the sample size $n$ is extremely large, as it is common in data
+    mining problems, then the QR factorization cannot be computed.
 
-- When the sample size $n$ is extremely large, as it is common in data mining problems, then the QR factorization cannot be computed.
+-   Indeed, even [loading]{.orange} $\bm{X}$ into [memory]{.orange}
+    could be problematic.
 
-- Indeed, even [loading]{.orange} $\bm{X}$ into [memory]{.orange} could be problematic.
+-   In the normal equations approach, we only need to compute the
+    [sufficient statistics]{.blue}: $$
+    \bm{W} = \bm{X}^T\bm{X}, \qquad \bm{u} = \bm{X}^T\bm{y},
+    $$ which are of dimension $p\times p$ and $p \times 1$,
+    respectively.
 
-- In the normal equations approach, we only need to compute the [sufficient statistics]{.blue}:
-$$
-\bm{W} = \bm{X}^T\bm{X}, \qquad \bm{u} = \bm{X}^T\bm{y},
-$$
-which are of dimension $p\times p$ and $p \times 1$, respectively. 
+-   Using $\bm{W}$ and $\bm{u}$ one can obtain the least square estimate
+    $\hat{\beta}$ using the Cholesky factorization.
 
-- Using $\bm{W}$ and $\bm{u}$ one can obtain the least square estimate $\hat{\beta}$ using the Cholesky factorization. 
-
-- However, when $n$ is extremely large, the difficult part is indeed computing $\bm{W}$ and $\bm{u}$!
-
+-   However, when $n$ is extremely large, the difficult part is indeed
+    computing $\bm{W}$ and $\bm{u}$!
 :::
 
-## Recursive data import
+## Recursive data import {#recursive-data-import}
 
 ::: incremental
+-   Using matrix notation, we express $\bm{W} = \bm{W}_{(n)}$ and
+    $\bm{u} = \bm{u}_{(n)}$ as follows $$
+    \bm{W}_{(n)} = \sum_{i=1}^n \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(n)} = \sum_{i=1}^n\tilde{\bm{x}}_i y_i.
+    $$
 
-- Using matrix notation, we express $\bm{W} = \bm{W}_{(n)}$ and $\bm{u} = \bm{u}_{(n)}$ as follows
-$$
-\bm{W}_{(n)} = \sum_{i=1}^n \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(n)} = \sum_{i=1}^n\tilde{\bm{x}}_i y_i.
-$$
-- Let us define the [initial conditions]{.blue} $\bm{W}_{(1)} = \tilde{\bm{x}}_1 \tilde{\bm{x}}_1^T$ and $\bm{u}_{(1)} = \tilde{\bm{x}}_1 y_1$.
+-   Let us define the [initial conditions]{.blue}
+    $\bm{W}_{(1)} = \tilde{\bm{x}}_1 \tilde{\bm{x}}_1^T$ and
+    $\bm{u}_{(1)} = \tilde{\bm{x}}_1 y_1$.
 
-- Then, the following [recursive relationship]{.orange} holds:
-$$
-\bm{W}_{(i)} = \bm{W}_{(i-1)} +  \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(i)} = \bm{u}_{(i-1)} + \tilde{\bm{x}}_i y_i, \qquad i=2,\dots,n,
-$$
-where $\bm{W}_{(i)}$ is the matrix formed by the first $i$ summands of $\bm{W}_{(n)}$ and analogously $\bm{u}_{(i)}$.
+-   Then, the following [recursive relationship]{.orange} holds: $$
+    \bm{W}_{(i)} = \bm{W}_{(i-1)} +  \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(i)} = \bm{u}_{(i-1)} + \tilde{\bm{x}}_i y_i, \qquad i=2,\dots,n,
+    $$ where $\bm{W}_{(i)}$ is the matrix formed by the first $i$
+    summands of $\bm{W}_{(n)}$ and analogously $\bm{u}_{(i)}$.
 
-- Hence $\bm{W}_{(n)}$ and $\bm{u}_{(n)}$ can be calculated by [importing a single record]{.blue} at a time, which does not create memory issues. 
+-   Hence $\bm{W}_{(n)}$ and $\bm{u}_{(n)}$ can be calculated by
+    [importing a single record]{.blue} at a time, which does not create
+    memory issues.
 :::
 
 ## Recursive estimates
 
 ::: incremental
+-   In many occasions, the data flow continuously, meaning that we get a
+    new pair of observations $(\tilde{\bm{x}}_{n+1}, y_{n+1})$ every
+    minute, or even every second.
 
-- In many occasions, the data flow continuously, meaning that we get a new pair of observations $(\tilde{\bm{x}}_{n+1}, y_{n+1})$ every minute, or even every second. 
+-   We would like to [update]{.orange} the current least square estimate
+    $\hat{\beta}_{(n)}$ with the new information
+    $(\tilde{\bm{x}}_{n+1}, y_{n+1})$, but ideally without re-doing all
+    the calculations.
 
-- We would like to [update]{.orange} the current least square estimate $\hat{\beta}_{(n)}$ with the new information $(\tilde{\bm{x}}_{n+1}, y_{n+1})$, but ideally without re-doing all the calculations.
+-   The [recursive data import]{.blue} of the [previous
+    slide](#recursive-data-import) is partially unsatisfactory, because
+    one would need to invert (or factorize) a $p \times p$ matrix every
+    time, which could be costly.
 
-- The [recursive data import]{.blue} of the [previous slide](#recursive-data-import) is partially unsatisfactory, because one would need to invert (or factorize) a $p \times p$ matrix every time, which could be costly. 
-
-- Let us define some useful quantity:
-$$
-\bm{V}_{(n)} = \bm{W}_{(n)}^{-1} = (\bm{X}_{(n)}^T\bm{X}_{(n)})^{-1},
-$$
-where $\bm{X}_{(n)}$ denotes the design matrix with $n$ observations and analogously $\bm{y}_{(n)}$.
+-   Let us define some useful quantity: $$
+    \bm{V}_{(n)} = \bm{W}_{(n)}^{-1} = (\bm{X}_{(n)}^T\bm{X}_{(n)})^{-1},
+    $$ where $\bm{X}_{(n)}$ denotes the design matrix with $n$
+    observations and analogously $\bm{y}_{(n)}$.
 :::
 
 ## Sherman-Morrison formula
 
-- When the new data points arrive, we can write the updated quantities $$
-\bm{X}_{(n+1)} = (\bm{X}_{(n)}, \tilde{\bm{x}}_{(n + 1)})^T, \quad \bm{W}_{(n + 1)} = (\bm{X}_{(n+1)}^T\bm{X}_{(n + 1)}) = (\bm{X}_{(n)}^T\bm{X}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} \tilde{\bm{x}}_{(n + 1)}^T).
-$$
+-   When the new data points arrive, we can write the updated quantities
+    $$
+    \bm{X}_{(n+1)} = (\bm{X}_{(n)}, \tilde{\bm{x}}_{(n + 1)})^T, \quad \bm{W}_{(n + 1)} = (\bm{X}_{(n+1)}^T\bm{X}_{(n + 1)}) = (\bm{X}_{(n)}^T\bm{X}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} \tilde{\bm{x}}_{(n + 1)}^T).
+    $$
 
-- The difficult part is to [efficiently]{.orange} compute $\bm{V}_{(n+1)} = \bm{W}_{(n + 1)}^{-1}$. The following result of linear algebra is of incredible help in this regard. 
+-   The difficult part is to [efficiently]{.orange} compute
+    $\bm{V}_{(n+1)} = \bm{W}_{(n + 1)}^{-1}$. The following result of
+    linear algebra is of incredible help in this regard.
 
 ::: callout-note
 #### Sherman-Morrison formula
 
-Let $\bm{A} \in \mathbb{R}^{p\times p}$ be an invertible matrix and let $\bm{b},\bm{d}$ be $p$-dimensional vectors. Then
-$$
+Let $\bm{A} \in \mathbb{R}^{p\times p}$ be an invertible matrix and let
+$\bm{b},\bm{d}$ be $p$-dimensional vectors. Then $$
 (\bm{A} + \bm{b} \bm{d}^T)^{-1} = \bm{A}^{-1} - \frac{1}{1 + \bm{d}^T \bm{A}^{-1}\bm{b}}\bm{A}^{-1}\bm{b}\bm{d}^T\bm{A}^{-1}.
 $$
 :::
@@ -964,52 +978,67 @@ $$
 ## The recursive least squares algorithm I
 
 ::: incremental
+-   Using the Sherman-Morrison formula, then we can express the new
+    matrix $\bm{V}_{(n + 1)}$ as a function of previously computed
+    quantities: $$
+    \bm{V}_{(n + 1)} = \bm{V}_{(n)} - v_{(n)}\bm{V}_{(n)} \tilde{\bm{x}}_{(n + 1)}\tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}, \quad v_{(n)} = \frac{1}{(1 + \tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)})}.
+    $$
 
-- Using the Sherman-Morrison formula, then we can express the new matrix $\bm{V}_{(n + 1)}$ as a function of previously computed quantities:
-$$
-\bm{V}_{(n + 1)} = \bm{V}_{(n)} - v_{(n)}\bm{V}_{(n)} \tilde{\bm{x}}_{(n + 1)}\tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}, \quad v_{(n)} = \frac{1}{(1 + \tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)})}.
-$$
+-   The [updated least square estimate]{.orange} therefore becomes $$
+    \begin{aligned}
+    \hat{\beta}_{(n+1)} &= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} y_{n+1}) \\
+    &=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)}}_{k_n}\underbrace{(y_{n+1} - \tilde{\bm{x}}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
+    &= \hat{\beta}_{(n)} + k_n e_{n+1}.
+    \end{aligned}
+    $$
 
-- The [updated least square estimate]{.orange} therefore becomes
-$$
-\begin{aligned}
-\hat{\beta}_{(n+1)} &= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} y_{n+1}) \\
-&=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)}}_{k_n}\underbrace{(y_{n+1} - \tilde{\bm{x}}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
-&= \hat{\beta}_{(n)} + k_n e_{n+1}.
-\end{aligned}
-$$
-- The quantity $e_{n+1}$ is the [prediction error]{.blue} of $y_{n+1}$ based on the previous estimate $\hat{\beta}_{(n)}$.
+-   The quantity $e_{n+1}$ is the [prediction error]{.blue} of $y_{n+1}$
+    based on the previous estimate $\hat{\beta}_{(n)}$.
 :::
 
 ## The recursive least squares algorithm II
 
-- The recursive estimation $\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + k_n e_{n+1}$ takes the form of a [linear filter]{.orange}, in which the new estimate $\hat{\beta}_{(n+1)}$ is obtained by modifying the old  one $\hat{\beta}_{(n+1)}$.
+-   The recursive estimation
+    $\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + k_n e_{n+1}$ takes the
+    form of a [linear filter]{.orange}, in which the new estimate
+    $\hat{\beta}_{(n+1)}$ is obtained by modifying the old one
+    $\hat{\beta}_{(n+1)}$.
 
-- This is performed according to the [prediction error]{.blue} $\epsilon_{n+1}$ and the [gain]{.orange} $k_n$ of the filter.
+-   This is performed according to the [prediction error]{.blue}
+    $\epsilon_{n+1}$ and the [gain]{.orange} $k_n$ of the filter.
 
-- Using a terminology typical of the machine learning field, we say that the estimator "learns from its errors".
+-   Using a terminology typical of the machine learning field, we say
+    that the estimator "learns from its errors".
 
-- If $n$ is sufficiently high, it is also possible to get an [approximate]{.orange} solution by initializing the algorithm by setting $\bm{V}_{(0)} = I_p$, to avoid any matrix inversion / factorization. 
+-   If $n$ is sufficiently high, it is also possible to get an
+    [approximate]{.orange} solution by initializing the algorithm by
+    setting $\bm{V}_{(0)} = I_p$, to avoid any matrix inversion /
+    factorization.
 
 . . .
 
-- With further algebraic steps, we also obtain a [recursive formula]{.blue} for the [deviance]{.blue}
+-   With further algebraic steps, we also obtain a [recursive
+    formula]{.blue} for the [deviance]{.blue}
 
 $$
 ||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n + 1)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2.
 $$
 
-- The full algorithm is provided in A&S, Algorithm 2.2.
+-   The full algorithm is provided in A&S, Algorithm 2.2.
 
 ## References
 
-
-
-- [Main references]{.blue}
-  - **Chapter 2** of Azzalini, A. and Scarpa, B. (2011), [*Data Analysis and Data Mining*](http://azzalini.stat.unipd.it/Book-DM/),
-    Oxford University Press.
-  - **Chapter 3** of Hastie, T., Tibshirani, R. and Friedman, J. (2009), [*The Elements of Statistical Learning*](https://hastie.su.domains/ElemStatLearn/), Second Edition, Springer.
-- [Advanced references]{.orange}
-  - **Chapters 1--3** of Quarteroni, Sacco \& Saleri (2007). *Numerical mathematics*. Second Edition, Springer. 
-  - **Chapters 1--5** of Golub \& Van Loan (1983). *Matrix computations*. Hopkins University Press.
-
+-   [Main references]{.blue}
+    -   **Chapter 2** of Azzalini, A. and Scarpa, B. (2011), [*Data
+        Analysis and Data
+        Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
+        University Press.
+    -   **Chapter 3** of Hastie, T., Tibshirani, R. and Friedman, J.
+        (2009), [*The Elements of Statistical
+        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
+        Edition, Springer.
+-   [Advanced references]{.orange}
+    -   **Chapters 1--3** of Quarteroni, A.,  Sacco, R., and Saleri F. (2007).
+        *Numerical mathematics*. Second Edition, Springer.
+    -   **Chapters 1--5** of Golub, G.H., and Van Loan, C.F. (1983). *Matrix
+        computations*. Hopkins University Press.
