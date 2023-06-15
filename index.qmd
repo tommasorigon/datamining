@@ -70,32 +70,19 @@ please check the latest updated version.
 | Lab 5                                  | [Code Lab 5]()                   |                                             |
 |                                        | [Past exams](exe/exe_8_bis.html) |                                             |
 
-### Approfondimenti
+### Additional resources
 
 #### News
 
--   
-
 #### Scientific papers
-
--   [Azzalini, A. (1990)](approfondimenti/Azzalini1990.pdf). A look at
-    some data on the Old Faithful geyser. *Journal of the Royal
-    Statistical Society. Series C (Applied Statistics)* **39**(3),
-    357--365.
 
 ### Other
 
--   [Cronistoria della statistica](approfondimenti/cronistoria.pdf)
+## Exam
 
-## Modalità d'esame
+## Prerequisites
 
-
-
-## Propedeuticità
-
-
-
-## Ricevimento
+## Office hours
 
 <!-- Per fissare un appuntamento, si prega di contattare il docente in -->
 <!-- anticipo via posta elettronica all'indirizzo `tommaso.rigon@unimib.it`. -->

@@ -30,6 +30,22 @@
     }
   </style>
   <link rel="stylesheet" href="un_B_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
   <link href="un_B_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="un_B_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="un_B_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -362,6 +378,22 @@
 </section>
 <section id="yesterdays-data" class="slide level2">
 <h2>Yesterday’s data</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-1_37a6770608b5b3925babed208d2070c4">
+<div class="cell-output-display">
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-1-1.png" width="1500"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><p>Let us presume that <span class="orange">yesterday</span> we observed <span class="math inline">n = 30</span> pairs of data <span class="math inline">(x_i, y_i)</span>.</p></li>
+<li><p>Data were generated according to <span class="math display">
+  y_i = f(x_i; \beta) + \epsilon_i, \quad i=1,\dots,n.
+  </span></p></li>
+</ul>
+</div>
+</div>
 <p><img src="img/logoB.png" class="slide-logo"></p>
 <div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
@@ -559,6 +591,44 @@
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

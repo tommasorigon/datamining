@@ -66,3 +66,29 @@ editor_options:
 ## Yesterday's data
 
 
+:::columns
+
+::: {.column width="50%"}
+```{r}
+#| fig-width: 5
+#| fig-height: 4.5
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+dataset <- read.table("../data/yesterday.txt", header=TRUE)
+ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
+  geom_point() +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("x") +
+  ylab("y")
+```
+:::
+::: {.column width="50%"}
+- Let us presume that [yesterday]{.orange} we observed $n = 30$ pairs of data $(x_i, y_i)$.
+
+- Data were generated according to $$
+    y_i = f(x_i; \beta) + \epsilon_i, \quad i=1,\dots,n.
+    $$
+:::
+::: 
