@@ -74,11 +74,6 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | **Additive models**                    | [Unit F]()                    | [Slides Unit F]()                           |
 | *Exercises*                            | [Exercises 4]()               |                                             |
 | Lab 4                                  | [Code Lab 4]()                |                                             |
-| **Trees**                              | [Unit G]()                    | [Slides Unit G]()                           |
-| **Bagging and random forests**         | [Unit H]()                    | [Slides Unit H]()                           |
-| **Boosting methods**                   | [Unit I]()                    | [Slides Unit I]()                           |
-| *Exercises*                            | [Exercises 5]()               |                                             |
-| Lab 5                                  | [Code Lab 5]()                |                                             |
 |                                        | [Past exams]()                |                                             |
 
 ### Additional resources
