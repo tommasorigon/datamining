@@ -36,22 +36,6 @@ ul.task-list li input[type="checkbox"] {
 <link href="un_intro_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <style>html{ scroll-behavior: smooth; }</style>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
-  <script>document.addEventListener("DOMContentLoaded", function () {
- var mathElements = document.getElementsByClassName("math");
- var macros = [];
- for (var i = 0; i < mathElements.length; i++) {
-  var texText = mathElements[i].firstChild;
-  if (mathElements[i].tagName == "SPAN") {
-   katex.render(texText.data, mathElements[i], {
-    displayMode: mathElements[i].classList.contains('display'),
-    throwOnError: false,
-    macros: macros,
-    fleqn: false
-   });
-}}});
-  </script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 </head>
 
@@ -63,9 +47,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#errore-quadratico-medio-di-previsione" id="toc-errore-quadratico-medio-di-previsione" class="nav-link active" data-scroll-target="#errore-quadratico-medio-di-previsione">Errore quadratico medio di previsione</a></li>
-  <li><a href="#slide-per-caterina" id="toc-slide-per-caterina" class="nav-link" data-scroll-target="#slide-per-caterina">Slide per caterina</a></li>
-  <li><a href="#another-slide" id="toc-another-slide" class="nav-link" data-scroll-target="#another-slide">Another slide</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section"></a></li>
   </ul>
 </nav>
 </div>
@@ -74,7 +56,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Introduction</h1>
-<p class="subtitle lead">Data mining - CdL CLAMSES</p>
+<p class="subtitle lead">Data Mining - CdL CLAMSES</p>
 </div>
 
 
@@ -102,35 +84,8 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="errore-quadratico-medio-di-previsione" class="level2">
-<h2 class="anchored" data-anchor-id="errore-quadratico-medio-di-previsione">Errore quadratico medio di previsione</h2>
-<ul>
-<li><p>Si consideri un vettore di variabili esplicative a valori reali <span class="math inline">x \in \mathbb{R}^p</span>.</p></li>
-<li><p>Interessa penalizzare gli errori di previsione utilizzando la <span class="blue">funzione di perdita quadratica</span> <span class="math display">
-\mathscr{L}(y, f(x)) = (y - f(x))^2.
-</span></p></li>
-<li><p>Il criterio di scelta di <span class="math inline">f</span> risulta essere l’<span class="orange">errore quadratico medio</span> di previsione <span class="math display">
-\mathbb{E}\{(y - f(x))^2 \}.
-</span></p></li>
-<li><p>La cui soluzione di minimo è <span class="math display">
-f(x) = \mathbb{E}\{y \mid x = x_0\},
-</span> il valore atteso condizionato, ovvero la <span class="blue">funzione di regressione</span>.</p></li>
-</ul>
-</section>
-<section id="slide-per-caterina" class="level2">
-<h2 class="anchored" data-anchor-id="slide-per-caterina">Slide per caterina</h2>
-<ul>
-<li><p>Quanto fa 15 + 18?</p></li>
-<li><p>Risposta: 33</p></li>
-</ul>
-</section>
-<section id="another-slide" class="level2">
-<h2 class="anchored" data-anchor-id="another-slide">Another slide</h2>
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="un_intro_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="1750"></p>
-</div>
-</div>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
 </section>
 
 </main>

@@ -1,12 +1,13 @@
 ---
 title: "Introduction"
-subtitle: "Data mining - CdL CLAMSES"
+subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
 execute:
-  cache: false
+  cache: true
 format:
   revealjs:
+    auto-stretch: false
     html-math-method: katex
     transition: slide
     output-file: un_intro_slides.html
@@ -15,14 +16,14 @@ format:
     code-line-numbers: true
     theme: [default, template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
-    fig-dpi: 250
     echo: false
+    fig-dpi: 300
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
   html:
     html-math-method: katex
-    echo: true
+    echo: false
     callout-appearance: minimal
     theme: [cosmo, template.css]
     toc: true
@@ -30,7 +31,9 @@ format:
     embed-resources: false
     code-line-numbers: true
     smooth-scroll: true
-    fig-dpi: 250
+    code-fold: true
+    code-summary: "Show the code"
+    fig-dpi: 300
 editor: 
   markdown: 
     wrap: 72
@@ -38,40 +41,5 @@ editor_options:
   chunk_output_type: console
 ---
 
-## Errore quadratico medio di previsione
 
--   Si consideri un vettore di variabili esplicative a valori reali
-    $x \in \mathbb{R}^p$.
-
--   Interessa penalizzare gli errori di previsione utilizzando la
-    [funzione di perdita quadratica]{.blue} $$
-    \mathscr{L}(y, f(x)) = (y - f(x))^2.
-    $$
-
--   Il criterio di scelta di $f$ risulta essere l'[errore quadratico
-    medio]{.orange} di previsione $$
-    \mathbb{E}\{(y - f(x))^2 \}.
-    $$
-
--   La cui soluzione di minimo è $$
-    f(x) = \mathbb{E}\{y \mid x = x_0\},
-    $$ il valore atteso condizionato, ovvero la [funzione di
-    regressione]{.blue}.
-
-## Slide per caterina
-
-- Quanto fa 15 + 18?
-
-- Risposta: `r 15 +  18`
-
-## Another slide
-
-```{r}
-#| echo: false
-
-library(ggplot2)
-ggplot(mtcars, aes(hp, mpg)) +
-  geom_point() +
-  geom_smooth(formula = y ~ x, method = "loess", se = F) + theme_bw() + 
-  theme(legend.position = 'top')
-```
+## 
