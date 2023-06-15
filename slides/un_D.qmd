@@ -1,0 +1,58 @@
+---
+title: "Nonparametric regression"
+subtitle: "Data Mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+execute:
+  cache: true
+format:
+  revealjs:
+    auto-stretch: false
+    html-math-method: katex
+    transition: slide
+    output-file: un_D_slides.html
+    slide-number: true
+    callout-appearance: minimal
+    code-line-numbers: true
+    theme: [default, template.css] # alternative themes (subset): default, night, dark
+    embed-resources: false
+    echo: false
+    fig-dpi: 300
+    # incremental: true  # Remove comment if you like incremental bullet points
+    logo: img/logoB.png
+    footer: "[Home page](https://tommasorigon.github.io/datamining)"
+  html:
+    html-math-method: katex
+    echo: false
+    callout-appearance: minimal
+    theme: [cosmo, template.css]
+    toc: true
+    toc-title: Table of contents
+    embed-resources: false
+    code-line-numbers: true
+    smooth-scroll: true
+    code-fold: true
+    code-summary: "Show the code"
+    fig-dpi: 300
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+## About this unit
+
+::: columns
+::: {.column width="40%"}
+![](img/razor.jpg){height=3in} 
+*"Nonparametric regression might, like linear regression, become an object treasured both for its artistic merit as well as usefulness."* 
+Leo Breiman
+:::
+
+::: {.column width="50%"}
+-   In this unit we will cover the following [topics]{.orange}:
+
+:::
+:::
+
