@@ -24,7 +24,9 @@ editor_options:
   chunk_output_type: console
 ---
 
-Website of the **Data Mining** course (6 CFU) of *Corso di Laurea Magistrale in Scienze Statistiche ed Economiche* (CLAMSES), Università degli Studi di Milano-Bicocca.
+Website of the **Data Mining** course (6 CFU) of *Corso di Laurea
+Magistrale in Scienze Statistiche ed Economiche* (CLAMSES), Università
+degli Studi di Milano-Bicocca.
 
 ## Teaching material
 
@@ -34,41 +36,48 @@ please check the latest updated version.
 
 ### Reference textbooks
 
--   Azzalini, A. and Scarpa, B. (2011), [*Data Analysis and Data Mining*](http://azzalini.stat.unipd.it/Book-DM/),
-    Oxford University Press.
--   Hastie, T., Tibshirani, R. and Friedman, J. (2009), [*The Elements of Statistical Learning*](https://hastie.su.domains/ElemStatLearn/), Second Edition, Springer.
+-   Azzalini, A. and Scarpa, B. (2011), [*Data Analysis and Data
+    Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford University
+    Press.
+-   Hastie, T., Tibshirani, R. and Friedman, J. (2009), [*The Elements
+    of Statistical Learning*](https://hastie.su.domains/ElemStatLearn/),
+    Second Edition, Springer.
 
 ### Additional references
 
--   Efron, B. and Hastie, T. (2016), [*Computer Age Statistical Inference*](https://hastie.su.domains/CASI/), Cambridge University Press.
+-   Efron, B. and Hastie, T. (2016), [*Computer Age Statistical
+    Inference*](https://hastie.su.domains/CASI/), Cambridge University
+    Press.
 
-### Teaching material
+### Slides and lecture notes
 
-| Topic                                  | Teaching material                | Slides                                      |
-|--------------------------------|----------------------|--------------|
-| Introduction                           | [Intro](slides/un_intro.html)    | [Slides intro](slides/un_intro_slides.html) |
-| **A-B-C**                              | [Unit A.1](slides/un_A1.html)                     | [Slides Unit A.1](slides/un_A1_slides.html)                         |
-| **Classification methods**             | [Unit A.2]()                     | [Slides Unit A.2]()                         |
-| *Exercises*                            | [Exercises 1]()                  |                                             |
-| **Optimism, conflicts and trade-offs** | [Unit B]()                       | [Slides Unit B]()                           |
-| *Exercises*                            | [Exercises 2]()                  |                                             |
-| Lab 1                                  | [Code Lab 1]()                   |                                             |
-| **Model selection**                    | [Unit C]()                       | [Slides Unit C]()                           |
-| *Exercises*                            | [Exercises 3]()                  |                                             |
-| Lab 2                                  | [Code Lab 2]()                   |                                             |
-| **Nonparametric estimation**           | [Unit D]()                       | [Slides Unit D]()                           |
-| *Exercises*                            | [Exercises 4]()                  |                                             |
-| Lab 3                                  | [Code Lab 3]()                   |                                             |
-| **The curse of dimensionality**        | [Unit E]()                       | [Slides Unit E]()                           |
-| **Additive models**                    | [Unit F]()                       | [Slides Unit F]()                           |
-| *Exercises*                            | [Exercises 4]()                  |                                             |
-| Lab 4                                  | [Code Lab 4]()                   |                                             |
-| **Trees**                              | [Unit G]()                       | [Slides Unit G]()                           |
-| **Bagging and random forests**         | [Unit H]()                       | [Slides Unit H]()                           |
-| **Boosting methods**                   | [Unit I]()                       | [Slides Unit I]()                           |
-| *Exercises*                            | [Exercises 5]()                  |                                             |
-| Lab 5                                  | [Code Lab 5]()                   |                                             |
-|                                        | [Past exams](exe/exe_8_bis.html) |                                             |
+If you would like to convert the html slides into pdf files, please [follow the instruction of the quarto documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf).
+
+| Topic                                  | Teaching material             | Slides                                      |
+|--------------------------------|----------------------|-----------------|
+| Introduction                           | [Intro](slides/un_intro.html) | [Slides intro](slides/un_intro_slides.html) |
+| **A-B-C**                              | [Unit A.1](slides/un_A1.html) | [Slides Unit A.1](slides/un_A1_slides.html) |
+| **Classification methods**             | [Unit A.2]()                  | [Slides Unit A.2]()                         |
+| *Exercises*                            | [Exercises 1]()               |                                             |
+| **Optimism, conflicts and trade-offs** | [Unit B]()                    | [Slides Unit B]()                           |
+| *Exercises*                            | [Exercises 2]()               |                                             |
+| Lab 1                                  | [Code Lab 1]()                |                                             |
+| **Model selection**                    | [Unit C]()                    | [Slides Unit C]()                           |
+| *Exercises*                            | [Exercises 3]()               |                                             |
+| Lab 2                                  | [Code Lab 2]()                |                                             |
+| **Nonparametric estimation**           | [Unit D]()                    | [Slides Unit D]()                           |
+| *Exercises*                            | [Exercises 4]()               |                                             |
+| Lab 3                                  | [Code Lab 3]()                |                                             |
+| **The curse of dimensionality**        | [Unit E]()                    | [Slides Unit E]()                           |
+| **Additive models**                    | [Unit F]()                    | [Slides Unit F]()                           |
+| *Exercises*                            | [Exercises 4]()               |                                             |
+| Lab 4                                  | [Code Lab 4]()                |                                             |
+| **Trees**                              | [Unit G]()                    | [Slides Unit G]()                           |
+| **Bagging and random forests**         | [Unit H]()                    | [Slides Unit H]()                           |
+| **Boosting methods**                   | [Unit I]()                    | [Slides Unit I]()                           |
+| *Exercises*                            | [Exercises 5]()               |                                             |
+| Lab 5                                  | [Code Lab 5]()                |                                             |
+|                                        | [Past exams]()                |                                             |
 
 ### Additional resources
 
@@ -85,7 +94,9 @@ please check the latest updated version.
 ## Office hours
 
 <!-- Per fissare un appuntamento, si prega di contattare il docente in -->
+
 <!-- anticipo via posta elettronica all'indirizzo `tommaso.rigon@unimib.it`. -->
+
 <!-- Il ricevimento è fissato ogni **martedì alle ore 17.30**. -->
 
 ------------------------------------------------------------------------
