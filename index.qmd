@@ -10,7 +10,7 @@ format:
     html-math-method: katex
     echo: true
     callout-appearance: minimal
-    theme: [cosmo, template.css]
+    theme: [cosmo, slides/template.css]
     toc: true
     toc-title: Table of contents
     embed-resources: true
@@ -56,15 +56,15 @@ If you would like to convert the html slides into pdf files, please
 documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf).
 
 | Topic                                  | Notes                         | Slides                                      |
-|--------------------------------|----------------------|------------------|
+|-------------------------|--------------------|----------------------------|
 | Introduction                           | [Intro](slides/un_intro.html) | [Slides intro](slides/un_intro_slides.html) |
 | **A-B-C**                              | [Unit A.1](slides/un_A1.html) | [Slides Unit A.1](slides/un_A1_slides.html) |
-| **Classification methods**             | [Unit A.2]()                  | [Slides Unit A.2]()                         |
+| **Linear classification methods**      | [Unit A.2]()                  | [Slides Unit A.2]()                         |
 | *Exercises*                            | [Exercises 1]()               |                                             |
 | **Optimism, conflicts and trade-offs** | [Unit B]()                    | [Slides Unit B]()                           |
 | *Exercises*                            | [Exercises 2]()               |                                             |
 | Lab 1                                  | [Code Lab 1]()                |                                             |
-| **Model selection for linear models**                    | [Unit C]()                    | [Slides Unit C]()                           |
+| **Model selection for linear models**  | [Unit C]()                    | [Slides Unit C]()                           |
 | *Exercises*                            | [Exercises 3]()               |                                             |
 | Lab 2                                  | [Code Lab 2]()                |                                             |
 | **Nonparametric estimation**           | [Unit D]()                    | [Slides Unit D]()                           |

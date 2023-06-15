@@ -400,12 +400,8 @@
 </section>
 <section id="car-data-diesel-or-gas" class="slide level2">
 <h2>Car data (<span class="blue">diesel</span> or <span class="orange">gas</span>)</h2>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-1_3b2f496c61142123593d1b884f17fc20">
-<div class="cell-output-display">
-<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-1-1.png" width="3000"></p>
-</div>
-</div>
-</section>
+
+<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-1-1.png" width="1500" class="r-stretch"></section>
 <section id="linear-regression" class="slide level2">
 <h2>Linear regression</h2>
 <ul>
@@ -429,12 +425,8 @@ y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 </section>
 <section id="scatterplot-of-the-data" class="slide level2">
 <h2>Scatterplot of the data</h2>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-2_726a4f0a79fbf488abcdf2fb42c0441b">
-<div class="cell-output-display">
-<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-2-1.png" width="3000"></p>
-</div>
-</div>
-</section>
+
+<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-2-1.png" width="1500" class="r-stretch"></section>
 <section id="regression-models" class="slide level2">
 <h2>Regression models</h2>
 <div>
@@ -571,18 +563,9 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>We obtain the following <span class="orange">summary</span> for the regression coefficients <span class="math inline">\hat{\beta}</span>.</li>
 </ul>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-3_21c65b81ccc6d1134f6a4f4de54e1000">
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-3_2fc4412b5895731c5a8bb54c3acbadde">
 <div class="cell-output-display">
-<table style="width:100%;">
-<colgroup>
-<col style="width: 23%">
-<col style="width: 12%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 10%">
-<col style="width: 12%">
-<col style="width: 13%">
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -590,8 +573,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <th style="text-align: right;">std.error</th>
 <th style="text-align: right;">statistic</th>
 <th style="text-align: right;">p.value</th>
-<th style="text-align: right;">conf.low</th>
-<th style="text-align: right;">conf.high</th>
 </tr>
 </thead>
 <tbody>
@@ -601,8 +582,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">3.076</td>
 <td style="text-align: right;">9.119</td>
 <td style="text-align: right;">0.000</td>
-<td style="text-align: right;">21.980</td>
-<td style="text-align: right;">34.110</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">engine.size</td>
@@ -610,8 +589,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">3.531</td>
 <td style="text-align: right;">-3.109</td>
 <td style="text-align: right;">0.002</td>
-<td style="text-align: right;">-17.943</td>
-<td style="text-align: right;">-4.016</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">I(engine.size^2)</td>
@@ -619,8 +596,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">1.271</td>
 <td style="text-align: right;">1.651</td>
 <td style="text-align: right;">0.100</td>
-<td style="text-align: right;">-0.409</td>
-<td style="text-align: right;">4.604</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">I(engine.size^3)</td>
@@ -628,8 +603,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">0.139</td>
 <td style="text-align: right;">-0.939</td>
 <td style="text-align: right;">0.349</td>
-<td style="text-align: right;">-0.406</td>
-<td style="text-align: right;">0.144</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">fuelgas</td>
@@ -637,8 +610,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">0.427</td>
 <td style="text-align: right;">-7.523</td>
 <td style="text-align: right;">0.000</td>
-<td style="text-align: right;">-4.057</td>
-<td style="text-align: right;">-2.372</td>
 </tr>
 </tbody>
 </table>
@@ -647,7 +618,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>The coefficient <span class="math inline">R^2</span> and <span class="math inline">s</span> are estimated as follows:</li>
 </ul>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-4_2d932bd0b2b42c1063fcc10c11347040">
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-4_2d2f6b823724ea758dc0fbc1bb4e94ff">
 <div class="cell-output-display">
 <table>
 <thead>
@@ -670,20 +641,12 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="a-first-model-fitted-values" class="slide level2">
 <h2>A first model: fitted values</h2>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-5_73ff6b250013fb7c5e07d6819797a8f5">
-<div class="cell-output-display">
-<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-5-1.png" width="3000"></p>
-</div>
-</div>
-</section>
+
+<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-5-1.png" width="1500" class="r-stretch"></section>
 <section id="a-first-model-graphical-diagnostics" class="slide level2">
 <h2>A first model: graphical diagnostics</h2>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-6_e265984980255ab314cda4def7bff5fc">
-<div class="cell-output-display">
-<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-6-1.png" width="3000"></p>
-</div>
-</div>
-</section>
+
+<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-6-1.png" width="1500" class="r-stretch"></section>
 <section id="comments-and-criticisms" class="slide level2">
 <h2>Comments and criticisms</h2>
 <div>
@@ -709,18 +672,9 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>This specification is <span class="orange">linear in the parameters</span>, it fixes the domain issues, and imposes a monotone relationship between engine size and consumption.</li>
 </ul>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-7_e785d5596eb06f10cdd5c6d7fc36fd24">
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-7_c032a71ad31910c2536bc32f45905c30">
 <div class="cell-output-display">
-<table style="width:100%;">
-<colgroup>
-<col style="width: 26%">
-<col style="width: 11%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 10%">
-<col style="width: 11%">
-<col style="width: 13%">
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -728,8 +682,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <th style="text-align: right;">std.error</th>
 <th style="text-align: right;">statistic</th>
 <th style="text-align: right;">p.value</th>
-<th style="text-align: right;">conf.low</th>
-<th style="text-align: right;">conf.high</th>
 </tr>
 </thead>
 <tbody>
@@ -739,8 +691,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">0.047</td>
 <td style="text-align: right;">64.865</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">2.967</td>
-<td style="text-align: right;">3.153</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">I(log(engine.size))</td>
@@ -748,8 +698,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">0.040</td>
 <td style="text-align: right;">-17.129</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.760</td>
-<td style="text-align: right;">-0.603</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">fuelgas</td>
@@ -757,8 +705,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">0.038</td>
 <td style="text-align: right;">-7.344</td>
 <td style="text-align: right;">0</td>
-<td style="text-align: right;">-0.353</td>
-<td style="text-align: right;">-0.203</td>
 </tr>
 </tbody>
 </table>
@@ -768,26 +714,18 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="second-model-fitted-values" class="slide level2">
 <h2>Second model: fitted values</h2>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-8_6c77cea7d2c362b49059b5eb447ce54e">
-<div class="cell-output-display">
-<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-8-1.png" width="3000"></p>
-</div>
-</div>
-</section>
+
+<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-8-1.png" width="1500" class="r-stretch"></section>
 <section id="second-model-graphical-diagnostics" class="slide level2">
 <h2>Second model: graphical diagnostics</h2>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-9_21d0707b5935c472a7bb75af0aefc1d4">
-<div class="cell-output-display">
-<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-9-1.png" width="3000"></p>
-</div>
-</div>
-</section>
+
+<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-9-1.png" width="1500" class="r-stretch"></section>
 <section id="comments-and-criticisms-1" class="slide level2">
 <h2>Comments and criticisms</h2>
 <ul>
 <li>The <span class="blue">goodness of fit</span> indices are the following:</li>
 </ul>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-10_b7f4b9d92665f73fb788030de6eefbea">
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-10_b74ea666dee40fd66f4984a09b7e0a4a">
 <div class="cell-output-display">
 <table>
 <thead>
@@ -828,18 +766,9 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </span> for <span class="math inline">i=1,\dots,n</span>.</li>
 </ul>
 <div class="fragment">
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-11_a4e6dd8611316de7f79748cadbcd730f">
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-11_b0002807b25020b1c6e08b2debf0ea51">
 <div class="cell-output-display">
-<table style="width:100%;">
-<colgroup>
-<col style="width: 26%">
-<col style="width: 11%">
-<col style="width: 13%">
-<col style="width: 13%">
-<col style="width: 10%">
-<col style="width: 11%">
-<col style="width: 13%">
-</colgroup>
+<table>
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -847,8 +776,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <th style="text-align: right;">std.error</th>
 <th style="text-align: right;">statistic</th>
 <th style="text-align: right;">p.value</th>
-<th style="text-align: right;">conf.low</th>
-<th style="text-align: right;">conf.high</th>
 </tr>
 </thead>
 <tbody>
@@ -858,8 +785,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">0.482</td>
 <td style="text-align: right;">19.549</td>
 <td style="text-align: right;">0.000</td>
-<td style="text-align: right;">8.472</td>
-<td style="text-align: right;">10.373</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">I(log(engine.size))</td>
@@ -867,8 +792,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">0.051</td>
 <td style="text-align: right;">-3.504</td>
 <td style="text-align: right;">0.001</td>
-<td style="text-align: right;">-0.281</td>
-<td style="text-align: right;">-0.079</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">I(log(curb.weight))</td>
@@ -876,8 +799,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">0.072</td>
 <td style="text-align: right;">-13.066</td>
 <td style="text-align: right;">0.000</td>
-<td style="text-align: right;">-1.085</td>
-<td style="text-align: right;">-0.800</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">fuelgas</td>
@@ -885,8 +806,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">0.022</td>
 <td style="text-align: right;">-15.934</td>
 <td style="text-align: right;">0.000</td>
-<td style="text-align: right;">-0.396</td>
-<td style="text-align: right;">-0.309</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">cylinders2TRUE</td>
@@ -894,8 +813,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <td style="text-align: right;">0.052</td>
 <td style="text-align: right;">-9.301</td>
 <td style="text-align: right;">0.000</td>
-<td style="text-align: right;">-0.584</td>
-<td style="text-align: right;">-0.379</td>
 </tr>
 </tbody>
 </table>
@@ -905,18 +822,14 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="a-third-model-graphical-diagnostics" class="slide level2">
 <h2>A third model: graphical diagnostics</h2>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-12_c986a7a9640cebfc3fb357790e566d3d">
-<div class="cell-output-display">
-<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-12-1.png" width="3000"></p>
-</div>
-</div>
-</section>
+
+<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-12-1.png" width="1500" class="r-stretch"></section>
 <section id="comments-and-criticisms-2" class="slide level2">
 <h2>Comments and criticisms</h2>
 <ul>
 <li>The goodness of fit greatly <span class="blue">improved</span>:</li>
 </ul>
-<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-13_7871f5e868d8b6f8b5347127c10c8cc4">
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-13_9813029bcbe24eba5431c6402b01e3bd">
 <div class="cell-output-display">
 <table>
 <thead>
@@ -1387,8 +1300,8 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <li><strong>Chapters 1–5</strong> of Golub, G.H., and Van Loan, C.F. (1983). <em>Matrix computations</em>. Hopkins University Press.</li>
 </ul></li>
 </ul>
-<p><img src="img/logoB.png" class="slide-logo"></p>
-<div class="footer footer-default">
+
+<img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
 </div>
 </section></section>
@@ -1548,7 +1461,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
         previewLinks: false,
 
         // Transition style (none/fade/slide/convex/concave/zoom)
-        transition: 'slide',
+        transition: 'none',
 
         // Transition speed (default/fast/slow)
         transitionSpeed: 'default',

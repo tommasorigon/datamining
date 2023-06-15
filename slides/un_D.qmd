@@ -9,7 +9,7 @@ format:
   revealjs:
     auto-stretch: false
     html-math-method: katex
-    transition: slide
+    transition: none
     output-file: un_D_slides.html
     slide-number: true
     callout-appearance: minimal
@@ -17,7 +17,7 @@ format:
     theme: [default, template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: false
-    fig-dpi: 300
+    fig-dpi: 150
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
@@ -33,7 +33,7 @@ format:
     smooth-scroll: true
     code-fold: true
     code-summary: "Show the code"
-    fig-dpi: 300
+    fig-dpi: 150
 editor: 
   markdown: 
     wrap: 72
