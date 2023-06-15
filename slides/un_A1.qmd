@@ -1026,6 +1026,8 @@ $$
 
 -   The full algorithm is provided in A&S, Algorithm 2.2.
 
+# References
+
 ## References
 
 -   [Main references]{.blue}
@@ -1037,7 +1039,7 @@ $$
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
--   [Advanced references]{.orange}
+-   [Specific references]{.orange}
     -   **Chapters 1--3** of Quarteroni, A.,  Sacco, R., and Saleri F. (2007).
         *Numerical mathematics*. Second Edition, Springer.
     -   **Chapters 1--5** of Golub, G.H., and Van Loan, C.F. (1983). *Matrix
