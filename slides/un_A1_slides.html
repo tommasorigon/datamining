@@ -355,7 +355,7 @@
 </div>
 
 </section>
-<section id="about-this-unit" class="slide level2">
+<section id="about-this-unit" class="slide level2 center">
 <h2>About this unit</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
@@ -383,51 +383,54 @@
 <h1>Old friends: linear models</h1>
 
 </section>
-<section id="car-data" class="slide level2">
-<h2>Car data</h2>
+<section id="car-data-diesel-or-gas" class="slide level2 center">
+<h2>Car data (<span class="blue">diesel</span> or <span class="orange">gas</span>)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-1_bdff2a2a53fce89618be153fa72377e1">
+<div class="cell-output-display">
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-1-1.png" width="750"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
 <ul>
 <li>We consider data for <span class="math inline">n = 203</span> models of cars in circulation in 1985 in the USA.</li>
-<li>We want to identify a relationship that allows to <span class="blue">predict</span> the distance covered per unit of fuel, as a function of the vehicle characteristics.</li>
-<li>We consider the following <span class="orange">continuous variables</span>:
+<li>We want to to <span class="blue">predict</span> the distance covered per unit of fuel, as a function of the vehicle characteristics.</li>
+<li>We consider the following <span class="orange">variables</span>:
 <ul>
 <li>The city distance per unit of fuel (km/L, <code>city.distance</code>)</li>
 <li>The engine size (L, <code>engine.size</code>)</li>
 <li>The number of cylinders (<code>n.cylinders</code>)</li>
 <li>The curb weight (kg, <code>curb.weight</code>)</li>
+<li>The fuel type (gasoline or diesel, <code>fuel</code>).</li>
 </ul></li>
-<li>We also considered the <span class="orange">categorical variable</span> fuel type (gasoline or diesel, <code>fuel</code>).</li>
-</ul>
-</section>
-<section id="car-data-diesel-or-gas" class="slide level2">
-<h2>Car data (<span class="blue">diesel</span> or <span class="orange">gas</span>)</h2>
-
-<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-1-1.png" width="1500" class="r-stretch"></section>
-<section id="linear-regression" class="slide level2">
-<h2>Linear regression</h2>
-<ul>
-<li><p>At the moment, let us focus on <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
-<li><p>The simplest model we can come up with is a <span class="orange">linear regression</span> line: <span class="math display">
-y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
-</span> where the “errors” <span class="math inline">\epsilon_i</span> are iid random variables, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>We are looking for an estimate for the <span class="blue">unknown regression parameters</span> <span class="math inline">\beta_0</span> and <span class="math inline">\beta_1</span>.</p></li>
-<li><p>Such an estimate could be obtained by ordinary least squares (OLS)…</p></li>
 </ul>
 </div>
-<div class="fragment">
+</div>
+</section>
+<section id="linear-regression" class="slide level2 center">
+<h2>Linear regression</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-2_fb6c9fcc2bddd244a45e5c2b87947100">
+<div class="cell-output-display">
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-2-1.png" width="600"></p>
+</div>
+</div>
+</div><div class="column" style="width:60%;">
 <ul>
-<li><p>… but the next plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
+<li><p>Consider <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
+<li><p>The simplest model is a <span class="orange">linear regression</span> line: <span class="math display">
+y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
+</span> where the “errors” <span class="math inline">\epsilon_i</span> are iid random variables, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
+<li><p>An estimate for the <span class="blue">unknown regression parameters</span> <span class="math inline">\beta_0</span> and <span class="math inline">\beta_1</span> can be obtained by ordinary least squares…</p></li>
+<li><p>… but the plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
 <li><p>… and also that <code>fuel</code> has an non-negligible effect on the response.</p></li>
 </ul>
 </div>
+</div>
 </section>
-<section id="scatterplot-of-the-data" class="slide level2">
-<h2>Scatterplot of the data</h2>
-
-<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-2-1.png" width="1500" class="r-stretch"></section>
-<section id="regression-models" class="slide level2">
+<section id="regression-models" class="slide level2 center">
 <h2>Regression models</h2>
 <div>
 <ul>
@@ -437,12 +440,12 @@ y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n.
 <li class="fragment"><p>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on the <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
 D(\beta) = \sum_{i=1}^n\{y_i - f(x_{i1},\dots, x_{ip}; \beta)\}^2,
 </span> using <span class="math inline">n</span> pairs of observations <span class="math inline">(x_{i1},\dots,x_{ip})^T</span> and <span class="math inline">y_i</span>, for <span class="math inline">i = 1,\dots,n</span>.</p></li>
-<li class="fragment"><p>The solution to this minimization problem is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
+<li class="fragment"><p>The <span class="orange">optimal value</span> is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
 <li class="fragment"><p>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are then obtained as <span class="math inline">\hat{y}_i = f(x_{i1},\dots,x_{ip}; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></p></li>
 </ul>
 </div>
 </section>
-<section id="linear-models" class="slide level2">
+<section id="linear-models" class="slide level2 center">
 <h2>Linear models</h2>
 <ul>
 <li><p>We can more flexibly model <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
@@ -466,7 +469,7 @@ f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z =
 </div>
 </div>
 </section>
-<section id="matrix-notation" class="slide level2">
+<section id="matrix-notation" class="slide level2 center">
 <h2>Matrix notation</h2>
 <div>
 <ul>
@@ -488,7 +491,7 @@ x_{n1} &amp; \cdots &amp; x_{np}
 </ul>
 </div>
 </section>
-<section id="linear-regression-estimation-i" class="slide level2">
+<section id="linear-regression-estimation-i" class="slide level2 center">
 <h2>Linear regression: estimation I</h2>
 <ul>
 <li>The optimal set of coefficients <span class="math inline">\hat{\beta}</span> is the minimizer of the least squared criterion <span class="math display">
@@ -509,7 +512,7 @@ D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\be
 </div>
 </div>
 </section>
-<section id="linear-regression-estimation-ii" class="slide level2">
+<section id="linear-regression-estimation-ii" class="slide level2 center">
 <h2>Linear regression: estimation II</h2>
 <div>
 <ul>
@@ -527,7 +530,7 @@ s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \tilde{\bm{
 </ul>
 </div>
 </section>
-<section id="linear-regression-inference" class="slide level2">
+<section id="linear-regression-inference" class="slide level2 center">
 <h2>Linear regression: inference</h2>
 <div>
 <ul>
@@ -543,7 +546,7 @@ s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \tilde{\bm{
 </ul>
 </div>
 </section>
-<section id="car-data-a-preliminary-model" class="slide level2">
+<section id="car-data-a-preliminary-model" class="slide level2 center">
 <h2>Car data, a preliminary model</h2>
 <div>
 <ul>
@@ -558,7 +561,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 </div>
 </section>
-<section id="a-first-model-estimated-coefficients" class="slide level2">
+<section id="a-first-model-estimated-coefficients" class="slide level2 center">
 <h2>A first model: estimated coefficients</h2>
 <ul>
 <li>We obtain the following <span class="orange">summary</span> for the regression coefficients <span class="math inline">\hat{\beta}</span>.</li>
@@ -616,7 +619,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 <ul>
-<li>The coefficient <span class="math inline">R^2</span> and <span class="math inline">s</span> are estimated as follows:</li>
+<li>The coefficient <span class="math inline">R^2</span> and the residual standard deviation <span class="math inline">s</span> are:</li>
 </ul>
 <div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-4_2d2f6b823724ea758dc0fbc1bb4e94ff">
 <div class="cell-output-display">
@@ -639,15 +642,31 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 </section>
-<section id="a-first-model-fitted-values" class="slide level2">
+<section id="a-first-model-fitted-values" class="slide level2 center">
 <h2>A first model: fitted values</h2>
-
-<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-5-1.png" width="1500" class="r-stretch"></section>
-<section id="a-first-model-graphical-diagnostics" class="slide level2">
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/revealjs/unnamed-chunk-5_bf5a125293f564ab85c507607a423d43">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-5-1.png" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="a-first-model-graphical-diagnostics" class="slide level2 center">
 <h2>A first model: graphical diagnostics</h2>
-
-<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-6-1.png" width="1500" class="r-stretch"></section>
-<section id="comments-and-criticisms" class="slide level2">
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/revealjs/unnamed-chunk-6_8ef5cf301076fc404032180de1a237fa">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-6-1.png" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="comments-and-criticisms" class="slide level2 center">
 <h2>Comments and criticisms</h2>
 <div>
 <ul>
@@ -659,7 +678,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 </div>
 </section>
-<section id="variable-transformation" class="slide level2">
+<section id="variable-transformation" class="slide level2 center">
 <h2>Variable transformation</h2>
 <ul>
 <li><p>A major advantage of linear models is that they can exploit non-linear relationship via <span class="blue">variable transformations</span>.</p></li>
@@ -712,15 +731,31 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 </section>
-<section id="second-model-fitted-values" class="slide level2">
+<section id="second-model-fitted-values" class="slide level2 center">
 <h2>Second model: fitted values</h2>
-
-<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-8-1.png" width="1500" class="r-stretch"></section>
-<section id="second-model-graphical-diagnostics" class="slide level2">
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/revealjs/unnamed-chunk-8_385ba0f5b9ddd51bbe1377f881e0cc30">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-8-1.png" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="second-model-graphical-diagnostics" class="slide level2 center">
 <h2>Second model: graphical diagnostics</h2>
-
-<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-9-1.png" width="1500" class="r-stretch"></section>
-<section id="comments-and-criticisms-1" class="slide level2">
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/revealjs/unnamed-chunk-9_12bcf042d814003cb1fb56f6a19e09e8">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-9-1.png" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="comments-and-criticisms-1" class="slide level2 center">
 <h2>Comments and criticisms</h2>
 <ul>
 <li>The <span class="blue">goodness of fit</span> indices are the following:</li>
@@ -758,7 +793,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 </div>
 </section>
-<section id="a-third-model-additional-variables" class="slide level2">
+<section id="a-third-model-additional-variables" class="slide level2 center">
 <h2>A third model: additional variables</h2>
 <ul>
 <li>Let us consider <span class="orange">two additional variables</span>: <code>curb.weight</code> (<span class="math inline">w</span>) and <code>n.cylinders</code> (<span class="math inline">v</span>). A modified model could be: <span class="math display">
@@ -820,11 +855,19 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 </section>
-<section id="a-third-model-graphical-diagnostics" class="slide level2">
+<section id="a-third-model-graphical-diagnostics" class="slide level2 center">
 <h2>A third model: graphical diagnostics</h2>
-
-<img data-src="un_A1_files/figure-revealjs/unnamed-chunk-12-1.png" width="1500" class="r-stretch"></section>
-<section id="comments-and-criticisms-2" class="slide level2">
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/revealjs/unnamed-chunk-12_87955c053a50af686080fbfb24ae3792">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="un_A1_files/figure-revealjs/unnamed-chunk-12-1.png" width="900"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="comments-and-criticisms-2" class="slide level2 center">
 <h2>Comments and criticisms</h2>
 <ul>
 <li>The goodness of fit greatly <span class="blue">improved</span>:</li>
@@ -862,7 +905,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <h1>Cholesky factorization</h1>
 
 </section>
-<section id="how-to-obtain-the-least-squares-estimate" class="slide level2">
+<section id="how-to-obtain-the-least-squares-estimate" class="slide level2 center">
 <h2>How to obtain the least squares estimate?</h2>
 <ul>
 <li><p>In undergraduate courses it is often suggested that the least square estimate should be computed using the formula <span class="math display">
@@ -877,7 +920,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 </div>
 </section>
-<section id="the-normal-equations" class="slide level2">
+<section id="the-normal-equations" class="slide level2 center">
 <h2>The normal equations</h2>
 <ul>
 <li><p>Consider the following system of equations (<span class="orange">normal equations</span>):<span class="math display">
@@ -901,7 +944,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 </section>
-<section id="cholesky-factorization-1" class="slide level2">
+<section id="cholesky-factorization-1" class="slide level2 center">
 <h2>Cholesky factorization</h2>
 <ul>
 <li>Recall (from your favorite linear algebra textbook) that a <span class="blue">symmetric</span> matrix <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> is <span class="orange">positive definite</span> if and only if one the following properties is satisfied
@@ -923,7 +966,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 </section>
-<section id="cholesky-factorization-and-least-squares" class="slide level2">
+<section id="cholesky-factorization-and-least-squares" class="slide level2 center">
 <h2>Cholesky factorization and least squares</h2>
 <div>
 <ul>
@@ -939,7 +982,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 </div>
 </section>
-<section id="forward-and-backward-substitutions" class="slide level2">
+<section id="forward-and-backward-substitutions" class="slide level2 center">
 <h2>Forward and backward substitutions</h2>
 <div>
 <ul>
@@ -962,7 +1005,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </ul>
 </div>
 </section>
-<section id="computational-complexity" class="slide level2">
+<section id="computational-complexity" class="slide level2 center">
 <h2>Computational complexity</h2>
 <div>
 <ul>
@@ -979,7 +1022,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </ul>
 </div>
 </section>
-<section id="error-propagation-in-normal-equations" class="slide level2">
+<section id="error-propagation-in-normal-equations" class="slide level2 center">
 <h2>☠️ - Error propagation in normal equations</h2>
 <div>
 <ul>
@@ -995,7 +1038,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </ul>
 </div>
 </section>
-<section id="condition-numbers-and-normal-equations" class="slide level2">
+<section id="condition-numbers-and-normal-equations" class="slide level2 center">
 <h2>☠️ - Condition numbers and normal equations</h2>
 <div>
 <ul>
@@ -1015,7 +1058,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <h1>The QR decomposition</h1>
 
 </section>
-<section id="orthogonal-predictors" class="slide level2">
+<section id="orthogonal-predictors" class="slide level2 center">
 <h2>Orthogonal predictors</h2>
 <ul>
 <li><p>When the <span class="blue">predictors</span> are mutually <span class="orange">orthogonal</span>, the problem is significantly simpler.</p></li>
@@ -1037,7 +1080,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </div>
 </div>
 </section>
-<section id="regression-by-successive-orthogonalization" class="slide level2">
+<section id="regression-by-successive-orthogonalization" class="slide level2 center">
 <h2>Regression by successive orthogonalization</h2>
 <ul>
 <li>The predictors of <span class="math inline">\bm{X}</span> are generally not orthogonal. We want to find a suitable transformation <span class="math inline">\bm{Z} = \bm{X} \bm{\Gamma}^{-1}</span> that <span class="blue">orthogonalize</span> the <span class="orange">predictors</span>.</li>
@@ -1055,7 +1098,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </ul>
 </div>
 </section>
-<section id="gram-schmidt-algorithm" class="slide level2">
+<section id="gram-schmidt-algorithm" class="slide level2 center">
 <h2>Gram-Schmidt algorithm</h2>
 <ul>
 <li><p>Let us now consider the <span class="orange">general case</span>, for any value of <span class="math inline">p</span>.</p></li>
@@ -1068,7 +1111,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <li><p>The geometry of linear models guarantees <span class="orange">orthogonality</span>, that is <span class="math inline">\bm{z}_j^T \bm{z}_{j'} = 0</span> for any <span class="math inline">j \neq j'</span>.</p></li>
 </ul>
 </section>
-<section id="the-qr-decomposition-i" class="slide level2">
+<section id="the-qr-decomposition-i" class="slide level2 center">
 <h2>The QR decomposition I</h2>
 <div>
 <ul>
@@ -1089,7 +1132,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </ul>
 </div>
 </section>
-<section id="the-qr-decomposition-ii" class="slide level2">
+<section id="the-qr-decomposition-ii" class="slide level2 center">
 <h2>The QR decomposition II</h2>
 <div class="callout callout-note no-icon callout-captioned callout-style-simple">
 <div class="callout-body">
@@ -1114,7 +1157,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </div>
 </div>
 </section>
-<section id="the-qr-decomposition-and-least-squares" class="slide level2">
+<section id="the-qr-decomposition-and-least-squares" class="slide level2 center">
 <h2>The QR decomposition and least squares</h2>
 <div>
 <ul>
@@ -1133,7 +1176,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </ul>
 </div>
 </section>
-<section id="the-qr-decomposition-and-linear-models" class="slide level2">
+<section id="the-qr-decomposition-and-linear-models" class="slide level2 center">
 <h2>The QR decomposition and linear models</h2>
 <div>
 <ul>
@@ -1149,20 +1192,20 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 </ul>
 </div>
 </section>
-<section id="computational-complexity-1" class="slide level2">
+<section id="computational-complexity-1" class="slide level2 center">
 <h2>Computational complexity</h2>
 <div>
 <ul>
 <li class="fragment"><p>The solution via QR factorization is <span class="orange">numerically reliable</span> and it facilitates the computation of other quantities of interest.</p></li>
 <li class="fragment"><p>In practice, the QR is computed via a <span class="blue">modified Gram-Schmidt</span>, that fixes the instabilities of the naïve Gram-Schmidt algorithm, or via <span class="orange">Householder reflections</span>.</p></li>
-<li class="fragment"><p>The expensive step is the QR factorization itself. This gives an overall computational complexity of order <span class="math display">
+<li class="fragment"><p>The expensive step is the QR factorization. The overall computational complexity is of order <span class="math display">
 \sim 2 n p^2</span> which is about twice that of the Cholesky, when <span class="math inline">n</span> is much larger than <span class="math inline">p</span>, and about the same when <span class="math inline">p \approx n</span>.</p></li>
 <li class="fragment"><p>Depending on the context, we may prefer the Cholesky or the QR. The default approach in R, i.e.&nbsp;the one implemented in the <code>lm</code> function, is the QR factorization.<br>
 </p></li>
 </ul>
 </div>
 </section>
-<section id="pivoting-and-rank-deficiencies" class="slide level2">
+<section id="pivoting-and-rank-deficiencies" class="slide level2 center">
 <h2>☠️ - Pivoting and rank deficiencies</h2>
 <div>
 <ul>
@@ -1180,7 +1223,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <h1>Iterative methods</h1>
 
 </section>
-<section id="when-n-is-very-large" class="slide level2">
+<section id="when-n-is-very-large" class="slide level2 center">
 <h2>When <span class="math inline">n</span> is very large…</h2>
 <div>
 <ul>
@@ -1194,7 +1237,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 </ul>
 </div>
 </section>
-<section id="recursive-data-import" class="slide level2">
+<section id="recursive-data-import" class="slide level2 center">
 <h2>Recursive data import</h2>
 <div>
 <ul>
@@ -1209,7 +1252,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 </ul>
 </div>
 </section>
-<section id="recursive-estimates" class="slide level2">
+<section id="recursive-estimates" class="slide level2 center">
 <h2>Recursive estimates</h2>
 <div>
 <ul>
@@ -1222,7 +1265,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 </ul>
 </div>
 </section>
-<section id="sherman-morrison-formula" class="slide level2">
+<section id="sherman-morrison-formula" class="slide level2 center">
 <h2>Sherman-Morrison formula</h2>
 <ul>
 <li><p>When the new data points arrive, we can write the updated quantities <span class="math display">
@@ -1243,7 +1286,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 </div>
 </div>
 </section>
-<section id="the-recursive-least-squares-algorithm-i" class="slide level2">
+<section id="the-recursive-least-squares-algorithm-i" class="slide level2 center">
 <h2>The recursive least squares algorithm I</h2>
 <div>
 <ul>
@@ -1261,7 +1304,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 </ul>
 </div>
 </section>
-<section id="the-recursive-least-squares-algorithm-ii" class="slide level2">
+<section id="the-recursive-least-squares-algorithm-ii" class="slide level2 center">
 <h2>The recursive least squares algorithm II</h2>
 <ul>
 <li><p>The recursive estimation <span class="math inline">\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + k_n e_{n+1}</span> takes the form of a <span class="orange">linear filter</span>, in which the new estimate <span class="math inline">\hat{\beta}_{(n+1)}</span> is obtained by modifying the old one <span class="math inline">\hat{\beta}_{(n+1)}</span>.</p></li>
@@ -1286,7 +1329,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <h1>References</h1>
 
 </section>
-<section id="references-1" class="slide level2">
+<section id="references-1" class="slide level2 center">
 <h2>References</h2>
 <ul>
 <li><span class="blue">Main references</span>
@@ -1300,8 +1343,8 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <li><strong>Chapters 1–5</strong> of Golub, G.H., and Van Loan, C.F. (1983). <em>Matrix computations</em>. Hopkins University Press.</li>
 </ul></li>
 </ul>
-
-<img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
+<p><img src="img/logoB.png" class="slide-logo"></p>
+<div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
 </div>
 </section></section>
@@ -1385,7 +1428,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
         disableLayout: false,
 
         // Vertical centering of slides
-        center: false,
+        center: true,
 
         // Enables touch navigation on devices with touch input
         touch: true,

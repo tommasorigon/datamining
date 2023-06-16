@@ -66,10 +66,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#about-this-unit" id="toc-about-this-unit" class="nav-link active" data-scroll-target="#about-this-unit">About this unit</a></li>
   <li><a href="#old-friends-linear-models" id="toc-old-friends-linear-models" class="nav-link" data-scroll-target="#old-friends-linear-models">Old friends: linear models</a>
   <ul class="collapse">
-  <li><a href="#car-data" id="toc-car-data" class="nav-link" data-scroll-target="#car-data">Car data</a></li>
   <li><a href="#car-data-diesel-or-gas" id="toc-car-data-diesel-or-gas" class="nav-link" data-scroll-target="#car-data-diesel-or-gas">Car data (<span class="blue">diesel</span> or <span class="orange">gas</span>)</a></li>
   <li><a href="#linear-regression" id="toc-linear-regression" class="nav-link" data-scroll-target="#linear-regression">Linear regression</a></li>
-  <li><a href="#scatterplot-of-the-data" id="toc-scatterplot-of-the-data" class="nav-link" data-scroll-target="#scatterplot-of-the-data">Scatterplot of the data</a></li>
   <li><a href="#regression-models" id="toc-regression-models" class="nav-link" data-scroll-target="#regression-models">Regression models</a></li>
   <li><a href="#linear-models" id="toc-linear-models" class="nav-link" data-scroll-target="#linear-models">Linear models</a></li>
   <li><a href="#matrix-notation" id="toc-matrix-notation" class="nav-link" data-scroll-target="#matrix-notation">Matrix notation</a></li>
@@ -186,55 +184,50 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="old-friends-linear-models" class="level1">
 <h1>Old friends: linear models</h1>
-<section id="car-data" class="level2">
-<h2 class="anchored" data-anchor-id="car-data">Car data</h2>
+<section id="car-data-diesel-or-gas" class="level2">
+<h2 class="anchored" data-anchor-id="car-data-diesel-or-gas">Car data (<span class="blue">diesel</span> or <span class="orange">gas</span>)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-1_634139fb4d84468a6c75fc6c21cca8c5">
+<div class="cell-output-display">
+<p><img src="un_A1_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="750"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
 <ul>
 <li>We consider data for <span class="math inline">n = 203</span> models of cars in circulation in 1985 in the USA.</li>
-<li>We want to identify a relationship that allows to <span class="blue">predict</span> the distance covered per unit of fuel, as a function of the vehicle characteristics.</li>
-<li>We consider the following <span class="orange">continuous variables</span>:
+<li>We want to to <span class="blue">predict</span> the distance covered per unit of fuel, as a function of the vehicle characteristics.</li>
+<li>We consider the following <span class="orange">variables</span>:
 <ul>
 <li>The city distance per unit of fuel (km/L, <code>city.distance</code>)</li>
 <li>The engine size (L, <code>engine.size</code>)</li>
 <li>The number of cylinders (<code>n.cylinders</code>)</li>
 <li>The curb weight (kg, <code>curb.weight</code>)</li>
+<li>The fuel type (gasoline or diesel, <code>fuel</code>).</li>
 </ul></li>
-<li>We also considered the <span class="orange">categorical variable</span> fuel type (gasoline or diesel, <code>fuel</code>).</li>
 </ul>
-</section>
-<section id="car-data-diesel-or-gas" class="level2">
-<h2 class="anchored" data-anchor-id="car-data-diesel-or-gas">Car data (<span class="blue">diesel</span> or <span class="orange">gas</span>)</h2>
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-1_b0b3871832551d3717bdabeb0584f68b">
-<div class="cell-output-display">
-<p><img src="un_A1_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="1050"></p>
 </div>
 </div>
 </section>
 <section id="linear-regression" class="level2">
 <h2 class="anchored" data-anchor-id="linear-regression">Linear regression</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-2_cea32a5b4f0b8c51a36f969219f02834">
+<div class="cell-output-display">
+<p><img src="un_A1_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="600"></p>
+</div>
+</div>
+</div><div class="column" style="width:60%;">
 <ul>
-<li><p>At the moment, let us focus on <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
-<li><p>The simplest model we can come up with is a <span class="orange">linear regression</span> line: <span class="math display">
+<li><p>Consider <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
+<li><p>The simplest model is a <span class="orange">linear regression</span> line: <span class="math display">
 y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 </span> where the “errors” <span class="math inline">\epsilon_i</span> are iid random variables, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
-</ul>
-<div class="incremental">
-<ul>
-<li><p>We are looking for an estimate for the <span class="blue">unknown regression parameters</span> <span class="math inline">\beta_0</span> and <span class="math inline">\beta_1</span>.</p></li>
-<li><p>Such an estimate could be obtained by ordinary least squares (OLS)…</p></li>
-</ul>
-</div>
-<div class="incremental">
-<ul>
-<li><p>… but the next plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
+<li><p>An estimate for the <span class="blue">unknown regression parameters</span> <span class="math inline">\beta_0</span> and <span class="math inline">\beta_1</span> can be obtained by ordinary least squares…</p></li>
+<li><p>… but the plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
 <li><p>… and also that <code>fuel</code> has an non-negligible effect on the response.</p></li>
 </ul>
-</div>
-</section>
-<section id="scatterplot-of-the-data" class="level2">
-<h2 class="anchored" data-anchor-id="scatterplot-of-the-data">Scatterplot of the data</h2>
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-2_97c63eec8745d370446971554ea4834b">
-<div class="cell-output-display">
-<p><img src="un_A1_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="1050"></p>
 </div>
 </div>
 </section>
@@ -248,7 +241,7 @@ y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n.
 <li><p>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on the <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
 D(\beta) = \sum_{i=1}^n\{y_i - f(x_{i1},\dots, x_{ip}; \beta)\}^2,
 </span> using <span class="math inline">n</span> pairs of observations <span class="math inline">(x_{i1},\dots,x_{ip})^T</span> and <span class="math inline">y_i</span>, for <span class="math inline">i = 1,\dots,n</span>.</p></li>
-<li><p>The solution to this minimization problem is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
+<li><p>The <span class="orange">optimal value</span> is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
 <li><p>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are then obtained as <span class="math inline">\hat{y}_i = f(x_{i1},\dots,x_{ip}; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></p></li>
 </ul>
 </div>
@@ -433,7 +426,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 <ul>
-<li>The coefficient <span class="math inline">R^2</span> and <span class="math inline">s</span> are estimated as follows:</li>
+<li>The coefficient <span class="math inline">R^2</span> and the residual standard deviation <span class="math inline">s</span> are:</li>
 </ul>
 <div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-4_9667ae6791a3ee2ab6745dfacf4a6f3a">
 <div class="cell-output-display">
@@ -458,17 +451,25 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="a-first-model-fitted-values" class="level2">
 <h2 class="anchored" data-anchor-id="a-first-model-fitted-values">A first model: fitted values</h2>
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-5_5fc2ad201bedd61fc91c632e51841c06">
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-5_e47ad47b958e96eebdae66de44d8a928">
 <div class="cell-output-display">
-<p><img src="un_A1_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="1050"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_A1_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="900"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
 <section id="a-first-model-graphical-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="a-first-model-graphical-diagnostics">A first model: graphical diagnostics</h2>
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-6_08847a9f2364edaef7334393180badcc">
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-6_6b559ebdc23bb9596d6b7836f33e1ec1">
 <div class="cell-output-display">
-<p><img src="un_A1_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="1050"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_A1_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="900"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -539,17 +540,25 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="second-model-fitted-values" class="level2">
 <h2 class="anchored" data-anchor-id="second-model-fitted-values">Second model: fitted values</h2>
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-8_d560748cac8fb2b765a5042a24516f38">
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-8_cd7fd80aa896c432f6963fea1a16147d">
 <div class="cell-output-display">
-<p><img src="un_A1_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="1050"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_A1_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="900"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
 <section id="second-model-graphical-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="second-model-graphical-diagnostics">Second model: graphical diagnostics</h2>
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-9_203e8930af67099911eb8c26a703c980">
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-9_fdd441447f01e9f94e63177e20a9c5ef">
 <div class="cell-output-display">
-<p><img src="un_A1_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="1050"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_A1_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="900"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -655,9 +664,13 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="a-third-model-graphical-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="a-third-model-graphical-diagnostics">A third model: graphical diagnostics</h2>
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-12_8a04e01c4a3de6dcadf036e15896396a">
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-12_31f1d793acf442479c6ba764004b7404">
 <div class="cell-output-display">
-<p><img src="un_A1_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="1050"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_A1_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="900"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1003,7 +1016,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <ul class="incremental">
 <li><p>The solution via QR factorization is <span class="orange">numerically reliable</span> and it facilitates the computation of other quantities of interest.</p></li>
 <li><p>In practice, the QR is computed via a <span class="blue">modified Gram-Schmidt</span>, that fixes the instabilities of the naïve Gram-Schmidt algorithm, or via <span class="orange">Householder reflections</span>.</p></li>
-<li><p>The expensive step is the QR factorization itself. This gives an overall computational complexity of order <span class="math display">
+<li><p>The expensive step is the QR factorization. The overall computational complexity is of order <span class="math display">
 \sim 2 n p^2</span> which is about twice that of the Cholesky, when <span class="math inline">n</span> is much larger than <span class="math inline">p</span>, and about the same when <span class="math inline">p \approx n</span>.</p></li>
 <li><p>Depending on the context, we may prefer the Cholesky or the QR. The default approach in R, i.e.&nbsp;the one implemented in the <code>lm</code> function, is the QR factorization.<br>
 </p></li>

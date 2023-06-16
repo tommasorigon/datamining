@@ -7,7 +7,8 @@ execute:
   cache: true
 format:
   revealjs:
-    auto-stretch: true
+    auto-stretch: false
+    center: true
     html-math-method: katex
     transition: none
     output-file: un_A1_slides.html
@@ -74,24 +75,14 @@ not simpler"* Attributed to Albert Einstein
 
 # Old friends: linear models
 
-## Car data
+## Car data  ([diesel]{.blue} or [gas]{.orange})
 
--   We consider data for $n = 203$ models of cars in circulation in 1985
-    in the USA.
--   We want to identify a relationship that allows to [predict]{.blue}
-    the distance covered per unit of fuel, as a function of the vehicle
-    characteristics.
--   We consider the following [continuous variables]{.orange}:
-    -   The city distance per unit of fuel (km/L, `city.distance`)
-    -   The engine size (L, `engine.size`)
-    -   The number of cylinders (`n.cylinders`)
-    -   The curb weight (kg, `curb.weight`)
--   We also considered the [categorical variable]{.orange} fuel type
-    (gasoline or diesel, `fuel`).
+:::columns
 
-## Car data ([diesel]{.blue} or [gas]{.orange})
-
-```{r, message=FALSE}
+::: {.column width="50%"}
+```{r}
+#| fig-width: 5
+#| fig-height: 4.5
 library(tidyverse)
 library(ggplot2)
 library(GGally)
@@ -111,38 +102,34 @@ p0 <- ggpairs(auto,
   ylab("")
 p0
 ```
+:::
+
+::: {.column width="50%"}
+-   We consider data for $n = 203$ models of cars in circulation in 1985
+    in the USA.
+-   We want to to [predict]{.blue}
+    the distance covered per unit of fuel, as a function of the vehicle
+    characteristics.
+-   We consider the following [variables]{.orange}:
+    -   The city distance per unit of fuel (km/L, `city.distance`)
+    -   The engine size (L, `engine.size`)
+    -   The number of cylinders (`n.cylinders`)
+    -   The curb weight (kg, `curb.weight`)
+    -   The fuel type (gasoline or diesel, `fuel`).
+:::
+
+:::
+
+
 
 ## Linear regression
 
--   At the moment, let us focus on `city.distance` ($y$), `engine.size`
-    ($x$) and `fuel` ($z$).
+:::columns
 
--   The simplest model we can come up with is a [linear
-    regression]{.orange} line: $$
-    y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
-    $$ where the "errors" $\epsilon_i$ are iid random variables, having
-    zero mean and variance $\sigma^2$.
-
-. . .
-
--   We are looking for an estimate for the [unknown regression
-    parameters]{.blue} $\beta_0$ and $\beta_1$.
-
--   Such an estimate could be obtained by ordinary least squares
-    (OLS)...
-
-. . .
-
--   ... but the next plot clearly suggests that the relationship between
-    `city.distance` and `engine.size` is [not]{.orange} well
-    approximated by a [linear]{.orange} function.
-
--   ... and also that `fuel` has an non-negligible effect on the
-    response.
-
-## Scatterplot of the data
-
+::: {.column width="40%"}
 ```{r}
+#| fig-width: 4
+#| fig-height: 3.7
 ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
   geom_point() +
   theme_light() +
@@ -151,6 +138,31 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
   xlab("Engine size (L)") +
   ylab("Urban distance (km/L)")
 ```
+:::
+
+::: {.column width="60%"}
+-   Consider `city.distance` ($y$), `engine.size`
+    ($x$) and `fuel` ($z$).
+
+-   The simplest model is a [linear
+    regression]{.orange} line: $$
+    y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
+    $$ where the "errors" $\epsilon_i$ are iid random variables, having
+    zero mean and variance $\sigma^2$.
+
+-   An estimate for the [unknown regression
+    parameters]{.blue} $\beta_0$ and $\beta_1$ can be obtained by ordinary least squares...
+
+-   ... but the plot clearly suggests that the relationship between
+    `city.distance` and `engine.size` is [not]{.orange} well
+    approximated by a [linear]{.orange} function.
+
+-   ... and also that `fuel` has an non-negligible effect on the
+    response.
+
+:::
+
+:::
 
 ## Regression models
 
@@ -169,7 +181,7 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
     $$ using $n$ pairs of observations $(x_{i1},\dots,x_{ip})^T$ and
     $y_i$, for $i = 1,\dots,n$.
 
--   The solution to this minimization problem is denoted by
+-   The [optimal value]{.orange} is denoted by
     $\hat{\beta}$.
 
 -   The [predicted values]{.blue} $\hat{y}_i$ are then obtained as
@@ -330,7 +342,7 @@ m1 <- lm(city.distance ~ engine.size + I(engine.size^2) + I(engine.size^3) + fue
 kable(tidy(m1, conf.int = FALSE), digits = 3)
 ```
 
--   The coefficient $R^2$ and $s$ are estimated as follows:
+-   The coefficient $R^2$ and the residual standard deviation $s$ are:
 
 ```{r}
 kable(glance(m1)[c(1, 3, 10)])
@@ -339,6 +351,9 @@ kable(glance(m1)[c(1, 3, 10)])
 ## A first model: fitted values
 
 ```{r}
+#| fig-width: 6
+#| fig-height: 3.5
+#| fig-align: center
 augmented_m1 <- augment(m1)
 ggplot(data = augmented_m1, aes(x = engine.size, y = city.distance, col = fuel)) +
   geom_point() +
@@ -353,6 +368,9 @@ ggplot(data = augmented_m1, aes(x = engine.size, y = city.distance, col = fuel))
 ## A first model: graphical diagnostics
 
 ```{r}
+#| fig-width: 6
+#| fig-height: 3.5
+#| fig-align: center
 ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
   geom_point() +
   geom_hline(aes(yintercept = 0), linetype = "dotted") +
@@ -412,6 +430,9 @@ kable(tidy(m2, conf.int = FALSE), digits = 3)
 ## Second model: fitted values
 
 ```{r}
+#| fig-width: 6
+#| fig-height: 3.5
+#| fig-align: center
 augmented_m2 <- augment(m2, data = auto)
 ggplot(data = augmented_m2, aes(x = engine.size, y = city.distance, col = fuel)) +
   geom_point() +
@@ -426,6 +447,9 @@ ggplot(data = augmented_m2, aes(x = engine.size, y = city.distance, col = fuel))
 ## Second model: graphical diagnostics
 
 ```{r}
+#| fig-width: 6
+#| fig-height: 3.5
+#| fig-align: center
 ggplot(data = augmented_m2, aes(x = .fitted, y = .resid, col = fuel)) +
   geom_point() +
   geom_hline(aes(yintercept = 0), linetype = "dotted") +
@@ -479,6 +503,9 @@ kable(tidy(m3, conf.int = FALSE), digits = 3)
 ## A third model: graphical diagnostics
 
 ```{r}
+#| fig-width: 6
+#| fig-height: 3.5
+#| fig-align: center
 augmented_m3 <- augment(m3, data = auto)
 ggplot(data = augmented_m3, aes(x = .fitted, y = .resid, col = fuel)) +
   geom_point() +
@@ -863,8 +890,8 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     Gram-Schmidt]{.blue}, that fixes the instabilities of the naïve
     Gram-Schmidt algorithm, or via [Householder reflections]{.orange}.
 
--   The expensive step is the QR factorization itself. This gives an
-    overall computational complexity of order $$
+-   The expensive step is the QR factorization. The overall
+   computational complexity is of order $$
     \sim 2 n p^2$$ which is about twice that of the Cholesky, when $n$
     is much larger than $p$, and about the same when $p \approx n$.
 
