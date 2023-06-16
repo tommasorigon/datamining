@@ -24,15 +24,11 @@ editor_options:
   chunk_output_type: console
 ---
 
-Website of the **Data Mining** course (6 CFU) of *Corso di Laurea
-Magistrale in Scienze Statistiche ed Economiche* (CLAMSES), Università
-degli Studi di Milano-Bicocca.
+This the website of the **Data Mining** course (6 CFU) of the "*Corso di
+Laurea Magistrale in Scienze Statistiche ed Economiche* (CLAMSES)",
+Università degli Studi di Milano-Bicocca.
 
 ## Teaching material
-
-The teaching material for each lesson can be downloaded using the
-[hyperlinks](). Please note that this web page is subject to changes, so
-please check the latest updated version.
 
 ### Reference textbooks
 
