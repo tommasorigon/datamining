@@ -42,7 +42,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## About this unit ([Homepage](../index.html))
+## [Homepage](../index.html)
 
 ::: columns
 ::: {.column width="40%"}
