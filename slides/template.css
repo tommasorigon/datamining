@@ -9,10 +9,10 @@
 $font-family-sans-serif: "Nunito", sans-serif !default; 
 $presentation-font-size-root: 25px;
 $presentation-font-smaller: 1;
-$code-block-font-size: 0.75em;
+$code-block-font-size: 0.90em;
 
 $presentation-heading-font: "Nunito", sans-serif !default; 
-$font-family-monospace: "Nunito Sans", monospace !default;
+// $font-family-monospace: "Nunito Sans", monospace !default;
 
 // colors
 //$body-bg: #fff !default;

@@ -405,11 +405,22 @@
 </section>
 <section id="section" class="slide level2">
 <h2></h2>
-<div class="cell" data-hash="un_intro_cache/revealjs/unnamed-chunk-1_ad64e478026d6312e1ac0822add1e638">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">rnorm</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="un_intro_cache/revealjs/unnamed-chunk-1_20ff184a8f8c554fd831e707e5a6873b">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<span id="cb1-2"><a href="#cb1-2"></a>X <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">runif</span>(<span class="dv">100</span> <span class="sc">*</span> <span class="dv">5</span>, <span class="dv">0</span>, <span class="dv">1</span>), <span class="dv">100</span>, <span class="dv">5</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># X &lt;- cbind(X, X[, 1] + rnorm(10, sd = 1e-6))</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a>XtX <span class="ot">&lt;-</span> <span class="fu">crossprod</span>(X)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>beta <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, X <span class="sc">%*%</span> beta, )</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="fu">kappa</span>(X, <span class="at">exact =</span> <span class="cn">TRUE</span>)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] -0.888702555 -0.649328818  0.811221501  0.003747631 -1.399357595
- [6] -0.902258070 -0.041814718  0.562293039 -1.421552807  0.140318144</code></pre>
+<pre><code>[1] 26.33166</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">kappa</span>(XtX, <span class="at">exact =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 26.33166</code></pre>
 </div>
 </div>
 <p><img src="img/logoB.png" class="slide-logo"></p>

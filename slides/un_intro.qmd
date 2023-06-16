@@ -46,6 +46,15 @@ editor_options:
 
 ```{r}
 #| echo: true
-rnorm(10)
+rm(list = ls())
+X <- matrix(runif(100 * 5, 0, 1), 100, 5)
+# X <- cbind(X, X[, 1] + rnorm(10, sd = 1e-6))
+
+XtX <- crossprod(X)
+beta <- rnorm(5)
+y <- rnorm(100, X %*% beta, )
+
+kappa(X, exact = TRUE)^2
+kappa(XtX, exact = TRUE)
 ```
 

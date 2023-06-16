@@ -36,6 +36,22 @@ ul.task-list li input[type="checkbox"] {
 <link href="un_B_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 </head>
 
@@ -52,7 +68,7 @@ ul.task-list li input[type="checkbox"] {
   </ul>
 </nav>
 </div>
-<main class="content page-columns page-full" id="quarto-document-content">
+<main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
@@ -106,13 +122,24 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
-<section id="yesterdays-data" class="level2 page-columns page-full">
+<section id="yesterdays-data" class="level2">
 <h2 class="anchored" data-anchor-id="yesterdays-data">Yesterday’s data</h2>
-<div class="cell page-columns page-full" data-hash="un_B_cache/html/unnamed-chunk-1_aff559bf830d46697f45cc9bf6ba3143">
-
-<div class="no-row-height column-margin column-container"><div class="cell-output-display">
-<p><img src="un_B_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="2100"></p>
-</div></div></div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-1_6ef4ced459e98fedaef1fbf883a4814c">
+<div class="cell-output-display">
+<p><img src="un_B_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="750"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><p>Let us presume that <span class="orange">yesterday</span> we observed <span class="math inline">n = 30</span> pairs of data <span class="math inline">(x_i, y_i)</span>.</p></li>
+<li><p>Data were generated according to <span class="math display">
+  y_i = f(x_i; \beta) + \epsilon_i, \quad i=1,\dots,n.
+  </span></p></li>
+</ul>
+</div>
+</div>
 </section>
 
 </main>
