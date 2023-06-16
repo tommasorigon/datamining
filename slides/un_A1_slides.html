@@ -371,10 +371,7 @@
 </ul></li>
 <li><p>The <span class="blue">computational aspects</span> of linear models will be novel to most of you…</p></li>
 <li><p>… but you should be already <span class="orange">very familiar</span> with linear models!</p></li>
-<li><p>If do not remember much about them, use this first week of lectures to catch up (or study) from the material of previous courses.</p></li>
 </ul>
-<!-- -   A [short introduction]{.blue} to the topic is also offered in -->
-<!--     Azzalini & Scarpa (2011), Chapter 2 and Appendix A.3. -->
 </div>
 </div>
 </section>
@@ -395,7 +392,7 @@
 </div><div class="column" style="width:50%;">
 <ul>
 <li>We consider data for <span class="math inline">n = 203</span> models of cars in circulation in 1985 in the USA.</li>
-<li>We want to to <span class="blue">predict</span> the distance covered per unit of fuel, as a function of the vehicle characteristics.</li>
+<li>We want to <span class="blue">predict</span> the distance per unit of fuel, as a function of the vehicle features.</li>
 <li>We consider the following <span class="orange">variables</span>:
 <ul>
 <li>The city distance per unit of fuel (km/L, <code>city.distance</code>)</li>
@@ -419,11 +416,10 @@
 </div>
 </div><div class="column" style="width:60%;">
 <ul>
-<li><p>Consider <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
-<li><p>The simplest model is a <span class="orange">linear regression</span> line: <span class="math display">
+<li><p>Let us consider the variables <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
+<li><p>A <span class="blue">simple linear regression</span> <span class="math display">
 y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
-</span> where the “errors” <span class="math inline">\epsilon_i</span> are iid random variables, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
-<li><p>An estimate for the <span class="blue">unknown regression parameters</span> <span class="math inline">\beta_0</span> and <span class="math inline">\beta_1</span> can be obtained by ordinary least squares…</p></li>
+</span> could be easily obtained by least squares…</p></li>
 <li><p>… but the plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
 <li><p>… and also that <code>fuel</code> has an non-negligible effect on the response.</p></li>
 </ul>
@@ -434,9 +430,9 @@ y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 <h2>Regression models</h2>
 <div>
 <ul>
-<li class="fragment"><p>A more <span class="orange">general formulation</span> for modeling the relationship between a vector of covariates <span class="math inline">(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p</span> and a response <span class="math inline">y \in \mathbb{R}</span> is <span class="math display">
-y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n.
-</span></p></li>
+<li class="fragment"><p>A <span class="orange">general</span> and <span class="orange">more flexible formulation</span> for modeling the relationship between a vector of covariates <span class="math inline">(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p</span> and a response <span class="math inline">y \in \mathbb{R}</span> is <span class="math display">
+y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n,
+</span> where the “errors” <span class="math inline">\epsilon_i</span> are iid random variables, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
 <li class="fragment"><p>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on the <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
 D(\beta) = \sum_{i=1}^n\{y_i - f(x_{i1},\dots, x_{ip}; \beta)\}^2,
 </span> using <span class="math inline">n</span> pairs of observations <span class="math inline">(x_{i1},\dots,x_{ip})^T</span> and <span class="math inline">y_i</span>, for <span class="math inline">i = 1,\dots,n</span>.</p></li>
@@ -448,12 +444,16 @@ D(\beta) = \sum_{i=1}^n\{y_i - f(x_{i1},\dots, x_{ip}; \beta)\}^2,
 <section id="linear-models" class="slide level2 center">
 <h2>Linear models</h2>
 <ul>
-<li><p>We can more flexibly model <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
-<li><p>For instance, we could consider a <span class="orange">polynomial term</span> combined with a <span class="blue">dummy variable</span> <span class="math display">
-f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}).
-</span></p></li>
-<li><p><span class="orange">Remark</span>. This model is <span class="blue">linear in the parameters</span>, but it can capture non-linear patterns!</p></li>
+<li><p>Let us consider again the variables <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
+<li><p>Which function <span class="math inline">f(x,z;\beta)</span> should we choose?</p></li>
 </ul>
+<div class="fragment">
+<ul>
+<li>A first attempt is to consider a <span class="orange">polynomial term</span> combined with a <span class="blue">dummy variable</span> <span class="math display">
+f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}),
+</span> which is a special instance of <span class="orange">linear model</span>.</li>
+</ul>
+</div>
 <div class="fragment">
 <div class="callout callout-note no-icon callout-captioned callout-style-simple">
 <div class="callout-body">
@@ -482,7 +482,7 @@ x_{11} &amp; \cdots &amp; x_{1p}\\
 x_{n1} &amp; \cdots &amp; x_{np}
 \end{bmatrix}.
 </span></p></li>
-<li class="fragment"><p>The linear model can be written using the <span class="orange">compact notation</span>: <span class="math display">
+<li class="fragment"><p>Then, a <span class="blue">linear model</span> can be written using the <span class="orange">compact notation</span>: <span class="math display">
 \bm{y} = \bm{X}\beta + \bm{\epsilon},
 </span> where <span class="math inline">\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T</span> is a vector of iid error terms with zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
 <li class="fragment"><p>The <span class="math inline">j</span>th variable (column) is denoted with <span class="math inline">\bm{x}_j</span>, whereas the <span class="math inline">i</span>th observation (row) is <span class="math inline">\tilde{\bm{x}}_i</span>: <span class="math display">
@@ -494,11 +494,12 @@ x_{n1} &amp; \cdots &amp; x_{np}
 <section id="linear-regression-estimation-i" class="slide level2 center">
 <h2>Linear regression: estimation I</h2>
 <ul>
-<li>The optimal set of coefficients <span class="math inline">\hat{\beta}</span> is the minimizer of the least squared criterion <span class="math display">
+<li>The optimal set of coefficients <span class="math inline">\hat{\beta}</span> is the minimizer of the <span class="orange">least squared criterion</span> <span class="math display">
 D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
 </span> known also as <span class="orange">residual sum of squares (RSS)</span>, where <span class="math display">
-||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2}.</span></li>
+||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2},</span> denotes the <span class="blue">Euclidean norm</span>.</li>
 </ul>
+<div class="fragment">
 <div class="callout callout-note no-icon callout-captioned callout-style-simple">
 <div class="callout-body">
 <div class="callout-caption">
@@ -511,17 +512,18 @@ D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\be
 </div>
 </div>
 </div>
+</div>
 </section>
 <section id="linear-regression-estimation-ii" class="slide level2 center">
 <h2>Linear regression: estimation II</h2>
 <div>
 <ul>
-<li class="fragment"><p>Consequently, the predicted values are <span class="math display">
+<li class="fragment"><p>In matrix notation, the predicted values are can be obtained as <span class="math display">
 \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{H}\bm{y}, \qquad \bm{H} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
 </span></p></li>
 <li class="fragment"><p><span class="math inline">\bm{H}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>.</p></li>
 <li class="fragment"><p>It can be shown that <span class="math inline">\text{tr}(\bm{H}) = \text{rk}(\bm{H}) = p</span>. Moreover, it holds <span class="math inline">\bm{H} = \bm{H}^T</span> and <span class="math inline">\bm{H}^2 = \bm{H}</span>.</p></li>
-<li class="fragment"><p>The quantity <span class="math inline">D(\hat{\beta})</span> is the <span class="blue">deviance</span>, which is equal to <span class="math display">
+<li class="fragment"><p>The quantity <span class="math inline">D(\hat{\beta})</span> is the so-called <span class="blue">deviance</span>, which is equal to <span class="math display">
 D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{H})\bm{y}.
 </span></p></li>
 <li class="fragment"><p>A typical estimate for the <span class="orange">residual variance</span> <span class="math inline">\sigma^2</span> is then given by <span class="math display">
@@ -535,7 +537,7 @@ s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \tilde{\bm{
 <div>
 <ul>
 <li class="fragment"><p>Let us additionally assume that the errors follow a Gaussian distribution: <span class="math inline">\epsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)</span>.</p></li>
-<li class="fragment"><p>This implies that the distribution of the estimator <span class="math inline">\hat{\beta}</span> is <span class="math display">
+<li class="fragment"><p>This implies that the <span class="orange">distribution</span> of the <span class="orange">estimator</span> <span class="math inline">\hat{\beta}</span> is <span class="math display">
 \hat{\beta} \sim N_p(\beta, \sigma^2 (\bm{X}^T\bm{X})^{-1}).
 </span></p></li>
 <li class="fragment"><p>Hence, the estimator <span class="math inline">\hat{\beta}</span> is <span class="orange">unbiased</span> and its <span class="blue">variance</span> can be estimated by <span class="math display">
@@ -543,18 +545,19 @@ s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \tilde{\bm{
 </span></p></li>
 <li class="fragment"><p>The <span class="orange">standard errors</span> of the components of beta correspond to the square root of the diagonal of the above covariance matrix.</p></li>
 <li class="fragment"><p>Confidence interval and Wald’s tests can be obtained through classical inferential theory.</p></li>
+<li class="fragment"><p>Ok, we are ready to get back to the original problem…</p></li>
 </ul>
 </div>
 </section>
-<section id="car-data-a-preliminary-model" class="slide level2 center">
-<h2>Car data, a preliminary model</h2>
+<section id="car-data-a-first-model" class="slide level2 center">
+<h2>Car data, a first model</h2>
 <div>
 <ul>
-<li class="fragment"><p>A first model to predict <code>city.distance</code> (<span class="math inline">y</span>) via <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>) is <span class="math display">
+<li class="fragment"><p>Our first attempt for predicting <code>city.distance</code> (<span class="math inline">y</span>) via <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>) is: <span class="math display">
   f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}).
   </span></p></li>
-<li class="fragment"><p>By looking at the plot of the data, it is plausible that we need a <span class="orange">polynomial</span> of degree <span class="math inline">3</span> or <span class="math inline">4</span></p></li>
-<li class="fragment"><p>It is also clear from the plot that <code>fuel</code> is a relevant variable. Categorical variable should be <span class="orange">encoded</span> using <span class="blue">indicator variables</span>.</p></li>
+<li class="fragment"><p>Indeed, by looking at the plot of the data, it is plausible that we need a <span class="orange">polynomial</span> of degree <span class="math inline">3</span> or <span class="math inline">4</span></p></li>
+<li class="fragment"><p>It is also clear from the plot that <code>fuel</code> is a relevant variable. Categorical variables are <span class="orange">encoded</span> using <span class="blue">indicator variables</span>.</p></li>
 <li class="fragment"><p>To evaluate the goodness of fit, we can calculate the <span class="orange">coefficient of determination</span>: <span class="math display">
 R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\sum_{i=1}^n(y_i - \bar{y})^2}.
 </span></p></li>
@@ -619,7 +622,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 <ul>
-<li>The coefficient <span class="math inline">R^2</span> and the residual standard deviation <span class="math inline">s</span> are:</li>
+<li>Moreover, the coefficient <span class="math inline">R^2</span> and the residual standard deviation <span class="math inline">s</span> are:</li>
 </ul>
 <div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-4_2d2f6b823724ea758dc0fbc1bb4e94ff">
 <div class="cell-output-display">
@@ -654,27 +657,36 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <h2>Comments and criticisms</h2>
 <div>
 <ul>
+<li class="fragment"><p>Is this a good model?</p></li>
 <li class="fragment"><p>The overall fit <span class="blue">seems satisfactory</span> at first glance, especially if we aim at predicting the urban distance of cars when average engine size (i.e., between <span class="math inline">1.5L</span> and <span class="math inline">3L</span>).</p></li>
 <li class="fragment"><p>However, the plot of the <span class="orange">residuals</span> <span class="math inline">r_i = y_i - \hat{y}_i</span> suggests that there the homoschedasticity assumption, i.e.&nbsp;<span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>, might be violated.</p></li>
-<li class="fragment"><p>Also, this model in not suitable for <span class="orange">extrapolation</span>. Indeed:</p></li>
-<li class="fragment"><p>It has no grounding in physics or engineering, which leads to difficulties in the interpretation of the trend and/or paradoxical situations.</p></li>
-<li class="fragment"><p>For example, the curve of the set of gasoline cars shows a local minimum around <span class="math inline">4.6 L</span> and then rises again!</p></li>
+<li class="fragment"><p>Also, this model in not suitable for <span class="orange">extrapolation</span>. Indeed:</p>
+<ul>
+<li class="fragment">It has no grounding in physics or engineering, which leads to difficulties in the interpretation of the trend and/or paradoxical situations.</li>
+<li class="fragment">For example, the curve of the set of gasoline cars shows a local minimum around <span class="math inline">4.6 L</span> and then rises again!</li>
+</ul></li>
+<li class="fragment"><p>It is plausible that we can find a better one, so what’s next?</p></li>
 </ul>
 </div>
 </section>
-<section id="variable-transformation" class="slide level2 center">
-<h2>Variable transformation</h2>
+<section id="linear-models-and-non-linear-patterns" class="slide level2 center">
+<h2>Linear models and non-linear patterns</h2>
 <ul>
-<li><p>A major advantage of linear models is that they can exploit non-linear relationship via <span class="blue">variable transformations</span>.</p></li>
-<li><p>This gives the statistician a lot of modelling flexibility, for instance:</p></li>
+<li>A major advantage of linear models is that they can describe non-linear relationship via <span class="blue">variable transformations</span> such as polynomials, logarithms, etc.</li>
 </ul>
-<p><span class="math display">
-\log{y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
-</span></p>
 <div class="fragment">
 <ul>
-<li>This specification is <span class="orange">linear in the parameters</span>, it fixes the domain issues, and imposes a monotone relationship between engine size and consumption.</li>
+<li>This gives the statistician a lot of modelling flexibility. For instance we could let: <span class="math display">
+\log{y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
+</span></li>
 </ul>
+</div>
+<div class="fragment">
+<ul>
+<li>This specification is <span class="orange">linear in the parameters</span>, it fixes the domain issues, and it imposes a monotone relationship between engine size and consumption.</li>
+</ul>
+</div>
+<div class="fragment">
 <div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-7_c032a71ad31910c2536bc32f45905c30">
 <div class="cell-output-display">
 <table>
@@ -751,22 +763,23 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 <ul>
-<li><span class="blue">Apple</span> and <span class="orange">oranges</span>: the <span class="math inline">R^2</span> must be computed and compared using the same scale!</li>
+<li>Do not mix <span class="blue">apple</span> and <span class="orange">oranges</span>! Compare <span class="math inline">R^2</span>s only if they refer to the same scale!</li>
 </ul>
 <div class="fragment">
 <ul>
-<li><p>This second model is <span class="blue">more parsimonious</span> and yet it reaches similar predictive performance.</p></li>
+<li><p>This second model is <span class="blue">more parsimonious</span> and yet it reaches satisfactory predictive performance.</p></li>
 <li><p>It is also more coherent with the nature of the data: the predictions cannot be negative and the relationship between engine size and the consumption is monotone.</p></li>
-<li><p>There is still some heteroschedasticity in the residuals — is this due to a missing covariate that has not been included into the model?</p></li>
+<li><p>Yet, there is still some heteroschedasticity in the residuals — is this due to a missing covariate that has not been included into the model?</p></li>
 </ul>
 </div>
 </section>
 <section id="a-third-model-additional-variables" class="slide level2 center">
 <h2>A third model: additional variables</h2>
 <ul>
-<li>Let us consider <span class="orange">two additional variables</span>: <code>curb.weight</code> (<span class="math inline">w</span>) and <code>n.cylinders</code> (<span class="math inline">v</span>). A modified model could be: <span class="math display">
-\log{y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
-</span> for <span class="math inline">i=1,\dots,n</span>.</li>
+<li><p>Let us consider <span class="blue">two additional variables</span>: <code>curb.weight</code> (<span class="math inline">w</span>) and <code>n.cylinders</code> (<span class="math inline">v</span>).</p></li>
+<li><p>A richer model therefore could be: <span class="math display">
+  \log{y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
+  </span> for <span class="math inline">i=1,\dots,n</span>. The estimates are:</p></li>
 </ul>
 <div class="fragment">
 <div class="cell" data-hash="un_A1_cache/revealjs/unnamed-chunk-11_b0002807b25020b1c6e08b2debf0ea51">
@@ -855,7 +868,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 <ul>
-<li><p>We took care of the <span class="orange">outliers</span>, which it turns out are identified by the group of cars having 2 cylinders.</p></li>
+<li><p>In this third model, we took care of the <span class="orange">outliers</span> appearing in the residual plots, which it turns out are identified by the group of cars having 2 cylinders.</p></li>
 <li><p>The diagnostic plots are also very much improved, although still not perfect.</p></li>
 <li><p>The estimates are coherent with our expectations, based on common knowledge. Have a look at the textbook (A&amp;S) for a detailed explaination about <span class="math inline">\beta_4</span>!</p></li>
 <li><p>If you are curious, the car dataset is available from the textbook (A&amp;S) website:</p>
@@ -873,28 +886,44 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <section id="how-to-obtain-the-least-squares-estimate" class="slide level2 center">
 <h2>How to obtain the least squares estimate?</h2>
 <ul>
-<li><p>In undergraduate courses it is often suggested that the least square estimate should be computed using the formula <span class="math display">
+<li><p>In B.Sc. courses it is often suggested that the least square estimate should be computed using the formula <span class="math display">
 \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y},
 </span> that is, using the R code <code>solve(t(X) %*% X) %*% t(X) %*% y</code>.</p></li>
-<li><p>This is <span class="orange">theoretically correct</span> and it works reasonably well in many simple cases.</p></li>
+<li><p>This approach works reasonably well in many <span class="blue">simple cases</span>.</p></li>
 </ul>
 <div class="fragment">
 <ul>
-<li><p>However, in realistic problems, when we have a lot of data (large <span class="math inline">n</span>) and correlated variables, the above code is <span class="orange">computationally inefficient</span> and <span class="blue">numerically inaccurate</span>.</p></li>
-<li><p>The main computational bottleneck is about obtaining the inverse of <span class="math inline">\bm{X}^T\bm{X}</span>, which is very costly and often numerically unstable, especially when the predictors are almost collinear.</p></li>
+<li>Unfortunately, in more challenging scenarios, e.g.&nbsp;when we have a lot of data (large <span class="math inline">n</span>) and correlated variables, the above code is
+<ul>
+<li><span class="orange">computationally inefficient</span></li>
+<li><span class="blue">numerically inaccurate</span></li>
+</ul></li>
+<li>The main computational bottleneck is the calculation of the inverse of <span class="math inline">\bm{X}^T\bm{X}</span>, which is very costly and often numerically unstable, especially when the predictors are almost collinear.</li>
 </ul>
 </div>
 </section>
 <section id="the-normal-equations" class="slide level2 center">
 <h2>The normal equations</h2>
 <ul>
-<li><p>Consider the following system of equations (<span class="orange">normal equations</span>):<span class="math display">
+<li><p>The least square estimate is the solution of the system of equations (<span class="orange">normal equations</span>):<span class="math display">
 \bm{X}^T\bm{X} \beta = \bm{X}^T \bm{y}.
 </span></p></li>
 <li><p>This system could be solved using <code>solve(crossprod(X), crossprod(X, y))</code>.</p></li>
-<li><p>The above R command avoids the computation of <span class="math inline">(\bm{X}^T\bm{X})^{-1}</span> and it is preferable compared to the “direct solution”. However, it does not exploit the properties of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>.</p></li>
+<li><p>This avoids the explicit computation of <span class="math inline">(\bm{X}^T\bm{X})^{-1}</span> and it is preferable compared to the “direct solution”. However, it does not exploit the properties of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>.</p></li>
 </ul>
 <div class="fragment">
+<ul>
+<li>Recall (from your favorite linear algebra textbook) that a <span class="blue">symmetric</span> matrix <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> is <span class="orange">positive definite</span> if and only if one the following properties is satisfied
+<ul>
+<li>The quadratic form <span class="math inline">\tilde{\bm{x}}^T \bm{A} \tilde{\bm{x}} &gt; 0</span> for all <span class="math inline">\tilde{\bm{x}} \in \mathbb{R}^p</span> such that <span class="math inline">\tilde{\bm{x}} \neq 0</span>.</li>
+<li>The eigenvalues <span class="math inline">\lambda_1,\dots,\lambda_p</span> of <span class="math inline">\bm{A}</span> are all strictly positive.</li>
+</ul></li>
+<li>We now describe a strategy to compute <span class="math inline">\hat{\beta}</span> that exploits the fact that <span class="math inline">\bm{X}^T\bm{X}</span> is <span class="orange">positive definite</span>, resulting in more <span class="blue">efficient computations</span>.</li>
+</ul>
+</div>
+</section>
+<section id="cholesky-factorization-1" class="slide level2 center">
+<h2>Cholesky factorization</h2>
 <div class="callout callout-note no-icon callout-captioned callout-style-simple">
 <div class="callout-body">
 <div class="callout-caption">
@@ -907,17 +936,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 </div>
-</div>
-</section>
-<section id="cholesky-factorization-1" class="slide level2 center">
-<h2>Cholesky factorization</h2>
-<ul>
-<li>Recall (from your favorite linear algebra textbook) that a <span class="blue">symmetric</span> matrix <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> is <span class="orange">positive definite</span> if and only if one the following properties is satisfied
-<ul>
-<li>The quadratic form <span class="math inline">\bm{x}^T \bm{A} \bm{x} &gt; 0</span> for all <span class="math inline">\bm{x} \in \mathbb{R}^p</span> such that <span class="math inline">\bm{x} \neq 0</span>.</li>
-<li>The eigenvalues <span class="math inline">\lambda_1,\dots,\lambda_p</span> of <span class="math inline">\bm{A}</span> are all strictly positive.</li>
-</ul></li>
-</ul>
+<div class="fragment">
 <div class="callout callout-note no-icon callout-captioned callout-style-simple">
 <div class="callout-body">
 <div class="callout-caption">
@@ -930,20 +949,23 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 </div>
+</div>
 </section>
 <section id="cholesky-factorization-and-least-squares" class="slide level2 center">
 <h2>Cholesky factorization and least squares</h2>
 <div>
 <ul>
+<li class="fragment"><p>The Cholesky factorization is incredibly helpful for computing least squares. Indeed:</p></li>
 <li class="fragment"><p>Let <span class="math inline">\bm{R}^T\bm{R}</span> be the Cholesky factorization of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>. Then, the <span class="orange">normal equations</span> can be written as <span class="math display">
-\bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y},
-</span> which can be can be solved in two steps.</p></li>
+\bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y}.
+</span> This system be can now solved in <span class="orange">two steps</span>:</p></li>
 <li class="fragment"><p><span class="blue">Step 1 (Forwardsolve)</span>. Solve with respect to <span class="math inline">z</span> the system of equations <span class="math display">
 \bm{R}^T z = \bm{X}^T \bm{y}.
 </span></p></li>
 <li class="fragment"><p><span class="blue">Step 2 (Backsolve)</span>. Given <span class="math inline">z</span>, now solve with respect to <span class="math inline">\beta</span> the system of equations <span class="math display">
 \bm{R} \beta = z.
 </span></p></li>
+<li class="fragment"><p>Why is this procedure computationally more efficient than the naïve solution?</p></li>
 </ul>
 </div>
 </section>
@@ -951,7 +973,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <h2>Forward and backward substitutions</h2>
 <div>
 <ul>
-<li class="fragment"><p>The solution of <span class="blue">triangular systems</span> is <span class="orange">straightforward</span>.</p></li>
+<li class="fragment"><p>The key observation is that the solution of <span class="blue">triangular systems</span> is computationally <span class="orange">straightforward</span>.</p></li>
 <li class="fragment"><p>As an example, consider the following <span class="math inline">3 \times 3</span> lower triangular system: <span class="math display">
 \begin{bmatrix}
 l_{11} &amp; 0 &amp; 0 \\
@@ -964,7 +986,7 @@ b_1 \\ b_2 \\ b_3
 <li class="fragment"><p>The solution for <span class="math inline">x_1,x_2,x_3</span> can be found sequentially: <span class="math display">
 x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x_3 = \frac{b_3 - l_{31}x_1 - l_{32}x_2}{l_{33}}.
 </span></p></li>
-<li class="fragment"><p>Finding the inverse <span class="math inline">\bm{R}^{-1}</span> is simple, again because <span class="math inline">\bm{R}</span> is upper triangular. Also note that <span class="math display">
+<li class="fragment"><p>Finding the <span class="orange">inverse</span> <span class="math inline">\bm{R}^{-1}</span> is simple, again because <span class="math inline">\bm{R}</span> is upper triangular. Also note that <span class="math display">
 (\bm{X}^T \bm{X})^{-1} = (\bm{R}^T \bm{R})^{-1} = \bm{R}^{-1} (\bm{R}^{-1})^T.
 </span></p></li>
 </ul>
@@ -983,7 +1005,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <li class="fragment"><p>This gives an overall computational complexity of order <span class="math display">
 \sim n p^2 + p^3 /3,
 </span> which corrects the typographical error of the A&amp;S textbook.</p></li>
-<li class="fragment"><p>This means that in <span class="orange">high-dimensional</span> settings (large <span class="math inline">p</span>) computations become rapidly <span class="orange">very costly</span>, since the complexity is cubic in <span class="math inline">p</span>.</p></li>
+<li class="fragment"><p>This means, unfortunately, that in <span class="blue">high-dimensional</span> settings (large <span class="math inline">p</span>) computations become <span class="orange">very costly</span>, since the complexity is cubic in <span class="math inline">p</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -1026,11 +1048,17 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <section id="orthogonal-predictors" class="slide level2 center">
 <h2>Orthogonal predictors</h2>
 <ul>
-<li><p>When the <span class="blue">predictors</span> are mutually <span class="orange">orthogonal</span>, the problem is significantly simpler.</p></li>
+<li>Another approach for computing least squares is based on the notion of orthogonality.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>If the <span class="blue">predictors</span> were mutually <span class="orange">orthogonal</span>, the problem would be much simpler.</p></li>
 <li><p>In other words, consider a linear model of the form <span class="math display">
 \bm{y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
 </span> where <span class="math inline">\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)</span>. <span class="orange">Orthogonality</span> means that <span class="math inline">\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)</span>.</p></li>
 </ul>
+</div>
+<div class="fragment">
 <div class="callout callout-note no-icon callout-captioned callout-style-simple">
 <div class="callout-body">
 <div class="callout-caption">
@@ -1044,37 +1072,38 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </div>
 </div>
 </div>
+</div>
 </section>
 <section id="regression-by-successive-orthogonalization" class="slide level2 center">
 <h2>Regression by successive orthogonalization</h2>
+<div>
 <ul>
-<li>The predictors of <span class="math inline">\bm{X}</span> are generally not orthogonal. We want to find a suitable transformation <span class="math inline">\bm{Z} = \bm{X} \bm{\Gamma}^{-1}</span> that <span class="blue">orthogonalize</span> the <span class="orange">predictors</span>.</li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>Suppose for example that <span class="math inline">p = 2</span>. We set <span class="orange">first orthogonal predictor</span> <span class="math inline">\bm{z}_1 = \bm{x}_1</span>.</p></li>
-<li><p>We then consider the following <span class="blue">univariate</span> regression problem <span class="math display">
+<li class="fragment"><p>Clearly, the predictors of <span class="math inline">\bm{X}</span> are generally not orthogonal. Hence, we want to find a suitable transformation <span class="math inline">\bm{Z} = \bm{X} \bm{\Gamma}^{-1}</span> that <span class="blue">orthogonalize</span> the <span class="orange">predictors</span>.</p></li>
+<li class="fragment"><p>Suppose for example that <span class="math inline">p = 2</span>. We set <span class="orange">first orthogonal predictor</span> <span class="math inline">\bm{z}_1 = \bm{x}_1</span>.</p></li>
+<li class="fragment"><p>We then consider the following <span class="blue">univariate</span> regression problem <span class="math display">
 \bm{x}_2 = \gamma \bm{z}_1 + \bm{\epsilon}, \qquad \text{which leads} \qquad \hat{\gamma} = \frac{\bm{z}_1^T\bm{x}_2}{\bm{z}_1^T\bm{z}_1}.
 </span></p></li>
-<li><p>The <span class="orange">second orthogonal predictor</span> is obtained as the <span class="blue">residual term</span>: <span class="math display">
+<li class="fragment"><p>The <span class="orange">second orthogonal predictor</span> is obtained as the <span class="blue">residual term</span>: <span class="math display">
 \bm{z}_2 = \bm{x}_2 - \hat{\gamma}\bm{z}_1.
 </span></p></li>
-<li><p>The geometry of linear models guarantees that <span class="math inline">\bm{z}_1^T\bm{z}_2 = 0</span>.</p></li>
+<li class="fragment"><p>The geometry of linear models guarantees that <span class="math inline">\bm{z}_1^T\bm{z}_2 = 0</span>.</p></li>
 </ul>
 </div>
 </section>
 <section id="gram-schmidt-algorithm" class="slide level2 center">
 <h2>Gram-Schmidt algorithm</h2>
+<div>
 <ul>
-<li><p>Let us now consider the <span class="orange">general case</span>, for any value of <span class="math inline">p</span>.</p></li>
-<li><p><span class="blue">Initialization</span>. Set <span class="math inline">\bm{z}_1 = \bm{x}_1</span>.</p></li>
-<li><p><span class="blue">For <span class="math inline">j= 2,\dots,p</span></span>. Consider the regression problem with <span class="math inline">j-1</span> orthogonal predictors <span class="math display">
+<li class="fragment"><p>Let us now consider the <span class="orange">general case</span>, valid for any value of <span class="math inline">p</span>.</p></li>
+<li class="fragment"><p><span class="blue">Initialization</span>. Set <span class="math inline">\bm{z}_1 = \bm{x}_1</span>.</p></li>
+<li class="fragment"><p><span class="blue">For <span class="math inline">j= 2,\dots,p</span></span>. Consider the regression problem with <span class="math inline">j-1</span> orthogonal predictors <span class="math display">
 \bm{x}_j = \sum_{k=1}^{j-1}\gamma_{kj} \bm{z}_k + \bm{\epsilon}_j, \quad \text{which leads} \quad \hat{\gamma}_{kj} = \frac{\bm{z}_k^T\bm{x}_j}{\bm{z}_k^T\bm{z}_k}, \quad k=1,\dots,j-1,
 </span> Then, compute the new vector <span class="math inline">\bm{z}_j</span> as the <span class="orange">residual</span> term <span class="math display">
 \bm{z}_j = \bm{x}_j - \sum_{k=1}^{j-1}\hat{\gamma}_{kj} \bm{z}_k
 </span></p></li>
-<li><p>The geometry of linear models guarantees <span class="orange">orthogonality</span>, that is <span class="math inline">\bm{z}_j^T \bm{z}_{j'} = 0</span> for any <span class="math inline">j \neq j'</span>.</p></li>
+<li class="fragment"><p>The geometry of linear models guarantees <span class="orange">orthogonality</span>, that is <span class="math inline">\bm{z}_j^T \bm{z}_{j'} = 0</span> for any <span class="math inline">j \neq j'</span>.</p></li>
 </ul>
+</div>
 </section>
 <section id="the-qr-decomposition-i" class="slide level2 center">
 <h2>The QR decomposition I</h2>
@@ -1089,7 +1118,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 1
 \end{bmatrix}, \qquad \bm{Z} = (\bm{z}_1,\dots,\bm{z}_p).
 </span></p></li>
-<li class="fragment"><p>The <span class="math inline">p \times p</span> matrix <span class="math inline">\bm{\Gamma}</span> is <span class="orange">upper triangular</span>, whereas the columns of the <span class="math inline">n \times p</span> matrix <span class="math inline">\bm{Z}</span> are <span class="blue">mutually orthogonal</span>.</p></li>
+<li class="fragment"><p>The <span class="math inline">p \times p</span> matrix <span class="math inline">\bm{\Gamma}</span> is <span class="orange">upper triangular</span>, whereas the columns of the <span class="math inline">n \times p</span> matrix <span class="math inline">\bm{Z}</span> are <span class="blue">mutually orthogonal</span>, due to the properties of the residuals of a linear model.</p></li>
 <li class="fragment"><p>It is often convenient to <span class="orange">standardize</span> the columns of <span class="math inline">\bm{Z}</span>, dividing them by their norm <span class="math inline">||\bm{z}_j||</span>. Let <span class="math inline">\bm{D} = \text{diag}(||\bm{z}_1||, \dots, ||\bm{z}_p||)</span>, then in matrix notation: <span class="math display">
 \bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}.
 </span></p></li>
@@ -1105,12 +1134,13 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <p><strong>Theorem (QR factorization)</strong></p>
 </div>
 <div class="callout-content">
-<p>Suppose <span class="math inline">\bm{X} \in \mathbb{R}^{n \times p}</span> with <span class="math inline">n \ge p</span> has full rank, that is <span class="math inline">\text{rk}(\bm{X}) = p</span>. Then there exists a factorization of the form <span class="math display">
+<p>Suppose <span class="math inline">\bm{X} \in \mathbb{R}^{n \times p}</span> with <span class="math inline">n \ge p</span> has full rank, that is <span class="math inline">\text{rk}(\bm{X}) = p</span>. Then, there exists a factorization of the form <span class="math display">
 \bm{X} = \bm{Q} \bm{R},
 </span> where <span class="math inline">\bm{Q} \in \mathbb{R}^{n \times p}</span> has <span class="orange">orthonormal columns</span> and <span class="math inline">\bm{R} \in \mathbb{R}^{p \times p}</span> is an <span class="blue">upper triangular</span> matrix.</p>
 </div>
 </div>
 </div>
+<div class="fragment">
 <div class="callout callout-tip no-icon callout-captioned callout-style-simple">
 <div class="callout-body">
 <div class="callout-caption">
@@ -1118,6 +1148,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </div>
 <div class="callout-content">
 <p>The QR decomposition is <span class="blue">unique</span> up to <span class="blue">sign flips</span> of the columns of <span class="math inline">\bm{Q}</span> and the rows of <span class="math inline">\bm{R}</span>. Moreover, if <span class="math inline">\bm{R}</span> has positive diagonal entries, as the one obtained using Gram-Schmidt, then it coincides with the <span class="orange">Cholesky factor</span> of <span class="math inline">\bm{X}^T\bm{X}</span>.</p>
+</div>
 </div>
 </div>
 </div>
@@ -1165,8 +1196,8 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <li class="fragment"><p>In practice, the QR is computed via a <span class="blue">modified Gram-Schmidt</span>, that fixes the instabilities of the naïve Gram-Schmidt algorithm, or via <span class="orange">Householder reflections</span>.</p></li>
 <li class="fragment"><p>The expensive step is the QR factorization. The overall computational complexity is of order <span class="math display">
 \sim 2 n p^2</span> which is about twice that of the Cholesky, when <span class="math inline">n</span> is much larger than <span class="math inline">p</span>, and about the same when <span class="math inline">p \approx n</span>.</p></li>
-<li class="fragment"><p>Depending on the context, we may prefer the Cholesky or the QR. The default approach in R, i.e.&nbsp;the one implemented in the <code>lm</code> function, is the QR factorization.<br>
-</p></li>
+<li class="fragment"><p>Depending on the context, and assuming we only care about <span class="math inline">\hat{\beta}</span>, we may prefer the Cholesky (<span class="blue">fast</span> but <span class="orange">imprecise</span>) or the QR (<span class="orange">slower</span> but more <span class="blue">reliable</span>).</p></li>
+<li class="fragment"><p>The default approach in R, i.e.&nbsp;the one implemented in the <code>lm</code> function, is the QR factorization, because one typically also needs to compute <span class="math inline">\bm{H}</span>, or the leverages.</p></li>
 </ul>
 </div>
 </section>
@@ -1192,12 +1223,12 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <h2>When <span class="math inline">n</span> is very large…</h2>
 <div>
 <ul>
-<li class="fragment"><p>When the sample size <span class="math inline">n</span> is extremely large, as it is common in data mining problems, then the QR factorization cannot be computed.</p></li>
+<li class="fragment"><p>When the <span class="blue">sample size</span> <span class="math inline">n</span> is <span class="orange">extremely large</span>, as it is common in data mining problems, then the QR factorization can be computed.</p></li>
 <li class="fragment"><p>Indeed, even <span class="orange">loading</span> <span class="math inline">\bm{X}</span> into <span class="orange">memory</span> could be problematic.</p></li>
 <li class="fragment"><p>In the normal equations approach, we only need to compute the <span class="blue">sufficient statistics</span>: <span class="math display">
 \bm{W} = \bm{X}^T\bm{X}, \qquad \bm{u} = \bm{X}^T\bm{y},
 </span> which are of dimension <span class="math inline">p\times p</span> and <span class="math inline">p \times 1</span>, respectively.</p></li>
-<li class="fragment"><p>Using <span class="math inline">\bm{W}</span> and <span class="math inline">\bm{u}</span> one can obtain the least square estimate <span class="math inline">\hat{\beta}</span> using the Cholesky factorization.</p></li>
+<li class="fragment"><p>If we knew <span class="math inline">\bm{W}</span> and <span class="math inline">\bm{u}</span>, then we could obtain the least square estimate <span class="math inline">\hat{\beta}</span> using the Cholesky factorization.</p></li>
 <li class="fragment"><p>However, when <span class="math inline">n</span> is extremely large, the difficult part is indeed computing <span class="math inline">\bm{W}</span> and <span class="math inline">\bm{u}</span>!</p></li>
 </ul>
 </div>
@@ -1222,7 +1253,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <div>
 <ul>
 <li class="fragment"><p>In many occasions, the data flow continuously, meaning that we get a new pair of observations <span class="math inline">(\tilde{\bm{x}}_{n+1}, y_{n+1})</span> every minute, or even every second.</p></li>
-<li class="fragment"><p>We would like to <span class="orange">update</span> the current least square estimate <span class="math inline">\hat{\beta}_{(n)}</span> with the new information <span class="math inline">(\tilde{\bm{x}}_{n+1}, y_{n+1})</span>, but ideally without re-doing all the calculations.</p></li>
+<li class="fragment"><p>In these cases, we would like to <span class="orange">update</span> the current least square estimate <span class="math inline">\hat{\beta}_{(n)}</span> with the new information <span class="math inline">(\tilde{\bm{x}}_{n+1}, y_{n+1})</span>, but ideally without re-doing all the calculations.</p></li>
 <li class="fragment"><p>The <span class="blue">recursive data import</span> of the <a href="#/recursive-data-import">previous slide</a> is partially unsatisfactory, because one would need to invert (or factorize) a <span class="math inline">p \times p</span> matrix every time, which could be costly.</p></li>
 <li class="fragment"><p>Let us define some useful quantity: <span class="math display">
 \bm{V}_{(n)} = \bm{W}_{(n)}^{-1} = (\bm{X}_{(n)}^T\bm{X}_{(n)})^{-1},

@@ -66,12 +66,6 @@ not simpler"* Attributed to Albert Einstein
 -   ... but you should be already [very familiar]{.orange} with linear
     models!
 
--   If do not remember much about them, use this first week of lectures
-    to catch up (or study) from the material of previous courses.
-
-<!-- -   A [short introduction]{.blue} to the topic is also offered in -->
-
-<!--     Azzalini & Scarpa (2011), Chapter 2 and Appendix A.3. -->
 :::
 :::
 
@@ -108,8 +102,8 @@ p0
 ::: {.column width="50%"}
 -   We consider data for $n = 203$ models of cars in circulation in 1985
     in the USA.
--   We want to to [predict]{.blue} the distance covered per unit of
-    fuel, as a function of the vehicle characteristics.
+-   We want to [predict]{.blue} the distance per unit of
+    fuel, as a function of the vehicle features.
 -   We consider the following [variables]{.orange}:
     -   The city distance per unit of fuel (km/L, `city.distance`)
     -   The engine size (L, `engine.size`)
@@ -138,16 +132,12 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 :::
 
 ::: {.column width="60%"}
--   Consider `city.distance` ($y$), `engine.size` ($x$) and `fuel`
+-   Let us consider the variables `city.distance` ($y$), `engine.size` ($x$) and `fuel`
     ($z$).
 
--   The simplest model is a [linear regression]{.orange} line: $$
+-   A [simple linear regression]{.blue} $$
     y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
-    $$ where the "errors" $\epsilon_i$ are iid random variables, having
-    zero mean and variance $\sigma^2$.
-
--   An estimate for the [unknown regression parameters]{.blue} $\beta_0$
-    and $\beta_1$ can be obtained by ordinary least squares...
+    $$ could be easily obtained by least squares...
 
 -   ... but the plot clearly suggests that the relationship between
     `city.distance` and `engine.size` is [not]{.orange} well
@@ -161,12 +151,14 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 ## Regression models
 
 ::: incremental
--   A more [general formulation]{.orange} for modeling the relationship
+-   A [general]{.orange} and [more flexible formulation]{.orange} for modeling the relationship
     between a vector of covariates
     $(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p$ and a response
     $y \in \mathbb{R}$ is $$
-    y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n.
+    y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n,
     $$
+    where the "errors" $\epsilon_i$ are iid random variables, having
+    zero mean and variance $\sigma^2$.
 
 -   To estimate the unknown parameters $\beta$, a possibility is to rely
     on the [least squares criterion]{.blue}: we seek the
@@ -184,16 +176,18 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 
 ## Linear models
 
--   We can more flexibly model `city.distance` ($y$), `engine.size`
+-   Let us consider again the variables `city.distance` ($y$), `engine.size`
     ($x$) and `fuel` ($z$).
 
--   For instance, we could consider a [polynomial term]{.orange}
-    combined with a [dummy variable]{.blue} $$
-    f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}).
-    $$
+- Which function $f(x,z;\beta)$ should we choose?
 
--   [Remark]{.orange}. This model is [linear in the parameters]{.blue},
-    but it can capture non-linear patterns!
+. . .
+
+-   A first attempt is to consider a [polynomial term]{.orange}
+    combined with a [dummy variable]{.blue} $$
+    f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}),
+    $$
+which is a special instance of [linear model]{.orange}.
 
 . . .
 
@@ -224,7 +218,7 @@ corresponding vector of [coefficients]{.orange}.
     \end{bmatrix}.
     $$
 
--   The linear model can be written using the [compact
+-   Then, a [linear model]{.blue} can be written using the [compact
     notation]{.orange}: $$
     \bm{y} = \bm{X}\beta + \bm{\epsilon},
     $$ where $\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T$ is a
@@ -239,10 +233,13 @@ corresponding vector of [coefficients]{.orange}.
 ## Linear regression: estimation I
 
 -   The optimal set of coefficients $\hat{\beta}$ is the minimizer of
-    the least squared criterion $$
+    the [least squared criterion]{.orange} $$
     D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
     $$ known also as [residual sum of squares (RSS)]{.orange}, where $$
-    ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2}.$$
+    ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2},$$
+    denotes the [Euclidean norm]{.blue}.
+
+. . .
 
 ::: callout-note
 #### Least square estimate (OLS)
@@ -257,7 +254,7 @@ estimate]{.orange} has an explicit solution: $$
 ## Linear regression: estimation II
 
 ::: incremental
--   Consequently, the predicted values are $$
+-   In matrix notation, the predicted values are can be obtained as $$
     \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{H}\bm{y}, \qquad \bm{H} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
     $$
 
@@ -267,7 +264,7 @@ estimate]{.orange} has an explicit solution: $$
 -   It can be shown that $\text{tr}(\bm{H}) = \text{rk}(\bm{H}) = p$.
     Moreover, it holds $\bm{H} = \bm{H}^T$ and $\bm{H}^2 = \bm{H}$.
 
--   The quantity $D(\hat{\beta})$ is the [deviance]{.blue}, which is
+-   The quantity $D(\hat{\beta})$ is the so-called [deviance]{.blue}, which is
     equal to $$
     D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{H})\bm{y}.
     $$
@@ -285,7 +282,7 @@ estimate]{.orange} has an explicit solution: $$
     distribution:
     $\epsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$.
 
--   This implies that the distribution of the estimator $\hat{\beta}$ is
+-   This implies that the [distribution]{.orange} of the [estimator]{.orange} $\hat{\beta}$ is
     $$
     \hat{\beta} \sim N_p(\beta, \sigma^2 (\bm{X}^T\bm{X})^{-1}).
     $$
@@ -300,21 +297,23 @@ estimate]{.orange} has an explicit solution: $$
 
 -   Confidence interval and Wald's tests can be obtained through
     classical inferential theory.
+    
+- Ok, we are ready to get back to the original problem...
 :::
 
-## Car data, a preliminary model
+## Car data, a first model
 
 ::: incremental
--   A first model to predict `city.distance` ($y$) via `engine.size`
-    ($x$) and `fuel` ($z$) is $$
+-   Our first attempt for predicting `city.distance` ($y$) via `engine.size`
+    ($x$) and `fuel` ($z$) is: $$
       f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}).
       $$
 
--   By looking at the plot of the data, it is plausible that we need a
+-   Indeed, by looking at the plot of the data, it is plausible that we need a
     [polynomial]{.orange} of degree $3$ or $4$
 
 -   It is also clear from the plot that `fuel` is a relevant variable.
-    Categorical variable should be [encoded]{.orange} using [indicator
+    Categorical variables are [encoded]{.orange} using [indicator
     variables]{.blue}.
 
 -   To evaluate the goodness of fit, we can calculate the [coefficient
@@ -335,7 +334,7 @@ m1 <- lm(city.distance ~ engine.size + I(engine.size^2) + I(engine.size^3) + fue
 kable(tidy(m1, conf.int = FALSE), digits = 3)
 ```
 
--   The coefficient $R^2$ and the residual standard deviation $s$ are:
+-   Moreover, the coefficient $R^2$ and the residual standard deviation $s$ are:
 
 ```{r}
 kable(glance(m1)[c(1, 3, 10)])
@@ -377,6 +376,9 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
 ## Comments and criticisms
 
 ::: incremental
+
+- Is this a good model?
+
 -   The overall fit [seems satisfactory]{.blue} at first glance,
     especially if we aim at predicting the urban distance of cars when
     average engine size (i.e., between $1.5L$ and $3L$).
@@ -386,34 +388,35 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
     assumption, i.e. $\text{var}(\epsilon_i) = \sigma^2$, might be
     violated.
 
--   Also, this model in not suitable for [extrapolation]{.orange}.
-    Indeed:
-
--   It has no grounding in physics or engineering, which leads to
+-   Also, this model in not suitable for [extrapolation]{.orange}. Indeed:
+    -   It has no grounding in physics or engineering, which leads to
     difficulties in the interpretation of the trend and/or paradoxical
     situations.
-
--   For example, the curve of the set of gasoline cars shows a local
+    -   For example, the curve of the set of gasoline cars shows a local
     minimum around $4.6 L$ and then rises again!
+    
+-  It is plausible that we can find a better one, so what's next?
 :::
 
-## Variable transformation
+## Linear models and non-linear patterns
 
--   A major advantage of linear models is that they can exploit
-    non-linear relationship via [variable transformations]{.blue}.
+-   A major advantage of linear models is that they can describe
+    non-linear relationship via [variable transformations]{.blue} such as polynomials, logarithms, etc.
 
--   This gives the statistician a lot of modelling flexibility, for
-    instance:
+. . .
 
-$$
+-   This gives the statistician a lot of modelling flexibility. For
+    instance we could let: $$
 \log{y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
 $$
 
 . . .
 
 -   This specification is [linear in the parameters]{.orange}, it fixes
-    the domain issues, and imposes a monotone relationship between
+    the domain issues, and it imposes a monotone relationship between
     engine size and consumption.
+
+. . .
 
 ```{r}
 m2 <- lm(log(city.distance) ~ I(log(engine.size)) + fuel, data = auto)
@@ -462,28 +465,29 @@ r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m2)))^2)) /
 kable(data.frame(r.squared.original = r.squared.original, glance(m2)[c(1, 3, 10)]))
 ```
 
--   [Apple]{.blue} and [oranges]{.orange}: the $R^2$ must be computed
-    and compared using the same scale!
+-   Do not mix [apple]{.blue} and [oranges]{.orange}! Compare $R^2$s only if they refer to the same scale!
 
 . . .
 
 -   This second model is [more parsimonious]{.blue} and yet it reaches
-    similar predictive performance.
+    satisfactory predictive performance.
 
 -   It is also more coherent with the nature of the data: the
     predictions cannot be negative and the relationship between engine
     size and the consumption is monotone.
 
--   There is still some heteroschedasticity in the residuals --- is this
+-   Yet, there is still some heteroschedasticity in the residuals --- is this
     due to a missing covariate that has not been included into the
     model?
 
 ## A third model: additional variables
 
--   Let us consider [two additional variables]{.orange}: `curb.weight`
-    ($w$) and `n.cylinders` ($v$). A modified model could be: $$
+-   Let us consider [two additional variables]{.blue}: `curb.weight`
+    ($w$) and `n.cylinders` ($v$). 
+    
+- A richer model therefore could be: $$
     \log{y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
-    $$ for $i=1,\dots,n$.
+    $$ for $i=1,\dots,n$. The estimates are:
 
 . . .
 
@@ -519,11 +523,9 @@ r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m3)))^2)) /
 kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)]))
 ```
 
--   We took care of the [outliers]{.orange}, which it turns out are
-    identified by the group of cars having 2 cylinders.
+-   In this third model, we took care of the [outliers]{.orange} appearing in the residual plots, which it turns out are identified by the group of cars having 2 cylinders.
 
--   The diagnostic plots are also very much improved, although still not
-    perfect.
+-   The diagnostic plots are also very much improved, although still not perfect.
 
 -   The estimates are coherent with our expectations, based on common
     knowledge. Have a look at the textbook (A&S) for a detailed
@@ -538,27 +540,29 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 
 ## How to obtain the least squares estimate?
 
--   In undergraduate courses it is often suggested that the least square
+-   In B.Sc. courses it is often suggested that the least square
     estimate should be computed using the formula $$
     \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y},
     $$ that is, using the R code `solve(t(X) %*% X) %*% t(X) %*% y`.
 
--   This is [theoretically correct]{.orange} and it works reasonably
-    well in many simple cases.
+-   This approach works reasonably
+    well in many [simple cases]{.blue}.
 
 . . .
 
--   However, in realistic problems, when we have a lot of data (large
-    $n$) and correlated variables, the above code is [computationally
-    inefficient]{.orange} and [numerically inaccurate]{.blue}.
+-   Unfortunately, in more challenging scenarios, e.g. when we have a lot of data (large
+    $n$) and correlated variables, the above code is 
+     - [computationally
+    inefficient]{.orange}
+     - [numerically inaccurate]{.blue}
 
--   The main computational bottleneck is about obtaining the inverse of
+-   The main computational bottleneck is the calculation of the inverse of
     $\bm{X}^T\bm{X}$, which is very costly and often numerically
     unstable, especially when the predictors are almost collinear.
 
 ## The normal equations
 
--   Consider the following system of equations ([normal
+-   The least square estimate is the solution of the system of equations ([normal
     equations]{.orange}):$$
     \bm{X}^T\bm{X} \beta = \bm{X}^T \bm{y}.
     $$
@@ -566,12 +570,29 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 -   This system could be solved using
     `solve(crossprod(X), crossprod(X, y))`.
 
--   The above R command avoids the computation of
+-   This avoids the explicit computation of
     $(\bm{X}^T\bm{X})^{-1}$ and it is preferable compared to the "direct
     solution". However, it does not exploit the properties of the matrix
     $\bm{X}^T\bm{X}$.
 
 . . .
+
+
+. . .
+
+-   Recall (from your favorite linear algebra textbook) that a
+    [symmetric]{.blue} matrix $\bm{A} \in \mathbb{R}^{p \times p}$ is
+    [positive definite]{.orange} if and only if one the following
+    properties is satisfied
+    -   The quadratic form $\tilde{\bm{x}}^T \bm{A} \tilde{\bm{x}} > 0$ for all
+        $\tilde{\bm{x}} \in \mathbb{R}^p$ such that $\tilde{\bm{x}} \neq 0$.
+    -   The eigenvalues $\lambda_1,\dots,\lambda_p$ of $\bm{A}$ are all
+        strictly positive.
+
+- We now describe a strategy to compute $\hat{\beta}$ that exploits the fact that $\bm{X}^T\bm{X}$ is [positive definite]{.orange}, resulting in more [efficient computations]{.blue}. 
+
+## Cholesky factorization
+
 
 ::: callout-note
 #### Proposition A.1
@@ -582,16 +603,7 @@ rank, that is $\text{rk}(\bm{X}) = p$. Then, the matrix $$
 $$ is [symmetric]{.blue} and [positive definite]{.orange}.
 :::
 
-## Cholesky factorization
-
--   Recall (from your favorite linear algebra textbook) that a
-    [symmetric]{.blue} matrix $\bm{A} \in \mathbb{R}^{p \times p}$ is
-    [positive definite]{.orange} if and only if one the following
-    properties is satisfied
-    -   The quadratic form $\bm{x}^T \bm{A} \bm{x} > 0$ for all
-        $\bm{x} \in \mathbb{R}^p$ such that $\bm{x} \neq 0$.
-    -   The eigenvalues $\lambda_1,\dots,\lambda_p$ of $\bm{A}$ are all
-        strictly positive.
+. . .
 
 ::: callout-note
 #### Theorem (Cholesky factorization)
@@ -606,11 +618,14 @@ $$
 ## Cholesky factorization and least squares
 
 ::: incremental
+
+- The Cholesky factorization is incredibly helpful for computing least squares. Indeed:
+
 -   Let $\bm{R}^T\bm{R}$ be the Cholesky factorization of the matrix
     $\bm{X}^T\bm{X}$. Then, the [normal equations]{.orange} can be
     written as $$
-    \bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y},
-    $$ which can be can be solved in two steps.
+    \bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y}.
+    $$ This system be can now solved in [two steps]{.orange}:
 
 -   [Step 1 (Forwardsolve)]{.blue}. Solve with respect to $z$ the system
     of equations $$
@@ -621,12 +636,13 @@ $$
     $\beta$ the system of equations $$
     \bm{R} \beta = z.
     $$
+- Why is this procedure computationally more efficient than the naïve solution?
 :::
 
 ## Forward and backward substitutions
 
 ::: incremental
--   The solution of [triangular systems]{.blue} is
+-   The key observation is that the solution of [triangular systems]{.blue} is computationally 
     [straightforward]{.orange}.
 
 -   As an example, consider the following $3 \times 3$ lower triangular
@@ -644,7 +660,7 @@ $$
     x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x_3 = \frac{b_3 - l_{31}x_1 - l_{32}x_2}{l_{33}}.
     $$
 
--   Finding the inverse $\bm{R}^{-1}$ is simple, again because $\bm{R}$
+-   Finding the [inverse]{.orange} $\bm{R}^{-1}$ is simple, again because $\bm{R}$
     is upper triangular. Also note that $$
     (\bm{X}^T \bm{X})^{-1} = (\bm{R}^T \bm{R})^{-1} = \bm{R}^{-1} (\bm{R}^{-1})^T.
     $$
@@ -667,8 +683,8 @@ $$
     \sim n p^2 + p^3 /3,
     $$ which corrects the typographical error of the A&S textbook.
 
--   This means that in [high-dimensional]{.orange} settings (large $p$)
-    computations become rapidly [very costly]{.orange}, since the
+-   This means, unfortunately, that in [high-dimensional]{.blue} settings (large $p$)
+    computations become [very costly]{.orange}, since the
     complexity is cubic in $p$.
 :::
 
@@ -720,14 +736,20 @@ $$
 
 ## Orthogonal predictors
 
--   When the [predictors]{.blue} are mutually [orthogonal]{.orange}, the
-    problem is significantly simpler.
+- Another approach for computing least squares is based on the notion of orthogonality. 
+
+. . .
+
+-   If the [predictors]{.blue} were mutually [orthogonal]{.orange}, the
+    problem would be much simpler.
 
 -   In other words, consider a linear model of the form $$
     \bm{y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
     $$ where $\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)$.
     [Orthogonality]{.orange} means that
     $\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)$.
+
+. . .
 
 ::: callout-note
 #### Proposition A.2. OLS with orthogonal predictors
@@ -742,12 +764,11 @@ $$
 :::
 
 ## Regression by successive orthogonalization
-
--   The predictors of $\bm{X}$ are generally not orthogonal. We want to
+::: incremental
+-   Clearly, the predictors of $\bm{X}$ are generally not orthogonal. Hence, we want to
     find a suitable transformation $\bm{Z} = \bm{X} \bm{\Gamma}^{-1}$
     that [orthogonalize]{.blue} the [predictors]{.orange}.
 
-. . .
 
 -   Suppose for example that $p = 2$. We set [first orthogonal
     predictor]{.orange} $\bm{z}_1 = \bm{x}_1$.
@@ -764,10 +785,11 @@ $$
 
 -   The geometry of linear models guarantees that
     $\bm{z}_1^T\bm{z}_2 = 0$.
+:::
 
 ## Gram-Schmidt algorithm
-
--   Let us now consider the [general case]{.orange}, for any value of
+::: incremental
+-   Let us now consider the [general case]{.orange}, valid for any value of
     $p$.
 
 -   [Initialization]{.blue}. Set $\bm{z}_1 = \bm{x}_1$.
@@ -782,6 +804,7 @@ $$
 
 -   The geometry of linear models guarantees [orthogonality]{.orange},
     that is $\bm{z}_j^T \bm{z}_{j'} = 0$ for any $j \neq j'$.
+:::
 
 ## The QR decomposition I
 
@@ -799,7 +822,7 @@ $$
 
 -   The $p \times p$ matrix $\bm{\Gamma}$ is [upper
     triangular]{.orange}, whereas the columns of the $n \times p$ matrix
-    $\bm{Z}$ are [mutually orthogonal]{.blue}.
+    $\bm{Z}$ are [mutually orthogonal]{.blue}, due to the properties of the residuals of a linear model. 
 
 -   It is often convenient to [standardize]{.orange} the columns of
     $\bm{Z}$, dividing them by their norm $||\bm{z}_j||$. Let
@@ -818,13 +841,15 @@ $$
 #### Theorem (QR factorization)
 
 Suppose $\bm{X} \in \mathbb{R}^{n \times p}$ with $n \ge p$ has full
-rank, that is $\text{rk}(\bm{X}) = p$. Then there exists a factorization
+rank, that is $\text{rk}(\bm{X}) = p$. Then, there exists a factorization
 of the form $$
 \bm{X} = \bm{Q} \bm{R},
 $$ where $\bm{Q} \in \mathbb{R}^{n \times p}$ has [orthonormal
 columns]{.orange} and $\bm{R} \in \mathbb{R}^{p \times p}$ is an [upper
 triangular]{.blue} matrix.
 :::
+
+. . .
 
 ::: callout-tip
 #### Corollary (QR factorization)
@@ -893,9 +918,10 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     \sim 2 n p^2$$ which is about twice that of the Cholesky, when $n$
     is much larger than $p$, and about the same when $p \approx n$.
 
--   Depending on the context, we may prefer the Cholesky or the QR. The
-    default approach in R, i.e. the one implemented in the `lm`
-    function, is the QR factorization.\
+-   Depending on the context, and assuming we only care about $\hat{\beta}$, we may prefer the Cholesky ([fast]{.blue} but [imprecise]{.orange}) or the QR ([slower]{.orange} but more [reliable]{.blue}). 
+
+- The default approach in R, i.e. the one implemented in the `lm`
+    function, is the QR factorization, because one typically also needs to compute $\bm{H}$, or the leverages. 
 :::
 
 ## ☠️ - Pivoting and rank deficiencies
@@ -922,8 +948,8 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 ## When $n$ is very large...
 
 ::: incremental
--   When the sample size $n$ is extremely large, as it is common in data
-    mining problems, then the QR factorization cannot be computed.
+-   When the [sample size]{.blue} $n$ is [extremely large]{.orange}, as it is common in data
+    mining problems, then the QR factorization can be computed.
 
 -   Indeed, even [loading]{.orange} $\bm{X}$ into [memory]{.orange}
     could be problematic.
@@ -934,7 +960,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     $$ which are of dimension $p\times p$ and $p \times 1$,
     respectively.
 
--   Using $\bm{W}$ and $\bm{u}$ one can obtain the least square estimate
+-   If we knew $\bm{W}$ and $\bm{u}$, then we could obtain the least square estimate
     $\hat{\beta}$ using the Cholesky factorization.
 
 -   However, when $n$ is extremely large, the difficult part is indeed
@@ -970,7 +996,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     new pair of observations $(\tilde{\bm{x}}_{n+1}, y_{n+1})$ every
     minute, or even every second.
 
--   We would like to [update]{.orange} the current least square estimate
+-   In these cases, we would like to [update]{.orange} the current least square estimate
     $\hat{\beta}_{(n)}$ with the new information
     $(\tilde{\bm{x}}_{n+1}, y_{n+1})$, but ideally without re-doing all
     the calculations.
