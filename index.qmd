@@ -28,9 +28,17 @@ This the website of the **Data Mining** course (6 CFU) of the "*Corso di
 Laurea Magistrale in Scienze Statistiche ed Economiche* (CLAMSES)",
 Università degli Studi di Milano-Bicocca.
 
+## Prerequisites
+
+Knowledge of the topics (i) linear algebra, (ii) linear models, and
+(iii) generalized linear models (GLMs), is highly recommended.
+
+Knowledge of topics covered in the courses *Probability and Statistics
+M* and *Advanced Statistics M* is also highly recommended.
+
 ## Teaching material
 
-### Reference textbooks
+### Required
 
 -   Azzalini, A. and Scarpa, B. (2011), [*Data Analysis and Data
     Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford University
@@ -39,11 +47,13 @@ Università degli Studi di Milano-Bicocca.
     of Statistical Learning*](https://hastie.su.domains/ElemStatLearn/),
     Second Edition, Springer.
 
-### Additional references
+### Optional
 
 -   Efron, B. and Hastie, T. (2016), [*Computer Age Statistical
     Inference*](https://hastie.su.domains/CASI/), Cambridge University
     Press.
+-   Lewis, Kane, Arnold (2019) *A Computational Approach to Statistical
+    Learning*. Chapman And Hall/Crc.
 
 ### Slides and lecture notes
 
@@ -52,44 +62,30 @@ If you would like to convert the html slides into pdf files, please
 documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf).
 
 | Topic                                  | Notes                         | Slides                                      |
-|-------------------------|--------------------|----------------------------|
-| Introduction                           | [Intro] | [Slides intro] |
+|----------------------------------------|-------------------------------|---------------------------------------------|
+| Introduction                           | \[Intro\]                     | \[Slides intro\]                            |
 | **A-B-C**                              | [Unit A.1](slides/un_A1.html) | [Slides Unit A.1](slides/un_A1_slides.html) |
-| **Linear classification methods**      | [Unit A.2]                 | [Slides Unit A.2]                        |
-| *Exercises*                            | [Exercises 1]               |                                             |
-| **Optimism, conflicts and trade-offs** | [Unit B]                    | [Slides Unit B]                           |
-| *Exercises*                            | [Exercises 2]               |                                             |
-| Lab 1                                  | [Code Lab 1]                |                                             |
-| **Model selection for linear models**  | [Unit C]                    | [Slides Unit C]                           |
-| *Exercises*                            | [Exercises 3]               |                                             |
-| Lab 2                                  | [Code Lab 2]                |                                             |
-| **Nonparametric estimation**           | [Unit D]                    | [Slides Unit D]                           |
-| *Exercises*                            | [Exercises 4]               |                                             |
-| Lab 3                                  | [Code Lab 3]                |                                             |
-| **The curse of dimensionality**        | [Unit E]                    | [Slides Unit E]                           |
-| **Additive models**                    | [Unit F]                    | [Slides Unit F]                           |
-| *Exercises*                            | [Exercises 4]               |                                             |
-| Lab 4                                  | [Code Lab 4]                |                                             |
-|                                        | [Past exams]                |                                             |
-
-### Additional resources
-
-#### News
-
-#### Scientific papers
-
-### Other
-
-## Exam
-
-## Prerequisites
+| **Linear classification methods**      | \[Unit A.2\]                  | \[Slides Unit A.2\]                         |
+| Lab 1                                  | \[Code Lab 1\]                |                                             |
+| *Exercises*                            | \[Exercises 1\]               |                                             |
+| **Optimism, conflicts and trade-offs** | \[Unit B\]                    | \[Slides Unit B\]                           |
+| *Exercises*                            | \[Exercises 2\]               |                                             |
+| Lab 2                                  | \[Code Lab 2\]                |                                             |
+| **Model selection for linear models**  | \[Unit C\]                    | \[Slides Unit C\]                           |
+| *Exercises*                            | \[Exercises 3\]               |                                             |
+| Lab 3                                  | \[Code Lab 3\]                |                                             |
+| **Nonparametric estimation**           | \[Unit D\]                    | \[Slides Unit D\]                           |
+| *Exercises*                            | \[Exercises 4\]               |                                             |
+| Lab 4                                  | \[Code Lab 4\]                |                                             |
+| **The curse of dimensionality**        | \[Unit E\]                    | \[Slides Unit E\]                           |
+| **Additive models**                    | \[Unit F\]                    | \[Slides Unit F\]                           |
+| *Exercises*                            | \[Exercises 5\]               |                                             |
+| Lab 5                                  | \[Code Lab 5\]                |                                             |
+|                                        | \[Past exams\]                |                                             |
 
 ## Office hours
 
-<!-- Per fissare un appuntamento, si prega di contattare il docente in -->
-
-<!-- anticipo via posta elettronica all'indirizzo `tommaso.rigon@unimib.it`. -->
-
-<!-- Il ricevimento è fissato ogni **martedì alle ore 17.30**. -->
+To schedule a meeting, please write to `tommaso.rigon@unimib.it`. Office
+hours is every **Tuesday at 17.30**
 
 ------------------------------------------------------------------------
