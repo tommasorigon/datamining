@@ -22,9 +22,10 @@ format:
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
+    highlight-style: ayu
   html:
     html-math-method: katex
-    echo: false
+    echo: true
     callout-appearance: minimal
     theme: [cosmo, template.css]
     toc: true
@@ -35,6 +36,7 @@ format:
     code-fold: true
     code-summary: "Show the code"
     fig-dpi: 150
+    highlight-style: ayu
 editor: 
   markdown: 
     wrap: 72
