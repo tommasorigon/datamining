@@ -28,14 +28,6 @@ This the website of the **Data Mining** course (6 CFU) of the "*Corso di
 Laurea Magistrale in Scienze Statistiche ed Economiche* (CLAMSES)",
 Università degli Studi di Milano-Bicocca.
 
-## Prerequisites
-
-Knowledge of the topics (i) linear algebra, (ii) linear models, and
-(iii) generalized linear models (GLMs), is highly recommended.
-
-Knowledge of topics covered in the courses *Probability and Statistics
-M* and *Advanced Statistics M* is also highly recommended.
-
 ## Teaching material
 
 ### Required
@@ -62,7 +54,7 @@ If you would like to convert the html slides into pdf files, please
 documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf).
 
 | Topic                                  | Notes                         | Slides                                      |
-|----------------------------------------|-------------------------------|---------------------------------------------|
+|-------------------------|--------------------|----------------------------|
 | Introduction                           | \[Intro\]                     | \[Slides intro\]                            |
 | **A-B-C**                              | [Unit A.1](slides/un_A1.html) | [Slides Unit A.1](slides/un_A1_slides.html) |
 | **Linear classification methods**      | \[Unit A.2\]                  | \[Slides Unit A.2\]                         |
@@ -82,6 +74,12 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | *Exercises*                            | \[Exercises 5\]               |                                             |
 | Lab 5                                  | \[Code Lab 5\]                |                                             |
 |                                        | \[Past exams\]                |                                             |
+
+Prerequisites
+
+Knowledge of the topics (i) linear algebra, (ii) linear models, and (iii) generalized linear models (GLMs), is highly recommended.
+
+Knowledge of topics covered in the courses Probability and Statistics M and Advanced Statistics M is also highly recommended.
 
 ## Office hours
 
