@@ -355,8 +355,8 @@
 </div>
 
 </section>
-<section id="about-this-unit" class="slide level2">
-<h2>About this unit</h2>
+<section id="homepage" class="slide level2 center">
+<h2><a href="../index.html">Homepage</a></h2>
 <div class="columns">
 <div class="column" style="width:40%;">
 <p><img data-src="img/razor.jpg"> <em>“Pluralitas non est ponenda sine necessitate.”</em> William of Ockham</p>
@@ -370,17 +370,17 @@
 <li>Optimism</li>
 </ul></li>
 <li><p>You may have seem some of these notions before…</p></li>
-<li><p>…but it is worth discussing the details of these ideas once again.</p></li>
+<li><p>…but it is worth discussing the details of these ideas once again, with the maturity you now have in a M.Sc.</p></li>
 <li><p>They are the <span class="blue">foundations</span> of <span class="orange">statistical learning</span>.</p></li>
 </ul>
 </div>
 </div>
 </section>
-<section id="yesterdays-data" class="slide level2">
+<section id="yesterdays-data" class="slide level2 center">
 <h2>Yesterday’s data</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-1_155ed14798787a70dab3f7584a778077">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-1_10054e534db2596bd9abee70d563d703">
 <div class="cell-output-display">
 <p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-1-1.png" width="750"></p>
 </div>
@@ -391,7 +391,69 @@
 <li><p>Data were generated according to <span class="math display">
   y_i = f(x_i; \beta) + \epsilon_i, \quad i=1,\dots,n.
   </span></p></li>
+<li><p>The <span class="math inline">\epsilon_1,\dots,\epsilon_n</span> are iid “<span class="orange">error</span>” terms, such that <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2 = 10^{-2}</span>.</p></li>
+<li><p>Here <span class="math inline">f(x; \beta)</span> is a regression function (<span class="blue">signal</span>) that we leave unspecified.</p></li>
+<li><p>Suppose <span class="orange">today</span> we get a new value <span class="math inline">x_{n+1}</span>. We wish to <span class="blue">predict</span> <span class="math inline">y_{n+1}</span> using <span class="math inline">f(x_{n+1}; \beta)</span>.</p></li>
 </ul>
+</div>
+</div>
+</section>
+<section id="polynomial-regression" class="slide level2 center">
+<h2>Polynomial regression</h2>
+<div>
+<ul>
+<li class="fragment"><p>The function <span class="math inline">f(x;\beta)</span> is unknown, so we need to estimate it.</p></li>
+<li class="fragment"><p>A simple approach is using the tools of <a href="unit_A1_slides.html">Unit A.1</a>, such as <span class="orange">polynomial regression</span>: <span class="math display">
+f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
+</span> i.e.&nbsp;<span class="math inline">f(x; \beta)</span> is <span class="orange">approximated</span> with a polynomial of degree <span class="math inline">p-1</span>.</p></li>
+<li class="fragment"><p>This model is linear in the parameters, therefore we can use ordinary least squares.</p></li>
+<li class="fragment"><p>However, how do we choose the <span class="blue">degree of the polynomial</span> <span class="math inline">p - 1</span>?</p></li>
+<li class="fragment"><p>Without have any clear guideline, at least in principle any value of <span class="math inline">p \in \{1,\dots,n\}</span> could be appropriate.</p></li>
+<li class="fragment"><p>Let us see what happens, in practice, when we select different values of <span class="math inline">p</span>…</p></li>
+</ul>
+</div>
+</section>
+<section id="yesterdays-data-polynomial-regression" class="slide level2 center">
+<h2>Yesterday’s data, polynomial regression</h2>
+
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-2-1.png" width="1170" class="r-stretch quarto-figure-center"></section>
+<section id="goodness-of-fit" class="slide level2 center">
+<h2>Goodness of fit</h2>
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-3_f4ddf8fa7cbcb6d64dd720f6c9aef7eb">
+
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-4_49bb5342c026a095715c3ce72e279b5c">
+<div class="cell-output-display">
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-4-1.png" width="750"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-5_a27aea010658c362a0334ba11bb53697">
+<div class="cell-output-display">
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-5-1.png" width="750"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="on-the-choice-of-p" class="slide level2 center">
+<h2>On the choice of <span class="math inline">p</span></h2>
+<ul>
+<li><p>The <span class="orange">deviance</span> decreases as the number of parameter increases; similarly, the <span class="blue"><span class="math inline">R^2</span></span> always increases as a function of <span class="math inline">p</span>. It can be <span class="orange">proved</span> that this <span class="orange">always happens</span> in linear models.</p></li>
+<li></li>
+</ul>
+</section>
+<section id="polynomial-interpolation-p-n" class="slide level2 center">
+<h2>Polynomial interpolation (<span class="math inline">p = n</span>)</h2>
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/revealjs/unnamed-chunk-6_3ff0e4624752a6fc868c86e413dfc7cb">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-6-1.png" width="1170"></p>
+</figure>
+</div>
 </div>
 </div>
 <p><img src="img/logoB.png" class="slide-logo"></p>
@@ -479,7 +541,7 @@
         disableLayout: false,
 
         // Vertical centering of slides
-        center: false,
+        center: true,
 
         // Enables touch navigation on devices with touch input
         touch: true,

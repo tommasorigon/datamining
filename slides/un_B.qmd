@@ -7,7 +7,8 @@ execute:
   cache: true
 format:
   revealjs:
-    auto-stretch: false
+    auto-stretch: true
+    center: true
     html-math-method: katex
     transition: none
     output-file: un_B_slides.html
@@ -21,9 +22,10 @@ format:
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
+    highlight-style: ayu
   html:
     html-math-method: katex
-    echo: false
+    echo: true
     callout-appearance: minimal
     theme: [cosmo, template.css]
     toc: true
@@ -34,6 +36,7 @@ format:
     code-fold: true
     code-summary: "Show the code"
     fig-dpi: 150
+    highlight-style: ayu
 editor: 
   markdown: 
     wrap: 72
@@ -41,7 +44,7 @@ editor_options:
   chunk_output_type: console
 ---
 
-## About this unit
+## [Homepage](../index.html)
 
 ::: columns
 ::: {.column width="40%"}
@@ -57,7 +60,7 @@ editor_options:
     - Optimism
 
 -   You may have seem some of these notions before... 
-- ...but it is worth discussing the details of these ideas once again. 
+- ...but it is worth discussing the details of these ideas once again, with the maturity you now have in a M.Sc. 
 
 - They are the [foundations]{.blue} of [statistical learning]{.orange}.
 :::
@@ -75,7 +78,7 @@ editor_options:
 library(tidyverse)
 library(ggplot2)
 library(ggthemes)
-dataset <- read.table("../data/yesterday.txt", header=TRUE)
+dataset <- read.table("../data/yesterday.txt", header = TRUE)
 ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
   geom_point() +
   theme_light() +
@@ -90,5 +93,133 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
 - Data were generated according to $$
     y_i = f(x_i; \beta) + \epsilon_i, \quad i=1,\dots,n.
     $$
+- The $\epsilon_1,\dots,\epsilon_n$ are iid "[error]{.orange}" terms, such that $\mathbb{E}(\epsilon_i)=0$ and $\text{var}(\epsilon_i)=\sigma^2 = 10^{-2}$. 
+
+- Here $f(x; \beta)$ is a regression function ([signal]{.blue}) that we leave unspecified.
+
+- Suppose [today]{.orange} we get a new value $x_{n+1}$. We wish to [predict]{.blue} $y_{n+1}$ using $f(x_{n+1}; \beta)$.
+
 :::
 ::: 
+
+## Polynomial regression
+
+::: incremental
+
+- The function $f(x;\beta)$ is unknown, so we need to estimate it.
+
+- A simple approach is using the tools of [Unit A.1](unit_A1_slides.html), such as [polynomial regression]{.orange}:
+$$
+f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
+$$
+i.e. $f(x; \beta)$ is [approximated]{.orange} with a polynomial of degree $p-1$.
+
+- This model is linear in the parameters, therefore we can use ordinary least squares.
+
+- However, how do we choose the [degree of the polynomial]{.blue} $p - 1$?
+
+- Without have any clear guideline, at least in principle any value of $p \in \{1,\dots,n\}$ could be appropriate. 
+
+- Let us see what happens, in practice, when we select different values of $p$...
+
+:::
+
+## Yesterday's data, polynomial regression
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4.55
+#| fig-align: center
+degree_list <- c(1, 3, 6, 12, 18, 23)
+data_plot <- NULL
+x_seq <- seq(from = min(dataset$x), to = max(dataset$x), length = 30000)
+for (degree in degree_list) {
+  # Fitting a polynomial of degree p -1
+  fit <- lm(y.yesterday ~ poly(x, degree = degree, raw = F), data = dataset)
+  y_hat <- predict(fit, newdata = data.frame(x = x_seq))
+  data_plot <- rbind(data_plot, data.frame(x = x_seq, y_hat = y_hat, degree = paste("Degree of the polynomial:", degree)))
+}
+data_plot$degree <- factor(data_plot$degree)
+data_plot$degree <- factor(data_plot$degree, levels = levels(data_plot$degree)[c(1, 5, 6, 2, 3, 4)])
+
+ggplot(data = data_plot) +
+  geom_line(aes(x = x, y = y_hat, col = degree)) +
+  geom_point(data = dataset, aes(x = x, y = y.yesterday), size = 0.8) +
+  theme_light() +
+  theme(legend.position = "none") +
+  facet_wrap(. ~ degree, ncol = 3) +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("x") +
+  ylab("y") +
+  ylim(c(0.42, 0.56))
+```
+
+## Goodness of fit
+
+```{r}
+degree_list <- 1:23
+data_plot <- data.frame(degree = degree_list, Deviance = NA, R_squared = NA)
+for (degree in degree_list) {
+  # Fitting a polynomial of degree p -1
+  fit <- lm(y.yesterday ~ poly(x, degree = degree, raw = F), data = dataset)
+  data_plot$Deviance[degree] <- sum( (dataset$y.yesterday -  fitted(fit))^2)
+  data_plot$R_squared[degree] <- summary(fit)$r.squared
+}
+```
+
+
+:::columns
+
+::: {.column width="50%"}
+```{r}
+#| fig-width: 5
+#| fig-height: 4.5
+ggplot(data = data_plot, aes(x = degree + 1, y = Deviance)) +
+  geom_line() +
+  geom_point(size = 0.8) +
+  theme_light() +
+  xlab("# of parameters p") +
+  ylab("Deviance")
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+#| fig-width: 5
+#| fig-height: 4.5
+ggplot(data = data_plot, aes(x = degree + 1, y = R_squared)) +
+  geom_line() +
+  geom_point(size = 0.8) +
+  theme_light() +
+  xlab("# of parameters p") +
+  ylab(expression(R^2))
+```
+:::
+
+:::
+
+## On the choice of $p$
+
+- The [deviance]{.orange} decreases as the number of parameter increases; similarly, the [$R^2$]{.blue} always increases as a function of $p$. It can be [proved]{.orange} that this [always happens]{.orange} in linear models. 
+
+- 
+
+## Polynomial interpolation ($p = n$)
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4.55
+#| fig-align: center
+lagrange <- function(x0, y0) {
+  f <- function(x) {
+    sum(y0 * sapply(seq_along(x0), \(j) {
+      prod(x - x0[-j]) / prod(x0[j] - x0[-j])
+    }))
+  }
+  Vectorize(f, "x")
+}
+f <- lagrange(dataset$x, dataset$y.yesterday)
+
+plot(dataset$x, dataset$y.yesterday, pch = 16, xlab = "x", ylab = "y", main = "Degree of the polynomial: n-1")
+curve(f(x), n = 300, add = TRUE)
+```
