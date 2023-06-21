@@ -418,8 +418,8 @@
 <ul>
 <li><p>Let us consider the variables <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
 <li><p>A <span class="blue">simple linear regression</span> <span class="math display">
-y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
-</span> could be easily obtained by least squares…</p></li>
+Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
+</span> could be easily fit by least squares…</p></li>
 <li><p>… but the plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
 <li><p>… and also that <code>fuel</code> has an non-negligible effect on the response.</p></li>
 </ul>
@@ -430,14 +430,13 @@ y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 <h2>Regression models</h2>
 <div>
 <ul>
-<li class="fragment"><p>A <span class="orange">general</span> and <span class="orange">more flexible formulation</span> for modeling the relationship between a vector of covariates <span class="math inline">(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p</span> and a response <span class="math inline">y \in \mathbb{R}</span> is <span class="math display">
-y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n,
+<li class="fragment"><p>A <span class="orange">general</span> and <span class="orange">more flexible formulation</span> for modeling the relationship between a vector of <span class="blue">fixed covariates</span> <span class="math inline">(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p</span> and a random variable <span class="math inline">Y_i \in \mathbb{R}</span> is <span class="math display">
+Y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n,
 </span> where the “errors” <span class="math inline">\epsilon_i</span> are iid random variables, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
 <li class="fragment"><p>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on the <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
 D(\beta) = \sum_{i=1}^n\{y_i - f(x_{i1},\dots, x_{ip}; \beta)\}^2,
-</span> using <span class="math inline">n</span> pairs of observations <span class="math inline">(x_{i1},\dots,x_{ip})^T</span> and <span class="math inline">y_i</span>, for <span class="math inline">i = 1,\dots,n</span>.</p></li>
-<li class="fragment"><p>The <span class="orange">optimal value</span> is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
-<li class="fragment"><p>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are then obtained as <span class="math inline">\hat{y}_i = f(x_{i1},\dots,x_{ip}; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></p></li>
+</span> using <span class="math inline">n</span> pairs of covariates <span class="math inline">(x_{i1},\dots,x_{ip})^T</span> and the observed realizations <span class="math inline">y_i</span> of the random variables <span class="math inline">Y_i</span>, for <span class="math inline">i = 1,\dots,n</span>. The <span class="orange">optimal value</span> is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
+<li class="fragment"><p>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are <span class="math inline">\hat{y}_i = \mathbb{E}(Y_i) = f(x_{i1},\dots,x_{ip}; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></p></li>
 </ul>
 </div>
 </section>
@@ -461,7 +460,7 @@ f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z =
 <p><strong>Definition (Linear model)</strong></p>
 </div>
 <div class="callout-content">
-<p>In a <span class="blue">linear model</span> the response variable <span class="math inline">y</span> is related to the covariates through the function<span class="math display">
+<p>In a <span class="blue">linear model</span> the response variable is related to the covariates through the function<span class="math display">
     f(x_1,\dots,x_p; \beta) = \beta_1 x_1 + \cdots + \beta_p x_p = \tilde{\bm{x}}^T\beta,
     </span> where <span class="math inline">\tilde{\bm{x}} = (x_1, \dots,x_p)^T</span> is a vector of <span class="orange">covariates</span> and <span class="math inline">\beta = (\beta_1,\dots,\beta_p)^T</span> is the corresponding vector of <span class="orange">coefficients</span>.</p>
 </div>
@@ -473,7 +472,7 @@ f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z =
 <h2>Matrix notation</h2>
 <div>
 <ul>
-<li class="fragment"><p>The <span class="orange">response values</span> are collected in the vector <span class="math inline">\bm{y} = (y_1,\dots,y_n)^T</span>.</p></li>
+<li class="fragment"><p>The <span class="orange">response random variables</span> are collected in the random vector <span class="math inline">\bm{Y} = (Y_1,\dots,Y_n)^T</span>, whose <span class="blue">observed realization</span> is <span class="math inline">\bm{y} = (y_1,\dots,y_n)^T</span>.</p></li>
 <li class="fragment"><p>The <span class="blue">design matrix</span> is a <span class="math inline">n \times p</span> matrix, comprising the covariate’s values, defined by <span class="math display">
 \bm{X} =
 \begin{bmatrix}
@@ -483,7 +482,7 @@ x_{n1} &amp; \cdots &amp; x_{np}
 \end{bmatrix}.
 </span></p></li>
 <li class="fragment"><p>Then, a <span class="blue">linear model</span> can be written using the <span class="orange">compact notation</span>: <span class="math display">
-\bm{y} = \bm{X}\beta + \bm{\epsilon},
+\bm{Y} = \bm{X}\beta + \bm{\epsilon},
 </span> where <span class="math inline">\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T</span> is a vector of iid error terms with zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
 <li class="fragment"><p>The <span class="math inline">j</span>th variable (column) is denoted with <span class="math inline">\bm{x}_j</span>, whereas the <span class="math inline">i</span>th observation (row) is <span class="math inline">\tilde{\bm{x}}_i</span>: <span class="math display">
 \bm{X} = (\bm{x}_1,\dots,\bm{x}_p) = (\tilde{\bm{x}}_1, \dots,\tilde{\bm{x}}_n)^T.
@@ -677,7 +676,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <div class="fragment">
 <ul>
 <li>This gives the statistician a lot of modelling flexibility. For instance we could let: <span class="math display">
-\log{y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
+\log{Y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
 </span></li>
 </ul>
 </div>
@@ -778,7 +777,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li><p>Let us consider <span class="blue">two additional variables</span>: <code>curb.weight</code> (<span class="math inline">w</span>) and <code>n.cylinders</code> (<span class="math inline">v</span>).</p></li>
 <li><p>A richer model therefore could be: <span class="math display">
-  \log{y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
+\log{Y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
   </span> for <span class="math inline">i=1,\dots,n</span>. The estimates are:</p></li>
 </ul>
 <div class="fragment">
@@ -1054,7 +1053,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <ul>
 <li><p>If the <span class="blue">predictors</span> were mutually <span class="orange">orthogonal</span>, the problem would be much simpler.</p></li>
 <li><p>In other words, consider a linear model of the form <span class="math display">
-\bm{y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
+\bm{Y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
 </span> where <span class="math inline">\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)</span>. <span class="orange">Orthogonality</span> means that <span class="math inline">\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)</span>.</p></li>
 </ul>
 </div>

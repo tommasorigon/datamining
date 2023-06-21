@@ -25,7 +25,7 @@ format:
     highlight-style: ayu
   html:
     html-math-method: katex
-    echo: true
+    echo: false
     callout-appearance: minimal
     theme: [cosmo, template.css]
     toc: true
@@ -136,8 +136,8 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
     ($z$).
 
 -   A [simple linear regression]{.blue} $$
-    y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
-    $$ could be easily obtained by least squares...
+    Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
+    $$ could be easily fit by least squares...
 
 -   ... but the plot clearly suggests that the relationship between
     `city.distance` and `engine.size` is [not]{.orange} well
@@ -152,10 +152,10 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 
 ::: incremental
 -   A [general]{.orange} and [more flexible formulation]{.orange} for modeling the relationship
-    between a vector of covariates
-    $(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p$ and a response
-    $y \in \mathbb{R}$ is $$
-    y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n,
+    between a vector of [fixed covariates]{.blue}
+    $(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p$ and a random variable
+    $Y_i \in \mathbb{R}$ is $$
+    Y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n,
     $$
     where the "errors" $\epsilon_i$ are iid random variables, having
     zero mean and variance $\sigma^2$.
@@ -164,13 +164,11 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
     on the [least squares criterion]{.blue}: we seek the
     [minimum]{.orange} of the objective function $$
     D(\beta) = \sum_{i=1}^n\{y_i - f(x_{i1},\dots, x_{ip}; \beta)\}^2,
-    $$ using $n$ pairs of observations $(x_{i1},\dots,x_{ip})^T$ and
-    $y_i$, for $i = 1,\dots,n$.
+    $$ using $n$ pairs of covariates $(x_{i1},\dots,x_{ip})^T$ and
+    the observed realizations $y_i$ of the random variables $Y_i$, for $i = 1,\dots,n$. The [optimal value]{.orange} is denoted by $\hat{\beta}$.
 
--   The [optimal value]{.orange} is denoted by $\hat{\beta}$.
-
--   The [predicted values]{.blue} $\hat{y}_i$ are then obtained as
-    $\hat{y}_i = f(x_{i1},\dots,x_{ip}; \hat{\beta})$, for
+-   The [predicted values]{.blue} $\hat{y}_i$ are 
+    $\hat{y}_i = \mathbb{E}(Y_i) = f(x_{i1},\dots,x_{ip}; \hat{\beta})$, for
     $i=1,\dots,n.$
 :::
 
@@ -194,7 +192,7 @@ which is a special instance of [linear model]{.orange}.
 ::: callout-note
 #### Definition (Linear model)
 
-In a [linear model]{.blue} the response variable $y$ is related to the
+In a [linear model]{.blue} the response variable is related to the
 covariates through the function$$
     f(x_1,\dots,x_p; \beta) = \beta_1 x_1 + \cdots + \beta_p x_p = \tilde{\bm{x}}^T\beta,
     $$ where $\tilde{\bm{x}} = (x_1, \dots,x_p)^T$ is a vector of
@@ -205,8 +203,7 @@ corresponding vector of [coefficients]{.orange}.
 ## Matrix notation
 
 ::: incremental
--   The [response values]{.orange} are collected in the vector
-    $\bm{y} = (y_1,\dots,y_n)^T$.
+-   The [response random variables]{.orange} are collected in the random vector $\bm{Y} = (Y_1,\dots,Y_n)^T$, whose [observed realization]{.blue} is $\bm{y} = (y_1,\dots,y_n)^T$.
 
 -   The [design matrix]{.blue} is a $n \times p$ matrix, comprising the
     covariate's values, defined by $$
@@ -220,7 +217,7 @@ corresponding vector of [coefficients]{.orange}.
 
 -   Then, a [linear model]{.blue} can be written using the [compact
     notation]{.orange}: $$
-    \bm{y} = \bm{X}\beta + \bm{\epsilon},
+    \bm{Y} = \bm{X}\beta + \bm{\epsilon},
     $$ where $\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T$ is a
     vector of iid error terms with zero mean and variance $\sigma^2$.
 
@@ -407,7 +404,7 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
 
 -   This gives the statistician a lot of modelling flexibility. For
     instance we could let: $$
-\log{y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
+\log{Y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
 $$
 
 . . .
@@ -486,7 +483,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m2)[c(1, 3, 10)
     ($w$) and `n.cylinders` ($v$). 
     
 - A richer model therefore could be: $$
-    \log{y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
+\log{Y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
     $$ for $i=1,\dots,n$. The estimates are:
 
 . . .
@@ -744,7 +741,7 @@ $$
     problem would be much simpler.
 
 -   In other words, consider a linear model of the form $$
-    \bm{y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
+    \bm{Y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
     $$ where $\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)$.
     [Orthogonality]{.orange} means that
     $\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)$.

@@ -21,69 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -248,28 +185,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="car-data-diesel-or-gas">Car data (<span class="blue">diesel</span> or <span class="orange">gas</span>)</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-1_994fe59b721f4f623a1271002e1333c3">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(GGally)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(ggthemes)</span>
-<span id="cb1-5"><a href="#cb1-5"></a></span>
-<span id="cb1-6"><a href="#cb1-6"></a>auto <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../data/auto.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(city.distance, engine.size, n.cylinders, curb.weight, fuel)</span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a>p0 <span class="ot">&lt;-</span> <span class="fu">ggpairs</span>(auto,</span>
-<span id="cb1-9"><a href="#cb1-9"></a>  <span class="at">columns =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>, <span class="fu">aes</span>(<span class="at">colour =</span> fuel),</span>
-<span id="cb1-10"><a href="#cb1-10"></a>  <span class="at">lower =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">"points"</span>, <span class="at">size =</span> <span class="fl">0.9</span>)),</span>
-<span id="cb1-11"><a href="#cb1-11"></a>  <span class="at">upper =</span> <span class="fu">list</span>(<span class="at">continuous =</span> <span class="fu">wrap</span>(<span class="st">"points"</span>, <span class="at">size =</span> <span class="fl">0.9</span>)),</span>
-<span id="cb1-12"><a href="#cb1-12"></a>  <span class="at">diag =</span> <span class="st">"blank"</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a>) <span class="sc">+</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a>  <span class="fu">scale_color_tableau</span>(<span class="at">palette =</span> <span class="st">"Color Blind"</span>) <span class="sc">+</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a>  <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span></span>
-<span id="cb1-17"><a href="#cb1-17"></a>  <span class="fu">ylab</span>(<span class="st">""</span>)</span>
-<span id="cb1-18"><a href="#cb1-18"></a>p0</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-1_634139fb4d84468a6c75fc6c21cca8c5">
 <div class="cell-output-display">
 <p><img src="un_A1_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="750"></p>
 </div>
@@ -294,17 +210,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="linear-regression">Linear regression</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-2_f2eb4602e977acfc7568643aae188dde">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> auto, <span class="fu">aes</span>(<span class="at">x =</span> engine.size, <span class="at">y =</span> city.distance, <span class="at">col =</span> fuel)) <span class="sc">+</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>  <span class="fu">scale_color_tableau</span>(<span class="at">palette =</span> <span class="st">"Color Blind"</span>) <span class="sc">+</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"top"</span>) <span class="sc">+</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>  <span class="fu">xlab</span>(<span class="st">"Engine size (L)"</span>) <span class="sc">+</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a>  <span class="fu">ylab</span>(<span class="st">"Urban distance (km/L)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-2_cea32a5b4f0b8c51a36f969219f02834">
 <div class="cell-output-display">
 <p><img src="un_A1_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="600"></p>
 </div>
@@ -313,8 +219,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><p>Let us consider the variables <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
 <li><p>A <span class="blue">simple linear regression</span> <span class="math display">
-y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
-</span> could be easily obtained by least squares…</p></li>
+Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
+</span> could be easily fit by least squares…</p></li>
 <li><p>… but the plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
 <li><p>… and also that <code>fuel</code> has an non-negligible effect on the response.</p></li>
 </ul>
@@ -325,14 +231,13 @@ y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 <h2 class="anchored" data-anchor-id="regression-models">Regression models</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>A <span class="orange">general</span> and <span class="orange">more flexible formulation</span> for modeling the relationship between a vector of covariates <span class="math inline">(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p</span> and a response <span class="math inline">y \in \mathbb{R}</span> is <span class="math display">
-y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n,
+<li><p>A <span class="orange">general</span> and <span class="orange">more flexible formulation</span> for modeling the relationship between a vector of <span class="blue">fixed covariates</span> <span class="math inline">(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p</span> and a random variable <span class="math inline">Y_i \in \mathbb{R}</span> is <span class="math display">
+Y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n,
 </span> where the “errors” <span class="math inline">\epsilon_i</span> are iid random variables, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
 <li><p>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on the <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
 D(\beta) = \sum_{i=1}^n\{y_i - f(x_{i1},\dots, x_{ip}; \beta)\}^2,
-</span> using <span class="math inline">n</span> pairs of observations <span class="math inline">(x_{i1},\dots,x_{ip})^T</span> and <span class="math inline">y_i</span>, for <span class="math inline">i = 1,\dots,n</span>.</p></li>
-<li><p>The <span class="orange">optimal value</span> is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
-<li><p>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are then obtained as <span class="math inline">\hat{y}_i = f(x_{i1},\dots,x_{ip}; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></p></li>
+</span> using <span class="math inline">n</span> pairs of covariates <span class="math inline">(x_{i1},\dots,x_{ip})^T</span> and the observed realizations <span class="math inline">y_i</span> of the random variables <span class="math inline">Y_i</span>, for <span class="math inline">i = 1,\dots,n</span>. The <span class="orange">optimal value</span> is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
+<li><p>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are <span class="math inline">\hat{y}_i = \mathbb{E}(Y_i) = f(x_{i1},\dots,x_{ip}; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></p></li>
 </ul>
 </div>
 </section>
@@ -360,7 +265,7 @@ Definition (Linear model)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In a <span class="blue">linear model</span> the response variable <span class="math inline">y</span> is related to the covariates through the function<span class="math display">
+<p>In a <span class="blue">linear model</span> the response variable is related to the covariates through the function<span class="math display">
     f(x_1,\dots,x_p; \beta) = \beta_1 x_1 + \cdots + \beta_p x_p = \tilde{\bm{x}}^T\beta,
     </span> where <span class="math inline">\tilde{\bm{x}} = (x_1, \dots,x_p)^T</span> is a vector of <span class="orange">covariates</span> and <span class="math inline">\beta = (\beta_1,\dots,\beta_p)^T</span> is the corresponding vector of <span class="orange">coefficients</span>.</p>
 </div>
@@ -371,7 +276,7 @@ Definition (Linear model)
 <h2 class="anchored" data-anchor-id="matrix-notation">Matrix notation</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>The <span class="orange">response values</span> are collected in the vector <span class="math inline">\bm{y} = (y_1,\dots,y_n)^T</span>.</p></li>
+<li><p>The <span class="orange">response random variables</span> are collected in the random vector <span class="math inline">\bm{Y} = (Y_1,\dots,Y_n)^T</span>, whose <span class="blue">observed realization</span> is <span class="math inline">\bm{y} = (y_1,\dots,y_n)^T</span>.</p></li>
 <li><p>The <span class="blue">design matrix</span> is a <span class="math inline">n \times p</span> matrix, comprising the covariate’s values, defined by <span class="math display">
 \bm{X} =
 \begin{bmatrix}
@@ -381,7 +286,7 @@ x_{n1} &amp; \cdots &amp; x_{np}
 \end{bmatrix}.
 </span></p></li>
 <li><p>Then, a <span class="blue">linear model</span> can be written using the <span class="orange">compact notation</span>: <span class="math display">
-\bm{y} = \bm{X}\beta + \bm{\epsilon},
+\bm{Y} = \bm{X}\beta + \bm{\epsilon},
 </span> where <span class="math inline">\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T</span> is a vector of iid error terms with zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
 <li><p>The <span class="math inline">j</span>th variable (column) is denoted with <span class="math inline">\bm{x}_j</span>, whereas the <span class="math inline">i</span>th observation (row) is <span class="math inline">\tilde{\bm{x}}_i</span>: <span class="math display">
 \bm{X} = (\bm{x}_1,\dots,\bm{x}_p) = (\tilde{\bm{x}}_1, \dots,\tilde{\bm{x}}_n)^T.
@@ -470,14 +375,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>We obtain the following <span class="orange">summary</span> for the regression coefficients <span class="math inline">\hat{\beta}</span>.</li>
 </ul>
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-3_abeee7d1435009f8f11a15b332263386">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(broom)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb3-3"><a href="#cb3-3"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(city.distance <span class="sc">~</span> engine.size <span class="sc">+</span> <span class="fu">I</span>(engine.size<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(engine.size<span class="sc">^</span><span class="dv">3</span>) <span class="sc">+</span> fuel, <span class="at">data =</span> auto)</span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">kable</span>(<span class="fu">tidy</span>(m1, <span class="at">conf.int =</span> <span class="cn">FALSE</span>), <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-3_8d870cddfae8ad32855c49cf3bafea7c">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
@@ -532,11 +430,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>Moreover, the coefficient <span class="math inline">R^2</span> and the residual standard deviation <span class="math inline">s</span> are:</li>
 </ul>
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-4_863794c86a2ca548b232f20d73b3fc5a">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">kable</span>(<span class="fu">glance</span>(m1)[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">10</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-4_9667ae6791a3ee2ab6745dfacf4a6f3a">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
@@ -559,19 +453,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="a-first-model-fitted-values" class="level2">
 <h2 class="anchored" data-anchor-id="a-first-model-fitted-values">A first model: fitted values</h2>
-<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-5_e164c35e333cdececd29774619c972be">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>augmented_m1 <span class="ot">&lt;-</span> <span class="fu">augment</span>(m1)</span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">ggplot</span>(<span class="at">data =</span> augmented_m1, <span class="fu">aes</span>(<span class="at">x =</span> engine.size, <span class="at">y =</span> city.distance, <span class="at">col =</span> fuel)) <span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> .fitted)) <span class="sc">+</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>) <span class="sc">+</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a>  <span class="fu">scale_color_tableau</span>(<span class="at">palette =</span> <span class="st">"Color Blind"</span>) <span class="sc">+</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a>  <span class="fu">xlab</span>(<span class="st">"Engine size (L)"</span>) <span class="sc">+</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a>  <span class="fu">ylab</span>(<span class="st">"Urban distance (km/L)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-5_cfe92c82c668fc8be33a70d77f3cf07b">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -583,18 +465,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="a-first-model-graphical-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="a-first-model-graphical-diagnostics">A first model: graphical diagnostics</h2>
-<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-6_99e58ae93995aa87f9c77a4f4b4afe59">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> augmented_m1, <span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid, <span class="at">col =</span> fuel)) <span class="sc">+</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="dv">0</span>), <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>) <span class="sc">+</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a>  <span class="fu">scale_color_tableau</span>(<span class="at">palette =</span> <span class="st">"Color Blind"</span>) <span class="sc">+</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a>  <span class="fu">xlab</span>(<span class="st">"Fitted values"</span>) <span class="sc">+</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a>  <span class="fu">ylab</span>(<span class="st">"Residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-6_c6752f5f51a2b0425f57234702cb3e05">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -628,7 +499,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <div class="incremental">
 <ul>
 <li>This gives the statistician a lot of modelling flexibility. For instance we could let: <span class="math display">
-\log{y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
+\log{Y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
 </span></li>
 </ul>
 </div>
@@ -638,12 +509,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 </div>
 <div class="incremental">
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-7_01479b8f5b52d232ea9822af0079df94">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(city.distance) <span class="sc">~</span> <span class="fu">I</span>(<span class="fu">log</span>(engine.size)) <span class="sc">+</span> fuel, <span class="at">data =</span> auto)</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">kable</span>(<span class="fu">tidy</span>(m2, <span class="at">conf.int =</span> <span class="cn">FALSE</span>), <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-7_5df14261370b727380c9cbf38cc0e4a9">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
@@ -685,19 +551,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="second-model-fitted-values" class="level2">
 <h2 class="anchored" data-anchor-id="second-model-fitted-values">Second model: fitted values</h2>
-<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-8_2a9c39f2cedaa55d0a41a00cd144a731">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>augmented_m2 <span class="ot">&lt;-</span> <span class="fu">augment</span>(m2, <span class="at">data =</span> auto)</span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">ggplot</span>(<span class="at">data =</span> augmented_m2, <span class="fu">aes</span>(<span class="at">x =</span> engine.size, <span class="at">y =</span> city.distance, <span class="at">col =</span> fuel)) <span class="sc">+</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">exp</span>(.fitted))) <span class="sc">+</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>) <span class="sc">+</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a>  <span class="fu">scale_color_tableau</span>(<span class="at">palette =</span> <span class="st">"Color Blind"</span>) <span class="sc">+</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a>  <span class="fu">xlab</span>(<span class="st">"Engine size (L)"</span>) <span class="sc">+</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a>  <span class="fu">ylab</span>(<span class="st">"Urban distance (km/L)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-8_beef8c7009fb431bc1ecfdc20a731bec">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -709,18 +563,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="second-model-graphical-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="second-model-graphical-diagnostics">Second model: graphical diagnostics</h2>
-<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-9_dda1d61c96d6d6f0923c18dfd5329fdb">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> augmented_m2, <span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid, <span class="at">col =</span> fuel)) <span class="sc">+</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="dv">0</span>), <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>) <span class="sc">+</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a>  <span class="fu">scale_color_tableau</span>(<span class="at">palette =</span> <span class="st">"Color Blind"</span>) <span class="sc">+</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a>  <span class="fu">xlab</span>(<span class="st">"Fitted values"</span>) <span class="sc">+</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a>  <span class="fu">ylab</span>(<span class="st">"Residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-9_700d468b4759829646108bc2ac7c6e7b">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -735,12 +578,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>The <span class="blue">goodness of fit</span> indices are the following:</li>
 </ul>
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-10_f5d520f65e1602e6d07e965659c4b1a5">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>r.squared.original <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">mean</span>((auto<span class="sc">$</span>city.distance <span class="sc">-</span> <span class="fu">exp</span>(<span class="fu">predict</span>(m2)))<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">mean</span>((auto<span class="sc">$</span>city.distance <span class="sc">-</span> <span class="fu">mean</span>(auto<span class="sc">$</span>city.distance))<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">kable</span>(<span class="fu">data.frame</span>(<span class="at">r.squared.original =</span> r.squared.original, <span class="fu">glance</span>(m2)[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">10</span>)]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-10_ab7aaa8f073dfa1c9a1613ed4b1a7d0b">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
@@ -778,17 +616,11 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li><p>Let us consider <span class="blue">two additional variables</span>: <code>curb.weight</code> (<span class="math inline">w</span>) and <code>n.cylinders</code> (<span class="math inline">v</span>).</p></li>
 <li><p>A richer model therefore could be: <span class="math display">
-  \log{y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
+\log{Y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
   </span> for <span class="math inline">i=1,\dots,n</span>. The estimates are:</p></li>
 </ul>
 <div class="incremental">
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-11_3b7fb4d62037d356a26936c83e6cb806">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>auto<span class="sc">$</span>cylinders2 <span class="ot">&lt;-</span> <span class="fu">factor</span>(auto<span class="sc">$</span>n.cylinders <span class="sc">==</span> <span class="dv">2</span>)</span>
-<span id="cb11-2"><a href="#cb11-2"></a>m3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(city.distance) <span class="sc">~</span> <span class="fu">I</span>(<span class="fu">log</span>(engine.size)) <span class="sc">+</span> <span class="fu">I</span>(<span class="fu">log</span>(curb.weight)) <span class="sc">+</span> fuel <span class="sc">+</span> cylinders2, <span class="at">data =</span> auto)</span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">kable</span>(<span class="fu">tidy</span>(m3, <span class="at">conf.int =</span> <span class="cn">FALSE</span>), <span class="at">digits =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-11_17f2962323ad6067dbecf1e4daf2c3ae">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
@@ -844,19 +676,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="a-third-model-graphical-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="a-third-model-graphical-diagnostics">A third model: graphical diagnostics</h2>
-<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-12_0824d7f5e0b38f3d1a0fba0ee9ddd19d">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>augmented_m3 <span class="ot">&lt;-</span> <span class="fu">augment</span>(m3, <span class="at">data =</span> auto)</span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">ggplot</span>(<span class="at">data =</span> augmented_m3, <span class="fu">aes</span>(<span class="at">x =</span> .fitted, <span class="at">y =</span> .resid, <span class="at">col =</span> fuel)) <span class="sc">+</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="dv">0</span>), <span class="at">linetype =</span> <span class="st">"dotted"</span>) <span class="sc">+</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb12-6"><a href="#cb12-6"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>) <span class="sc">+</span></span>
-<span id="cb12-7"><a href="#cb12-7"></a>  <span class="fu">scale_color_tableau</span>(<span class="at">palette =</span> <span class="st">"Color Blind"</span>) <span class="sc">+</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a>  <span class="fu">xlab</span>(<span class="st">"Fitted values"</span>) <span class="sc">+</span></span>
-<span id="cb12-9"><a href="#cb12-9"></a>  <span class="fu">ylab</span>(<span class="st">"Residuals"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-layout-align="center" data-hash="un_A1_cache/html/unnamed-chunk-12_8d02e128da68af900c2f63208cce1cff">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -871,12 +691,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>The goodness of fit greatly <span class="blue">improved</span>:</li>
 </ul>
-<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-13_ab62953c312ba39f3f72101e2f82d852">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>r.squared.original <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>(<span class="fu">mean</span>((auto<span class="sc">$</span>city.distance <span class="sc">-</span> <span class="fu">exp</span>(<span class="fu">predict</span>(m3)))<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">/</span> <span class="fu">sum</span>(<span class="fu">mean</span>((auto<span class="sc">$</span>city.distance <span class="sc">-</span> <span class="fu">mean</span>(auto<span class="sc">$</span>city.distance))<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">kable</span>(<span class="fu">data.frame</span>(<span class="at">r.squared.original =</span> r.squared.original, <span class="fu">glance</span>(m3)[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">10</span>)]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="un_A1_cache/html/unnamed-chunk-13_4a36c67b2ea8b75d6dc9184e856ed34d">
 <div class="cell-output-display">
 <table class="table table-sm table-striped">
 <thead>
@@ -1087,7 +902,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <ul>
 <li><p>If the <span class="blue">predictors</span> were mutually <span class="orange">orthogonal</span>, the problem would be much simpler.</p></li>
 <li><p>In other words, consider a linear model of the form <span class="math display">
-\bm{y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
+\bm{Y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
 </span> where <span class="math inline">\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)</span>. <span class="orange">Orthogonality</span> means that <span class="math inline">\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)</span>.</p></li>
 </ul>
 </div>

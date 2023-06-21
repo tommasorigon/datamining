@@ -129,7 +129,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a></li>
   <li><a href="#yesterdays-data" id="toc-yesterdays-data" class="nav-link" data-scroll-target="#yesterdays-data">Yesterday’s data</a></li>
   <li><a href="#polynomial-regression" id="toc-polynomial-regression" class="nav-link" data-scroll-target="#polynomial-regression">Polynomial regression</a></li>
-  <li><a href="#asd" id="toc-asd" class="nav-link" data-scroll-target="#asd">asd</a></li>
+  <li><a href="#yesterdays-data-polynomial-regression" id="toc-yesterdays-data-polynomial-regression" class="nav-link" data-scroll-target="#yesterdays-data-polynomial-regression">Yesterday’s data, polynomial regression</a></li>
+  <li><a href="#goodness-of-fit" id="toc-goodness-of-fit" class="nav-link" data-scroll-target="#goodness-of-fit">Goodness of fit</a></li>
+  <li><a href="#on-the-choice-of-p" id="toc-on-the-choice-of-p" class="nav-link" data-scroll-target="#on-the-choice-of-p">On the choice of <span class="math inline">p</span></a></li>
+  <li><a href="#polynomial-interpolation-p-n" id="toc-polynomial-interpolation-p-n" class="nav-link" data-scroll-target="#polynomial-interpolation-p-n">Polynomial interpolation (<span class="math inline">p = n</span>)</a></li>
   </ul>
 </nav>
 </div>
@@ -191,13 +194,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="yesterdays-data">Yesterday’s data</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-1_caccea930fa74d62ee59dd94037567e8">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-1_2316a14bd991678a8289cb11cb0378d8">
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(ggthemes)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>dataset <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../data/yesterday.txt"</span>, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>dataset <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../data/yesterday.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb1-5"><a href="#cb1-5"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataset, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y.yesterday)) <span class="sc">+</span></span>
 <span id="cb1-6"><a href="#cb1-6"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb1-7"><a href="#cb1-7"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
@@ -231,13 +234,131 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 </span> i.e.&nbsp;<span class="math inline">f(x; \beta)</span> is <span class="orange">approximated</span> with a polynomial of degree <span class="math inline">p-1</span>.</p></li>
 <li><p>This model is linear in the parameters, therefore we can use ordinary least squares.</p></li>
-<li><p>However, how do we choose the <span class="orange">degree of the polynomial</span> <span class="math inline">p - 1</span>?</p></li>
-<li><p>Without have any clear guideline, in principle any value <span class="math inline">p \in \{1,\dots,n\}</span> could be appropriate.</p></li>
+<li><p>However, how do we choose the <span class="blue">degree of the polynomial</span> <span class="math inline">p - 1</span>?</p></li>
+<li><p>Without have any clear guideline, at least in principle any value of <span class="math inline">p \in \{1,\dots,n\}</span> could be appropriate.</p></li>
+<li><p>Let us see what happens, in practice, when we select different values of <span class="math inline">p</span>…</p></li>
 </ul>
 </div>
 </section>
-<section id="asd" class="level2">
-<h2 class="anchored" data-anchor-id="asd">asd</h2>
+<section id="yesterdays-data-polynomial-regression" class="level2">
+<h2 class="anchored" data-anchor-id="yesterdays-data-polynomial-regression">Yesterday’s data, polynomial regression</h2>
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-2_53a656465c52e8ecebdec86fb7fa4ec1">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>degree_list <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">23</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>data_plot <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>x_seq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(dataset<span class="sc">$</span>x), <span class="at">to =</span> <span class="fu">max</span>(dataset<span class="sc">$</span>x), <span class="at">length =</span> <span class="dv">30000</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="cf">for</span> (degree <span class="cf">in</span> degree_list) {</span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="co"># Fitting a polynomial of degree p -1</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y.yesterday <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> degree, <span class="at">raw =</span> F), <span class="at">data =</span> dataset)</span>
+<span id="cb2-7"><a href="#cb2-7"></a>  y_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x_seq))</span>
+<span id="cb2-8"><a href="#cb2-8"></a>  data_plot <span class="ot">&lt;-</span> <span class="fu">rbind</span>(data_plot, <span class="fu">data.frame</span>(<span class="at">x =</span> x_seq, <span class="at">y_hat =</span> y_hat, <span class="at">degree =</span> <span class="fu">paste</span>(<span class="st">"Degree of the polynomial:"</span>, degree)))</span>
+<span id="cb2-9"><a href="#cb2-9"></a>}</span>
+<span id="cb2-10"><a href="#cb2-10"></a>data_plot<span class="sc">$</span>degree <span class="ot">&lt;-</span> <span class="fu">factor</span>(data_plot<span class="sc">$</span>degree)</span>
+<span id="cb2-11"><a href="#cb2-11"></a>data_plot<span class="sc">$</span>degree <span class="ot">&lt;-</span> <span class="fu">factor</span>(data_plot<span class="sc">$</span>degree, <span class="at">levels =</span> <span class="fu">levels</span>(data_plot<span class="sc">$</span>degree)[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)])</span>
+<span id="cb2-12"><a href="#cb2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data_plot) <span class="sc">+</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y_hat, <span class="at">col =</span> degree)) <span class="sc">+</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> dataset, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y.yesterday), <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>  <span class="fu">facet_wrap</span>(. <span class="sc">~</span> degree, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>  <span class="fu">scale_color_tableau</span>(<span class="at">palette =</span> <span class="st">"Color Blind"</span>) <span class="sc">+</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>  <span class="fu">xlab</span>(<span class="st">"x"</span>) <span class="sc">+</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>  <span class="fu">ylab</span>(<span class="st">"y"</span>) <span class="sc">+</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="fl">0.42</span>, <span class="fl">0.56</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_B_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="1170"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="goodness-of-fit" class="level2">
+<h2 class="anchored" data-anchor-id="goodness-of-fit">Goodness of fit</h2>
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-3_dd9ffa4423dd9ef6140ade41cfc58216">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>degree_list <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">23</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>data_plot <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">degree =</span> degree_list, <span class="at">Deviance =</span> <span class="cn">NA</span>, <span class="at">R_squared =</span> <span class="cn">NA</span>)</span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="cf">for</span> (degree <span class="cf">in</span> degree_list) {</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="co"># Fitting a polynomial of degree p -1</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y.yesterday <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> degree, <span class="at">raw =</span> F), <span class="at">data =</span> dataset)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  data_plot<span class="sc">$</span>Deviance[degree] <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dataset<span class="sc">$</span>y.yesterday <span class="sc">-</span>  <span class="fu">fitted</span>(fit))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>  data_plot<span class="sc">$</span>R_squared[degree] <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit)<span class="sc">$</span>r.squared</span>
+<span id="cb3-8"><a href="#cb3-8"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-4_fbeeaed78ff49a36c8c09f9fd78a9f7e">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data_plot, <span class="fu">aes</span>(<span class="at">x =</span> degree <span class="sc">+</span> <span class="dv">1</span>, <span class="at">y =</span> Deviance)) <span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">xlab</span>(<span class="st">"# of parameters p"</span>) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="fu">ylab</span>(<span class="st">"Deviance"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="un_B_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="750"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-5_d900739650540e4bf1511c5872c3ac9a">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data_plot, <span class="fu">aes</span>(<span class="at">x =</span> degree <span class="sc">+</span> <span class="dv">1</span>, <span class="at">y =</span> R_squared)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="fu">xlab</span>(<span class="st">"# of parameters p"</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(R<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="un_B_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="750"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="on-the-choice-of-p" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-choice-of-p">On the choice of <span class="math inline">p</span></h2>
+<ul>
+<li><p>The <span class="blue">deviance</span> decreases as the number of parameter increases; similarly, the <span class="blue"><span class="math inline">R^2</span></span> always increases as a function of <span class="math inline">p</span>. It can be <span class="orange">proved</span> that this <span class="orange">always happens</span> in linear models.</p></li>
+<li></li>
+</ul>
+</section>
+<section id="polynomial-interpolation-p-n" class="level2">
+<h2 class="anchored" data-anchor-id="polynomial-interpolation-p-n">Polynomial interpolation (<span class="math inline">p = n</span>)</h2>
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-6_c26a9745655fa22fdd02c8df676d8769">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>lagrange <span class="ot">&lt;-</span> <span class="cf">function</span>(x0, y0) {</span>
+<span id="cb6-2"><a href="#cb6-2"></a>  f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="fu">sum</span>(y0 <span class="sc">*</span> <span class="fu">sapply</span>(<span class="fu">seq_along</span>(x0), \(j) {</span>
+<span id="cb6-4"><a href="#cb6-4"></a>      <span class="fu">prod</span>(x <span class="sc">-</span> x0[<span class="sc">-</span>j]) <span class="sc">/</span> <span class="fu">prod</span>(x0[j] <span class="sc">-</span> x0[<span class="sc">-</span>j])</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    }))</span>
+<span id="cb6-6"><a href="#cb6-6"></a>  }</span>
+<span id="cb6-7"><a href="#cb6-7"></a>  <span class="fu">Vectorize</span>(f, <span class="st">"x"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8"></a>}</span>
+<span id="cb6-9"><a href="#cb6-9"></a>f <span class="ot">&lt;-</span> <span class="fu">lagrange</span>(dataset<span class="sc">$</span>x, dataset<span class="sc">$</span>y.yesterday)</span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="fu">plot</span>(dataset<span class="sc">$</span>x, dataset<span class="sc">$</span>y.yesterday, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"y"</span>, <span class="at">main =</span> <span class="st">"Degree of the polynomial: n-1"</span>)</span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="fu">curve</span>(<span class="fu">f</span>(x), <span class="at">n =</span> <span class="dv">300</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_B_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="1170"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 
 </main>

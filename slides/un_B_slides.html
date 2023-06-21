@@ -389,11 +389,11 @@
 <ul>
 <li><p>Let us presume that <span class="orange">yesterday</span> we observed <span class="math inline">n = 30</span> pairs of data <span class="math inline">(x_i, y_i)</span>.</p></li>
 <li><p>Data were generated according to <span class="math display">
-  y_i = f(x_i; \beta) + \epsilon_i, \quad i=1,\dots,n.
+  y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n.
   </span></p></li>
 <li><p>The <span class="math inline">\epsilon_1,\dots,\epsilon_n</span> are iid “<span class="orange">error</span>” terms, such that <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2 = 10^{-2}</span>.</p></li>
-<li><p>Here <span class="math inline">f(x; \beta)</span> is a regression function (<span class="blue">signal</span>) that we leave unspecified.</p></li>
-<li><p>Suppose <span class="orange">today</span> we get a new value <span class="math inline">x_{n+1}</span>. We wish to <span class="blue">predict</span> <span class="math inline">y_{n+1}</span> using <span class="math inline">f(x_{n+1}; \beta)</span>.</p></li>
+<li><p>Here <span class="math inline">f(x)</span> is a regression function (<span class="blue">signal</span>) that we leave unspecified.</p></li>
+<li><p>Suppose <span class="blue">tomorrow</span> we get a new <span class="math inline">x_{n+1}</span>. We wish to <span class="orange">predict</span> <span class="math inline">y_{n+1}</span> using <span class="math inline">f(x_{n+1}; \beta)</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -402,12 +402,12 @@
 <h2>Polynomial regression</h2>
 <div>
 <ul>
-<li class="fragment"><p>The function <span class="math inline">f(x;\beta)</span> is unknown, so we need to estimate it.</p></li>
+<li class="fragment"><p>The function <span class="math inline">f(x)</span> is unknown, therefore it should be estimated.</p></li>
 <li class="fragment"><p>A simple approach is using the tools of <a href="unit_A1_slides.html">Unit A.1</a>, such as <span class="orange">polynomial regression</span>: <span class="math display">
-f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
-</span> i.e.&nbsp;<span class="math inline">f(x; \beta)</span> is <span class="orange">approximated</span> with a polynomial of degree <span class="math inline">p-1</span>.</p></li>
+f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
+</span> i.e.&nbsp;<span class="math inline">f(x; \beta)</span> is <span class="orange">approximated</span> with a polynomial of degree <span class="math inline">p-1</span> (Taylor expansions).</p></li>
 <li class="fragment"><p>This model is linear in the parameters, therefore we can use ordinary least squares.</p></li>
-<li class="fragment"><p>However, how do we choose the <span class="blue">degree of the polynomial</span> <span class="math inline">p - 1</span>?</p></li>
+<li class="fragment"><p>How do we choose the <span class="blue">degree of the polynomial</span> <span class="math inline">p - 1</span>?</p></li>
 <li class="fragment"><p>Without have any clear guideline, at least in principle any value of <span class="math inline">p \in \{1,\dots,n\}</span> could be appropriate.</p></li>
 <li class="fragment"><p>Let us see what happens, in practice, when we select different values of <span class="math inline">p</span>…</p></li>
 </ul>
@@ -417,20 +417,20 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 <h2>Yesterday’s data, polynomial regression</h2>
 
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-2-1.png" width="1170" class="r-stretch quarto-figure-center"></section>
-<section id="goodness-of-fit" class="slide level2 center">
-<h2>Goodness of fit</h2>
-<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-3_f4ddf8fa7cbcb6d64dd720f6c9aef7eb">
+<section id="yesterdays-data-goodness-of-fit" class="slide level2 center">
+<h2>Yesterday’s data, goodness of fit</h2>
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-3_37d162dd9f209c1e12e3534daca85d02">
 
 </div>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-4_49bb5342c026a095715c3ce72e279b5c">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-4_ef673cfce6487824a1890d68734c0b5d">
 <div class="cell-output-display">
 <p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-4-1.png" width="750"></p>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-5_a27aea010658c362a0334ba11bb53697">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-5_79eafaa6ac244c39abed053582e32ad8">
 <div class="cell-output-display">
 <p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-5-1.png" width="750"></p>
 </div>
@@ -438,26 +438,87 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 </div>
 </div>
 </section>
-<section id="on-the-choice-of-p" class="slide level2 center">
-<h2>On the choice of <span class="math inline">p</span></h2>
+<section id="yesterdays-data-polynomial-interpolation-p-n" class="slide level2 center">
+<h2>Yesterday’s data, polynomial interpolation (<span class="math inline">p = n</span>)</h2>
+
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-6-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
+<section id="yesterdays-data-tomorrows-prediction" class="slide level2 center">
+<h2>Yesterday’s data, tomorrow’s prediction</h2>
+<div>
 <ul>
-<li><p>The <span class="orange">deviance</span> decreases as the number of parameter increases; similarly, the <span class="blue"><span class="math inline">R^2</span></span> always increases as a function of <span class="math inline">p</span>. It can be <span class="orange">proved</span> that this <span class="orange">always happens</span> in linear models.</p></li>
-<li></li>
+<li class="fragment"><p>The <span class="blue">deviance</span> decreases as the number of parameter increases; similarly, the <span class="blue"><span class="math inline">R^2</span></span> always increases as a function of <span class="math inline">p</span>. It can be <span class="orange">proved</span> that this <span class="orange">always happens</span> in linear models.</p></li>
+<li class="fragment"><p>One might be tempted to let <span class="math inline">p</span> as large as possible…</p></li>
+<li class="fragment"><p>Taking this reasoning to the extreme, this would lead to the choice <span class="math inline">p = n</span>, so that <span class="math display">
+D(\hat{\beta}) = 0, \qquad R^2 = 1,
+</span> i.e.&nbsp;an apparently perfect fit. This procedure is called <span class="blue">interpolation</span>.</p></li>
+<li class="fragment"><p>However, we are <span class="orange">not</span> interested in predicting <span class="orange">yesterday</span> data. Our goal is to predict <span class="blue">tomorrow</span>’s data, i.e., given <span class="math inline">x_{n + i}</span>, to predict <span class="math inline">y_{n + i}</span>, for a new set of <span class="math inline">m = 30</span> points: <span class="math display">
+(x_{n+1}, y_{n+1}), \dots, (x_{n+m}, y_{n + m}) \quad \longrightarrow \quad \hat{y}_{n+i} = f(x_{n+i}; \hat{\beta}), \quad i=1,\dots,m,
+</span> where <span class="math inline">\hat{\beta}</span> is obtained using yesterday data.</p></li>
+<li class="fragment"><p><span class="orange">Remark</span>. Tomorrow’s data are generated according to the same scheme of yesterday’s data.</p></li>
 </ul>
+</div>
 </section>
-<section id="polynomial-interpolation-p-n" class="slide level2 center">
-<h2>Polynomial interpolation (<span class="math inline">p = n</span>)</h2>
-<div class="cell" data-layout-align="center" data-hash="un_B_cache/revealjs/unnamed-chunk-6_3ff0e4624752a6fc868c86e413dfc7cb">
+<section id="tomorrows-data-polynomial-regression" class="slide level2 center">
+<h2>Tomorrow’s data, polynomial regression</h2>
+
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-7-1.png" width="1170" class="r-stretch quarto-figure-center"></section>
+<section id="tomorrows-data-goodness-of-fit" class="slide level2 center">
+<h2>Tomorrow’s data, goodness of fit</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-8_249604aac04b7760f15cd32fd9e6ac11">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-6-1.png" width="1170"></p>
-</figure>
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-8-1.png" width="750"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-9_e460c319fea2180115b71466d58d4ca8">
+<div class="cell-output-display">
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-9-1.png" width="750"></p>
 </div>
 </div>
 </div>
-<p><img src="img/logoB.png" class="slide-logo"></p>
-<div class="footer footer-default">
+</div>
+</section>
+<section id="comments-and-remarks" class="slide level2 center">
+<h2>Comments and remarks</h2>
+<div>
+<ul>
+<li class="fragment"><p>The deviance on yesterday’s data (<span class="orange">training</span>) or tomorrow’s data (<span class="blue">test</span>) are defined as <span class="math display">
+D_{\text{train}}(\hat{\beta}) = \sum_{i=1}^n\{y_i -f(x_i; \hat{\beta})\}^2,\quad D_{\text{test}}(\hat{\beta}) = \sum_{i=1}^m\{y_{n +i} -f(x_{n + i}; \hat{\beta})\}^2,
+</span> and similarly for <span class="math inline">R^2_\text{train}</span> and <span class="math inline">R^2_\text{test}</span>.</p></li>
+<li class="fragment"><p>For small values of <span class="math inline">p</span>, an increase in the degree of the polynomial <span class="blue">improves the fit</span>. In other words, at the beginning both the deviances <span class="math inline">D_{\text{train}}(\hat{\beta})</span> and <span class="math inline">D_{\text{test}}(\hat{\beta})</span> decrease.</p></li>
+<li class="fragment"><p>This improvement gradually ceases as the increase in degree causes the polynomial to follow <span class="orange">random fluctuations</span> in yesterday’s data <span class="blue">not observed</span> in the <span class="blue">new sample</span>.</p></li>
+<li class="fragment"><p>An over-adaptation to yesterday data is called <span class="orange">overfitting</span>, which occurs when the deviance <span class="math inline">D_{\text{train}}(\hat{\beta})</span> is low but the new deviance <span class="math inline">D_{\text{test}}(\hat{\beta})</span> is high.</p></li>
+</ul>
+</div>
+</section>
+<section>
+<section id="bias-variance-tradeoff" class="title-slide slide level1 center">
+<h1>Bias-variance tradeoff</h1>
+
+</section>
+<section id="if-we-knew-fx" class="slide level2 center">
+<h2>If we knew <span class="math inline">f(x)</span>…</h2>
+</section>
+<section id="bias-variance-trade-off" class="slide level2 center">
+<h2>Bias-variance trade-off</h2>
+</section>
+<section id="prediction-error" class="slide level2 center">
+<h2>Prediction error</h2>
+</section>
+<section id="but-since-we-do-not-know-fx" class="slide level2 center">
+<h2>…but since we do not know <span class="math inline">f(x)</span></h2>
+</section></section>
+<section id="cross-validation" class="title-slide slide level1 center">
+<h1>Cross-validation</h1>
+
+</section>
+
+<section id="information-criteria" class="title-slide slide level1 center">
+<h1>Information criteria</h1>
+
+<img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
 </div>
 </section>
