@@ -525,54 +525,121 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <h2>The average prediction error</h2>
 <div>
 <ul>
-<li class="fragment"><p>Let us consider a generic <span class="orange">new data point</span> <span class="math inline">Y</span> independent on the training, associated with the covariate vector <span class="math inline">\tilde{\bm{x}} = (x_1,\dots,x_p)^T</span>.</p></li>
 <li class="fragment"><p>A measure of quality for the predictions is the so-called <span class="blue">expected prediction error</span>: <span class="math display">
-\text{Err} = \mathbb{E}\left[\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\}\right],
-</span> where <span class="math inline">\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\}</span> is a <span class="orange">loss function</span>. The expectation is taken with respect to traning random variable <span class="math inline">Y_1,\dots,Y_n</span>, implicitly appearing in <span class="math inline">\hat{f}</span>, and the new data point <span class="math inline">Y</span>.</p></li>
-<li class="fragment"><p>The expected prediction error is measuring the <span class="blue">average</span> “discrepancy” between a new data point and the corresponding prediction.</p></li>
+\text{Err} = \mathbb{E}(\text{MSE}_\text{test}) =  \mathbb{E}\left[\frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n + i}; \hat{f}(\bm{x}_{n + i})\}\right],
+</span> where <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\}</span> is a <span class="orange">loss function</span>.</p></li>
+<li class="fragment"><p>The expectation is taken with respect to traning random variable <span class="math inline">Y_1,\dots,Y_n</span>, implicitly appearing in <span class="math inline">\hat{f}(\bm{x})</span>, and the new data points <span class="math inline">Y_{n+1},\dots,Y_{n+m}</span>.</p></li>
+<li class="fragment"><p>The expected prediction error is measuring the <span class="blue">average</span> “discrepancy” between the new data points and the corresponding predictions.</p></li>
 <li class="fragment"><p>Examples of loss functions for <span class="blue">regression problems</span> <span class="math inline">Y \in \mathbb{R}</span> are:</p>
 <ul>
-<li class="fragment">The quadratic loss <span class="math inline">\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\} = \{Y_i - \hat{f}(x_1,\dots,x_p)\}^2</span>, leading to the MSE.</li>
-<li class="fragment">The absolute loss <span class="math inline">\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\} = |Y_i - \hat{f}(x_1,\dots,x_p)|</span>, leading to the MAE.</li>
+<li class="fragment">The quadratic loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = \{Y_i - \hat{f}(\bm{x}_i)\}^2</span>, leading to the MSE.</li>
+<li class="fragment">The absolute loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = |Y_i - \hat{f}(\bm{x}_i)|</span>, leading to the MAE.</li>
 </ul></li>
 </ul>
 </div>
 </section>
 <section id="quadratic-loss-and-the-mean-squared-error" class="slide level2 center">
 <h2>Quadratic loss and the mean squared error</h2>
-<div class="callout callout-note no-icon callout-style-simple">
+<div class="callout callout-note no-icon callout-captioned callout-style-simple">
 <div class="callout-body">
+<div class="callout-caption">
+<p><strong>Error decomposition (reducible and irreducible)</strong></p>
+</div>
 <div class="callout-content">
-<p>Under the above assumptions and using a quadratic loss, the <span class="blue">expected prediction error</span> is <span class="math display">
+<p>Under a quadratic loss, <span class="orange">each element</span> of the <span class="blue">expected prediction error</span> admits the following decomposition <span class="math display">
 \begin{aligned}
-\text{Err} &amp;=\mathbb{E}\left[\{Y_{n+1} - \hat{f}(\tilde{\bm{x}}_{n+1})\}^2\right] \\
-&amp;= \underbrace{\sigma^2}_{\text{irreducible}} + \underbrace{\mathbb{E}\left[\{\hat{f}(\tilde{\bm{x}}_{n+1}) - f(\tilde{\bm{x}}_{n+1})\}^2\right]}_{\text{reducible}}
+\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] &amp;= \mathbb{E}\left[\{f(\bm{x}_i) + \epsilon_i - \hat{f}(\bm{x}_i)\}^2\right] \\
+&amp; = \mathbb{E}\left[\{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}^2\right] + \mathbb{E}(\epsilon_i^2) + 2 \: \mathbb{E}\left[\epsilon_i \: \{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}\right]\\
+&amp; = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}},
 \end{aligned}
-</span></p>
+</span> recalling that <span class="math inline">\mathbb{E}(\epsilon_i^2) = \text{var}(\epsilon_i) = \sigma^2</span> and for any <span class="math inline">i = n+1,\dots,n+m</span> (<span class="orange">test set</span>).</p>
 </div>
 </div>
 </div>
 </section>
 <section id="reducible-and-irreducible-errors" class="slide level2 center">
 <h2>Reducible and irreducible errors</h2>
+<div>
+<ul>
+<li class="fragment"><p>We would like to make the <span class="orange">mean squared error</span> as <span class="orange">small</span> as possible, e.g.&nbsp;by choosing an “optimal” degree of the polynomial <span class="math inline">p-1</span> that minimizes it.</p></li>
+<li class="fragment"><p>Let us recall the previous decomposition <span class="math display">
+\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] =  \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}}, \quad i=n+1,\dots,n + m.
+</span></p></li>
+<li class="fragment"><p>The <span class="blue">best case scenario</span> is when the estimated function coincides with the mean of <span class="math inline">Y_i</span>, i.e. <span class="math display">
+\hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(Y_i),
+</span> but even in this (overly optimistic) situation, we would still commit mistakes, due to the presence of <span class="math inline">\epsilon_i</span> (unless <span class="math inline">\sigma^2 = 0</span>). Hence, the variance <span class="math inline">\sigma^2</span> is called the <span class="orange">irreducible error</span>.</p></li>
+<li class="fragment"><p>Since we do not know <span class="math inline">f(\bm{x}_i)</span>, we seek for an estimate <span class="math inline">\hat{f}(\bm{x}_i) \approx f(\bm{x}_i)</span>, in the attempt of minimizing the <span class="blue">reducible error</span>.</p></li>
+</ul>
+</div>
 </section>
-<section id="if-we-knew-fx" class="slide level2 center">
-<h2>If we knew <span class="math inline">f(x)</span>…</h2>
+<section id="bias-variance-trade-off-i" class="slide level2 center">
+<h2>Bias-variance trade-off I</h2>
+<ul>
+<li><p>In many books, including A&amp;S, the starting point of the analysis is the <span class="blue">reducible error</span>, because it is the only one we can change and minimize, e.g.&nbsp;by selecting the “optimal” <span class="math inline">p</span>.</p></li>
+<li><p>It measures the <span class="orange">discrepancy</span> between the unknown function <span class="math inline">f(x)</span> and its estimate <span class="math inline">\hat{f}(\bm{x})</span>.</p></li>
+<li><p>What follows is the <span class="blue">most important result</span> of this unit.</p></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-note no-icon callout-captioned callout-style-simple">
+<div class="callout-body">
+<div class="callout-caption">
+<p><strong>Bias-variance decomposition</strong></p>
+</div>
+<div class="callout-content">
+<p>For any covariate value <span class="math inline">\bm{x}</span>, it holds the following well-known decomposition: <span class="math display">
+\mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}^2\right] = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}\right]^2}_{\text{Bias}^2} + \underbrace{\text{var}\{\hat{f}(\bm{x})\}}_{\text{variance}}.
+</span></p>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section id="bias-variance-trade-off" class="slide level2 center">
-<h2>Bias-variance trade-off</h2>
+<section id="the-expected-prediction-error" class="slide level2 center">
+<h2>The expected prediction error</h2>
+<div>
+<ul>
+<li class="fragment"><p>Summarizing, the <span class="orange">expected prediction error</span> <span class="math inline">\text{Err}</span> can be decomposed as <span class="math display">
+\begin{aligned}
+\text{Err} = \sigma^2 + \frac{1}{m}\sum_{i=1}^m\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right]^2 + \frac{1}{m}\sum_{i=1}^m\text{var}\{\hat{f}(\bm{x}_{n+i})\}.
+\end{aligned}
+</span></p></li>
+<li class="fragment"><p>In <span class="blue">ordinary least squares</span> the above quantity can be computed in closed form.</p></li>
+<li class="fragment"><p>Indeed, each element of the <span class="orange">bias</span> term equals <span class="math display">
+\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right] = \bm{x}_{n+i}^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_{n+i}).
+</span> where <span class="math inline">\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T</span>. Note that if <span class="math inline">f(\bm{x}) = \bm{x}^T\beta</span>, then the bias is zero.</p></li>
+<li class="fragment"><p>Moreover, each element of the <span class="orange">variance</span> term equals <span class="math display">
+\text{var}\{\hat{f}(\bm{x}_{n+i})\} = \sigma^2 \bm{x}_{n+i}^T (\bm{X}^T\bm{X})^{-1}\bm{x}_{n+i}.
+</span></p></li>
+</ul>
+</div>
 </section>
-<section id="prediction-error" class="slide level2 center">
-<h2>Prediction error</h2>
+<section id="if-we-knew-fx-i" class="slide level2 center">
+<h2>If we knew <span class="math inline">f(x)</span>… I</h2>
 </section>
-<section id="but-since-we-do-not-know-fx" class="slide level2 center">
-<h2>…but since we do not know <span class="math inline">f(x)</span></h2>
+<section id="if-we-knew-fx-ii" class="slide level2 center">
+<h2>If we knew <span class="math inline">f(x)</span>… II</h2>
+</section>
+<section id="bias-variance-trade-off-ii" class="slide level2 center">
+<h2>Bias-variance trade-off II</h2>
+<div>
+<ul>
+<li class="fragment"><p>The <span class="orange">bias</span> measures the ability of the estimator <span class="math inline">\hat{f}(\bm{x})</span> to reconstruct the true <span class="math inline">f(\bm{x})</span>. It equals zero whenever <span class="math inline">\mathbb{E}\{\hat{f}(\bm{x})\} = f(\bm{x})</span>.</p></li>
+<li class="fragment"><p>The <span class="orange">bias</span> term can be reduced by increasing the flexibility of the model (e.g., by considering a high value for <span class="math inline">p</span>).</p></li>
+<li class="fragment"><p>The <span class="blue">variance</span> measures the variability of the estimator <span class="math inline">\hat{f}(\bm{x})</span> and its tendency to follow random fluctuations of the data.</p></li>
+<li class="fragment"><p>The <span class="blue">variance</span> increases together with the model complexity.</p></li>
+<li class="fragment"><p>It is not possible to minimize both the bias and the variance, there is a <span class="orange">trade-off</span>.</p></li>
+<li class="fragment"><p><strong>Summary</strong>. Low model complexity: <span class="orange">high bias</span>, <span class="blue">low variance</span>. High model complexity: <span class="blue">low bias</span>, <span class="orange">high variance</span>.</p></li>
+</ul>
+</div>
 </section></section>
+<section>
 <section id="cross-validation" class="title-slide slide level1 center">
 <h1>Cross-validation</h1>
 
 </section>
-
+<section id="but-since-we-do-not-know-fx" class="slide level2 center">
+<h2>…but since we do not know <span class="math inline">f(x)</span></h2>
+</section></section>
 <section id="information-criteria" class="title-slide slide level1 center">
 <h1>Information criteria</h1>
 

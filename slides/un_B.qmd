@@ -344,46 +344,129 @@ $$ where $\epsilon_1,\dots,\epsilon_m$ are iid "[error]{.orange}" terms with $\m
 
 ::: incremental
 
-- Let us consider a generic [new data point]{.orange} $Y$ independent on the training, associated with the covariate vector $\tilde{\bm{x}} = (x_1,\dots,x_p)^T$.
-
 - A measure of quality for the predictions is the so-called [expected prediction error]{.blue}:
 $$
-\text{Err} = \mathbb{E}\left[\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\}\right],
+\text{Err} = \mathbb{E}(\text{MSE}_\text{test}) =  \mathbb{E}\left[\frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n + i}; \hat{f}(\bm{x}_{n + i})\}\right],
 $$
-where $\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\}$ is a [loss function]{.orange}. The expectation is taken with respect to traning random variable $Y_1,\dots,Y_n$, implicitly appearing in $\hat{f}$, and the new data point $Y$.
+where $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\}$ is a [loss function]{.orange}. 
 
-- The expected prediction error is measuring the [average]{.blue} "discrepancy" between a new data point and the corresponding prediction.
+- The expectation is taken with respect to traning random variable $Y_1,\dots,Y_n$, implicitly appearing in $\hat{f}(\bm{x})$, and the new data points $Y_{n+1},\dots,Y_{n+m}$.
+
+- The expected prediction error is measuring the [average]{.blue} "discrepancy" between the new data points and the corresponding predictions.
 
 - Examples of loss functions for [regression problems]{.blue} $Y \in \mathbb{R}$ are: 
-  - The quadratic loss $\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\} = \{Y_i - \hat{f}(x_1,\dots,x_p)\}^2$, leading to the MSE.
-  - The absolute loss $\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\} = |Y_i - \hat{f}(x_1,\dots,x_p)|$, leading to the MAE.
+  - The quadratic loss $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = \{Y_i - \hat{f}(\bm{x}_i)\}^2$, leading to the MSE.
+  - The absolute loss $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = |Y_i - \hat{f}(\bm{x}_i)|$, leading to the MAE.
 
 
 :::
 
 ## Quadratic loss and the mean squared error
 
-
 ::: callout-note
-Under the above assumptions and using a quadratic loss, the [expected prediction error]{.blue} is
+#### Error decomposition (reducible and irreducible)
+
+Under a quadratic loss, [each element]{.orange} of the [expected prediction error]{.blue} admits the following decomposition
 $$
 \begin{aligned}
-\text{Err} &=\mathbb{E}\left[\{Y_{n+1} - \hat{f}(\tilde{\bm{x}}_{n+1})\}^2\right] \\
-&= \underbrace{\sigma^2}_{\text{irreducible}} + \underbrace{\mathbb{E}\left[\{\hat{f}(\tilde{\bm{x}}_{n+1}) - f(\tilde{\bm{x}}_{n+1})\}^2\right]}_{\text{reducible}}
+\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] &= \mathbb{E}\left[\{f(\bm{x}_i) + \epsilon_i - \hat{f}(\bm{x}_i)\}^2\right] \\
+& = \mathbb{E}\left[\{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}^2\right] + \mathbb{E}(\epsilon_i^2) + 2 \: \mathbb{E}\left[\epsilon_i \: \{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}\right]\\
+& = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}},
 \end{aligned}
 $$
+recalling that $\mathbb{E}(\epsilon_i^2) = \text{var}(\epsilon_i) = \sigma^2$ and for any $i = n+1,\dots,n+m$ ([test set]{.orange}). 
 :::
 
 ## Reducible and irreducible errors
 
+::: incremental
+
+- We would like to make the [mean squared error]{.orange} as [small]{.orange} as possible, e.g. by choosing an "optimal" degree of the polynomial $p-1$ that minimizes it. 
+
+- Let us recall the previous decomposition
+$$
+\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] =  \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}}, \quad i=n+1,\dots,n + m.
+$$
+- The [best case scenario]{.blue} is when the estimated function coincides with the mean of $Y_i$, i.e.
+$$
+\hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(Y_i),
+$$
+but even in this (overly optimistic) situation, we would still commit mistakes, due to the presence of $\epsilon_i$ (unless $\sigma^2 = 0$). Hence, the variance $\sigma^2$ is called the [irreducible error]{.orange}. 
+
+- Since we do not know $f(\bm{x}_i)$, we seek for an estimate $\hat{f}(\bm{x}_i) \approx  f(\bm{x}_i)$, in the attempt of minimizing the [reducible error]{.blue}.
+
+:::
+
+## Bias-variance trade-off I
+
+- In many books, including A\&S, the starting point of the analysis is the [reducible error]{.blue}, because it is the only one we can change and minimize, e.g. by selecting the "optimal" $p$.
+
+- It measures the [discrepancy]{.orange} between the unknown function $f(x)$ and its estimate $\hat{f}(\bm{x})$.
+
+- What follows is the [most important result]{.blue} of this unit.
+
+. . .
+
+::: callout-note
+#### Bias-variance decomposition
+
+For any covariate value $\bm{x}$, it holds the following well-known decomposition:
+$$
+\mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}^2\right] = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}\right]^2}_{\text{Bias}^2} + \underbrace{\text{var}\{\hat{f}(\bm{x})\}}_{\text{variance}}.
+$$
+:::
+
+## The expected prediction error
+
+::: incremental
+
+- Summarizing, the [expected prediction error]{.orange} $\text{Err}$ can be decomposed as
+$$
+\begin{aligned}
+\text{Err} = \sigma^2 + \frac{1}{m}\sum_{i=1}^m\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right]^2 + \frac{1}{m}\sum_{i=1}^m\text{var}\{\hat{f}(\bm{x}_{n+i})\}.
+\end{aligned}
+$$
+- In [ordinary least squares]{.blue} the above quantity can be computed in closed form. 
+
+- Indeed, each element of the [bias]{.orange} term equals
+$$
+\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right] = \bm{x}_{n+i}^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_{n+i}).
+$$
+where $\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T$. Note that if $f(\bm{x}) = \bm{x}^T\beta$, then the bias is zero. 
+
+- Moreover, each element of the [variance]{.orange} term equals
+$$
+\text{var}\{\hat{f}(\bm{x}_{n+i})\} = \sigma^2 \bm{x}_{n+i}^T (\bm{X}^T\bm{X})^{-1}\bm{x}_{n+i}.
+$$
+
+:::
+
 ## If we knew $f(x)$...
 
-## Bias-variance trade-off
+## If we knew $f(x)$...
 
-## Prediction error
+## Bias-variance trade-off II
+
+::: incremental
+
+- The [bias]{.orange} measures the ability of the estimator $\hat{f}(\bm{x})$ to reconstruct the true $f(\bm{x})$. It equals zero whenever $\mathbb{E}\{\hat{f}(\bm{x})\} = f(\bm{x})$. 
+
+- The [bias]{.orange} term can be reduced by increasing the flexibility of the model (e.g., by considering a high value for $p$).
+
+- The [variance]{.blue} measures the variability of the estimator $\hat{f}(\bm{x})$ and its tendency to follow random fluctuations of the data. 
+
+- The [variance]{.blue} increases together with the model complexity. 
+
+- It is not possible to minimize both the bias and the variance, there is a [trade-off]{.orange}. 
+
+- **Summary**. Low model complexity: [high bias]{.orange}, [low variance]{.blue}. High model complexity: [low bias]{.blue}, [high variance]{.orange}.
+
+:::
+
+
+# Cross-validation
 
 ## ...but since we do not know $f(x)$
 
-# Cross-validation
 
 # Information criteria
