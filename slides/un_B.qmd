@@ -91,13 +91,14 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
 - Let us presume that [yesterday]{.orange} we observed $n = 30$ pairs of data $(x_i, y_i)$.
 
 - Data were generated according to $$
-    y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n.
+    Y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n,
     $$
+    with each $y_i$ being the realization of $Y_i$.
 - The $\epsilon_1,\dots,\epsilon_n$ are iid "[error]{.orange}" terms, such that $\mathbb{E}(\epsilon_i)=0$ and $\text{var}(\epsilon_i)=\sigma^2 = 10^{-2}$. 
 
 - Here $f(x)$ is a regression function ([signal]{.blue}) that we leave unspecified.
 
-- Suppose [tomorrow]{.blue} we get a new $x_{n+1}$. We wish to [predict]{.orange} $y_{n+1}$ using $f(x_{n+1}; \beta)$.
+- [Tomorrow]{.blue} we will get a new $x_{n+1}$. We wish to [predict]{.orange} $Y_{n+1}$ using $\mathbb{E}(Y_{n+1}) = f(x_{n+1}; \beta)$.
 
 :::
 ::: 
@@ -112,15 +113,19 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
 $$
 f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 $$
-i.e. $f(x; \beta)$ is [approximated]{.orange} with a polynomial of degree $p-1$ (Taylor expansions).
+namely $f(x)$ is [approximated]{.orange} with a polynomial of degree $p-1$ (i.e. Taylor expansions).
 
 - This model is linear in the parameters, therefore we can use ordinary least squares.
 
 - How do we choose the [degree of the polynomial]{.blue} $p - 1$?
 
-- Without have any clear guideline, at least in principle any value of $p \in \{1,\dots,n\}$ could be appropriate. 
+- Without a clear guidance, in principle any value of $p \in \{1,\dots,n\}$ could be appropriate. 
 
-- Let us see what happens, in practice, when we select different values of $p$...
+- Let us compare the [mean squared error]{.blue} (MSE) on yesterday's data ([training]{.orange})
+$$
+\text{MSE}_{\text{train}} = \frac{1}{n}\sum_{i=1}^n\{y_i -f(x_i; \hat{\beta})\}^2,
+$$
+or alternatively $R^2_\text{train}$, for different values of $p$...
 
 :::
 
@@ -158,15 +163,15 @@ ggplot(data = data_pred) +
 
 ```{r}
 degree_list <- 1:23
-data_goodness <- data.frame(degree = degree_list, Deviance = NA, R_squared = NA, Deviance_test = NA, R_squared_test = NA)
-deviance_tot <- sum((dataset$y.tomorrow - mean(dataset$y.tomorrow))^2)
+data_goodness <- data.frame(degree = degree_list, MSE = NA, R_squared = NA, MSE_test = NA, R_squared_test = NA)
+MSE_tot <- mean((dataset$y.tomorrow - mean(dataset$y.tomorrow))^2)
 for (degree in degree_list) {
   # Fitting a polynomial of degree p -1
   fit <- lm(y.yesterday ~ poly(x, degree = degree, raw = F), data = dataset)
-  data_goodness$Deviance[degree] <- sum((dataset$y.yesterday - fitted(fit))^2)
-  data_goodness$Deviance_test[degree] <- sum((dataset$y.tomorrow - fitted(fit))^2)
+  data_goodness$MSE[degree] <- mean((dataset$y.yesterday - fitted(fit))^2)
+  data_goodness$MSE_test[degree] <- mean((dataset$y.tomorrow - fitted(fit))^2)
   data_goodness$R_squared[degree] <- summary(fit)$r.squared
-  data_goodness$R_squared_test[degree] <- 1 - data_goodness$Deviance_test[degree] / deviance_tot
+  data_goodness$R_squared_test[degree] <- 1 - data_goodness$MSE_test[degree] / MSE_tot
 }
 ```
 
@@ -177,12 +182,12 @@ for (degree in degree_list) {
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
-ggplot(data = data_goodness, aes(x = degree + 1, y = Deviance)) +
+ggplot(data = data_goodness, aes(x = degree + 1, y = MSE)) +
   geom_line() +
   geom_point(size = 0.8) +
   theme_light() +
   xlab("# of parameters p") +
-  ylab("Deviance")
+  ylab("MSE")
 ```
 :::
 
@@ -225,21 +230,21 @@ curve(f(x), n = 300, add = TRUE)
 
 ::: incremental
 
-- The [deviance]{.blue} decreases as the number of parameter increases; similarly, the [$R^2$]{.blue} always increases as a function of $p$. It can be [proved]{.orange} that this [always happens]{.orange} in linear models. 
+- The [MSE]{.blue} decreases as the number of parameter increases; similarly, the [$R^2$]{.blue} always increases as a function of $p$. It can be [proved]{.orange} that this [always happens]{.orange} in linear models. 
 
-- One might be tempted to let $p$ as large as possible...
+- One might be tempted to let $p$ as large as possible to make the model more flexible...
 
-- Taking this reasoning to the extreme, this would lead to the choice $p = n$, so that $$
-D(\hat{\beta}) = 0, \qquad R^2 = 1,
+- Taking this reasoning to the extreme would lead to the choice $p = n$, so that $$
+\text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
 $$
 i.e. an apparently perfect fit. This procedure is called [interpolation]{.blue}.
 
-- However, we are [not]{.orange} interested in predicting [yesterday]{.orange} data. Our goal is to predict [tomorrow]{.blue}'s data, i.e., given $x_{n + i}$, to predict $y_{n + i}$, for a new set of $m = 30$ points: $$
-(x_{n+1}, y_{n+1}), \dots, (x_{n+m}, y_{n + m}) \quad \longrightarrow \quad \hat{y}_{n+i} = f(x_{n+i}; \hat{\beta}), \quad i=1,\dots,m,
+- However, we are [not]{.orange} interested in predicting [yesterday]{.orange} data. Our goal is to predict [tomorrow]{.blue}'s data, i.e., given $x_{n + i}$, to predict $Y_{n + i}$, for a new set of $m = 30$ points: $$
+(x_{n+1}, y_{n+1}), \dots, (x_{n+m}, y_{n + m}) \  \longrightarrow \ \hat{y}_{n+i} = \mathbb{E}(Y_{n+i}) = f(x_{n+i}; \hat{\beta}), 
 $$
-where $\hat{\beta}$ is obtained using yesterday data. 
+for $i=1,\dots,m$, where $\hat{\beta}$ is obtained using yesterday data. 
 
-- [Remark]{.orange}. Tomorrow's data are generated according to the same scheme of yesterday's data.
+- [Remark]{.orange}. Tomorrow's data $Y_{n+1},\dots, Y_{n+m}$ follows the same scheme of yesterday's data.
 
 :::
 
@@ -269,12 +274,12 @@ ggplot(data = data_pred) +
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
-ggplot(data = data_goodness, aes(x = degree + 1, y = Deviance_test)) +
+ggplot(data = data_goodness, aes(x = degree + 1, y = MSE_test)) +
   geom_line() +
   geom_point(size = 0.8) +
   theme_light() +
   xlab("# of parameters p") +
-  ylab("Deviance")
+  ylab("MSE")
 ```
 :::
 
@@ -297,21 +302,76 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
 
 ::: incremental
 
-- The deviance on yesterday's data ([training]{.orange}) or tomorrow's data ([test]{.blue}) are defined as
+- The mean squared error on tomorrow's data ([test]{.blue}) is defined as
 $$
-D_{\text{train}}(\hat{\beta}) = \sum_{i=1}^n\{y_i -f(x_i; \hat{\beta})\}^2,\quad D_{\text{test}}(\hat{\beta}) = \sum_{i=1}^m\{y_{n +i} -f(x_{n + i}; \hat{\beta})\}^2,
+\text{MSE}_{\text{test}} = \frac{1}{m}\sum_{i=1}^m\{y_{n +i} -f(x_{n + i}; \hat{\beta})\}^2,
 $$
-and similarly for $R^2_\text{train}$ and $R^2_\text{test}$.
+and similarly the $R^2_\text{test}$. We would like the $\text{MSE}_{\text{test}}$  to be [as small as possible]{.orange}.
 
-- For small values of $p$, an increase in the degree of the polynomial [improves the fit]{.blue}. In other words, at the beginning both the deviances $D_{\text{train}}(\hat{\beta})$ and $D_{\text{test}}(\hat{\beta})$ decrease.
+- For [small values]{.blue} of $p$, an increase in the degree of the polynomial [improves the fit]{.blue}. In other words, at the beginning, both the $\text{MSE}_{\text{train}}$ and the $\text{MSE}_{\text{test}}$ decrease.
 
-- This improvement gradually ceases as the increase in degree causes the polynomial to follow [random fluctuations]{.orange} in yesterday’s data [not observed]{.blue} in the [new sample]{.blue}.
+- For [larger values]{.orange} of $p$, the improvement gradually ceases and the polynomial starts to follow [random fluctuations]{.orange} in yesterday’s data which are [not observed]{.blue} in the [new sample]{.blue}.
 
-- An over-adaptation to yesterday data is called [overfitting]{.orange}, which occurs when the deviance $D_{\text{train}}(\hat{\beta})$ is low but the new deviance $D_{\text{test}}(\hat{\beta})$ is high.
+- An over-adaptation to yesterday data is called [overfitting]{.orange}, which occurs when the training $\text{MSE}_{\text{train}}$ is low but the test $\text{MSE}_{\text{test}}$ is high.
 
 :::
 
-# Bias-variance tradeoff
+## ☠️ - Orthogonal polynomials and numerical difficulties
+
+# Methods for model selection
+
+## A general strategy
+
+::: incremental
+
+- The example with yesterday's and tomorrow's data can be better formalized.
+
+- In general settings, we consider two datasets of [iid random variables]{.blue}: 
+  - [Training]{.orange} $(X_1, Y_1),\dots,(X_n, Y_n)$, whose realization is $(\tilde{\bm{x}}_1, y_1), \dots, (\tilde{\bm{x}}_n, y_n)$.
+  - [Test]{.blue} $(X_{n+1}, Y_{n+1}),\dots,(X_{n +m}, Y_{n +m})$, with realization $(\tilde{\bm{x}}_{n+1}, y_{n+1}), \dots, (\tilde{\bm{x}}_{n +m}, y_{n + m})$.
+- The [key assumption]{.orange} behind most statistical learning algorithm is that the random vectors  $$(X_i,Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \qquad i=1,\dots,m,$$ 
+where $X_i \in \mathbb{R}^p$ represents a vector of [covariates]{.blue} and $Y_i$ is the [response]{.orange}.
+
+- [Step 1]{.blue}. Use the [training data]{.orange} to estimate a function of the covariates $\hat{f}(X_i)$ which should predict well the corresponding response $Y_i$.
+
+- [Step 2]{.blue}. Evaluate the quality of our predictions by measuring the discrepancy between $\hat{f}(X_i)$ and $Y_i$, using the [test set]{.orange}.
+
+:::
+
+## Loss functions
+
+::: incremental
+
+- A common measure of discrepacy between $\hat{f}(X_i)$ and $Y_i$, based on the test set, is: $$
+\text{Err}_\text{test} = \frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n+i}; \hat{f}(X_{n+i})\},
+$$
+where $\mathscr{L}\{Y_i; \hat{f}(X_i)\}$ is a [loss function]{.orange}.
+
+- Examples of loss functions for [regression problems]{.blue} $Y_i \in \mathbb{R}$ are: 
+  - The quadratic loss $\mathscr{L}\{Y_i; \hat{f}(X_i)\} = \{Y_i - \hat{f}(X_i)\}^2$.
+  - The absolute loss $\mathscr{L}\{Y_i; \hat{f}(X_i)\} = |Y_i - \hat{f}(X_i)|$.
+
+- In practice, it is convenient to consider the so-called [expected prediction error]{.blue}
+$$
+\text{Err} = \mathbb{E}(\text{Err}_\text{test} ) = \frac{1}{m} \sum_{i=1}^m \mathbb{E}\left[\mathscr{L}\{Y_{n+i}; \hat{f}(X_{n+i})\}\right] = \mathbb{E}\left[\mathscr{L}\{Y_{n+1}; \hat{f}(X_{n+1})\}\right],
+$$
+where the expectation is taken with respect to both the training and the test set. 
+:::
+
+## Quadratic loss
+
+::: incremental
+
+- We assume that the [covariates]{.blue} $\tilde{\bm{x}_i}$ are [deterministic]{.blue} (fixed-X design). If they were not, one just needs to include the conditioning $(X_{n+1} = \tilde{\bm{x}}_{n+1})$ in all the following expectations.
+
+- The expected prediction error, under a [quadratic loss]{.orange} and fixed-X, becomes
+$$
+\text{Err} = \mathbb{E}(\text{MSE}_\text{test} ) =\mathbb{E}\left[\{Y_{n+1} - \hat{f}(\tilde{\bm{x}}_{n+1})\}^2\right].
+$$
+
+:::
+
+## Reducible and irreducible errors
 
 ## If we knew $f(x)$...
 

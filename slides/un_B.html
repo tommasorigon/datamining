@@ -21,69 +21,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { color: #008000; } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { color: #008000; font-weight: bold; } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -130,9 +67,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#yesterdays-data" id="toc-yesterdays-data" class="nav-link" data-scroll-target="#yesterdays-data">Yesterday’s data</a></li>
   <li><a href="#polynomial-regression" id="toc-polynomial-regression" class="nav-link" data-scroll-target="#polynomial-regression">Polynomial regression</a></li>
   <li><a href="#yesterdays-data-polynomial-regression" id="toc-yesterdays-data-polynomial-regression" class="nav-link" data-scroll-target="#yesterdays-data-polynomial-regression">Yesterday’s data, polynomial regression</a></li>
-  <li><a href="#goodness-of-fit" id="toc-goodness-of-fit" class="nav-link" data-scroll-target="#goodness-of-fit">Goodness of fit</a></li>
-  <li><a href="#on-the-choice-of-p" id="toc-on-the-choice-of-p" class="nav-link" data-scroll-target="#on-the-choice-of-p">On the choice of <span class="math inline">p</span></a></li>
-  <li><a href="#polynomial-interpolation-p-n" id="toc-polynomial-interpolation-p-n" class="nav-link" data-scroll-target="#polynomial-interpolation-p-n">Polynomial interpolation (<span class="math inline">p = n</span>)</a></li>
+  <li><a href="#yesterdays-data-goodness-of-fit" id="toc-yesterdays-data-goodness-of-fit" class="nav-link" data-scroll-target="#yesterdays-data-goodness-of-fit">Yesterday’s data, goodness of fit</a></li>
+  <li><a href="#yesterdays-data-polynomial-interpolation-p-n" id="toc-yesterdays-data-polynomial-interpolation-p-n" class="nav-link" data-scroll-target="#yesterdays-data-polynomial-interpolation-p-n">Yesterday’s data, polynomial interpolation (<span class="math inline">p = n</span>)</a></li>
+  <li><a href="#yesterdays-data-tomorrows-prediction" id="toc-yesterdays-data-tomorrows-prediction" class="nav-link" data-scroll-target="#yesterdays-data-tomorrows-prediction">Yesterday’s data, tomorrow’s prediction</a></li>
+  <li><a href="#tomorrows-data-polynomial-regression" id="toc-tomorrows-data-polynomial-regression" class="nav-link" data-scroll-target="#tomorrows-data-polynomial-regression">Tomorrow’s data, polynomial regression</a></li>
+  <li><a href="#tomorrows-data-goodness-of-fit" id="toc-tomorrows-data-goodness-of-fit" class="nav-link" data-scroll-target="#tomorrows-data-goodness-of-fit">Tomorrow’s data, goodness of fit</a></li>
+  <li><a href="#comments-and-remarks" id="toc-comments-and-remarks" class="nav-link" data-scroll-target="#comments-and-remarks">Comments and remarks</a></li>
+  <li><a href="#orthogonal-polynomials-and-numerical-difficulties" id="toc-orthogonal-polynomials-and-numerical-difficulties" class="nav-link" data-scroll-target="#orthogonal-polynomials-and-numerical-difficulties">☠️ - Orthogonal polynomials and numerical difficulties</a></li>
+  <li><a href="#methods-for-model-selection" id="toc-methods-for-model-selection" class="nav-link" data-scroll-target="#methods-for-model-selection">Methods for model selection</a>
+  <ul class="collapse">
+  <li><a href="#a-general-strategy" id="toc-a-general-strategy" class="nav-link" data-scroll-target="#a-general-strategy">A general strategy</a></li>
+  <li><a href="#loss-functions" id="toc-loss-functions" class="nav-link" data-scroll-target="#loss-functions">Loss functions</a></li>
+  <li><a href="#quadratic-loss" id="toc-quadratic-loss" class="nav-link" data-scroll-target="#quadratic-loss">Quadratic loss</a></li>
+  <li><a href="#reducible-and-irreducible-errors" id="toc-reducible-and-irreducible-errors" class="nav-link" data-scroll-target="#reducible-and-irreducible-errors">Reducible and irreducible errors</a></li>
+  <li><a href="#if-we-knew-fx" id="toc-if-we-knew-fx" class="nav-link" data-scroll-target="#if-we-knew-fx">If we knew <span class="math inline">f(x)</span>…</a></li>
+  <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
+  <li><a href="#prediction-error" id="toc-prediction-error" class="nav-link" data-scroll-target="#prediction-error">Prediction error</a></li>
+  <li><a href="#but-since-we-do-not-know-fx" id="toc-but-since-we-do-not-know-fx" class="nav-link" data-scroll-target="#but-since-we-do-not-know-fx">…but since we do not know <span class="math inline">f(x)</span></a></li>
+  </ul></li>
+  <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation">Cross-validation</a></li>
+  <li><a href="#information-criteria" id="toc-information-criteria" class="nav-link" data-scroll-target="#information-criteria">Information criteria</a></li>
   </ul>
 </nav>
 </div>
@@ -194,20 +148,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="yesterdays-data">Yesterday’s data</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-1_2316a14bd991678a8289cb11cb0378d8">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(ggthemes)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>dataset <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../data/yesterday.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dataset, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y.yesterday)) <span class="sc">+</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>  <span class="fu">scale_color_tableau</span>(<span class="at">palette =</span> <span class="st">"Color Blind"</span>) <span class="sc">+</span></span>
-<span id="cb1-9"><a href="#cb1-9"></a>  <span class="fu">xlab</span>(<span class="st">"x"</span>) <span class="sc">+</span></span>
-<span id="cb1-10"><a href="#cb1-10"></a>  <span class="fu">ylab</span>(<span class="st">"y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-1_53ed7c1cf7bd7feaf7714cc1dbd35ff4">
 <div class="cell-output-display">
 <p><img src="un_B_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="750"></p>
 </div>
@@ -216,11 +157,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li><p>Let us presume that <span class="orange">yesterday</span> we observed <span class="math inline">n = 30</span> pairs of data <span class="math inline">(x_i, y_i)</span>.</p></li>
 <li><p>Data were generated according to <span class="math display">
-  y_i = f(x_i; \beta) + \epsilon_i, \quad i=1,\dots,n.
-  </span></p></li>
+  Y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n,
+  </span> with each <span class="math inline">y_i</span> being the realization of <span class="math inline">Y_i</span>.</p></li>
 <li><p>The <span class="math inline">\epsilon_1,\dots,\epsilon_n</span> are iid “<span class="orange">error</span>” terms, such that <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2 = 10^{-2}</span>.</p></li>
-<li><p>Here <span class="math inline">f(x; \beta)</span> is a regression function (<span class="blue">signal</span>) that we leave unspecified.</p></li>
-<li><p>Suppose <span class="orange">today</span> we get a new value <span class="math inline">x_{n+1}</span>. We wish to <span class="blue">predict</span> <span class="math inline">y_{n+1}</span> using <span class="math inline">f(x_{n+1}; \beta)</span>.</p></li>
+<li><p>Here <span class="math inline">f(x)</span> is a regression function (<span class="blue">signal</span>) that we leave unspecified.</p></li>
+<li><p><span class="blue">Tomorrow</span> we will get a new <span class="math inline">x_{n+1}</span>. We wish to <span class="orange">predict</span> <span class="math inline">Y_{n+1}</span> using <span class="math inline">\mathbb{E}(Y_{n+1}) = f(x_{n+1}; \beta)</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -229,45 +170,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="polynomial-regression">Polynomial regression</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>The function <span class="math inline">f(x;\beta)</span> is unknown, so we need to estimate it.</p></li>
+<li><p>The function <span class="math inline">f(x)</span> is unknown, therefore it should be estimated.</p></li>
 <li><p>A simple approach is using the tools of <a href="unit_A1_slides.html">Unit A.1</a>, such as <span class="orange">polynomial regression</span>: <span class="math display">
-f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
-</span> i.e.&nbsp;<span class="math inline">f(x; \beta)</span> is <span class="orange">approximated</span> with a polynomial of degree <span class="math inline">p-1</span>.</p></li>
+f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
+</span> namely <span class="math inline">f(x)</span> is <span class="orange">approximated</span> with a polynomial of degree <span class="math inline">p-1</span> (i.e.&nbsp;Taylor expansions).</p></li>
 <li><p>This model is linear in the parameters, therefore we can use ordinary least squares.</p></li>
-<li><p>However, how do we choose the <span class="blue">degree of the polynomial</span> <span class="math inline">p - 1</span>?</p></li>
-<li><p>Without have any clear guideline, at least in principle any value of <span class="math inline">p \in \{1,\dots,n\}</span> could be appropriate.</p></li>
-<li><p>Let us see what happens, in practice, when we select different values of <span class="math inline">p</span>…</p></li>
+<li><p>How do we choose the <span class="blue">degree of the polynomial</span> <span class="math inline">p - 1</span>?</p></li>
+<li><p>Without a clear guidance, in principle any value of <span class="math inline">p \in \{1,\dots,n\}</span> could be appropriate.</p></li>
+<li><p>Let us compare the <span class="blue">mean squared error</span> (MSE) on yesterday’s data (<span class="orange">training</span>) <span class="math display">
+\text{MSE}_{\text{train}} = \frac{1}{n}\sum_{i=1}^n\{y_i -f(x_i; \hat{\beta})\}^2,
+</span> or alternatively <span class="math inline">R^2_\text{train}</span>, for different values of <span class="math inline">p</span>…</p></li>
 </ul>
 </div>
 </section>
 <section id="yesterdays-data-polynomial-regression" class="level2">
 <h2 class="anchored" data-anchor-id="yesterdays-data-polynomial-regression">Yesterday’s data, polynomial regression</h2>
-<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-2_53a656465c52e8ecebdec86fb7fa4ec1">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>degree_list <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">12</span>, <span class="dv">18</span>, <span class="dv">23</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>data_plot <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>x_seq <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="fu">min</span>(dataset<span class="sc">$</span>x), <span class="at">to =</span> <span class="fu">max</span>(dataset<span class="sc">$</span>x), <span class="at">length =</span> <span class="dv">30000</span>)</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="cf">for</span> (degree <span class="cf">in</span> degree_list) {</span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="co"># Fitting a polynomial of degree p -1</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y.yesterday <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> degree, <span class="at">raw =</span> F), <span class="at">data =</span> dataset)</span>
-<span id="cb2-7"><a href="#cb2-7"></a>  y_hat <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x_seq))</span>
-<span id="cb2-8"><a href="#cb2-8"></a>  data_plot <span class="ot">&lt;-</span> <span class="fu">rbind</span>(data_plot, <span class="fu">data.frame</span>(<span class="at">x =</span> x_seq, <span class="at">y_hat =</span> y_hat, <span class="at">degree =</span> <span class="fu">paste</span>(<span class="st">"Degree of the polynomial:"</span>, degree)))</span>
-<span id="cb2-9"><a href="#cb2-9"></a>}</span>
-<span id="cb2-10"><a href="#cb2-10"></a>data_plot<span class="sc">$</span>degree <span class="ot">&lt;-</span> <span class="fu">factor</span>(data_plot<span class="sc">$</span>degree)</span>
-<span id="cb2-11"><a href="#cb2-11"></a>data_plot<span class="sc">$</span>degree <span class="ot">&lt;-</span> <span class="fu">factor</span>(data_plot<span class="sc">$</span>degree, <span class="at">levels =</span> <span class="fu">levels</span>(data_plot<span class="sc">$</span>degree)[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">6</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)])</span>
-<span id="cb2-12"><a href="#cb2-12"></a></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data_plot) <span class="sc">+</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y_hat, <span class="at">col =</span> degree)) <span class="sc">+</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> dataset, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y.yesterday), <span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
-<span id="cb2-18"><a href="#cb2-18"></a>  <span class="fu">facet_wrap</span>(. <span class="sc">~</span> degree, <span class="at">ncol =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb2-19"><a href="#cb2-19"></a>  <span class="fu">scale_color_tableau</span>(<span class="at">palette =</span> <span class="st">"Color Blind"</span>) <span class="sc">+</span></span>
-<span id="cb2-20"><a href="#cb2-20"></a>  <span class="fu">xlab</span>(<span class="st">"x"</span>) <span class="sc">+</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a>  <span class="fu">ylab</span>(<span class="st">"y"</span>) <span class="sc">+</span></span>
-<span id="cb2-22"><a href="#cb2-22"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="fl">0.42</span>, <span class="fl">0.56</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-2_51a143d42eafae1d7d39b2c97bc08096">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -277,48 +195,20 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 </div>
 </div>
 </section>
-<section id="goodness-of-fit" class="level2">
-<h2 class="anchored" data-anchor-id="goodness-of-fit">Goodness of fit</h2>
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-3_dd9ffa4423dd9ef6140ade41cfc58216">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>degree_list <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">23</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>data_plot <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">degree =</span> degree_list, <span class="at">Deviance =</span> <span class="cn">NA</span>, <span class="at">R_squared =</span> <span class="cn">NA</span>)</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="cf">for</span> (degree <span class="cf">in</span> degree_list) {</span>
-<span id="cb3-4"><a href="#cb3-4"></a>  <span class="co"># Fitting a polynomial of degree p -1</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>  fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y.yesterday <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> degree, <span class="at">raw =</span> F), <span class="at">data =</span> dataset)</span>
-<span id="cb3-6"><a href="#cb3-6"></a>  data_plot<span class="sc">$</span>Deviance[degree] <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dataset<span class="sc">$</span>y.yesterday <span class="sc">-</span>  <span class="fu">fitted</span>(fit))<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb3-7"><a href="#cb3-7"></a>  data_plot<span class="sc">$</span>R_squared[degree] <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit)<span class="sc">$</span>r.squared</span>
-<span id="cb3-8"><a href="#cb3-8"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<section id="yesterdays-data-goodness-of-fit" class="level2">
+<h2 class="anchored" data-anchor-id="yesterdays-data-goodness-of-fit">Yesterday’s data, goodness of fit</h2>
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-3_9bfa582691d945587b2dbf63daa80d26">
+
 </div>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-4_fbeeaed78ff49a36c8c09f9fd78a9f7e">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data_plot, <span class="fu">aes</span>(<span class="at">x =</span> degree <span class="sc">+</span> <span class="dv">1</span>, <span class="at">y =</span> Deviance)) <span class="sc">+</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">xlab</span>(<span class="st">"# of parameters p"</span>) <span class="sc">+</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a>  <span class="fu">ylab</span>(<span class="st">"Deviance"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-4_38215ae58fc69016261d4ee79e4deea9">
 <div class="cell-output-display">
 <p><img src="un_B_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="750"></p>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-5_d900739650540e4bf1511c5872c3ac9a">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> data_plot, <span class="fu">aes</span>(<span class="at">x =</span> degree <span class="sc">+</span> <span class="dv">1</span>, <span class="at">y =</span> R_squared)) <span class="sc">+</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">theme_light</span>() <span class="sc">+</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a>  <span class="fu">xlab</span>(<span class="st">"# of parameters p"</span>) <span class="sc">+</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a>  <span class="fu">ylab</span>(<span class="fu">expression</span>(R<span class="sc">^</span><span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-5_b79c9ffaa336cee260506a594e97d3c3">
 <div class="cell-output-display">
 <p><img src="un_B_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="750"></p>
 </div>
@@ -326,39 +216,148 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 </div>
 </div>
 </section>
-<section id="on-the-choice-of-p" class="level2">
-<h2 class="anchored" data-anchor-id="on-the-choice-of-p">On the choice of <span class="math inline">p</span></h2>
-<ul>
-<li><p>The <span class="blue">deviance</span> decreases as the number of parameter increases; similarly, the <span class="blue"><span class="math inline">R^2</span></span> always increases as a function of <span class="math inline">p</span>. It can be <span class="orange">proved</span> that this <span class="orange">always happens</span> in linear models.</p></li>
-<li></li>
-</ul>
-</section>
-<section id="polynomial-interpolation-p-n" class="level2">
-<h2 class="anchored" data-anchor-id="polynomial-interpolation-p-n">Polynomial interpolation (<span class="math inline">p = n</span>)</h2>
-<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-6_c26a9745655fa22fdd02c8df676d8769">
-<details>
-<summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>lagrange <span class="ot">&lt;-</span> <span class="cf">function</span>(x0, y0) {</span>
-<span id="cb6-2"><a href="#cb6-2"></a>  f <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb6-3"><a href="#cb6-3"></a>    <span class="fu">sum</span>(y0 <span class="sc">*</span> <span class="fu">sapply</span>(<span class="fu">seq_along</span>(x0), \(j) {</span>
-<span id="cb6-4"><a href="#cb6-4"></a>      <span class="fu">prod</span>(x <span class="sc">-</span> x0[<span class="sc">-</span>j]) <span class="sc">/</span> <span class="fu">prod</span>(x0[j] <span class="sc">-</span> x0[<span class="sc">-</span>j])</span>
-<span id="cb6-5"><a href="#cb6-5"></a>    }))</span>
-<span id="cb6-6"><a href="#cb6-6"></a>  }</span>
-<span id="cb6-7"><a href="#cb6-7"></a>  <span class="fu">Vectorize</span>(f, <span class="st">"x"</span>)</span>
-<span id="cb6-8"><a href="#cb6-8"></a>}</span>
-<span id="cb6-9"><a href="#cb6-9"></a>f <span class="ot">&lt;-</span> <span class="fu">lagrange</span>(dataset<span class="sc">$</span>x, dataset<span class="sc">$</span>y.yesterday)</span>
-<span id="cb6-10"><a href="#cb6-10"></a></span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="fu">plot</span>(dataset<span class="sc">$</span>x, dataset<span class="sc">$</span>y.yesterday, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">xlab =</span> <span class="st">"x"</span>, <span class="at">ylab =</span> <span class="st">"y"</span>, <span class="at">main =</span> <span class="st">"Degree of the polynomial: n-1"</span>)</span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="fu">curve</span>(<span class="fu">f</span>(x), <span class="at">n =</span> <span class="dv">300</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<section id="yesterdays-data-polynomial-interpolation-p-n" class="level2">
+<h2 class="anchored" data-anchor-id="yesterdays-data-polynomial-interpolation-p-n">Yesterday’s data, polynomial interpolation (<span class="math inline">p = n</span>)</h2>
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-6_8e554241687276528c57dd3f5c45b223">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_B_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="1170"></p>
+<p><img src="un_B_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="1350"></p>
 </figure>
 </div>
 </div>
 </div>
+</section>
+<section id="yesterdays-data-tomorrows-prediction" class="level2">
+<h2 class="anchored" data-anchor-id="yesterdays-data-tomorrows-prediction">Yesterday’s data, tomorrow’s prediction</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The <span class="blue">MSE</span> decreases as the number of parameter increases; similarly, the <span class="blue"><span class="math inline">R^2</span></span> always increases as a function of <span class="math inline">p</span>. It can be <span class="orange">proved</span> that this <span class="orange">always happens</span> in linear models.</p></li>
+<li><p>One might be tempted to let <span class="math inline">p</span> as large as possible to make the model more flexible…</p></li>
+<li><p>Taking this reasoning to the extreme would lead to the choice <span class="math inline">p = n</span>, so that <span class="math display">
+\text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
+</span> i.e.&nbsp;an apparently perfect fit. This procedure is called <span class="blue">interpolation</span>.</p></li>
+<li><p>However, we are <span class="orange">not</span> interested in predicting <span class="orange">yesterday</span> data. Our goal is to predict <span class="blue">tomorrow</span>’s data, i.e., given <span class="math inline">x_{n + i}</span>, to predict <span class="math inline">Y_{n + i}</span>, for a new set of <span class="math inline">m = 30</span> points: <span class="math display">
+(x_{n+1}, y_{n+1}), \dots, (x_{n+m}, y_{n + m}) \  \longrightarrow \ \hat{y}_{n+i} = \mathbb{E}(Y_{n+i}) = f(x_{n+i}; \hat{\beta}),
+</span> for <span class="math inline">i=1,\dots,m</span>, where <span class="math inline">\hat{\beta}</span> is obtained using yesterday data.</p></li>
+<li><p><span class="orange">Remark</span>. Tomorrow’s data <span class="math inline">Y_{n+1},\dots, Y_{n+m}</span> follows the same scheme of yesterday’s data.</p></li>
+</ul>
+</div>
+</section>
+<section id="tomorrows-data-polynomial-regression" class="level2">
+<h2 class="anchored" data-anchor-id="tomorrows-data-polynomial-regression">Tomorrow’s data, polynomial regression</h2>
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-7_0b530dc18c9cc71d7b28635015612678">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_B_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="1170"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="tomorrows-data-goodness-of-fit" class="level2">
+<h2 class="anchored" data-anchor-id="tomorrows-data-goodness-of-fit">Tomorrow’s data, goodness of fit</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-8_1d4c315acf3499fba23a0f3955be0278">
+<div class="cell-output-display">
+<p><img src="un_B_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="750"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-9_88a964be1c70a65414ed869c99f0cb6b">
+<div class="cell-output-display">
+<p><img src="un_B_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="750"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comments-and-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="comments-and-remarks">Comments and remarks</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The mean squared error on tomorrow’s data (<span class="blue">test</span>) is defined as <span class="math display">
+\text{MSE}_{\text{test}} = \frac{1}{m}\sum_{i=1}^m\{y_{n +i} -f(x_{n + i}; \hat{\beta})\}^2,
+</span> and similarly the <span class="math inline">R^2_\text{test}</span>. We would like the <span class="math inline">\text{MSE}_{\text{test}}</span> to be <span class="orange">as small as possible</span>.</p></li>
+<li><p>For <span class="blue">small values</span> of <span class="math inline">p</span>, an increase in the degree of the polynomial <span class="blue">improves the fit</span>. In other words, at the beginning, both the <span class="math inline">\text{MSE}_{\text{train}}</span> and the <span class="math inline">\text{MSE}_{\text{test}}</span> decrease.</p></li>
+<li><p>For <span class="orange">larger values</span> of <span class="math inline">p</span>, the improvement gradually ceases and the polynomial starts to follow <span class="orange">random fluctuations</span> in yesterday’s data which are <span class="blue">not observed</span> in the <span class="blue">new sample</span>.</p></li>
+<li><p>An over-adaptation to yesterday data is called <span class="orange">overfitting</span>, which occurs when the training <span class="math inline">\text{MSE}_{\text{train}}</span> is low but the test <span class="math inline">\text{MSE}_{\text{test}}</span> is high.</p></li>
+</ul>
+</div>
+</section>
+<section id="orthogonal-polynomials-and-numerical-difficulties" class="level2">
+<h2 class="anchored" data-anchor-id="orthogonal-polynomials-and-numerical-difficulties">☠️ - Orthogonal polynomials and numerical difficulties</h2>
+</section>
+<section id="methods-for-model-selection" class="level1">
+<h1>Methods for model selection</h1>
+<section id="a-general-strategy" class="level2">
+<h2 class="anchored" data-anchor-id="a-general-strategy">A general strategy</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The example with yesterday’s and tomorrow’s data can be better formalized.</p></li>
+<li><p>In general settings, we consider two datasets of <span class="blue">iid random variables</span>:</p>
+<ul class="incremental">
+<li><span class="orange">Training</span> <span class="math inline">(X_1, Y_1),\dots,(X_n, Y_n)</span>, whose realization is <span class="math inline">(\tilde{\bm{x}}_1, y_1), \dots, (\tilde{\bm{x}}_n, y_n)</span>.</li>
+<li><span class="blue">Test</span> <span class="math inline">(X_{n+1}, Y_{n+1}),\dots,(X_{n +m}, Y_{n +m})</span>, with realization <span class="math inline">(\tilde{\bm{x}}_{n+1}, y_{n+1}), \dots, (\tilde{\bm{x}}_{n +m}, y_{n + m})</span>.</li>
+</ul></li>
+<li><p>The <span class="orange">key assumption</span> behind most statistical learning algorithm is that the random vectors <span class="math display">(X_i,Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \qquad i=1,\dots,m,</span> where <span class="math inline">X_i \in \mathbb{R}^p</span> represents a vector of <span class="blue">covariates</span> and <span class="math inline">Y_i</span> is the <span class="orange">response</span>.</p></li>
+<li><p><span class="blue">Step 1</span>. Use the <span class="orange">training data</span> to estimate a function of the covariates <span class="math inline">\hat{f}(X_i)</span> which should predict well the corresponding response <span class="math inline">Y_i</span>.</p></li>
+<li><p><span class="blue">Step 2</span>. Evaluate the quality of our predictions by measuring the discrepancy between <span class="math inline">\hat{f}(X_i)</span> and <span class="math inline">Y_i</span>, using the <span class="orange">test set</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="loss-functions" class="level2">
+<h2 class="anchored" data-anchor-id="loss-functions">Loss functions</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>A common measure of discrepacy between <span class="math inline">\hat{f}(X_i)</span> and <span class="math inline">Y_i</span>, based on the test set, is: <span class="math display">
+\text{Err}_\text{test} = \frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n+i}; \hat{f}(X_{n+i})\},
+</span> where <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(X_i)\}</span> is a <span class="orange">loss function</span>.</p></li>
+<li><p>Examples of loss functions for <span class="blue">regression problems</span> <span class="math inline">Y_i \in \mathbb{R}</span> are:</p>
+<ul class="incremental">
+<li>The quadratic loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(X_i)\} = \{Y_i - \hat{f}(X_i)\}^2</span>.</li>
+<li>The absolute loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(X_i)\} = |Y_i - \hat{f}(X_i)|</span>.</li>
+</ul></li>
+<li><p>In practice, it is convenient to consider the so-called <span class="blue">expected prediction error</span> <span class="math display">
+\text{Err} = \mathbb{E}(\text{Err}_\text{test} ) = \frac{1}{m} \sum_{i=1}^m \mathbb{E}\left[\mathscr{L}\{Y_{n+i}; \hat{f}(X_{n+i})\}\right] = \mathbb{E}\left[\mathscr{L}\{Y_{n+1}; \hat{f}(X_{n+1})\}\right],
+</span> where the expectation is taken with respect to both the training and the test set.</p></li>
+</ul>
+</div>
+</section>
+<section id="quadratic-loss" class="level2">
+<h2 class="anchored" data-anchor-id="quadratic-loss">Quadratic loss</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>We assume that the <span class="blue">covariates</span> <span class="math inline">\tilde{\bm{x}_i}</span> are <span class="blue">deterministic</span> (fixed-X design). If they were not, one just needs to include the conditioning <span class="math inline">(X_{n+1} = \tilde{\bm{x}}_{n+1})</span> in all the following expectations.</p></li>
+<li><p>The expected prediction error, under a <span class="orange">quadratic loss</span> and fixed-X, becomes <span class="math display">
+\text{Err} = \mathbb{E}(\text{MSE}_\text{test} ) =\mathbb{E}\left[\{Y_{n+1} - \hat{f}(\tilde{\bm{x}}_{n+1})\}^2\right].
+</span></p></li>
+</ul>
+</div>
+</section>
+<section id="reducible-and-irreducible-errors" class="level2">
+<h2 class="anchored" data-anchor-id="reducible-and-irreducible-errors">Reducible and irreducible errors</h2>
+</section>
+<section id="if-we-knew-fx" class="level2">
+<h2 class="anchored" data-anchor-id="if-we-knew-fx">If we knew <span class="math inline">f(x)</span>…</h2>
+</section>
+<section id="bias-variance-trade-off" class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-trade-off">Bias-variance trade-off</h2>
+</section>
+<section id="prediction-error" class="level2">
+<h2 class="anchored" data-anchor-id="prediction-error">Prediction error</h2>
+</section>
+<section id="but-since-we-do-not-know-fx" class="level2">
+<h2 class="anchored" data-anchor-id="but-since-we-do-not-know-fx">…but since we do not know <span class="math inline">f(x)</span></h2>
+</section>
+</section>
+<section id="cross-validation" class="level1">
+<h1>Cross-validation</h1>
+</section>
+<section id="information-criteria" class="level1">
+<h1>Information criteria</h1>
 </section>
 
 </main>
