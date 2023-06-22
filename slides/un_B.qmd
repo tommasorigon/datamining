@@ -320,55 +320,58 @@ and similarly the $R^2_\text{test}$. We would like the $\text{MSE}_{\text{test}}
 
 # Methods for model selection
 
-## A general strategy
+## Summary and notation
 
 ::: incremental
 
-- The example with yesterday's and tomorrow's data can be better formalized.
+- As in the previous example, we consider two set of [random variables]{.blue}: 
+  - The [training set]{.orange} $Y_1,\dots, Y_n$, whose realization is $y_1,\dots,y_n$.
+  - The [test set]{.blue} $Y_{n+1},\dots,Y_{n +m}$, whose realization is $y_{n+1}, \dots, y_{n + m}$.
 
-- In general settings, we consider two datasets of [iid random variables]{.blue}: 
-  - [Training]{.orange} $(X_1, Y_1),\dots,(X_n, Y_n)$, whose realization is $(\tilde{\bm{x}}_1, y_1), \dots, (\tilde{\bm{x}}_n, y_n)$.
-  - [Test]{.blue} $(X_{n+1}, Y_{n+1}),\dots,(X_{n +m}, Y_{n +m})$, with realization $(\tilde{\bm{x}}_{n+1}, y_{n+1}), \dots, (\tilde{\bm{x}}_{n +m}, y_{n + m})$.
-- The [key assumption]{.orange} behind most statistical learning algorithm is that the random vectors  $$(X_i,Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \qquad i=1,\dots,m,$$ 
-where $X_i \in \mathbb{R}^p$ represents a vector of [covariates]{.blue} and $Y_i$ is the [response]{.orange}.
+- We assume that the [covariates]{.blue} $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ are [deterministic]{.blue}, to simplify the notation and the discussion. This can be relaxed, see e.g. Chapter 7 of HTF. 
 
-- [Step 1]{.blue}. Use the [training data]{.orange} to estimate a function of the covariates $\hat{f}(X_i)$ which should predict well the corresponding response $Y_i$.
+- An [important assumption]{.orange} is that the random variables $Y_i$ are [independent]{.blue}. In particular: $$
+    Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,m,
+$$ where $\epsilon_1,\dots,\epsilon_m$ are iid "[error]{.orange}" terms with $\mathbb{E}(\epsilon_i)=0$ and $\text{var}(\epsilon_i)=\sigma^2$. 
 
-- [Step 2]{.blue}. Evaluate the quality of our predictions by measuring the discrepancy between $\hat{f}(X_i)$ and $Y_i$, using the [test set]{.orange}.
+- The [training data]{.orange} is used to estimate a function of the covariates $\hat{f}(\bm{x}_i)$ which should predict well the corresponding response $Y_i$.
+
+- We hope that our predictions works well on the [test set]{.blue}, which can be used to evaluate the quality of the estimated $\hat{f}(\bm{x}_i)$.
 
 :::
 
-## Loss functions
+## The average prediction error
 
 ::: incremental
 
-- A common measure of discrepacy between $\hat{f}(X_i)$ and $Y_i$, based on the test set, is: $$
-\text{Err}_\text{test} = \frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n+i}; \hat{f}(X_{n+i})\},
-$$
-where $\mathscr{L}\{Y_i; \hat{f}(X_i)\}$ is a [loss function]{.orange}.
+- Let us consider a generic [new data point]{.orange} $Y$ independent on the training, associated with the covariate vector $\tilde{\bm{x}} = (x_1,\dots,x_p)^T$.
 
-- Examples of loss functions for [regression problems]{.blue} $Y_i \in \mathbb{R}$ are: 
-  - The quadratic loss $\mathscr{L}\{Y_i; \hat{f}(X_i)\} = \{Y_i - \hat{f}(X_i)\}^2$.
-  - The absolute loss $\mathscr{L}\{Y_i; \hat{f}(X_i)\} = |Y_i - \hat{f}(X_i)|$.
+- A measure of quality for the predictions is the so-called [expected prediction error]{.blue}:
+$$
+\text{Err} = \mathbb{E}\left[\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\}\right],
+$$
+where $\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\}$ is a [loss function]{.orange}. The expectation is taken with respect to traning random variable $Y_1,\dots,Y_n$, implicitly appearing in $\hat{f}$, and the new data point $Y$.
 
-- In practice, it is convenient to consider the so-called [expected prediction error]{.blue}
-$$
-\text{Err} = \mathbb{E}(\text{Err}_\text{test} ) = \frac{1}{m} \sum_{i=1}^m \mathbb{E}\left[\mathscr{L}\{Y_{n+i}; \hat{f}(X_{n+i})\}\right] = \mathbb{E}\left[\mathscr{L}\{Y_{n+1}; \hat{f}(X_{n+1})\}\right],
-$$
-where the expectation is taken with respect to both the training and the test set. 
+- The expected prediction error is measuring the [average]{.blue} "discrepancy" between a new data point and the corresponding prediction.
+
+- Examples of loss functions for [regression problems]{.blue} $Y \in \mathbb{R}$ are: 
+  - The quadratic loss $\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\} = \{Y_i - \hat{f}(x_1,\dots,x_p)\}^2$, leading to the MSE.
+  - The absolute loss $\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\} = |Y_i - \hat{f}(x_1,\dots,x_p)|$, leading to the MAE.
+
+
 :::
 
-## Quadratic loss
+## Quadratic loss and the mean squared error
 
-::: incremental
 
-- We assume that the [covariates]{.blue} $\tilde{\bm{x}_i}$ are [deterministic]{.blue} (fixed-X design). If they were not, one just needs to include the conditioning $(X_{n+1} = \tilde{\bm{x}}_{n+1})$ in all the following expectations.
-
-- The expected prediction error, under a [quadratic loss]{.orange} and fixed-X, becomes
+::: callout-note
+Under the above assumptions and using a quadratic loss, the [expected prediction error]{.blue} is
 $$
-\text{Err} = \mathbb{E}(\text{MSE}_\text{test} ) =\mathbb{E}\left[\{Y_{n+1} - \hat{f}(\tilde{\bm{x}}_{n+1})\}^2\right].
+\begin{aligned}
+\text{Err} &=\mathbb{E}\left[\{Y_{n+1} - \hat{f}(\tilde{\bm{x}}_{n+1})\}^2\right] \\
+&= \underbrace{\sigma^2}_{\text{irreducible}} + \underbrace{\mathbb{E}\left[\{\hat{f}(\tilde{\bm{x}}_{n+1}) - f(\tilde{\bm{x}}_{n+1})\}^2\right]}_{\text{reducible}}
+\end{aligned}
 $$
-
 :::
 
 ## Reducible and irreducible errors

@@ -153,9 +153,9 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 ::: incremental
 -   A [general]{.orange} and [more flexible formulation]{.orange} for modeling the relationship
     between a vector of [fixed covariates]{.blue}
-    $(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p$ and a random variable
+    $\bm{x}_i = (x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p$ and a random variable
     $Y_i \in \mathbb{R}$ is $$
-    Y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n,
+    Y_i = f(\bm{x}_i; \beta) + \epsilon_i, \qquad i=1,\dots,n,
     $$
     where the "errors" $\epsilon_i$ are iid random variables, having
     zero mean and variance $\sigma^2$.
@@ -163,12 +163,12 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 -   To estimate the unknown parameters $\beta$, a possibility is to rely
     on the [least squares criterion]{.blue}: we seek the
     [minimum]{.orange} of the objective function $$
-    D(\beta) = \sum_{i=1}^n\{y_i - f(x_{i1},\dots, x_{ip}; \beta)\}^2,
-    $$ using $n$ pairs of covariates $(x_{i1},\dots,x_{ip})^T$ and
+    D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
+    $$ using $n$ pairs of covariates $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ and
     the observed realizations $y_i$ of the random variables $Y_i$, for $i = 1,\dots,n$. The [optimal value]{.orange} is denoted by $\hat{\beta}$.
 
 -   The [predicted values]{.blue} $\hat{y}_i$ are 
-    $\hat{y}_i = \mathbb{E}(Y_i) = f(x_{i1},\dots,x_{ip}; \hat{\beta})$, for
+    $\hat{y}_i = \mathbb{E}(Y_i) = f(\bm{x}_i; \hat{\beta})$, for
     $i=1,\dots,n.$
 :::
 
@@ -192,10 +192,10 @@ which is a special instance of [linear model]{.orange}.
 ::: callout-note
 #### Definition (Linear model)
 
-In a [linear model]{.blue} the response variable is related to the
+In a [linear model]{.blue} the response variable $Y_i$ is related to the
 covariates through the function$$
-    f(x_1,\dots,x_p; \beta) = \beta_1 x_1 + \cdots + \beta_p x_p = \tilde{\bm{x}}^T\beta,
-    $$ where $\tilde{\bm{x}} = (x_1, \dots,x_p)^T$ is a vector of
+    f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
+    $$ where $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ is a vector of
 [covariates]{.orange} and $\beta = (\beta_1,\dots,\beta_p)^T$ is the
 corresponding vector of [coefficients]{.orange}.
 :::
@@ -221,9 +221,9 @@ corresponding vector of [coefficients]{.orange}.
     $$ where $\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T$ is a
     vector of iid error terms with zero mean and variance $\sigma^2$.
 
--   The $j$th variable (column) is denoted with $\bm{x}_j$, whereas the
-    $i$th observation (row) is $\tilde{\bm{x}}_i$: $$
-    \bm{X} = (\bm{x}_1,\dots,\bm{x}_p) = (\tilde{\bm{x}}_1, \dots,\tilde{\bm{x}}_n)^T.
+-   The $j$th variable (column) is denoted with $\tilde{\bm{x}}_j$, whereas the
+    $i$th observation (row) is $\bm{x}_i$: $$
+    \bm{X} = (\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p) = (\bm{x}_1, \dots,\bm{x}_n)^T.
     $$
 :::
 
@@ -267,8 +267,8 @@ estimate]{.orange} has an explicit solution: $$
     $$
 
 -   A typical estimate for the [residual variance]{.orange} $\sigma^2$
-    is then given by $$
-    s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \tilde{\bm{x}}_i^T\hat{\beta})^2.
+    is $$
+    s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
     $$
 :::
 
@@ -528,7 +528,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
     knowledge. Have a look at the textbook (A&S) for a detailed
     explaination about $\beta_4$!
     
-- If you are curious, the car dataset is available from the textbook (A\&S) website:
+- The car dataset is available from the textbook (A\&S) website:
   - Dataset <http://azzalini.stat.unipd.it/Book-DM/auto.dat>
   - Variable description <http://azzalini.stat.unipd.it/Book-DM/auto.names>
 
@@ -624,14 +624,14 @@ $$
     \bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y}.
     $$ This system be can now solved in [two steps]{.orange}:
 
--   [Step 1 (Forwardsolve)]{.blue}. Solve with respect to $z$ the system
+-   [Step 1 (Forwardsolve)]{.blue}. Solve with respect to $\bm{z}$ the system
     of equations $$
-    \bm{R}^T z = \bm{X}^T \bm{y}.
+    \bm{R}^T \bm{z} = \bm{X}^T \bm{y}.
     $$
 
--   [Step 2 (Backsolve)]{.blue}. Given $z$, now solve with respect to
+-   [Step 2 (Backsolve)]{.blue}. Given $\bm{z}$, now solve with respect to
     $\beta$ the system of equations $$
-    \bm{R} \beta = z.
+    \bm{R} \beta = \bm{z}.
     $$
 - Why is this procedure computationally more efficient than the naïve solution?
 :::
@@ -742,9 +742,9 @@ $$
 
 -   In other words, consider a linear model of the form $$
     \bm{Y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
-    $$ where $\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)$.
+    $$ where $\bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p)$.
     [Orthogonality]{.orange} means that
-    $\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)$.
+    $\bm{Z}^T\bm{Z} = \text{diag}(\tilde{\bm{z}}_1^T\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p^T\tilde{\bm{z}}_p)$.
 
 . . .
 
@@ -752,11 +752,10 @@ $$
 #### Proposition A.2. OLS with orthogonal predictors
 
 The least square estimate
-$\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T$ of a linear
-model with orthogonal predictors is
+$\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T$ with orthogonal predictors is
 
 $$
-\hat{\gamma}_j = \frac{\bm{z}_j^T\bm{y}}{\bm{z}_j^T\bm{z}_j}, \qquad j=1,\dots,p.
+\hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j}, \qquad j=1,\dots,p.
 $$
 :::
 
@@ -768,20 +767,20 @@ $$
 
 
 -   Suppose for example that $p = 2$. We set [first orthogonal
-    predictor]{.orange} $\bm{z}_1 = \bm{x}_1$.
+    predictor]{.orange} $\tilde{\bm{z}}_1 = \tilde{\bm{x}}_1$.
 
 -   We then consider the following [univariate]{.blue} regression
     problem $$
-    \bm{x}_2 = \gamma \bm{z}_1 + \bm{\epsilon}, \qquad \text{which leads} \qquad \hat{\gamma} = \frac{\bm{z}_1^T\bm{x}_2}{\bm{z}_1^T\bm{z}_1}.
+    \tilde{\bm{x}}_2 = \gamma \tilde{\bm{z}}_1 + \bm{\epsilon}, \qquad \text{which leads} \qquad \hat{\gamma} = \frac{\tilde{\bm{z}}_1^T\tilde{\bm{x}}_2}{\tilde{\bm{z}}_1^T\tilde{\bm{z}}_1}.
     $$
 
 -   The [second orthogonal predictor]{.orange} is obtained as the
     [residual term]{.blue}: $$
-    \bm{z}_2 = \bm{x}_2 - \hat{\gamma}\bm{z}_1.
+    \tilde{\bm{z}}_2 = \tilde{\bm{x}}_2 - \hat{\gamma}\tilde{\bm{z}}_1.
     $$
 
 -   The geometry of linear models guarantees that
-    $\bm{z}_1^T\bm{z}_2 = 0$.
+    $\tilde{\bm{z}}_1^T\tilde{\bm{z}}_2 = 0$.
 :::
 
 ## Gram-Schmidt algorithm
@@ -789,18 +788,18 @@ $$
 -   Let us now consider the [general case]{.orange}, valid for any value of
     $p$.
 
--   [Initialization]{.blue}. Set $\bm{z}_1 = \bm{x}_1$.
+-   [Initialization]{.blue}. Set $\tilde{\bm{z}}_1 = \tilde{\bm{x}}_1$.
 
 -   [For $j= 2,\dots,p$]{.blue}. Consider the regression problem with
     $j-1$ orthogonal predictors $$
-    \bm{x}_j = \sum_{k=1}^{j-1}\gamma_{kj} \bm{z}_k + \bm{\epsilon}_j, \quad \text{which leads} \quad \hat{\gamma}_{kj} = \frac{\bm{z}_k^T\bm{x}_j}{\bm{z}_k^T\bm{z}_k}, \quad k=1,\dots,j-1,
+    \tilde{\bm{x}}_j = \sum_{k=1}^{j-1}\gamma_{kj} \tilde{\bm{z}}_k + \bm{\epsilon}_j, \quad \text{which leads} \quad \hat{\gamma}_{kj} = \frac{\tilde{\bm{z}}_k^T\tilde{\bm{x}}_j}{\tilde{\bm{z}}_k^T\tilde{\bm{z}}_k}, \quad k=1,\dots,j-1,
     $$ Then, compute the new vector $\bm{z}_j$ as the
     [residual]{.orange} term $$
-    \bm{z}_j = \bm{x}_j - \sum_{k=1}^{j-1}\hat{\gamma}_{kj} \bm{z}_k
+    \tilde{\bm{z}}_j = \tilde{\bm{x}}_j - \sum_{k=1}^{j-1}\hat{\gamma}_{kj} \tilde{\bm{z}}_k
     $$
 
 -   The geometry of linear models guarantees [orthogonality]{.orange},
-    that is $\bm{z}_j^T \bm{z}_{j'} = 0$ for any $j \neq j'$.
+    that is $\tilde{\bm{z}}_j^T \tilde{\bm{z}}_{j'} = 0$ for any $j \neq j'$.
 :::
 
 ## The QR decomposition I
@@ -814,7 +813,7 @@ $$
     0 &  1 & \hat{\gamma}_{23} &\cdots & \hat{\gamma}_{2p} \\
     \vdots & \vdots & \vdots &\ddots & \vdots\\
     0 & 0 & 0 & \cdots & 1
-    \end{bmatrix}, \qquad \bm{Z} = (\bm{z}_1,\dots,\bm{z}_p).
+    \end{bmatrix}, \qquad \bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p).
     $$
 
 -   The $p \times p$ matrix $\bm{\Gamma}$ is [upper
@@ -822,8 +821,8 @@ $$
     $\bm{Z}$ are [mutually orthogonal]{.blue}, due to the properties of the residuals of a linear model. 
 
 -   It is often convenient to [standardize]{.orange} the columns of
-    $\bm{Z}$, dividing them by their norm $||\bm{z}_j||$. Let
-    $\bm{D} = \text{diag}(||\bm{z}_1||, \dots, ||\bm{z}_p||)$, then in
+    $\bm{Z}$, dividing them by their norm $||\tilde{\bm{z}}_j||$. Let
+    $\bm{D} = \text{diag}(||\tilde{\bm{z}}_1||, \dots, ||\tilde{\bm{z}}_p||)$, then in
     matrix notation: $$
     \bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}.
     $$
@@ -876,7 +875,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     $$ which can be easily solved via [backward substitution]{.orange}.
 
 -   As a special case of the above equation, one gets
-    $\hat{\beta}_p = (\bm{z}_p^T\bm{y}) / (\bm{z}_p^T \bm{z}_p)$.
+    $\hat{\beta}_p = (\tilde{\bm{z}}_p^T\bm{y}) / (\tilde{\bm{z}}_p^T \tilde{\bm{z}}_p)$.
 :::
 
 ## The QR decomposition and linear models
@@ -969,15 +968,15 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 ::: incremental
 -   Using matrix notation, we express $\bm{W} = \bm{W}_{(n)}$ and
     $\bm{u} = \bm{u}_{(n)}$ as follows $$
-    \bm{W}_{(n)} = \sum_{i=1}^n \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(n)} = \sum_{i=1}^n\tilde{\bm{x}}_i y_i.
+    \bm{W}_{(n)} = \sum_{i=1}^n \bm{x}_i \bm{x}_i^T, \qquad \bm{u}_{(n)} = \sum_{i=1}^n\bm{x}_i y_i.
     $$
 
 -   Let us define the [initial conditions]{.blue}
-    $\bm{W}_{(1)} = \tilde{\bm{x}}_1 \tilde{\bm{x}}_1^T$ and
-    $\bm{u}_{(1)} = \tilde{\bm{x}}_1 y_1$.
+    $\bm{W}_{(1)} = \bm{x}_1 \bm{x}_1^T$ and
+    $\bm{u}_{(1)} = \bm{x}_1 y_1$.
 
 -   Then, the following [recursive relationship]{.orange} holds: $$
-    \bm{W}_{(i)} = \bm{W}_{(i-1)} +  \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(i)} = \bm{u}_{(i-1)} + \tilde{\bm{x}}_i y_i, \qquad i=2,\dots,n,
+    \bm{W}_{(i)} = \bm{W}_{(i-1)} +  \bm{x}_i \bm{x}_i^T, \qquad \bm{u}_{(i)} = \bm{u}_{(i-1)} + \bm{x}_i y_i, \qquad i=2,\dots,n,
     $$ where $\bm{W}_{(i)}$ is the matrix formed by the first $i$
     summands of $\bm{W}_{(n)}$ and analogously $\bm{u}_{(i)}$.
 
@@ -990,12 +989,12 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 
 ::: incremental
 -   In many occasions, the data flow continuously, meaning that we get a
-    new pair of observations $(\tilde{\bm{x}}_{n+1}, y_{n+1})$ every
+    new pair of observations $(\bm{x}_{n+1}, y_{n+1})$ every
     minute, or even every second.
 
 -   In these cases, we would like to [update]{.orange} the current least square estimate
     $\hat{\beta}_{(n)}$ with the new information
-    $(\tilde{\bm{x}}_{n+1}, y_{n+1})$, but ideally without re-doing all
+    $(\bm{x}_{n+1}, y_{n+1})$, but ideally without re-doing all
     the calculations.
 
 -   The [recursive data import]{.blue} of the [previous
@@ -1013,7 +1012,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 
 -   When the new data points arrive, we can write the updated quantities
     $$
-    \bm{X}_{(n+1)} = (\bm{X}_{(n)}, \tilde{\bm{x}}_{(n + 1)})^T, \quad \bm{W}_{(n + 1)} = (\bm{X}_{(n+1)}^T\bm{X}_{(n + 1)}) = (\bm{X}_{(n)}^T\bm{X}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} \tilde{\bm{x}}_{(n + 1)}^T).
+    \bm{X}_{(n+1)} = (\bm{X}_{(n)}, \bm{x}_{(n + 1)})^T, \quad \bm{W}_{(n + 1)} = (\bm{X}_{(n+1)}^T\bm{X}_{(n + 1)}) = (\bm{X}_{(n)}^T\bm{X}_{(n)} +  \bm{x}_{(n + 1)} \bm{x}_{(n + 1)}^T).
     $$
 
 -   The difficult part is to [efficiently]{.orange} compute
@@ -1035,13 +1034,13 @@ $$
 -   Using the Sherman-Morrison formula, then we can express the new
     matrix $\bm{V}_{(n + 1)}$ as a function of previously computed
     quantities: $$
-    \bm{V}_{(n + 1)} = \bm{V}_{(n)} - v_{(n)}\bm{V}_{(n)} \tilde{\bm{x}}_{(n + 1)}\tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}, \quad v_{(n)} = \frac{1}{(1 + \tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)})}.
+    \bm{V}_{(n + 1)} = \bm{V}_{(n)} - v_{(n)}\bm{V}_{(n)} \bm{x}_{(n + 1)}\bm{x}_{(n + 1)}^T \bm{V}_{(n)}, \quad v_{(n)} = \frac{1}{(1 + \bm{x}_{(n + 1)}^T \bm{V}_{(n)}\bm{x}_{(n + 1)})}.
     $$
 
 -   The [updated least square estimate]{.orange} therefore becomes $$
     \begin{aligned}
-    \hat{\beta}_{(n+1)} &= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} y_{n+1}) \\
-    &=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)}}_{k_n}\underbrace{(y_{n+1} - \tilde{\bm{x}}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
+    \hat{\beta}_{(n+1)} &= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \bm{x}_{(n + 1)} y_{n+1}) \\
+    &=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\bm{x}_{(n + 1)}}_{k_n}\underbrace{(y_{n+1} - \bm{x}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
     &= \hat{\beta}_{(n)} + k_n e_{n+1}.
     \end{aligned}
     $$

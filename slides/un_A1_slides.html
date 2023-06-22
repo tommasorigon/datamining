@@ -430,13 +430,13 @@ Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 <h2>Regression models</h2>
 <div>
 <ul>
-<li class="fragment"><p>A <span class="orange">general</span> and <span class="orange">more flexible formulation</span> for modeling the relationship between a vector of <span class="blue">fixed covariates</span> <span class="math inline">(x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p</span> and a random variable <span class="math inline">Y_i \in \mathbb{R}</span> is <span class="math display">
-Y_i = f(x_{i1},\dots,x_{ip}; \beta) + \epsilon_i, \qquad i=1,\dots,n,
+<li class="fragment"><p>A <span class="orange">general</span> and <span class="orange">more flexible formulation</span> for modeling the relationship between a vector of <span class="blue">fixed covariates</span> <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p</span> and a random variable <span class="math inline">Y_i \in \mathbb{R}</span> is <span class="math display">
+Y_i = f(\bm{x}_i; \beta) + \epsilon_i, \qquad i=1,\dots,n,
 </span> where the “errors” <span class="math inline">\epsilon_i</span> are iid random variables, having zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
 <li class="fragment"><p>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on the <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
-D(\beta) = \sum_{i=1}^n\{y_i - f(x_{i1},\dots, x_{ip}; \beta)\}^2,
-</span> using <span class="math inline">n</span> pairs of covariates <span class="math inline">(x_{i1},\dots,x_{ip})^T</span> and the observed realizations <span class="math inline">y_i</span> of the random variables <span class="math inline">Y_i</span>, for <span class="math inline">i = 1,\dots,n</span>. The <span class="orange">optimal value</span> is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
-<li class="fragment"><p>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are <span class="math inline">\hat{y}_i = \mathbb{E}(Y_i) = f(x_{i1},\dots,x_{ip}; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></p></li>
+D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
+</span> using <span class="math inline">n</span> pairs of covariates <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> and the observed realizations <span class="math inline">y_i</span> of the random variables <span class="math inline">Y_i</span>, for <span class="math inline">i = 1,\dots,n</span>. The <span class="orange">optimal value</span> is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
+<li class="fragment"><p>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are <span class="math inline">\hat{y}_i = \mathbb{E}(Y_i) = f(\bm{x}_i; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></p></li>
 </ul>
 </div>
 </section>
@@ -460,9 +460,9 @@ f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z =
 <p><strong>Definition (Linear model)</strong></p>
 </div>
 <div class="callout-content">
-<p>In a <span class="blue">linear model</span> the response variable is related to the covariates through the function<span class="math display">
-    f(x_1,\dots,x_p; \beta) = \beta_1 x_1 + \cdots + \beta_p x_p = \tilde{\bm{x}}^T\beta,
-    </span> where <span class="math inline">\tilde{\bm{x}} = (x_1, \dots,x_p)^T</span> is a vector of <span class="orange">covariates</span> and <span class="math inline">\beta = (\beta_1,\dots,\beta_p)^T</span> is the corresponding vector of <span class="orange">coefficients</span>.</p>
+<p>In a <span class="blue">linear model</span> the response variable <span class="math inline">Y_i</span> is related to the covariates through the function<span class="math display">
+    f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
+    </span> where <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> is a vector of <span class="orange">covariates</span> and <span class="math inline">\beta = (\beta_1,\dots,\beta_p)^T</span> is the corresponding vector of <span class="orange">coefficients</span>.</p>
 </div>
 </div>
 </div>
@@ -484,8 +484,8 @@ x_{n1} &amp; \cdots &amp; x_{np}
 <li class="fragment"><p>Then, a <span class="blue">linear model</span> can be written using the <span class="orange">compact notation</span>: <span class="math display">
 \bm{Y} = \bm{X}\beta + \bm{\epsilon},
 </span> where <span class="math inline">\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T</span> is a vector of iid error terms with zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
-<li class="fragment"><p>The <span class="math inline">j</span>th variable (column) is denoted with <span class="math inline">\bm{x}_j</span>, whereas the <span class="math inline">i</span>th observation (row) is <span class="math inline">\tilde{\bm{x}}_i</span>: <span class="math display">
-\bm{X} = (\bm{x}_1,\dots,\bm{x}_p) = (\tilde{\bm{x}}_1, \dots,\tilde{\bm{x}}_n)^T.
+<li class="fragment"><p>The <span class="math inline">j</span>th variable (column) is denoted with <span class="math inline">\tilde{\bm{x}}_j</span>, whereas the <span class="math inline">i</span>th observation (row) is <span class="math inline">\bm{x}_i</span>: <span class="math display">
+\bm{X} = (\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p) = (\bm{x}_1, \dots,\bm{x}_n)^T.
 </span></p></li>
 </ul>
 </div>
@@ -525,8 +525,8 @@ D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\be
 <li class="fragment"><p>The quantity <span class="math inline">D(\hat{\beta})</span> is the so-called <span class="blue">deviance</span>, which is equal to <span class="math display">
 D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{H})\bm{y}.
 </span></p></li>
-<li class="fragment"><p>A typical estimate for the <span class="orange">residual variance</span> <span class="math inline">\sigma^2</span> is then given by <span class="math display">
-s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \tilde{\bm{x}}_i^T\hat{\beta})^2.
+<li class="fragment"><p>A typical estimate for the <span class="orange">residual variance</span> <span class="math inline">\sigma^2</span> is <span class="math display">
+s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
 </span></p></li>
 </ul>
 </div>
@@ -870,7 +870,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <li><p>In this third model, we took care of the <span class="orange">outliers</span> appearing in the residual plots, which it turns out are identified by the group of cars having 2 cylinders.</p></li>
 <li><p>The diagnostic plots are also very much improved, although still not perfect.</p></li>
 <li><p>The estimates are coherent with our expectations, based on common knowledge. Have a look at the textbook (A&amp;S) for a detailed explaination about <span class="math inline">\beta_4</span>!</p></li>
-<li><p>If you are curious, the car dataset is available from the textbook (A&amp;S) website:</p>
+<li><p>The car dataset is available from the textbook (A&amp;S) website:</p>
 <ul>
 <li>Dataset <a href="http://azzalini.stat.unipd.it/Book-DM/auto.dat" class="uri">http://azzalini.stat.unipd.it/Book-DM/auto.dat</a></li>
 <li>Variable description <a href="http://azzalini.stat.unipd.it/Book-DM/auto.names" class="uri">http://azzalini.stat.unipd.it/Book-DM/auto.names</a></li>
@@ -958,11 +958,11 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <li class="fragment"><p>Let <span class="math inline">\bm{R}^T\bm{R}</span> be the Cholesky factorization of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>. Then, the <span class="orange">normal equations</span> can be written as <span class="math display">
 \bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y}.
 </span> This system be can now solved in <span class="orange">two steps</span>:</p></li>
-<li class="fragment"><p><span class="blue">Step 1 (Forwardsolve)</span>. Solve with respect to <span class="math inline">z</span> the system of equations <span class="math display">
-\bm{R}^T z = \bm{X}^T \bm{y}.
+<li class="fragment"><p><span class="blue">Step 1 (Forwardsolve)</span>. Solve with respect to <span class="math inline">\bm{z}</span> the system of equations <span class="math display">
+\bm{R}^T \bm{z} = \bm{X}^T \bm{y}.
 </span></p></li>
-<li class="fragment"><p><span class="blue">Step 2 (Backsolve)</span>. Given <span class="math inline">z</span>, now solve with respect to <span class="math inline">\beta</span> the system of equations <span class="math display">
-\bm{R} \beta = z.
+<li class="fragment"><p><span class="blue">Step 2 (Backsolve)</span>. Given <span class="math inline">\bm{z}</span>, now solve with respect to <span class="math inline">\beta</span> the system of equations <span class="math display">
+\bm{R} \beta = \bm{z}.
 </span></p></li>
 <li class="fragment"><p>Why is this procedure computationally more efficient than the naïve solution?</p></li>
 </ul>
@@ -1054,7 +1054,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <li><p>If the <span class="blue">predictors</span> were mutually <span class="orange">orthogonal</span>, the problem would be much simpler.</p></li>
 <li><p>In other words, consider a linear model of the form <span class="math display">
 \bm{Y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
-</span> where <span class="math inline">\bm{Z} = (\bm{z}_1,\dots,\bm{z}_p)</span>. <span class="orange">Orthogonality</span> means that <span class="math inline">\bm{Z}^T\bm{Z} = \text{diag}(\bm{z}_1^T\bm{z}_1,\dots,\bm{z}_p^T\bm{z}_p)</span>.</p></li>
+</span> where <span class="math inline">\bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p)</span>. <span class="orange">Orthogonality</span> means that <span class="math inline">\bm{Z}^T\bm{Z} = \text{diag}(\tilde{\bm{z}}_1^T\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p^T\tilde{\bm{z}}_p)</span>.</p></li>
 </ul>
 </div>
 <div class="fragment">
@@ -1064,9 +1064,9 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <p><strong>Proposition A.2. OLS with orthogonal predictors</strong></p>
 </div>
 <div class="callout-content">
-<p>The least square estimate <span class="math inline">\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T</span> of a linear model with orthogonal predictors is</p>
+<p>The least square estimate <span class="math inline">\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T</span> with orthogonal predictors is</p>
 <p><span class="math display">
-\hat{\gamma}_j = \frac{\bm{z}_j^T\bm{y}}{\bm{z}_j^T\bm{z}_j}, \qquad j=1,\dots,p.
+\hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j}, \qquad j=1,\dots,p.
 </span></p>
 </div>
 </div>
@@ -1078,14 +1078,14 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <div>
 <ul>
 <li class="fragment"><p>Clearly, the predictors of <span class="math inline">\bm{X}</span> are generally not orthogonal. Hence, we want to find a suitable transformation <span class="math inline">\bm{Z} = \bm{X} \bm{\Gamma}^{-1}</span> that <span class="blue">orthogonalize</span> the <span class="orange">predictors</span>.</p></li>
-<li class="fragment"><p>Suppose for example that <span class="math inline">p = 2</span>. We set <span class="orange">first orthogonal predictor</span> <span class="math inline">\bm{z}_1 = \bm{x}_1</span>.</p></li>
+<li class="fragment"><p>Suppose for example that <span class="math inline">p = 2</span>. We set <span class="orange">first orthogonal predictor</span> <span class="math inline">\tilde{\bm{z}}_1 = \tilde{\bm{x}}_1</span>.</p></li>
 <li class="fragment"><p>We then consider the following <span class="blue">univariate</span> regression problem <span class="math display">
-\bm{x}_2 = \gamma \bm{z}_1 + \bm{\epsilon}, \qquad \text{which leads} \qquad \hat{\gamma} = \frac{\bm{z}_1^T\bm{x}_2}{\bm{z}_1^T\bm{z}_1}.
+\tilde{\bm{x}}_2 = \gamma \tilde{\bm{z}}_1 + \bm{\epsilon}, \qquad \text{which leads} \qquad \hat{\gamma} = \frac{\tilde{\bm{z}}_1^T\tilde{\bm{x}}_2}{\tilde{\bm{z}}_1^T\tilde{\bm{z}}_1}.
 </span></p></li>
 <li class="fragment"><p>The <span class="orange">second orthogonal predictor</span> is obtained as the <span class="blue">residual term</span>: <span class="math display">
-\bm{z}_2 = \bm{x}_2 - \hat{\gamma}\bm{z}_1.
+\tilde{\bm{z}}_2 = \tilde{\bm{x}}_2 - \hat{\gamma}\tilde{\bm{z}}_1.
 </span></p></li>
-<li class="fragment"><p>The geometry of linear models guarantees that <span class="math inline">\bm{z}_1^T\bm{z}_2 = 0</span>.</p></li>
+<li class="fragment"><p>The geometry of linear models guarantees that <span class="math inline">\tilde{\bm{z}}_1^T\tilde{\bm{z}}_2 = 0</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -1094,13 +1094,13 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <div>
 <ul>
 <li class="fragment"><p>Let us now consider the <span class="orange">general case</span>, valid for any value of <span class="math inline">p</span>.</p></li>
-<li class="fragment"><p><span class="blue">Initialization</span>. Set <span class="math inline">\bm{z}_1 = \bm{x}_1</span>.</p></li>
+<li class="fragment"><p><span class="blue">Initialization</span>. Set <span class="math inline">\tilde{\bm{z}}_1 = \tilde{\bm{x}}_1</span>.</p></li>
 <li class="fragment"><p><span class="blue">For <span class="math inline">j= 2,\dots,p</span></span>. Consider the regression problem with <span class="math inline">j-1</span> orthogonal predictors <span class="math display">
-\bm{x}_j = \sum_{k=1}^{j-1}\gamma_{kj} \bm{z}_k + \bm{\epsilon}_j, \quad \text{which leads} \quad \hat{\gamma}_{kj} = \frac{\bm{z}_k^T\bm{x}_j}{\bm{z}_k^T\bm{z}_k}, \quad k=1,\dots,j-1,
+\tilde{\bm{x}}_j = \sum_{k=1}^{j-1}\gamma_{kj} \tilde{\bm{z}}_k + \bm{\epsilon}_j, \quad \text{which leads} \quad \hat{\gamma}_{kj} = \frac{\tilde{\bm{z}}_k^T\tilde{\bm{x}}_j}{\tilde{\bm{z}}_k^T\tilde{\bm{z}}_k}, \quad k=1,\dots,j-1,
 </span> Then, compute the new vector <span class="math inline">\bm{z}_j</span> as the <span class="orange">residual</span> term <span class="math display">
-\bm{z}_j = \bm{x}_j - \sum_{k=1}^{j-1}\hat{\gamma}_{kj} \bm{z}_k
+\tilde{\bm{z}}_j = \tilde{\bm{x}}_j - \sum_{k=1}^{j-1}\hat{\gamma}_{kj} \tilde{\bm{z}}_k
 </span></p></li>
-<li class="fragment"><p>The geometry of linear models guarantees <span class="orange">orthogonality</span>, that is <span class="math inline">\bm{z}_j^T \bm{z}_{j'} = 0</span> for any <span class="math inline">j \neq j'</span>.</p></li>
+<li class="fragment"><p>The geometry of linear models guarantees <span class="orange">orthogonality</span>, that is <span class="math inline">\tilde{\bm{z}}_j^T \tilde{\bm{z}}_{j'} = 0</span> for any <span class="math inline">j \neq j'</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -1115,10 +1115,10 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 0 &amp;  1 &amp; \hat{\gamma}_{23} &amp;\cdots &amp; \hat{\gamma}_{2p} \\
 \vdots &amp; \vdots &amp; \vdots &amp;\ddots &amp; \vdots\\
 0 &amp; 0 &amp; 0 &amp; \cdots &amp; 1
-\end{bmatrix}, \qquad \bm{Z} = (\bm{z}_1,\dots,\bm{z}_p).
+\end{bmatrix}, \qquad \bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p).
 </span></p></li>
 <li class="fragment"><p>The <span class="math inline">p \times p</span> matrix <span class="math inline">\bm{\Gamma}</span> is <span class="orange">upper triangular</span>, whereas the columns of the <span class="math inline">n \times p</span> matrix <span class="math inline">\bm{Z}</span> are <span class="blue">mutually orthogonal</span>, due to the properties of the residuals of a linear model.</p></li>
-<li class="fragment"><p>It is often convenient to <span class="orange">standardize</span> the columns of <span class="math inline">\bm{Z}</span>, dividing them by their norm <span class="math inline">||\bm{z}_j||</span>. Let <span class="math inline">\bm{D} = \text{diag}(||\bm{z}_1||, \dots, ||\bm{z}_p||)</span>, then in matrix notation: <span class="math display">
+<li class="fragment"><p>It is often convenient to <span class="orange">standardize</span> the columns of <span class="math inline">\bm{Z}</span>, dividing them by their norm <span class="math inline">||\tilde{\bm{z}}_j||</span>. Let <span class="math inline">\bm{D} = \text{diag}(||\tilde{\bm{z}}_1||, \dots, ||\tilde{\bm{z}}_p||)</span>, then in matrix notation: <span class="math display">
 \bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}.
 </span></p></li>
 <li class="fragment"><p><span class="orange">Remark</span>. Note that <span class="math inline">\bm{Q}^T \bm{Q} = I_p</span>, i.e.&nbsp;the columns of <span class="math inline">\bm{Q}</span> are <span class="blue">orthonormal</span>.</p></li>
@@ -1167,7 +1167,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <li class="fragment"><p>Hence, the least square estimate is obtained as the solution of the <span class="blue">triangular system</span> <span class="math display">
 \bm{R}\beta = \bm{Q}^T\bm{y},
 </span> which can be easily solved via <span class="orange">backward substitution</span>.</p></li>
-<li class="fragment"><p>As a special case of the above equation, one gets <span class="math inline">\hat{\beta}_p = (\bm{z}_p^T\bm{y}) / (\bm{z}_p^T \bm{z}_p)</span>.</p></li>
+<li class="fragment"><p>As a special case of the above equation, one gets <span class="math inline">\hat{\beta}_p = (\tilde{\bm{z}}_p^T\bm{y}) / (\tilde{\bm{z}}_p^T \tilde{\bm{z}}_p)</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -1237,11 +1237,11 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <div>
 <ul>
 <li class="fragment"><p>Using matrix notation, we express <span class="math inline">\bm{W} = \bm{W}_{(n)}</span> and <span class="math inline">\bm{u} = \bm{u}_{(n)}</span> as follows <span class="math display">
-\bm{W}_{(n)} = \sum_{i=1}^n \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(n)} = \sum_{i=1}^n\tilde{\bm{x}}_i y_i.
+\bm{W}_{(n)} = \sum_{i=1}^n \bm{x}_i \bm{x}_i^T, \qquad \bm{u}_{(n)} = \sum_{i=1}^n\bm{x}_i y_i.
 </span></p></li>
-<li class="fragment"><p>Let us define the <span class="blue">initial conditions</span> <span class="math inline">\bm{W}_{(1)} = \tilde{\bm{x}}_1 \tilde{\bm{x}}_1^T</span> and <span class="math inline">\bm{u}_{(1)} = \tilde{\bm{x}}_1 y_1</span>.</p></li>
+<li class="fragment"><p>Let us define the <span class="blue">initial conditions</span> <span class="math inline">\bm{W}_{(1)} = \bm{x}_1 \bm{x}_1^T</span> and <span class="math inline">\bm{u}_{(1)} = \bm{x}_1 y_1</span>.</p></li>
 <li class="fragment"><p>Then, the following <span class="orange">recursive relationship</span> holds: <span class="math display">
-\bm{W}_{(i)} = \bm{W}_{(i-1)} +  \tilde{\bm{x}}_i \tilde{\bm{x}}_i^T, \qquad \bm{u}_{(i)} = \bm{u}_{(i-1)} + \tilde{\bm{x}}_i y_i, \qquad i=2,\dots,n,
+\bm{W}_{(i)} = \bm{W}_{(i-1)} +  \bm{x}_i \bm{x}_i^T, \qquad \bm{u}_{(i)} = \bm{u}_{(i-1)} + \bm{x}_i y_i, \qquad i=2,\dots,n,
 </span> where <span class="math inline">\bm{W}_{(i)}</span> is the matrix formed by the first <span class="math inline">i</span> summands of <span class="math inline">\bm{W}_{(n)}</span> and analogously <span class="math inline">\bm{u}_{(i)}</span>.</p></li>
 <li class="fragment"><p>Hence <span class="math inline">\bm{W}_{(n)}</span> and <span class="math inline">\bm{u}_{(n)}</span> can be calculated by <span class="blue">importing a single record</span> at a time, which does not create memory issues.</p></li>
 </ul>
@@ -1251,8 +1251,8 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <h2>Recursive estimates</h2>
 <div>
 <ul>
-<li class="fragment"><p>In many occasions, the data flow continuously, meaning that we get a new pair of observations <span class="math inline">(\tilde{\bm{x}}_{n+1}, y_{n+1})</span> every minute, or even every second.</p></li>
-<li class="fragment"><p>In these cases, we would like to <span class="orange">update</span> the current least square estimate <span class="math inline">\hat{\beta}_{(n)}</span> with the new information <span class="math inline">(\tilde{\bm{x}}_{n+1}, y_{n+1})</span>, but ideally without re-doing all the calculations.</p></li>
+<li class="fragment"><p>In many occasions, the data flow continuously, meaning that we get a new pair of observations <span class="math inline">(\bm{x}_{n+1}, y_{n+1})</span> every minute, or even every second.</p></li>
+<li class="fragment"><p>In these cases, we would like to <span class="orange">update</span> the current least square estimate <span class="math inline">\hat{\beta}_{(n)}</span> with the new information <span class="math inline">(\bm{x}_{n+1}, y_{n+1})</span>, but ideally without re-doing all the calculations.</p></li>
 <li class="fragment"><p>The <span class="blue">recursive data import</span> of the <a href="#/recursive-data-import">previous slide</a> is partially unsatisfactory, because one would need to invert (or factorize) a <span class="math inline">p \times p</span> matrix every time, which could be costly.</p></li>
 <li class="fragment"><p>Let us define some useful quantity: <span class="math display">
 \bm{V}_{(n)} = \bm{W}_{(n)}^{-1} = (\bm{X}_{(n)}^T\bm{X}_{(n)})^{-1},
@@ -1264,7 +1264,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <h2>Sherman-Morrison formula</h2>
 <ul>
 <li><p>When the new data points arrive, we can write the updated quantities <span class="math display">
-\bm{X}_{(n+1)} = (\bm{X}_{(n)}, \tilde{\bm{x}}_{(n + 1)})^T, \quad \bm{W}_{(n + 1)} = (\bm{X}_{(n+1)}^T\bm{X}_{(n + 1)}) = (\bm{X}_{(n)}^T\bm{X}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} \tilde{\bm{x}}_{(n + 1)}^T).
+\bm{X}_{(n+1)} = (\bm{X}_{(n)}, \bm{x}_{(n + 1)})^T, \quad \bm{W}_{(n + 1)} = (\bm{X}_{(n+1)}^T\bm{X}_{(n + 1)}) = (\bm{X}_{(n)}^T\bm{X}_{(n)} +  \bm{x}_{(n + 1)} \bm{x}_{(n + 1)}^T).
 </span></p></li>
 <li><p>The difficult part is to <span class="orange">efficiently</span> compute <span class="math inline">\bm{V}_{(n+1)} = \bm{W}_{(n + 1)}^{-1}</span>. The following result of linear algebra is of incredible help in this regard.</p></li>
 </ul>
@@ -1286,12 +1286,12 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <div>
 <ul>
 <li class="fragment"><p>Using the Sherman-Morrison formula, then we can express the new matrix <span class="math inline">\bm{V}_{(n + 1)}</span> as a function of previously computed quantities: <span class="math display">
-\bm{V}_{(n + 1)} = \bm{V}_{(n)} - v_{(n)}\bm{V}_{(n)} \tilde{\bm{x}}_{(n + 1)}\tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}, \quad v_{(n)} = \frac{1}{(1 + \tilde{\bm{x}}_{(n + 1)}^T \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)})}.
+\bm{V}_{(n + 1)} = \bm{V}_{(n)} - v_{(n)}\bm{V}_{(n)} \bm{x}_{(n + 1)}\bm{x}_{(n + 1)}^T \bm{V}_{(n)}, \quad v_{(n)} = \frac{1}{(1 + \bm{x}_{(n + 1)}^T \bm{V}_{(n)}\bm{x}_{(n + 1)})}.
 </span></p></li>
 <li class="fragment"><p>The <span class="orange">updated least square estimate</span> therefore becomes <span class="math display">
 \begin{aligned}
-\hat{\beta}_{(n+1)} &amp;= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \tilde{\bm{x}}_{(n + 1)} y_{n+1}) \\
-&amp;=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\tilde{\bm{x}}_{(n + 1)}}_{k_n}\underbrace{(y_{n+1} - \tilde{\bm{x}}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
+\hat{\beta}_{(n+1)} &amp;= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \bm{x}_{(n + 1)} y_{n+1}) \\
+&amp;=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\bm{x}_{(n + 1)}}_{k_n}\underbrace{(y_{n+1} - \bm{x}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
 &amp;= \hat{\beta}_{(n)} + k_n e_{n+1}.
 \end{aligned}
 </span></p></li>

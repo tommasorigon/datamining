@@ -503,49 +503,54 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <h1>Methods for model selection</h1>
 
 </section>
-<section id="a-general-strategy" class="slide level2 center">
-<h2>A general strategy</h2>
+<section id="summary-and-notation" class="slide level2 center">
+<h2>Summary and notation</h2>
 <div>
 <ul>
-<li class="fragment"><p>The example with yesterday’s and tomorrow’s data can be better formalized.</p></li>
-<li class="fragment"><p>In general settings, we consider two datasets of <span class="blue">iid random variables</span>:</p>
+<li class="fragment"><p>As in the previous example, we consider two set of <span class="blue">random variables</span>:</p>
 <ul>
-<li class="fragment"><span class="orange">Training</span> <span class="math inline">(X_1, Y_1),\dots,(X_n, Y_n)</span>, whose realization is <span class="math inline">(\tilde{\bm{x}}_1, y_1), \dots, (\tilde{\bm{x}}_n, y_n)</span>.</li>
-<li class="fragment"><span class="blue">Test</span> <span class="math inline">(X_{n+1}, Y_{n+1}),\dots,(X_{n +m}, Y_{n +m})</span>, with realization <span class="math inline">(\tilde{\bm{x}}_{n+1}, y_{n+1}), \dots, (\tilde{\bm{x}}_{n +m}, y_{n + m})</span>.</li>
+<li class="fragment">The <span class="orange">training set</span> <span class="math inline">Y_1,\dots, Y_n</span>, whose realization is <span class="math inline">y_1,\dots,y_n</span>.</li>
+<li class="fragment">The <span class="blue">test set</span> <span class="math inline">Y_{n+1},\dots,Y_{n +m}</span>, whose realization is <span class="math inline">y_{n+1}, \dots, y_{n + m}</span>.</li>
 </ul></li>
-<li class="fragment"><p>The <span class="orange">key assumption</span> behind most statistical learning algorithm is that the random vectors <span class="math display">(X_i,Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \qquad i=1,\dots,m,</span> where <span class="math inline">X_i \in \mathbb{R}^p</span> represents a vector of <span class="blue">covariates</span> and <span class="math inline">Y_i</span> is the <span class="orange">response</span>.</p></li>
-<li class="fragment"><p><span class="blue">Step 1</span>. Use the <span class="orange">training data</span> to estimate a function of the covariates <span class="math inline">\hat{f}(X_i)</span> which should predict well the corresponding response <span class="math inline">Y_i</span>.</p></li>
-<li class="fragment"><p><span class="blue">Step 2</span>. Evaluate the quality of our predictions by measuring the discrepancy between <span class="math inline">\hat{f}(X_i)</span> and <span class="math inline">Y_i</span>, using the <span class="orange">test set</span>.</p></li>
+<li class="fragment"><p>We assume that the <span class="blue">covariates</span> <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> are <span class="blue">deterministic</span>, to simplify the notation and the discussion. This can be relaxed, see e.g.&nbsp;Chapter 7 of HTF.</p></li>
+<li class="fragment"><p>An <span class="orange">important assumption</span> is that the random variables <span class="math inline">Y_i</span> are <span class="blue">independent</span>. In particular: <span class="math display">
+  Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,m,
+</span> where <span class="math inline">\epsilon_1,\dots,\epsilon_m</span> are iid “<span class="orange">error</span>” terms with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
+<li class="fragment"><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span> which should predict well the corresponding response <span class="math inline">Y_i</span>.</p></li>
+<li class="fragment"><p>We hope that our predictions works well on the <span class="blue">test set</span>, which can be used to evaluate the quality of the estimated <span class="math inline">\hat{f}(\bm{x}_i)</span>.</p></li>
 </ul>
 </div>
 </section>
-<section id="loss-functions" class="slide level2 center">
-<h2>Loss functions</h2>
+<section id="the-average-prediction-error" class="slide level2 center">
+<h2>The average prediction error</h2>
 <div>
 <ul>
-<li class="fragment"><p>A common measure of discrepacy between <span class="math inline">\hat{f}(X_i)</span> and <span class="math inline">Y_i</span>, based on the test set, is: <span class="math display">
-\text{Err}_\text{test} = \frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n+i}; \hat{f}(X_{n+i})\},
-</span> where <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(X_i)\}</span> is a <span class="orange">loss function</span>.</p></li>
-<li class="fragment"><p>Examples of loss functions for <span class="blue">regression problems</span> <span class="math inline">Y_i \in \mathbb{R}</span> are:</p>
+<li class="fragment"><p>Let us consider a generic <span class="orange">new data point</span> <span class="math inline">Y</span> independent on the training, associated with the covariate vector <span class="math inline">\tilde{\bm{x}} = (x_1,\dots,x_p)^T</span>.</p></li>
+<li class="fragment"><p>A measure of quality for the predictions is the so-called <span class="blue">expected prediction error</span>: <span class="math display">
+\text{Err} = \mathbb{E}\left[\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\}\right],
+</span> where <span class="math inline">\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\}</span> is a <span class="orange">loss function</span>. The expectation is taken with respect to traning random variable <span class="math inline">Y_1,\dots,Y_n</span>, implicitly appearing in <span class="math inline">\hat{f}</span>, and the new data point <span class="math inline">Y</span>.</p></li>
+<li class="fragment"><p>The expected prediction error is measuring the <span class="blue">average</span> “discrepancy” between a new data point and the corresponding prediction.</p></li>
+<li class="fragment"><p>Examples of loss functions for <span class="blue">regression problems</span> <span class="math inline">Y \in \mathbb{R}</span> are:</p>
 <ul>
-<li class="fragment">The quadratic loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(X_i)\} = \{Y_i - \hat{f}(X_i)\}^2</span>.</li>
-<li class="fragment">The absolute loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(X_i)\} = |Y_i - \hat{f}(X_i)|</span>.</li>
+<li class="fragment">The quadratic loss <span class="math inline">\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\} = \{Y_i - \hat{f}(x_1,\dots,x_p)\}^2</span>, leading to the MSE.</li>
+<li class="fragment">The absolute loss <span class="math inline">\mathscr{L}\{Y; \hat{f}(x_1,\dots,x_p)\} = |Y_i - \hat{f}(x_1,\dots,x_p)|</span>, leading to the MAE.</li>
 </ul></li>
-<li class="fragment"><p>In practice, it is convenient to consider the so-called <span class="blue">expected prediction error</span> <span class="math display">
-\text{Err} = \mathbb{E}(\text{Err}_\text{test} ) = \frac{1}{m} \sum_{i=1}^m \mathbb{E}\left[\mathscr{L}\{Y_{n+i}; \hat{f}(X_{n+i})\}\right] = \mathbb{E}\left[\mathscr{L}\{Y_{n+1}; \hat{f}(X_{n+1})\}\right],
-</span> where the expectation is taken with respect to both the training and the test set.</p></li>
 </ul>
 </div>
 </section>
-<section id="quadratic-loss" class="slide level2 center">
-<h2>Quadratic loss</h2>
-<div>
-<ul>
-<li class="fragment"><p>We assume that the <span class="blue">covariates</span> <span class="math inline">\tilde{\bm{x}_i}</span> are <span class="blue">deterministic</span> (fixed-X design). If they were not, one just needs to include the conditioning <span class="math inline">(X_{n+1} = \tilde{\bm{x}}_{n+1})</span> in all the following expectations.</p></li>
-<li class="fragment"><p>The expected prediction error, under a <span class="orange">quadratic loss</span> and fixed-X, becomes <span class="math display">
-\text{Err} = \mathbb{E}(\text{MSE}_\text{test} ) =\mathbb{E}\left[\{Y_{n+1} - \hat{f}(\tilde{\bm{x}}_{n+1})\}^2\right].
-</span></p></li>
-</ul>
+<section id="quadratic-loss-and-the-mean-squared-error" class="slide level2 center">
+<h2>Quadratic loss and the mean squared error</h2>
+<div class="callout callout-note no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p>Under the above assumptions and using a quadratic loss, the <span class="blue">expected prediction error</span> is <span class="math display">
+\begin{aligned}
+\text{Err} &amp;=\mathbb{E}\left[\{Y_{n+1} - \hat{f}(\tilde{\bm{x}}_{n+1})\}^2\right] \\
+&amp;= \underbrace{\sigma^2}_{\text{irreducible}} + \underbrace{\mathbb{E}\left[\{\hat{f}(\tilde{\bm{x}}_{n+1}) - f(\tilde{\bm{x}}_{n+1})\}^2\right]}_{\text{reducible}}
+\end{aligned}
+</span></p>
+</div>
+</div>
 </div>
 </section>
 <section id="reducible-and-irreducible-errors" class="slide level2 center">
