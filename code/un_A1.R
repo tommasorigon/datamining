@@ -1,14 +1,10 @@
 ## ----r------------------------------------------------------------------------
-knitr::purl("un_A1.qmd", output = "../code/un_A1.R")
-styler:::style_file("../code/un_A1.R")
-
-
-## ----r------------------------------------------------------------------------
 library(tidyverse)
 library(ggplot2)
 library(GGally)
 library(ggthemes)
 
+# The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
 auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
 
 p0 <- ggpairs(auto,
