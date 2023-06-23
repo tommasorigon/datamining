@@ -1,14 +1,9 @@
 ## ----r------------------------------------------------------------------------
-# Please ignore this chunk
-knitr::purl("un_B.qmd", output = "../code/un_B.R")
-styler:::style_file("../code/un_B.R")
-
-
-## ----r------------------------------------------------------------------------
 library(tidyverse)
 library(ggplot2)
 library(ggthemes)
 
+rm(list = ls())
 # The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/yesterday.txt
 dataset <- read.table("../data/yesterday.txt", header = TRUE)
 ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
