@@ -53,10 +53,10 @@ If you would like to convert the html slides into pdf files, please
 [follow the instruction of the quarto
 documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf).
 
-| Topic                                  | Notes                         | Slides                                      |
-|-------------------------|--------------------|----------------------------|
-| Introduction                           | \[Intro\]                     | \[Slides intro\]                            |
-| **A-B-C**                              | [Unit A.1](slides/un_A1.html) | [Slides Unit A.1](slides/un_A1_slides.html) |
+| Topic                                  | Notes                         | Slides                                      | Code |
+|-------------------------|--------------------|----------------------------|--------------|
+| Introduction                           | \[Intro\]                     | \[Slides intro\]                            | |
+| **A-B-C**                              | [Unit A.1](slides/un_A1.html) | [Slides Unit A.1](slides/un_A1_slides.html) | [Code A.1](code/un_A1.R) |
 | **Linear classification methods**      | \[Unit A.2\]                  | \[Slides Unit A.2\]                         |
 | Lab 1                                  | \[Code Lab 1\]                |                                             |
 | *Exercises*                            | \[Exercises 1\]               |                                             |
