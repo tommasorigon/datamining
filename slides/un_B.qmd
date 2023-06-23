@@ -59,8 +59,8 @@ editor_options:
     - Information criteria
     - Optimism
 
--   You may have seem some of these notions before... 
-- ...but it is worth discussing the details of these ideas once again, with the maturity you now have in a M.Sc. 
+-   You may have seen these notions before... 
+- ...but it is worth discussing the [details]{.orange} of these ideas once again, with the maturity you now have in a M.Sc. 
 
 - They are the [foundations]{.blue} of [statistical learning]{.orange}.
 :::
@@ -75,6 +75,7 @@ editor_options:
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
+#| warning: false
 library(tidyverse)
 library(ggplot2)
 library(ggthemes)
@@ -132,21 +133,24 @@ or alternatively $R^2_\text{train}$, for different values of $p$...
 ## Yesterday's data, polynomial regression
 
 ```{r}
-#| fig-width: 7.8
-#| fig-height: 4.55
-#| fig-align: center
-degree_list <- c(1, 3, 6, 12, 18, 23)
+degree_list <- c(1, 3, 5, 11, 17, 23)
 data_pred <- NULL
 x_seq <- seq(from = min(dataset$x), to = max(dataset$x), length = 30000)
 for (degree in degree_list) {
-  # Fitting a polynomial of degree p -1
-  fit <- lm(y.yesterday ~ poly(x, degree = degree, raw = F), data = dataset)
+  # Fitting a polynomial of degree p - 1
+  fit <- lm(y.yesterday ~ poly(x, degree = degree, raw = FALSE), data = dataset)
   y_hat <- predict(fit, newdata = data.frame(x = x_seq))
-  data_pred <- rbind(data_pred, data.frame(x = x_seq, y_hat = y_hat, degree = paste("Degree of the polynomial:", degree)))
+  data_pred <- rbind(data_pred, data.frame(x = x_seq, y_hat = y_hat, degree = paste("Number of parameters p:", degree + 1)))
 }
 data_pred$degree <- factor(data_pred$degree)
-data_pred$degree <- factor(data_pred$degree, levels = levels(data_pred$degree)[c(1, 5, 6, 2, 3, 4)])
+data_pred$degree <- factor(data_pred$degree, levels = levels(data_pred$degree)[c(3, 5, 6, 1, 2, 4)])
+```
 
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4.55
+#| fig-align: center
 ggplot(data = data_pred) +
   geom_line(aes(x = x, y = y_hat, col = degree)) +
   geom_point(data = dataset, aes(x = x, y = y.yesterday), size = 0.8) +
@@ -167,7 +171,9 @@ data_goodness <- data.frame(degree = degree_list, MSE = NA, R_squared = NA, MSE_
 MSE_tot <- mean((dataset$y.tomorrow - mean(dataset$y.tomorrow))^2)
 for (degree in degree_list) {
   # Fitting a polynomial of degree p -1
-  fit <- lm(y.yesterday ~ poly(x, degree = degree, raw = F), data = dataset)
+  fit <- lm(y.yesterday ~ poly(x, degree = degree, raw = FALSE), data = dataset)
+
+  # Storing the results
   data_goodness$MSE[degree] <- mean((dataset$y.yesterday - fitted(fit))^2)
   data_goodness$MSE_test[degree] <- mean((dataset$y.tomorrow - fitted(fit))^2)
   data_goodness$R_squared[degree] <- summary(fit)$r.squared
@@ -397,11 +403,11 @@ but even in this (overly optimistic) situation, we would still commit mistakes, 
 
 :::
 
-## Bias-variance trade-off I
+## Bias-variance trade-off
 
-- In many books, including A\&S, the starting point of the analysis is the [reducible error]{.blue}, because it is the only one we can change and minimize, e.g. by selecting the "optimal" $p$.
+- In many books, including A\&S, the starting point of the analysis is the [reducible error]{.blue}, because it is the only one we can control, e.g. by selecting the "optimal" $p$.
 
-- It measures the [discrepancy]{.orange} between the unknown function $f(x)$ and its estimate $\hat{f}(\bm{x})$.
+- The reducible error measures the [discrepancy]{.orange} between the unknown function $f(x)$ and its estimate $\hat{f}(\bm{x})$.
 
 - What follows is the [most important result]{.blue} of this unit.
 
@@ -420,7 +426,7 @@ $$
 
 ::: incremental
 
-- Summarizing, the [expected prediction error]{.orange} $\text{Err}$ can be decomposed as
+- Summarizing, the [expected prediction error]{.orange} can be decomposed as
 $$
 \begin{aligned}
 \text{Err} = \sigma^2 + \frac{1}{m}\sum_{i=1}^m\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right]^2 + \frac{1}{m}\sum_{i=1}^m\text{var}\{\hat{f}(\bm{x}_{n+i})\}.
@@ -439,17 +445,63 @@ $$
 \text{var}\{\hat{f}(\bm{x}_{n+i})\} = \sigma^2 \bm{x}_{n+i}^T (\bm{X}^T\bm{X})^{-1}\bm{x}_{n+i}.
 $$
 
+- If we knew $f(\bm{x})$ and $\sigma^2$, then the expected prediction error could be calculated...
+
 :::
 
 ## If we knew $f(x)$...
 
-## If we knew $f(x)$...
+```{r}
+x <- dataset$x
+n <- nrow(dataset)
 
-## Bias-variance trade-off II
+# The true values have been downloaded from the A&S texbook; sigma2true = 0.01 is also declared in the book
+sigmatrue <- 0.01
+ftrue <- c(
+  0.4342, 0.4780, 0.5072, 0.5258, 0.5369,
+  0.5426, 0.5447, 0.5444, 0.5425, 0.5397,
+  0.5364, 0.5329, 0.5294, 0.5260, 0.5229,
+  0.5200, 0.5174, 0.5151, 0.5131, 0.5113,
+  0.5097, 0.5083, 0.5071, 0.5061, 0.5052,
+  0.5044, 0.5037, 0.5032, 0.5027, 0.5023
+)
+
+degree_list <- 1:23
+p_list <- degree_list + 1
+Bias2s <- sapply(p_list, function(p) {
+  mean((ftrue - fitted(lm(ftrue ~ poly(x, degree = p - 1))))^2)
+})
+
+Vars <- p_list * (sigmatrue^2) / n # This formula can be obtained after some algebraic manipulation
+MSEs <- Bias2s + Vars
+
+data_bv <- data.frame(p = p_list, Bias = Bias2s, Variance = Vars, MSE = MSEs)
+data_bv <- reshape2::melt(data_bv, id = "p")
+levels(data_bv$variable) <- c("Squared Bias", "Variance", "Reducible error")
+colnames(data_bv) <- c("p", "Error term", "value")
+```
+
+```{r}
+#| fig-width: 7
+#| fig-height: 4
+#| fig-align: center
+ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
+  geom_line() +
+  geom_point(size = 0.8) +
+  geom_vline(xintercept = 6, linetype = "dotted") +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Error")
+```
+
+## Bias-variance trade-off
 
 ::: incremental
 
-- The [bias]{.orange} measures the ability of the estimator $\hat{f}(\bm{x})$ to reconstruct the true $f(\bm{x})$. It equals zero whenever $\mathbb{E}\{\hat{f}(\bm{x})\} = f(\bm{x})$. 
+- When $p$ grows, the mean squared error first decreases and then it increases. In the example, the [theoretical optimum]{.orange} is $p = 6$ (5th degree polynomial).
+
+- The [bias]{.orange} measures the ability of $\hat{f}(\bm{x})$ to reconstruct the true $f(\bm{x})$.  The bias is due to [lack of knowledge]{.blue} of the data-generating mechanism. It equals zero when $\mathbb{E}\{\hat{f}(\bm{x})\} = f(\bm{x})$.
 
 - The [bias]{.orange} term can be reduced by increasing the flexibility of the model (e.g., by considering a high value for $p$).
 
@@ -459,14 +511,83 @@ $$
 
 - It is not possible to minimize both the bias and the variance, there is a [trade-off]{.orange}. 
 
-- **Summary**. Low model complexity: [high bias]{.orange}, [low variance]{.blue}. High model complexity: [low bias]{.blue}, [high variance]{.orange}.
+- We say that an estimator is [overfitting]{.orange} the data if an increase in variance comes without important gains in terms of bias. 
+
+<!-- - **Summary**. Low model complexity: [high bias]{.orange}, [low variance]{.blue}. High model complexity: [low bias]{.blue}, [high variance]{.orange}. -->
 
 :::
 
 
-# Cross-validation
+# Traning, test, and cross-validation
 
-## ...but since we do not know $f(x)$
+## But since we do not know $f(x)$...
+
+- 
+
+## Mean squared error
+
+```{r}
+data_bv <- data.frame(p = p_list, MSE = sigmatrue^2 + Bias2s + Vars, MSE_train = data_goodness$MSE, MSE_test = data_goodness$MSE_test)
+data_bv <- reshape2::melt(data_bv, id = "p")
+levels(data_bv$variable) <- c("Expected prediction error (theoretical)", "MSE train", "MSE test")
+colnames(data_bv) <- c("p", "Error term", "value")
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
+  geom_line() +
+  geom_point(size = 0.8) +
+  geom_vline(xintercept = 5, linetype = "dotted") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Error")
+```
+
+## Training and test
+
+## Cross-validation
+
+## Leave-one-out cross-validation (LOO-CV)
+
+```{r}
+degree_list <- 1:23
+data_cv <- data.frame(x = c(dataset$x, dataset$x), y = c(dataset$y.yesterday, dataset$y.tomorrow))
+for (degree in degree_list) {
+  # Fitting a polynomial of degree p -1
+  fit <- lm(y ~ poly(x, degree = degree, raw = FALSE), data = data_cv)
+  lev <- influence(fit)$hat
+  data_goodness$LOO_CV[degree] <- mean(((data_cv$y - fitted(fit)) / (1 - lev))^2)
+}
+
+
+data_bv <- data.frame(p = p_list, MSE = sigmatrue^2 + Bias2s + Vars, LOO_CV = data_goodness$LOO_CV)
+data_bv <- reshape2::melt(data_bv, id = "p")
+levels(data_bv$variable) <- c("Expected prediction error (theoretical)", "LOO-CV")
+colnames(data_bv) <- c("p", "Error term", "value")
+```
+
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
+  geom_line() +
+  geom_point(size = 0.8) +
+  geom_vline(xintercept = 6, linetype = "dotted") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Error")
+```
 
 
 # Information criteria
+
+# Optimism

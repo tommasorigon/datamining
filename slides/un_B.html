@@ -76,17 +76,25 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#orthogonal-polynomials-and-numerical-difficulties" id="toc-orthogonal-polynomials-and-numerical-difficulties" class="nav-link" data-scroll-target="#orthogonal-polynomials-and-numerical-difficulties">☠️ - Orthogonal polynomials and numerical difficulties</a></li>
   <li><a href="#methods-for-model-selection" id="toc-methods-for-model-selection" class="nav-link" data-scroll-target="#methods-for-model-selection">Methods for model selection</a>
   <ul class="collapse">
-  <li><a href="#a-general-strategy" id="toc-a-general-strategy" class="nav-link" data-scroll-target="#a-general-strategy">A general strategy</a></li>
-  <li><a href="#loss-functions" id="toc-loss-functions" class="nav-link" data-scroll-target="#loss-functions">Loss functions</a></li>
-  <li><a href="#quadratic-loss" id="toc-quadratic-loss" class="nav-link" data-scroll-target="#quadratic-loss">Quadratic loss</a></li>
+  <li><a href="#summary-and-notation" id="toc-summary-and-notation" class="nav-link" data-scroll-target="#summary-and-notation">Summary and notation</a></li>
+  <li><a href="#the-average-prediction-error" id="toc-the-average-prediction-error" class="nav-link" data-scroll-target="#the-average-prediction-error">The average prediction error</a></li>
+  <li><a href="#quadratic-loss-and-the-mean-squared-error" id="toc-quadratic-loss-and-the-mean-squared-error" class="nav-link" data-scroll-target="#quadratic-loss-and-the-mean-squared-error">Quadratic loss and the mean squared error</a></li>
   <li><a href="#reducible-and-irreducible-errors" id="toc-reducible-and-irreducible-errors" class="nav-link" data-scroll-target="#reducible-and-irreducible-errors">Reducible and irreducible errors</a></li>
-  <li><a href="#if-we-knew-fx" id="toc-if-we-knew-fx" class="nav-link" data-scroll-target="#if-we-knew-fx">If we knew <span class="math inline">f(x)</span>…</a></li>
   <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
-  <li><a href="#prediction-error" id="toc-prediction-error" class="nav-link" data-scroll-target="#prediction-error">Prediction error</a></li>
-  <li><a href="#but-since-we-do-not-know-fx" id="toc-but-since-we-do-not-know-fx" class="nav-link" data-scroll-target="#but-since-we-do-not-know-fx">…but since we do not know <span class="math inline">f(x)</span></a></li>
+  <li><a href="#the-expected-prediction-error" id="toc-the-expected-prediction-error" class="nav-link" data-scroll-target="#the-expected-prediction-error">The expected prediction error</a></li>
+  <li><a href="#if-we-knew-fx" id="toc-if-we-knew-fx" class="nav-link" data-scroll-target="#if-we-knew-fx">If we knew <span class="math inline">f(x)</span>…</a></li>
+  <li><a href="#bias-variance-trade-off-1" id="toc-bias-variance-trade-off-1" class="nav-link" data-scroll-target="#bias-variance-trade-off-1">Bias-variance trade-off</a></li>
   </ul></li>
+  <li><a href="#traning-test-and-cross-validation" id="toc-traning-test-and-cross-validation" class="nav-link" data-scroll-target="#traning-test-and-cross-validation">Traning, test, and cross-validation</a>
+  <ul class="collapse">
+  <li><a href="#but-since-we-do-not-know-fx" id="toc-but-since-we-do-not-know-fx" class="nav-link" data-scroll-target="#but-since-we-do-not-know-fx">But since we do not know <span class="math inline">f(x)</span>…</a></li>
+  <li><a href="#mean-squared-error" id="toc-mean-squared-error" class="nav-link" data-scroll-target="#mean-squared-error">Mean squared error</a></li>
+  <li><a href="#training-and-test" id="toc-training-and-test" class="nav-link" data-scroll-target="#training-and-test">Training and test</a></li>
   <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation">Cross-validation</a></li>
+  <li><a href="#leave-one-out-cross-validation-loo-cv" id="toc-leave-one-out-cross-validation-loo-cv" class="nav-link" data-scroll-target="#leave-one-out-cross-validation-loo-cv">Leave-one-out cross-validation (LOO-CV)</a></li>
+  </ul></li>
   <li><a href="#information-criteria" id="toc-information-criteria" class="nav-link" data-scroll-target="#information-criteria">Information criteria</a></li>
+  <li><a href="#optimism" id="toc-optimism" class="nav-link" data-scroll-target="#optimism">Optimism</a></li>
   </ul>
 </nav>
 </div>
@@ -137,8 +145,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Information criteria</li>
 <li>Optimism</li>
 </ul></li>
-<li><p>You may have seem some of these notions before…</p></li>
-<li><p>…but it is worth discussing the details of these ideas once again, with the maturity you now have in a M.Sc.</p></li>
+<li><p>You may have seen these notions before…</p></li>
+<li><p>…but it is worth discussing the <span class="orange">details</span> of these ideas once again, with the maturity you now have in a M.Sc.</p></li>
 <li><p>They are the <span class="blue">foundations</span> of <span class="orange">statistical learning</span>.</p></li>
 </ul>
 </div>
@@ -148,7 +156,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="yesterdays-data">Yesterday’s data</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-1_53ed7c1cf7bd7feaf7714cc1dbd35ff4">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-1_f0febfd906e76a6beb42183cb353ddfe">
 <div class="cell-output-display">
 <p><img src="un_B_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="750"></p>
 </div>
@@ -185,11 +193,14 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 </section>
 <section id="yesterdays-data-polynomial-regression" class="level2">
 <h2 class="anchored" data-anchor-id="yesterdays-data-polynomial-regression">Yesterday’s data, polynomial regression</h2>
-<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-2_51a143d42eafae1d7d39b2c97bc08096">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-2_640fc0aba66a9e0bfbc9c18830d7e47e">
+
+</div>
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-3_c060feab551226ff6834ea4b1202c443">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_B_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="1170"></p>
+<p><img src="un_B_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="1170"></p>
 </figure>
 </div>
 </div>
@@ -197,20 +208,20 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 </section>
 <section id="yesterdays-data-goodness-of-fit" class="level2">
 <h2 class="anchored" data-anchor-id="yesterdays-data-goodness-of-fit">Yesterday’s data, goodness of fit</h2>
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-3_9bfa582691d945587b2dbf63daa80d26">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-4_4d0ff3216863ab04bdc0a417d0056f95">
 
 </div>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-4_38215ae58fc69016261d4ee79e4deea9">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-5_747fc5f6d70b7f7ee49589ced045a075">
 <div class="cell-output-display">
-<p><img src="un_B_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="750"></p>
+<p><img src="un_B_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="750"></p>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-5_b79c9ffaa336cee260506a594e97d3c3">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-6_82ca90864d5d1671095582936a1f40f7">
 <div class="cell-output-display">
-<p><img src="un_B_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="750"></p>
+<p><img src="un_B_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="750"></p>
 </div>
 </div>
 </div>
@@ -218,11 +229,11 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 </section>
 <section id="yesterdays-data-polynomial-interpolation-p-n" class="level2">
 <h2 class="anchored" data-anchor-id="yesterdays-data-polynomial-interpolation-p-n">Yesterday’s data, polynomial interpolation (<span class="math inline">p = n</span>)</h2>
-<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-6_8e554241687276528c57dd3f5c45b223">
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-7_bd0947f28ebb958d9875696ba4de819f">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_B_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="1350"></p>
+<p><img src="un_B_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="1350"></p>
 </figure>
 </div>
 </div>
@@ -246,11 +257,11 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 </section>
 <section id="tomorrows-data-polynomial-regression" class="level2">
 <h2 class="anchored" data-anchor-id="tomorrows-data-polynomial-regression">Tomorrow’s data, polynomial regression</h2>
-<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-7_0b530dc18c9cc71d7b28635015612678">
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-8_e0c1dc344d275fdf365a5f9419d6c034">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_B_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="1170"></p>
+<p><img src="un_B_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="1170"></p>
 </figure>
 </div>
 </div>
@@ -260,15 +271,15 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <h2 class="anchored" data-anchor-id="tomorrows-data-goodness-of-fit">Tomorrow’s data, goodness of fit</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-8_1d4c315acf3499fba23a0f3955be0278">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-9_75057bfdc685a2dedfb87bbb30eb7ecf">
 <div class="cell-output-display">
-<p><img src="un_B_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="750"></p>
+<p><img src="un_B_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="750"></p>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-9_88a964be1c70a65414ed869c99f0cb6b">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-10_edcd2c1747319faac7d7ab26122e04ea">
 <div class="cell-output-display">
-<p><img src="un_B_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="750"></p>
+<p><img src="un_B_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="750"></p>
 </div>
 </div>
 </div>
@@ -292,72 +303,204 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 </section>
 <section id="methods-for-model-selection" class="level1">
 <h1>Methods for model selection</h1>
-<section id="a-general-strategy" class="level2">
-<h2 class="anchored" data-anchor-id="a-general-strategy">A general strategy</h2>
+<section id="summary-and-notation" class="level2">
+<h2 class="anchored" data-anchor-id="summary-and-notation">Summary and notation</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>The example with yesterday’s and tomorrow’s data can be better formalized.</p></li>
-<li><p>In general settings, we consider two datasets of <span class="blue">iid random variables</span>:</p>
+<li><p>As in the previous example, we consider two set of <span class="blue">random variables</span>:</p>
 <ul class="incremental">
-<li><span class="orange">Training</span> <span class="math inline">(X_1, Y_1),\dots,(X_n, Y_n)</span>, whose realization is <span class="math inline">(\tilde{\bm{x}}_1, y_1), \dots, (\tilde{\bm{x}}_n, y_n)</span>.</li>
-<li><span class="blue">Test</span> <span class="math inline">(X_{n+1}, Y_{n+1}),\dots,(X_{n +m}, Y_{n +m})</span>, with realization <span class="math inline">(\tilde{\bm{x}}_{n+1}, y_{n+1}), \dots, (\tilde{\bm{x}}_{n +m}, y_{n + m})</span>.</li>
+<li>The <span class="orange">training set</span> <span class="math inline">Y_1,\dots, Y_n</span>, whose realization is <span class="math inline">y_1,\dots,y_n</span>.</li>
+<li>The <span class="blue">test set</span> <span class="math inline">Y_{n+1},\dots,Y_{n +m}</span>, whose realization is <span class="math inline">y_{n+1}, \dots, y_{n + m}</span>.</li>
 </ul></li>
-<li><p>The <span class="orange">key assumption</span> behind most statistical learning algorithm is that the random vectors <span class="math display">(X_i,Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \qquad i=1,\dots,m,</span> where <span class="math inline">X_i \in \mathbb{R}^p</span> represents a vector of <span class="blue">covariates</span> and <span class="math inline">Y_i</span> is the <span class="orange">response</span>.</p></li>
-<li><p><span class="blue">Step 1</span>. Use the <span class="orange">training data</span> to estimate a function of the covariates <span class="math inline">\hat{f}(X_i)</span> which should predict well the corresponding response <span class="math inline">Y_i</span>.</p></li>
-<li><p><span class="blue">Step 2</span>. Evaluate the quality of our predictions by measuring the discrepancy between <span class="math inline">\hat{f}(X_i)</span> and <span class="math inline">Y_i</span>, using the <span class="orange">test set</span>.</p></li>
+<li><p>We assume that the <span class="blue">covariates</span> <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> are <span class="blue">deterministic</span>, to simplify the notation and the discussion. This can be relaxed, see e.g.&nbsp;Chapter 7 of HTF.</p></li>
+<li><p>An <span class="orange">important assumption</span> is that the random variables <span class="math inline">Y_i</span> are <span class="blue">independent</span>. In particular: <span class="math display">
+  Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,m,
+</span> where <span class="math inline">\epsilon_1,\dots,\epsilon_m</span> are iid “<span class="orange">error</span>” terms with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
+<li><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span> which should predict well the corresponding response <span class="math inline">Y_i</span>.</p></li>
+<li><p>We hope that our predictions works well on the <span class="blue">test set</span>, which can be used to evaluate the quality of the estimated <span class="math inline">\hat{f}(\bm{x}_i)</span>.</p></li>
 </ul>
 </div>
 </section>
-<section id="loss-functions" class="level2">
-<h2 class="anchored" data-anchor-id="loss-functions">Loss functions</h2>
+<section id="the-average-prediction-error" class="level2">
+<h2 class="anchored" data-anchor-id="the-average-prediction-error">The average prediction error</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>A common measure of discrepacy between <span class="math inline">\hat{f}(X_i)</span> and <span class="math inline">Y_i</span>, based on the test set, is: <span class="math display">
-\text{Err}_\text{test} = \frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n+i}; \hat{f}(X_{n+i})\},
-</span> where <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(X_i)\}</span> is a <span class="orange">loss function</span>.</p></li>
-<li><p>Examples of loss functions for <span class="blue">regression problems</span> <span class="math inline">Y_i \in \mathbb{R}</span> are:</p>
+<li><p>A measure of quality for the predictions is the so-called <span class="blue">expected prediction error</span>: <span class="math display">
+\text{Err} = \mathbb{E}(\text{MSE}_\text{test}) =  \mathbb{E}\left[\frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n + i}; \hat{f}(\bm{x}_{n + i})\}\right],
+</span> where <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\}</span> is a <span class="orange">loss function</span>.</p></li>
+<li><p>The expectation is taken with respect to traning random variable <span class="math inline">Y_1,\dots,Y_n</span>, implicitly appearing in <span class="math inline">\hat{f}(\bm{x})</span>, and the new data points <span class="math inline">Y_{n+1},\dots,Y_{n+m}</span>.</p></li>
+<li><p>The expected prediction error is measuring the <span class="blue">average</span> “discrepancy” between the new data points and the corresponding predictions.</p></li>
+<li><p>Examples of loss functions for <span class="blue">regression problems</span> <span class="math inline">Y \in \mathbb{R}</span> are:</p>
 <ul class="incremental">
-<li>The quadratic loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(X_i)\} = \{Y_i - \hat{f}(X_i)\}^2</span>.</li>
-<li>The absolute loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(X_i)\} = |Y_i - \hat{f}(X_i)|</span>.</li>
+<li>The quadratic loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = \{Y_i - \hat{f}(\bm{x}_i)\}^2</span>, leading to the MSE.</li>
+<li>The absolute loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = |Y_i - \hat{f}(\bm{x}_i)|</span>, leading to the MAE.</li>
 </ul></li>
-<li><p>In practice, it is convenient to consider the so-called <span class="blue">expected prediction error</span> <span class="math display">
-\text{Err} = \mathbb{E}(\text{Err}_\text{test} ) = \frac{1}{m} \sum_{i=1}^m \mathbb{E}\left[\mathscr{L}\{Y_{n+i}; \hat{f}(X_{n+i})\}\right] = \mathbb{E}\left[\mathscr{L}\{Y_{n+1}; \hat{f}(X_{n+1})\}\right],
-</span> where the expectation is taken with respect to both the training and the test set.</p></li>
 </ul>
 </div>
 </section>
-<section id="quadratic-loss" class="level2">
-<h2 class="anchored" data-anchor-id="quadratic-loss">Quadratic loss</h2>
-<div class="incremental">
-<ul class="incremental">
-<li><p>We assume that the <span class="blue">covariates</span> <span class="math inline">\tilde{\bm{x}_i}</span> are <span class="blue">deterministic</span> (fixed-X design). If they were not, one just needs to include the conditioning <span class="math inline">(X_{n+1} = \tilde{\bm{x}}_{n+1})</span> in all the following expectations.</p></li>
-<li><p>The expected prediction error, under a <span class="orange">quadratic loss</span> and fixed-X, becomes <span class="math display">
-\text{Err} = \mathbb{E}(\text{MSE}_\text{test} ) =\mathbb{E}\left[\{Y_{n+1} - \hat{f}(\tilde{\bm{x}}_{n+1})\}^2\right].
-</span></p></li>
-</ul>
+<section id="quadratic-loss-and-the-mean-squared-error" class="level2">
+<h2 class="anchored" data-anchor-id="quadratic-loss-and-the-mean-squared-error">Quadratic loss and the mean squared error</h2>
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Error decomposition (reducible and irreducible)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Under a quadratic loss, <span class="orange">each element</span> of the <span class="blue">expected prediction error</span> admits the following decomposition <span class="math display">
+\begin{aligned}
+\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] &amp;= \mathbb{E}\left[\{f(\bm{x}_i) + \epsilon_i - \hat{f}(\bm{x}_i)\}^2\right] \\
+&amp; = \mathbb{E}\left[\{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}^2\right] + \mathbb{E}(\epsilon_i^2) + 2 \: \mathbb{E}\left[\epsilon_i \: \{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}\right]\\
+&amp; = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}},
+\end{aligned}
+</span> recalling that <span class="math inline">\mathbb{E}(\epsilon_i^2) = \text{var}(\epsilon_i) = \sigma^2</span> and for any <span class="math inline">i = n+1,\dots,n+m</span> (<span class="orange">test set</span>).</p>
+</div>
 </div>
 </section>
 <section id="reducible-and-irreducible-errors" class="level2">
 <h2 class="anchored" data-anchor-id="reducible-and-irreducible-errors">Reducible and irreducible errors</h2>
-</section>
-<section id="if-we-knew-fx" class="level2">
-<h2 class="anchored" data-anchor-id="if-we-knew-fx">If we knew <span class="math inline">f(x)</span>…</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>We would like to make the <span class="orange">mean squared error</span> as <span class="orange">small</span> as possible, e.g.&nbsp;by choosing an “optimal” degree of the polynomial <span class="math inline">p-1</span> that minimizes it.</p></li>
+<li><p>Let us recall the previous decomposition <span class="math display">
+\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] =  \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}}, \quad i=n+1,\dots,n + m.
+</span></p></li>
+<li><p>The <span class="blue">best case scenario</span> is when the estimated function coincides with the mean of <span class="math inline">Y_i</span>, i.e. <span class="math display">
+\hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(Y_i),
+</span> but even in this (overly optimistic) situation, we would still commit mistakes, due to the presence of <span class="math inline">\epsilon_i</span> (unless <span class="math inline">\sigma^2 = 0</span>). Hence, the variance <span class="math inline">\sigma^2</span> is called the <span class="orange">irreducible error</span>.</p></li>
+<li><p>Since we do not know <span class="math inline">f(\bm{x}_i)</span>, we seek for an estimate <span class="math inline">\hat{f}(\bm{x}_i) \approx f(\bm{x}_i)</span>, in the attempt of minimizing the <span class="blue">reducible error</span>.</p></li>
+</ul>
+</div>
 </section>
 <section id="bias-variance-trade-off" class="level2">
 <h2 class="anchored" data-anchor-id="bias-variance-trade-off">Bias-variance trade-off</h2>
+<ul>
+<li><p>In many books, including A&amp;S, the starting point of the analysis is the <span class="blue">reducible error</span>, because it is the only one we can control, e.g.&nbsp;by selecting the “optimal” <span class="math inline">p</span>.</p></li>
+<li><p>The reducible error measures the <span class="orange">discrepancy</span> between the unknown function <span class="math inline">f(x)</span> and its estimate <span class="math inline">\hat{f}(\bm{x})</span>.</p></li>
+<li><p>What follows is the <span class="blue">most important result</span> of this unit.</p></li>
+</ul>
+<div class="incremental">
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Bias-variance decomposition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For any covariate value <span class="math inline">\bm{x}</span>, it holds the following well-known decomposition: <span class="math display">
+\mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}^2\right] = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}\right]^2}_{\text{Bias}^2} + \underbrace{\text{var}\{\hat{f}(\bm{x})\}}_{\text{variance}}.
+</span></p>
+</div>
+</div>
+</div>
 </section>
-<section id="prediction-error" class="level2">
-<h2 class="anchored" data-anchor-id="prediction-error">Prediction error</h2>
+<section id="the-expected-prediction-error" class="level2">
+<h2 class="anchored" data-anchor-id="the-expected-prediction-error">The expected prediction error</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Summarizing, the <span class="orange">expected prediction error</span> can be decomposed as <span class="math display">
+\begin{aligned}
+\text{Err} = \sigma^2 + \frac{1}{m}\sum_{i=1}^m\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right]^2 + \frac{1}{m}\sum_{i=1}^m\text{var}\{\hat{f}(\bm{x}_{n+i})\}.
+\end{aligned}
+</span></p></li>
+<li><p>In <span class="blue">ordinary least squares</span> the above quantity can be computed in closed form.</p></li>
+<li><p>Indeed, each element of the <span class="orange">bias</span> term equals <span class="math display">
+\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right] = \bm{x}_{n+i}^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_{n+i}).
+</span> where <span class="math inline">\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T</span>. Note that if <span class="math inline">f(\bm{x}) = \bm{x}^T\beta</span>, then the bias is zero.</p></li>
+<li><p>Moreover, each element of the <span class="orange">variance</span> term equals <span class="math display">
+\text{var}\{\hat{f}(\bm{x}_{n+i})\} = \sigma^2 \bm{x}_{n+i}^T (\bm{X}^T\bm{X})^{-1}\bm{x}_{n+i}.
+</span></p></li>
+<li><p>If we knew <span class="math inline">f(\bm{x})</span> and <span class="math inline">\sigma^2</span>, then the expected prediction error could be calculated…</p></li>
+</ul>
+</div>
 </section>
+<section id="if-we-knew-fx" class="level2">
+<h2 class="anchored" data-anchor-id="if-we-knew-fx">If we knew <span class="math inline">f(x)</span>…</h2>
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-11_8fa9ed0ec4b958420c72760c54619488">
+
+</div>
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-12_da736c50d1015baf22fd873bd5abc34b">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_B_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="bias-variance-trade-off-1" class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-trade-off-1">Bias-variance trade-off</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>When <span class="math inline">p</span>, a measure of the model complexity, grows, the mean squared error first decreases and then it increases. In the example, the optimal <span class="math inline">p = 6</span> (5th degree polynomial).</p></li>
+<li><p>The <span class="orange">bias</span> measures the ability of <span class="math inline">\hat{f}(\bm{x})</span> to reconstruct the true <span class="math inline">f(\bm{x})</span>. The bias is due to <span class="blue">lack of knowledge</span> of the data-generating mechanism. It equals zero when <span class="math inline">\mathbb{E}\{\hat{f}(\bm{x})\} = f(\bm{x})</span>.</p></li>
+<li><p>The <span class="orange">bias</span> term can be reduced by increasing the flexibility of the model (e.g., by considering a high value for <span class="math inline">p</span>).</p></li>
+<li><p>The <span class="blue">variance</span> measures the variability of the estimator <span class="math inline">\hat{f}(\bm{x})</span> and its tendency to follow random fluctuations of the data.</p></li>
+<li><p>The <span class="blue">variance</span> increases together with the model complexity.</p></li>
+<li><p>It is not possible to minimize both the bias and the variance, there is a <span class="orange">trade-off</span>.</p></li>
+<li><p>We say that an estimator is <span class="orange">overfitting</span> the data if an increase in variance comes without important gains in terms of bias.</p></li>
+</ul>
+<!-- - **Summary**. Low model complexity: [high bias]{.orange}, [low variance]{.blue}. High model complexity: [low bias]{.blue}, [high variance]{.orange}. -->
+</div>
+</section>
+</section>
+<section id="traning-test-and-cross-validation" class="level1">
+<h1>Traning, test, and cross-validation</h1>
 <section id="but-since-we-do-not-know-fx" class="level2">
-<h2 class="anchored" data-anchor-id="but-since-we-do-not-know-fx">…but since we do not know <span class="math inline">f(x)</span></h2>
+<h2 class="anchored" data-anchor-id="but-since-we-do-not-know-fx">But since we do not know <span class="math inline">f(x)</span>…</h2>
+<ul>
+<li></li>
+</ul>
 </section>
+<section id="mean-squared-error" class="level2">
+<h2 class="anchored" data-anchor-id="mean-squared-error">Mean squared error</h2>
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-13_2709c45ba70b8026d7f57b663977b252">
+
+</div>
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-14_66a5a1e20b1bf44349329adcb1365cf1">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_B_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="1200"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="cross-validation" class="level1">
-<h1>Cross-validation</h1>
+<section id="training-and-test" class="level2">
+<h2 class="anchored" data-anchor-id="training-and-test">Training and test</h2>
+</section>
+<section id="cross-validation" class="level2">
+<h2 class="anchored" data-anchor-id="cross-validation">Cross-validation</h2>
+</section>
+<section id="leave-one-out-cross-validation-loo-cv" class="level2">
+<h2 class="anchored" data-anchor-id="leave-one-out-cross-validation-loo-cv">Leave-one-out cross-validation (LOO-CV)</h2>
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-15_e078772f4dbe3a3587c101dc33e54611">
+
+</div>
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-16_c21b8509692fcae4d50757d942576537">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_B_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="1200"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 </section>
 <section id="information-criteria" class="level1">
 <h1>Information criteria</h1>
+</section>
+<section id="optimism" class="level1">
+<h1>Optimism</h1>
 </section>
 
 </main>
