@@ -53,33 +53,35 @@ If you would like to convert the html slides into pdf files, please
 [follow the instruction of the quarto
 documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf).
 
-| Topic                                  | Notes                         | Slides                                      | Code |
-|-------------------------|--------------------|----------------------------|--------------|
-| Introduction                           | \[Intro\]                     | \[Slides intro\]                            | |
+| Topic                                  | Notes                         | Slides                                      | Code                     |
+|----------------------------------------|-------------------------------|---------------------------------------------|--------------------------|
+| **Introduction**                       | \[Intro\]                     | \[Slides intro\]                            |                          |
 | **A-B-C**                              | [Unit A.1](slides/un_A1.html) | [Slides Unit A.1](slides/un_A1_slides.html) | [Code A.1](code/un_A1.R) |
-| **Linear classification methods**      | \[Unit A.2\]                  | \[Slides Unit A.2\]                         |
-| Lab 1                                  | \[Code Lab 1\]                |                                             |
-| *Exercises*                            | \[Exercises 1\]               |                                             |
-| **Optimism, conflicts and trade-offs** | \[Unit B\]                    | \[Slides Unit B\]                           |
-| *Exercises*                            | \[Exercises 2\]               |                                             |
-| Lab 2                                  | \[Code Lab 2\]                |                                             |
-| **Model selection for linear models**  | \[Unit C\]                    | \[Slides Unit C\]                           |
-| *Exercises*                            | \[Exercises 3\]               |                                             |
-| Lab 3                                  | \[Code Lab 3\]                |                                             |
-| **Nonparametric estimation**           | \[Unit D\]                    | \[Slides Unit D\]                           |
-| *Exercises*                            | \[Exercises 4\]               |                                             |
-| Lab 4                                  | \[Code Lab 4\]                |                                             |
-| **The curse of dimensionality**        | \[Unit E\]                    | \[Slides Unit E\]                           |
-| **Additive models**                    | \[Unit F\]                    | \[Slides Unit F\]                           |
-| *Exercises*                            | \[Exercises 5\]               |                                             |
-| Lab 5                                  | \[Code Lab 5\]                |                                             |
-|                                        | \[Past exams\]                |                                             |
+| **Linear classification methods**      | \[Unit A.2\]                  | \[Slides Unit A.2\]                         |                          |
+| Lab 1                                  | \[Code Lab 1\]                |                                             |                          |
+| *Exercises*                            | \[Exercises 1\]               |                                             |                          |
+| **Optimism, conflicts and trade-offs** | \[Unit B\]                    | \[Slides Unit B\]                           |                          |
+| *Exercises*                            | \[Exercises 2\]               |                                             |                          |
+| Lab 2                                  | \[Code Lab 2\]                |                                             |                          |
+| **Model selection for linear models**  | \[Unit C\]                    | \[Slides Unit C\]                           |                          |
+| *Exercises*                            | \[Exercises 3\]               |                                             |                          |
+| Lab 3                                  | \[Code Lab 3\]                |                                             |                          |
+| **Nonparametric estimation**           | \[Unit D\]                    | \[Slides Unit D\]                           |                          |
+| *Exercises*                            | \[Exercises 4\]               |                                             |                          |
+| Lab 4                                  | \[Code Lab 4\]                |                                             |                          |
+| **The curse of dimensionality**        | \[Unit E\]                    | \[Slides Unit E\]                           |                          |
+| **Additive models**                    | \[Unit F\]                    | \[Slides Unit F\]                           |                          |
+| *Exercises*                            | \[Exercises 5\]               |                                             |                          |
+| Lab 5                                  | \[Code Lab 5\]                |                                             |                          |
+|                                        | \[Past exams\]                |                                             |                          |
 
-Prerequisites
+## Prerequisites
 
-Knowledge of the topics (i) linear algebra, (ii) linear models, and (iii) generalized linear models (GLMs), is highly recommended.
+Knowledge of the topics (i) linear algebra, (ii) linear models, and
+(iii) generalized linear models (GLMs), is highly recommended.
 
-Knowledge of topics covered in the courses Probability and Statistics M and Advanced Statistics M is also highly recommended.
+Knowledge of topics covered in the courses Probability and Statistics M
+and Advanced Statistics M is also highly recommended.
 
 ## Office hours
 
