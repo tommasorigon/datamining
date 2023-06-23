@@ -7,7 +7,6 @@ execute:
   cache: true
 format:
   revealjs:
-    multiplex: true
     auto-stretch: true
     center: true
     html-math-method: katex
@@ -46,6 +45,16 @@ editor_options:
 ---
 
 ## [Homepage](../index.html)
+
+```{r}
+#| warning: false
+#| echo: false
+#| include: false
+#| message: false
+knitr::purl("un_A1.qmd", output = "../code/un_A1.R")
+styler:::style_file("../code/un_A1.R")
+```
+
 
 ::: columns
 ::: {.column width="40%"}

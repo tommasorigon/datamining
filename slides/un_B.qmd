@@ -46,6 +46,15 @@ editor_options:
 
 ## [Homepage](../index.html)
 
+```{r}
+#| warning: false
+#| echo: false
+#| include: false
+#| message: false
+knitr::purl("un_B.qmd", output = "../code/un_B.R")
+styler:::style_file("../code/un_B.R")
+```
+
 ::: columns
 ::: {.column width="40%"}
 ![](img/razor.jpg) *"Pluralitas non est ponenda sine necessitate."* William of Ockham
@@ -190,7 +199,7 @@ for (degree in degree_list) {
 #| fig-height: 4.5
 ggplot(data = data_goodness, aes(x = degree + 1, y = MSE)) +
   geom_line() +
-  geom_point(size = 0.8) +
+  geom_point() +
   theme_light() +
   xlab("# of parameters p") +
   ylab("MSE")
@@ -203,7 +212,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = MSE)) +
 #| fig-height: 4.5
 ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared)) +
   geom_line() +
-  geom_point(size = 0.8) +
+  geom_point() +
   theme_light() +
   xlab("# of parameters p") +
   ylab(expression(R^2))
@@ -257,8 +266,8 @@ for $i=1,\dots,m$, where $\hat{\beta}$ is obtained using yesterday data.
 ## Tomorrow's data, polynomial regression
 
 ```{r}
-#| fig-width: 7.8
-#| fig-height: 4.55
+#| fig-width: 8
+#| fig-height: 4.5
 #| fig-align: center
 ggplot(data = data_pred) +
   geom_line(aes(x = x, y = y_hat, col = degree)) +
@@ -282,7 +291,7 @@ ggplot(data = data_pred) +
 #| fig-height: 4.5
 ggplot(data = data_goodness, aes(x = degree + 1, y = MSE_test)) +
   geom_line() +
-  geom_point(size = 0.8) +
+  geom_point() +
   theme_light() +
   xlab("# of parameters p") +
   ylab("MSE")
@@ -295,7 +304,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = MSE_test)) +
 #| fig-height: 4.5
 ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
   geom_line() +
-  geom_point(size = 0.8) +
+  geom_point() +
   theme_light() +
   xlab("# of parameters p") +
   ylab(expression(R^2))
@@ -482,12 +491,12 @@ colnames(data_bv) <- c("p", "Error term", "value")
 ```
 
 ```{r}
-#| fig-width: 7
-#| fig-height: 4
-#| fig-align: center
+#| fig-width: 8
+#| fig-height: 4.5
+#| #| fig-align: center
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
-  geom_point(size = 0.8) +
+  geom_point() +
   geom_vline(xintercept = 6, linetype = "dotted") +
   theme_light() +
   scale_color_tableau(palette = "Color Blind") +
@@ -539,7 +548,7 @@ colnames(data_bv) <- c("p", "Error term", "value")
 #| fig-align: center
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
-  geom_point(size = 0.8) +
+  geom_point() +
   geom_vline(xintercept = 5, linetype = "dotted") +
   theme_light() +
   theme(legend.position = "top") +
@@ -578,7 +587,7 @@ colnames(data_bv) <- c("p", "Error term", "value")
 #| fig-align: center
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
-  geom_point(size = 0.8) +
+  geom_point() +
   geom_vline(xintercept = 6, linetype = "dotted") +
   theme_light() +
   theme(legend.position = "top") +
