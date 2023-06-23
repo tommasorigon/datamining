@@ -9,7 +9,7 @@ format:
   revealjs:
     multiplex:
       id: '1ea875674b17ca76'
-      secret: '13652805320794272084'
+      secret: 'null'
     auto-stretch: true
     center: true
     html-math-method: katex
