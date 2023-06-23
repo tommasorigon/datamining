@@ -7,7 +7,7 @@ execute:
   cache: true
 format:
   revealjs:
-    multiplex: true
+    chalkboard: true
     auto-stretch: true
     center: true
     html-math-method: katex
