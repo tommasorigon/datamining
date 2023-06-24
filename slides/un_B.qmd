@@ -4,7 +4,7 @@ subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
 execute:
-  cache: false
+  cache: true
 format:
   revealjs:
     auto-stretch: true
@@ -22,7 +22,7 @@ format:
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
-    highlight-style: ayu
+    highlight-style: github
   html:
     html-math-method: katex
     echo: false
@@ -36,7 +36,7 @@ format:
     code-fold: true
     code-summary: "Show the code"
     fig-dpi: 150
-    highlight-style: ayu
+    highlight-style: github
 editor: 
   markdown: 
     wrap: 72
@@ -59,29 +59,31 @@ styler:::style_file("../code/un_B.R")
 
 ::: columns
 ::: {.column width="40%"}
-![](img/razor.jpg) *"Pluralitas non est ponenda sine necessitate."* William of Ockham
+![](img/razor.jpg) *"Pluralitas non est ponenda sine necessitate."*
+William of Ockham
 :::
 
 ::: {.column width="60%"}
 -   In this unit we will cover the following [topics]{.orange}:
 
-    - Bias-variance trade-off
-    - Cross-validation
-    - Information criteria
-    - Optimism
+    -   Bias-variance trade-off
+    -   Cross-validation
+    -   Information criteria
+    -   Optimism
 
--   You may have seen these notions before... 
-- ...but it is worth discussing the [details]{.orange} of these ideas once again, with the maturity you now have in a M.Sc. 
+-   You may have seen these notions before...
 
-- They are the [foundations]{.blue} of [statistical learning]{.orange}.
+-   ...but it is worth discussing the [details]{.orange} of these ideas
+    once again, with the maturity you now have in a M.Sc.
+
+-   They are the [foundations]{.blue} of [statistical
+    learning]{.orange}.
 :::
 :::
 
 ## Yesterday's data
 
-
-:::columns
-
+::: columns
 ::: {.column width="50%"}
 ```{r}
 #| fig-width: 5
@@ -102,69 +104,83 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
   ylab("y")
 ```
 :::
+
 ::: {.column width="50%"}
-- Let us presume that [yesterday]{.orange} we observed $n = 30$ pairs of data $(x_i, y_i)$.
+-   Let us presume that [yesterday]{.orange} we observed $n = 30$ pairs
+    of data $(x_i, y_i)$.
 
-- Data were generated according to $$
-    Y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n,
-    $$
-    with each $y_i$ being the realization of $Y_i$.
-- The $\epsilon_1,\dots,\epsilon_n$ are iid "[error]{.orange}" terms, such that $\mathbb{E}(\epsilon_i)=0$ and $\text{var}(\epsilon_i)=\sigma^2 = 10^{-2}$. 
+-   Data were generated according to $$
+      Y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n,
+      $$ with each $y_i$ being the realization of $Y_i$.
 
-- Here $f(x)$ is a regression function ([signal]{.blue}) that we leave unspecified.
+-   The $\epsilon_1,\dots,\epsilon_n$ are iid "[error]{.orange}" terms,
+    such that $\mathbb{E}(\epsilon_i)=0$ and
+    $\text{var}(\epsilon_i)=\sigma^2 = 10^{-2}$.
 
-- [Tomorrow]{.blue} we will get a new $x_{n+1}$. We wish to [predict]{.orange} $Y_{n+1}$ using $\mathbb{E}(Y_{n+1}) = f(x_{n+1}; \beta)$.
+-   Here $f(x)$ is a regression function ([signal]{.blue}) that we leave
+    unspecified.
 
+-   [Tomorrow]{.blue} we will get a new $x_{n+1}$. We wish to
+    [predict]{.orange} $Y_{n+1}$ using
+    $\mathbb{E}(Y_{n+1}) = f(x_{n+1}; \beta)$.
 :::
-::: 
+:::
 
 ## Polynomial regression
 
 ::: incremental
+-   The function $f(x)$ is unknown, therefore it should be estimated.
 
-- The function $f(x)$ is unknown, therefore it should be estimated. 
+-   A simple approach is using the tools of [Unit
+    A.1](unit_A1_slides.html), such as [polynomial regression]{.orange}:
+    $$
+    f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
+    $$ namely $f(x)$ is [approximated]{.orange} with a polynomial of
+    degree $p-1$ (i.e. Taylor expansions).
 
-- A simple approach is using the tools of [Unit A.1](unit_A1_slides.html), such as [polynomial regression]{.orange}:
-$$
-f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
-$$
-namely $f(x)$ is [approximated]{.orange} with a polynomial of degree $p-1$ (i.e. Taylor expansions).
+-   This model is linear in the parameters, therefore we can use
+    ordinary least squares.
 
-- This model is linear in the parameters, therefore we can use ordinary least squares.
+-   How do we choose the [degree of the polynomial]{.blue} $p - 1$?
 
-- How do we choose the [degree of the polynomial]{.blue} $p - 1$?
+-   Without a clear guidance, in principle any value of
+    $p \in \{1,\dots,n\}$ could be appropriate.
 
-- Without a clear guidance, in principle any value of $p \in \{1,\dots,n\}$ could be appropriate. 
-
-- Let us compare the [mean squared error]{.blue} (MSE) on yesterday's data ([training]{.orange})
-$$
-\text{MSE}_{\text{train}} = \frac{1}{n}\sum_{i=1}^n\{y_i -f(x_i; \hat{\beta})\}^2,
-$$
-or alternatively $R^2_\text{train}$, for different values of $p$...
-
+-   Let us compare the [mean squared error]{.blue} (MSE) on yesterday's
+    data ([training]{.orange}) $$
+    \text{MSE}_{\text{train}} = \frac{1}{n}\sum_{i=1}^n\{y_i -f(x_i; \hat{\beta})\}^2,
+    $$ or alternatively $R^2_\text{train}$, for different values of
+    $p$...
 :::
 
 ## Yesterday's data, polynomial regression
 
 ```{r}
-degree_list <- c(1, 3, 5, 11, 17, 23)
-data_pred <- NULL
-x_seq <- seq(from = min(dataset$x), to = max(dataset$x), length = 30000)
-for (degree in degree_list) {
-  # Fitting a polynomial of degree p - 1
-  fit <- lm(y.yesterday ~ poly(x, degree = degree, raw = FALSE), data = dataset)
-  y_hat <- predict(fit, newdata = data.frame(x = x_seq))
-  data_pred <- rbind(data_pred, data.frame(x = x_seq, y_hat = y_hat, degree = paste("Number of parameters p:", degree + 1)))
-}
-data_pred$degree <- factor(data_pred$degree)
-data_pred$degree <- factor(data_pred$degree, levels = levels(data_pred$degree)[c(3, 5, 6, 1, 2, 4)])
-```
-
-
-```{r}
 #| fig-width: 7.8
 #| fig-height: 4.55
 #| fig-align: center
+
+# Degrees of the polynomials
+degree_list <- c(1, 3, 5, 11, 17, 23)
+
+# I am using 30.000 obs to improve the quality of the graph
+x_seq <- seq(from = min(dataset$x), to = max(dataset$x), length = 30000) 
+
+# Actual fitting procedure
+data_pred <- NULL
+for (degree in degree_list) {
+  # Fitting a polynomial of degree p - 1
+  fit <- lm(y.yesterday ~ poly(x, degree = degree, raw = FALSE), data = dataset)
+  # Fitted values
+  y_hat <- predict(fit, newdata = data.frame(x = x_seq))
+  data_pred <- rbind(data_pred, data.frame(x = x_seq, y_hat = y_hat, degree = paste("Number of parameters p:", degree + 1)))
+}
+
+# Graphical adjustment to get the plots in the right order
+data_pred$degree <- factor(data_pred$degree)
+data_pred$degree <- factor(data_pred$degree, levels = levels(data_pred$degree)[c(3, 5, 6, 1, 2, 4)])
+
+# Final plot
 ggplot(data = data_pred) +
   geom_line(aes(x = x, y = y_hat, col = degree)) +
   geom_point(data = dataset, aes(x = x, y = y.yesterday), size = 0.8) +
@@ -174,30 +190,38 @@ ggplot(data = data_pred) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("x") +
   ylab("y") +
-  ylim(c(0.42, 0.56))
+  ylim(c(0.42, 0.56)) # Manual identification of an "interesting" region
 ```
 
 ## Yesterday's data, goodness of fit
 
 ```{r}
+# Main chunk of code; fitting several models and storing some relevant quantities
 degree_list <- 1:23
-data_goodness <- data.frame(degree = degree_list, MSE = NA, R_squared = NA, MSE_test = NA, R_squared_test = NA)
+
+# Tomorrow's mean-squared error
 MSE_tot <- mean((dataset$y.tomorrow - mean(dataset$y.tomorrow))^2)
+
+# Initialization
+data_goodness <- data.frame(degree = degree_list, MSE = NA, R_squared = NA, MSE_test = NA, R_squared_test = NA)
+
+# Code execution
 for (degree in degree_list) {
   # Fitting a polynomial of degree p -1
   fit <- lm(y.yesterday ~ poly(x, degree = degree, raw = FALSE), data = dataset)
-
-  # Storing the results
-  data_goodness$MSE[degree] <- mean((dataset$y.yesterday - fitted(fit))^2)
-  data_goodness$MSE_test[degree] <- mean((dataset$y.tomorrow - fitted(fit))^2)
+  y_hat <- fitted(fit)
+  
+  # Training goodness of fit
+  data_goodness$MSE[degree] <- mean((dataset$y.yesterday - y_hat)^2)
   data_goodness$R_squared[degree] <- summary(fit)$r.squared
+  
+  # Test goodness of fit
+  data_goodness$MSE_test[degree] <- mean((dataset$y.tomorrow - y_hat)^2)
   data_goodness$R_squared_test[degree] <- 1 - data_goodness$MSE_test[degree] / MSE_tot
 }
 ```
 
-
-:::columns
-
+::: columns
 ::: {.column width="50%"}
 ```{r}
 #| fig-width: 5
@@ -223,7 +247,6 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared)) +
   ylab(expression(R^2))
 ```
 :::
-
 :::
 
 ## Yesterday's data, polynomial interpolation ($p = n$)
@@ -249,23 +272,30 @@ curve(f(x), n = 300, add = TRUE)
 ## Yesterday's data, tomorrow's prediction
 
 ::: incremental
+-   The [MSE]{.blue} decreases as the number of parameter increases;
+    similarly, the [$R^2$]{.blue} always increases as a function of $p$.
+    It can be [proved]{.orange} that this [always happens]{.orange} in
+    linear models.
 
-- The [MSE]{.blue} decreases as the number of parameter increases; similarly, the [$R^2$]{.blue} always increases as a function of $p$. It can be [proved]{.orange} that this [always happens]{.orange} in linear models. 
+-   One might be tempted to let $p$ as large as possible to make the
+    model more flexible...
 
-- One might be tempted to let $p$ as large as possible to make the model more flexible...
+-   Taking this reasoning to the extreme would lead to the choice
+    $p = n$, so that $$
+    \text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
+    $$ i.e. an apparently perfect fit. This procedure is called
+    [interpolation]{.blue}.
 
-- Taking this reasoning to the extreme would lead to the choice $p = n$, so that $$
-\text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
-$$
-i.e. an apparently perfect fit. This procedure is called [interpolation]{.blue}.
+-   However, we are [not]{.orange} interested in predicting
+    [yesterday]{.orange} data. Our goal is to predict
+    [tomorrow]{.blue}'s data, i.e., given $x_{n + i}$, to predict
+    $Y_{n + i}$, for a new set of $m = 30$ points: $$
+    (x_{n+1}, y_{n+1}), \dots, (x_{n+m}, y_{n + m}) \  \longrightarrow \ \hat{y}_{n+i} = \mathbb{E}(Y_{n+i}) = f(x_{n+i}; \hat{\beta}), 
+    $$ for $i=1,\dots,m$, where $\hat{\beta}$ is obtained using
+    yesterday data.
 
-- However, we are [not]{.orange} interested in predicting [yesterday]{.orange} data. Our goal is to predict [tomorrow]{.blue}'s data, i.e., given $x_{n + i}$, to predict $Y_{n + i}$, for a new set of $m = 30$ points: $$
-(x_{n+1}, y_{n+1}), \dots, (x_{n+m}, y_{n + m}) \  \longrightarrow \ \hat{y}_{n+i} = \mathbb{E}(Y_{n+i}) = f(x_{n+i}; \hat{\beta}), 
-$$
-for $i=1,\dots,m$, where $\hat{\beta}$ is obtained using yesterday data. 
-
-- [Remark]{.orange}. Tomorrow's data $Y_{n+1},\dots, Y_{n+m}$ follows the same scheme of yesterday's data.
-
+-   [Remark]{.orange}. Tomorrow's data $Y_{n+1},\dots, Y_{n+m}$ follows
+    the same scheme of yesterday's data.
 :::
 
 ## Tomorrow's data, polynomial regression
@@ -288,8 +318,7 @@ ggplot(data = data_pred) +
 
 ## Tomorrow's data, goodness of fit
 
-:::columns
-
+::: columns
 ::: {.column width="50%"}
 ```{r}
 #| fig-width: 5
@@ -315,70 +344,110 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
   ylab(expression(R^2))
 ```
 :::
-
-::: 
+:::
 
 ## Comments and remarks
 
 ::: incremental
+-   The mean squared error on tomorrow's data ([test]{.blue}) is defined
+    as $$
+    \text{MSE}_{\text{test}} = \frac{1}{m}\sum_{i=1}^m\{y_{n +i} -f(x_{n + i}; \hat{\beta})\}^2,
+    $$ and similarly the $R^2_\text{test}$. We would like the
+    $\text{MSE}_{\text{test}}$ to be [as small as possible]{.orange}.
 
-- The mean squared error on tomorrow's data ([test]{.blue}) is defined as
-$$
-\text{MSE}_{\text{test}} = \frac{1}{m}\sum_{i=1}^m\{y_{n +i} -f(x_{n + i}; \hat{\beta})\}^2,
-$$
-and similarly the $R^2_\text{test}$. We would like the $\text{MSE}_{\text{test}}$  to be [as small as possible]{.orange}.
+-   For [small values]{.blue} of $p$, an increase in the degree of the
+    polynomial [improves the fit]{.blue}. In other words, at the
+    beginning, both the $\text{MSE}_{\text{train}}$ and the
+    $\text{MSE}_{\text{test}}$ decrease.
 
-- For [small values]{.blue} of $p$, an increase in the degree of the polynomial [improves the fit]{.blue}. In other words, at the beginning, both the $\text{MSE}_{\text{train}}$ and the $\text{MSE}_{\text{test}}$ decrease.
+-   For [larger values]{.orange} of $p$, the improvement gradually
+    ceases and the polynomial starts to follow [random
+    fluctuations]{.orange} in yesterday's data which are [not
+    observed]{.blue} in the [new sample]{.blue}.
 
-- For [larger values]{.orange} of $p$, the improvement gradually ceases and the polynomial starts to follow [random fluctuations]{.orange} in yesterday’s data which are [not observed]{.blue} in the [new sample]{.blue}.
-
-- An over-adaptation to yesterday data is called [overfitting]{.orange}, which occurs when the training $\text{MSE}_{\text{train}}$ is low but the test $\text{MSE}_{\text{test}}$ is high.
-
+-   An over-adaptation to yesterday data is called
+    [overfitting]{.orange}, which occurs when the training
+    $\text{MSE}_{\text{train}}$ is low but the test
+    $\text{MSE}_{\text{test}}$ is high.
+    
+- The yesterday's dataset is available from the textbook (A\&S) website:
+  - Dataset <http://azzalini.stat.unipd.it/Book-DM/yesterday.dat>
+  - True $f(\bm{x})$ <http://azzalini.stat.unipd.it/Book-DM/f_true.R>
 :::
 
-## ☠️ - Orthogonal polynomials and numerical difficulties
+## ☠️ - Orthogonal polynomials
+
+- When performing polynomial regression, the `poly` command computes an [orthogonal basis]{.orange} of the original covariates $(1, x, x^2,\dots,x^{p-1})$ through the QR decomposition:
+```{r}
+#| echo: true
+fit <- lm(y.yesterday ~ poly(x, degree = 3, raw = FALSE), data = dataset)
+X <- model.matrix(fit)
+colnames(X) = c("Intercept","x1","x2","x3")
+round(t(X) %*% X, 8)
+```
+
+- Polynomial regression becomes numerically unstable when $p \ge 13$ (`raw = TRUE`, i.e. using the original polynomials) and $p \ge 25$ (`raw = FALSE`, i.e. using orthogonal polynomials).
 
 # Methods for model selection
 
 ## Summary and notation
 
 ::: incremental
+-   As in the previous example, we consider two set of [random
+    variables]{.blue}:
 
-- As in the previous example, we consider two set of [random variables]{.blue}: 
-  - The [training set]{.orange} $Y_1,\dots, Y_n$, whose realization is $y_1,\dots,y_n$.
-  - The [test set]{.blue} $Y_{n+1},\dots,Y_{n +m}$, whose realization is $y_{n+1}, \dots, y_{n + m}$.
+    -   The [training set]{.orange} $Y_1,\dots, Y_n$, whose realization
+        is $y_1,\dots,y_n$.
+    -   The [test set]{.blue} $Y_{n+1},\dots,Y_{n +m}$, whose
+        realization is $y_{n+1}, \dots, y_{n + m}$.
 
-- We assume that the [covariates]{.blue} $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ are [deterministic]{.blue}, to simplify the notation and the discussion. This can be relaxed, see e.g. Chapter 7 of HTF. 
+-   We assume that the [covariates]{.blue}
+    $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ are [deterministic]{.blue}, to
+    simplify the notation and the discussion. This can be relaxed, see
+    e.g. Chapter 7 of HTF.
 
-- An [important assumption]{.orange} is that the random variables $Y_i$ are [independent]{.blue}. In particular: $$
-    Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,m,
-$$ where $\epsilon_1,\dots,\epsilon_m$ are iid "[error]{.orange}" terms with $\mathbb{E}(\epsilon_i)=0$ and $\text{var}(\epsilon_i)=\sigma^2$. 
+-   An [important assumption]{.orange} is that the random variables
+    $Y_i$ are [independent]{.blue}. In particular: $$
+      Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,m,
+    $$ where $\epsilon_1,\dots,\epsilon_m$ are iid "[error]{.orange}"
+    terms with $\mathbb{E}(\epsilon_i)=0$ and
+    $\text{var}(\epsilon_i)=\sigma^2$.
 
-- The [training data]{.orange} is used to estimate a function of the covariates $\hat{f}(\bm{x}_i)$ which should predict well the corresponding response $Y_i$.
+-   The [training data]{.orange} is used to estimate a function of the
+    covariates $\hat{f}(\bm{x}_i)$ which should predict well the
+    corresponding response $Y_i$.
 
-- We hope that our predictions works well on the [test set]{.blue}, which can be used to evaluate the quality of the estimated $\hat{f}(\bm{x}_i)$.
-
+-   We hope that our predictions works well on the [test set]{.blue},
+    which can be used to evaluate the quality of the estimated
+    $\hat{f}(\bm{x}_i)$.
 :::
 
 ## The average prediction error
 
 ::: incremental
+-   A measure of quality for the predictions is the so-called [expected
+    prediction error]{.blue}: $$
+    \text{Err} = \mathbb{E}(\text{MSE}_\text{test}) =  \mathbb{E}\left[\frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n + i}; \hat{f}(\bm{x}_{n + i})\}\right],
+    $$ where $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\}$ is a [loss
+    function]{.orange}.
 
-- A measure of quality for the predictions is the so-called [expected prediction error]{.blue}:
-$$
-\text{Err} = \mathbb{E}(\text{MSE}_\text{test}) =  \mathbb{E}\left[\frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n + i}; \hat{f}(\bm{x}_{n + i})\}\right],
-$$
-where $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\}$ is a [loss function]{.orange}. 
+-   The expectation is taken with respect to traning random variable
+    $Y_1,\dots,Y_n$, implicitly appearing in $\hat{f}(\bm{x})$, and the
+    new data points $Y_{n+1},\dots,Y_{n+m}$.
 
-- The expectation is taken with respect to traning random variable $Y_1,\dots,Y_n$, implicitly appearing in $\hat{f}(\bm{x})$, and the new data points $Y_{n+1},\dots,Y_{n+m}$.
+-   The expected prediction error is measuring the [average]{.blue}
+    "discrepancy" between the new data points and the corresponding
+    predictions.
 
-- The expected prediction error is measuring the [average]{.blue} "discrepancy" between the new data points and the corresponding predictions.
+-   Examples of loss functions for [regression problems]{.blue}
+    $Y \in \mathbb{R}$ are:
 
-- Examples of loss functions for [regression problems]{.blue} $Y \in \mathbb{R}$ are: 
-  - The quadratic loss $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = \{Y_i - \hat{f}(\bm{x}_i)\}^2$, leading to the MSE.
-  - The absolute loss $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = |Y_i - \hat{f}(\bm{x}_i)|$, leading to the MAE.
-
-
+    -   The quadratic loss
+        $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = \{Y_i - \hat{f}(\bm{x}_i)\}^2$,
+        leading to the MSE.
+    -   The absolute loss
+        $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = |Y_i - \hat{f}(\bm{x}_i)|$,
+        leading to the MAE.
 :::
 
 ## Quadratic loss and the mean squared error
@@ -386,52 +455,60 @@ where $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\}$ is a [loss function]{.orange}.
 ::: callout-note
 #### Error decomposition (reducible and irreducible)
 
-Under a quadratic loss, [each element]{.orange} of the [expected prediction error]{.blue} admits the following decomposition
-$$
+Under a quadratic loss, [each element]{.orange} of the [expected
+prediction error]{.blue} admits the following decomposition $$
 \begin{aligned}
 \mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] &= \mathbb{E}\left[\{f(\bm{x}_i) + \epsilon_i - \hat{f}(\bm{x}_i)\}^2\right] \\
 & = \mathbb{E}\left[\{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}^2\right] + \mathbb{E}(\epsilon_i^2) + 2 \: \mathbb{E}\left[\epsilon_i \: \{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}\right]\\
 & = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}},
 \end{aligned}
-$$
-recalling that $\mathbb{E}(\epsilon_i^2) = \text{var}(\epsilon_i) = \sigma^2$ and for any $i = n+1,\dots,n+m$ ([test set]{.orange}). 
+$$ recalling that
+$\mathbb{E}(\epsilon_i^2) = \text{var}(\epsilon_i) = \sigma^2$ and for
+any $i = n+1,\dots,n+m$ ([test set]{.orange}).
 :::
 
 ## Reducible and irreducible errors
 
 ::: incremental
+-   We would like to make the [mean squared error]{.orange} as
+    [small]{.orange} as possible, e.g. by choosing an "optimal" degree
+    of the polynomial $p-1$ that minimizes it.
 
-- We would like to make the [mean squared error]{.orange} as [small]{.orange} as possible, e.g. by choosing an "optimal" degree of the polynomial $p-1$ that minimizes it. 
+-   Let us recall the previous decomposition $$
+    \mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] =  \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}}, \quad i=n+1,\dots,n + m.
+    $$
 
-- Let us recall the previous decomposition
-$$
-\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] =  \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}}, \quad i=n+1,\dots,n + m.
-$$
-- The [best case scenario]{.blue} is when the estimated function coincides with the mean of $Y_i$, i.e.
-$$
-\hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(Y_i),
-$$
-but even in this (overly optimistic) situation, we would still commit mistakes, due to the presence of $\epsilon_i$ (unless $\sigma^2 = 0$). Hence, the variance $\sigma^2$ is called the [irreducible error]{.orange}. 
+-   The [best case scenario]{.blue} is when the estimated function
+    coincides with the mean of $Y_i$, i.e. $$
+    \hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(Y_i),
+    $$ but even in this (overly optimistic) situation, we would still
+    commit mistakes, due to the presence of $\epsilon_i$ (unless
+    $\sigma^2 = 0$). Hence, the variance $\sigma^2$ is called the
+    [irreducible error]{.orange}.
 
-- Since we do not know $f(\bm{x}_i)$, we seek for an estimate $\hat{f}(\bm{x}_i) \approx  f(\bm{x}_i)$, in the attempt of minimizing the [reducible error]{.blue}.
-
+-   Since we do not know $f(\bm{x}_i)$, we seek for an estimate
+    $\hat{f}(\bm{x}_i) \approx f(\bm{x}_i)$, in the attempt of
+    minimizing the [reducible error]{.blue}.
 :::
 
 ## Bias-variance trade-off
 
-- In many books, including A\&S, the starting point of the analysis is the [reducible error]{.blue}, because it is the only one we can control, e.g. by selecting the "optimal" $p$.
+-   In many books, including A&S, the starting point of the analysis is
+    the [reducible error]{.blue}, because it is the only one we can
+    control, e.g. by selecting the "optimal" $p$.
 
-- The reducible error measures the [discrepancy]{.orange} between the unknown function $f(x)$ and its estimate $\hat{f}(\bm{x})$.
+-   The reducible error measures the [discrepancy]{.orange} between the
+    unknown function $f(x)$ and its estimate $\hat{f}(\bm{x})$.
 
-- What follows is the [most important result]{.blue} of this unit.
+-   What follows is the [most important result]{.blue} of this unit.
 
 . . .
 
 ::: callout-note
 #### Bias-variance decomposition
 
-For any covariate value $\bm{x}$, it holds the following well-known decomposition:
-$$
+For any covariate value $\bm{x}$, it holds the following well-known
+decomposition: $$
 \mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}^2\right] = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}\right]^2}_{\text{Bias}^2} + \underbrace{\text{var}\{\hat{f}(\bm{x})\}}_{\text{variance}}.
 $$
 :::
@@ -439,38 +516,40 @@ $$
 ## The expected prediction error
 
 ::: incremental
+-   Summarizing, the [expected prediction error]{.orange} can be
+    decomposed as $$
+    \begin{aligned}
+    \text{Err} = \sigma^2 + \frac{1}{m}\sum_{i=1}^m\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right]^2 + \frac{1}{m}\sum_{i=1}^m\text{var}\{\hat{f}(\bm{x}_{n+i})\}.
+    \end{aligned}
+    $$
 
-- Summarizing, the [expected prediction error]{.orange} can be decomposed as
-$$
-\begin{aligned}
-\text{Err} = \sigma^2 + \frac{1}{m}\sum_{i=1}^m\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right]^2 + \frac{1}{m}\sum_{i=1}^m\text{var}\{\hat{f}(\bm{x}_{n+i})\}.
-\end{aligned}
-$$
-- In [ordinary least squares]{.blue} the above quantity can be computed in closed form. 
+-   In [ordinary least squares]{.blue} the above quantity can be
+    computed in closed form.
 
-- Indeed, each element of the [bias]{.orange} term equals
-$$
-\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right] = \bm{x}_{n+i}^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_{n+i}).
-$$
-where $\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T$. Note that if $f(\bm{x}) = \bm{x}^T\beta$, then the bias is zero. 
+-   Indeed, each element of the [bias]{.orange} term equals $$
+    \mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right] = \bm{x}_{n+i}^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_{n+i}).
+    $$ where $\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T$. Note that if
+    $f(\bm{x}) = \bm{x}^T\beta$, then the bias is zero.
 
-- Moreover, each element of the [variance]{.orange} term equals
-$$
-\text{var}\{\hat{f}(\bm{x}_{n+i})\} = \sigma^2 \bm{x}_{n+i}^T (\bm{X}^T\bm{X})^{-1}\bm{x}_{n+i}.
-$$
+-   Moreover, each element of the [variance]{.orange} term equals $$
+    \text{var}\{\hat{f}(\bm{x}_{n+i})\} = \sigma^2 \bm{x}_{n+i}^T (\bm{X}^T\bm{X})^{-1}\bm{x}_{n+i}.
+    $$
 
-- If we knew $f(\bm{x})$ and $\sigma^2$, then the expected prediction error could be calculated...
-
+-   If we knew $f(\bm{x})$ and $\sigma^2$, then the expected prediction
+    error could be calculated...
 :::
 
 ## If we knew $f(x)$...
 
 ```{r}
+# I am storing these information for simplicity
 x <- dataset$x
 n <- nrow(dataset)
 
-# The true values have been downloaded from the A&S texbook; sigma2true = 0.01 is also declared in the book
+# The standard deviation of the data generative process is sigma2true = 0.01, declared in the book and the slides
 sigmatrue <- 0.01
+
+# The true values have been downloaded from the A&S texbook; see here: http://azzalini.stat.unipd.it/Book-DM/f_true.R
 ftrue <- c(
   0.4342, 0.4780, 0.5072, 0.5258, 0.5369,
   0.5426, 0.5447, 0.5444, 0.5425, 0.5397,
@@ -479,16 +558,28 @@ ftrue <- c(
   0.5097, 0.5083, 0.5071, 0.5061, 0.5052,
   0.5044, 0.5037, 0.5032, 0.5027, 0.5023
 )
+```
 
+
+```{r}
+# Number of degree of the polynomial
 degree_list <- 1:23
+# Number of parameters in the model
 p_list <- degree_list + 1
+
+# Squared bias
 Bias2s <- sapply(p_list, function(p) {
   mean((ftrue - fitted(lm(ftrue ~ poly(x, degree = p - 1))))^2)
 })
 
-Vars <- p_list * (sigmatrue^2) / n # This formula can be obtained after some algebraic manipulation
+# Variance
+Vars <- p_list * (sigmatrue^2) / n 
+# This simplified formula can be obtained after some algebraic manipulation, under the assumption that the covariates in the test set are equal to those in the training; please refer to the exercises.
+
+# Reducible errors
 MSEs <- Bias2s + Vars
 
+# Organize the data to 
 data_bv <- data.frame(p = p_list, Bias = Bias2s, Variance = Vars, MSE = MSEs)
 data_bv <- reshape2::melt(data_bv, id = "p")
 levels(data_bv$variable) <- c("Squared Bias", "Variance", "Reducible error")
@@ -512,45 +603,53 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 ## Bias-variance trade-off
 
 ::: incremental
+-   When $p$ grows, the mean squared error first decreases and then it
+    increases. In the example, the [theoretical optimum]{.orange} is
+    $p = 6$ (5th degree polynomial).
 
-- When $p$ grows, the mean squared error first decreases and then it increases. In the example, the [theoretical optimum]{.orange} is $p = 6$ (5th degree polynomial).
+-   The [bias]{.orange} measures the ability of $\hat{f}(\bm{x})$ to
+    reconstruct the true $f(\bm{x})$. The bias is due to [lack of
+    knowledge]{.blue} of the data-generating mechanism. It equals zero
+    when $\mathbb{E}\{\hat{f}(\bm{x})\} = f(\bm{x})$.
 
-- The [bias]{.orange} measures the ability of $\hat{f}(\bm{x})$ to reconstruct the true $f(\bm{x})$.  The bias is due to [lack of knowledge]{.blue} of the data-generating mechanism. It equals zero when $\mathbb{E}\{\hat{f}(\bm{x})\} = f(\bm{x})$.
+-   The [bias]{.orange} term can be reduced by increasing the
+    flexibility of the model (e.g., by considering a high value for
+    $p$).
 
-- The [bias]{.orange} term can be reduced by increasing the flexibility of the model (e.g., by considering a high value for $p$).
+-   The [variance]{.blue} measures the variability of the estimator
+    $\hat{f}(\bm{x})$ and its tendency to follow random fluctuations of
+    the data.
 
-- The [variance]{.blue} measures the variability of the estimator $\hat{f}(\bm{x})$ and its tendency to follow random fluctuations of the data. 
+-   The [variance]{.blue} increases together with the model complexity.
 
-- The [variance]{.blue} increases together with the model complexity. 
+-   It is not possible to minimize both the bias and the variance, there
+    is a [trade-off]{.orange}.
 
-- It is not possible to minimize both the bias and the variance, there is a [trade-off]{.orange}. 
-
-- We say that an estimator is [overfitting]{.orange} the data if an increase in variance comes without important gains in terms of bias. 
+-   We say that an estimator is [overfitting]{.orange} the data if an
+    increase in variance comes without important gains in terms of bias.
 
 <!-- - **Summary**. Low model complexity: [high bias]{.orange}, [low variance]{.blue}. High model complexity: [low bias]{.blue}, [high variance]{.orange}. -->
-
 :::
-
 
 # Traning, test, and cross-validation
 
 ## But since we do not know $f(x)$...
 
-- 
+-   
 
 ## Mean squared error
-
-```{r}
-data_bv <- data.frame(p = p_list, MSE = sigmatrue^2 + Bias2s + Vars, MSE_train = data_goodness$MSE, MSE_test = data_goodness$MSE_test)
-data_bv <- reshape2::melt(data_bv, id = "p")
-levels(data_bv$variable) <- c("Expected prediction error (theoretical)", "MSE train", "MSE test")
-colnames(data_bv) <- c("p", "Error term", "value")
-```
 
 ```{r}
 #| fig-width: 8
 #| fig-height: 4.5
 #| fig-align: center
+
+data_bv <- data.frame(p = p_list, MSE = sigmatrue^2 + Bias2s + Vars, 
+                      MSE_train = data_goodness$MSE, MSE_test = data_goodness$MSE_test)
+data_bv <- reshape2::melt(data_bv, id = "p")
+levels(data_bv$variable) <- c("Expected prediction error (theoretical)", "MSE train", "MSE test")
+colnames(data_bv) <- c("p", "Error term", "value")
+
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
   geom_point() +
@@ -570,21 +669,23 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 ```{r}
 degree_list <- 1:23
+# Creation of the dataset using 60 observations.
 data_cv <- data.frame(x = c(dataset$x, dataset$x), y = c(dataset$y.yesterday, dataset$y.tomorrow))
+# Code execution and storage of the interesting quantities
 for (degree in degree_list) {
   # Fitting a polynomial of degree p -1
   fit <- lm(y ~ poly(x, degree = degree, raw = FALSE), data = data_cv)
+  # Computation of the leverages h_i in an efficient manner (using QR)
   lev <- influence(fit)$hat
   data_goodness$LOO_CV[degree] <- mean(((data_cv$y - fitted(fit)) / (1 - lev))^2)
 }
 
-
+# Organization of the results for graphical purposes
 data_bv <- data.frame(p = p_list, MSE = sigmatrue^2 + Bias2s + Vars, LOO_CV = data_goodness$LOO_CV)
 data_bv <- reshape2::melt(data_bv, id = "p")
 levels(data_bv$variable) <- c("Expected prediction error (theoretical)", "LOO-CV")
 colnames(data_bv) <- c("p", "Error term", "value")
 ```
-
 
 ```{r}
 #| fig-width: 8
@@ -600,7 +701,6 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   xlab("Model complexity (p)") +
   ylab("Error")
 ```
-
 
 # Information criteria
 

@@ -1,5 +1,7 @@
 ## ----r------------------------------------------------------------------------
 library(tidyverse)
+library(broom)
+library(knitr)
 library(ggplot2)
 library(GGally)
 library(ggthemes)
@@ -32,8 +34,6 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 
 
 ## ----r------------------------------------------------------------------------
-library(broom)
-library(knitr)
 m1 <- lm(city.distance ~ engine.size + I(engine.size^2) + I(engine.size^3) + fuel, data = auto)
 kable(tidy(m1, conf.int = FALSE), digits = 3)
 

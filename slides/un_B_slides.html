@@ -28,6 +28,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
   </style>
   <link rel="stylesheet" href="un_B_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
@@ -380,7 +444,7 @@
 <h2>Yesterday’s data</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-2_0a67bf899f4da3302ca79bec6e581fbe">
 <div class="cell-output-display">
 <p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-2-1.png" width="750"></p>
 </div>
@@ -417,27 +481,24 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 </section>
 <section id="yesterdays-data-polynomial-regression" class="slide level2 center">
 <h2>Yesterday’s data, polynomial regression</h2>
-<div class="cell">
 
-</div>
-
-<img data-src="un_B_files/figure-revealjs/unnamed-chunk-4-1.png" width="1170" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-3-1.png" width="1170" class="r-stretch quarto-figure-center"></section>
 <section id="yesterdays-data-goodness-of-fit" class="slide level2 center">
 <h2>Yesterday’s data, goodness of fit</h2>
-<div class="cell">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-4_a19f8118ca192ba03a1bfe8b92a9ddad">
 
 </div>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-5_7f6eafebab3340267f36309c76a4334d">
 <div class="cell-output-display">
-<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-6-1.png" width="750"></p>
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-5-1.png" width="750"></p>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<div class="cell">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-6_f682da34d188ed3c269ec47d06c8f46f">
 <div class="cell-output-display">
-<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-7-1.png" width="750"></p>
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-6-1.png" width="750"></p>
 </div>
 </div>
 </div>
@@ -446,7 +507,7 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <section id="yesterdays-data-polynomial-interpolation-p-n" class="slide level2 center">
 <h2>Yesterday’s data, polynomial interpolation (<span class="math inline">p = n</span>)</h2>
 
-<img data-src="un_B_files/figure-revealjs/unnamed-chunk-8-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-7-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
 <section id="yesterdays-data-tomorrows-prediction" class="slide level2 center">
 <h2>Yesterday’s data, tomorrow’s prediction</h2>
 <div>
@@ -466,20 +527,20 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <section id="tomorrows-data-polynomial-regression" class="slide level2 center">
 <h2>Tomorrow’s data, polynomial regression</h2>
 
-<img data-src="un_B_files/figure-revealjs/unnamed-chunk-9-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-8-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
 <section id="tomorrows-data-goodness-of-fit" class="slide level2 center">
 <h2>Tomorrow’s data, goodness of fit</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-9_38ec2d5b8e8c3e0e48096398c5aeb998">
 <div class="cell-output-display">
-<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-10-1.png" width="750"></p>
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-9-1.png" width="750"></p>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<div class="cell">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-10_d68df3a629cde8b6e0db2cca63fbfed2">
 <div class="cell-output-display">
-<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-11-1.png" width="750"></p>
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-10-1.png" width="750"></p>
 </div>
 </div>
 </div>
@@ -495,11 +556,35 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <li class="fragment"><p>For <span class="blue">small values</span> of <span class="math inline">p</span>, an increase in the degree of the polynomial <span class="blue">improves the fit</span>. In other words, at the beginning, both the <span class="math inline">\text{MSE}_{\text{train}}</span> and the <span class="math inline">\text{MSE}_{\text{test}}</span> decrease.</p></li>
 <li class="fragment"><p>For <span class="orange">larger values</span> of <span class="math inline">p</span>, the improvement gradually ceases and the polynomial starts to follow <span class="orange">random fluctuations</span> in yesterday’s data which are <span class="blue">not observed</span> in the <span class="blue">new sample</span>.</p></li>
 <li class="fragment"><p>An over-adaptation to yesterday data is called <span class="orange">overfitting</span>, which occurs when the training <span class="math inline">\text{MSE}_{\text{train}}</span> is low but the test <span class="math inline">\text{MSE}_{\text{test}}</span> is high.</p></li>
+<li class="fragment"><p>The yesterday’s dataset is available from the textbook (A&amp;S) website:</p>
+<ul>
+<li class="fragment">Dataset <a href="http://azzalini.stat.unipd.it/Book-DM/yesterday.dat" class="uri">http://azzalini.stat.unipd.it/Book-DM/yesterday.dat</a></li>
+<li class="fragment">True <span class="math inline">f(\bm{x})</span> <a href="http://azzalini.stat.unipd.it/Book-DM/f_true.R" class="uri">http://azzalini.stat.unipd.it/Book-DM/f_true.R</a></li>
+</ul></li>
 </ul>
 </div>
 </section>
-<section id="orthogonal-polynomials-and-numerical-difficulties" class="slide level2 center">
-<h2>☠️ - Orthogonal polynomials and numerical difficulties</h2>
+<section id="orthogonal-polynomials" class="slide level2 center">
+<h2>☠️ - Orthogonal polynomials</h2>
+<ul>
+<li>When performing polynomial regression, the <code>poly</code> command computes an <span class="orange">orthogonal basis</span> of the original covariates <span class="math inline">(1, x, x^2,\dots,x^{p-1})</span> through the QR decomposition:</li>
+</ul>
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-11_32432e945a6e8d822b902ffa4d783904">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y.yesterday <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">raw =</span> <span class="cn">FALSE</span>), <span class="at">data =</span> dataset)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(fit)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">colnames</span>(X) <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"Intercept"</span>,<span class="st">"x1"</span>,<span class="st">"x2"</span>,<span class="st">"x3"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">round</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X, <span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Intercept x1 x2 x3
+Intercept        30  0  0  0
+x1                0  1  0  0
+x2                0  0  1  0
+x3                0  0  0  1</code></pre>
+</div>
+</div>
+<ul>
+<li>Polynomial regression becomes numerically unstable when <span class="math inline">p \ge 13</span> (<code>raw = TRUE</code>, i.e.&nbsp;using the original polynomials) and <span class="math inline">p \ge 25</span> (<code>raw = FALSE</code>, i.e.&nbsp;using orthogonal polynomials).</li>
+</ul>
 </section>
 <section>
 <section id="methods-for-model-selection" class="title-slide slide level1 center">
@@ -568,7 +653,7 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <li class="fragment"><p>Let us recall the previous decomposition <span class="math display">
 \mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] =  \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}}, \quad i=n+1,\dots,n + m.
 </span></p></li>
-<li class="fragment"><p>The <span class="blue">best case scenario</span> is when the estimated function coincides with the mean of <span class="math inline">Y_i</span>, i.e. <span class="math display">
+<li class="fragment"><p>The <span class="blue">best case scenario</span> is when the estimated function coincides with the mean of <span class="math inline">Y_i</span>, i.e.&nbsp;<span class="math display">
 \hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(Y_i),
 </span> but even in this (overly optimistic) situation, we would still commit mistakes, due to the presence of <span class="math inline">\epsilon_i</span> (unless <span class="math inline">\sigma^2 = 0</span>). Hence, the variance <span class="math inline">\sigma^2</span> is called the <span class="orange">irreducible error</span>.</p></li>
 <li class="fragment"><p>Since we do not know <span class="math inline">f(\bm{x}_i)</span>, we seek for an estimate <span class="math inline">\hat{f}(\bm{x}_i) \approx f(\bm{x}_i)</span>, in the attempt of minimizing the <span class="blue">reducible error</span>.</p></li>
@@ -619,11 +704,14 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 </section>
 <section id="if-we-knew-fx" class="slide level2 center">
 <h2>If we knew <span class="math inline">f(x)</span>…</h2>
-<div class="cell">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-12_b6b42a44338830019296b590e2832953">
+
+</div>
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-13_b8f205e3685c8bd0e13338b9e1d6e924">
 
 </div>
 
-<img data-src="un_B_files/figure-revealjs/unnamed-chunk-13-1.png" width="1200" class="r-stretch"></section>
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-14-1.png" width="1200" class="r-stretch"></section>
 <section id="bias-variance-trade-off-1" class="slide level2 center">
 <h2>Bias-variance trade-off</h2>
 <div>
@@ -652,9 +740,6 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 </section>
 <section id="mean-squared-error" class="slide level2 center">
 <h2>Mean squared error</h2>
-<div class="cell">
-
-</div>
 
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-15-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
 <section id="training-and-test" class="slide level2 center">
@@ -665,7 +750,7 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 </section>
 <section id="leave-one-out-cross-validation-loo-cv" class="slide level2 center">
 <h2>Leave-one-out cross-validation (LOO-CV)</h2>
-<div class="cell">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-16_54cd7679a9330d73dbec35eae4b5feb2">
 
 </div>
 
