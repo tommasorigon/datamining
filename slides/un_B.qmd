@@ -714,6 +714,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 - In the [$K$-fold cross-validation]{.blue} method we use the observations $i \notin V_k$ to train the model and the remaining observations $i \in V_k$ to assess to perform model selection.
 
+- In the following scheme we let $K  = 5$. 
+
 <div class="flourish-embed flourish-hierarchy" data-src="visualisation/14247663"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
 
 
@@ -782,11 +784,31 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Mean Squared Error (MSE)") #+ ylim(c(8e-05, 1e-02))
 ```
 
-## On the choice of $K$
 
-## Leave-one-out cross-validation
 
-## Leave-one-out cross-validation (LOO-CV)
+## Leave-one-out cross-validation I
+
+- The maximum possible value for $K$ is $n$, the [leave-one-out]{.orange} cross-validation (LOO-CV).
+
+- The LOO-CV is hard to implement, because it requires the estimation of $n$ different models.
+
+- However in [linear models]{.blue} there is a brilliant [computational shortcut]{.orange} that we can exploit.
+
+. . .
+
+::: callout-note
+#### LOO-CV (Linear models)
+
+Let $\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}$ be the leave-one-out predictions of a [linear model]{.blue} and let $h_i = [\bm{H}]_{ii}$ and $\hat{y}_i$ be respectively the leverages and the predictions of the full model. Then:
+$$
+y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
+$$
+Therefore, the leave-one-out mean squared error is
+$$\widehat{\mathrm{Err}} = \frac{1}{n} \sum_{i=1}^{n} \widehat{\text{Err}}_{V_i}= \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - h_i}\right)^2.$$
+:::
+
+
+## Leave-one-out cross-validation II
 
 ```{r}
 # Code execution and storage of the interesting quantities
@@ -820,10 +842,26 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Mean Squared Error (MSE)")
 ```
 
+## On the choice of $K$
 
-## The wrong way of doing cross-validation
+::: incremental
+
+- Common choices are $K = 5$ or $K = 10$. It is quite evident that a [larger $K$]{.blue} requires more [computations]{.blue}. 
+
+- A $K$-fold CV with $K=5$ or $K = 10$ is a (upwords) [biased estimate]{.orange} of $\mathbb{E}(\mathrm{MSE}_{\mathrm{Te}})$ because it uses less observations than those available (either $4/5$ or $9/10$).
+
+- The LOO-CV has a very [small bias]{.blue}, since each fit uses $n-1$ observations, but it has [high variance]{.orange}, being the average of $n$ highly positively correlated quantities.  
+
+- Indeed, the estimates $\hat{f}_{-i}$ and $\hat{f}_{-i'}$ have $n - 2$ observations in common. Recall that the variance of the sum is:
+$$\text{var}(X + Y) = \text{var}(X) + \text{var}(Y) + 2\text{cov}(X, Y).$$
+
+- Overall, the choice is very much context dependent.
+
+:::
 
 # Information criteria
+
+## Goodness of fit with a penalty term
 
 # Optimism
 

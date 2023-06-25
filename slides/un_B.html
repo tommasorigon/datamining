@@ -161,9 +161,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#cross-validation-i" id="toc-cross-validation-i" class="nav-link" data-scroll-target="#cross-validation-i">Cross-validation I</a></li>
   <li><a href="#cross-validation-ii" id="toc-cross-validation-ii" class="nav-link" data-scroll-target="#cross-validation-ii">Cross-validation II</a></li>
   <li><a href="#cross-validation-iii" id="toc-cross-validation-iii" class="nav-link" data-scroll-target="#cross-validation-iii">Cross-validation III</a></li>
-  <li><a href="#leave-one-out-cross-validation-loo-cv" id="toc-leave-one-out-cross-validation-loo-cv" class="nav-link" data-scroll-target="#leave-one-out-cross-validation-loo-cv">Leave-one-out cross-validation (LOO-CV)</a></li>
+  <li><a href="#leave-one-out-cross-validation-i" id="toc-leave-one-out-cross-validation-i" class="nav-link" data-scroll-target="#leave-one-out-cross-validation-i">Leave-one-out cross-validation I</a></li>
+  <li><a href="#leave-one-out-cross-validation-ii" id="toc-leave-one-out-cross-validation-ii" class="nav-link" data-scroll-target="#leave-one-out-cross-validation-ii">Leave-one-out cross-validation II</a></li>
   <li><a href="#on-the-choice-of-k" id="toc-on-the-choice-of-k" class="nav-link" data-scroll-target="#on-the-choice-of-k">On the choice of <span class="math inline">K</span></a></li>
-  <li><a href="#the-wrong-way-of-doing-cross-validation" id="toc-the-wrong-way-of-doing-cross-validation" class="nav-link" data-scroll-target="#the-wrong-way-of-doing-cross-validation">The wrong way of doing cross-validation</a></li>
   </ul></li>
   <li><a href="#information-criteria" id="toc-information-criteria" class="nav-link" data-scroll-target="#information-criteria">Information criteria</a></li>
   <li><a href="#optimism" id="toc-optimism" class="nav-link" data-scroll-target="#optimism">Optimism</a>
@@ -596,36 +596,52 @@ Bias-variance decomposition
 </section>
 <section id="training-validation-and-test-i" class="level2">
 <h2 class="anchored" data-anchor-id="training-validation-and-test-i">Training, validation and test I</h2>
-<ul>
+<div class="incremental">
+<ul class="incremental">
 <li><p>The same test set can be used to evaluate many different models, hence the final assessment of the error is still somewhat biased and <span class="orange">too optimistic</span>.</p></li>
 <li><p>If we are in a data-rich situation, the best approach is to randomly divide the dataset into three parts:</p>
-<ul>
+<ul class="incremental">
 <li>a <span class="orange">training set</span>, used for <span class="orange">fitting</span> the models;</li>
 <li>a <span class="blue">validation set</span>, used to estimate prediction error and perform <span class="blue">model selection</span>;</li>
 <li>a <span class="grey">test set</span>, for <span class="grey">assessment of the error</span> of the final chosen model.</li>
 </ul></li>
 <li><p>Ideally, the test set should be kept in a “vault,” and be brought out only at the end of the data analysis.</p></li>
 </ul>
+</div>
 </section>
 <section id="training-validation-and-test-ii" class="level2">
 <h2 class="anchored" data-anchor-id="training-validation-and-test-ii">Training, validation and test II</h2>
 <ul>
-<li>There is no precise rule on how to select the size of these sets; some rule of thumbs are given the picture below.</li>
+<li>There is no precise rule on how to select the size of these sets; some rule of thumbs are given in the picture below.</li>
 </ul>
 <div class="flourish-embed flourish-chart" data-src="visualisation/14246499">
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 </div>
 <ul>
-<li>The training, validation and test setup <span class="orange">reduces</span> the <span class="orange">number of observations</span> that we use for fitting our models. It could be problematic if the sample size is small-moderate.</li>
+<li>The training, validation and test setup <span class="orange">reduces</span> the <span class="orange">number of observations</span> that we can use for fitting the models. It could be problematic if the sample size is relatively small.</li>
 </ul>
 </section>
 <section id="cross-validation-i" class="level2">
 <h2 class="anchored" data-anchor-id="cross-validation-i">Cross-validation I</h2>
+<ul>
+<li><p>A way to partially overcome the loss of efficiency of the training / test paradigm consists in <span class="orange">randomly splitting the data</span> <span class="math inline">\{1,\dots,n\}</span> in equal parts, say <span class="math inline">V_1,\ldots,V_K</span>.</p></li>
+<li><p>In the <span class="blue"><span class="math inline">K</span>-fold cross-validation</span> method we use the observations <span class="math inline">i \notin V_k</span> to train the model and the remaining observations <span class="math inline">i \in V_k</span> to assess to perform model selection.</p></li>
+<li><p>In the following scheme we let <span class="math inline">K = 5</span>.</p></li>
+</ul>
+<div class="flourish-embed flourish-hierarchy" data-src="visualisation/14247663">
+<script src="https://public.flourish.studio/resources/embed.js"></script>
+</div>
 </section>
 <section id="cross-validation-ii" class="level2">
 <h2 class="anchored" data-anchor-id="cross-validation-ii">Cross-validation II</h2>
-<div class="flourish-embed flourish-hierarchy" data-src="visualisation/14247663">
-<script src="https://public.flourish.studio/resources/embed.js"></script>
+<div class="incremental">
+<ul class="incremental">
+<li><p>In the <span class="blue"><span class="math inline">K</span>-fold cross validation</span> we compute for each fold <span class="math inline">k</span> we fit a model <span class="math inline">\hat{f}_{-V_k}(\bm{x})</span> without using the observations of <span class="math inline">V_k</span>.</p></li>
+<li><p>Hence, the model must be estimated <span class="orange"><span class="math inline">K</span> times</span>, which could be computationally challenging.</p></li>
+<li><p>The error of each on the <span class="math inline">k</span>th folds is computed as <span class="math display">\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
+</span> where <span class="math inline">|V_k|</span> is the cardinality of <span class="math inline">V_k</span>, i.e.&nbsp;<span class="math inline">V_k \approx n / K</span>.</p></li>
+<li><p>We summarize the above errors using for instance the mean, obtaining the following <span class="orange">estimate</span> for the <span class="orange">expected prediction error</span>: <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].</span></p></li>
+</ul>
 </div>
 </section>
 <section id="cross-validation-iii" class="level2">
@@ -633,7 +649,7 @@ Bias-variance decomposition
 <div class="cell" data-hash="un_B_cache/html/unnamed-chunk-16_8ef0774f1bae3c9995ea36be810c3c3e">
 
 </div>
-<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-17_d5f0e1bb0dbbcc58eac4418a6c2e94ca">
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-17_a28e9582ea73cf90b267b52a3629827d">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -643,12 +659,37 @@ Bias-variance decomposition
 </div>
 </div>
 </section>
-<section id="leave-one-out-cross-validation-loo-cv" class="level2">
-<h2 class="anchored" data-anchor-id="leave-one-out-cross-validation-loo-cv">Leave-one-out cross-validation (LOO-CV)</h2>
+<section id="leave-one-out-cross-validation-i" class="level2">
+<h2 class="anchored" data-anchor-id="leave-one-out-cross-validation-i">Leave-one-out cross-validation I</h2>
+<ul>
+<li><p>The maximum possible value for <span class="math inline">K</span> is <span class="math inline">n</span>, the <span class="orange">leave-one-out</span> cross-validation (LOO-CV).</p></li>
+<li><p>The LOO-CV is hard to implement, because it requires the estimation of <span class="math inline">n</span> different models.</p></li>
+<li><p>However in <span class="blue">linear models</span> there is a brilliant <span class="orange">computational shortcut</span> that we can exploit.</p></li>
+</ul>
+<div class="incremental">
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+LOO-CV (Linear models)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}</span> be the leave-one-out predictions of a <span class="blue">linear model</span> and let <span class="math inline">h_i = [\bm{H}]_{ii}</span> and <span class="math inline">\hat{y}_i</span> be respectively the leverages and the predictions of the full model. Then: <span class="math display">
+y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
+</span> Therefore, the leave-one-out mean squared error is <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{n} \sum_{i=1}^{n} \widehat{\text{Err}}_{V_i}= \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - h_i}\right)^2.</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="leave-one-out-cross-validation-ii" class="level2">
+<h2 class="anchored" data-anchor-id="leave-one-out-cross-validation-ii">Leave-one-out cross-validation II</h2>
 <div class="cell" data-hash="un_B_cache/html/unnamed-chunk-18_d3b74ad6f5de07d07a5a82319ea34475">
 
 </div>
-<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-19_c934fb3ee62580b67cfe02a94cdfe90a">
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-19_504d126e88b9e0d827a70afc47942d60">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -660,9 +701,15 @@ Bias-variance decomposition
 </section>
 <section id="on-the-choice-of-k" class="level2">
 <h2 class="anchored" data-anchor-id="on-the-choice-of-k">On the choice of <span class="math inline">K</span></h2>
-</section>
-<section id="the-wrong-way-of-doing-cross-validation" class="level2">
-<h2 class="anchored" data-anchor-id="the-wrong-way-of-doing-cross-validation">The wrong way of doing cross-validation</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Common choices are <span class="math inline">K = 5</span> or <span class="math inline">K = 10</span>. It is quite evident that a <span class="blue">larger <span class="math inline">K</span></span> requires more <span class="blue">computations</span>.</p></li>
+<li><p>A <span class="math inline">K</span>-fold CV with <span class="math inline">K=5</span> or <span class="math inline">K = 10</span> is a (upwords) <span class="orange">biased estimate</span> of <span class="math inline">\mathbb{E}(\mathrm{MSE}_{\mathrm{Te}})</span> because it uses less observations than those available (either <span class="math inline">4/5</span> or <span class="math inline">9/10</span>).</p></li>
+<li><p>The LOO-CV has a very <span class="blue">small bias</span>, since each fit uses <span class="math inline">n-1</span> observations, but it has <span class="orange">high variance</span>, being the average of <span class="math inline">n</span> highly positively correlated quantities.</p></li>
+<li><p>Indeed, the estimates <span class="math inline">\hat{f}_{-i}</span> and <span class="math inline">\hat{f}_{-i'}</span> have <span class="math inline">n - 2</span> observations in common. Recall that the variance of the sum is: <span class="math display">\text{var}(X + Y) = \text{var}(X) + \mathbb{V}\text{var}(Y) + 2\text{cov}(X, Y).</span></p></li>
+<li><p>Overall, the choice is very much context dependent.</p></li>
+</ul>
+</div>
 </section>
 </section>
 <section id="information-criteria" class="level1">

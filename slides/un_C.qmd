@@ -1,0 +1,102 @@
+---
+title: "Methods for model selection"
+subtitle: "Data Mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+execute:
+  cache: true
+format:
+  revealjs:
+    auto-stretch: true
+    center: true
+    html-math-method: katex
+    transition: none
+    output-file: un_C_slides.html
+    slide-number: true
+    callout-appearance: minimal
+    code-line-numbers: true
+    theme: [default, template.css] # alternative themes (subset): default, night, dark
+    embed-resources: false
+    echo: false
+    fig-dpi: 150
+    # incremental: true  # Remove comment if you like incremental bullet points
+    logo: img/logoB.png
+    footer: "[Home page](https://tommasorigon.github.io/datamining)"
+    highlight-style: github
+  html:
+    html-math-method: katex
+    echo: false
+    callout-appearance: minimal
+    theme: [cosmo, template.css]
+    toc: true
+    toc-title: Table of contents
+    embed-resources: false
+    code-line-numbers: true
+    smooth-scroll: true
+    code-fold: true
+    code-summary: "Show the code"
+    fig-dpi: 150
+    highlight-style: github
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+## [Homepage](../index.html)
+
+```{r}
+#| warning: false
+#| echo: false
+#| include: false
+#| message: false
+#| purl: false
+
+knitr::purl("un_C.qmd", output = "../code/un_C.R")
+styler:::style_file("../code/un_C.R")
+```
+
+::: columns
+::: {.column width="25%"}
+![](img/lasso.png){}
+:::
+
+::: {.column width="75%"}
+-   In this unit we will cover the following [topics]{.orange}:
+
+    -   Best subset regression
+    -   Principal component regression
+    -   Ridge regression
+    -   Lasso, LARS, elastic-net
+    
+- The asdasd
+:::
+:::
+
+# Best subset regression
+
+## The wrong way of doing cross-validation
+
+::: incremental
+
+- Consider a regression problem with a [large number of predictors]{.blue}, as may arise, for example, in genomic or proteomic applications. 
+
+- A typical strategy for analysis might be as follows:
+
+  1. Screen the predictors: find a subset of "good" predictors that show fairly strong (univariate) correlation with the class labels;
+  2. Using just this subset of predictors, build a regression model;
+  3. Use cross-validation to estimate the unknown tuning parameters (i.e. degree of polynomials) and to estimate the prediction error of the final model.
+
+- Is this a correct application of cross-validation? 
+
+- If your reaction was "[this is  absolutely wrong!]{.orange}", it means you correctly understood the principles of cross-validation. 
+
+- If you though this was an ok-ish idea, please read [Section 7.10.2]{.blue} of HTF (2009).
+:::
+
+
+# Ridge regression
+
+# Lasso, LARS, and elastic-net
+

@@ -800,6 +800,7 @@ x3                0  0  0  1</code></pre>
 <ul>
 <li><p>A way to partially overcome the loss of efficiency of the training / test paradigm consists in <span class="orange">randomly splitting the data</span> <span class="math inline">\{1,\dots,n\}</span> in equal parts, say <span class="math inline">V_1,\ldots,V_K</span>.</p></li>
 <li><p>In the <span class="blue"><span class="math inline">K</span>-fold cross-validation</span> method we use the observations <span class="math inline">i \notin V_k</span> to train the model and the remaining observations <span class="math inline">i \in V_k</span> to assess to perform model selection.</p></li>
+<li><p>In the following scheme we let <span class="math inline">K = 5</span>.</p></li>
 </ul>
 <div class="flourish-embed flourish-hierarchy" data-src="visualisation/14247663">
 <script src="https://public.flourish.studio/resources/embed.js"></script>
@@ -824,27 +825,55 @@ x3                0  0  0  1</code></pre>
 </div>
 
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-17-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
-<section id="on-the-choice-of-k" class="slide level2 center">
-<h2>On the choice of <span class="math inline">K</span></h2>
+<section id="leave-one-out-cross-validation-i" class="slide level2 center">
+<h2>Leave-one-out cross-validation I</h2>
+<ul>
+<li><p>The maximum possible value for <span class="math inline">K</span> is <span class="math inline">n</span>, the <span class="orange">leave-one-out</span> cross-validation (LOO-CV).</p></li>
+<li><p>The LOO-CV is hard to implement, because it requires the estimation of <span class="math inline">n</span> different models.</p></li>
+<li><p>However in <span class="blue">linear models</span> there is a brilliant <span class="orange">computational shortcut</span> that we can exploit.</p></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-note no-icon callout-captioned callout-style-simple">
+<div class="callout-body">
+<div class="callout-caption">
+<p><strong>LOO-CV (Linear models)</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}</span> be the leave-one-out predictions of a <span class="blue">linear model</span> and let <span class="math inline">h_i = [\bm{H}]_{ii}</span> and <span class="math inline">\hat{y}_i</span> be respectively the leverages and the predictions of the full model. Then: <span class="math display">
+y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
+</span> Therefore, the leave-one-out mean squared error is <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{n} \sum_{i=1}^{n} \widehat{\text{Err}}_{V_i}= \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - h_i}\right)^2.</span></p>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section id="leave-one-out-cross-validation" class="slide level2 center">
-<h2>Leave-one-out cross-validation</h2>
-</section>
-<section id="leave-one-out-cross-validation-loo-cv" class="slide level2 center">
-<h2>Leave-one-out cross-validation (LOO-CV)</h2>
+<section id="leave-one-out-cross-validation-ii" class="slide level2 center">
+<h2>Leave-one-out cross-validation II</h2>
 <div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-18_6fc948d65e413de1e3a4dba996e91079">
 
 </div>
 
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-19-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
-<section id="the-wrong-way-of-doing-cross-validation" class="slide level2 center">
-<h2>The wrong way of doing cross-validation</h2>
+<section id="on-the-choice-of-k" class="slide level2 center">
+<h2>On the choice of <span class="math inline">K</span></h2>
+<div>
+<ul>
+<li class="fragment"><p>Common choices are <span class="math inline">K = 5</span> or <span class="math inline">K = 10</span>. It is quite evident that a <span class="blue">larger <span class="math inline">K</span></span> requires more <span class="blue">computations</span>.</p></li>
+<li class="fragment"><p>A <span class="math inline">K</span>-fold CV with <span class="math inline">K=5</span> or <span class="math inline">K = 10</span> is a (upwords) <span class="orange">biased estimate</span> of <span class="math inline">\mathbb{E}(\mathrm{MSE}_{\mathrm{Te}})</span> because it uses less observations than those available (either <span class="math inline">4/5</span> or <span class="math inline">9/10</span>).</p></li>
+<li class="fragment"><p>The LOO-CV has a very <span class="blue">small bias</span>, since each fit uses <span class="math inline">n-1</span> observations, but it has <span class="orange">high variance</span>, being the average of <span class="math inline">n</span> highly positively correlated quantities.</p></li>
+<li class="fragment"><p>Indeed, the estimates <span class="math inline">\hat{f}_{-i}</span> and <span class="math inline">\hat{f}_{-i'}</span> have <span class="math inline">n - 2</span> observations in common. Recall that the variance of the sum is: <span class="math display">\text{var}(X + Y) = \text{var}(X) + \text{var}(Y) + 2\text{cov}(X, Y).</span></p></li>
+<li class="fragment"><p>Overall, the choice is very much context dependent.</p></li>
+</ul>
+</div>
 </section></section>
+<section>
 <section id="information-criteria" class="title-slide slide level1 center">
 <h1>Information criteria</h1>
 
 </section>
-
+<section id="goodness-of-fit-with-a-penalty-term" class="slide level2 center">
+<h2>Goodness of fit with a penalty term</h2>
+</section></section>
 <section>
 <section id="optimism" class="title-slide slide level1 center">
 <h1>Optimism</h1>
