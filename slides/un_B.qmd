@@ -361,7 +361,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
     $\text{MSE}_{\text{test}}$ decrease.
 
 -   For [larger values]{.orange} of $p$, the improvement gradually
-    ceases and the polynomial starts to follow [random
+    ceases and the polynomial follows [random
     fluctuations]{.orange} in yesterday's data which are [not
     observed]{.blue} in the [new sample]{.blue}.
 
