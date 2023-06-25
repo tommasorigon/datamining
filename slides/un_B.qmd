@@ -687,6 +687,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 ```
 
 ## Training, validation and test I
+::: incremental
 
 - The same test set can be used to evaluate many different models, hence the final assessment of the error is still somewhat biased and [too optimistic]{.orange}.
 
@@ -696,10 +697,12 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   - a [test set]{.grey}, for [assessment of the error]{.grey} of the final chosen model.
 
 - Ideally, the test set should be kept in a "vault," and be brought out only at the end of the data analysis.
+
+:::
   
 ## Training, validation and test II
 
-- There is no precise rule on how to select the size of these sets; some rule of thumbs are given the picture below.
+- There is no precise rule on how to select the size of these sets; some rule of thumbs are given in the picture below.
 
 <div class="flourish-embed flourish-chart" data-src="visualisation/14246499"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
 
@@ -707,11 +710,30 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 ## Cross-validation I
 
-## Cross-validation II
+- A way to partially overcome the loss of efficiency of the training / test paradigm consists in [randomly splitting the data]{.orange} $\{1,\dots,n\}$ in equal parts, say $V_1,\ldots,V_K$.
 
-- The following plot represents the data splitting scheme of a [$5$-fold cross-validation]{.orange}. 
+- In the [$K$-fold cross-validation]{.blue} method we use the observations $i \notin V_k$ to train the model and the remaining observations $i \in V_k$ to assess to perform model selection.
 
 <div class="flourish-embed flourish-hierarchy" data-src="visualisation/14247663"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
+
+
+## Cross-validation II
+
+::: incremental
+
+- In the [$K$-fold cross validation]{.blue} we compute for each fold $k$ we fit a model $\hat{f}_{-V_k}(\bm{x})$ without using the observations of $V_k$.
+
+- Hence, the model must be estimated [$K$ times]{.orange}, which could be computationally challenging.
+
+- The error of each on the $k$th folds is computed as
+$$\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
+$$
+where $|V_k|$ is the cardinality of $V_k$, i.e. $V_k \approx n / K$. 
+
+- We summarize the above errors using for instance the mean, obtaining the following [estimate]{.orange} for the [expected prediction error]{.orange}:
+$$\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].$$
+
+:::
 
 ## Cross-validation III
 
@@ -757,8 +779,12 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Model complexity (p)") +
-  ylab("Error") #+ ylim(c(8e-05, 1e-02))
+  ylab("Mean Squared Error (MSE)") #+ ylim(c(8e-05, 1e-02))
 ```
+
+## On the choice of $K$
+
+## Leave-one-out cross-validation
 
 ## Leave-one-out cross-validation (LOO-CV)
 
@@ -791,10 +817,9 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Model complexity (p)") +
-  ylab("Error")
+  ylab("Mean Squared Error (MSE)")
 ```
 
-## On the choice of $K$
 
 ## The wrong way of doing cross-validation
 

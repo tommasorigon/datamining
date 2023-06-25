@@ -54,13 +54,13 @@ If you would like to convert the html slides into pdf files, please
 documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf).
 
 | Topic                                  | Notes                         | Slides                                      | Code                     |
-|-------------------|----------------|---------------------|----------------|
+|------------------|------------------|--------------------|------------------|
 | **Introduction**                       | \[Intro\]                     | \[Slides intro\]                            |                          |
 | **A-B-C**                              | [Unit A.1](slides/un_A1.html) | [Slides Unit A.1](slides/un_A1_slides.html) | [Code A.1](code/un_A1.R) |
 | **Linear classification methods**      | \[Unit A.2\]                  | \[Slides Unit A.2\]                         |                          |
 | Lab 1                                  | \[Code Lab 1\]                |                                             |                          |
 | *Exercises*                            | \[Exercises 1\]               |                                             |                          |
-| **Optimism, conflicts and trade-offs** | \[Unit B\]                    | \[Slides Unit B\]                           |                          |
+| **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)    | [Slides Unit B](slides/un_B_slides.html)    | [Code B](code/un_B.R)    |
 | *Exercises*                            | \[Exercises 2\]               |                                             |                          |
 | Lab 2                                  | \[Code Lab 2\]                |                                             |                          |
 | **Model selection for linear models**  | \[Unit C\]                    | \[Slides Unit C\]                           |                          |

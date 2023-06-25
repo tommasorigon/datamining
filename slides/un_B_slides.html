@@ -770,21 +770,23 @@ x3                0  0  0  1</code></pre>
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-15-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
 <section id="training-validation-and-test-i" class="slide level2 center">
 <h2>Training, validation and test I</h2>
+<div>
 <ul>
-<li><p>The same test set can be used to evaluate many different models, hence the final assessment of the error is still somewhat biased and <span class="orange">too optimistic</span>.</p></li>
-<li><p>If we are in a data-rich situation, the best approach is to randomly divide the dataset into three parts:</p>
+<li class="fragment"><p>The same test set can be used to evaluate many different models, hence the final assessment of the error is still somewhat biased and <span class="orange">too optimistic</span>.</p></li>
+<li class="fragment"><p>If we are in a data-rich situation, the best approach is to randomly divide the dataset into three parts:</p>
 <ul>
-<li>a <span class="orange">training set</span>, used for <span class="orange">fitting</span> the models;</li>
-<li>a <span class="blue">validation set</span>, used to estimate prediction error and perform <span class="blue">model selection</span>;</li>
-<li>a <span class="grey">test set</span>, for <span class="grey">assessment of the error</span> of the final chosen model.</li>
+<li class="fragment">a <span class="orange">training set</span>, used for <span class="orange">fitting</span> the models;</li>
+<li class="fragment">a <span class="blue">validation set</span>, used to estimate prediction error and perform <span class="blue">model selection</span>;</li>
+<li class="fragment">a <span class="grey">test set</span>, for <span class="grey">assessment of the error</span> of the final chosen model.</li>
 </ul></li>
-<li><p>Ideally, the test set should be kept in a “vault,” and be brought out only at the end of the data analysis.</p></li>
+<li class="fragment"><p>Ideally, the test set should be kept in a “vault,” and be brought out only at the end of the data analysis.</p></li>
 </ul>
+</div>
 </section>
 <section id="training-validation-and-test-ii" class="slide level2 center">
 <h2>Training, validation and test II</h2>
 <ul>
-<li>There is no precise rule on how to select the size of these sets; some rule of thumbs are given the picture below.</li>
+<li>There is no precise rule on how to select the size of these sets; some rule of thumbs are given in the picture below.</li>
 </ul>
 <div class="flourish-embed flourish-chart" data-src="visualisation/14246499">
 <script src="https://public.flourish.studio/resources/embed.js"></script>
@@ -795,14 +797,24 @@ x3                0  0  0  1</code></pre>
 </section>
 <section id="cross-validation-i" class="slide level2 center">
 <h2>Cross-validation I</h2>
-</section>
-<section id="cross-validation-ii" class="slide level2 center">
-<h2>Cross-validation II</h2>
 <ul>
-<li>The following plot represents the data splitting scheme of a <span class="orange"><span class="math inline">5</span>-fold cross-validation</span>.</li>
+<li><p>A way to partially overcome the loss of efficiency of the training / test paradigm consists in <span class="orange">randomly splitting the data</span> <span class="math inline">\{1,\dots,n\}</span> in equal parts, say <span class="math inline">V_1,\ldots,V_K</span>.</p></li>
+<li><p>In the <span class="blue"><span class="math inline">K</span>-fold cross-validation</span> method we use the observations <span class="math inline">i \notin V_k</span> to train the model and the remaining observations <span class="math inline">i \in V_k</span> to assess to perform model selection.</p></li>
 </ul>
 <div class="flourish-embed flourish-hierarchy" data-src="visualisation/14247663">
 <script src="https://public.flourish.studio/resources/embed.js"></script>
+</div>
+</section>
+<section id="cross-validation-ii" class="slide level2 center">
+<h2>Cross-validation II</h2>
+<div>
+<ul>
+<li class="fragment"><p>In the <span class="blue"><span class="math inline">K</span>-fold cross validation</span> we compute for each fold <span class="math inline">k</span> we fit a model <span class="math inline">\hat{f}_{-V_k}(\bm{x})</span> without using the observations of <span class="math inline">V_k</span>.</p></li>
+<li class="fragment"><p>Hence, the model must be estimated <span class="orange"><span class="math inline">K</span> times</span>, which could be computationally challenging.</p></li>
+<li class="fragment"><p>The error of each on the <span class="math inline">k</span>th folds is computed as <span class="math display">\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
+</span> where <span class="math inline">|V_k|</span> is the cardinality of <span class="math inline">V_k</span>, i.e.&nbsp;<span class="math inline">V_k \approx n / K</span>.</p></li>
+<li class="fragment"><p>We summarize the above errors using for instance the mean, obtaining the following <span class="orange">estimate</span> for the <span class="orange">expected prediction error</span>: <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].</span></p></li>
+</ul>
 </div>
 </section>
 <section id="cross-validation-iii" class="slide level2 center">
@@ -812,6 +824,12 @@ x3                0  0  0  1</code></pre>
 </div>
 
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-17-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
+<section id="on-the-choice-of-k" class="slide level2 center">
+<h2>On the choice of <span class="math inline">K</span></h2>
+</section>
+<section id="leave-one-out-cross-validation" class="slide level2 center">
+<h2>Leave-one-out cross-validation</h2>
+</section>
 <section id="leave-one-out-cross-validation-loo-cv" class="slide level2 center">
 <h2>Leave-one-out cross-validation (LOO-CV)</h2>
 <div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-18_6fc948d65e413de1e3a4dba996e91079">
@@ -819,9 +837,6 @@ x3                0  0  0  1</code></pre>
 </div>
 
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-19-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
-<section id="on-the-choice-of-k" class="slide level2 center">
-<h2>On the choice of <span class="math inline">K</span></h2>
-</section>
 <section id="the-wrong-way-of-doing-cross-validation" class="slide level2 center">
 <h2>The wrong way of doing cross-validation</h2>
 </section></section>
