@@ -95,7 +95,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared)) +
 ## ----r------------------------------------------------------------------------
 lagrange <- function(x0, y0) {
   f <- function(x) {
-    sum(y0 * sapply(seq_along(x0), \(j) {
+    sum(y0 * sapply(seq_along(x0), function(j) {
       prod(x - x0[-j]) / prod(x0[j] - x0[-j])
     }))
   }
@@ -202,11 +202,11 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 ## ----r------------------------------------------------------------------------
 data_bv <- data.frame(
-  p = p_list, MSE = sigmatrue^2 + Bias2s + Vars,
+  p = p_list, # MSE = sigmatrue^2 + Bias2s + Vars,
   MSE_train = data_goodness$MSE, MSE_test = data_goodness$MSE_test
 )
 data_bv <- reshape2::melt(data_bv, id = "p")
-levels(data_bv$variable) <- c("Expected prediction error (theoretical)", "MSE train", "MSE test")
+levels(data_bv$variable) <- c("MSE train (yesterday's data)", "MSE test (tomorrow's data)")
 colnames(data_bv) <- c("p", "Error term", "value")
 
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
@@ -221,9 +221,50 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 
 ## ----r------------------------------------------------------------------------
-degree_list <- 1:23
+library(tidymodels)
+source("../code/mse_yardstick.R")
+
 # Creation of the dataset using 60 observations.
 data_cv <- data.frame(x = c(dataset$x, dataset$x), y = c(dataset$y.yesterday, dataset$y.tomorrow))
+
+set.seed(123)
+CV_splits <- vfold_cv(data_cv, v = 10)
+
+control_settings <- control_grid(save_pred = TRUE, verbose = TRUE)
+
+rec <- recipe(y ~ x, data = data_cv) %>% step_poly(x, degree = tune())
+m_lm_grid <- tibble(degree = 1:11)
+
+m_lin <- linear_reg() %>% set_engine("lm")
+wf_lin <- workflow() %>%
+  add_model(m_lin) %>%
+  add_recipe(rec)
+
+# Fitting the various models - this takes some time!
+fit_lin <- wf_lin %>% tune_grid(
+  resamples = CV_splits,
+  metrics = metric_set(mse),
+  grid = m_lm_grid, control = control_settings
+)
+
+
+## ----r------------------------------------------------------------------------
+data_bv <- collect_metrics(fit_lin) %>%
+  select(degree, mean) %>%
+  mutate(p = degree + 1, `Error term` = "10-fold MSE")
+colnames(data_bv) <- c("degree", "value", "p", "Error term")
+ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = 6, linetype = "dotted") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Error") #+ ylim(c(8e-05, 1e-02))
+
+
+## ----r------------------------------------------------------------------------
 # Code execution and storage of the interesting quantities
 for (degree in degree_list) {
   # Fitting a polynomial of degree p -1
@@ -234,9 +275,9 @@ for (degree in degree_list) {
 }
 
 # Organization of the results for graphical purposes
-data_bv <- data.frame(p = p_list, MSE = sigmatrue^2 + Bias2s + Vars, LOO_CV = data_goodness$LOO_CV)
+data_bv <- data.frame(p = p_list, LOO_CV = data_goodness$LOO_CV)
 data_bv <- reshape2::melt(data_bv, id = "p")
-levels(data_bv$variable) <- c("Expected prediction error (theoretical)", "LOO-CV")
+levels(data_bv$variable) <- c("LOO-CV")
 colnames(data_bv) <- c("p", "Error term", "value")
 
 

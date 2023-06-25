@@ -270,7 +270,7 @@ estimate]{.orange} has an explicit solution: $$
 ## Linear regression: estimation II
 
 ::: incremental
--   In matrix notation, the predicted values are can be obtained as $$
+-   In matrix notation, the predicted values can be obtained as $$
     \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{H}\bm{y}, \qquad \bm{H} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
     $$
 
@@ -638,7 +638,7 @@ $$
     $\bm{X}^T\bm{X}$. Then, the [normal equations]{.orange} can be
     written as $$
     \bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y}.
-    $$ This system be can now solved in [two steps]{.orange}:
+    $$ This system can now solved in [two steps]{.orange}:
 
 -   [Step 1 (Forwardsolve)]{.blue}. Solve with respect to $\bm{z}$ the system
     of equations $$
@@ -961,7 +961,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 
 ::: incremental
 -   When the [sample size]{.blue} $n$ is [extremely large]{.orange}, as it is common in data
-    mining problems, then the QR factorization can be computed.
+    mining problems, then the QR factorization cannot be computed.
 
 -   Indeed, even [loading]{.orange} $\bm{X}$ into [memory]{.orange}
     could be problematic.

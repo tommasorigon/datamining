@@ -517,7 +517,7 @@ D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\be
 <h2>Linear regression: estimation II</h2>
 <div>
 <ul>
-<li class="fragment"><p>In matrix notation, the predicted values are can be obtained as <span class="math display">
+<li class="fragment"><p>In matrix notation, the predicted values can be obtained as <span class="math display">
 \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{H}\bm{y}, \qquad \bm{H} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
 </span></p></li>
 <li class="fragment"><p><span class="math inline">\bm{H}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>.</p></li>
@@ -957,7 +957,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <li class="fragment"><p>The Cholesky factorization is incredibly helpful for computing least squares. Indeed:</p></li>
 <li class="fragment"><p>Let <span class="math inline">\bm{R}^T\bm{R}</span> be the Cholesky factorization of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>. Then, the <span class="orange">normal equations</span> can be written as <span class="math display">
 \bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y}.
-</span> This system be can now solved in <span class="orange">two steps</span>:</p></li>
+</span> This system can now solved in <span class="orange">two steps</span>:</p></li>
 <li class="fragment"><p><span class="blue">Step 1 (Forwardsolve)</span>. Solve with respect to <span class="math inline">\bm{z}</span> the system of equations <span class="math display">
 \bm{R}^T \bm{z} = \bm{X}^T \bm{y}.
 </span></p></li>
@@ -1222,7 +1222,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <h2>When <span class="math inline">n</span> is very large…</h2>
 <div>
 <ul>
-<li class="fragment"><p>When the <span class="blue">sample size</span> <span class="math inline">n</span> is <span class="orange">extremely large</span>, as it is common in data mining problems, then the QR factorization can be computed.</p></li>
+<li class="fragment"><p>When the <span class="blue">sample size</span> <span class="math inline">n</span> is <span class="orange">extremely large</span>, as it is common in data mining problems, then the QR factorization cannot be computed.</p></li>
 <li class="fragment"><p>Indeed, even <span class="orange">loading</span> <span class="math inline">\bm{X}</span> into <span class="orange">memory</span> could be problematic.</p></li>
 <li class="fragment"><p>In the normal equations approach, we only need to compute the <span class="blue">sufficient statistics</span>: <span class="math display">
 \bm{W} = \bm{X}^T\bm{X}, \qquad \bm{u} = \bm{X}^T\bm{y},

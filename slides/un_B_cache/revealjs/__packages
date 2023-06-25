@@ -8,3 +8,17 @@ dplyr
 stringr
 forcats
 ggthemes
+tidymodels
+broom
+scales
+dials
+infer
+modeldata
+parsnip
+recipes
+rsample
+tune
+workflows
+workflowsets
+yardstick
+rlang

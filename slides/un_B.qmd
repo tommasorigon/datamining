@@ -81,6 +81,8 @@ William of Ockham
 :::
 :::
 
+# Yesterday's and tomorrow's data
+
 ## Yesterday's data
 
 ::: columns
@@ -257,9 +259,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared)) +
 #| fig-align: center
 lagrange <- function(x0, y0) {
   f <- function(x) {
-    sum(y0 * sapply(seq_along(x0), \(j) {
-      prod(x - x0[-j]) / prod(x0[j] - x0[-j])
-    }))
+    sum(y0 * sapply(seq_along(x0), function(j) {prod(x - x0[-j]) / prod(x0[j] - x0[-j])}))
   }
   Vectorize(f, "x")
 }
@@ -388,6 +388,18 @@ round(t(X) %*% X, 8)
 
 - Polynomial regression becomes numerically unstable when $p \ge 13$ (`raw = TRUE`, i.e. using the original polynomials) and $p \ge 25$ (`raw = FALSE`, i.e. using orthogonal polynomials).
 
+## ☠️ - Lagrange interpolating polynomials
+
+- If the previous code does not work for $p \ge 25$, how was the plot of [this slide](#yesterdays-data-polynomial-interpolation-p-n) computed?
+
+- It turns out that for $p = n$ there exists an alternative way of finding the ordinary least square solution, based on Lagrange interpolating polynomials, namely:
+
+$$
+\hat{f}(x) = \sum_{i=1}^n\ell_i(x) y_i, \qquad \ell_i(x) = \prod_{k \neq i}\frac{x - x_k}{x_i - x_k}.
+$$
+
+- Interpolating polynomials are clearly [unsuitable]{.orange} for regression purposes, but may have interesting applications in other contexts.
+
 # Methods for model selection
 
 ## Summary and notation
@@ -427,7 +439,7 @@ round(t(X) %*% X, 8)
 ::: incremental
 -   A measure of quality for the predictions is the so-called [expected
     prediction error]{.blue}: $$
-    \text{Err} = \mathbb{E}(\text{MSE}_\text{test}) =  \mathbb{E}\left[\frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n + i}; \hat{f}(\bm{x}_{n + i})\}\right],
+    \text{Err} =  \mathbb{E}\left[\frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n + i}; \hat{f}(\bm{x}_{n + i})\}\right],
     $$ where $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\}$ is a [loss
     function]{.orange}.
 
@@ -635,19 +647,32 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 ## But since we do not know $f(x)$...
 
--   
+::: incremental
 
-## Mean squared error
+- We just concluded that we must expect a trade-off between error and variance components. In practice, however, we cannot do this because, of course, $f(x)$ is [unknown]{.orange}.
+
+- A simple solution consists in [randomly splitting]{.orange} the observations in two parts: a [training set]{.orange} $(y_1,\dots,y_n)$ and a [test set]{.blue} $y_{n+1},\dots,y_{n+m}$. 
+
+- We fit the model $\hat{f}$ using $n$ observations of the training and we use it to predict the $m$ observations on the test set.
+
+- This leads to an [unbiased estimate]{.orange} of the [expected prediction error]{.blue}, i.e.:
+$$
+\widehat{\mathrm{Err}} =  \frac{1}{m}\sum_{i=1}^m\mathscr{L}\{y_{n +i}; \hat{f}(x_{n + i})\}.
+$$
+- This is exactly what we already did with yesterday's and tomorrow's data!
+:::
+
+## MSE on training and test set
 
 ```{r}
 #| fig-width: 8
 #| fig-height: 4.5
 #| fig-align: center
 
-data_bv <- data.frame(p = p_list, MSE = sigmatrue^2 + Bias2s + Vars, 
+data_bv <- data.frame(p = p_list, #MSE = sigmatrue^2 + Bias2s + Vars, 
                       MSE_train = data_goodness$MSE, MSE_test = data_goodness$MSE_test)
 data_bv <- reshape2::melt(data_bv, id = "p")
-levels(data_bv$variable) <- c("Expected prediction error (theoretical)", "MSE train", "MSE test")
+levels(data_bv$variable) <- c( "MSE train (yesterday's data)", "MSE test (tomorrow's data)")
 colnames(data_bv) <- c("p", "Error term", "value")
 
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
@@ -661,16 +686,83 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Error")
 ```
 
-## Training and test
+## Training, validation and test I
 
-## Cross-validation
+- The same test set can be used to evaluate many different models, hence the final assessment of the error is still somewhat biased and [too optimistic]{.orange}.
+
+- If we are in a data-rich situation, the best approach is to randomly divide the dataset into three parts: 
+  - a [training set]{.orange}, used for [fitting]{.orange} the models;
+  - a [validation set]{.blue}, used to estimate prediction error and perform [model selection]{.blue};
+  - a [test set]{.grey}, for [assessment of the error]{.grey} of the final chosen model.
+
+- Ideally, the test set should be kept in a "vault," and be brought out only at the end of the data analysis.
+  
+## Training, validation and test II
+
+- There is no precise rule on how to select the size of these sets; some rule of thumbs are given the picture below.
+
+<div class="flourish-embed flourish-chart" data-src="visualisation/14246499"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
+
+- The training, validation and test setup [reduces]{.orange} the [number of observations]{.orange} that we can use for fitting the models. It could be problematic if the sample size is relatively small.  
+
+## Cross-validation I
+
+## Cross-validation II
+
+- The following plot represents the data splitting scheme of a [$5$-fold cross-validation]{.orange}. 
+
+<div class="flourish-embed flourish-hierarchy" data-src="visualisation/14247663"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
+
+## Cross-validation III
+
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidymodels)
+source("../code/mse_yardstick.R")
+
+# Creation of the dataset using 60 observations.
+data_cv <- data.frame(x = c(dataset$x, dataset$x), y = c(dataset$y.yesterday, dataset$y.tomorrow))
+
+set.seed(123)
+CV_splits <- vfold_cv(data_cv, v = 10)
+
+control_settings <- control_grid(save_pred = TRUE, verbose = TRUE)
+
+rec <- recipe(y ~ x, data = data_cv) %>% step_poly(x, degree = tune())
+m_lm_grid <- tibble(degree = 1:11)
+
+m_lin <- linear_reg() %>% set_engine("lm")
+wf_lin <- workflow() %>% add_model(m_lin) %>% add_recipe(rec)
+
+# Fitting the various models - this takes some time!
+fit_lin <- wf_lin %>% tune_grid(resamples = CV_splits, 
+                                metrics = metric_set(mse),
+                                grid = m_lm_grid, control = control_settings)
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+data_bv <- collect_metrics(fit_lin) %>% select(degree, mean) %>% mutate(p = degree + 1, `Error term` = "10-fold MSE")
+colnames(data_bv) <- c("degree","value", "p", "Error term")
+ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = 6, linetype = "dotted") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Error") #+ ylim(c(8e-05, 1e-02))
+```
 
 ## Leave-one-out cross-validation (LOO-CV)
 
 ```{r}
-degree_list <- 1:23
-# Creation of the dataset using 60 observations.
-data_cv <- data.frame(x = c(dataset$x, dataset$x), y = c(dataset$y.yesterday, dataset$y.tomorrow))
 # Code execution and storage of the interesting quantities
 for (degree in degree_list) {
   # Fitting a polynomial of degree p -1
@@ -681,9 +773,9 @@ for (degree in degree_list) {
 }
 
 # Organization of the results for graphical purposes
-data_bv <- data.frame(p = p_list, MSE = sigmatrue^2 + Bias2s + Vars, LOO_CV = data_goodness$LOO_CV)
+data_bv <- data.frame(p = p_list, LOO_CV = data_goodness$LOO_CV)
 data_bv <- reshape2::melt(data_bv, id = "p")
-levels(data_bv$variable) <- c("Expected prediction error (theoretical)", "LOO-CV")
+levels(data_bv$variable) <- c("LOO-CV")
 colnames(data_bv) <- c("p", "Error term", "value")
 ```
 
@@ -702,6 +794,14 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Error")
 ```
 
+## On the choice of $K$
+
+## The wrong way of doing cross-validation
+
 # Information criteria
 
 # Optimism
+
+## The final model
+
+# References
