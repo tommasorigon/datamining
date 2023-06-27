@@ -460,9 +460,9 @@
 <li><p>Data were generated according to <span class="math display">
   Y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n,
   </span> with each <span class="math inline">y_i</span> being the realization of <span class="math inline">Y_i</span>.</p></li>
-<li><p>The <span class="math inline">\epsilon_1,\dots,\epsilon_n</span> are iid “<span class="orange">error</span>” terms, such that <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2 = 10^{-2}</span>.</p></li>
+<li><p>The <span class="math inline">\epsilon_1,\dots,\epsilon_n</span> are iid “<span class="orange">error</span>” terms, such that <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2 = 10^{-4}</span>.</p></li>
 <li><p>Here <span class="math inline">f(x)</span> is a regression function (<span class="blue">signal</span>) that we leave unspecified.</p></li>
-<li><p><span class="blue">Tomorrow</span> we will get a new <span class="math inline">x_{n+1}</span>. We wish to <span class="orange">predict</span> <span class="math inline">Y_{n+1}</span> using <span class="math inline">\mathbb{E}(Y_{n+1}) = f(x_{n+1}; \beta)</span>.</p></li>
+<li><p><span class="blue">Tomorrow</span> we will get a new <span class="math inline">x</span>. We wish to <span class="orange">predict</span> <span class="math inline">Y</span> using <span class="math inline">\mathbb{E}(Y) = f(x)</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -475,7 +475,7 @@
 <li class="fragment"><p>A simple approach is using the tools of <a href="unit_A1_slides.html">Unit A.1</a>, such as <span class="orange">polynomial regression</span>: <span class="math display">
 f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 </span> namely <span class="math inline">f(x)</span> is <span class="orange">approximated</span> with a polynomial of degree <span class="math inline">p-1</span> (i.e.&nbsp;Taylor expansions).</p></li>
-<li class="fragment"><p>This model is linear in the parameters, therefore we can use ordinary least squares.</p></li>
+<li class="fragment"><p>This model is linear in the parameters: ordinary least squares can be applied.</p></li>
 <li class="fragment"><p>How do we choose the <span class="blue">degree of the polynomial</span> <span class="math inline">p - 1</span>?</p></li>
 <li class="fragment"><p>Without a clear guidance, in principle any value of <span class="math inline">p \in \{1,\dots,n\}</span> could be appropriate.</p></li>
 <li class="fragment"><p>Let us compare the <span class="blue">mean squared error</span> (MSE) on yesterday’s data (<span class="orange">training</span>) <span class="math display">
@@ -522,10 +522,10 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <li class="fragment"><p>Taking this reasoning to the extreme would lead to the choice <span class="math inline">p = n</span>, so that <span class="math display">
 \text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
 </span> i.e.&nbsp;an apparently perfect fit. This procedure is called <span class="blue">interpolation</span>.</p></li>
-<li class="fragment"><p>However, we are <span class="orange">not</span> interested in predicting <span class="orange">yesterday</span> data. Our goal is to predict <span class="blue">tomorrow</span>’s data, i.e., given <span class="math inline">x_{n + i}</span>, to predict <span class="math inline">Y_{n + i}</span>, for a new set of <span class="math inline">m = 30</span> points: <span class="math display">
-(x_{n+1}, y_{n+1}), \dots, (x_{n+m}, y_{n + m}) \  \longrightarrow \ \hat{y}_{n+i} = \mathbb{E}(Y_{n+i}) = f(x_{n+i}; \hat{\beta}),
-</span> for <span class="math inline">i=1,\dots,m</span>, where <span class="math inline">\hat{\beta}</span> is obtained using yesterday data.</p></li>
-<li class="fragment"><p><span class="orange">Remark</span>. Tomorrow’s data <span class="math inline">Y_{n+1},\dots, Y_{n+m}</span> follows the same scheme of yesterday’s data.</p></li>
+<li class="fragment"><p>However, we are <span class="orange">not</span> interested in predicting <span class="orange">yesterday</span> data. Our goal is to predict <span class="blue">tomorrow</span>’s data, i.e.&nbsp;a <span class="blue">new set</span> of <span class="math inline">n = 30</span> points: <span class="math display">
+(x_1, \tilde{y}_1), \dots, (x_n, \tilde{y}_n),
+</span> using <span class="math inline">\hat{y}_i = f(x_i; \hat{\beta})</span>, where <span class="math inline">\hat{\beta}</span> is obtained using yesterday data.</p></li>
+<li class="fragment"><p><span class="orange">Remark</span>. Tomorrow’s r.v. <span class="math inline">\tilde{Y}_1,\dots, \tilde{Y}_n</span> follows the same scheme of yesterday’s data.</p></li>
 </ul>
 </div>
 </section>
@@ -556,7 +556,7 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <div>
 <ul>
 <li class="fragment"><p>The mean squared error on tomorrow’s data (<span class="blue">test</span>) is defined as <span class="math display">
-\text{MSE}_{\text{test}} = \frac{1}{m}\sum_{i=1}^m\{y_{n +i} -f(x_{n + i}; \hat{\beta})\}^2,
+\text{MSE}_{\text{test}} = \frac{1}{n}\sum_{i=1}^n\{\tilde{y}_i -f(x_i; \hat{\beta})\}^2,
 </span> and similarly the <span class="math inline">R^2_\text{test}</span>. We would like the <span class="math inline">\text{MSE}_{\text{test}}</span> to be <span class="orange">as small as possible</span>.</p></li>
 <li class="fragment"><p>For <span class="blue">small values</span> of <span class="math inline">p</span>, an increase in the degree of the polynomial <span class="blue">improves the fit</span>. In other words, at the beginning, both the <span class="math inline">\text{MSE}_{\text{train}}</span> and the <span class="math inline">\text{MSE}_{\text{test}}</span> decrease.</p></li>
 <li class="fragment"><p>For <span class="orange">larger values</span> of <span class="math inline">p</span>, the improvement gradually ceases and the polynomial follows <span class="orange">random fluctuations</span> in yesterday’s data which are <span class="blue">not observed</span> in the <span class="blue">new sample</span>.</p></li>
@@ -605,41 +605,42 @@ x3                0  0  0  1</code></pre>
 </ul>
 </section></section>
 <section>
-<section id="methods-for-model-selection" class="title-slide slide level1 center">
-<h1>Methods for model selection</h1>
+<section id="errors-trade-offs-and-optimism" class="title-slide slide level1 center">
+<h1>Errors, trade-offs and optimism</h1>
 
 </section>
-<section id="summary-and-notation" class="slide level2 center">
-<h2>Summary and notation</h2>
+<section id="summary-and-notation-fixed-x" class="slide level2 center">
+<h2>Summary and notation (fixed-<span class="math inline">X</span>)</h2>
 <div>
 <ul>
-<li class="fragment"><p>As in the previous example, we consider two set of <span class="blue">random variables</span>:</p>
+<li class="fragment"><p>Let us better formalize the analysis we did, using the appropriate mathematical tools.</p></li>
+<li class="fragment"><p>In the previous example we consider two set of <span class="blue">random variables</span>:</p>
 <ul>
-<li class="fragment">The <span class="orange">training set</span> <span class="math inline">Y_1,\dots, Y_n</span>, whose realization is <span class="math inline">y_1,\dots,y_n</span>.</li>
-<li class="fragment">The <span class="blue">test set</span> <span class="math inline">Y_{n+1},\dots,Y_{n +m}</span>, whose realization is <span class="math inline">y_{n+1}, \dots, y_{n + m}</span>.</li>
+<li class="fragment">The <span class="orange">training set</span> (yesterday’s) <span class="math inline">Y_1,\dots, Y_n</span>, whose realization is <span class="math inline">y_1,\dots,y_n</span>.</li>
+<li class="fragment">The <span class="blue">test set</span> (tomorrow’s) <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>, whose realization is <span class="math inline">\tilde{y}_1, \dots, \tilde{y}_n</span>.</li>
 </ul></li>
-<li class="fragment"><p>We assume that the <span class="blue">covariates</span> <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> are <span class="blue">deterministic</span>, to simplify the notation and the discussion. This can be relaxed, see e.g.&nbsp;Chapter 7 of HTF.</p></li>
-<li class="fragment"><p>An <span class="orange">important assumption</span> is that the random variables <span class="math inline">Y_i</span> are <span class="blue">independent</span>. In particular: <span class="math display">
-  Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,m,
-</span> where <span class="math inline">\epsilon_1,\dots,\epsilon_m</span> are iid “<span class="orange">error</span>” terms with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
-<li class="fragment"><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span> which should predict well the corresponding response <span class="math inline">Y_i</span>.</p></li>
+<li class="fragment"><p>The <span class="blue">covariates</span> <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> in this scenario are <span class="blue">deterministic</span>. This is the so-called the <span class="blue">fixed-<span class="math inline">X</span></span> design, which is a common assumption in regression models.</p></li>
+<li class="fragment"><p>We also require that the random variables <span class="math inline">Y_i</span> and <span class="math inline">\tilde{Y}_i</span> are <span class="blue">independent</span>: <span class="math display">
+  Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
+</span> where <span class="math inline">\epsilon_i</span> and <span class="math inline">\tilde{\epsilon}_i</span> are iid “<span class="orange">error</span>” terms with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
+<li class="fragment"><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span>.</p></li>
 <li class="fragment"><p>We hope that our predictions works well on the <span class="blue">test set</span>, which can be used to evaluate the quality of the estimated <span class="math inline">\hat{f}(\bm{x}_i)</span>.</p></li>
 </ul>
 </div>
 </section>
-<section id="the-average-prediction-error" class="slide level2 center">
-<h2>The average prediction error</h2>
+<section id="the-in-sample-prediction-error" class="slide level2 center">
+<h2>The in-sample prediction error</h2>
 <div>
 <ul>
-<li class="fragment"><p>A measure of quality for the predictions is the so-called <span class="blue">expected prediction error</span>: <span class="math display">
-\text{Err} =  \mathbb{E}\left[\frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n + i}; \hat{f}(\bm{x}_{n + i})\}\right],
-</span> where <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\}</span> is a <span class="orange">loss function</span>.</p></li>
-<li class="fragment"><p>The expectation is taken with respect to traning random variable <span class="math inline">Y_1,\dots,Y_n</span>, implicitly appearing in <span class="math inline">\hat{f}(\bm{x})</span>, and the new data points <span class="math inline">Y_{n+1},\dots,Y_{n+m}</span>.</p></li>
-<li class="fragment"><p>The expected prediction error is measuring the <span class="blue">average</span> “discrepancy” between the new data points and the corresponding predictions.</p></li>
+<li class="fragment"><p>A measure of quality for the predictions is the <span class="blue">in-sample prediction error</span>: <span class="math display">
+\text{ErrF} =  \mathbb{E}\left[\frac{1}{n} \sum_{i=1}^n \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right],
+</span> where <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}</span> is a <span class="orange">loss function</span>. The “<span class="blue">F</span>” is a reminder of the <span class="blue">f</span>ixed-<span class="math inline">X</span> design.</p></li>
+<li class="fragment"><p>The expectation is taken with respect to traning random variable <span class="math inline">Y_1,\dots,Y_n</span>, implicitly appearing in <span class="math inline">\hat{f}(\bm{x})</span>, and the new data points <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>.</p></li>
+<li class="fragment"><p>The in-sample prediction error is measuring the <span class="blue">average</span> “discrepancy” between the <span class="orange">new data points</span> and the corresponding predictions based on the training.</p></li>
 <li class="fragment"><p>Examples of loss functions for <span class="blue">regression problems</span> <span class="math inline">Y \in \mathbb{R}</span> are:</p>
 <ul>
-<li class="fragment">The quadratic loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = \{Y_i - \hat{f}(\bm{x}_i)\}^2</span>, leading to the MSE.</li>
-<li class="fragment">The absolute loss <span class="math inline">\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = |Y_i - \hat{f}(\bm{x}_i)|</span>, leading to the MAE.</li>
+<li class="fragment">The quadratic loss <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2</span>, leading to the MSE.</li>
+<li class="fragment">The absolute loss <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = |\tilde{Y}_i - \hat{f}(\bm{x}_i)|</span>, leading to the MAE.</li>
 </ul></li>
 </ul>
 </div>
@@ -652,13 +653,13 @@ x3                0  0  0  1</code></pre>
 <p><strong>Error decomposition (reducible and irreducible)</strong></p>
 </div>
 <div class="callout-content">
-<p>Under a quadratic loss, <span class="orange">each element</span> of the <span class="blue">expected prediction error</span> admits the following decomposition <span class="math display">
+<p>Under a quadratic loss, <span class="orange">each element</span> of the <span class="blue">in-sample prediction error</span> admits the following decomposition <span class="math display">
 \begin{aligned}
-\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] &amp;= \mathbb{E}\left[\{f(\bm{x}_i) + \epsilon_i - \hat{f}(\bm{x}_i)\}^2\right] \\
-&amp; = \mathbb{E}\left[\{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}^2\right] + \mathbb{E}(\epsilon_i^2) + 2 \: \mathbb{E}\left[\epsilon_i \: \{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}\right]\\
+\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right] &amp;= \mathbb{E}\left[\{f(\bm{x}_i) + \tilde{\epsilon}_i - \hat{f}(\bm{x}_i)\}^2\right] \\
+&amp; = \mathbb{E}\left[\{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}^2\right] + \mathbb{E}(\tilde{\epsilon}_i^2) + 2 \: \mathbb{E}\left[\tilde{\epsilon}_i \: \{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}\right]\\
 &amp; = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}},
 \end{aligned}
-</span> recalling that <span class="math inline">\mathbb{E}(\epsilon_i^2) = \text{var}(\epsilon_i) = \sigma^2</span> and for any <span class="math inline">i = n+1,\dots,n+m</span> (<span class="orange">test set</span>).</p>
+</span> recalling that <span class="math inline">\mathbb{E}(\tilde{\epsilon}_i^2) = \text{var}(\tilde{\epsilon}_i) = \sigma^2</span> and for any <span class="math inline">i = 1,\dots,n</span>.</p>
 </div>
 </div>
 </div>
@@ -669,11 +670,11 @@ x3                0  0  0  1</code></pre>
 <ul>
 <li class="fragment"><p>We would like to make the <span class="orange">mean squared error</span> as <span class="orange">small</span> as possible, e.g.&nbsp;by choosing an “optimal” degree of the polynomial <span class="math inline">p-1</span> that minimizes it.</p></li>
 <li class="fragment"><p>Let us recall the previous decomposition <span class="math display">
-\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] =  \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}}, \quad i=n+1,\dots,n + m.
+\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right] =  \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}}, \quad i=1\dots,n.
 </span></p></li>
-<li class="fragment"><p>The <span class="blue">best case scenario</span> is when the estimated function coincides with the mean of <span class="math inline">Y_i</span>, i.e.&nbsp;<span class="math display">
-\hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(Y_i),
-</span> but even in this (overly optimistic) situation, we would still commit mistakes, due to the presence of <span class="math inline">\epsilon_i</span> (unless <span class="math inline">\sigma^2 = 0</span>). Hence, the variance <span class="math inline">\sigma^2</span> is called the <span class="orange">irreducible error</span>.</p></li>
+<li class="fragment"><p>The <span class="blue">best case scenario</span> is when the estimated function coincides with the mean of <span class="math inline">\tilde{Y}_i</span>, i.e.&nbsp;<span class="math display">
+\hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(\tilde{Y}_i),
+</span> but even in this (overly optimistic) situation, we would still commit mistakes, due to the presence of <span class="math inline">\tilde{\epsilon}_i</span> (unless <span class="math inline">\sigma^2 = 0</span>). Hence, the variance <span class="math inline">\sigma^2</span> is called the <span class="orange">irreducible error</span>.</p></li>
 <li class="fragment"><p>Since we do not know <span class="math inline">f(\bm{x}_i)</span>, we seek for an estimate <span class="math inline">\hat{f}(\bm{x}_i) \approx f(\bm{x}_i)</span>, in the attempt of minimizing the <span class="blue">reducible error</span>.</p></li>
 </ul>
 </div>
@@ -681,8 +682,8 @@ x3                0  0  0  1</code></pre>
 <section id="bias-variance-trade-off" class="slide level2 center">
 <h2>Bias-variance trade-off</h2>
 <ul>
-<li><p>In many books, including A&amp;S, the starting point of the analysis is the <span class="blue">reducible error</span>, because it is the only one we can control, e.g.&nbsp;by selecting the “optimal” <span class="math inline">p</span>.</p></li>
-<li><p>The reducible error measures the <span class="orange">discrepancy</span> between the unknown function <span class="math inline">f(x)</span> and its estimate <span class="math inline">\hat{f}(\bm{x})</span>.</p></li>
+<li><p>In many textbooks, including A&amp;S, the starting point of the analysis is the <span class="blue">reducible error</span>, because it is the only one we can control and it has a transparent interpretatio</p></li>
+<li><p>The reducible error measures the <span class="orange">discrepancy</span> between the unknown function <span class="math inline">f(x)</span> and its estimate <span class="math inline">\hat{f}(\bm{x})</span> and therefore it is a <span class="orange">natural measure</span> of goodness of fit.</p></li>
 <li><p>What follows is the <span class="blue">most important result</span> of this unit.</p></li>
 </ul>
 <div class="fragment">
@@ -692,7 +693,7 @@ x3                0  0  0  1</code></pre>
 <p><strong>Bias-variance decomposition</strong></p>
 </div>
 <div class="callout-content">
-<p>For any covariate value <span class="math inline">\bm{x}</span>, it holds the following well-known decomposition: <span class="math display">
+<p>For any covariate value <span class="math inline">\bm{x}</span>, it holds the following bias-variance decomposition: <span class="math display">
 \mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}^2\right] = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}\right]^2}_{\text{Bias}^2} + \underbrace{\text{var}\{\hat{f}(\bm{x})\}}_{\text{variance}}.
 </span></p>
 </div>
@@ -700,23 +701,21 @@ x3                0  0  0  1</code></pre>
 </div>
 </div>
 </section>
-<section id="the-expected-prediction-error" class="slide level2 center">
-<h2>The expected prediction error</h2>
+<section id="the-in-sample-prediction-error-1" class="slide level2 center">
+<h2>The in-sample prediction error</h2>
 <div>
 <ul>
-<li class="fragment"><p>Summarizing, the <span class="orange">expected prediction error</span> can be decomposed as <span class="math display">
+<li class="fragment"><p>Summarizing, the <span class="orange">in-sample prediction error</span> under <span class="blue">squared loss</span> can be decomposed as <span class="math display">
 \begin{aligned}
-\text{Err} = \sigma^2 + \frac{1}{m}\sum_{i=1}^m\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right]^2 + \frac{1}{m}\sum_{i=1}^m\text{var}\{\hat{f}(\bm{x}_{n+i})\}.
+\text{ErrF} = \sigma^2 + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>In <span class="blue">ordinary least squares</span> the above quantity can be computed in closed form.</p></li>
-<li class="fragment"><p>Indeed, each element of the <span class="orange">bias</span> term equals <span class="math display">
-\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right] = \bm{x}_{n+i}^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_{n+i}).
+<li class="fragment"><p>In <span class="blue">ordinary least squares</span> the above quantity can be computed in closed form, since each element of the <span class="orange">bias</span> term equals <span class="math display">
+\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}\right] = \bm{x}_i^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_i).
 </span> where <span class="math inline">\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T</span>. Note that if <span class="math inline">f(\bm{x}) = \bm{x}^T\beta</span>, then the bias is zero.</p></li>
-<li class="fragment"><p>Moreover, each element of the <span class="orange">variance</span> term equals <span class="math display">
-\text{var}\{\hat{f}(\bm{x}_{n+i})\} = \sigma^2 \bm{x}_{n+i}^T (\bm{X}^T\bm{X})^{-1}\bm{x}_{n+i}.
+<li class="fragment"><p>Moreover, in <span class="blue">ordinary least squares</span> the <span class="orange">variance</span> term equals <span class="math display">
+\frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\} = \frac{\sigma^2}{n}\sum_{i=1}^n  \bm{x}_i^T (\bm{X}^T\bm{X})^{-1}\bm{x}_i = \frac{\sigma^2}{n}\text{tr}\{(\bm{X}^T\bm{X})(\bm{X}^T\bm{X})^{-1}\} = \sigma^2 \frac{p}{n}.
 </span></p></li>
-<li class="fragment"><p>If we knew <span class="math inline">f(\bm{x})</span> and <span class="math inline">\sigma^2</span>, then the expected prediction error could be calculated…</p></li>
 </ul>
 </div>
 </section>
@@ -744,35 +743,136 @@ x3                0  0  0  1</code></pre>
 </ul>
 <!-- - **Summary**. Low model complexity: [high bias]{.orange}, [low variance]{.blue}. High model complexity: [low bias]{.blue}, [high variance]{.orange}. -->
 </div>
-</section></section>
-<section>
-<section id="traning-test-and-cross-validation" class="title-slide slide level1 center">
-<h1>Traning, test, and cross-validation</h1>
-
 </section>
 <section id="but-since-we-do-not-know-fx" class="slide level2 center">
 <h2>But since we do not know <span class="math inline">f(x)</span>…</h2>
 <div>
 <ul>
 <li class="fragment"><p>We just concluded that we must expect a trade-off between error and variance components. In practice, however, we cannot do this because, of course, <span class="math inline">f(x)</span> is <span class="orange">unknown</span>.</p></li>
-<li class="fragment"><p>A simple solution consists in <span class="orange">randomly splitting</span> the observations in two parts: a <span class="orange">training set</span> <span class="math inline">(y_1,\dots,y_n)</span> and a <span class="blue">test set</span> <span class="math inline">y_{n+1},\dots,y_{n+m}</span>.</p></li>
-<li class="fragment"><p>We fit the model <span class="math inline">\hat{f}</span> using <span class="math inline">n</span> observations of the training and we use it to predict the <span class="math inline">m</span> observations on the test set.</p></li>
-<li class="fragment"><p>This leads to an <span class="orange">unbiased estimate</span> of the <span class="blue">expected prediction error</span>, i.e.: <span class="math display">
-\widehat{\mathrm{Err}} =  \frac{1}{m}\sum_{i=1}^m\mathscr{L}\{y_{n +i}; \hat{f}(x_{n + i})\}.
+<li class="fragment"><p>A simple solution consists indeed in <span class="orange">splitting</span> the observations in two parts: a <span class="orange">training set</span> <span class="math inline">(y_1,\dots,y_n)</span> and a <span class="blue">test set</span> <span class="math inline">(\tilde{y}_1,\dots,\tilde{y}_n)</span>, having the same covariates <span class="math inline">x_1,\dots,x_n</span>.</p></li>
+<li class="fragment"><p>We fit the model <span class="math inline">\hat{f}</span> using <span class="math inline">n</span> observations of the training and we use it to predict the <span class="math inline">n</span> observations on the test set.</p></li>
+<li class="fragment"><p>This leads to an <span class="orange">unbiased estimate</span> of the <span class="blue">in-sample prediction error</span>, i.e.: <span class="math display">
+\widehat{\mathrm{ErrF}} =  \frac{1}{n}\sum_{i=1}^n\mathscr{L}\{\tilde{y}_i; \hat{f}(\bm{x}_i)\}.
 </span></p></li>
 <li class="fragment"><p>This is exactly what we already did with yesterday’s and tomorrow’s data!</p></li>
 </ul>
 </div>
 </section>
-<section id="mse-on-training-and-test-set" class="slide level2 center">
-<h2>MSE on training and test set</h2>
+<section id="mse-on-training-and-test-set-recap" class="slide level2 center">
+<h2>MSE on training and test set (recap)</h2>
 
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-15-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
+<section id="optimism-i" class="slide level2 center">
+<h2>Optimism I</h2>
+<div>
+<ul>
+<li class="fragment"><p>Under a <span class="blue">squared loss function</span>, the <span class="orange">in-sample prediction error</span> is <span class="math display">
+\text{ErrF} = \mathbb{E}(\text{MSE}_\text{test}) = \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right]
+</span></p></li>
+<li class="fragment"><p>Similarly, the <span class="orange">in-sample training error</span> can be defined as follows <span class="math display">
+\mathbb{E}(\text{MSE}_\text{train}) = \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right].
+</span></p></li>
+<li class="fragment"><p>We already know that <span class="math inline">\mathbb{E}(\text{MSE}_\text{train})</span> provides a very optimistic assessment of the model performance. For example when <span class="math inline">p = n</span> then <span class="math inline">\mathbb{E}(\text{MSE}_\text{train}) = 0</span>.</p></li>
+<li class="fragment"><p>We call <span class="orange">optimism</span> the difference between these two quantities: <span class="math display">
+\text{Opt} = \mathbb{E}(\text{MSE}_\text{test}) - \mathbb{E}(\text{MSE}_\text{train}).
+</span></p></li>
+</ul>
+</div>
+</section>
+<section id="optimism-ii" class="slide level2 center">
+<h2>Optimism II</h2>
+<div>
+<ul>
+<li class="fragment"><p>It can be proved (see Exercises), that the <span class="orange">optimism</span> has a very simple form: <span class="math display">
+\text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \hat{\bm{f}})\}.
+</span></p></li>
+<li class="fragment"><p>If the predicted values are obtained using <span class="blue">ordinary least squares</span>, then <span class="math inline">\hat{\bm{f}} = \bm{H}\bm{Y}</span>, therefore <span class="math display">
+\text{Opt} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{H}\bm{Y})\} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{Y}) \bm{H}^T\} = \frac{2 \sigma^2}{n}\text{tr} \{\text{cov}(\bm{H})\} = \frac{2 \sigma^2 p}{n}.
+</span></p></li>
+<li class="fragment"><p>This leads to an estimate for the in-sample prediction error, known as <span class="blue"><span class="math inline">C_p</span> of Mallows</span>: <span class="math display">
+\widehat{\mathrm{ErrF}} = \text{MSE}_\text{train} + \text{Opt} = \frac{1}{n}\sum_{i=1}^n\{y_i - \hat{f}(\bm{x}_i)\}^2 + \frac{2 \sigma^2 p}{n}.
+</span></p></li>
+<li class="fragment"><p>If <span class="math inline">\sigma^2</span> is unknown, then it must be <span class="orange">estimated</span> using for instance <span class="math inline">s^2</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="optimism-iii" class="slide level2 center">
+<h2>Optimism III</h2>
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-16_e2b552cbef452dee76f84d6724cbdfff">
+
+</div>
+
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-17-1.png" width="1200" class="r-stretch quarto-figure-center"></section></section>
+<section>
+<section id="cross-validation" class="title-slide slide level1 center">
+<h1>Cross-validation</h1>
+
+</section>
+<section id="the-cholesterol-data" class="slide level2 center">
+<h2>The <code>cholesterol</code> data</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-18_fb1504b56ce04da5a6b634854229dcca">
+<div class="cell-output-display">
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-18-1.png" width="900"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><p>A drug called “cholestyramine” is administered to <span class="math inline">n = 164</span> men.</p></li>
+<li><p>For each man, we observe the pair <span class="math inline">(x_i, y_i)</span>.</p></li>
+<li><p>The response <span class="math inline">y_i</span> is the <span class="orange">decrease in cholesterol level</span> over the experiment.</p></li>
+<li><p>The covariate <span class="math inline">x_i</span> is a measure of <span class="blue">compliance</span>.</p></li>
+<li><p>We assume, as before, that the data were generated according to <span class="math display">
+    Y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n.
+    </span></p></li>
+<li><p>The original data can be <a href="https://hastie.su.domains/CASI_files/DATA/cholesterol.txt">found here</a>.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="summary-and-notation-random-x" class="slide level2 center">
+<h2>Summary and notation (random-<span class="math inline">X</span>)</h2>
+<div>
+<ul>
+<li class="fragment"><p>A slight change to the previous setup is necessary. In fact, there are no reasons to believe that the <span class="blue">compliance</span> is a fixed covariate.</p></li>
+<li class="fragment"><p>We consider a set of iid <span class="blue">random variables</span> <span class="math inline">(X_1, Y_1),\dots, (X_n, Y_n)</span>, whose realization is <span class="math inline">(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)</span>. This time the covariates are <span class="orange">random</span>.</p></li>
+<li class="fragment"><p>The main assumptions is that these pairs are <span class="orange">iid</span>, namely: <span class="math display">(X_i, Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \quad  i=1,\dots,n.</span></p></li>
+<li class="fragment"><p>Conditionally on <span class="math inline">X_i = \bm{x}_i</span>, in <span class="orange">regression problems</span> we let as before <span class="math display">
+  Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,n,
+</span> where <span class="math inline">\epsilon_i</span> are iid “<span class="orange">error</span>” terms with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="expected-prediction-error" class="slide level2 center">
+<h2>Expected prediction error</h2>
+<div>
+<ul>
+<li class="fragment"><p>In this setting with random covariates, we want to minimize the <span class="orange">expected prediction error</span>: <span class="math display">
+\text{Err} =  \mathbb{E}\left[\mathscr{L}\{\tilde{Y}; \hat{f}(\tilde{X})\}\right],
+</span> where <span class="math inline">(\tilde{X},\tilde{Y}) \sim \mathcal{P}</span> is a <span class="blue">new data point</span> and <span class="math inline">\hat{f}</span> is an estimate using <span class="math inline">n</span> observations.</p></li>
+<li class="fragment"><p>We can <span class="orange">randomly</span> split the original set data <span class="math inline">\{1,\dots,n\}</span> into two groups <span class="math inline">V_\text{train}</span> and <span class="math inline">V_\text{test}</span>.</p></li>
+<li class="fragment"><p>We call <span class="math inline">\hat{f}_\text{train}</span> the estimate based on the data in <span class="math inline">V_\text{train}</span>.</p></li>
+<li class="fragment"><p>Then, we obtain a (slightly biased) estimate of <span class="math inline">\text{Err}</span> by using the empirical quantity: <span class="math display">
+  \widehat{\mathrm{Err}} =  \frac{1}{|V_\text{test}|}\sum_{i \in V_\text{test}}\mathscr{L}\{\tilde{y}_i; \hat{f}_\text{train}(\bm{x}_i)\}.
+  </span></p></li>
+<li class="fragment"><p>The data-splitting strategy we used before is an effective tool for assessing the error. However, its <span class="blue">interpretation</span> is changed: we are now estimating <span class="math inline">\text{Err}</span> and not <span class="math inline">\text{ErrF}</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="mse-on-training-and-test-cholesterol-data" class="slide level2 center">
+<h2>MSE on training and test (<code>cholesterol</code> data)</h2>
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-19_1a6611740cd84f3838d62126ee26ae0e">
+
+</div>
+
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-20-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
 <section id="training-validation-and-test-i" class="slide level2 center">
 <h2>Training, validation and test I</h2>
 <div>
 <ul>
-<li class="fragment"><p>The same test set can be used to evaluate many different models, hence the final assessment of the error is still somewhat biased and <span class="orange">too optimistic</span>.</p></li>
+<li class="fragment"><p>In many occasions, we may need to select several complexity parameters and compare hundres of models.</p></li>
+<li class="fragment"><p>If the same test set is used to evaluate many different models, the final assessment of the error is still somewhat biased and <span class="orange">too optimistic</span>, because we are “learning” from the test.</p></li>
 <li class="fragment"><p>If we are in a data-rich situation, the best approach is to randomly divide the dataset into three parts:</p>
 <ul>
 <li class="fragment">a <span class="orange">training set</span>, used for <span class="orange">fitting</span> the models;</li>
@@ -813,20 +913,20 @@ x3                0  0  0  1</code></pre>
 <li class="fragment"><p>In the <span class="blue"><span class="math inline">K</span>-fold cross validation</span> we compute for each fold <span class="math inline">k</span> we fit a model <span class="math inline">\hat{f}_{-V_k}(\bm{x})</span> without using the observations of <span class="math inline">V_k</span>.</p></li>
 <li class="fragment"><p>Hence, the model must be estimated <span class="orange"><span class="math inline">K</span> times</span>, which could be computationally challenging.</p></li>
 <li class="fragment"><p>The error of each on the <span class="math inline">k</span>th folds is computed as <span class="math display">\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
-</span> where <span class="math inline">|V_k|</span> is the cardinality of <span class="math inline">V_k</span>, i.e.&nbsp;<span class="math inline">V_k \approx n / K</span>.</p></li>
+</span> where <span class="math inline">|V_k|</span> is the cardinality of <span class="math inline">V_k</span>, i.e. <span class="math inline">V_k \approx n / K</span>.</p></li>
 <li class="fragment"><p>We summarize the above errors using for instance the mean, obtaining the following <span class="orange">estimate</span> for the <span class="orange">expected prediction error</span>: <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].</span></p></li>
 </ul>
 </div>
 </section>
-<section id="cross-validation-iii" class="slide level2 center">
-<h2>Cross-validation III</h2>
-<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-16_50d3e59bc9d3ba45b9b1a2f2dce46c55">
+<section id="cross-validation-iii-cholesterol-data" class="slide level2 center">
+<h2>Cross-validation III (<code>cholesterol</code> data)</h2>
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-21_03afc6c47a975d5e007888655a88499a">
 
 </div>
 
-<img data-src="un_B_files/figure-revealjs/unnamed-chunk-17-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
-<section id="leave-one-out-cross-validation-i" class="slide level2 center">
-<h2>Leave-one-out cross-validation I</h2>
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-22-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
+<section id="leave-one-out-cross-validation" class="slide level2 center">
+<h2>Leave-one-out cross-validation</h2>
 <ul>
 <li><p>The maximum possible value for <span class="math inline">K</span> is <span class="math inline">n</span>, the <span class="orange">leave-one-out</span> cross-validation (LOO-CV).</p></li>
 <li><p>The LOO-CV is hard to implement, because it requires the estimation of <span class="math inline">n</span> different models.</p></li>
@@ -847,24 +947,44 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </div>
 </div>
 </section>
-<section id="leave-one-out-cross-validation-ii" class="slide level2 center">
-<h2>Leave-one-out cross-validation II</h2>
-<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-18_6fc948d65e413de1e3a4dba996e91079">
+<section id="generalized-cross-validation" class="slide level2 center">
+<h2>Generalized cross-validation</h2>
+<div>
+<ul>
+<li class="fragment">An alternative to LOO-CV, sometimes used in more complex scenarios, is the so-called <span class="orange">generalized cross validation</span> (GCV), defined as <span class="math display">
+\text{GCV} = \widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - p/n}\right)^2.
+</span></li>
+<li class="fragment">The GCV is an approximate LOO-CV, in which the leverages <span class="math inline">h_i</span> are replaced by their mean: <span class="math display">
+\frac{1}{n}\sum_{i=1}^n h_i = \frac{p}{n}.
+</span></li>
+<li class="fragment">For small <span class="math inline">x &gt;0</span> it holds that <span class="math inline">(1 - x)^{-2} \approx 1 + 2x</span>. Then, we will write <span class="math display">
+\text{GCV} \approx \frac{1}{n}\sum_{i=1}^n(y_i - \hat{f}(\bm{x}_i))^2 + 2 \hat{\sigma}^2 p, \qquad \hat{\sigma}^2 =\frac{1}{n}\sum_{i=1}^n(y_i - \hat{f}(\bm{x}_i))^2,
+</span> revealing a sharp connection with the <span class="math inline">C_p</span> of Mallows.</li>
+</ul>
+</div>
+</section>
+<section id="loo-cv-and-gcv-cholesterol-data" class="slide level2 center">
+<h2>LOO-CV and GCV (<code>cholesterol</code> data)</h2>
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-23_3299d29d05bed53e96ec3660867b6036">
 
 </div>
 
-<img data-src="un_B_files/figure-revealjs/unnamed-chunk-19-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-24-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
 <section id="on-the-choice-of-k" class="slide level2 center">
 <h2>On the choice of <span class="math inline">K</span></h2>
 <div>
 <ul>
 <li class="fragment"><p>Common choices are <span class="math inline">K = 5</span> or <span class="math inline">K = 10</span>. It is quite evident that a <span class="blue">larger <span class="math inline">K</span></span> requires more <span class="blue">computations</span>.</p></li>
-<li class="fragment"><p>A <span class="math inline">K</span>-fold CV with <span class="math inline">K=5</span> or <span class="math inline">K = 10</span> is a (upwords) <span class="orange">biased estimate</span> of <span class="math inline">\mathbb{E}(\mathrm{MSE}_{\mathrm{Te}})</span> because it uses less observations than those available (either <span class="math inline">4/5</span> or <span class="math inline">9/10</span>).</p></li>
+<li class="fragment"><p>A <span class="math inline">K</span>-fold CV with <span class="math inline">K=5</span> or <span class="math inline">K = 10</span> is a (upwords) <span class="orange">biased estimate</span> of <span class="math inline">\text{Err}</span> because it uses less observations than those available (either <span class="math inline">4/5</span> or <span class="math inline">9/10</span>).</p></li>
 <li class="fragment"><p>The LOO-CV has a very <span class="blue">small bias</span>, since each fit uses <span class="math inline">n-1</span> observations, but it has <span class="orange">high variance</span>, being the average of <span class="math inline">n</span> highly positively correlated quantities.</p></li>
 <li class="fragment"><p>Indeed, the estimates <span class="math inline">\hat{f}_{-i}</span> and <span class="math inline">\hat{f}_{-i'}</span> have <span class="math inline">n - 2</span> observations in common. Recall that the variance of the sum is: <span class="math display">\text{var}(X + Y) = \text{var}(X) + \text{var}(Y) + 2\text{cov}(X, Y).</span></p></li>
 <li class="fragment"><p>Overall, the choice is very much context dependent.</p></li>
 </ul>
 </div>
+<!-- ## ☠️ - Optimism, random-$X$ -->
+<!-- -   What is a good definition and estimate of the [optimism]{.orange} in -->
+<!--     the very much realistic scenario where the covariates are random? -->
+<!-- ![](img/randomX.png){fig-align="center"} -->
 </section></section>
 <section>
 <section id="information-criteria" class="title-slide slide level1 center">
@@ -873,17 +993,28 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </section>
 <section id="goodness-of-fit-with-a-penalty-term" class="slide level2 center">
 <h2>Goodness of fit with a penalty term</h2>
-</section></section>
-<section>
-<section id="optimism" class="title-slide slide level1 center">
-<h1>Optimism</h1>
-
+<ul>
+<li></li>
+</ul>
 </section>
-<section id="the-final-model" class="slide level2 center">
-<h2>The final model</h2>
-</section></section>
+<section id="aic-and-bic-cholesterol-data" class="slide level2 center">
+<h2>AIC and BIC (<code>cholesterol</code> data)</h2>
+
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-25-1.png" width="1200" class="r-stretch quarto-figure-center"></section></section>
 <section id="references" class="title-slide slide level1 center">
 <h1>References</h1>
+<ul>
+<li><span class="blue">Main references</span>
+<ul>
+<li><strong>Chapter 3</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
+<li><strong>Chapter 7</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+</ul></li>
+<li><span class="orange">Advanced references</span>
+<ul>
+<li>Rosset, S., and R. J. Tibshirani (2020). “<a href="https://doi.org/10.1080/01621459.2018.1424632">From fixed-X to random-X regression: bias-variance decompositions, covariance penalties, and prediction error Estimation</a>.” <em>Journal of the American Statistical Association</em> <strong>115</strong> (529): 138–51.</li>
+<li>Bates, S., Hastie, T., and R. Tibshirani (2023). “<a href="https://doi.org/10.1080/01621459.2023.2197686">Cross-validation: what does it estimate and how well does it do it?</a>” Journal of the American Statistical Association, in press.</li>
+</ul></li>
+</ul>
 
 <img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>

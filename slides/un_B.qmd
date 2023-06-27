@@ -117,14 +117,13 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
 
 -   The $\epsilon_1,\dots,\epsilon_n$ are iid "[error]{.orange}" terms,
     such that $\mathbb{E}(\epsilon_i)=0$ and
-    $\text{var}(\epsilon_i)=\sigma^2 = 10^{-2}$.
+    $\text{var}(\epsilon_i)=\sigma^2 = 10^{-4}$.
 
 -   Here $f(x)$ is a regression function ([signal]{.blue}) that we leave
     unspecified.
 
--   [Tomorrow]{.blue} we will get a new $x_{n+1}$. We wish to
-    [predict]{.orange} $Y_{n+1}$ using
-    $\mathbb{E}(Y_{n+1}) = f(x_{n+1}; \beta)$.
+-   [Tomorrow]{.blue} we will get a new $x$. We wish to
+    [predict]{.orange} $Y$ using $\mathbb{E}(Y) = f(x)$.
 :::
 :::
 
@@ -140,8 +139,8 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
     $$ namely $f(x)$ is [approximated]{.orange} with a polynomial of
     degree $p-1$ (i.e. Taylor expansions).
 
--   This model is linear in the parameters, therefore we can use
-    ordinary least squares.
+-   This model is linear in the parameters: ordinary least squares can
+    be applied.
 
 -   How do we choose the [degree of the polynomial]{.blue} $p - 1$?
 
@@ -251,7 +250,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared)) +
 :::
 :::
 
-## Yesterday's data, polynomial interpolation ($p = n$)
+## Yesterday's data, polynomial interpolation ($p = n$) {#yesterdays-data-polynomial-interpolation-p-n}
 
 ```{r}
 #| fig-width: 9
@@ -288,14 +287,14 @@ curve(f(x), n = 300, add = TRUE)
 
 -   However, we are [not]{.orange} interested in predicting
     [yesterday]{.orange} data. Our goal is to predict
-    [tomorrow]{.blue}'s data, i.e., given $x_{n + i}$, to predict
-    $Y_{n + i}$, for a new set of $m = 30$ points: $$
-    (x_{n+1}, y_{n+1}), \dots, (x_{n+m}, y_{n + m}) \  \longrightarrow \ \hat{y}_{n+i} = \mathbb{E}(Y_{n+i}) = f(x_{n+i}; \hat{\beta}), 
-    $$ for $i=1,\dots,m$, where $\hat{\beta}$ is obtained using
-    yesterday data.
+    [tomorrow]{.blue}'s data, i.e. a [new set]{.blue} of $n = 30$
+    points: $$
+    (x_1, \tilde{y}_1), \dots, (x_n, \tilde{y}_n), 
+    $$ using $\hat{y}_i = f(x_i; \hat{\beta})$, where $\hat{\beta}$ is
+    obtained using yesterday data.
 
--   [Remark]{.orange}. Tomorrow's data $Y_{n+1},\dots, Y_{n+m}$ follows
-    the same scheme of yesterday's data.
+-   [Remark]{.orange}. Tomorrow's r.v. $\tilde{Y}_1,\dots, \tilde{Y}_n$
+    follows the same scheme of yesterday's data.
 :::
 
 ## Tomorrow's data, polynomial regression
@@ -351,7 +350,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
 ::: incremental
 -   The mean squared error on tomorrow's data ([test]{.blue}) is defined
     as $$
-    \text{MSE}_{\text{test}} = \frac{1}{m}\sum_{i=1}^m\{y_{n +i} -f(x_{n + i}; \hat{\beta})\}^2,
+    \text{MSE}_{\text{test}} = \frac{1}{n}\sum_{i=1}^n\{\tilde{y}_i -f(x_i; \hat{\beta})\}^2,
     $$ and similarly the $R^2_\text{test}$. We would like the
     $\text{MSE}_{\text{test}}$ to be [as small as possible]{.orange}.
 
@@ -361,23 +360,29 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
     $\text{MSE}_{\text{test}}$ decrease.
 
 -   For [larger values]{.orange} of $p$, the improvement gradually
-    ceases and the polynomial follows [random
-    fluctuations]{.orange} in yesterday's data which are [not
-    observed]{.blue} in the [new sample]{.blue}.
+    ceases and the polynomial follows [random fluctuations]{.orange} in
+    yesterday's data which are [not observed]{.blue} in the [new
+    sample]{.blue}.
 
 -   An over-adaptation to yesterday data is called
     [overfitting]{.orange}, which occurs when the training
     $\text{MSE}_{\text{train}}$ is low but the test
     $\text{MSE}_{\text{test}}$ is high.
-    
-- The yesterday's dataset is available from the textbook (A\&S) website:
-  - Dataset <http://azzalini.stat.unipd.it/Book-DM/yesterday.dat>
-  - True $f(\bm{x})$ <http://azzalini.stat.unipd.it/Book-DM/f_true.R>
+
+-   The yesterday's dataset is available from the textbook (A&S)
+    website:
+
+    -   Dataset <http://azzalini.stat.unipd.it/Book-DM/yesterday.dat>
+    -   True $f(\bm{x})$
+        <http://azzalini.stat.unipd.it/Book-DM/f_true.R>
 :::
 
 ## ☠️ - Orthogonal polynomials
 
-- When performing polynomial regression, the `poly` command computes an [orthogonal basis]{.orange} of the original covariates $(1, x, x^2,\dots,x^{p-1})$ through the QR decomposition:
+-   When performing polynomial regression, the `poly` command computes
+    an [orthogonal basis]{.orange} of the original covariates
+    $(1, x, x^2,\dots,x^{p-1})$ through the QR decomposition:
+
 ```{r}
 #| echo: true
 fit <- lm(y.yesterday ~ poly(x, degree = 3, raw = FALSE), data = dataset)
@@ -386,79 +391,91 @@ colnames(X) = c("Intercept","x1","x2","x3")
 round(t(X) %*% X, 8)
 ```
 
-- Polynomial regression becomes numerically unstable when $p \ge 13$ (`raw = TRUE`, i.e. using the original polynomials) and $p \ge 25$ (`raw = FALSE`, i.e. using orthogonal polynomials).
+-   Polynomial regression becomes numerically unstable when $p \ge 13$
+    (`raw = TRUE`, i.e. using the original polynomials) and $p \ge 25$
+    (`raw = FALSE`, i.e. using orthogonal polynomials).
 
 ## ☠️ - Lagrange interpolating polynomials
 
-- If the previous code does not work for $p \ge 25$, how was the plot of [this slide](#yesterdays-data-polynomial-interpolation-p-n) computed?
+-   If the previous code does not work for $p \ge 25$, how was the plot
+    of [this slide](#yesterdays-data-polynomial-interpolation-p-n)
+    computed?
 
-- It turns out that for $p = n$ there exists an alternative way of finding the ordinary least square solution, based on Lagrange interpolating polynomials, namely:
+-   It turns out that for $p = n$ there exists an alternative way of
+    finding the ordinary least square solution, based on Lagrange
+    interpolating polynomials, namely:
 
 $$
 \hat{f}(x) = \sum_{i=1}^n\ell_i(x) y_i, \qquad \ell_i(x) = \prod_{k \neq i}\frac{x - x_k}{x_i - x_k}.
 $$
 
-- Interpolating polynomials are clearly [unsuitable]{.orange} for regression purposes, but may have interesting applications in other contexts.
+-   Interpolating polynomials are clearly [unsuitable]{.orange} for
+    regression purposes, but may have interesting applications in other
+    contexts.
 
-# Methods for model selection
+# Errors, trade-offs and optimism
 
-## Summary and notation
+## Summary and notation (fixed-$X$)
 
 ::: incremental
--   As in the previous example, we consider two set of [random
+-   Let us better formalize the analysis we did, using the appropriate
+    mathematical tools.
+
+-   In the previous example we consider two set of [random
     variables]{.blue}:
 
-    -   The [training set]{.orange} $Y_1,\dots, Y_n$, whose realization
-        is $y_1,\dots,y_n$.
-    -   The [test set]{.blue} $Y_{n+1},\dots,Y_{n +m}$, whose
-        realization is $y_{n+1}, \dots, y_{n + m}$.
+    -   The [training set]{.orange} (yesterday's) $Y_1,\dots, Y_n$,
+        whose realization is $y_1,\dots,y_n$.
+    -   The [test set]{.blue} (tomorrow's)
+        $\tilde{Y}_1,\dots,\tilde{Y}_n$, whose realization is
+        $\tilde{y}_1, \dots, \tilde{y}_n$.
 
--   We assume that the [covariates]{.blue}
-    $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ are [deterministic]{.blue}, to
-    simplify the notation and the discussion. This can be relaxed, see
-    e.g. Chapter 7 of HTF.
+-   The [covariates]{.blue} $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ in this
+    scenario are [deterministic]{.blue}. This is the so-called the
+    [fixed-$X$]{.blue} design, which is a common assumption in
+    regression models.
 
--   An [important assumption]{.orange} is that the random variables
-    $Y_i$ are [independent]{.blue}. In particular: $$
-      Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,m,
-    $$ where $\epsilon_1,\dots,\epsilon_m$ are iid "[error]{.orange}"
-    terms with $\mathbb{E}(\epsilon_i)=0$ and
+-   We also require that the random variables $Y_i$ and $\tilde{Y}_i$
+    are [independent]{.blue}: $$
+      Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
+    $$ where $\epsilon_i$ and $\tilde{\epsilon}_i$ are iid
+    "[error]{.orange}" terms with $\mathbb{E}(\epsilon_i)=0$ and
     $\text{var}(\epsilon_i)=\sigma^2$.
 
 -   The [training data]{.orange} is used to estimate a function of the
-    covariates $\hat{f}(\bm{x}_i)$ which should predict well the
-    corresponding response $Y_i$.
+    covariates $\hat{f}(\bm{x}_i)$.
 
 -   We hope that our predictions works well on the [test set]{.blue},
     which can be used to evaluate the quality of the estimated
     $\hat{f}(\bm{x}_i)$.
 :::
 
-## The average prediction error
+## The in-sample prediction error
 
 ::: incremental
--   A measure of quality for the predictions is the so-called [expected
+-   A measure of quality for the predictions is the [in-sample
     prediction error]{.blue}: $$
-    \text{Err} =  \mathbb{E}\left[\frac{1}{m} \sum_{i=1}^m \mathscr{L}\{Y_{n + i}; \hat{f}(\bm{x}_{n + i})\}\right],
-    $$ where $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\}$ is a [loss
-    function]{.orange}.
+    \text{ErrF} =  \mathbb{E}\left[\frac{1}{n} \sum_{i=1}^n \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right],
+    $$ where $\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}$ is a [loss
+    function]{.orange}. The "[F]{.blue}" is a reminder of the
+    [f]{.blue}ixed-$X$ design.
 
 -   The expectation is taken with respect to traning random variable
     $Y_1,\dots,Y_n$, implicitly appearing in $\hat{f}(\bm{x})$, and the
-    new data points $Y_{n+1},\dots,Y_{n+m}$.
+    new data points $\tilde{Y}_1,\dots,\tilde{Y}_n$.
 
--   The expected prediction error is measuring the [average]{.blue}
-    "discrepancy" between the new data points and the corresponding
-    predictions.
+-   The in-sample prediction error is measuring the [average]{.blue}
+    "discrepancy" between the [new data points]{.orange} and the
+    corresponding predictions based on the training.
 
 -   Examples of loss functions for [regression problems]{.blue}
     $Y \in \mathbb{R}$ are:
 
     -   The quadratic loss
-        $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = \{Y_i - \hat{f}(\bm{x}_i)\}^2$,
+        $\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2$,
         leading to the MSE.
     -   The absolute loss
-        $\mathscr{L}\{Y_i; \hat{f}(\bm{x}_i)\} = |Y_i - \hat{f}(\bm{x}_i)|$,
+        $\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = |\tilde{Y}_i - \hat{f}(\bm{x}_i)|$,
         leading to the MAE.
 :::
 
@@ -467,16 +484,16 @@ $$
 ::: callout-note
 #### Error decomposition (reducible and irreducible)
 
-Under a quadratic loss, [each element]{.orange} of the [expected
+Under a quadratic loss, [each element]{.orange} of the [in-sample
 prediction error]{.blue} admits the following decomposition $$
 \begin{aligned}
-\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] &= \mathbb{E}\left[\{f(\bm{x}_i) + \epsilon_i - \hat{f}(\bm{x}_i)\}^2\right] \\
-& = \mathbb{E}\left[\{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}^2\right] + \mathbb{E}(\epsilon_i^2) + 2 \: \mathbb{E}\left[\epsilon_i \: \{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}\right]\\
+\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right] &= \mathbb{E}\left[\{f(\bm{x}_i) + \tilde{\epsilon}_i - \hat{f}(\bm{x}_i)\}^2\right] \\
+& = \mathbb{E}\left[\{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}^2\right] + \mathbb{E}(\tilde{\epsilon}_i^2) + 2 \: \mathbb{E}\left[\tilde{\epsilon}_i \: \{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}\right]\\
 & = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}},
 \end{aligned}
 $$ recalling that
-$\mathbb{E}(\epsilon_i^2) = \text{var}(\epsilon_i) = \sigma^2$ and for
-any $i = n+1,\dots,n+m$ ([test set]{.orange}).
+$\mathbb{E}(\tilde{\epsilon}_i^2) = \text{var}(\tilde{\epsilon}_i) = \sigma^2$
+and for any $i = 1,\dots,n$.
 :::
 
 ## Reducible and irreducible errors
@@ -487,14 +504,14 @@ any $i = n+1,\dots,n+m$ ([test set]{.orange}).
     of the polynomial $p-1$ that minimizes it.
 
 -   Let us recall the previous decomposition $$
-    \mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right] =  \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}}, \quad i=n+1,\dots,n + m.
+    \mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right] =  \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}}, \quad i=1\dots,n.
     $$
 
 -   The [best case scenario]{.blue} is when the estimated function
-    coincides with the mean of $Y_i$, i.e. $$
-    \hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(Y_i),
+    coincides with the mean of $\tilde{Y}_i$, i.e. $$
+    \hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(\tilde{Y}_i),
     $$ but even in this (overly optimistic) situation, we would still
-    commit mistakes, due to the presence of $\epsilon_i$ (unless
+    commit mistakes, due to the presence of $\tilde{\epsilon}_i$ (unless
     $\sigma^2 = 0$). Hence, the variance $\sigma^2$ is called the
     [irreducible error]{.orange}.
 
@@ -505,12 +522,13 @@ any $i = n+1,\dots,n+m$ ([test set]{.orange}).
 
 ## Bias-variance trade-off
 
--   In many books, including A&S, the starting point of the analysis is
-    the [reducible error]{.blue}, because it is the only one we can
-    control, e.g. by selecting the "optimal" $p$.
+-   In many textbooks, including A&S, the starting point of the analysis
+    is the [reducible error]{.blue}, because it is the only one we can
+    control and it has a transparent interpretatio
 
 -   The reducible error measures the [discrepancy]{.orange} between the
-    unknown function $f(x)$ and its estimate $\hat{f}(\bm{x})$.
+    unknown function $f(x)$ and its estimate $\hat{f}(\bm{x})$ and
+    therefore it is a [natural measure]{.orange} of goodness of fit.
 
 -   What follows is the [most important result]{.blue} of this unit.
 
@@ -519,36 +537,33 @@ any $i = n+1,\dots,n+m$ ([test set]{.orange}).
 ::: callout-note
 #### Bias-variance decomposition
 
-For any covariate value $\bm{x}$, it holds the following well-known
+For any covariate value $\bm{x}$, it holds the following bias-variance
 decomposition: $$
 \mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}^2\right] = \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}) - f(\bm{x})\}\right]^2}_{\text{Bias}^2} + \underbrace{\text{var}\{\hat{f}(\bm{x})\}}_{\text{variance}}.
 $$
 :::
 
-## The expected prediction error
+## The in-sample prediction error
 
 ::: incremental
--   Summarizing, the [expected prediction error]{.orange} can be
-    decomposed as $$
+-   Summarizing, the [in-sample prediction error]{.orange} under
+    [squared loss]{.blue} can be decomposed as $$
     \begin{aligned}
-    \text{Err} = \sigma^2 + \frac{1}{m}\sum_{i=1}^m\mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right]^2 + \frac{1}{m}\sum_{i=1}^m\text{var}\{\hat{f}(\bm{x}_{n+i})\}.
+    \text{ErrF} = \sigma^2 + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
     \end{aligned}
     $$
 
 -   In [ordinary least squares]{.blue} the above quantity can be
-    computed in closed form.
-
--   Indeed, each element of the [bias]{.orange} term equals $$
-    \mathbb{E}\left[\{\hat{f}(\bm{x}_{n+i}) - f(\bm{x}_{n+i})\}\right] = \bm{x}_{n+i}^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_{n+i}).
+    computed in closed form, since each element of the [bias]{.orange}
+    term equals $$
+    \mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}\right] = \bm{x}_i^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_i).
     $$ where $\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T$. Note that if
     $f(\bm{x}) = \bm{x}^T\beta$, then the bias is zero.
 
--   Moreover, each element of the [variance]{.orange} term equals $$
-    \text{var}\{\hat{f}(\bm{x}_{n+i})\} = \sigma^2 \bm{x}_{n+i}^T (\bm{X}^T\bm{X})^{-1}\bm{x}_{n+i}.
+-   Moreover, in [ordinary least squares]{.blue} the [variance]{.orange}
+    term equals $$
+    \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\} = \frac{\sigma^2}{n}\sum_{i=1}^n  \bm{x}_i^T (\bm{X}^T\bm{X})^{-1}\bm{x}_i = \frac{\sigma^2}{n}\text{tr}\{(\bm{X}^T\bm{X})(\bm{X}^T\bm{X})^{-1}\} = \sigma^2 \frac{p}{n}.
     $$
-
--   If we knew $f(\bm{x})$ and $\sigma^2$, then the expected prediction
-    error could be calculated...
 :::
 
 ## If we knew $f(x)$...
@@ -571,7 +586,6 @@ ftrue <- c(
   0.5044, 0.5037, 0.5032, 0.5027, 0.5023
 )
 ```
-
 
 ```{r}
 # Number of degree of the polynomial
@@ -643,26 +657,32 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 <!-- - **Summary**. Low model complexity: [high bias]{.orange}, [low variance]{.blue}. High model complexity: [low bias]{.blue}, [high variance]{.orange}. -->
 :::
 
-# Traning, test, and cross-validation
-
 ## But since we do not know $f(x)$...
 
 ::: incremental
+-   We just concluded that we must expect a trade-off between error and
+    variance components. In practice, however, we cannot do this
+    because, of course, $f(x)$ is [unknown]{.orange}.
 
-- We just concluded that we must expect a trade-off between error and variance components. In practice, however, we cannot do this because, of course, $f(x)$ is [unknown]{.orange}.
+-   A simple solution consists indeed in [splitting]{.orange} the
+    observations in two parts: a [training set]{.orange}
+    $(y_1,\dots,y_n)$ and a [test set]{.blue}
+    $(\tilde{y}_1,\dots,\tilde{y}_n)$, having the same covariates
+    $x_1,\dots,x_n$.
 
-- A simple solution consists in [randomly splitting]{.orange} the observations in two parts: a [training set]{.orange} $(y_1,\dots,y_n)$ and a [test set]{.blue} $y_{n+1},\dots,y_{n+m}$. 
+-   We fit the model $\hat{f}$ using $n$ observations of the training
+    and we use it to predict the $n$ observations on the test set.
 
-- We fit the model $\hat{f}$ using $n$ observations of the training and we use it to predict the $m$ observations on the test set.
+-   This leads to an [unbiased estimate]{.orange} of the [in-sample
+    prediction error]{.blue}, i.e.: $$
+    \widehat{\mathrm{ErrF}} =  \frac{1}{n}\sum_{i=1}^n\mathscr{L}\{\tilde{y}_i; \hat{f}(\bm{x}_i)\}.
+    $$
 
-- This leads to an [unbiased estimate]{.orange} of the [expected prediction error]{.blue}, i.e.:
-$$
-\widehat{\mathrm{Err}} =  \frac{1}{m}\sum_{i=1}^m\mathscr{L}\{y_{n +i}; \hat{f}(x_{n + i})\}.
-$$
-- This is exactly what we already did with yesterday's and tomorrow's data!
+-   This is exactly what we already did with yesterday's and tomorrow's
+    data!
 :::
 
-## MSE on training and test set
+## MSE on training and test set (recap)
 
 ```{r}
 #| fig-width: 8
@@ -672,7 +692,7 @@ $$
 data_bv <- data.frame(p = p_list, #MSE = sigmatrue^2 + Bias2s + Vars, 
                       MSE_train = data_goodness$MSE, MSE_test = data_goodness$MSE_test)
 data_bv <- reshape2::melt(data_bv, id = "p")
-levels(data_bv$variable) <- c( "MSE train (yesterday's data)", "MSE test (tomorrow's data)")
+levels(data_bv$variable) <- c("MSE train (yesterday's data)", "MSE test (tomorrow's data)")
 colnames(data_bv) <- c("p", "Error term", "value")
 
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
@@ -686,93 +706,73 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Error")
 ```
 
-## Training, validation and test I
-::: incremental
-
-- The same test set can be used to evaluate many different models, hence the final assessment of the error is still somewhat biased and [too optimistic]{.orange}.
-
-- If we are in a data-rich situation, the best approach is to randomly divide the dataset into three parts: 
-  - a [training set]{.orange}, used for [fitting]{.orange} the models;
-  - a [validation set]{.blue}, used to estimate prediction error and perform [model selection]{.blue};
-  - a [test set]{.grey}, for [assessment of the error]{.grey} of the final chosen model.
-
-- Ideally, the test set should be kept in a "vault," and be brought out only at the end of the data analysis.
-
-:::
-  
-## Training, validation and test II
-
-- There is no precise rule on how to select the size of these sets; some rule of thumbs are given in the picture below.
-
-<div class="flourish-embed flourish-chart" data-src="visualisation/14246499"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
-
-- The training, validation and test setup [reduces]{.orange} the [number of observations]{.orange} that we can use for fitting the models. It could be problematic if the sample size is relatively small.  
-
-## Cross-validation I
-
-- A way to partially overcome the loss of efficiency of the training / test paradigm consists in [randomly splitting the data]{.orange} $\{1,\dots,n\}$ in equal parts, say $V_1,\ldots,V_K$.
-
-- In the [$K$-fold cross-validation]{.blue} method we use the observations $i \notin V_k$ to train the model and the remaining observations $i \in V_k$ to assess to perform model selection.
-
-- In the following scheme we let $K  = 5$. 
-
-<div class="flourish-embed flourish-hierarchy" data-src="visualisation/14247663"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
-
-
-## Cross-validation II
+## Optimism I
 
 ::: incremental
+-   Under a [squared loss function]{.blue}, the [in-sample prediction
+    error]{.orange} is $$
+    \text{ErrF} = \mathbb{E}(\text{MSE}_\text{test}) = \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right]
+    $$
 
-- In the [$K$-fold cross validation]{.blue} we compute for each fold $k$ we fit a model $\hat{f}_{-V_k}(\bm{x})$ without using the observations of $V_k$.
+-   Similarly, the [in-sample training error]{.orange} can be defined as
+    follows $$
+    \mathbb{E}(\text{MSE}_\text{train}) = \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right].
+    $$ 
+    
+- We already know that $\mathbb{E}(\text{MSE}_\text{train})$
+    provides a very optimistic assessment of the model performance. For
+    example when $p = n$ then $\mathbb{E}(\text{MSE}_\text{train}) = 0$.
 
-- Hence, the model must be estimated [$K$ times]{.orange}, which could be computationally challenging.
-
-- The error of each on the $k$th folds is computed as
-$$\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
-$$
-where $|V_k|$ is the cardinality of $V_k$, i.e. $V_k \approx n / K$. 
-
-- We summarize the above errors using for instance the mean, obtaining the following [estimate]{.orange} for the [expected prediction error]{.orange}:
-$$\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].$$
-
+-   We call [optimism]{.orange} the difference between these two
+    quantities: $$
+    \text{Opt} = \mathbb{E}(\text{MSE}_\text{test}) - \mathbb{E}(\text{MSE}_\text{train}).
+    $$
 :::
 
-## Cross-validation III
+## Optimism II
 
+::: incremental
+-   It can be proved (see Exercises), that the [optimism]{.orange} has a
+    very simple form: $$
+    \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \hat{\bm{f}})\}.
+    $$
+
+-   If the predicted values are obtained using [ordinary least
+    squares]{.blue}, then $\hat{\bm{f}} = \bm{H}\bm{Y}$, therefore $$
+    \text{Opt} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{H}\bm{Y})\} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{Y}) \bm{H}^T\} = \frac{2 \sigma^2}{n}\text{tr} \{\text{cov}(\bm{H})\} = \frac{2 \sigma^2 p}{n}.
+    $$
+
+-   This leads to an estimate for the in-sample prediction error, known
+    as [$C_p$ of Mallows]{.blue}: $$
+    \widehat{\mathrm{ErrF}} = \text{MSE}_\text{train} + \text{Opt} = \frac{1}{n}\sum_{i=1}^n\{y_i - \hat{f}(\bm{x}_i)\}^2 + \frac{2 \sigma^2 p}{n}.
+    $$
+
+-   If $\sigma^2$ is unknown, then it must be [estimated]{.orange} using
+    for instance $s^2$.
+:::
+
+## Optimism III
 
 ```{r}
-#| message: false
-#| warning: false
+# Code execution and storage of the interesting quantities
+for (degree in degree_list) {
+  # Fitting a polynomial of degree p -1
+  fit <- lm(y.yesterday ~ poly(x, degree = degree, raw = FALSE), data = dataset)
+  data_goodness$C_p[degree] <- mean((dataset$y.yesterday - fitted(fit))^2) + 2 * summary(fit)$sigma^2 * (degree +  1) / nrow(dataset)
+}
 
-library(tidymodels)
-source("../code/mse_yardstick.R")
-
-# Creation of the dataset using 60 observations.
-data_cv <- data.frame(x = c(dataset$x, dataset$x), y = c(dataset$y.yesterday, dataset$y.tomorrow))
-
-set.seed(123)
-CV_splits <- vfold_cv(data_cv, v = 10)
-
-control_settings <- control_grid(save_pred = TRUE, verbose = TRUE)
-
-rec <- recipe(y ~ x, data = data_cv) %>% step_poly(x, degree = tune())
-m_lm_grid <- tibble(degree = 1:11)
-
-m_lin <- linear_reg() %>% set_engine("lm")
-wf_lin <- workflow() %>% add_model(m_lin) %>% add_recipe(rec)
-
-# Fitting the various models - this takes some time!
-fit_lin <- wf_lin %>% tune_grid(resamples = CV_splits, 
-                                metrics = metric_set(mse),
-                                grid = m_lm_grid, control = control_settings)
+# Organization of the results for graphical purposes
+data_bv <- data.frame(p = p_list, MSE_train = data_goodness$MSE, C_p = data_goodness$C_p)
+data_bv <- reshape2::melt(data_bv, id = "p")
+levels(data_bv$variable) <- c("MSE train (yesterday's data)", "C_p")
+colnames(data_bv) <- c("p", "Error term", "value")
 ```
 
 ```{r}
 #| fig-width: 8
 #| fig-height: 4.5
 #| fig-align: center
-data_bv <- collect_metrics(fit_lin) %>% select(degree, mean) %>% mutate(p = degree + 1, `Error term` = "10-fold MSE")
-colnames(data_bv) <- c("degree","value", "p", "Error term")
+#| warning: false
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
   geom_point() +
@@ -781,49 +781,334 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Model complexity (p)") +
-  ylab("Mean Squared Error (MSE)") #+ ylim(c(8e-05, 1e-02))
+  ylab(expression(C[p])) + xlim(c(2, 15))
 ```
 
+# Cross-validation
 
+## The `cholesterol` data
 
-## Leave-one-out cross-validation I
+::: columns
+::: {.column width="50%"}
+```{r}
+#| fig-width: 6
+#| fig-height: 4.5
+#| warning: false
+# rm(list = ls())
+# The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/cholesterol.txt
+dataset <- read.table("../data/cholesterol.txt", header = TRUE)
+ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
+  geom_point() +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Compliance") +
+  ylab("Cholesterol Decrease")
+```
+:::
 
-- The maximum possible value for $K$ is $n$, the [leave-one-out]{.orange} cross-validation (LOO-CV).
+::: {.column width="50%"}
+-   A drug called "cholestyramine" is administered to $n = 164$ men.
 
-- The LOO-CV is hard to implement, because it requires the estimation of $n$ different models.
+-   For each man, we observe the pair $(x_i, y_i)$.
 
-- However in [linear models]{.blue} there is a brilliant [computational shortcut]{.orange} that we can exploit.
+-   The response $y_i$ is the [decrease in cholesterol level]{.orange}
+    over the experiment.
+
+-   The covariate $x_i$ is a measure of [compliance]{.blue}.
+
+-   We assume, as before, that the data were generated according to $$
+        Y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n.
+        $$
+
+-   The original data can be [found
+    here](https://hastie.su.domains/CASI_files/DATA/cholesterol.txt).
+:::
+:::
+
+## Summary and notation (random-$X$)
+
+::: incremental
+-   A slight change to the previous setup is necessary. In fact, there
+    are no reasons to believe that the [compliance]{.blue} is a fixed
+    covariate.
+
+-   We consider a set of iid [random variables]{.blue} $(X_1, Y_1),\dots, (X_n, Y_n)$, whose realization is $(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)$. This time the covariates are [random]{.orange}.
+
+-   The main assumptions is that these pairs are [iid]{.orange}, namely:
+    $$(X_i, Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \quad  i=1,\dots,n.$$
+
+-   Conditionally on $X_i = \bm{x}_i$, in [regression problems]{.orange}
+    we let as before $$
+      Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,n,
+    $$ where $\epsilon_i$ are iid "[error]{.orange}" terms with $\mathbb{E}(\epsilon_i)=0$ and
+    $\text{var}(\epsilon_i)=\sigma^2$.
+:::
+
+## Expected prediction error
+
+::: incremental
+-   In this setting with random covariates, we want to minimize the
+    [expected prediction error]{.orange}: $$
+    \text{Err} =  \mathbb{E}\left[\mathscr{L}\{\tilde{Y}; \hat{f}(\tilde{X})\}\right],
+    $$ where $(\tilde{X},\tilde{Y}) \sim \mathcal{P}$ is a [new data point]{.blue} and $\hat{f}$ is an estimate using $n$ observations. 
+
+-   We can [randomly]{.orange} split the original set data $\{1,\dots,n\}$ into two groups $V_\text{train}$ and $V_\text{test}$.
+
+- We call $\hat{f}_\text{train}$ the estimate based on the data in $V_\text{train}$.
+
+- Then, we obtain a (slightly biased) estimate of $\text{Err}$ by using the empirical quantity:
+$$
+    \widehat{\mathrm{Err}} =  \frac{1}{|V_\text{test}|}\sum_{i \in V_\text{test}}\mathscr{L}\{\tilde{y}_i; \hat{f}_\text{train}(\bm{x}_i)\}.
+    $$
+
+-   The data-splitting strategy we used before is an effective
+    tool for assessing the error. However, its
+    [interpretation]{.blue} is changed: we are now estimating $\text{Err}$ and not
+    $\text{ErrF}$.
+:::
+
+## MSE on training and test (`cholesterol` data)
+
+```{r}
+# Main chunk of code; fitting several models and storing some relevant quantities
+degree_list <- 1:14
+p_list <- degree_list + 1
+
+# Data splitting
+set.seed(123)
+id_train <- sample(1:nrow(dataset), size = floor(0.75 * nrow(dataset)), replace = FALSE)
+id_test <- setdiff(1:nrow(dataset), id_train)
+dataset_train <- dataset[id_train, ]
+dataset_test <- dataset[id_test, ]
+
+# Initialization
+data_goodness <- data.frame(degree = degree_list, MSE = NA, MSE_test = NA)
+
+# Code execution
+for (degree in degree_list) {
+  # Fitting a polynomial of degree p -1
+  fit <- lm(cholesterol.decrease ~ poly(compliance, degree = degree, raw = FALSE), 
+            data = dataset_train)
+  y_hat_train <- fitted(fit)
+  y_hat_test <- predict(fit, newdata = dataset_test)
+  
+  # Training goodness of fit
+  data_goodness$MSE[degree] <- mean((dataset_train$cholesterol.decrease - y_hat_train)^2)
+
+  # Test goodness of fit
+  data_goodness$MSE_test[degree] <- mean((dataset_test$cholesterol.decrease - y_hat_test)^2)
+}
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+
+data_bv <- data.frame(p = p_list, #MSE = sigmatrue^2 + Bias2s + Vars, 
+                      MSE_train = data_goodness$MSE, MSE_test = data_goodness$MSE_test)
+data_bv <- reshape2::melt(data_bv, id = "p")
+levels(data_bv$variable) <- c("MSE train", "MSE test")
+colnames(data_bv) <- c("p", "Error term", "value")
+
+ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = 3, linetype = "dotted") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Error")
+```
+
+## Training, validation and test I
+
+::: incremental
+-   In many occasions, we may need to select several complexity
+    parameters and compare hundres of models.
+
+-   If the same test set is used to evaluate many different models, the
+    final assessment of the error is still somewhat biased and [too
+    optimistic]{.orange}, because we are "learning" from the test.
+
+-   If we are in a data-rich situation, the best approach is to randomly
+    divide the dataset into three parts:
+
+    -   a [training set]{.orange}, used for [fitting]{.orange} the
+        models;
+    -   a [validation set]{.blue}, used to estimate prediction error and
+        perform [model selection]{.blue};
+    -   a [test set]{.grey}, for [assessment of the error]{.grey} of the
+        final chosen model.
+
+-   Ideally, the test set should be kept in a "vault," and be brought
+    out only at the end of the data analysis.
+:::
+
+## Training, validation and test II
+
+-   There is no precise rule on how to select the size of these sets;
+    some rule of thumbs are given in the picture below.
+
+::: {.flourish-embed .flourish-chart data-src="visualisation/14246499"}
+```{=html}
+<script src="https://public.flourish.studio/resources/embed.js"></script>
+```
+:::
+
+-   The training, validation and test setup [reduces]{.orange} the
+    [number of observations]{.orange} that we can use for fitting the
+    models. It could be problematic if the sample size is relatively
+    small.
+
+## Cross-validation I
+
+-   A way to partially overcome the loss of efficiency of the training /
+    test paradigm consists in [randomly splitting the data]{.orange}
+    $\{1,\dots,n\}$ in equal parts, say $V_1,\ldots,V_K$.
+
+-   In the [$K$-fold cross-validation]{.blue} method we use the
+    observations $i \notin V_k$ to train the model and the remaining
+    observations $i \in V_k$ to assess to perform model selection.
+
+-   In the following scheme we let $K = 5$.
+
+::: {.flourish-embed .flourish-hierarchy data-src="visualisation/14247663"}
+```{=html}
+<script src="https://public.flourish.studio/resources/embed.js"></script>
+```
+:::
+
+## Cross-validation II
+
+::: incremental
+-   In the [$K$-fold cross validation]{.blue} we compute for each fold
+    $k$ we fit a model $\hat{f}_{-V_k}(\bm{x})$ without using the
+    observations of $V_k$.
+
+-   Hence, the model must be estimated [$K$ times]{.orange}, which could
+    be computationally challenging.
+
+-   The error of each on the $k$th folds is computed as
+    $$\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
+    $$ where $|V_k|$ is the cardinality of $V_k$, i.e.
+    $V_k \approx n / K$.
+
+-   We summarize the above errors using for instance the mean, obtaining
+    the following [estimate]{.orange} for the [expected prediction
+    error]{.orange}:
+    $$\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].$$
+:::
+
+## Cross-validation III (`cholesterol` data)
+
+```{r}
+#| message: false
+#| warning: false
+
+library(tidymodels)
+source("../code/mse_yardstick.R")
+
+control_settings <- control_grid(save_pred = TRUE, verbose = TRUE)
+rec <- recipe(cholesterol.decrease ~ compliance, data = dataset) %>% step_poly(compliance, degree = tune())
+m_lm_grid <- tibble(degree = degree_list)
+
+m_lin <- linear_reg() %>% set_engine("lm")
+wf_lin <- workflow() %>% add_model(m_lin) %>% add_recipe(rec)
+
+# Define the cross-validation setup
+set.seed(123)
+CV_splits <- vfold_cv(dataset, v = 10)
+
+# Fitting the various models - this takes some time!
+fit_lin_cv <- wf_lin %>% tune_grid(resamples = CV_splits, 
+                                metrics = metric_set(mse),
+                                grid = m_lm_grid, control = control_settings)
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+data_bv <- collect_metrics(fit_lin_cv) %>% select(degree, mean) %>% mutate(p = degree + 1, `Error term` = "10-fold MSE")
+colnames(data_bv) <- c("degree","value", "p", "Error term")
+ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = 2, linetype = "dotted") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Mean Squared Error (MSE)")
+```
+
+## Leave-one-out cross-validation
+
+-   The maximum possible value for $K$ is $n$, the
+    [leave-one-out]{.orange} cross-validation (LOO-CV).
+
+-   The LOO-CV is hard to implement, because it requires the estimation
+    of $n$ different models.
+
+-   However in [linear models]{.blue} there is a brilliant
+    [computational shortcut]{.orange} that we can exploit.
 
 . . .
 
 ::: callout-note
 #### LOO-CV (Linear models)
 
-Let $\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}$ be the leave-one-out predictions of a [linear model]{.blue} and let $h_i = [\bm{H}]_{ii}$ and $\hat{y}_i$ be respectively the leverages and the predictions of the full model. Then:
-$$
+Let $\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}$ be the leave-one-out
+predictions of a [linear model]{.blue} and let $h_i = [\bm{H}]_{ii}$ and
+$\hat{y}_i$ be respectively the leverages and the predictions of the
+full model. Then: $$
 y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
-$$
-Therefore, the leave-one-out mean squared error is
+$$ Therefore, the leave-one-out mean squared error is
 $$\widehat{\mathrm{Err}} = \frac{1}{n} \sum_{i=1}^{n} \widehat{\text{Err}}_{V_i}= \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - h_i}\right)^2.$$
 :::
 
+## Generalized cross-validation
 
-## Leave-one-out cross-validation II
+::: incremental
+-   An alternative to LOO-CV, sometimes used in more complex scenarios,
+    is the so-called [generalized cross validation]{.orange} (GCV),
+    defined as $$
+    \text{GCV} = \widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - p/n}\right)^2.
+    $$
+-   The GCV is an approximate LOO-CV, in which the leverages $h_i$ are
+    replaced by their mean: $$
+    \frac{1}{n}\sum_{i=1}^n h_i = \frac{p}{n}. 
+    $$
+-   For small $x >0$ it holds that $(1 - x)^{-2} \approx 1 + 2x$. Then,
+    we will write $$
+    \text{GCV} \approx \frac{1}{n}\sum_{i=1}^n(y_i - \hat{f}(\bm{x}_i))^2 + 2 \hat{\sigma}^2 p, \qquad \hat{\sigma}^2 =\frac{1}{n}\sum_{i=1}^n(y_i - \hat{f}(\bm{x}_i))^2,
+    $$ revealing a sharp connection with the $C_p$ of Mallows.
+:::
+
+## LOO-CV and GCV (`cholesterol` data)
 
 ```{r}
 # Code execution and storage of the interesting quantities
+data_goodness <- data.frame(degree = degree_list)
 for (degree in degree_list) {
   # Fitting a polynomial of degree p -1
-  fit <- lm(y ~ poly(x, degree = degree, raw = FALSE), data = data_cv)
+  fit <- lm(cholesterol.decrease ~ poly(compliance, degree = degree, raw = FALSE), data = dataset)
   # Computation of the leverages h_i in an efficient manner (using QR)
   lev <- influence(fit)$hat
-  data_goodness$LOO_CV[degree] <- mean(((data_cv$y - fitted(fit)) / (1 - lev))^2)
+  data_goodness$LOO_CV[degree] <- mean(((dataset$cholesterol.decrease - fitted(fit)) / (1 - lev))^2)
+  p <- degree + 1
+  data_goodness$GCV[degree] <- mean(((dataset$cholesterol.decrease - fitted(fit)) / (1 - p / nrow(dataset)))^2)
+  data_goodness$AICc[degree] <- AIC(fit) + 2 * p * (p + 1) / (nrow(dataset) - p - 1)
+  data_goodness$AIC[degree] <- AIC(fit)
+  data_goodness$BIC[degree] <- BIC(fit)
 }
 
 # Organization of the results for graphical purposes
-data_bv <- data.frame(p = p_list, LOO_CV = data_goodness$LOO_CV)
+data_bv <- data.frame(p = p_list, GCV = data_goodness$GCV, LOO_CV = data_goodness$LOO_CV)
 data_bv <- reshape2::melt(data_bv, id = "p")
-levels(data_bv$variable) <- c("LOO-CV")
+levels(data_bv$variable) <- c("GCV", "LOO-CV")
 colnames(data_bv) <- c("p", "Error term", "value")
 ```
 
@@ -834,37 +1119,84 @@ colnames(data_bv) <- c("p", "Error term", "value")
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
   geom_point() +
-  geom_vline(xintercept = 6, linetype = "dotted") +
+  geom_vline(xintercept = 4, linetype = "dotted") +
   theme_light() +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Model complexity (p)") +
-  ylab("Mean Squared Error (MSE)")
+  ylab("Mean Squared Error (MSE)") #+ ylim(c(9e-05, 6e-4))
 ```
 
 ## On the choice of $K$
 
 ::: incremental
+-   Common choices are $K = 5$ or $K = 10$. It is quite evident that a
+    [larger $K$]{.blue} requires more [computations]{.blue}.
 
-- Common choices are $K = 5$ or $K = 10$. It is quite evident that a [larger $K$]{.blue} requires more [computations]{.blue}. 
+-   A $K$-fold CV with $K=5$ or $K = 10$ is a (upwords) [biased
+    estimate]{.orange} of $\text{Err}$ because it uses less observations
+    than those available (either $4/5$ or $9/10$).
 
-- A $K$-fold CV with $K=5$ or $K = 10$ is a (upwords) [biased estimate]{.orange} of $\mathbb{E}(\mathrm{MSE}_{\mathrm{Te}})$ because it uses less observations than those available (either $4/5$ or $9/10$).
+-   The LOO-CV has a very [small bias]{.blue}, since each fit uses $n-1$
+    observations, but it has [high variance]{.orange}, being the average
+    of $n$ highly positively correlated quantities.
 
-- The LOO-CV has a very [small bias]{.blue}, since each fit uses $n-1$ observations, but it has [high variance]{.orange}, being the average of $n$ highly positively correlated quantities.  
+-   Indeed, the estimates $\hat{f}_{-i}$ and $\hat{f}_{-i'}$ have
+    $n - 2$ observations in common. Recall that the variance of the sum
+    is:
+    $$\text{var}(X + Y) = \text{var}(X) + \text{var}(Y) + 2\text{cov}(X, Y).$$
 
-- Indeed, the estimates $\hat{f}_{-i}$ and $\hat{f}_{-i'}$ have $n - 2$ observations in common. Recall that the variance of the sum is:
-$$\text{var}(X + Y) = \text{var}(X) + \text{var}(Y) + 2\text{cov}(X, Y).$$
-
-- Overall, the choice is very much context dependent.
-
+-   Overall, the choice is very much context dependent.
 :::
+
+<!-- ## ☠️ - Optimism, random-$X$ -->
+
+<!-- -   What is a good definition and estimate of the [optimism]{.orange} in -->
+<!--     the very much realistic scenario where the covariates are random? -->
+
+<!-- ![](img/randomX.png){fig-align="center"} -->
 
 # Information criteria
 
 ## Goodness of fit with a penalty term
 
-# Optimism
+- 
 
-## The final model
+## AIC and BIC (`cholesterol` data)
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+
+# Organization of the results for graphical purposes
+data_bv <- data.frame(p = p_list, AIC = data_goodness$AIC, AICc = data_goodness$AICc,  BIC = data_goodness$BIC)
+data_bv <- reshape2::melt(data_bv, id = "p")
+levels(data_bv$variable) <- c("AIC", "AICc", "BIC")
+colnames(data_bv) <- c("p", "Criterion", "value")
+
+ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = 4, linetype = "dotted") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Information Criterion (IC)")
+```
 
 # References
+
+-   [Main references]{.blue}
+    -   **Chapter 3** of Azzalini, A. and Scarpa, B. (2011), [*Data
+        Analysis and Data
+        Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
+        University Press.
+    -   **Chapter 7** of Hastie, T., Tibshirani, R. and Friedman, J.
+        (2009), [*The Elements of Statistical
+        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
+        Edition, Springer.
+-   [Advanced references]{.orange}
+    -   Rosset, S., and R. J. Tibshirani (2020). "[From fixed-X to random-X regression: bias-variance decompositions, covariance penalties, and prediction error Estimation](https://doi.org/10.1080/01621459.2018.1424632)." *Journal of the American Statistical Association* **115** (529): 138–51. 
+    -   Bates, S., Hastie, T., and R. Tibshirani (2023). "[Cross-validation: what does it estimate and how well does it do it?](https://doi.org/10.1080/01621459.2023.2197686)" Journal of the American Statistical Association, in press.
