@@ -1,4 +1,4 @@
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 library(tidyverse)
 library(ggplot2)
 library(ggthemes)
@@ -14,7 +14,7 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
   ylab("y")
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 # Degrees of the polynomials
 degree_list <- c(1, 3, 5, 11, 17, 23)
 
@@ -48,7 +48,7 @@ ggplot(data = data_pred) +
   ylim(c(0.42, 0.56)) # Manual identification of an "interesting" region
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 # Main chunk of code; fitting several models and storing some relevant quantities
 degree_list <- 1:23
 
@@ -74,7 +74,7 @@ for (degree in degree_list) {
 }
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 ggplot(data = data_goodness, aes(x = degree + 1, y = MSE)) +
   geom_line() +
   geom_point() +
@@ -83,7 +83,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = MSE)) +
   ylab("MSE")
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared)) +
   geom_line() +
   geom_point() +
@@ -92,7 +92,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared)) +
   ylab(expression(R^2))
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 lagrange <- function(x0, y0) {
   f <- function(x) {
     sum(y0 * sapply(seq_along(x0), function(j) {
@@ -107,7 +107,7 @@ plot(dataset$x, dataset$y.yesterday, pch = 16, xlab = "x", ylab = "y", main = "D
 curve(f(x), n = 300, add = TRUE)
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 ggplot(data = data_pred) +
   geom_line(aes(x = x, y = y_hat, col = degree)) +
   geom_point(data = dataset, aes(x = x, y = y.tomorrow), size = 0.8) +
@@ -120,7 +120,7 @@ ggplot(data = data_pred) +
   ylim(c(0.42, 0.56))
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 ggplot(data = data_goodness, aes(x = degree + 1, y = MSE_test)) +
   geom_line() +
   geom_point() +
@@ -129,7 +129,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = MSE_test)) +
   ylab("MSE")
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
   geom_line() +
   geom_point() +
@@ -138,14 +138,14 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
   ylab(expression(R^2))
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 fit <- lm(y.yesterday ~ poly(x, degree = 3, raw = FALSE), data = dataset)
 X <- model.matrix(fit)
 colnames(X) <- c("Intercept", "x1", "x2", "x3")
 round(t(X) %*% X, 8)
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 # I am storing these information for simplicity
 x <- dataset$x
 n <- nrow(dataset)
@@ -164,7 +164,7 @@ ftrue <- c(
 )
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 # Number of degree of the polynomial
 degree_list <- 1:23
 # Number of parameters in the model
@@ -189,7 +189,7 @@ levels(data_bv$variable) <- c("Squared Bias", "Variance", "Reducible error")
 colnames(data_bv) <- c("p", "Error term", "value")
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
   geom_point() +
@@ -200,7 +200,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Error")
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 data_bv <- data.frame(
   p = p_list, # MSE = sigmatrue^2 + Bias2s + Vars,
   MSE_train = data_goodness$MSE, MSE_test = data_goodness$MSE_test
@@ -220,7 +220,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Error")
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 # Code execution and storage of the interesting quantities
 for (degree in degree_list) {
   # Fitting a polynomial of degree p -1
@@ -235,7 +235,7 @@ levels(data_bv$variable) <- c("MSE train (yesterday's data)", "C_p")
 colnames(data_bv) <- c("p", "Error term", "value")
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
   geom_point() +
@@ -248,7 +248,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   xlim(c(2, 15))
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 # rm(list = ls())
 # The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/cholesterol.txt
 dataset <- read.table("../data/cholesterol.txt", header = TRUE)
@@ -260,9 +260,9 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
   ylab("Cholesterol Decrease")
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 # Main chunk of code; fitting several models and storing some relevant quantities
-degree_list <- 1:9
+degree_list <- 1:14
 p_list <- degree_list + 1
 
 # Data splitting
@@ -292,19 +292,19 @@ for (degree in degree_list) {
 }
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 data_bv <- data.frame(
   p = p_list, # MSE = sigmatrue^2 + Bias2s + Vars,
   MSE_train = data_goodness$MSE, MSE_test = data_goodness$MSE_test
 )
 data_bv <- reshape2::melt(data_bv, id = "p")
-levels(data_bv$variable) <- c("MSE train (yesterday's data)", "MSE test (tomorrow's data)")
+levels(data_bv$variable) <- c("MSE train", "MSE test")
 colnames(data_bv) <- c("p", "Error term", "value")
 
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
   geom_point() +
-  geom_vline(xintercept = 5, linetype = "dotted") +
+  geom_vline(xintercept = 3, linetype = "dotted") +
   theme_light() +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
@@ -312,7 +312,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Error")
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 library(tidymodels)
 source("../code/mse_yardstick.R")
 
@@ -326,6 +326,7 @@ wf_lin <- workflow() %>%
   add_recipe(rec)
 
 # Define the cross-validation setup
+set.seed(123)
 CV_splits <- vfold_cv(dataset, v = 10)
 
 # Fitting the various models - this takes some time!
@@ -336,7 +337,7 @@ fit_lin_cv <- wf_lin %>% tune_grid(
 )
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 data_bv <- collect_metrics(fit_lin_cv) %>%
   select(degree, mean) %>%
   mutate(p = degree + 1, `Error term` = "10-fold MSE")
@@ -344,7 +345,7 @@ colnames(data_bv) <- c("degree", "value", "p", "Error term")
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
   geom_point() +
-  geom_vline(xintercept = 4, linetype = "dotted") +
+  geom_vline(xintercept = 2, linetype = "dotted") +
   theme_light() +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
@@ -352,7 +353,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Mean Squared Error (MSE)")
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 # Code execution and storage of the interesting quantities
 data_goodness <- data.frame(degree = degree_list)
 for (degree in degree_list) {
@@ -375,7 +376,7 @@ levels(data_bv$variable) <- c("GCV", "LOO-CV")
 colnames(data_bv) <- c("p", "Error term", "value")
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
   geom_point() +
@@ -387,7 +388,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Mean Squared Error (MSE)") #+ ylim(c(9e-05, 6e-4))
 
 
-## ------------------------------------------------------
+## ----r------------------------------------------------------------------------
 # Organization of the results for graphical purposes
 data_bv <- data.frame(p = p_list, AIC = data_goodness$AIC, AICc = data_goodness$AICc, BIC = data_goodness$BIC)
 data_bv <- reshape2::melt(data_bv, id = "p")
@@ -397,9 +398,23 @@ colnames(data_bv) <- c("p", "Criterion", "value")
 ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
   geom_line() +
   geom_point() +
+  geom_vline(xintercept = 2, linetype = "dashed") +
   geom_vline(xintercept = 4, linetype = "dotted") +
   theme_light() +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Model complexity (p)") +
   ylab("Information Criterion (IC)")
+
+
+## ----r------------------------------------------------------------------------
+fit <- lm(cholesterol.decrease ~ poly(compliance, degree = 3, raw = FALSE), data = dataset)
+dataset$fitted <- fitted(fit)
+
+ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
+  geom_point(size = 0.8) +
+  geom_line(aes(x = compliance, y = fitted), col = "black") +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Compliance") +
+  ylab("Cholesterol Decrease")

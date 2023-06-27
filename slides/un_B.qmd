@@ -33,7 +33,7 @@ format:
     embed-resources: false
     code-line-numbers: true
     smooth-scroll: true
-    code-fold: true
+    code-fold: false
     code-summary: "Show the code"
     fig-dpi: 150
     highlight-style: github
@@ -717,11 +717,11 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   Similarly, the [in-sample training error]{.orange} can be defined as
     follows $$
     \mathbb{E}(\text{MSE}_\text{train}) = \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{Y_i - \hat{f}(\bm{x}_i)\}^2\right].
-    $$ 
-    
-- We already know that $\mathbb{E}(\text{MSE}_\text{train})$
-    provides a very optimistic assessment of the model performance. For
-    example when $p = n$ then $\mathbb{E}(\text{MSE}_\text{train}) = 0$.
+    $$
+
+-   We already know that $\mathbb{E}(\text{MSE}_\text{train})$ provides
+    a very optimistic assessment of the model performance. For example
+    when $p = n$ then $\mathbb{E}(\text{MSE}_\text{train}) = 0$.
 
 -   We call [optimism]{.orange} the difference between these two
     quantities: $$
@@ -832,7 +832,10 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
     are no reasons to believe that the [compliance]{.blue} is a fixed
     covariate.
 
--   We consider a set of iid [random variables]{.blue} $(X_1, Y_1),\dots, (X_n, Y_n)$, whose realization is $(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)$. This time the covariates are [random]{.orange}.
+-   We consider a set of iid [random variables]{.blue}
+    $(X_1, Y_1),\dots, (X_n, Y_n)$, whose realization is
+    $(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)$. This time the covariates are
+    [random]{.orange}.
 
 -   The main assumptions is that these pairs are [iid]{.orange}, namely:
     $$(X_i, Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \quad  i=1,\dots,n.$$
@@ -840,8 +843,8 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 -   Conditionally on $X_i = \bm{x}_i$, in [regression problems]{.orange}
     we let as before $$
       Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,n,
-    $$ where $\epsilon_i$ are iid "[error]{.orange}" terms with $\mathbb{E}(\epsilon_i)=0$ and
-    $\text{var}(\epsilon_i)=\sigma^2$.
+    $$ where $\epsilon_i$ are iid "[error]{.orange}" terms with
+    $\mathbb{E}(\epsilon_i)=0$ and $\text{var}(\epsilon_i)=\sigma^2$.
 :::
 
 ## Expected prediction error
@@ -850,21 +853,24 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 -   In this setting with random covariates, we want to minimize the
     [expected prediction error]{.orange}: $$
     \text{Err} =  \mathbb{E}\left[\mathscr{L}\{\tilde{Y}; \hat{f}(\tilde{X})\}\right],
-    $$ where $(\tilde{X},\tilde{Y}) \sim \mathcal{P}$ is a [new data point]{.blue} and $\hat{f}$ is an estimate using $n$ observations. 
+    $$ where $(\tilde{X},\tilde{Y}) \sim \mathcal{P}$ is a [new data
+    point]{.blue} and $\hat{f}$ is an estimate using $n$ observations.
 
--   We can [randomly]{.orange} split the original set data $\{1,\dots,n\}$ into two groups $V_\text{train}$ and $V_\text{test}$.
+-   We can [randomly]{.orange} split the original set data
+    $\{1,\dots,n\}$ into two groups $V_\text{train}$ and
+    $V_\text{test}$.
 
-- We call $\hat{f}_\text{train}$ the estimate based on the data in $V_\text{train}$.
+-   We call $\hat{f}_\text{train}$ the estimate based on the data in
+    $V_\text{train}$.
 
-- Then, we obtain a (slightly biased) estimate of $\text{Err}$ by using the empirical quantity:
-$$
-    \widehat{\mathrm{Err}} =  \frac{1}{|V_\text{test}|}\sum_{i \in V_\text{test}}\mathscr{L}\{\tilde{y}_i; \hat{f}_\text{train}(\bm{x}_i)\}.
-    $$
+-   Then, we obtain a (slightly biased) estimate of $\text{Err}$ by
+    using the empirical quantity: $$
+      \widehat{\mathrm{Err}} =  \frac{1}{|V_\text{test}|}\sum_{i \in V_\text{test}}\mathscr{L}\{\tilde{y}_i; \hat{f}_\text{train}(\bm{x}_i)\}.
+      $$
 
--   The data-splitting strategy we used before is an effective
-    tool for assessing the error. However, its
-    [interpretation]{.blue} is changed: we are now estimating $\text{Err}$ and not
-    $\text{ErrF}$.
+-   The data-splitting strategy we used before is an effective tool for
+    assessing the error. However, its [interpretation]{.blue} is
+    changed: we are now estimating $\text{Err}$ and not $\text{ErrF}$.
 :::
 
 ## MSE on training and test (`cholesterol` data)
@@ -1152,6 +1158,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 <!-- ## ☠️ - Optimism, random-$X$ -->
 
 <!-- -   What is a good definition and estimate of the [optimism]{.orange} in -->
+
 <!--     the very much realistic scenario where the covariates are random? -->
 
 <!-- ![](img/randomX.png){fig-align="center"} -->
@@ -1160,7 +1167,89 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 ## Goodness of fit with a penalty term
 
-- 
+::: incremental
+-   The main statistical method for estimating unknown parameters of a
+    model is the [maximize the log-likelihood]{.blue}
+    $\ell(\theta) = \ell(\theta; y_1,\dots,y_n)$.
+
+-   However, we cannot pick the value of $p$ that maximizes the
+    log-likelihood (why not?)
+
+-   We must take into account the different number of parameters,
+    introducing a [penalty]{.orange}: $$
+    \text{IC}(p) = -2 \ell(\hat{\theta}) + \text{penalty}(p),
+    $$
+
+-   The $\text{IC}$ is called an [information criterion]{.orange}. We
+    select the number of parameters that minimizes the $\text{IC}$.
+
+-   The choice of the specific penalty identifies a particular
+    criterion.
+
+-   An advantage of $IC$ is that they are based on the full dataset.
+:::
+
+## The Akaike information criterion I
+
+::: incremental
+
+-   For any $p$, Akaike suggested minimizing the so-called [Kullback-Leibler
+    divergence]{.orange}: $$
+    \text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\theta)) = \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} - \int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\theta)\mathrm{d}\tilde{\bm{Y}}},
+    $$ between the "true" model $p(\bm{Y};\theta_0)$ with parameter $\theta_0$ and the specified model $p(\bm{Y};\theta)$.
+
+-   We evaluate this discrepancy in the value of $\theta$ that maximizes $\log{p(\tilde{\bm{Y}};\theta)}$ using the data $\bm{Y} = (Y_1,\dots,Y_n)$, namely in the [maximum likelihood estimator]{.blue} $\hat{\theta} = \hat{\theta}(\bm{Y})$.
+    
+- The Akaike (ideal) approach would select $p$ such that the expectation w.r.t. $p(\bm{Y}; \theta_0)$ 
+$$
+\begin{aligned}
+S(p) &= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - 2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} \\
+& = - 2 \: \mathbb{E}_{\theta_0}\left[\int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}} \right] 
+\end{aligned}
+$$
+is [minimized]{.orange}. Unfortunately, we cannot compute $S(p)$, because $\theta_0$ is unknown. 
+
+:::
+
+## The Akaike information criterion II
+
+- Although $S(p)$ cannot be obtained, under several technical conditions it turns out that
+$$
+\text{AIC} = -2 \ell(\hat{\theta}) + 2 p,
+$$
+namely the [Akaike information criterion]{.orange} is a good estimator of $S(p)$.
+
+- More formally, it can be proved (under technical conditions) that
+$$
+\mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = S(p),
+$$
+for $n \rightarrow \infty$. 
+
+- The factor $2$ is just a [convention]{.blue} and is introduced to match the quantities appearing in the usual asymptotic theory for log-likelihoods. 
+
+## AIC, AICc, BIC
+
+-   Akaike's original work was followed by several other proposals,
+    different in their assumptions and the way they approximate certain
+    quantities.
+
+. . .
+
+| Criterion      | Author                | Penalty                           |
+|----------------|-----------------------|-----------------------------------|
+| $\text{AIC}$   | Akaike                | $2p$                              |
+| $\text{AIC}_c$ | Sugiura, Hurvich-Tsay | $2p + \frac{2p(p+1)}{n - (p +1)}$ |
+| $\text{BIC}$   | Akaike, Schwarz       | $p \log{n}$                       |
+
+-   The $\text{AIC}_c$ is an [higher order correction]{.orange} of the
+    $\text{AIC}$ and the differences tends to be negligible for high
+    values of $n$.
+    
+- The justification of $\text{BIC}$ is instead related to Bayesian statistics.
+
+-   Since $\log{n} > 2$ for any $n > 7$, it means that the $\text{BIC}$
+    [penalty]{.blue} is typically [stronger]{.blue} than the one of
+    $\text{AIC}$.
 
 ## AIC and BIC (`cholesterol` data)
 
@@ -1178,12 +1267,30 @@ colnames(data_bv) <- c("p", "Criterion", "value")
 ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
   geom_line() +
   geom_point() +
+  geom_vline(xintercept = 2, linetype = "dashed") +
   geom_vline(xintercept = 4, linetype = "dotted") +
   theme_light() +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Model complexity (p)") +
   ylab("Information Criterion (IC)")
+```
+
+## The `cholesterol` data: final model ($p = 4$)
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+fit <- lm(cholesterol.decrease ~ poly(compliance, degree = 3, raw = FALSE), data = dataset)
+dataset$fitted <- fitted(fit)
+
+ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
+  geom_point(size = 0.8) + geom_line(aes(x = compliance, y = fitted), col = "black") + 
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Compliance") +
+  ylab("Cholesterol Decrease")
 ```
 
 # References
@@ -1198,5 +1305,13 @@ ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
 -   [Advanced references]{.orange}
-    -   Rosset, S., and R. J. Tibshirani (2020). "[From fixed-X to random-X regression: bias-variance decompositions, covariance penalties, and prediction error Estimation](https://doi.org/10.1080/01621459.2018.1424632)." *Journal of the American Statistical Association* **115** (529): 138–51. 
-    -   Bates, S., Hastie, T., and R. Tibshirani (2023). "[Cross-validation: what does it estimate and how well does it do it?](https://doi.org/10.1080/01621459.2023.2197686)" Journal of the American Statistical Association, in press.
+    -   Rosset, S., and R. J. Tibshirani (2020). "[From fixed-X to
+        random-X regression: bias-variance decompositions, covariance
+        penalties, and prediction error
+        Estimation](https://doi.org/10.1080/01621459.2018.1424632)."
+        *Journal of the American Statistical Association* **115** (529):
+        138--51.
+    -   Bates, S., Hastie, T., and R. Tibshirani (2023).
+        "[Cross-validation: what does it estimate and how well does it
+        do it?](https://doi.org/10.1080/01621459.2023.2197686)" Journal
+        of the American Statistical Association, in press.

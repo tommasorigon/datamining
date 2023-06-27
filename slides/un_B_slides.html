@@ -993,14 +993,100 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </section>
 <section id="goodness-of-fit-with-a-penalty-term" class="slide level2 center">
 <h2>Goodness of fit with a penalty term</h2>
+<div>
 <ul>
-<li></li>
+<li class="fragment"><p>The main statistical method for estimating unknown parameters of a model is the <span class="blue">maximize the log-likelihood</span> <span class="math inline">\ell(\theta) = \ell(\theta; y_1,\dots,y_n)</span>.</p></li>
+<li class="fragment"><p>However, we cannot pick the value of <span class="math inline">p</span> that maximizes the log-likelihood (why not?)</p></li>
+<li class="fragment"><p>We must take into account the different number of parameters, introducing a <span class="orange">penalty</span>: <span class="math display">
+\text{IC}(p) = -2 \ell(\hat{\theta}) + \text{penalty}(p),
+</span></p></li>
+<li class="fragment"><p>The <span class="math inline">\text{IC}</span> is called an <span class="orange">information criterion</span>. We select the number of parameters that minimizes the <span class="math inline">\text{IC}</span>.</p></li>
+<li class="fragment"><p>The choice of the specific penalty identifies a particular criterion.</p></li>
+<li class="fragment"><p>An advantage of <span class="math inline">IC</span> is that they are based on the full dataset.</p></li>
 </ul>
+</div>
+</section>
+<section id="the-akaike-information-criterion-i" class="slide level2 center">
+<h2>The Akaike information criterion I</h2>
+<div>
+<ul>
+<li class="fragment"><p>For any <span class="math inline">p</span>, Akaike suggested minimizing the so-called <span class="orange">Kullback-Leibler divergence</span>: <span class="math display">
+\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\theta)) = \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} - \int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\theta)\mathrm{d}\tilde{\bm{Y}}},
+</span> between the “true” model <span class="math inline">p(\bm{Y};\theta_0)</span> with parameter <span class="math inline">\theta_0</span> and the specified model <span class="math inline">p(\bm{Y};\theta)</span>.</p></li>
+<li class="fragment"><p>We evaluate this discrepancy in the value of <span class="math inline">\theta</span> that maximizes <span class="math inline">\log{p(\tilde{\bm{Y}};\theta)}</span> using the data <span class="math inline">\bm{Y} = (Y_1,\dots,Y_n)</span>, namely in the <span class="blue">maximum likelihood estimator</span> <span class="math inline">\hat{\theta} = \hat{\theta}(\bm{Y})</span>.</p></li>
+<li class="fragment"><p>The Akaike (ideal) approach would select <span class="math inline">p</span> such that the expectation w.r.t. <span class="math inline">p(\bm{Y}; \theta_0)</span> <span class="math display">
+\begin{aligned}
+S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - 2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} \\
+&amp; = - 2 \: \mathbb{E}_{\theta_0}\left[\int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}} \right]
+\end{aligned}
+</span> is <span class="orange">minimized</span>. Unfortunately, we cannot compute <span class="math inline">S(p)</span>, because <span class="math inline">\theta_0</span> is unknown.</p></li>
+</ul>
+</div>
+</section>
+<section id="the-akaike-information-criterion-ii" class="slide level2 center">
+<h2>The Akaike information criterion II</h2>
+<ul>
+<li><p>Although <span class="math inline">S(p)</span> cannot be obtained, under several technical conditions it turns out that <span class="math display">
+\text{AIC} = -2 \ell(\hat{\theta}) + 2 p,
+</span> namely the <span class="orange">Akaike information criterion</span> is a good estimator of <span class="math inline">S(p)</span>.</p></li>
+<li><p>More formally, it can be proved (under technical conditions) that <span class="math display">
+\mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = S(p),
+</span> for <span class="math inline">n \rightarrow \infty</span>.</p></li>
+<li><p>The factor <span class="math inline">2</span> is just a <span class="blue">convention</span> and is introduced to match the quantities appearing in the usual asymptotic theory for log-likelihoods.</p></li>
+</ul>
+</section>
+<section id="aic-aicc-bic" class="slide level2 center">
+<h2>AIC, AICc, BIC</h2>
+<ul>
+<li>Akaike’s original work was followed by several other proposals, different in their assumptions and the way they approximate certain quantities.</li>
+</ul>
+<div class="fragment">
+<table>
+<colgroup>
+<col style="width: 21%">
+<col style="width: 31%">
+<col style="width: 47%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Criterion</th>
+<th>Author</th>
+<th>Penalty</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\text{AIC}</span></td>
+<td>Akaike</td>
+<td><span class="math inline">2p</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\text{AIC}_c</span></td>
+<td>Sugiura, Hurvich-Tsay</td>
+<td><span class="math inline">2p + \frac{2p(p+1)}{n - (p +1)}</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\text{BIC}</span></td>
+<td>Akaike, Schwarz</td>
+<td><span class="math inline">p \log{n}</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><p>The <span class="math inline">\text{AIC}_c</span> is an <span class="orange">higher order correction</span> of the <span class="math inline">\text{AIC}</span> and the differences tends to be negligible for high values of <span class="math inline">n</span>.</p></li>
+<li><p>The justification of <span class="math inline">\text{BIC}</span> is instead related to Bayesian statistics.</p></li>
+<li><p>Since <span class="math inline">\log{n} &gt; 2</span> for any <span class="math inline">n &gt; 7</span>, it means that the <span class="math inline">\text{BIC}</span> <span class="blue">penalty</span> is typically <span class="blue">stronger</span> than the one of <span class="math inline">\text{AIC}</span>.</p></li>
+</ul>
+</div>
 </section>
 <section id="aic-and-bic-cholesterol-data" class="slide level2 center">
 <h2>AIC and BIC (<code>cholesterol</code> data)</h2>
 
-<img data-src="un_B_files/figure-revealjs/unnamed-chunk-25-1.png" width="1200" class="r-stretch quarto-figure-center"></section></section>
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-25-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
+<section id="the-cholesterol-data-final-model-p-4" class="slide level2 center">
+<h2>The <code>cholesterol</code> data: final model (<span class="math inline">p = 4</span>)</h2>
+
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-26-1.png" width="1200" class="r-stretch quarto-figure-center"></section></section>
 <section id="references" class="title-slide slide level1 center">
 <h1>References</h1>
 <ul>
