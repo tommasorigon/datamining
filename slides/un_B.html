@@ -141,7 +141,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#orthogonal-polynomials" id="toc-orthogonal-polynomials" class="nav-link" data-scroll-target="#orthogonal-polynomials">☠️ - Orthogonal polynomials</a></li>
   <li><a href="#lagrange-interpolating-polynomials" id="toc-lagrange-interpolating-polynomials" class="nav-link" data-scroll-target="#lagrange-interpolating-polynomials">☠️ - Lagrange interpolating polynomials</a></li>
   </ul></li>
-  <li><a href="#errors-trade-offs-and-optimism" id="toc-errors-trade-offs-and-optimism" class="nav-link" data-scroll-target="#errors-trade-offs-and-optimism">Errors, trade-offs and optimism</a>
+  <li><a href="#errors-trade-offs-and-optimism" id="toc-errors-trade-offs-and-optimism" class="nav-link" data-scroll-target="#errors-trade-offs-and-optimism">Errors, trade-offs, and optimism</a>
   <ul class="collapse">
   <li><a href="#summary-and-notation-fixed-x" id="toc-summary-and-notation-fixed-x" class="nav-link" data-scroll-target="#summary-and-notation-fixed-x">Summary and notation (fixed-<span class="math inline">X</span>)</a></li>
   <li><a href="#the-in-sample-prediction-error" id="toc-the-in-sample-prediction-error" class="nav-link" data-scroll-target="#the-in-sample-prediction-error">The in-sample prediction error</a></li>
@@ -164,8 +164,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#summary-and-notation-random-x" id="toc-summary-and-notation-random-x" class="nav-link" data-scroll-target="#summary-and-notation-random-x">Summary and notation (random-<span class="math inline">X</span>)</a></li>
   <li><a href="#expected-prediction-error" id="toc-expected-prediction-error" class="nav-link" data-scroll-target="#expected-prediction-error">Expected prediction error</a></li>
   <li><a href="#mse-on-training-and-test-cholesterol-data" id="toc-mse-on-training-and-test-cholesterol-data" class="nav-link" data-scroll-target="#mse-on-training-and-test-cholesterol-data">MSE on training and test (<code>cholesterol</code> data)</a></li>
-  <li><a href="#training-validation-and-test-i" id="toc-training-validation-and-test-i" class="nav-link" data-scroll-target="#training-validation-and-test-i">Training, validation and test I</a></li>
-  <li><a href="#training-validation-and-test-ii" id="toc-training-validation-and-test-ii" class="nav-link" data-scroll-target="#training-validation-and-test-ii">Training, validation and test II</a></li>
+  <li><a href="#training-validation-and-test-i" id="toc-training-validation-and-test-i" class="nav-link" data-scroll-target="#training-validation-and-test-i">Training, validation, and test I</a></li>
+  <li><a href="#training-validation-and-test-ii" id="toc-training-validation-and-test-ii" class="nav-link" data-scroll-target="#training-validation-and-test-ii">Training, validation, and test II</a></li>
   <li><a href="#cross-validation-i" id="toc-cross-validation-i" class="nav-link" data-scroll-target="#cross-validation-i">Cross-validation I</a></li>
   <li><a href="#cross-validation-ii" id="toc-cross-validation-ii" class="nav-link" data-scroll-target="#cross-validation-ii">Cross-validation II</a></li>
   <li><a href="#cross-validation-iii-cholesterol-data" id="toc-cross-validation-iii-cholesterol-data" class="nav-link" data-scroll-target="#cross-validation-iii-cholesterol-data">Cross-validation III (<code>cholesterol</code> data)</a></li>
@@ -236,7 +236,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li>Optimism</li>
 </ul></li>
 <li><p>You may have seen these notions before…</p></li>
-<li><p>…but it is worth discussing the <span class="orange">details</span> of these ideas once again, with the maturity you now have in a M.Sc.</p></li>
+<li><p>…but it is worth discussing the <span class="orange">details</span> of these ideas once again, with the maturity you now have in an M.Sc.</p></li>
 <li><p>They are the <span class="blue">foundations</span> of <span class="orange">statistical learning</span>.</p></li>
 </ul>
 </div>
@@ -270,13 +270,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="polynomial-regression">Polynomial regression</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>The function <span class="math inline">f(x)</span> is unknown, therefore it should be estimated.</p></li>
+<li><p>The function <span class="math inline">f(x)</span> is unknown, therefore, it should be estimated.</p></li>
 <li><p>A simple approach is using the tools of <a href="unit_A1_slides.html">Unit A.1</a>, such as <span class="orange">polynomial regression</span>: <span class="math display">
 f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
-</span> namely <span class="math inline">f(x)</span> is <span class="orange">approximated</span> with a polynomial of degree <span class="math inline">p-1</span> (i.e.&nbsp;Taylor expansions).</p></li>
+</span> namely <span class="math inline">f(x)</span> is <span class="orange">approximated</span> with a polynomial of degree <span class="math inline">p-1</span> (i.e., Taylor expansions).</p></li>
 <li><p>This model is linear in the parameters: ordinary least squares can be applied.</p></li>
 <li><p>How do we choose the <span class="blue">degree of the polynomial</span> <span class="math inline">p - 1</span>?</p></li>
-<li><p>Without a clear guidance, in principle any value of <span class="math inline">p \in \{1,\dots,n\}</span> could be appropriate.</p></li>
+<li><p>Without clear guidance, in principle, any value of <span class="math inline">p \in \{1,\dots,n\}</span> could be appropriate.</p></li>
 <li><p>Let us compare the <span class="blue">mean squared error</span> (MSE) on yesterday’s data (<span class="orange">training</span>) <span class="math display">
 \text{MSE}_{\text{train}} = \frac{1}{n}\sum_{i=1}^n\{y_i -f(x_i; \hat{\beta})\}^2,
 </span> or alternatively <span class="math inline">R^2_\text{train}</span>, for different values of <span class="math inline">p</span>…</p></li>
@@ -336,11 +336,11 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <li><p>One might be tempted to let <span class="math inline">p</span> as large as possible to make the model more flexible…</p></li>
 <li><p>Taking this reasoning to the extreme would lead to the choice <span class="math inline">p = n</span>, so that <span class="math display">
 \text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
-</span> i.e.&nbsp;an apparently perfect fit. This procedure is called <span class="blue">interpolation</span>.</p></li>
+</span> i.e., a perfect fit. This procedure is called <span class="blue">interpolation</span>.</p></li>
 <li><p>However, we are <span class="orange">not</span> interested in predicting <span class="orange">yesterday</span> data. Our goal is to predict <span class="blue">tomorrow</span>’s data, i.e.&nbsp;a <span class="blue">new set</span> of <span class="math inline">n = 30</span> points: <span class="math display">
 (x_1, \tilde{y}_1), \dots, (x_n, \tilde{y}_n),
-</span> using <span class="math inline">\hat{y}_i = f(x_i; \hat{\beta})</span>, where <span class="math inline">\hat{\beta}</span> is obtained using yesterday data.</p></li>
-<li><p><span class="orange">Remark</span>. Tomorrow’s r.v. <span class="math inline">\tilde{Y}_1,\dots, \tilde{Y}_n</span> follow the same scheme of yesterday’s data.</p></li>
+</span> using <span class="math inline">\hat{y}_i = f(x_i; \hat{\beta})</span>, where <span class="math inline">\hat{\beta}</span> is obtained using yesterday’s data.</p></li>
+<li><p><span class="orange">Remark</span>. Tomorrow’s r.v. <span class="math inline">\tilde{Y}_1,\dots, \tilde{Y}_n</span> follow the same scheme as yesterday’s data.</p></li>
 </ul>
 </div>
 </section>
@@ -382,9 +382,9 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 \text{MSE}_{\text{test}} = \frac{1}{n}\sum_{i=1}^n\{\tilde{y}_i -f(x_i; \hat{\beta})\}^2,
 </span> and similarly the <span class="math inline">R^2_\text{test}</span>. We would like the <span class="math inline">\text{MSE}_{\text{test}}</span> to be <span class="orange">as small as possible</span>.</p></li>
 <li><p>For <span class="blue">small values</span> of <span class="math inline">p</span>, an increase in the degree of the polynomial <span class="blue">improves the fit</span>. In other words, at the beginning, both the <span class="math inline">\text{MSE}_{\text{train}}</span> and the <span class="math inline">\text{MSE}_{\text{test}}</span> decrease.</p></li>
-<li><p>For <span class="orange">larger values</span> of <span class="math inline">p</span>, the improvement gradually ceases and the polynomial follows <span class="orange">random fluctuations</span> in yesterday’s data which are <span class="blue">not observed</span> in the <span class="blue">new sample</span>.</p></li>
-<li><p>An over-adaptation to yesterday data is called <span class="orange">overfitting</span>, which occurs when the training <span class="math inline">\text{MSE}_{\text{train}}</span> is low but the test <span class="math inline">\text{MSE}_{\text{test}}</span> is high.</p></li>
-<li><p>The yesterday’s dataset is available from the textbook (A&amp;S) website:</p>
+<li><p>For <span class="orange">larger values</span> of <span class="math inline">p</span>, the improvement gradually ceases, and the polynomial follows <span class="orange">random fluctuations</span> in yesterday’s data which are <span class="blue">not observed</span> in the <span class="blue">new sample</span>.</p></li>
+<li><p>An over-adaptation to yesterday’s data is called <span class="orange">overfitting</span>, which occurs when the training <span class="math inline">\text{MSE}_{\text{train}}</span> is low but the test <span class="math inline">\text{MSE}_{\text{test}}</span> is high.</p></li>
+<li><p>Yesterday’s dataset is available from the textbook (A&amp;S) website:</p>
 <ul class="incremental">
 <li>Dataset <a href="http://azzalini.stat.unipd.it/Book-DM/yesterday.dat" class="uri">http://azzalini.stat.unipd.it/Book-DM/yesterday.dat</a></li>
 <li>True <span class="math inline">f(\bm{x})</span> <a href="http://azzalini.stat.unipd.it/Book-DM/f_true.R" class="uri">http://azzalini.stat.unipd.it/Book-DM/f_true.R</a></li>
@@ -411,7 +411,7 @@ x3                0  0  0  1</code></pre>
 </div>
 </div>
 <ul>
-<li>Polynomial regression becomes numerically unstable when <span class="math inline">p \ge 13</span> (<code>raw = TRUE</code>, i.e.&nbsp;using the original polynomials) and <span class="math inline">p \ge 25</span> (<code>raw = FALSE</code>, i.e.&nbsp;using orthogonal polynomials).</li>
+<li>Polynomial regression becomes numerically unstable when <span class="math inline">p \ge 13</span> (<code>raw = TRUE</code>, i.e., using the original polynomials) and <span class="math inline">p \ge 25</span> (<code>raw = FALSE</code>, i.e., using orthogonal polynomials).</li>
 </ul>
 </section>
 <section id="lagrange-interpolating-polynomials" class="level2">
@@ -429,13 +429,13 @@ x3                0  0  0  1</code></pre>
 </section>
 </section>
 <section id="errors-trade-offs-and-optimism" class="level1">
-<h1>Errors, trade-offs and optimism</h1>
+<h1>Errors, trade-offs, and optimism</h1>
 <section id="summary-and-notation-fixed-x" class="level2">
 <h2 class="anchored" data-anchor-id="summary-and-notation-fixed-x">Summary and notation (fixed-<span class="math inline">X</span>)</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Let us better formalize the analysis we did so far, using the appropriate mathematical tools.</p></li>
-<li><p>In the previous example we consider two set of <span class="blue">random variables</span>:</p>
+<li><p>Let us better formalize the analysis we have done so far using the appropriate mathematical tools.</p></li>
+<li><p>In the previous example, we consider two sets of <span class="blue">random variables</span>:</p>
 <ul class="incremental">
 <li>The <span class="orange">training set</span> (yesterday) <span class="math inline">Y_1,\dots, Y_n</span>, whose realization is <span class="math inline">y_1,\dots,y_n</span>.</li>
 <li>The <span class="blue">test set</span> (tomorrow) <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>, whose realization is <span class="math inline">\tilde{y}_1, \dots, \tilde{y}_n</span>.</li>
@@ -445,7 +445,7 @@ x3                0  0  0  1</code></pre>
 <li><p>In <span class="orange">regression</span> problems we customarily assume that <span class="math display">
     Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
   </span> where <span class="math inline">\epsilon_i</span> and <span class="math inline">\tilde{\epsilon}_i</span> are iid “<span class="orange">error</span>” terms, with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
-<li><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span>. We hope that our predictions works well on the <span class="blue">test set</span>.</p></li>
+<li><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span>. We hope our predictions work well on the <span class="blue">test set</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -456,7 +456,7 @@ x3                0  0  0  1</code></pre>
 <li><p>A measure of quality for the predictions is the <span class="blue">in-sample prediction error</span>: <span class="math display">
 \text{ErrF} =  \mathbb{E}\left[\frac{1}{n} \sum_{i=1}^n \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right],
 </span> where <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}</span> is a <span class="orange">loss function</span>. The “<span class="blue">F</span>” is a reminder of the <span class="blue">f</span>ixed-<span class="math inline">X</span> design.</p></li>
-<li><p>The expectation is taken with respect to traning random variable <span class="math inline">Y_1,\dots,Y_n</span>, implicitly appearing in <span class="math inline">\hat{f}(\bm{x})</span>, and the new data points <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>.</p></li>
+<li><p>The expectation is taken with respect to training random variable <span class="math inline">Y_1,\dots,Y_n</span>, implicitly appearing in <span class="math inline">\hat{f}(\bm{x})</span>, and the new data points <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>.</p></li>
 <li><p>The in-sample prediction error is measuring the <span class="blue">average</span> “discrepancy” between the <span class="orange">new data points</span> and the corresponding predictions based on the training.</p></li>
 <li><p>Examples of loss functions for <span class="blue">regression problems</span> <span class="math inline">Y \in \mathbb{R}</span> are:</p>
 <ul class="incremental">
@@ -492,7 +492,7 @@ Error decomposition (reducible and irreducible)
 <h2 class="anchored" data-anchor-id="reducible-and-irreducible-errors">Reducible and irreducible errors</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>We would like to make the <span class="orange">mean squared error</span> as <span class="orange">small</span> as possible, e.g.&nbsp;by choosing an “optimal” degree of the polynomial <span class="math inline">p-1</span> that minimizes it.</p></li>
+<li><p>We would like to make the <span class="orange">mean squared error</span> as <span class="orange">small</span> as possible, e.g., by choosing an “optimal” degree of the polynomial <span class="math inline">p-1</span> that minimizes it.</p></li>
 <li><p>Let us recall the previous decomposition <span class="math display">
 \mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right] =  \underbrace{\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}^2\right]}_{\text{reducible}} + \underbrace{\sigma^2}_{\text{irreducible}}, \quad i=1\dots,n.
 </span></p></li>
@@ -507,14 +507,14 @@ Error decomposition (reducible and irreducible)
 <h2 class="anchored" data-anchor-id="classification-problems">Classification problems</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>The principles described for regression settings also applies to <span class="blue">classification problems</span>, after the appropriate adjustments. We focus here on the binary case <span class="math inline">Y \in \{0, 1\}</span>.</p></li>
+<li><p>After the appropriate adjustments, the principles described for regression settings also apply to <span class="blue">classification problems</span>. We focus on the binary case <span class="math inline">Y \in \{0, 1\}</span>.</p></li>
 <li><p>In this context, the relationship between <span class="math inline">\bm{x}_i</span> and the <span class="orange">Bernoulli</span> r.v. <span class="math inline">Y_i</span> is such that <span class="math display">
 \mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
 </span> where <span class="math inline">g(x) :\mathbb{R} \rightarrow (0,1)</span> is monotone transformation, such as the inverse logit.</p></li>
 <li><p>Examples of loss functions for <span class="blue">binary classification problems</span> <span class="math inline">Y \in \{0, 1\}</span> are:</p>
 <ul class="incremental">
 <li>The <span class="orange">misclassification rate</span> <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)</span>, where the predictions are obtained dichotomizing the estimated probabilities <span class="math inline">\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) &gt; 1/2)</span>.</li>
-<li>The <span class="orange">deviance</span> or <span class="orange">cross-entropy</span> loss functions is defined as <span class="math display">
+<li>The <span class="orange">deviance</span> or <span class="orange">cross-entropy</span> loss functions are defined as <span class="math display">
 \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
 </span></li>
 </ul></li>
@@ -525,8 +525,8 @@ Error decomposition (reducible and irreducible)
 <section id="bias-variance-trade-off" class="level2">
 <h2 class="anchored" data-anchor-id="bias-variance-trade-off">Bias-variance trade-off</h2>
 <ul>
-<li><p>In many textbooks, including A&amp;S, the starting point of the analysis is the <span class="blue">reducible error</span>, because it is the only one we can control and it has a transparent interpretation.</p></li>
-<li><p>The reducible error measures the <span class="orange">discrepancy</span> between the unknown function <span class="math inline">f(\bm{x})</span> and its estimate <span class="math inline">\hat{f}(\bm{x})</span> and therefore it is a <span class="orange">natural measure</span> of goodness of fit.</p></li>
+<li><p>In many textbooks, including A&amp;S, the starting point of the analysis is the <span class="blue">reducible error</span>, because it is the only one we can control and has a transparent interpretation.</p></li>
+<li><p>The reducible error measures the <span class="orange">discrepancy</span> between the unknown function <span class="math inline">f(\bm{x})</span> and its estimate <span class="math inline">\hat{f}(\bm{x})</span> and therefore it is a <span class="orange">natural measure</span> of the goodness of fit.</p></li>
 <li><p>What follows is the <span class="blue">most important result</span> of this unit.</p></li>
 </ul>
 <div class="incremental">
@@ -567,10 +567,10 @@ Bias-variance decomposition
 </section>
 <section id="if-we-knew-fx" class="level2">
 <h2 class="anchored" data-anchor-id="if-we-knew-fx">If we knew <span class="math inline">f(x)</span>…</h2>
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-12_61e99b9d947b5bdf0969d46333853c55">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-12_ef1ed75b55817c9471a5ea534d5e580c">
 
 </div>
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-13_4da9960ac26942bbd3cac8ed25775113">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-13_bb171a3ee6057a3bd3effc00950d11ba">
 
 </div>
 <div class="cell" data-hash="un_B_cache/html/unnamed-chunk-14_00ee1fcfa6d3c3b3a80d54c42490038e">
@@ -587,7 +587,7 @@ Bias-variance decomposition
 <li><p>The <span class="orange">bias</span> measures the ability of <span class="math inline">\hat{f}(\bm{x})</span> to reconstruct the true <span class="math inline">f(\bm{x})</span>. The bias is due to <span class="blue">lack of knowledge</span> of the data-generating mechanism. It equals zero when <span class="math inline">\mathbb{E}\{\hat{f}(\bm{x})\} = f(\bm{x})</span>.</p></li>
 <li><p>The <span class="orange">bias</span> term can be reduced by increasing the flexibility of the model (e.g., by considering a high value for <span class="math inline">p</span>).</p></li>
 <li><p>The <span class="blue">variance</span> measures the variability of the estimator <span class="math inline">\hat{f}(\bm{x})</span> and its tendency to follow random fluctuations of the data.</p></li>
-<li><p>The <span class="blue">variance</span> increases together with the model complexity.</p></li>
+<li><p>The <span class="blue">variance</span> increases with the model complexity.</p></li>
 <li><p>It is not possible to minimize both the bias and the variance, there is a <span class="orange">trade-off</span>.</p></li>
 <li><p>We say that an estimator is <span class="orange">overfitting</span> the data if an increase in variance comes without important gains in terms of bias.</p></li>
 </ul>
@@ -604,7 +604,7 @@ Bias-variance decomposition
 <li><p>This leads to an <span class="orange">unbiased estimate</span> of the <span class="blue">in-sample prediction error</span>, i.e.: <span class="math display">
 \widehat{\mathrm{ErrF}} =  \frac{1}{n}\sum_{i=1}^n\mathscr{L}\{\tilde{y}_i; \hat{f}(\bm{x}_i)\}.
 </span></p></li>
-<li><p>This is exactly what we already did with yesterday’s and tomorrow’s data!</p></li>
+<li><p>This is precisely what we already did with yesterday’s and tomorrow’s data!</p></li>
 </ul>
 </div>
 </section>
@@ -624,7 +624,7 @@ Bias-variance decomposition
 <h2 class="anchored" data-anchor-id="optimism-i">Optimism I</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Let us investigate this discrepancy between training and test more in depth.</p></li>
+<li><p>Let us investigate this discrepancy between training and test more in-depth.</p></li>
 <li><p>Under a <span class="blue">squared loss function</span>, the <span class="orange">in-sample prediction error</span> is <span class="math display">
 \text{ErrF} = \mathbb{E}(\text{MSE}_\text{test}) = \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right]
 </span></p></li>
@@ -642,7 +642,7 @@ Bias-variance decomposition
 <h2 class="anchored" data-anchor-id="optimism-ii">Optimism II</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>It can be proved (see Exercises), that the <span class="orange">optimism</span> has a very simple form: <span class="math display">
+<li><p>It can be proved (see Exercises) that the <span class="orange">optimism</span> has a very simple form: <span class="math display">
 \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \hat{\bm{f}})\}.
 </span></p></li>
 <li><p>If the predicted values are obtained using <span class="blue">ordinary least squares</span>, then <span class="math inline">\hat{\bm{f}} = \bm{H}\bm{Y}</span>, therefore <span class="math display">
@@ -677,9 +677,9 @@ Bias-variance decomposition
 <h2 class="anchored" data-anchor-id="another-example-cholesterol-data">Another example: <code>cholesterol</code> data</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-18_b9b123e73578625afe9ac4664841b928">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-18_71b4a8e44a7627a2a6bc61beaa04786a">
 <div class="cell-output-display">
-<p><img src="un_B_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="900"></p>
+<p><img src="un_B_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="750"></p>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
@@ -702,7 +702,7 @@ Bias-variance decomposition
 <ul class="incremental">
 <li><p>A slight change to the previous setup is necessary. In fact, there are no reasons to believe that the <span class="blue">compliance</span> is a fixed covariate.</p></li>
 <li><p>We consider a set of iid <span class="blue">random variables</span> <span class="math inline">(X_1, Y_1),\dots, (X_n, Y_n)</span>, whose realization is <span class="math inline">(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)</span>. This time the covariates are <span class="orange">random</span>.</p></li>
-<li><p>The main assumptions is that these pairs are <span class="orange">iid</span>, namely: <span class="math display">(X_i, Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \quad  i=1,\dots,n.</span></p></li>
+<li><p>The main assumption is that these pairs are <span class="orange">iid</span>, namely: <span class="math display">(X_i, Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \quad  i=1,\dots,n.</span></p></li>
 <li><p>Conditionally on <span class="math inline">X_i = \bm{x}_i</span>, in <span class="orange">regression problems</span> we let as before <span class="math display">
   Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,n,
 </span> where <span class="math inline">\epsilon_i</span> are iid “<span class="orange">error</span>” terms with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
@@ -716,7 +716,7 @@ Bias-variance decomposition
 <li><p>In this setting with random covariates, we want to minimize the <span class="orange">expected prediction error</span>: <span class="math display">
 \text{Err} =  \mathbb{E}\left[\mathscr{L}\{\tilde{Y}; \hat{f}(\tilde{X})\}\right],
 </span> where <span class="math inline">(\tilde{X},\tilde{Y}) \sim \mathcal{P}</span> is a <span class="blue">new data point</span> and <span class="math inline">\hat{f}</span> is an estimate using <span class="math inline">n</span> observations.</p></li>
-<li><p>We can <span class="orange">randomly</span> split the original set data <span class="math inline">\{1,\dots,n\}</span> into two groups <span class="math inline">V_\text{train}</span> and <span class="math inline">V_\text{test}</span>.</p></li>
+<li><p>We can <span class="orange">randomly</span> split the original set of data <span class="math inline">\{1,\dots,n\}</span> into two groups <span class="math inline">V_\text{train}</span> and <span class="math inline">V_\text{test}</span>.</p></li>
 <li><p>We call <span class="math inline">\hat{f}_\text{train}</span> the estimate based on the data in <span class="math inline">V_\text{train}</span>.</p></li>
 <li><p>Then, we obtain a (slightly biased) estimate of <span class="math inline">\text{Err}</span> by using the empirical quantity: <span class="math display">
   \widehat{\mathrm{Err}} =  \frac{1}{|V_\text{test}|}\sum_{i \in V_\text{test}}\mathscr{L}\{\tilde{y}_i; \hat{f}_\text{train}(\bm{x}_i)\}.
@@ -741,31 +741,31 @@ Bias-variance decomposition
 </div>
 </section>
 <section id="training-validation-and-test-i" class="level2">
-<h2 class="anchored" data-anchor-id="training-validation-and-test-i">Training, validation and test I</h2>
+<h2 class="anchored" data-anchor-id="training-validation-and-test-i">Training, validation, and test I</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>In many occasions, we may need to select several complexity parameters and compare hundreds of models.</p></li>
+<li><p>On many occasions, we may need to select several complexity parameters and compare hundreds of models.</p></li>
 <li><p>If the same test set is used for such a task, the final assessment of the error is somewhat biased and <span class="orange">too optimistic</span>, because we are “learning” from the test set.</p></li>
-<li><p>If we are in a data-rich situation, the best approach is to randomly divide the dataset into three parts:</p>
+<li><p>If we are in a data-rich situation, the best approach is to divide the dataset into three parts randomly:</p>
 <ul class="incremental">
 <li>a <span class="orange">training set</span>, used for <span class="orange">fitting</span> the models;</li>
 <li>a <span class="blue">validation set</span>, used to estimate prediction error and perform <span class="blue">model selection</span>;</li>
 <li>a <span class="grey">test set</span>, for <span class="grey">assessment of the error</span> of the final chosen model.</li>
 </ul></li>
-<li><p>Ideally, the test set should be kept in a “vault,” and be brought out only at the end of the data analysis.</p></li>
+<li><p>Ideally, the test set should be kept in a “vault” and be brought out only at the end of the data analysis.</p></li>
 </ul>
 </div>
 </section>
 <section id="training-validation-and-test-ii" class="level2">
-<h2 class="anchored" data-anchor-id="training-validation-and-test-ii">Training, validation and test II</h2>
+<h2 class="anchored" data-anchor-id="training-validation-and-test-ii">Training, validation, and test II</h2>
 <ul>
-<li>There is no precise rule on how to select the size of these sets; some rule of thumbs are given in the picture below.</li>
+<li>There is no precise rule on how to select the size of these sets; a rule of thumb is given in the picture below.</li>
 </ul>
 <div class="flourish-embed flourish-chart" data-src="visualisation/14246499">
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 </div>
 <ul>
-<li>The training, validation and test setup <span class="orange">reduces</span> the <span class="orange">number of observations</span> that we can use for fitting the models. It could be problematic if the sample size is relatively small.</li>
+<li>The training, validation, and test setup <span class="orange">reduces</span> the <span class="orange">number of observations</span> we can use to fit the models. It could be problematic if the sample size is relatively small.</li>
 </ul>
 </section>
 <section id="cross-validation-i" class="level2">
@@ -787,7 +787,7 @@ Bias-variance decomposition
 <li><p>Hence, the model must be estimated <span class="orange"><span class="math inline">K</span> times</span>, which could be computationally challenging.</p></li>
 <li><p>The error of each on the <span class="math inline">k</span>th folds is computed as <span class="math display">\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
 </span> where <span class="math inline">|V_k|</span> is the cardinality of <span class="math inline">V_k</span>, i.e. <span class="math inline">V_k \approx n / K</span>.</p></li>
-<li><p>We summarize the above errors using for instance the mean, obtaining the following <span class="orange">estimate</span> for the <span class="orange">expected prediction error</span>: <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].</span></p></li>
+<li><p>We summarize the above errors using the mean, obtaining the following <span class="orange">estimate</span> for the <span class="orange">expected prediction error</span>: <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].</span></p></li>
 </ul>
 </div>
 </section>
@@ -810,8 +810,8 @@ Bias-variance decomposition
 <h2 class="anchored" data-anchor-id="leave-one-out-cross-validation">Leave-one-out cross-validation</h2>
 <ul>
 <li><p>The maximum possible value for <span class="math inline">K</span> is <span class="math inline">n</span>, the <span class="orange">leave-one-out</span> cross-validation (LOO-CV).</p></li>
-<li><p>The LOO-CV is hard to implement, because it requires the estimation of <span class="math inline">n</span> different models.</p></li>
-<li><p>However in <span class="blue">linear models</span> there is a brilliant <span class="orange">computational shortcut</span> that we can exploit.</p></li>
+<li><p>The LOO-CV is hard to implement because it requires the estimation of <span class="math inline">n</span> different models.</p></li>
+<li><p>However, in <span class="blue">linear models</span> there is a brilliant <span class="orange">computational shortcut</span> that we can exploit.</p></li>
 </ul>
 <div class="incremental">
 <div class="callout-note callout callout-style-simple no-icon callout-captioned">
@@ -824,7 +824,7 @@ LOO-CV (Linear models)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Let <span class="math inline">\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}</span> be the leave-one-out predictions of a <span class="blue">linear model</span> and let <span class="math inline">h_i = [\bm{H}]_{ii}</span> and <span class="math inline">\hat{y}_i</span> be respectively the leverages and the predictions of the full model. Then: <span class="math display">
+<p>Let <span class="math inline">\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}</span> be the leave-one-out predictions of a <span class="blue">linear model</span> and let <span class="math inline">h_i = [\bm{H}]_{ii}</span> and <span class="math inline">\hat{y}_i</span> be the leverages and the predictions of the full model. Then: <span class="math display">
 y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </span> Therefore, the leave-one-out mean squared error is <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{n} \sum_{i=1}^{n} \widehat{\text{Err}}_{V_i}= \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - h_i}\right)^2.</span></p>
 </div>
@@ -849,7 +849,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </section>
 <section id="loo-cv-and-gcv-cholesterol-data" class="level2">
 <h2 class="anchored" data-anchor-id="loo-cv-and-gcv-cholesterol-data">LOO-CV and GCV (<code>cholesterol</code> data)</h2>
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-23_d9790e9771bcfa13763f634cad6686a1">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-23_f7212af07f86f2c90c23d1141be49152">
 
 </div>
 <div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-24_68a44a691dbc1933005bbbd0630b52a0">
@@ -870,7 +870,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <li><p>A <span class="math inline">K</span>-fold CV with <span class="math inline">K=5</span> or <span class="math inline">K = 10</span> is a (upwords) <span class="orange">biased estimate</span> of <span class="math inline">\text{Err}</span> because it uses less observations than those available (either <span class="math inline">4/5</span> or <span class="math inline">9/10</span>).</p></li>
 <li><p>The LOO-CV has a very <span class="blue">small bias</span>, since each fit uses <span class="math inline">n-1</span> observations, but it has <span class="orange">high variance</span>, being the average of <span class="math inline">n</span> highly positively correlated quantities.</p></li>
 <li><p>Indeed, the estimates <span class="math inline">\hat{f}_{-i}</span> and <span class="math inline">\hat{f}_{-i'}</span> have <span class="math inline">n - 2</span> observations in common. Recall that the variance of the sum is: <span class="math display">\text{var}(X + Y) = \text{var}(X) + \text{var}(Y) + 2\text{cov}(X, Y).</span></p></li>
-<li><p>Overall, the choice is very much context dependent.</p></li>
+<li><p>Overall, the choice is very much context-dependent.</p></li>
 </ul>
 </div>
 <!-- ## ☠️ - Optimism, random-$X$ -->
@@ -887,7 +887,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <ul class="incremental">
 <li><p>The main statistical method for estimating unknown parameters of a model is the <span class="blue">maximize the log-likelihood</span> <span class="math inline">\ell(\theta) = \ell(\theta; y_1,\dots,y_n)</span>.</p></li>
 <li><p>However, we cannot pick the value of <span class="math inline">p</span> that maximizes the log-likelihood (why not?)</p></li>
-<li><p>We must take into account the different number of parameters, introducing a <span class="orange">penalty</span>: <span class="math display">
+<li><p>We must consider the different number of parameters, introducing a <span class="orange">penalty</span>: <span class="math display">
 \text{IC}(p) = -2 \ell(\hat{\theta}) + \text{penalty}(p),
 </span></p></li>
 <li><p>The <span class="math inline">\text{IC}</span> is called an <span class="orange">information criterion</span>. We select the number of parameters that minimizes the <span class="math inline">\text{IC}</span>.</p></li>
@@ -909,7 +909,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - \underbrace{2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}}}_{\text{Does not depend on } p} \\
 &amp; = - 2 \: \mathbb{E}_{\theta_0}\left[\int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}} \right]
 \end{aligned}
-</span> is <span class="orange">minimized</span>. However, we cannot compute nor minimize <span class="math inline">S(p)</span>, because <span class="math inline">\theta_0</span> is unknown.</p></li>
+</span> is <span class="orange">minimized</span>. However, we cannot compute nor minimize <span class="math inline">S(p)</span> because <span class="math inline">\theta_0</span> is unknown.</p></li>
 </ul>
 </div>
 </section>
@@ -917,11 +917,11 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 <h2 class="anchored" data-anchor-id="the-akaike-information-criterion-ii">The Akaike information criterion II</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Although <span class="math inline">S(p)</span> cannot be obtained, under technical conditions it turns out that <span class="math display">
+<li><p>Although <span class="math inline">S(p)</span> cannot be obtained under technical conditions, it turns out that <span class="math display">
 \text{AIC} = -2 \ell(\hat{\theta}) + 2 p,
-</span> namely the <span class="orange">Akaike information criterion</span> is a good estimator of <span class="math inline">S(p)</span>.</p></li>
+</span> namely the <span class="orange">Akaike information criterion</span>, is a good estimator of <span class="math inline">S(p)</span>.</p></li>
 <li><p>In practice, we will select the value of <span class="math inline">p</span> minimizing the <span class="math inline">\text{AIC}</span>, which is typically quite easy.</p></li>
-<li><p>The factor <span class="math inline">2</span> is just a <span class="blue">cosmetic convention</span>, which has been introduced to match the quantities appearing in the usual asymptotic theory.</p></li>
+<li><p>The factor <span class="math inline">2</span> is just a <span class="blue">cosmetic convention</span>, introduced to match the quantities of the usual asymptotic theory.</p></li>
 <li><p>More formally, it can be proved (under technical conditions) that <span class="math display">
 \mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = S(p),
 </span> for <span class="math inline">n \rightarrow \infty</span>.</p></li>
@@ -931,7 +931,7 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 <section id="aic-aicc-bic" class="level2">
 <h2 class="anchored" data-anchor-id="aic-aicc-bic">AIC, AICc, BIC</h2>
 <ul>
-<li>Akaike’s original work was followed by several other proposals, different in their assumptions and the way they approximate certain quantities.</li>
+<li>several other proposals followed Akaike’s original work, different in their assumptions and the way they approximate certain quantities.</li>
 </ul>
 <div class="incremental">
 <table class="table">
@@ -968,7 +968,7 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 </div>
 <div class="incremental">
 <ul>
-<li>The <span class="math inline">\text{AIC}_c</span> is an <span class="orange">higher order correction</span> of the <span class="math inline">\text{AIC}</span> and the differences tends to be negligible for high values of <span class="math inline">n</span>.</li>
+<li>The <span class="math inline">\text{AIC}_c</span> is an <span class="orange">higher order correction</span> of the <span class="math inline">\text{AIC}</span> and the differences tend to be negligible for high values of <span class="math inline">n</span>.</li>
 </ul>
 </div>
 <div class="incremental">

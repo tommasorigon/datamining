@@ -74,7 +74,7 @@ William of Ockham
 -   You may have seen these notions before...
 
 -   ...but it is worth discussing the [details]{.orange} of these ideas
-    once again, with the maturity you now have in a M.Sc.
+    once again, with the maturity you now have in an M.Sc.
 
 -   They are the [foundations]{.blue} of [statistical
     learning]{.orange}.
@@ -133,21 +133,21 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
 ## Polynomial regression
 
 ::: incremental
--   The function $f(x)$ is unknown, therefore it should be estimated.
+-   The function $f(x)$ is unknown, therefore, it should be estimated.
 
 -   A simple approach is using the tools of [Unit
     A.1](unit_A1_slides.html), such as [polynomial regression]{.orange}:
     $$
     f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
     $$ namely $f(x)$ is [approximated]{.orange} with a polynomial of
-    degree $p-1$ (i.e. Taylor expansions).
+    degree $p-1$ (i.e., Taylor expansions).
 
 -   This model is linear in the parameters: ordinary least squares can
     be applied.
 
 -   How do we choose the [degree of the polynomial]{.blue} $p - 1$?
 
--   Without a clear guidance, in principle any value of
+-   Without clear guidance, in principle, any value of
     $p \in \{1,\dots,n\}$ could be appropriate.
 
 -   Let us compare the [mean squared error]{.blue} (MSE) on yesterday's
@@ -284,7 +284,7 @@ curve(f(x), n = 300, add = TRUE)
 -   Taking this reasoning to the extreme would lead to the choice
     $p = n$, so that $$
     \text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
-    $$ i.e. an apparently perfect fit. This procedure is called
+    $$ i.e., a perfect fit. This procedure is called
     [interpolation]{.blue}.
 
 -   However, we are [not]{.orange} interested in predicting
@@ -293,10 +293,10 @@ curve(f(x), n = 300, add = TRUE)
     points: $$
     (x_1, \tilde{y}_1), \dots, (x_n, \tilde{y}_n), 
     $$ using $\hat{y}_i = f(x_i; \hat{\beta})$, where $\hat{\beta}$ is
-    obtained using yesterday data.
+    obtained using yesterday's data.
 
 -   [Remark]{.orange}. Tomorrow's r.v. $\tilde{Y}_1,\dots, \tilde{Y}_n$
-    follow the same scheme of yesterday's data.
+    follow the same scheme as yesterday's data.
 :::
 
 ## Tomorrow's data, polynomial regression
@@ -362,16 +362,16 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
     $\text{MSE}_{\text{test}}$ decrease.
 
 -   For [larger values]{.orange} of $p$, the improvement gradually
-    ceases and the polynomial follows [random fluctuations]{.orange} in
+    ceases, and the polynomial follows [random fluctuations]{.orange} in
     yesterday's data which are [not observed]{.blue} in the [new
     sample]{.blue}.
 
--   An over-adaptation to yesterday data is called
+-   An over-adaptation to yesterday's data is called
     [overfitting]{.orange}, which occurs when the training
     $\text{MSE}_{\text{train}}$ is low but the test
     $\text{MSE}_{\text{test}}$ is high.
 
--   The yesterday's dataset is available from the textbook (A&S)
+- Yesterday's dataset is available from the textbook (A&S)
     website:
 
     -   Dataset <http://azzalini.stat.unipd.it/Book-DM/yesterday.dat>
@@ -394,8 +394,8 @@ round(t(X) %*% X, 8)
 ```
 
 -   Polynomial regression becomes numerically unstable when $p \ge 13$
-    (`raw = TRUE`, i.e. using the original polynomials) and $p \ge 25$
-    (`raw = FALSE`, i.e. using orthogonal polynomials).
+    (`raw = TRUE`, i.e., using the original polynomials) and $p \ge 25$
+    (`raw = FALSE`, i.e., using orthogonal polynomials).
 
 ## ☠️ - Lagrange interpolating polynomials
 
@@ -415,16 +415,16 @@ $$
     regression purposes, but may have interesting applications in other
     contexts.
 
-# Errors, trade-offs and optimism
+# Errors, trade-offs, and optimism
 
 ## Summary and notation (fixed-$X$)
 
 ::: incremental
 
--   Let us better formalize the analysis we did so far, using the appropriate
+-   Let us better formalize the analysis we have done so far using the appropriate
     mathematical tools.
 
--   In the previous example we consider two set of [random
+-   In the previous example, we consider two sets of [random
     variables]{.blue}:
 
     -   The [training set]{.orange} (yesterday) $Y_1,\dots, Y_n$,
@@ -448,7 +448,7 @@ $$
     $\text{var}(\epsilon_i)=\sigma^2$.
 
 -   The [training data]{.orange} is used to estimate a function of the
-    covariates $\hat{f}(\bm{x}_i)$. We hope that our predictions works well on the [test set]{.blue}.
+    covariates $\hat{f}(\bm{x}_i)$. We hope our predictions work well on the [test set]{.blue}.
     
 :::
 
@@ -462,7 +462,7 @@ $$
     function]{.orange}. The "[F]{.blue}" is a reminder of the
     [f]{.blue}ixed-$X$ design.
 
--   The expectation is taken with respect to traning random variable
+-   The expectation is taken with respect to training random variable
     $Y_1,\dots,Y_n$, implicitly appearing in $\hat{f}(\bm{x})$, and the
     new data points $\tilde{Y}_1,\dots,\tilde{Y}_n$.
 
@@ -502,7 +502,7 @@ and for any $i = 1,\dots,n$.
 
 ::: incremental
 -   We would like to make the [mean squared error]{.orange} as
-    [small]{.orange} as possible, e.g. by choosing an "optimal" degree
+    [small]{.orange} as possible, e.g., by choosing an "optimal" degree
     of the polynomial $p-1$ that minimizes it.
 
 -   Let us recall the previous decomposition $$
@@ -526,7 +526,7 @@ and for any $i = 1,\dots,n$.
 
 ::: incremental
 
-- The principles described for regression settings also applies to [classification problems]{.blue}, after the appropriate adjustments. We focus here on the binary case $Y \in \{0, 1\}$.
+- After the appropriate adjustments, the principles described for regression settings also apply to [classification problems]{.blue}. We focus on the binary case $Y \in \{0, 1\}$.
 
 - In this context, the relationship between $\bm{x}_i$ and the [Bernoulli]{.orange} r.v. $Y_i$ is such that 
 $$
@@ -539,7 +539,7 @@ where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone transformation, such as t
     -   The [misclassification rate]{.orange}
         $\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i  \neq \hat{y}_i)$,
         where the predictions are obtained dichotomizing the estimated probabilities $\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) > 1/2)$.
-    -   The [deviance]{.orange} or [cross-entropy]{.orange} loss functions is defined as
+    -   The [deviance]{.orange} or [cross-entropy]{.orange} loss functions are defined as
         $$
         \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
         $$
@@ -551,11 +551,11 @@ where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone transformation, such as t
 
 -   In many textbooks, including A&S, the starting point of the analysis
     is the [reducible error]{.blue}, because it is the only one we can
-    control and it has a transparent interpretation.
+    control and has a transparent interpretation.
 
 -   The reducible error measures the [discrepancy]{.orange} between the
     unknown function $f(\bm{x})$ and its estimate $\hat{f}(\bm{x})$ and
-    therefore it is a [natural measure]{.orange} of goodness of fit.
+    therefore it is a [natural measure]{.orange} of the goodness of fit.
 
 -   What follows is the [most important result]{.blue} of this unit.
 
@@ -596,14 +596,14 @@ $$
 ## If we knew $f(x)$...
 
 ```{r}
-# I am storing these information for simplicity
+# I am storing this information for simplicity
 x <- dataset$x
 n <- nrow(dataset)
 
 # The standard deviation of the data generative process is sigma2true = 0.01, declared in the book and the slides
 sigmatrue <- 0.01
 
-# The true values have been downloaded from the A&S texbook; see here: http://azzalini.stat.unipd.it/Book-DM/f_true.R
+# The true values have been downloaded from the A&S textbook; see here: http://azzalini.stat.unipd.it/Book-DM/f_true.R
 ftrue <- c(
   0.4342, 0.4780, 0.5072, 0.5258, 0.5369,
   0.5426, 0.5447, 0.5444, 0.5425, 0.5397,
@@ -615,7 +615,7 @@ ftrue <- c(
 ```
 
 ```{r}
-# Number of degree of the polynomial
+# Number of degrees of the polynomial
 degree_list <- 1:23
 # Number of parameters in the model
 p_list <- degree_list + 1
@@ -627,7 +627,6 @@ Bias2s <- sapply(p_list, function(p) {
 
 # Variance
 Vars <- p_list * (sigmatrue^2) / n 
-# This simplified formula can be obtained after some algebraic manipulation, under the assumption that the covariates in the test set are equal to those in the training; please refer to the exercises.
 
 # Reducible errors
 MSEs <- Bias2s + Vars
@@ -673,7 +672,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     $\hat{f}(\bm{x})$ and its tendency to follow random fluctuations of
     the data.
 
--   The [variance]{.blue} increases together with the model complexity.
+-   The [variance]{.blue} increases with the model complexity.
 
 -   It is not possible to minimize both the bias and the variance, there
     is a [trade-off]{.orange}.
@@ -705,7 +704,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     \widehat{\mathrm{ErrF}} =  \frac{1}{n}\sum_{i=1}^n\mathscr{L}\{\tilde{y}_i; \hat{f}(\bm{x}_i)\}.
     $$
 
--   This is exactly what we already did with yesterday's and tomorrow's
+-   This is precisely what we already did with yesterday's and tomorrow's
     data!
 :::
 
@@ -737,7 +736,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 ::: incremental
 
-- Let us investigate this discrepancy between training and test more in depth.
+- Let us investigate this discrepancy between training and test more in-depth.
 
 -   Under a [squared loss function]{.blue}, the [in-sample prediction
     error]{.orange} is $$
@@ -762,7 +761,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 ## Optimism II
 
 ::: incremental
--   It can be proved (see Exercises), that the [optimism]{.orange} has a
+-   It can be proved (see Exercises) that the [optimism]{.orange} has a
     very simple form: $$
     \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \hat{\bm{f}})\}.
     $$
@@ -821,7 +820,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 ::: columns
 ::: {.column width="50%"}
 ```{r}
-#| fig-width: 6
+#| fig-width: 5
 #| fig-height: 4.5
 #| warning: false
 # rm(list = ls())
@@ -867,7 +866,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
     $(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)$. This time the covariates are
     [random]{.orange}.
 
--   The main assumptions is that these pairs are [iid]{.orange}, namely:
+-   The main assumption is that these pairs are [iid]{.orange}, namely:
     $$(X_i, Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \quad  i=1,\dots,n.$$
 
 -   Conditionally on $X_i = \bm{x}_i$, in [regression problems]{.orange}
@@ -886,7 +885,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
     $$ where $(\tilde{X},\tilde{Y}) \sim \mathcal{P}$ is a [new data
     point]{.blue} and $\hat{f}$ is an estimate using $n$ observations.
 
--   We can [randomly]{.orange} split the original set data
+-   We can [randomly]{.orange} split the original set of data
     $\{1,\dots,n\}$ into two groups $V_\text{train}$ and
     $V_\text{test}$.
 
@@ -958,18 +957,17 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Error")
 ```
 
-## Training, validation and test I
+## Training, validation, and test I
 
 ::: incremental
--   In many occasions, we may need to select several complexity
+- On many occasions, we may need to select several complexity
     parameters and compare hundreds of models.
 
 -   If the same test set is used for such a task, the
     final assessment of the error is somewhat biased and [too
     optimistic]{.orange}, because we are "learning" from the test set.
 
--   If we are in a data-rich situation, the best approach is to randomly
-    divide the dataset into three parts:
+-   If we are in a data-rich situation, the best approach is to divide the dataset into three parts randomly:
 
     -   a [training set]{.orange}, used for [fitting]{.orange} the
         models;
@@ -978,14 +976,14 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     -   a [test set]{.grey}, for [assessment of the error]{.grey} of the
         final chosen model.
 
--   Ideally, the test set should be kept in a "vault," and be brought
+-   Ideally, the test set should be kept in a "vault" and be brought
     out only at the end of the data analysis.
 :::
 
-## Training, validation and test II
+## Training, validation, and test II
 
 -   There is no precise rule on how to select the size of these sets;
-    some rule of thumbs are given in the picture below.
+    a rule of thumb is given in the picture below.
 
 ::: {.flourish-embed .flourish-chart data-src="visualisation/14246499"}
 ```{=html}
@@ -993,8 +991,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 ```
 :::
 
--   The training, validation and test setup [reduces]{.orange} the
-    [number of observations]{.orange} that we can use for fitting the
+-   The training, validation, and test setup [reduces]{.orange} the
+    [number of observations]{.orange} we can use to fit the
     models. It could be problematic if the sample size is relatively
     small.
 
@@ -1031,7 +1029,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     $$ where $|V_k|$ is the cardinality of $V_k$, i.e.
     $V_k \approx n / K$.
 
--   We summarize the above errors using for instance the mean, obtaining
+-   We summarize the above errors using the mean, obtaining
     the following [estimate]{.orange} for the [expected prediction
     error]{.orange}:
     $$\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].$$
@@ -1085,10 +1083,10 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   The maximum possible value for $K$ is $n$, the
     [leave-one-out]{.orange} cross-validation (LOO-CV).
 
--   The LOO-CV is hard to implement, because it requires the estimation
+-   The LOO-CV is hard to implement because it requires the estimation
     of $n$ different models.
 
--   However in [linear models]{.blue} there is a brilliant
+-   However, in [linear models]{.blue} there is a brilliant
     [computational shortcut]{.orange} that we can exploit.
 
 . . .
@@ -1098,7 +1096,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 Let $\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}$ be the leave-one-out
 predictions of a [linear model]{.blue} and let $h_i = [\bm{H}]_{ii}$ and
-$\hat{y}_i$ be respectively the leverages and the predictions of the
+$\hat{y}_i$ be the leverages and the predictions of the
 full model. Then: $$
 y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 $$ Therefore, the leave-one-out mean squared error is
@@ -1131,7 +1129,7 @@ data_goodness <- data.frame(degree = degree_list)
 for (degree in degree_list) {
   # Fitting a polynomial of degree p -1
   fit <- lm(cholesterol.decrease ~ poly(compliance, degree = degree, raw = FALSE), data = dataset)
-  # Computation of the leverages h_i in an efficient manner (using QR)
+  # Computation of the leverages h_i efficiently (using QR)
   lev <- influence(fit)$hat
   data_goodness$LOO_CV[degree] <- mean(((dataset$cholesterol.decrease - fitted(fit)) / (1 - lev))^2)
   p <- degree + 1
@@ -1182,7 +1180,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     is:
     $$\text{var}(X + Y) = \text{var}(X) + \text{var}(Y) + 2\text{cov}(X, Y).$$
 
--   Overall, the choice is very much context dependent.
+-   Overall, the choice is very much context-dependent.
 :::
 
 <!-- ## ☠️ - Optimism, random-$X$ -->
@@ -1205,7 +1203,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   However, we cannot pick the value of $p$ that maximizes the
     log-likelihood (why not?)
 
--   We must take into account the different number of parameters,
+-   We must consider the different number of parameters,
     introducing a [penalty]{.orange}: $$
     \text{IC}(p) = -2 \ell(\hat{\theta}) + \text{penalty}(p),
     $$
@@ -1237,7 +1235,7 @@ S(p) &= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(
 & = - 2 \: \mathbb{E}_{\theta_0}\left[\int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}} \right] 
 \end{aligned}
 $$
-is [minimized]{.orange}. However, we cannot compute nor minimize $S(p)$, because $\theta_0$ is unknown. 
+is [minimized]{.orange}. However, we cannot compute nor minimize $S(p)$ because $\theta_0$ is unknown. 
 
 :::
 
@@ -1245,15 +1243,15 @@ is [minimized]{.orange}. However, we cannot compute nor minimize $S(p)$, because
 
 ::: incremental
 
-- Although $S(p)$ cannot be obtained, under technical conditions it turns out that
+- Although $S(p)$ cannot be obtained under technical conditions, it turns out that
 $$
 \text{AIC} = -2 \ell(\hat{\theta}) + 2 p,
 $$
-namely the [Akaike information criterion]{.orange} is a good estimator of $S(p)$.
+namely the [Akaike information criterion]{.orange}, is a good estimator of $S(p)$.
 
 - In practice, we will select the value of $p$ minimizing the $\text{AIC}$, which is typically quite easy. 
 
-- The factor $2$ is just a [cosmetic convention]{.blue}, which has been introduced to match the quantities appearing in the usual asymptotic theory. 
+- The factor $2$ is just a [cosmetic convention]{.blue}, introduced to match the quantities of the usual asymptotic theory. 
 
 
 - More formally, it can be proved (under technical conditions) that
@@ -1266,7 +1264,7 @@ for $n \rightarrow \infty$.
 
 ## AIC, AICc, BIC
 
--   Akaike's original work was followed by several other proposals,
+- several other proposals followed Akaike's original work,
     different in their assumptions and the way they approximate certain
     quantities.
 
@@ -1281,7 +1279,7 @@ for $n \rightarrow \infty$.
 . . .
 
 -   The $\text{AIC}_c$ is an [higher order correction]{.orange} of the
-    $\text{AIC}$ and the differences tends to be negligible for high
+    $\text{AIC}$ and the differences tend to be negligible for high
     values of $n$.
 
 . . .
