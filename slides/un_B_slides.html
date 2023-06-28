@@ -1022,7 +1022,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </span></p></li>
 <li class="fragment"><p>The <span class="math inline">\text{IC}</span> is called an <span class="orange">information criterion</span>. We select the number of parameters that minimizes the <span class="math inline">\text{IC}</span>.</p></li>
 <li class="fragment"><p>The choice of the specific penalty identifies a particular criterion.</p></li>
-<li class="fragment"><p>An advantage of <span class="math inline">IC</span> is that they are based on the full dataset.</p></li>
+<li class="fragment"><p>An advantage of <span class="math inline">\text{IC}</span> is that they are based on the full dataset.</p></li>
 </ul>
 </div>
 </section>
@@ -1034,7 +1034,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 \text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\theta)) = \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} - \int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\theta)\mathrm{d}\tilde{\bm{Y}}},
 </span> between the “true” model <span class="math inline">p(\bm{Y};\theta_0)</span> with parameter <span class="math inline">\theta_0</span> and the specified model <span class="math inline">p(\bm{Y};\theta)</span>.</p></li>
 <li class="fragment"><p>In the above Kullback-Leibler, for any <span class="math inline">p</span> the value <span class="math inline">\theta</span> is replaced by the <span class="blue">maximum likelihood estimator</span> <span class="math inline">\hat{\theta} = \hat{\theta}(\bm{Y})</span>, using the data <span class="math inline">\bm{Y} = (Y_1,\dots,Y_n)</span>.</p></li>
-<li class="fragment"><p>Ideally, we would select <span class="math inline">p</span> such that the expectation w.r.t. <span class="math inline">p(\bm{Y}; \theta_0)</span> <span class="math display">
+<li class="fragment"><p>Hence, we would like to select <span class="math inline">p</span> such that the expectation w.r.t. <span class="math inline">p(\bm{Y}; \theta_0)</span> <span class="math display">
 \begin{aligned}
 S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - \underbrace{2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}}}_{\text{Does not depend on } p} \\
 &amp; = - 2 \: \mathbb{E}_{\theta_0}\left[\int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}} \right]
@@ -1095,8 +1095,14 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 </tr>
 </tbody>
 </table>
+</div>
+<div class="fragment">
 <ul>
-<li><p>The <span class="math inline">\text{AIC}_c</span> is an <span class="orange">higher order correction</span> of the <span class="math inline">\text{AIC}</span> and the differences tends to be negligible for high values of <span class="math inline">n</span>.</p></li>
+<li>The <span class="math inline">\text{AIC}_c</span> is an <span class="orange">higher order correction</span> of the <span class="math inline">\text{AIC}</span> and the differences tends to be negligible for high values of <span class="math inline">n</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
 <li><p>The justification of <span class="math inline">\text{BIC}</span> is instead related to Bayesian statistics.</p></li>
 <li><p>Since <span class="math inline">\log{n} &gt; 2</span> for any <span class="math inline">n &gt; 7</span>, it means that the <span class="math inline">\text{BIC}</span> <span class="blue">penalty</span> is typically <span class="blue">stronger</span> than the one of <span class="math inline">\text{AIC}</span>.</p></li>
 </ul>
@@ -1104,15 +1110,29 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 </section>
 <section id="aic-and-bic-cholesterol-data" class="slide level2 center">
 <h2>AIC and BIC (<code>cholesterol</code> data)</h2>
-
-<img data-src="un_B_files/figure-revealjs/unnamed-chunk-25-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
-<section id="an-overly-optimistic-summary" class="slide level2 center">
-<h2>An overly optimistic summary</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-25_d69f0a142b89f6a1e217d3a8cefa00c7">
+<div class="cell-output-display">
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-25-1.png" width="750"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-26_a58caaeb033cbb49271fd242f52144a6">
+<div class="cell-output-display">
+<p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-26-1.png" width="750"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="an-optimistic-summary" class="slide level2 center">
+<h2>An optimistic summary</h2>
 </section>
 <section id="the-cholesterol-data-final-model-p-4" class="slide level2 center">
 <h2>The <code>cholesterol</code> data: final model (<span class="math inline">p = 4</span>)</h2>
 
-<img data-src="un_B_files/figure-revealjs/unnamed-chunk-26-1.png" width="1200" class="r-stretch quarto-figure-center"></section></section>
+<img data-src="un_B_files/figure-revealjs/unnamed-chunk-27-1.png" width="1200" class="r-stretch quarto-figure-center"></section></section>
 <section id="references" class="title-slide slide level1 center">
 <h1>References</h1>
 <ul>

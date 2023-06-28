@@ -160,7 +160,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </ul></li>
   <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation">Cross-validation</a>
   <ul class="collapse">
-  <li><a href="#the-cholesterol-data" id="toc-the-cholesterol-data" class="nav-link" data-scroll-target="#the-cholesterol-data">The <code>cholesterol</code> data</a></li>
+  <li><a href="#another-example-cholesterol-data" id="toc-another-example-cholesterol-data" class="nav-link" data-scroll-target="#another-example-cholesterol-data">Another example: <code>cholesterol</code> data</a></li>
   <li><a href="#summary-and-notation-random-x" id="toc-summary-and-notation-random-x" class="nav-link" data-scroll-target="#summary-and-notation-random-x">Summary and notation (random-<span class="math inline">X</span>)</a></li>
   <li><a href="#expected-prediction-error" id="toc-expected-prediction-error" class="nav-link" data-scroll-target="#expected-prediction-error">Expected prediction error</a></li>
   <li><a href="#mse-on-training-and-test-cholesterol-data" id="toc-mse-on-training-and-test-cholesterol-data" class="nav-link" data-scroll-target="#mse-on-training-and-test-cholesterol-data">MSE on training and test (<code>cholesterol</code> data)</a></li>
@@ -181,7 +181,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#the-akaike-information-criterion-ii" id="toc-the-akaike-information-criterion-ii" class="nav-link" data-scroll-target="#the-akaike-information-criterion-ii">The Akaike information criterion II</a></li>
   <li><a href="#aic-aicc-bic" id="toc-aic-aicc-bic" class="nav-link" data-scroll-target="#aic-aicc-bic">AIC, AICc, BIC</a></li>
   <li><a href="#aic-and-bic-cholesterol-data" id="toc-aic-and-bic-cholesterol-data" class="nav-link" data-scroll-target="#aic-and-bic-cholesterol-data">AIC and BIC (<code>cholesterol</code> data)</a></li>
-  <li><a href="#an-overly-optimistic-summary" id="toc-an-overly-optimistic-summary" class="nav-link" data-scroll-target="#an-overly-optimistic-summary">An overly optimistic summary</a></li>
+  <li><a href="#an-optimistic-summary" id="toc-an-optimistic-summary" class="nav-link" data-scroll-target="#an-optimistic-summary">An optimistic summary</a></li>
   <li><a href="#the-cholesterol-data-final-model-p-4" id="toc-the-cholesterol-data-final-model-p-4" class="nav-link" data-scroll-target="#the-cholesterol-data-final-model-p-4">The <code>cholesterol</code> data: final model (<span class="math inline">p = 4</span>)</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
@@ -624,6 +624,7 @@ Bias-variance decomposition
 <h2 class="anchored" data-anchor-id="optimism-i">Optimism I</h2>
 <div class="incremental">
 <ul class="incremental">
+<li><p>Let us investigate this discrepancy between training and test more in depth.</p></li>
 <li><p>Under a <span class="blue">squared loss function</span>, the <span class="orange">in-sample prediction error</span> is <span class="math display">
 \text{ErrF} = \mathbb{E}(\text{MSE}_\text{test}) = \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right]
 </span></p></li>
@@ -672,8 +673,8 @@ Bias-variance decomposition
 </section>
 <section id="cross-validation" class="level1">
 <h1>Cross-validation</h1>
-<section id="the-cholesterol-data" class="level2">
-<h2 class="anchored" data-anchor-id="the-cholesterol-data">The <code>cholesterol</code> data</h2>
+<section id="another-example-cholesterol-data" class="level2">
+<h2 class="anchored" data-anchor-id="another-example-cholesterol-data">Another example: <code>cholesterol</code> data</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-hash="un_B_cache/html/unnamed-chunk-18_b9b123e73578625afe9ac4664841b928">
@@ -687,7 +688,7 @@ Bias-variance decomposition
 <li><p>For each man, we observe the pair <span class="math inline">(x_i, y_i)</span>.</p></li>
 <li><p>The response <span class="math inline">y_i</span> is the <span class="orange">decrease in cholesterol level</span> over the experiment.</p></li>
 <li><p>The covariate <span class="math inline">x_i</span> is a measure of <span class="blue">compliance</span>.</p></li>
-<li><p>We assume, as before, that the data were generated according to <span class="math display">
+<li><p>We assume, as before, that the data are generated according to <span class="math display">
     Y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n.
     </span></p></li>
 <li><p>The original data can be <a href="https://hastie.su.domains/CASI_files/DATA/cholesterol.txt">found here</a>.</p></li>
@@ -743,8 +744,8 @@ Bias-variance decomposition
 <h2 class="anchored" data-anchor-id="training-validation-and-test-i">Training, validation and test I</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>In many occasions, we may need to select several complexity parameters and compare hundres of models.</p></li>
-<li><p>If the same test set is used to evaluate many different models, the final assessment of the error is still somewhat biased and <span class="orange">too optimistic</span>, because we are “learning” from the test.</p></li>
+<li><p>In many occasions, we may need to select several complexity parameters and compare hundreds of models.</p></li>
+<li><p>If the same test set is used for such a task, the final assessment of the error is somewhat biased and <span class="orange">too optimistic</span>, because we are “learning” from the test set.</p></li>
 <li><p>If we are in a data-rich situation, the best approach is to randomly divide the dataset into three parts:</p>
 <ul class="incremental">
 <li>a <span class="orange">training set</span>, used for <span class="orange">fitting</span> the models;</li>
@@ -891,7 +892,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </span></p></li>
 <li><p>The <span class="math inline">\text{IC}</span> is called an <span class="orange">information criterion</span>. We select the number of parameters that minimizes the <span class="math inline">\text{IC}</span>.</p></li>
 <li><p>The choice of the specific penalty identifies a particular criterion.</p></li>
-<li><p>An advantage of <span class="math inline">IC</span> is that they are based on the full dataset.</p></li>
+<li><p>An advantage of <span class="math inline">\text{IC}</span> is that they are based on the full dataset.</p></li>
 </ul>
 </div>
 </section>
@@ -899,30 +900,33 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <h2 class="anchored" data-anchor-id="the-akaike-information-criterion-i">The Akaike information criterion I</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>For any <span class="math inline">p</span>, Akaike suggested minimizing the so-called <span class="orange">Kullback-Leibler divergence</span>: <span class="math display">
+<li><p>Akaike suggested minimizing over <span class="math inline">p</span> the following <span class="orange">Kullback-Leibler divergence</span>: <span class="math display">
 \text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\theta)) = \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} - \int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\theta)\mathrm{d}\tilde{\bm{Y}}},
 </span> between the “true” model <span class="math inline">p(\bm{Y};\theta_0)</span> with parameter <span class="math inline">\theta_0</span> and the specified model <span class="math inline">p(\bm{Y};\theta)</span>.</p></li>
-<li><p>We evaluate this discrepancy in the value of <span class="math inline">\theta</span> that maximizes <span class="math inline">\log{p(\tilde{\bm{Y}};\theta)}</span> using the data <span class="math inline">\bm{Y} = (Y_1,\dots,Y_n)</span>, namely in the <span class="blue">maximum likelihood estimator</span> <span class="math inline">\hat{\theta} = \hat{\theta}(\bm{Y})</span>.</p></li>
-<li><p>The Akaike (ideal) approach would select <span class="math inline">p</span> such that the expectation w.r.t. <span class="math inline">p(\bm{Y}; \theta_0)</span> <span class="math display">
+<li><p>In the above Kullback-Leibler, for any <span class="math inline">p</span> the value <span class="math inline">\theta</span> is replaced by the <span class="blue">maximum likelihood estimator</span> <span class="math inline">\hat{\theta} = \hat{\theta}(\bm{Y})</span>, using the data <span class="math inline">\bm{Y} = (Y_1,\dots,Y_n)</span>.</p></li>
+<li><p>Hence, we would like to select <span class="math inline">p</span> such that the expectation w.r.t. <span class="math inline">p(\bm{Y}; \theta_0)</span> <span class="math display">
 \begin{aligned}
-S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - 2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} \\
+S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - \underbrace{2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}}}_{\text{Does not depend on } p} \\
 &amp; = - 2 \: \mathbb{E}_{\theta_0}\left[\int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}} \right]
 \end{aligned}
-</span> is <span class="orange">minimized</span>. Unfortunately, we cannot compute <span class="math inline">S(p)</span>, because <span class="math inline">\theta_0</span> is unknown.</p></li>
+</span> is <span class="orange">minimized</span>. However, we cannot compute nor minimize <span class="math inline">S(p)</span>, because <span class="math inline">\theta_0</span> is unknown.</p></li>
 </ul>
 </div>
 </section>
 <section id="the-akaike-information-criterion-ii" class="level2">
 <h2 class="anchored" data-anchor-id="the-akaike-information-criterion-ii">The Akaike information criterion II</h2>
-<ul>
-<li><p>Although <span class="math inline">S(p)</span> cannot be obtained, under several technical conditions it turns out that <span class="math display">
+<div class="incremental">
+<ul class="incremental">
+<li><p>Although <span class="math inline">S(p)</span> cannot be obtained, under technical conditions it turns out that <span class="math display">
 \text{AIC} = -2 \ell(\hat{\theta}) + 2 p,
 </span> namely the <span class="orange">Akaike information criterion</span> is a good estimator of <span class="math inline">S(p)</span>.</p></li>
+<li><p>In practice, we will select the value of <span class="math inline">p</span> minimizing the <span class="math inline">\text{AIC}</span>, which is typically quite easy.</p></li>
+<li><p>The factor <span class="math inline">2</span> is just a <span class="blue">cosmetic convention</span>, which has been introduced to match the quantities appearing in the usual asymptotic theory.</p></li>
 <li><p>More formally, it can be proved (under technical conditions) that <span class="math display">
 \mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = S(p),
 </span> for <span class="math inline">n \rightarrow \infty</span>.</p></li>
-<li><p>The factor <span class="math inline">2</span> is just a <span class="blue">convention</span> and is introduced to match the quantities appearing in the usual asymptotic theory for log-likelihoods.</p></li>
 </ul>
+</div>
 </section>
 <section id="aic-aicc-bic" class="level2">
 <h2 class="anchored" data-anchor-id="aic-aicc-bic">AIC, AICc, BIC</h2>
@@ -961,8 +965,14 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 </tr>
 </tbody>
 </table>
+</div>
+<div class="incremental">
 <ul>
-<li><p>The <span class="math inline">\text{AIC}_c</span> is an <span class="orange">higher order correction</span> of the <span class="math inline">\text{AIC}</span> and the differences tends to be negligible for high values of <span class="math inline">n</span>.</p></li>
+<li>The <span class="math inline">\text{AIC}_c</span> is an <span class="orange">higher order correction</span> of the <span class="math inline">\text{AIC}</span> and the differences tends to be negligible for high values of <span class="math inline">n</span>.</li>
+</ul>
+</div>
+<div class="incremental">
+<ul>
 <li><p>The justification of <span class="math inline">\text{BIC}</span> is instead related to Bayesian statistics.</p></li>
 <li><p>Since <span class="math inline">\log{n} &gt; 2</span> for any <span class="math inline">n &gt; 7</span>, it means that the <span class="math inline">\text{BIC}</span> <span class="blue">penalty</span> is typically <span class="blue">stronger</span> than the one of <span class="math inline">\text{AIC}</span>.</p></li>
 </ul>
@@ -970,26 +980,32 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 </section>
 <section id="aic-and-bic-cholesterol-data" class="level2">
 <h2 class="anchored" data-anchor-id="aic-and-bic-cholesterol-data">AIC and BIC (<code>cholesterol</code> data)</h2>
-<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-25_fda6a6c03b0c02b2f13ad9178baee248">
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-25_3da9e1b575156abf75eac812c95b42d3">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="un_B_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="1200"></p>
-</figure>
+<p><img src="un_B_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="750"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-26_c12d789e50b85f525ea18d99b38da592">
+<div class="cell-output-display">
+<p><img src="un_B_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="750"></p>
+</div>
 </div>
 </div>
 </div>
 </section>
-<section id="an-overly-optimistic-summary" class="level2">
-<h2 class="anchored" data-anchor-id="an-overly-optimistic-summary">An overly optimistic summary</h2>
+<section id="an-optimistic-summary" class="level2">
+<h2 class="anchored" data-anchor-id="an-optimistic-summary">An optimistic summary</h2>
 </section>
 <section id="the-cholesterol-data-final-model-p-4" class="level2">
 <h2 class="anchored" data-anchor-id="the-cholesterol-data-final-model-p-4">The <code>cholesterol</code> data: final model (<span class="math inline">p = 4</span>)</h2>
-<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-26_7f0f8936ef7023ea86e74817081a72f2">
+<div class="cell" data-layout-align="center" data-hash="un_B_cache/html/unnamed-chunk-27_47d33030f8e13adc41689d0ea4d12bba">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_B_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="1200"></p>
+<p><img src="un_B_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid figure-img" width="1200"></p>
 </figure>
 </div>
 </div>

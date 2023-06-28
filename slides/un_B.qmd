@@ -1216,7 +1216,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   The choice of the specific penalty identifies a particular
     criterion.
 
--   An advantage of $IC$ is that they are based on the full dataset.
+-   An advantage of $\text{IC}$ is that they are based on the full dataset.
 :::
 
 ## The Akaike information criterion I
@@ -1230,7 +1230,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 -   In the above Kullback-Leibler, for any $p$ the value $\theta$ is replaced by the [maximum likelihood estimator]{.blue} $\hat{\theta} = \hat{\theta}(\bm{Y})$, using the data $\bm{Y} = (Y_1,\dots,Y_n)$.
     
-- Ideally, we would select $p$ such that the expectation w.r.t. $p(\bm{Y}; \theta_0)$ 
+- Hence, we would like to select $p$ such that the expectation w.r.t. $p(\bm{Y}; \theta_0)$ 
 $$
 \begin{aligned}
 S(p) &= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - \underbrace{2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}}}_{\text{Does not depend on } p} \\
@@ -1278,10 +1278,14 @@ for $n \rightarrow \infty$.
 | $\text{AIC}_c$ | Sugiura, Hurvich-Tsay | $2p + \frac{2p(p+1)}{n - (p +1)}$ |
 | $\text{BIC}$   | Akaike, Schwarz       | $p \log{n}$                       |
 
+. . .
+
 -   The $\text{AIC}_c$ is an [higher order correction]{.orange} of the
     $\text{AIC}$ and the differences tends to be negligible for high
     values of $n$.
-    
+
+. . .
+
 - The justification of $\text{BIC}$ is instead related to Bayesian statistics.
 
 -   Since $\log{n} > 2$ for any $n > 7$, it means that the $\text{BIC}$
@@ -1290,21 +1294,23 @@ for $n \rightarrow \infty$.
 
 ## AIC and BIC (`cholesterol` data)
 
+
+
+::: columns
+::: {.column width="50%"}
 ```{r}
-#| fig-width: 8
+#| fig-width: 5
 #| fig-height: 4.5
-#| fig-align: center
 
 # Organization of the results for graphical purposes
-data_bv <- data.frame(p = p_list, AIC = data_goodness$AIC, AICc = data_goodness$AICc,  BIC = data_goodness$BIC)
+data_bv <- data.frame(p = p_list, AIC = data_goodness$AIC, AICc = data_goodness$AICc)
 data_bv <- reshape2::melt(data_bv, id = "p")
-levels(data_bv$variable) <- c("AIC", "AICc", "BIC")
+levels(data_bv$variable) <- c("AIC", "AICc")
 colnames(data_bv) <- c("p", "Criterion", "value")
 
 ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
   geom_line() +
   geom_point() +
-  geom_vline(xintercept = 2, linetype = "dashed") +
   geom_vline(xintercept = 4, linetype = "dotted") +
   theme_light() +
   theme(legend.position = "top") +
@@ -1312,8 +1318,33 @@ ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
   xlab("Model complexity (p)") +
   ylab("Information Criterion (IC)")
 ```
+:::
 
-## An overly optimistic summary
+::: {.column width="50%"}
+```{r}
+#| fig-width: 5
+#| fig-height: 4.5
+# Organization of the results for graphical purposes
+data_bv <- data.frame(p = p_list, BIC = data_goodness$BIC)
+data_bv <- reshape2::melt(data_bv, id = "p")
+levels(data_bv$variable) <- c("BIC")
+colnames(data_bv) <- c("p", "Criterion", "value")
+
+ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = 2, linetype = "dotted") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Information Criterion (IC)")
+```
+:::
+:::
+
+
+## An optimistic summary
 
 ## The `cholesterol` data: final model ($p = 4$)
 
