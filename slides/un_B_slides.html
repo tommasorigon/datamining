@@ -449,7 +449,7 @@
 <h2>Yesterday’s data</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-2_0a67bf899f4da3302ca79bec6e581fbe">
+<div class="cell" data-hash="un_B_cache/revealjs/unnamed-chunk-2_3013eb589d75c45da1175a2d29f495f0">
 <div class="cell-output-display">
 <p><img data-src="un_B_files/figure-revealjs/unnamed-chunk-2-1.png" width="750"></p>
 </div>
@@ -517,7 +517,7 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <h2>Yesterday’s data, tomorrow’s prediction</h2>
 <div>
 <ul>
-<li class="fragment"><p>The <span class="blue">MSE</span> decreases as the number of parameter increases; similarly, the <span class="blue"><span class="math inline">R^2</span></span> always increases as a function of <span class="math inline">p</span>. It can be <span class="orange">proved</span> that this <span class="orange">always happens</span> in linear models.</p></li>
+<li class="fragment"><p>The <span class="blue">MSE</span> decreases as the number of parameter increases; similarly, the <span class="blue"><span class="math inline">R^2</span></span> increases as a function of <span class="math inline">p</span>. It can be <span class="orange">proved</span> that this <span class="orange">always happens</span> using ordinary least squares.</p></li>
 <li class="fragment"><p>One might be tempted to let <span class="math inline">p</span> as large as possible to make the model more flexible…</p></li>
 <li class="fragment"><p>Taking this reasoning to the extreme would lead to the choice <span class="math inline">p = n</span>, so that <span class="math display">
 \text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
@@ -525,7 +525,7 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <li class="fragment"><p>However, we are <span class="orange">not</span> interested in predicting <span class="orange">yesterday</span> data. Our goal is to predict <span class="blue">tomorrow</span>’s data, i.e.&nbsp;a <span class="blue">new set</span> of <span class="math inline">n = 30</span> points: <span class="math display">
 (x_1, \tilde{y}_1), \dots, (x_n, \tilde{y}_n),
 </span> using <span class="math inline">\hat{y}_i = f(x_i; \hat{\beta})</span>, where <span class="math inline">\hat{\beta}</span> is obtained using yesterday data.</p></li>
-<li class="fragment"><p><span class="orange">Remark</span>. Tomorrow’s r.v. <span class="math inline">\tilde{Y}_1,\dots, \tilde{Y}_n</span> follows the same scheme of yesterday’s data.</p></li>
+<li class="fragment"><p><span class="orange">Remark</span>. Tomorrow’s r.v. <span class="math inline">\tilde{Y}_1,\dots, \tilde{Y}_n</span> follow the same scheme of yesterday’s data.</p></li>
 </ul>
 </div>
 </section>
@@ -613,18 +613,18 @@ x3                0  0  0  1</code></pre>
 <h2>Summary and notation (fixed-<span class="math inline">X</span>)</h2>
 <div>
 <ul>
-<li class="fragment"><p>Let us better formalize the analysis we did, using the appropriate mathematical tools.</p></li>
+<li class="fragment"><p>Let us better formalize the analysis we did so far, using the appropriate mathematical tools.</p></li>
 <li class="fragment"><p>In the previous example we consider two set of <span class="blue">random variables</span>:</p>
 <ul>
-<li class="fragment">The <span class="orange">training set</span> (yesterday’s) <span class="math inline">Y_1,\dots, Y_n</span>, whose realization is <span class="math inline">y_1,\dots,y_n</span>.</li>
-<li class="fragment">The <span class="blue">test set</span> (tomorrow’s) <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>, whose realization is <span class="math inline">\tilde{y}_1, \dots, \tilde{y}_n</span>.</li>
+<li class="fragment">The <span class="orange">training set</span> (yesterday) <span class="math inline">Y_1,\dots, Y_n</span>, whose realization is <span class="math inline">y_1,\dots,y_n</span>.</li>
+<li class="fragment">The <span class="blue">test set</span> (tomorrow) <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>, whose realization is <span class="math inline">\tilde{y}_1, \dots, \tilde{y}_n</span>.</li>
 </ul></li>
-<li class="fragment"><p>The <span class="blue">covariates</span> <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> in this scenario are <span class="blue">deterministic</span>. This is the so-called the <span class="blue">fixed-<span class="math inline">X</span></span> design, which is a common assumption in regression models.</p></li>
-<li class="fragment"><p>We also require that the random variables <span class="math inline">Y_i</span> and <span class="math inline">\tilde{Y}_i</span> are <span class="blue">independent</span>: <span class="math display">
-  Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
-</span> where <span class="math inline">\epsilon_i</span> and <span class="math inline">\tilde{\epsilon}_i</span> are iid “<span class="orange">error</span>” terms with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
-<li class="fragment"><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span>.</p></li>
-<li class="fragment"><p>We hope that our predictions works well on the <span class="blue">test set</span>, which can be used to evaluate the quality of the estimated <span class="math inline">\hat{f}(\bm{x}_i)</span>.</p></li>
+<li class="fragment"><p>The <span class="blue">covariates</span> <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> in this scenario are <span class="blue">deterministic</span>. This is the so-called <span class="blue">fixed-<span class="math inline">X</span></span> design, which is a common assumption in regression models.</p></li>
+<li class="fragment"><p>We also assume that the random variables <span class="math inline">Y_i</span> and <span class="math inline">\tilde{Y}_i</span> are <span class="blue">independent</span>.</p></li>
+<li class="fragment"><p>In <span class="orange">regression</span> problems we customarily assume that <span class="math display">
+    Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
+  </span> where <span class="math inline">\epsilon_i</span> and <span class="math inline">\tilde{\epsilon}_i</span> are iid “<span class="orange">error</span>” terms, with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
+<li class="fragment"><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span>. We hope that our predictions works well on the <span class="blue">test set</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -653,7 +653,7 @@ x3                0  0  0  1</code></pre>
 <p><strong>Error decomposition (reducible and irreducible)</strong></p>
 </div>
 <div class="callout-content">
-<p>Under a quadratic loss, <span class="orange">each element</span> of the <span class="blue">in-sample prediction error</span> admits the following decomposition <span class="math display">
+<p>In a regression problem, under a quadratic loss, <span class="orange">each element</span> of the <span class="blue">in-sample prediction error</span> admits the following decomposition <span class="math display">
 \begin{aligned}
 \mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right] &amp;= \mathbb{E}\left[\{f(\bm{x}_i) + \tilde{\epsilon}_i - \hat{f}(\bm{x}_i)\}^2\right] \\
 &amp; = \mathbb{E}\left[\{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}^2\right] + \mathbb{E}(\tilde{\epsilon}_i^2) + 2 \: \mathbb{E}\left[\tilde{\epsilon}_i \: \{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}\right]\\
@@ -679,11 +679,30 @@ x3                0  0  0  1</code></pre>
 </ul>
 </div>
 </section>
+<section id="classification-problems" class="slide level2 center">
+<h2>Classification problems</h2>
+<div>
+<ul>
+<li class="fragment"><p>The principles described for regression settings also applies to <span class="blue">classification problems</span>, after the appropriate adjustments. We focus here on the binary case <span class="math inline">Y \in \{0, 1\}</span>.</p></li>
+<li class="fragment"><p>In this context, the relationship between <span class="math inline">\bm{x}_i</span> and the <span class="orange">Bernoulli</span> r.v. <span class="math inline">Y_i</span> is such that <span class="math display">
+\mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
+</span> where <span class="math inline">g(x) :\mathbb{R} \rightarrow (0,1)</span> is monotone transformation, such as the inverse logit.</p></li>
+<li class="fragment"><p>Examples of loss functions for <span class="blue">binary classification problems</span> <span class="math inline">Y \in \{0, 1\}</span> are:</p>
+<ul>
+<li class="fragment">The <span class="orange">misclassification rate</span> <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)</span>, where the predictions are obtained dichotomizing the estimated probabilities <span class="math inline">\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) &gt; 1/2)</span>.</li>
+<li class="fragment">The <span class="orange">deviance</span> or <span class="orange">cross-entropy</span> loss functions is defined as <span class="math display">
+\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
+</span></li>
+</ul></li>
+<li class="fragment"><p>Under a misclassification loss, the <span class="blue">Bayes rate</span> is the error rate we would get if we knew the true <span class="math inline">p(\bm{x}_i)</span>. This is the <span class="orange">irreducible error</span> for classification problems.</p></li>
+</ul>
+</div>
+</section>
 <section id="bias-variance-trade-off" class="slide level2 center">
 <h2>Bias-variance trade-off</h2>
 <ul>
-<li><p>In many textbooks, including A&amp;S, the starting point of the analysis is the <span class="blue">reducible error</span>, because it is the only one we can control and it has a transparent interpretatio</p></li>
-<li><p>The reducible error measures the <span class="orange">discrepancy</span> between the unknown function <span class="math inline">f(x)</span> and its estimate <span class="math inline">\hat{f}(\bm{x})</span> and therefore it is a <span class="orange">natural measure</span> of goodness of fit.</p></li>
+<li><p>In many textbooks, including A&amp;S, the starting point of the analysis is the <span class="blue">reducible error</span>, because it is the only one we can control and it has a transparent interpretation.</p></li>
+<li><p>The reducible error measures the <span class="orange">discrepancy</span> between the unknown function <span class="math inline">f(\bm{x})</span> and its estimate <span class="math inline">\hat{f}(\bm{x})</span> and therefore it is a <span class="orange">natural measure</span> of goodness of fit.</p></li>
 <li><p>What follows is the <span class="blue">most important result</span> of this unit.</p></li>
 </ul>
 <div class="fragment">
@@ -701,8 +720,8 @@ x3                0  0  0  1</code></pre>
 </div>
 </div>
 </section>
-<section id="the-in-sample-prediction-error-1" class="slide level2 center">
-<h2>The in-sample prediction error</h2>
+<section id="in-sample-prediction-error-of-ordinary-least-squares" class="slide level2 center">
+<h2>In-sample prediction error of ordinary least squares</h2>
 <div>
 <ul>
 <li class="fragment"><p>Summarizing, the <span class="orange">in-sample prediction error</span> under <span class="blue">squared loss</span> can be decomposed as <span class="math display">
@@ -1083,6 +1102,9 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 <h2>AIC and BIC (<code>cholesterol</code> data)</h2>
 
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-25-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
+<section id="an-overly-optimistic-summary" class="slide level2 center">
+<h2>An overly optimistic summary</h2>
+</section>
 <section id="the-cholesterol-data-final-model-p-4" class="slide level2 center">
 <h2>The <code>cholesterol</code> data: final model (<span class="math inline">p = 4</span>)</h2>
 

@@ -100,6 +100,9 @@ rm(list = ls())
 dataset <- read.table("../data/yesterday.txt", header = TRUE)
 ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
   geom_point() +
+  geom_point(aes(x=2,y=0.51),colour="#fc7d0b") +
+  geom_segment(aes(x = 2, xend = 2, y=0.42, yend = 0.51), col = "#fc7d0b", linetype = "dotted") +
+  geom_segment(aes(x = 0.48, xend = 2, y=0.51, yend = 0.51), col = "#fc7d0b", linetype = "dotted") +
   theme_light() +
   scale_color_tableau(palette = "Color Blind") +
   xlab("x") +
@@ -272,9 +275,8 @@ curve(f(x), n = 300, add = TRUE)
 
 ::: incremental
 -   The [MSE]{.blue} decreases as the number of parameter increases;
-    similarly, the [$R^2$]{.blue} always increases as a function of $p$.
-    It can be [proved]{.orange} that this [always happens]{.orange} in
-    linear models.
+    similarly, the [$R^2$]{.blue} increases as a function of $p$.
+    It can be [proved]{.orange} that this [always happens]{.orange} using ordinary least squares.
 
 -   One might be tempted to let $p$ as large as possible to make the
     model more flexible...
@@ -294,7 +296,7 @@ curve(f(x), n = 300, add = TRUE)
     obtained using yesterday data.
 
 -   [Remark]{.orange}. Tomorrow's r.v. $\tilde{Y}_1,\dots, \tilde{Y}_n$
-    follows the same scheme of yesterday's data.
+    follow the same scheme of yesterday's data.
 :::
 
 ## Tomorrow's data, polynomial regression
@@ -418,36 +420,36 @@ $$
 ## Summary and notation (fixed-$X$)
 
 ::: incremental
--   Let us better formalize the analysis we did, using the appropriate
+
+-   Let us better formalize the analysis we did so far, using the appropriate
     mathematical tools.
 
 -   In the previous example we consider two set of [random
     variables]{.blue}:
 
-    -   The [training set]{.orange} (yesterday's) $Y_1,\dots, Y_n$,
+    -   The [training set]{.orange} (yesterday) $Y_1,\dots, Y_n$,
         whose realization is $y_1,\dots,y_n$.
-    -   The [test set]{.blue} (tomorrow's)
+    -   The [test set]{.blue} (tomorrow)
         $\tilde{Y}_1,\dots,\tilde{Y}_n$, whose realization is
         $\tilde{y}_1, \dots, \tilde{y}_n$.
 
 -   The [covariates]{.blue} $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ in this
-    scenario are [deterministic]{.blue}. This is the so-called the
+    scenario are [deterministic]{.blue}. This is the so-called
     [fixed-$X$]{.blue} design, which is a common assumption in
     regression models.
 
--   We also require that the random variables $Y_i$ and $\tilde{Y}_i$
-    are [independent]{.blue}: $$
+-   We also assume that the random variables $Y_i$ and $\tilde{Y}_i$
+    are [independent]{.blue}. 
+    
+- In [regression]{.orange} problems we customarily assume that $$
       Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
     $$ where $\epsilon_i$ and $\tilde{\epsilon}_i$ are iid
-    "[error]{.orange}" terms with $\mathbb{E}(\epsilon_i)=0$ and
+    "[error]{.orange}" terms, with $\mathbb{E}(\epsilon_i)=0$ and
     $\text{var}(\epsilon_i)=\sigma^2$.
 
 -   The [training data]{.orange} is used to estimate a function of the
-    covariates $\hat{f}(\bm{x}_i)$.
-
--   We hope that our predictions works well on the [test set]{.blue},
-    which can be used to evaluate the quality of the estimated
-    $\hat{f}(\bm{x}_i)$.
+    covariates $\hat{f}(\bm{x}_i)$. We hope that our predictions works well on the [test set]{.blue}.
+    
 :::
 
 ## The in-sample prediction error
@@ -484,7 +486,7 @@ $$
 ::: callout-note
 #### Error decomposition (reducible and irreducible)
 
-Under a quadratic loss, [each element]{.orange} of the [in-sample
+In a regression problem, under a quadratic loss, [each element]{.orange} of the [in-sample
 prediction error]{.blue} admits the following decomposition $$
 \begin{aligned}
 \mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right] &= \mathbb{E}\left[\{f(\bm{x}_i) + \tilde{\epsilon}_i - \hat{f}(\bm{x}_i)\}^2\right] \\
@@ -520,14 +522,39 @@ and for any $i = 1,\dots,n$.
     minimizing the [reducible error]{.blue}.
 :::
 
+## Classification problems
+
+::: incremental
+
+- The principles described for regression settings also applies to [classification problems]{.blue}, after the appropriate adjustments. We focus here on the binary case $Y \in \{0, 1\}$.
+
+- In this context, the relationship between $\bm{x}_i$ and the [Bernoulli]{.orange} r.v. $Y_i$ is such that 
+$$
+\mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
+$$
+where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone transformation, such as the inverse logit.
+
+-   Examples of loss functions for [binary classification problems]{.blue}
+    $Y \in \{0, 1\}$ are:
+    -   The [misclassification rate]{.orange}
+        $\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i  \neq \hat{y}_i)$,
+        where the predictions are obtained dichotomizing the estimated probabilities $\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) > 1/2)$.
+    -   The [deviance]{.orange} or [cross-entropy]{.orange} loss functions is defined as
+        $$
+        \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
+        $$
+- Under a misclassification loss, the [Bayes rate]{.blue} is the error rate we would get if we knew the true $p(\bm{x}_i)$. This is the [irreducible error]{.orange} for classification problems.  
+
+:::
+
 ## Bias-variance trade-off
 
 -   In many textbooks, including A&S, the starting point of the analysis
     is the [reducible error]{.blue}, because it is the only one we can
-    control and it has a transparent interpretatio
+    control and it has a transparent interpretation.
 
 -   The reducible error measures the [discrepancy]{.orange} between the
-    unknown function $f(x)$ and its estimate $\hat{f}(\bm{x})$ and
+    unknown function $f(\bm{x})$ and its estimate $\hat{f}(\bm{x})$ and
     therefore it is a [natural measure]{.orange} of goodness of fit.
 
 -   What follows is the [most important result]{.blue} of this unit.
@@ -543,7 +570,7 @@ decomposition: $$
 $$
 :::
 
-## The in-sample prediction error
+## In-sample prediction error of ordinary least squares
 
 ::: incremental
 -   Summarizing, the [in-sample prediction error]{.orange} under
@@ -1275,6 +1302,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
   xlab("Model complexity (p)") +
   ylab("Information Criterion (IC)")
 ```
+
+## An overly optimistic summary
 
 ## The `cholesterol` data: final model ($p = 4$)
 

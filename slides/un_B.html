@@ -147,6 +147,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#the-in-sample-prediction-error" id="toc-the-in-sample-prediction-error" class="nav-link" data-scroll-target="#the-in-sample-prediction-error">The in-sample prediction error</a></li>
   <li><a href="#quadratic-loss-and-the-mean-squared-error" id="toc-quadratic-loss-and-the-mean-squared-error" class="nav-link" data-scroll-target="#quadratic-loss-and-the-mean-squared-error">Quadratic loss and the mean squared error</a></li>
   <li><a href="#reducible-and-irreducible-errors" id="toc-reducible-and-irreducible-errors" class="nav-link" data-scroll-target="#reducible-and-irreducible-errors">Reducible and irreducible errors</a></li>
+  <li><a href="#classification-problems" id="toc-classification-problems" class="nav-link" data-scroll-target="#classification-problems">Classification problems</a></li>
   <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
   <li><a href="#the-in-sample-prediction-error-1" id="toc-the-in-sample-prediction-error-1" class="nav-link" data-scroll-target="#the-in-sample-prediction-error-1">The in-sample prediction error</a></li>
   <li><a href="#if-we-knew-fx" id="toc-if-we-knew-fx" class="nav-link" data-scroll-target="#if-we-knew-fx">If we knew <span class="math inline">f(x)</span>…</a></li>
@@ -180,6 +181,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#the-akaike-information-criterion-ii" id="toc-the-akaike-information-criterion-ii" class="nav-link" data-scroll-target="#the-akaike-information-criterion-ii">The Akaike information criterion II</a></li>
   <li><a href="#aic-aicc-bic" id="toc-aic-aicc-bic" class="nav-link" data-scroll-target="#aic-aicc-bic">AIC, AICc, BIC</a></li>
   <li><a href="#aic-and-bic-cholesterol-data" id="toc-aic-and-bic-cholesterol-data" class="nav-link" data-scroll-target="#aic-and-bic-cholesterol-data">AIC and BIC (<code>cholesterol</code> data)</a></li>
+  <li><a href="#an-overly-optimistic-summary" id="toc-an-overly-optimistic-summary" class="nav-link" data-scroll-target="#an-overly-optimistic-summary">An overly optimistic summary</a></li>
   <li><a href="#the-cholesterol-data-final-model-p-4" id="toc-the-cholesterol-data-final-model-p-4" class="nav-link" data-scroll-target="#the-cholesterol-data-final-model-p-4">The <code>cholesterol</code> data: final model (<span class="math inline">p = 4</span>)</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
@@ -246,7 +248,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2 class="anchored" data-anchor-id="yesterdays-data">Yesterday’s data</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-2_ec53cf48329d13ca59d06d6ceeacbf92">
+<div class="cell" data-hash="un_B_cache/html/unnamed-chunk-2_71d324588b2ef6cda4291334858bfc33">
 <div class="cell-output-display">
 <p><img src="un_B_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="750"></p>
 </div>
@@ -330,7 +332,7 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <h2 class="anchored" data-anchor-id="yesterdays-data-tomorrows-prediction">Yesterday’s data, tomorrow’s prediction</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>The <span class="blue">MSE</span> decreases as the number of parameter increases; similarly, the <span class="blue"><span class="math inline">R^2</span></span> always increases as a function of <span class="math inline">p</span>. It can be <span class="orange">proved</span> that this <span class="orange">always happens</span> in linear models.</p></li>
+<li><p>The <span class="blue">MSE</span> decreases as the number of parameter increases; similarly, the <span class="blue"><span class="math inline">R^2</span></span> increases as a function of <span class="math inline">p</span>. It can be <span class="orange">proved</span> that this <span class="orange">always happens</span> using ordinary least squares.</p></li>
 <li><p>One might be tempted to let <span class="math inline">p</span> as large as possible to make the model more flexible…</p></li>
 <li><p>Taking this reasoning to the extreme would lead to the choice <span class="math inline">p = n</span>, so that <span class="math display">
 \text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
@@ -338,7 +340,7 @@ f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1
 <li><p>However, we are <span class="orange">not</span> interested in predicting <span class="orange">yesterday</span> data. Our goal is to predict <span class="blue">tomorrow</span>’s data, i.e.&nbsp;a <span class="blue">new set</span> of <span class="math inline">n = 30</span> points: <span class="math display">
 (x_1, \tilde{y}_1), \dots, (x_n, \tilde{y}_n),
 </span> using <span class="math inline">\hat{y}_i = f(x_i; \hat{\beta})</span>, where <span class="math inline">\hat{\beta}</span> is obtained using yesterday data.</p></li>
-<li><p><span class="orange">Remark</span>. Tomorrow’s r.v. <span class="math inline">\tilde{Y}_1,\dots, \tilde{Y}_n</span> follows the same scheme of yesterday’s data.</p></li>
+<li><p><span class="orange">Remark</span>. Tomorrow’s r.v. <span class="math inline">\tilde{Y}_1,\dots, \tilde{Y}_n</span> follow the same scheme of yesterday’s data.</p></li>
 </ul>
 </div>
 </section>
@@ -439,7 +441,7 @@ x3                0  0  0  1</code></pre>
 <li>The <span class="blue">test set</span> (tomorrow’s) <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>, whose realization is <span class="math inline">\tilde{y}_1, \dots, \tilde{y}_n</span>.</li>
 </ul></li>
 <li><p>The <span class="blue">covariates</span> <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> in this scenario are <span class="blue">deterministic</span>. This is the so-called the <span class="blue">fixed-<span class="math inline">X</span></span> design, which is a common assumption in regression models.</p></li>
-<li><p>We also require that the random variables <span class="math inline">Y_i</span> and <span class="math inline">\tilde{Y}_i</span> are <span class="blue">independent</span>: <span class="math display">
+<li><p>We also require that the random variables <span class="math inline">Y_i</span> and <span class="math inline">\tilde{Y}_i</span> are <span class="blue">independent</span>. In <span class="orange">regression</span>: <span class="math display">
   Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
 </span> where <span class="math inline">\epsilon_i</span> and <span class="math inline">\tilde{\epsilon}_i</span> are iid “<span class="orange">error</span>” terms with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
 <li><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span>.</p></li>
@@ -498,6 +500,25 @@ Error decomposition (reducible and irreducible)
 \hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(\tilde{Y}_i),
 </span> but even in this (overly optimistic) situation, we would still commit mistakes, due to the presence of <span class="math inline">\tilde{\epsilon}_i</span> (unless <span class="math inline">\sigma^2 = 0</span>). Hence, the variance <span class="math inline">\sigma^2</span> is called the <span class="orange">irreducible error</span>.</p></li>
 <li><p>Since we do not know <span class="math inline">f(\bm{x}_i)</span>, we seek for an estimate <span class="math inline">\hat{f}(\bm{x}_i) \approx f(\bm{x}_i)</span>, in the attempt of minimizing the <span class="blue">reducible error</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="classification-problems" class="level2">
+<h2 class="anchored" data-anchor-id="classification-problems">Classification problems</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The general principles describe in regression settings also applies to <span class="orange">classification problems</span>. For notational simplicity, we focus on <span class="math inline">Y \in \{0, 1\}</span>.</p></li>
+<li><p>In this context (with fixed-<span class="math inline">X</span>), the relationship between <span class="math inline">\bm{x}_i</span> and <span class="math inline">Y_i</span> is such that <span class="math display">
+\mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
+</span> for some monotone trasformation of <span class="math inline">g(\cdot)</span>, such as the inverse logit.</p></li>
+<li><p>Examples of loss functions for <span class="blue">binary classification problems</span> <span class="math inline">Y \in \{0, 1\}</span> are:</p>
+<ul class="incremental">
+<li>The <span class="orange">misclassification rate</span> <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)</span>, where the predictions are obtained dichotomizing the estimated probabilities <span class="math inline">\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) &gt; 1/2)</span>.</li>
+<li>The <span class="orange">deviance</span> or <span class="orange">cross-entropy</span> loss <span class="math display">
+\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
+</span></li>
+</ul></li>
+<li><p>Under a misclassification loss, the <span class="blue">Bayes rate</span> is the error rate we would get if we knew the true <span class="math inline">p(\bm{x}_i)</span>. This is the “irreducible error” for classification problems.</p></li>
 </ul>
 </div>
 </section>
@@ -958,6 +979,9 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 </div>
 </div>
 </div>
+</section>
+<section id="an-overly-optimistic-summary" class="level2">
+<h2 class="anchored" data-anchor-id="an-overly-optimistic-summary">An overly optimistic summary</h2>
 </section>
 <section id="the-cholesterol-data-final-model-p-4" class="level2">
 <h2 class="anchored" data-anchor-id="the-cholesterol-data-final-model-p-4">The <code>cholesterol</code> data: final model (<span class="math inline">p = 4</span>)</h2>
