@@ -149,7 +149,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#reducible-and-irreducible-errors" id="toc-reducible-and-irreducible-errors" class="nav-link" data-scroll-target="#reducible-and-irreducible-errors">Reducible and irreducible errors</a></li>
   <li><a href="#classification-problems" id="toc-classification-problems" class="nav-link" data-scroll-target="#classification-problems">Classification problems</a></li>
   <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
-  <li><a href="#the-in-sample-prediction-error-1" id="toc-the-in-sample-prediction-error-1" class="nav-link" data-scroll-target="#the-in-sample-prediction-error-1">The in-sample prediction error</a></li>
+  <li><a href="#in-sample-prediction-error-of-ordinary-least-squares" id="toc-in-sample-prediction-error-of-ordinary-least-squares" class="nav-link" data-scroll-target="#in-sample-prediction-error-of-ordinary-least-squares">In-sample prediction error of ordinary least squares</a></li>
   <li><a href="#if-we-knew-fx" id="toc-if-we-knew-fx" class="nav-link" data-scroll-target="#if-we-knew-fx">If we knew <span class="math inline">f(x)</span>…</a></li>
   <li><a href="#bias-variance-trade-off-1" id="toc-bias-variance-trade-off-1" class="nav-link" data-scroll-target="#bias-variance-trade-off-1">Bias-variance trade-off</a></li>
   <li><a href="#but-since-we-do-not-know-fx" id="toc-but-since-we-do-not-know-fx" class="nav-link" data-scroll-target="#but-since-we-do-not-know-fx">But since we do not know <span class="math inline">f(x)</span>…</a></li>
@@ -434,18 +434,18 @@ x3                0  0  0  1</code></pre>
 <h2 class="anchored" data-anchor-id="summary-and-notation-fixed-x">Summary and notation (fixed-<span class="math inline">X</span>)</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Let us better formalize the analysis we did, using the appropriate mathematical tools.</p></li>
+<li><p>Let us better formalize the analysis we did so far, using the appropriate mathematical tools.</p></li>
 <li><p>In the previous example we consider two set of <span class="blue">random variables</span>:</p>
 <ul class="incremental">
-<li>The <span class="orange">training set</span> (yesterday’s) <span class="math inline">Y_1,\dots, Y_n</span>, whose realization is <span class="math inline">y_1,\dots,y_n</span>.</li>
-<li>The <span class="blue">test set</span> (tomorrow’s) <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>, whose realization is <span class="math inline">\tilde{y}_1, \dots, \tilde{y}_n</span>.</li>
+<li>The <span class="orange">training set</span> (yesterday) <span class="math inline">Y_1,\dots, Y_n</span>, whose realization is <span class="math inline">y_1,\dots,y_n</span>.</li>
+<li>The <span class="blue">test set</span> (tomorrow) <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>, whose realization is <span class="math inline">\tilde{y}_1, \dots, \tilde{y}_n</span>.</li>
 </ul></li>
-<li><p>The <span class="blue">covariates</span> <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> in this scenario are <span class="blue">deterministic</span>. This is the so-called the <span class="blue">fixed-<span class="math inline">X</span></span> design, which is a common assumption in regression models.</p></li>
-<li><p>We also require that the random variables <span class="math inline">Y_i</span> and <span class="math inline">\tilde{Y}_i</span> are <span class="blue">independent</span>. In <span class="orange">regression</span>: <span class="math display">
-  Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
-</span> where <span class="math inline">\epsilon_i</span> and <span class="math inline">\tilde{\epsilon}_i</span> are iid “<span class="orange">error</span>” terms with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
-<li><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span>.</p></li>
-<li><p>We hope that our predictions works well on the <span class="blue">test set</span>, which can be used to evaluate the quality of the estimated <span class="math inline">\hat{f}(\bm{x}_i)</span>.</p></li>
+<li><p>The <span class="blue">covariates</span> <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> in this scenario are <span class="blue">deterministic</span>. This is the so-called <span class="blue">fixed-<span class="math inline">X</span></span> design, which is a common assumption in regression models.</p></li>
+<li><p>We also assume that the random variables <span class="math inline">Y_i</span> and <span class="math inline">\tilde{Y}_i</span> are <span class="blue">independent</span>.</p></li>
+<li><p>In <span class="orange">regression</span> problems we customarily assume that <span class="math display">
+    Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
+  </span> where <span class="math inline">\epsilon_i</span> and <span class="math inline">\tilde{\epsilon}_i</span> are iid “<span class="orange">error</span>” terms, with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
+<li><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span>. We hope that our predictions works well on the <span class="blue">test set</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -478,7 +478,7 @@ Error decomposition (reducible and irreducible)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Under a quadratic loss, <span class="orange">each element</span> of the <span class="blue">in-sample prediction error</span> admits the following decomposition <span class="math display">
+<p>In a regression problem, under a quadratic loss, <span class="orange">each element</span> of the <span class="blue">in-sample prediction error</span> admits the following decomposition <span class="math display">
 \begin{aligned}
 \mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right] &amp;= \mathbb{E}\left[\{f(\bm{x}_i) + \tilde{\epsilon}_i - \hat{f}(\bm{x}_i)\}^2\right] \\
 &amp; = \mathbb{E}\left[\{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}^2\right] + \mathbb{E}(\tilde{\epsilon}_i^2) + 2 \: \mathbb{E}\left[\tilde{\epsilon}_i \: \{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}\right]\\
@@ -507,26 +507,26 @@ Error decomposition (reducible and irreducible)
 <h2 class="anchored" data-anchor-id="classification-problems">Classification problems</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>The general principles describe in regression settings also applies to <span class="orange">classification problems</span>. For notational simplicity, we focus on <span class="math inline">Y \in \{0, 1\}</span>.</p></li>
-<li><p>In this context (with fixed-<span class="math inline">X</span>), the relationship between <span class="math inline">\bm{x}_i</span> and <span class="math inline">Y_i</span> is such that <span class="math display">
+<li><p>The principles described for regression settings also applies to <span class="blue">classification problems</span>, after the appropriate adjustments. We focus here on the binary case <span class="math inline">Y \in \{0, 1\}</span>.</p></li>
+<li><p>In this context, the relationship between <span class="math inline">\bm{x}_i</span> and the <span class="orange">Bernoulli</span> r.v. <span class="math inline">Y_i</span> is such that <span class="math display">
 \mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
-</span> for some monotone trasformation of <span class="math inline">g(\cdot)</span>, such as the inverse logit.</p></li>
+</span> where <span class="math inline">g(x) :\mathbb{R} \rightarrow (0,1)</span> is monotone transformation, such as the inverse logit.</p></li>
 <li><p>Examples of loss functions for <span class="blue">binary classification problems</span> <span class="math inline">Y \in \{0, 1\}</span> are:</p>
 <ul class="incremental">
 <li>The <span class="orange">misclassification rate</span> <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)</span>, where the predictions are obtained dichotomizing the estimated probabilities <span class="math inline">\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) &gt; 1/2)</span>.</li>
-<li>The <span class="orange">deviance</span> or <span class="orange">cross-entropy</span> loss <span class="math display">
+<li>The <span class="orange">deviance</span> or <span class="orange">cross-entropy</span> loss functions is defined as <span class="math display">
 \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
 </span></li>
 </ul></li>
-<li><p>Under a misclassification loss, the <span class="blue">Bayes rate</span> is the error rate we would get if we knew the true <span class="math inline">p(\bm{x}_i)</span>. This is the “irreducible error” for classification problems.</p></li>
+<li><p>Under a misclassification loss, the <span class="blue">Bayes rate</span> is the error rate we would get if we knew the true <span class="math inline">p(\bm{x}_i)</span>. This is the <span class="orange">irreducible error</span> for classification problems.</p></li>
 </ul>
 </div>
 </section>
 <section id="bias-variance-trade-off" class="level2">
 <h2 class="anchored" data-anchor-id="bias-variance-trade-off">Bias-variance trade-off</h2>
 <ul>
-<li><p>In many textbooks, including A&amp;S, the starting point of the analysis is the <span class="blue">reducible error</span>, because it is the only one we can control and it has a transparent interpretatio</p></li>
-<li><p>The reducible error measures the <span class="orange">discrepancy</span> between the unknown function <span class="math inline">f(x)</span> and its estimate <span class="math inline">\hat{f}(\bm{x})</span> and therefore it is a <span class="orange">natural measure</span> of goodness of fit.</p></li>
+<li><p>In many textbooks, including A&amp;S, the starting point of the analysis is the <span class="blue">reducible error</span>, because it is the only one we can control and it has a transparent interpretation.</p></li>
+<li><p>The reducible error measures the <span class="orange">discrepancy</span> between the unknown function <span class="math inline">f(\bm{x})</span> and its estimate <span class="math inline">\hat{f}(\bm{x})</span> and therefore it is a <span class="orange">natural measure</span> of goodness of fit.</p></li>
 <li><p>What follows is the <span class="blue">most important result</span> of this unit.</p></li>
 </ul>
 <div class="incremental">
@@ -547,8 +547,8 @@ Bias-variance decomposition
 </div>
 </div>
 </section>
-<section id="the-in-sample-prediction-error-1" class="level2">
-<h2 class="anchored" data-anchor-id="the-in-sample-prediction-error-1">The in-sample prediction error</h2>
+<section id="in-sample-prediction-error-of-ordinary-least-squares" class="level2">
+<h2 class="anchored" data-anchor-id="in-sample-prediction-error-of-ordinary-least-squares">In-sample prediction error of ordinary least squares</h2>
 <div class="incremental">
 <ul class="incremental">
 <li><p>Summarizing, the <span class="orange">in-sample prediction error</span> under <span class="blue">squared loss</span> can be decomposed as <span class="math display">
