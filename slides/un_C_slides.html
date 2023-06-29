@@ -30,6 +30,22 @@
     }
   </style>
   <link rel="stylesheet" href="un_C_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
   <link href="un_C_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="un_C_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="un_C_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -353,10 +369,36 @@
 <li>Ridge regression</li>
 <li>Lasso, LARS, elastic-net</li>
 </ul></li>
-<li><p>The asdasd</p></li>
+<li><p>The common thread among these topics is the so-called <span class="blue">variable selection</span> problem.</p></li>
+<li><p>We will start from the basic, moving towards to most recent and sophisticated approaches, such as the elastic-net.</p></li>
 </ul>
 </div>
 </div>
+</section>
+<section id="the-ames-housing-problem" class="slide level2 center">
+<h2>The Ames housing problem</h2>
+
+<img data-src="https://datasciencebocconi.github.io/Images/ames_housing/housesbanner.png" class="r-stretch quarto-figure-center"><ul>
+<li><p>Suppose you are interested in <span class="orange">buying a new house</span> in the town of Ames, which is located in the US state of Iowa.</p></li>
+<li><p>You want to focus your search on houses that you expect to be able to afford.</p></li>
+<li><p>Can you <span class="orange">predict</span> the price of the house based on its characteristics?</p></li>
+<li><p>De Cock, D. 2011. “Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester Regression Project.” Journal of Statistics Education 19 (3).</p></li>
+</ul>
+</section>
+<section id="problem-description" class="slide level2 center">
+<h2>Problem description</h2>
+<ul>
+<li><p>This is a prediction problem, in which the <strong>sale price</strong> is the <span class="orange">output</span> variable (response).</p></li>
+<li><p>You have some information from all of the houses sold over the past few years, including the number of bedrooms, the size of the house, the year the house was built, etc.</p></li>
+<li><p>This unit is organized into two sections:</p>
+<ol type="1">
+<li>We clean the data and perform some <span class="orange">exploratory data analysis</span> to gain some preliminary understanding of the data;</li>
+<li>We exploit advanced regression techniques to predict the price of the house using all the remaining <span class="orange">input</span> variables (covariates).</li>
+</ol></li>
+<li><p>In other words, we will try to estimate a function <span class="math inline">f(\cdot)</span> such that <span class="math display">
+(\texttt{SalePrice}) = f(\texttt{GarageArea},\texttt{Neighborhood}, \dots) + \epsilon.
+</span></p></li>
+</ul>
 </section>
 <section>
 <section id="best-subset-regression" class="title-slide slide level1 center">

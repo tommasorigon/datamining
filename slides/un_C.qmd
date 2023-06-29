@@ -33,7 +33,7 @@ format:
     embed-resources: false
     code-line-numbers: true
     smooth-scroll: true
-    code-fold: true
+    code-fold: false
     code-summary: "Show the code"
     fig-dpi: 150
     highlight-style: github
@@ -70,9 +70,37 @@ styler:::style_file("../code/un_C.R")
     -   Ridge regression
     -   Lasso, LARS, elastic-net
     
-- The asdasd
+- The common thread among these topics is the so-called [variable selection]{.blue} problem.
+
+- We will start from the basic, moving towards to most recent and sophisticated approaches, such as the elastic-net.
 :::
 :::
+
+```{r}
+library(ISLR)
+library(tidyverse)
+data(Hitters)
+Hitters <- na.omit(Hitters)
+Hitters <- mutate(Hitters, Salary = log10(Salary), Years = log(Years))
+```
+    
+```{r}
+library(leaps)
+fit <- regsubsets(Salary ~ ., data = Hitters, method = "exhaustive", nbest = 1, nvmax = 20)
+sum1 <- summary(fit)
+
+plot(rowSums(sum1$which), sum1$cp)
+
+fit <- regsubsets(Salary ~ ., data = Hitters, method = "backward", nbest = 1, nvmax = 20)
+sum1 <- summary(fit)
+plot(rowSums(sum1$which), sum1$cp)
+
+
+sum1$outmat[which.min(sum1$bic),]
+coef(fit, 41)
+```
+
+
 
 # Best subset regression
 

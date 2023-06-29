@@ -149,14 +149,14 @@ round(t(X) %*% X, 8)
 
 
 ## ----r------------------------------------------------------------------------
-# I am storing these information for simplicity
+# I am storing this information for simplicity
 x <- dataset$x
 n <- nrow(dataset)
 
 # The standard deviation of the data generative process is sigma2true = 0.01, declared in the book and the slides
 sigmatrue <- 0.01
 
-# The true values have been downloaded from the A&S texbook; see here: http://azzalini.stat.unipd.it/Book-DM/f_true.R
+# The true values have been downloaded from the A&S textbook; see here: http://azzalini.stat.unipd.it/Book-DM/f_true.R
 ftrue <- c(
   0.4342, 0.4780, 0.5072, 0.5258, 0.5369,
   0.5426, 0.5447, 0.5444, 0.5425, 0.5397,
@@ -168,7 +168,7 @@ ftrue <- c(
 
 
 ## ----r------------------------------------------------------------------------
-# Number of degree of the polynomial
+# Number of degrees of the polynomial
 degree_list <- 1:23
 # Number of parameters in the model
 p_list <- degree_list + 1
@@ -180,7 +180,6 @@ Bias2s <- sapply(p_list, function(p) {
 
 # Variance
 Vars <- p_list * (sigmatrue^2) / n
-# This simplified formula can be obtained after some algebraic manipulation, under the assumption that the covariates in the test set are equal to those in the training; please refer to the exercises.
 
 # Reducible errors
 MSEs <- Bias2s + Vars
@@ -362,7 +361,7 @@ data_goodness <- data.frame(degree = degree_list)
 for (degree in degree_list) {
   # Fitting a polynomial of degree p -1
   fit <- lm(cholesterol.decrease ~ poly(compliance, degree = degree, raw = FALSE), data = dataset)
-  # Computation of the leverages h_i in an efficient manner (using QR)
+  # Computation of the leverages h_i efficiently (using QR)
   lev <- influence(fit)$hat
   data_goodness$LOO_CV[degree] <- mean(((dataset$cholesterol.decrease - fitted(fit)) / (1 - lev))^2)
   p <- degree + 1
