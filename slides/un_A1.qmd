@@ -926,7 +926,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     Gram-Schmidt algorithm, or via [Householder reflections]{.orange}.
 
 -   The expensive step is the QR factorization. The overall
-    computational complexity is of order $$
+    computational complexity is $$
     \sim 2 n p^2$$ which is about twice that of the Cholesky, when $n$
     is much larger than $p$, and about the same when $p \approx n$.
 
