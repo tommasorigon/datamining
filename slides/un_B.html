@@ -179,6 +179,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <li><a href="#goodness-of-fit-with-a-penalty-term" id="toc-goodness-of-fit-with-a-penalty-term" class="nav-link" data-scroll-target="#goodness-of-fit-with-a-penalty-term">Goodness of fit with a penalty term</a></li>
   <li><a href="#the-akaike-information-criterion-i" id="toc-the-akaike-information-criterion-i" class="nav-link" data-scroll-target="#the-akaike-information-criterion-i">The Akaike information criterion I</a></li>
   <li><a href="#the-akaike-information-criterion-ii" id="toc-the-akaike-information-criterion-ii" class="nav-link" data-scroll-target="#the-akaike-information-criterion-ii">The Akaike information criterion II</a></li>
+  <li><a href="#the-aic-for-gaussian-linear-models" id="toc-the-aic-for-gaussian-linear-models" class="nav-link" data-scroll-target="#the-aic-for-gaussian-linear-models">The AIC for Gaussian linear models</a></li>
   <li><a href="#aic-aicc-bic" id="toc-aic-aicc-bic" class="nav-link" data-scroll-target="#aic-aicc-bic">AIC, AICc, BIC</a></li>
   <li><a href="#aic-and-bic-cholesterol-data" id="toc-aic-and-bic-cholesterol-data" class="nav-link" data-scroll-target="#aic-and-bic-cholesterol-data">AIC and BIC (<code>cholesterol</code> data)</a></li>
   <li><a href="#an-optimistic-summary" id="toc-an-optimistic-summary" class="nav-link" data-scroll-target="#an-optimistic-summary">An optimistic summary</a></li>
@@ -900,16 +901,16 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <h2 class="anchored" data-anchor-id="the-akaike-information-criterion-i">The Akaike information criterion I</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Akaike suggested minimizing over <span class="math inline">p</span> the following <span class="orange">Kullback-Leibler divergence</span>: <span class="math display">
-\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\theta)) = \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} - \int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\theta)\mathrm{d}\tilde{\bm{Y}}},
-</span> between the “true” model <span class="math inline">p(\bm{Y};\theta_0)</span> with parameter <span class="math inline">\theta_0</span> and the specified model <span class="math inline">p(\bm{Y};\theta)</span>.</p></li>
-<li><p>In the above Kullback-Leibler, for any <span class="math inline">p</span> the value <span class="math inline">\theta</span> is replaced by the <span class="blue">maximum likelihood estimator</span> <span class="math inline">\hat{\theta} = \hat{\theta}(\bm{Y})</span>, using the data <span class="math inline">\bm{Y} = (Y_1,\dots,Y_n)</span>.</p></li>
-<li><p>Hence, we would like to select <span class="math inline">p</span> such that the expectation w.r.t. <span class="math inline">p(\bm{Y}; \theta_0)</span> <span class="math display">
+<li><p>Akaike suggested minimizing over <span class="math inline">p</span> the <span class="blue">expectation</span> of the <span class="orange">Kullback-Leibler divergence</span>: <span class="math display">
+\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta})) = \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} - \int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}},
+</span> between the “true” model <span class="math inline">p(\bm{Y};\theta_0)</span> with parameter <span class="math inline">\theta_0</span> and the estimated model <span class="math inline">p(\bm{Y};\hat{\theta})</span>.</p></li>
+<li><p>In the above Kullback-Leibler, for any fixed <span class="math inline">p</span>, the parameter <span class="math inline">\theta</span> is replaced with its <span class="blue">maximum likelihood estimator</span> <span class="math inline">\hat{\theta} = \hat{\theta}(\bm{Y})</span>, using the data <span class="math inline">\bm{Y} = (Y_1,\dots,Y_n)</span>.</p></li>
+<li><p><span class="orange">Equivalently</span>, we can select <span class="math inline">p</span> such that the expectation w.r.t. <span class="math inline">p(\bm{Y}; \theta_0)</span> <span class="math display">
 \begin{aligned}
-S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - \underbrace{2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}}}_{\text{Does not depend on } p} \\
+\Delta(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - \underbrace{2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}}}_{\text{Does not depend on } p} \\
 &amp; = - 2 \: \mathbb{E}_{\theta_0}\left[\int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}} \right]
 \end{aligned}
-</span> is <span class="orange">minimized</span>. However, we cannot compute nor minimize <span class="math inline">S(p)</span> because <span class="math inline">\theta_0</span> is unknown.</p></li>
+</span> is <span class="orange">minimized</span>. Unfortunately, we cannot compute nor minimize <span class="math inline">\Delta(p)</span> because <span class="math inline">\theta_0</span> is unknown.</p></li>
 </ul>
 </div>
 </section>
@@ -917,21 +918,39 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 <h2 class="anchored" data-anchor-id="the-akaike-information-criterion-ii">The Akaike information criterion II</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Although <span class="math inline">S(p)</span> cannot be obtained under technical conditions, it turns out that <span class="math display">
+<li><p>The theoretical quantity <span class="math inline">\Delta(p)</span> cannot be obtained. However, the quantity <span class="math display">
 \text{AIC} = -2 \ell(\hat{\theta}) + 2 p,
-</span> namely the <span class="orange">Akaike information criterion</span>, is a good estimator of <span class="math inline">S(p)</span>.</p></li>
-<li><p>In practice, we will select the value of <span class="math inline">p</span> minimizing the <span class="math inline">\text{AIC}</span>, which is typically quite easy.</p></li>
-<li><p>The factor <span class="math inline">2</span> is just a <span class="blue">cosmetic convention</span>, introduced to match the quantities of the usual asymptotic theory.</p></li>
-<li><p>More formally, it can be proved (under technical conditions) that <span class="math display">
-\mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = S(p),
+</span> namely the <span class="orange">Akaike information criterion</span>, is a good estimator of <span class="math inline">\Delta(p)</span>.</p></li>
+<li><p>More formally, it can be proved that, under technical conditions: <span class="math display">
+\mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = \Delta(p),
 </span> for <span class="math inline">n \rightarrow \infty</span>.</p></li>
+<li><p>In practice, we will select the value of <span class="math inline">p</span> minimizing the <span class="math inline">\text{AIC}</span>, which is typically quite easy.</p></li>
+<li><p>The factor <span class="math inline">2</span> is just a <span class="blue">convention</span>, introduced to match the quantities of the usual asymptotic theory.</p></li>
+</ul>
+</div>
+</section>
+<section id="the-aic-for-gaussian-linear-models" class="level2">
+<h2 class="anchored" data-anchor-id="the-aic-for-gaussian-linear-models">The AIC for Gaussian linear models</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Let us assume that <span class="math inline">\sigma^2</span> is <span class="orange">known</span>. Then the <span class="math inline">\text{AIC}</span> for a Gaussian linear model is <span class="math display">
+\begin{aligned}
+\text{AIC} &amp;= -2 \ell(\hat{\beta}) + 2 p = -2 \left\{-\frac{n}{2}\log{(2\pi\sigma^2)} - \frac{1}{2
+\sigma^2}\sum_{i=1}^n (y_i - \bm{x}_i^T\hat{\beta})^2\right\} + 2p \\
+&amp; = n\log{(2\pi\sigma^2)} + \frac{n}{
+\sigma^2}\left\{ \frac{1}{n}\sum_{i=1}^n (y_i - \bm{x}_i^T\hat{\beta})^2 + \frac{2p\sigma^2}{n} \right\} \\
+&amp; = n\log{(2\pi\sigma^2)} + \frac{n}{
+\sigma^2} C_p,
+\end{aligned}
+</span> implying that for fixed values <span class="math inline">\sigma^2</span> the <span class="math inline">C_p</span> of Mallows and the Akaike’s <span class="math inline">\text{AIC}</span> are <span class="blue">equivalent</span>, i.e.&nbsp;they lead to the same <span class="orange">minimum</span>.</p></li>
+<li><p>When <span class="math inline">\sigma^2</span> is unknown, then it is estimated and the <span class="math inline">C_p</span> and <span class="math inline">\text{AIC}</span> may be slightly different.</p></li>
 </ul>
 </div>
 </section>
 <section id="aic-aicc-bic" class="level2">
 <h2 class="anchored" data-anchor-id="aic-aicc-bic">AIC, AICc, BIC</h2>
 <ul>
-<li>several other proposals followed Akaike’s original work, different in their assumptions and the way they approximate certain quantities.</li>
+<li>Several other proposals followed Akaike’s original work, differing in their assumptions and the way they approximate certain quantities.</li>
 </ul>
 <div class="incremental">
 <table class="table">
@@ -973,8 +992,8 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 </div>
 <div class="incremental">
 <ul>
-<li><p>The justification of <span class="math inline">\text{BIC}</span> is instead related to Bayesian statistics.</p></li>
-<li><p>Since <span class="math inline">\log{n} &gt; 2</span> for any <span class="math inline">n &gt; 7</span>, it means that the <span class="math inline">\text{BIC}</span> <span class="blue">penalty</span> is typically <span class="blue">stronger</span> than the one of <span class="math inline">\text{AIC}</span>.</p></li>
+<li><p>The justification of <span class="math inline">\text{BIC}</span> is comes from <span class="blue">Bayesian statistics</span>.</p></li>
+<li><p>Since <span class="math inline">\log{n} &gt; 2</span> for any <span class="math inline">n &gt; 7</span>, it means that the <span class="math inline">\text{BIC}</span> <span class="blue">penalty</span> is typically <span class="orange">stronger</span> than the one of <span class="math inline">\text{AIC}</span> and it favors more parsimonious models.</p></li>
 </ul>
 </div>
 </section>
@@ -998,6 +1017,20 @@ S(p) &amp;= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mi
 </section>
 <section id="an-optimistic-summary" class="level2">
 <h2 class="anchored" data-anchor-id="an-optimistic-summary">An optimistic summary</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>In the <code>cholesterol</code> dataset, the various indices produced <span class="orange">different results</span>!</p>
+<ul class="incremental">
+<li>The BIC and and the <span class="math inline">10-</span>fold cross-validation selected <span class="math inline">p = 2</span> (linear model);</li>
+<li>The the training / test split suggested <span class="math inline">p = 3</span> (quadratic model);</li>
+<li>All the others (LOO-CV, <span class="math inline">\text{GCV}</span>, <span class="math inline">\text{AIC}</span> and <span class="math inline">\text{AIC}_c</span>) concluded that <span class="math inline">p = 4</span> (cubic model).</li>
+</ul></li>
+<li><p>The good news is that all the above methods produced <span class="blue">similar findings</span>. For example, we are quite sure that we should choose <span class="math inline">p \le 6</span>.</p></li>
+<li><p>On the other hand, there is obviously some <span class="orange">uncertainty</span>, which is a quite common situation.</p></li>
+<li><p>In this specific case, we may prefer <span class="math inline">p = 4</span>, since it is based on the less-biased estimates of <span class="math inline">\text{Err}</span>, such as the LOO-CV.</p></li>
+<li><p>However, this choice is <span class="blue">debatable</span>: another statistician may prefer the simpler linear model with <span class="math inline">p =2</span>.</p></li>
+</ul>
+</div>
 </section>
 <section id="the-cholesterol-data-final-model-p-4" class="level2">
 <h2 class="anchored" data-anchor-id="the-cholesterol-data-final-model-p-4">The <code>cholesterol</code> data: final model (<span class="math inline">p = 4</span>)</h2>

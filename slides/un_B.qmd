@@ -1221,21 +1221,21 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 ::: incremental
 
--   Akaike suggested minimizing over $p$ the following [Kullback-Leibler
+-   Akaike suggested minimizing over $p$ the [expectation]{.blue} of the [Kullback-Leibler
     divergence]{.orange}: $$
-    \text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\theta)) = \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} - \int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\theta)\mathrm{d}\tilde{\bm{Y}}},
-    $$ between the "true" model $p(\bm{Y};\theta_0)$ with parameter $\theta_0$ and the specified model $p(\bm{Y};\theta)$.
+    \text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta})) = \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} - \int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}},
+    $$ between the "true" model $p(\bm{Y};\theta_0)$ with parameter $\theta_0$ and the estimated model $p(\bm{Y};\hat{\theta})$.
 
--   In the above Kullback-Leibler, for any $p$ the value $\theta$ is replaced by the [maximum likelihood estimator]{.blue} $\hat{\theta} = \hat{\theta}(\bm{Y})$, using the data $\bm{Y} = (Y_1,\dots,Y_n)$.
+-   In the above Kullback-Leibler, for any fixed $p$, the parameter $\theta$ is replaced with its [maximum likelihood estimator]{.blue} $\hat{\theta} = \hat{\theta}(\bm{Y})$, using the data $\bm{Y} = (Y_1,\dots,Y_n)$.
     
-- Hence, we would like to select $p$ such that the expectation w.r.t. $p(\bm{Y}; \theta_0)$ 
+- [Equivalently]{.orange}, we can select $p$ such that the expectation w.r.t. $p(\bm{Y}; \theta_0)$
 $$
 \begin{aligned}
-S(p) &= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - \underbrace{2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}}}_{\text{Does not depend on } p} \\
+\Delta(p) &= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - \underbrace{2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}}}_{\text{Does not depend on } p} \\
 & = - 2 \: \mathbb{E}_{\theta_0}\left[\int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}} \right] 
 \end{aligned}
 $$
-is [minimized]{.orange}. However, we cannot compute nor minimize $S(p)$ because $\theta_0$ is unknown. 
+is [minimized]{.orange}. Unfortunately, we cannot compute nor minimize $\Delta(p)$ because $\theta_0$ is unknown. 
 
 :::
 
@@ -1243,30 +1243,49 @@ is [minimized]{.orange}. However, we cannot compute nor minimize $S(p)$ because 
 
 ::: incremental
 
-- Although $S(p)$ cannot be obtained under technical conditions, it turns out that
-$$
+- The theoretical quantity $\Delta(p)$ cannot be obtained. However, the quantity $$
 \text{AIC} = -2 \ell(\hat{\theta}) + 2 p,
 $$
-namely the [Akaike information criterion]{.orange}, is a good estimator of $S(p)$.
+namely the [Akaike information criterion]{.orange}, is a good estimator of $\Delta(p)$.
+
+- More formally, it can be proved that, under technical conditions:
+$$
+\mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = \Delta(p),
+$$
+for $n \rightarrow \infty$. 
+
 
 - In practice, we will select the value of $p$ minimizing the $\text{AIC}$, which is typically quite easy. 
 
-- The factor $2$ is just a [cosmetic convention]{.blue}, introduced to match the quantities of the usual asymptotic theory. 
+- The factor $2$ is just a [convention]{.blue}, introduced to match the quantities of the usual asymptotic theory. 
 
 
-- More formally, it can be proved (under technical conditions) that
+:::
+
+## The AIC for Gaussian linear models
+
+::: incremental
+
+- Let us assume that $\sigma^2$ is [known]{.orange}. Then the $\text{AIC}$ for a Gaussian linear model is
 $$
-\mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = S(p),
+\begin{aligned}
+\text{AIC} &= -2 \ell(\hat{\beta}) + 2 p = -2 \left\{-\frac{n}{2}\log{(2\pi\sigma^2)} - \frac{1}{2
+\sigma^2}\sum_{i=1}^n (y_i - \bm{x}_i^T\hat{\beta})^2\right\} + 2p \\
+& = n\log{(2\pi\sigma^2)} + \frac{n}{
+\sigma^2}\left\{ \frac{1}{n}\sum_{i=1}^n (y_i - \bm{x}_i^T\hat{\beta})^2 + \frac{2p\sigma^2}{n} \right\} \\
+& = n\log{(2\pi\sigma^2)} + \frac{n}{
+\sigma^2} C_p,
+\end{aligned}
 $$
-for $n \rightarrow \infty$. 
+implying that for fixed values $\sigma^2$ the $C_p$ of Mallows and the Akaike's $\text{AIC}$ are [equivalent]{.blue}, i.e. they lead to the same [minimum]{.orange}. 
+
+- When $\sigma^2$ is unknown, then it is estimated and the $C_p$ and $\text{AIC}$ may be slightly different.
 
 :::
 
 ## AIC, AICc, BIC
 
-- several other proposals followed Akaike's original work,
-    different in their assumptions and the way they approximate certain
-    quantities.
+- Several other proposals followed Akaike's original work, differing in their assumptions and the way they approximate certain quantities.
 
 . . .
 
@@ -1284,11 +1303,11 @@ for $n \rightarrow \infty$.
 
 . . .
 
-- The justification of $\text{BIC}$ is instead related to Bayesian statistics.
+- The justification of $\text{BIC}$ is comes from [Bayesian statistics]{.blue}.
 
 -   Since $\log{n} > 2$ for any $n > 7$, it means that the $\text{BIC}$
-    [penalty]{.blue} is typically [stronger]{.blue} than the one of
-    $\text{AIC}$.
+    [penalty]{.blue} is typically [stronger]{.orange} than the one of
+    $\text{AIC}$ and it favors more parsimonious models. 
 
 ## AIC and BIC (`cholesterol` data)
 
@@ -1343,6 +1362,23 @@ ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
 
 
 ## An optimistic summary
+
+::: incremental
+
+- In the `cholesterol` dataset, the various indices produced [different results]{.orange}!
+  - The BIC and  and the $10-$fold cross-validation selected $p = 2$ (linear model); 
+  - The the training / test split suggested $p = 3$ (quadratic model); 
+  - All the others (LOO-CV, $\text{GCV}$, $\text{AIC}$ and $\text{AIC}_c$) concluded that $p = 4$ (cubic model). 
+
+- The good news is that all the above methods produced [similar findings]{.blue}. For example, we are quite sure that we should choose $p \le 6$. 
+
+- On the other hand, there is obviously some [uncertainty]{.orange}, which is a quite common situation. 
+
+- In this specific case, we may prefer $p = 4$, since it is based on the less-biased estimates of $\text{Err}$, such as the LOO-CV. 
+
+- However, this choice is [debatable]{.blue}: another statistician may prefer the simpler linear model with $p =2$. 
+
+:::
 
 ## The `cholesterol` data: final model ($p = 4$)
 
