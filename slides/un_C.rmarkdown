@@ -44,7 +44,9 @@ editor_options:
   chunk_output_type: console
 ---
 
+
 ## [Homepage](../index.html)
+
 
 ```{r}
 #| warning: false
@@ -56,6 +58,7 @@ editor_options:
 knitr::purl("un_C.qmd", output = "../code/un_C.R")
 styler:::style_file("../code/un_C.R")
 ```
+
 
 ::: columns
 ::: {.column width="25%"}
@@ -77,22 +80,6 @@ styler:::style_file("../code/un_C.R")
 :::
 
 
-
-## 3D plots
-
-```{r}
-#| fig-width: 6
-#| fig-height: 4
-#| fig-align: center
-library(plotly)
-x <- seq_len(nrow(volcano)) + 100
-y <- seq_len(ncol(volcano)) + 500
-plot_ly() %>% add_surface(x = ~x, y = ~y, z = ~volcano)
-```
-
-
-## asd
-
 ```{r}
 library(ISLR)
 library(tidyverse)
@@ -100,7 +87,7 @@ data(Hitters)
 Hitters <- na.omit(Hitters)
 Hitters <- mutate(Hitters, Salary = log10(Salary), Years = log(Years))
 ```
-    
+
 ```{r}
 library(leaps)
 fit <- regsubsets(Salary ~ ., data = Hitters, method = "exhaustive", nbest = 1, nvmax = 20)
@@ -110,8 +97,13 @@ plot(rowSums(sum1$which), sum1$cp)
 
 fit <- regsubsets(Salary ~ ., data = Hitters, method = "backward", nbest = 1, nvmax = 20)
 sum1 <- summary(fit)
-#plot(rowSums(sum1$which), sum1$cp)
+plot(rowSums(sum1$which), sum1$cp)
+
+
+sum1$outmat[which.min(sum1$bic),]
+coef(fit, 41)
 ```
+
 
 
 
@@ -141,8 +133,6 @@ sum1 <- summary(fit)
 
 # Lasso, LARS, and elastic-net
 
-## Lasso
-
 ::: columns
 ::: {.column width="25%"}
 ![](img/lasso.png){}
@@ -153,4 +143,3 @@ sum1 <- summary(fit)
 :::
 :::
 
-## References

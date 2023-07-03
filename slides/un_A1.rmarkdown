@@ -1,0 +1,1145 @@
+---
+title: "A-B-C"
+subtitle: "Data Mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+execute:
+  cache: false
+format:
+  revealjs:
+    auto-stretch: true
+    center: true
+    html-math-method: katex
+    transition: none
+    output-file: un_A1_slides.html
+    slide-number: true
+    callout-appearance: minimal
+    code-line-numbers: true
+    theme: [default, template.css] # alternative themes (subset): default, night, dark
+    embed-resources: false
+    echo: false
+    fig-dpi: 150
+    # incremental: true  # Remove comment if you like incremental bullet points
+    logo: img/logoB.png
+    footer: "[Home page](https://tommasorigon.github.io/datamining)"
+    highlight-style: github
+  html:
+    html-math-method: katex
+    echo: false
+    callout-appearance: minimal
+    theme: [cosmo, template.css]
+    toc: true
+    toc-title: Table of contents
+    embed-resources: false
+    code-line-numbers: true
+    smooth-scroll: true
+    code-fold: true
+    code-summary: "Show the code"
+    fig-dpi: 150
+    highlight-style: github
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+
+## [Homepage](../index.html)
+
+
+```{r}
+#| warning: false
+#| echo: false
+#| include: false
+#| message: false
+#| purl: false
+
+# Please ignore this chunk
+knitr::purl("un_A1.qmd", output = "../code/un_A1.R")
+styler:::style_file("../code/un_A1.R")
+```
+
+
+
+::: columns
+::: {.column width="40%"}
+![](img/ABC.png) *"Everything should be made as simple as possible, but
+not simpler"* Attributed to Albert Einstein
+:::
+
+::: {.column width="60%"}
+-   In this unit we will cover the following [topics]{.orange}:
+
+    -   Linear models and the modelling process
+    -   Cholesky factorization
+    -   Orthogonalization and QR decomposition
+    -   Iterative methods
+
+-   The [computational aspects]{.blue} of linear models will be novel to
+    most of you...
+
+-   ... but you should be already [very familiar]{.orange} with linear
+    models!
+
+:::
+:::
+
+# Old friends: linear models
+
+## Car data ([diesel]{.blue} or [gas]{.orange})
+
+::: columns
+::: {.column width="50%"}
+
+```{r}
+#| warning: false
+#| message: false
+#| fig-width: 5
+#| fig-height: 4.5
+library(tidyverse)
+library(broom)
+library(knitr)
+library(ggplot2)
+library(GGally)
+library(ggthemes)
+
+rm(list = ls())
+# The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
+auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
+
+p0 <- ggpairs(auto,
+  columns = 1:4, aes(colour = fuel),
+  lower = list(continuous = wrap("points", size = 0.9)),
+  upper = list(continuous = wrap("points", size = 0.9)),
+  diag = "blank"
+) +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("") +
+  ylab("")
+p0
+```
+
+:::
+
+::: {.column width="50%"}
+-   We consider data for $n = 203$ models of cars in circulation in 1985
+    in the USA.
+-   We want to [predict]{.blue} the distance per unit of
+    fuel, as a function of the vehicle features.
+-   We consider the following [variables]{.orange}:
+    -   The city distance per unit of fuel (km/L, `city.distance`)
+    -   The engine size (L, `engine.size`)
+    -   The number of cylinders (`n.cylinders`)
+    -   The curb weight (kg, `curb.weight`)
+    -   The fuel type (gasoline or diesel, `fuel`).
+:::
+:::
+
+
+## Linear regression
+
+::: columns
+::: {.column width="40%"}
+
+```{r}
+#| fig-width: 4
+#| fig-height: 3.7
+ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
+  geom_point() +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  theme(legend.position = "top") +
+  xlab("Engine size (L)") +
+  ylab("Urban distance (km/L)")
+```
+
+:::
+
+::: {.column width="60%"}
+-   Let us consider the variables `city.distance` ($y$), `engine.size` ($x$) and `fuel`
+    ($z$).
+
+-   A [simple linear regression]{.blue} $$
+    Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
+    $$ could be easily fit by least squares...
+
+-   ... but the plot clearly suggests that the relationship between
+    `city.distance` and `engine.size` is [not]{.orange} well
+    approximated by a [linear]{.orange} function.
+
+-   ... and also that `fuel` has an non-negligible effect on the
+    response.
+:::
+:::
+
+## Regression models
+
+::: incremental
+-   A [general]{.orange} and [more flexible formulation]{.orange} for modeling the relationship
+    between a vector of [fixed covariates]{.blue}
+    $\bm{x}_i = (x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p$ and a random variable
+    $Y_i \in \mathbb{R}$ is $$
+    Y_i = f(\bm{x}_i; \beta) + \epsilon_i, \qquad i=1,\dots,n,
+    $$
+    where the "errors" $\epsilon_i$ are iid random variables, having
+    zero mean and variance $\sigma^2$.
+
+-   To estimate the unknown parameters $\beta$, a possibility is to rely
+    on the [least squares criterion]{.blue}: we seek the
+    [minimum]{.orange} of the objective function $$
+    D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
+    $$ using $n$ pairs of covariates $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ and
+    the observed realizations $y_i$ of the random variables $Y_i$, for $i = 1,\dots,n$. The [optimal value]{.orange} is denoted by $\hat{\beta}$.
+
+-   The [predicted values]{.blue} $\hat{y}_i$ are 
+    $\hat{y}_i = \mathbb{E}(Y_i) = f(\bm{x}_i; \hat{\beta})$, for
+    $i=1,\dots,n.$
+:::
+
+## Linear models
+
+-   Let us consider again the variables `city.distance` ($y$), `engine.size`
+    ($x$) and `fuel` ($z$).
+
+- Which function $f(x,z;\beta)$ should we choose?
+
+. . .
+
+-   A first attempt is to consider a [polynomial term]{.orange}
+    combined with a [dummy variable]{.blue} $$
+    f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}),
+    $$
+which is a special instance of [linear model]{.orange}.
+
+. . .
+
+::: callout-note
+#### Definition (Linear model)
+
+In a [linear model]{.blue} the response variable $Y_i$ is related to the
+covariates through the function$$
+    f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
+    $$ where $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ is a vector of
+[covariates]{.orange} and $\beta = (\beta_1,\dots,\beta_p)^T$ is the
+corresponding vector of [coefficients]{.orange}.
+:::
+
+## Matrix notation
+
+::: incremental
+-   The [response random variables]{.orange} are collected in the random vector $\bm{Y} = (Y_1,\dots,Y_n)^T$, whose [observed realization]{.blue} is $\bm{y} = (y_1,\dots,y_n)^T$.
+
+-   The [design matrix]{.blue} is a $n \times p$ matrix, comprising the
+    covariate's values, defined by $$
+    \bm{X} = 
+    \begin{bmatrix} 
+    x_{11} & \cdots & x_{1p}\\
+    \vdots & \ddots & \vdots \\
+    x_{n1} & \cdots & x_{np}
+    \end{bmatrix}.
+    $$
+
+-   Then, a [linear model]{.blue} can be written using the [compact
+    notation]{.orange}: $$
+    \bm{Y} = \bm{X}\beta + \bm{\epsilon},
+    $$ where $\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T$ is a
+    vector of iid error terms with zero mean and variance $\sigma^2$.
+
+-   The $j$th variable (column) is denoted with $\tilde{\bm{x}}_j$, whereas the
+    $i$th observation (row) is $\bm{x}_i$: $$
+    \bm{X} = (\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p) = (\bm{x}_1, \dots,\bm{x}_n)^T.
+    $$
+:::
+
+## Linear regression: estimation I
+
+-   The optimal set of coefficients $\hat{\beta}$ is the minimizer of
+    the [least squared criterion]{.orange} $$
+    D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
+    $$ known also as [residual sum of squares (RSS)]{.orange}, where $$
+    ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2},$$
+    denotes the [Euclidean norm]{.blue}.
+
+. . .
+
+::: callout-note
+#### Least square estimate (OLS)
+
+If the design matrix has [full rank]{.blue}, that is if
+$\text{rk}(\bm{X}^T\bm{X}) = p$, then the [least square
+estimate]{.orange} has an explicit solution: $$
+    \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y}.
+    $$
+:::
+
+## Linear regression: estimation II
+
+::: incremental
+-   In matrix notation, the predicted values can be obtained as $$
+    \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{H}\bm{y}, \qquad \bm{H} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
+    $$
+
+-   $\bm{H}$ is a $n \times n$ [projection matrix]{.orange} matrix
+    sometimes called [hat matrix]{.blue}.
+
+-   It can be shown that $\text{tr}(\bm{H}) = \text{rk}(\bm{H}) = p$.
+    Moreover, it holds $\bm{H} = \bm{H}^T$ and $\bm{H}^2 = \bm{H}$.
+
+-   The quantity $D(\hat{\beta})$ is the so-called [deviance]{.blue}, which is
+    equal to $$
+    D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{H})\bm{y}.
+    $$
+
+-   A typical estimate for the [residual variance]{.orange} $\sigma^2$
+    is $$
+    s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
+    $$
+:::
+
+## Linear regression: inference
+
+::: incremental
+-   Let us additionally assume that the errors follow a Gaussian
+    distribution:
+    $\epsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$.
+
+-   This implies that the [distribution]{.orange} of the [estimator]{.orange} $\hat{\beta}$ is
+    $$
+    \hat{\beta} \sim N_p(\beta, \sigma^2 (\bm{X}^T\bm{X})^{-1}).
+    $$
+
+-   Hence, the estimator $\hat{\beta}$ is [unbiased]{.orange} and its
+    [variance]{.blue} can be estimated by $$
+    \widehat{\text{var}}(\hat{\beta}) = s^2 (\bm{X}^T\bm{X})^{-1}.
+    $$
+
+-   The [standard errors]{.orange} of the components of beta correspond
+    to the square root of the diagonal of the above covariance matrix.
+
+-   Confidence interval and Wald's tests can be obtained through
+    classical inferential theory.
+    
+- Ok, we are ready to get back to the original problem...
+:::
+
+## Car data, a first model
+
+::: incremental
+-   Our first attempt for predicting `city.distance` ($y$) via `engine.size`
+    ($x$) and `fuel` ($z$) is: $$
+      f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}).
+      $$
+
+-   Indeed, by looking at the plot of the data, it is plausible that we need a
+    [polynomial]{.orange} of degree $3$ or $4$
+
+-   It is also clear from the plot that `fuel` is a relevant variable.
+    Categorical variables are [encoded]{.orange} using [indicator
+    variables]{.blue}.
+
+-   To evaluate the goodness of fit, we can calculate the [coefficient
+    of determination]{.orange}: $$
+    R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\sum_{i=1}^n(y_i - \bar{y})^2}.
+    $$
+:::
+
+## A first model: estimated coefficients
+
+-   We obtain the following [summary]{.orange} for the regression
+    coefficients $\hat{\beta}$.
+
+
+```{r}
+m1 <- lm(city.distance ~ engine.size + I(engine.size^2) + I(engine.size^3) + fuel, data = auto)
+kable(tidy(m1, conf.int = FALSE), digits = 3)
+```
+
+
+-   Moreover, the coefficient $R^2$ and the residual standard deviation $s$ are:
+
+
+```{r}
+kable(glance(m1)[c(1, 3, 10)])
+```
+
+
+## A first model: fitted values
+
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4.55
+#| fig-align: center
+augmented_m1 <- augment(m1)
+ggplot(data = augmented_m1, aes(x = engine.size, y = city.distance, col = fuel)) +
+  geom_point() +
+  geom_line(aes(y = .fitted)) +
+  theme_light() +
+  theme(legend.position = "right") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Engine size (L)") +
+  ylab("Urban distance (km/L)")
+```
+
+
+## A first model: graphical diagnostics
+
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4.55
+#| fig-align: center
+ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
+  geom_point() +
+  geom_hline(aes(yintercept = 0), linetype = "dotted") +
+  theme_light() +
+  theme(legend.position = "right") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Fitted values") +
+  ylab("Residuals")
+```
+
+
+## Comments and criticisms
+
+::: incremental
+
+- Is this a good model?
+
+-   The overall fit [seems satisfactory]{.blue} at first glance,
+    especially if we aim at predicting the urban distance of cars when
+    average engine size (i.e., between $1.5L$ and $3L$).
+
+-   However, the plot of the [residuals]{.orange}
+    $r_i = y_i - \hat{y}_i$ suggests that there the homoschedasticity
+    assumption, i.e. $\text{var}(\epsilon_i) = \sigma^2$, might be
+    violated.
+
+-   Also, this model in not suitable for [extrapolation]{.orange}. Indeed:
+    -   It has no grounding in physics or engineering, which leads to
+    difficulties in the interpretation of the trend and/or paradoxical
+    situations.
+    -   For example, the curve of the set of gasoline cars shows a local
+    minimum around $4.6 L$ and then rises again!
+    
+-  It is plausible that we can find a better one, so what's next?
+:::
+
+## Linear models and non-linear patterns
+
+-   A major advantage of linear models is that they can describe
+    non-linear relationship via [variable transformations]{.blue} such as polynomials, logarithms, etc.
+
+. . .
+
+-   This gives the statistician a lot of modelling flexibility. For
+    instance we could let: $$
+\log{Y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
+$$
+
+. . .
+
+-   This specification is [linear in the parameters]{.orange}, it fixes
+    the domain issues, and it imposes a monotone relationship between
+    engine size and consumption.
+
+. . .
+
+
+```{r}
+m2 <- lm(log(city.distance) ~ I(log(engine.size)) + fuel, data = auto)
+kable(tidy(m2, conf.int = FALSE), digits = 3)
+```
+
+
+## Second model: fitted values
+
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4.55
+#| fig-align: center
+augmented_m2 <- augment(m2, data = auto)
+ggplot(data = augmented_m2, aes(x = engine.size, y = city.distance, col = fuel)) +
+  geom_point() +
+  geom_line(aes(y = exp(.fitted))) +
+  theme_light() +
+  theme(legend.position = "right") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Engine size (L)") +
+  ylab("Urban distance (km/L)")
+```
+
+
+## Second model: graphical diagnostics
+
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4.55
+#| fig-align: center
+ggplot(data = augmented_m2, aes(x = .fitted, y = .resid, col = fuel)) +
+  geom_point() +
+  geom_hline(aes(yintercept = 0), linetype = "dotted") +
+  theme_light() +
+  theme(legend.position = "right") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Fitted values") +
+  ylab("Residuals")
+```
+
+
+## Comments and criticisms
+
+-   The [goodness of fit]{.blue} indices are the following:
+
+
+```{r}
+r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m2)))^2)) / sum(mean((auto$city.distance - mean(auto$city.distance))^2))
+kable(data.frame(r.squared.original = r.squared.original, glance(m2)[c(1, 3, 10)]))
+```
+
+
+-   Do not mix [apple]{.blue} and [oranges]{.orange}! Compare $R^2$s only if they refer to the same scale!
+
+. . .
+
+-   This second model is [more parsimonious]{.blue} and yet it reaches
+    satisfactory predictive performance.
+
+-   It is also more coherent with the nature of the data: the
+    predictions cannot be negative and the relationship between engine
+    size and the consumption is monotone.
+
+-   Yet, there is still some heteroschedasticity in the residuals --- is this
+    due to a missing covariate that has not been included into the
+    model?
+
+## A third model: additional variables
+
+-   Let us consider [two additional variables]{.blue}: `curb.weight`
+    ($w$) and `n.cylinders` ($v$). 
+    
+- A richer model therefore could be: $$
+\log{Y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
+    $$ for $i=1,\dots,n$. The estimates are:
+
+. . .
+
+
+```{r}
+auto$cylinders2 <- factor(auto$n.cylinders == 2)
+m3 <- lm(log(city.distance) ~ I(log(engine.size)) + I(log(curb.weight)) + fuel + cylinders2, data = auto)
+kable(tidy(m3, conf.int = FALSE), digits = 3)
+```
+
+
+## A third model: graphical diagnostics
+
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4.55
+#| fig-align: center
+augmented_m3 <- augment(m3, data = auto)
+ggplot(data = augmented_m3, aes(x = .fitted, y = .resid, col = fuel)) +
+  geom_point() +
+  geom_hline(aes(yintercept = 0), linetype = "dotted") +
+  theme_light() +
+  theme(legend.position = "right") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Fitted values") +
+  ylab("Residuals")
+```
+
+
+## Comments and criticisms
+
+-   The goodness of fit greatly [improved]{.blue}:
+
+
+```{r}
+r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m3)))^2)) / sum(mean((auto$city.distance - mean(auto$city.distance))^2))
+kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)]))
+```
+
+
+-   In this third model, we took care of the [outliers]{.orange} appearing in the residual plots, which it turns out are identified by the group of cars having 2 cylinders.
+
+-   The diagnostic plots are also very much improved, although still not perfect.
+
+-   The estimates are coherent with our expectations, based on common
+    knowledge. Have a look at the textbook (A&S) for a detailed
+    explaination about $\beta_4$!
+    
+- The car dataset is available from the textbook (A\&S) website:
+  - Dataset <http://azzalini.stat.unipd.it/Book-DM/auto.dat>
+  - Variable description <http://azzalini.stat.unipd.it/Book-DM/auto.names>
+
+
+# Cholesky factorization
+
+## How to obtain the least squares estimate?
+
+-   In B.Sc. courses it is often suggested that the least square
+    estimate should be computed using the formula $$
+    \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y},
+    $$ that is, using the R code `solve(t(X) %*% X) %*% t(X) %*% y`.
+
+-   This approach works reasonably
+    well in many [simple cases]{.blue}.
+
+. . .
+
+-   Unfortunately, in more challenging scenarios, e.g. when we have a lot of data (large
+    $n$) and correlated variables, the above code is 
+     - [computationally
+    inefficient]{.orange}
+     - [numerically inaccurate]{.blue}
+
+-   The main computational bottleneck is the calculation of the inverse of
+    $\bm{X}^T\bm{X}$, which is very costly and often numerically
+    unstable, especially when the predictors are almost collinear.
+
+## The normal equations
+
+-   The least square estimate is the solution of the system of equations ([normal
+    equations]{.orange}):$$
+    \bm{X}^T\bm{X} \beta = \bm{X}^T \bm{y}.
+    $$
+
+-   This system could be solved using
+    `solve(crossprod(X), crossprod(X, y))`.
+
+-   This avoids the explicit computation of
+    $(\bm{X}^T\bm{X})^{-1}$ and it is preferable compared to the "direct
+    solution". However, it does not exploit the properties of the matrix
+    $\bm{X}^T\bm{X}$.
+
+. . .
+
+
+. . .
+
+-   Recall (from your favorite linear algebra textbook) that a
+    [symmetric]{.blue} matrix $\bm{A} \in \mathbb{R}^{p \times p}$ is
+    [positive definite]{.orange} if and only if one the following
+    properties is satisfied
+    -   The quadratic form $\tilde{\bm{x}}^T \bm{A} \tilde{\bm{x}} > 0$ for all
+        $\tilde{\bm{x}} \in \mathbb{R}^p$ such that $\tilde{\bm{x}} \neq 0$.
+    -   The eigenvalues $\lambda_1,\dots,\lambda_p$ of $\bm{A}$ are all
+        strictly positive.
+
+- We now describe a strategy to compute $\hat{\beta}$ that exploits the fact that $\bm{X}^T\bm{X}$ is [positive definite]{.orange}, resulting in more [efficient computations]{.blue}. 
+
+## Cholesky factorization
+
+::: callout-note
+#### Proposition A.1
+
+Suppose $\bm{X} \in \mathbb{R}^{n \times p}$ with $n \ge p$ has full
+rank, that is $\text{rk}(\bm{X}) = p$. Then, the matrix $$
+\bm{X}^T\bm{X}
+$$ is [symmetric]{.blue} and [positive definite]{.orange}.
+:::
+
+. . .
+
+::: callout-note
+#### Theorem (Cholesky factorization)
+
+Let $\bm{A} \in \mathbb{R}^{p \times p}$ be a symmetric and positive
+definite matrix. Then, there exists a unique [upper triangular]{.orange}
+$p \times p$ matrix $\bm{R}$ with positive entries such that $$
+\bm{A} = \bm{R}^T\bm{R}.
+$$
+:::
+
+## Cholesky factorization and least squares
+
+::: incremental
+
+- The Cholesky factorization is incredibly helpful for computing least squares. Indeed:
+
+-   Let $\bm{R}^T\bm{R}$ be the Cholesky factorization of the matrix
+    $\bm{X}^T\bm{X}$. Then, the [normal equations]{.orange} can be
+    written as $$
+    \bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y}.
+    $$ This system can now solved in [two steps]{.orange}:
+
+-   [Step 1 (Forwardsolve)]{.blue}. Solve with respect to $\bm{z}$ the system
+    of equations $$
+    \bm{R}^T \bm{z} = \bm{X}^T \bm{y}.
+    $$
+
+-   [Step 2 (Backsolve)]{.blue}. Given $\bm{z}$, now solve with respect to
+    $\beta$ the system of equations $$
+    \bm{R} \beta = \bm{z}.
+    $$
+- Why is this procedure computationally more efficient than the naïve solution?
+:::
+
+## Forward and backward substitutions
+
+::: incremental
+-   The key observation is that the solution of [triangular systems]{.blue} is computationally 
+    [straightforward]{.orange}.
+
+-   As an example, consider the following $3 \times 3$ lower triangular
+    system: $$
+    \begin{bmatrix} 
+    l_{11} & 0 & 0 \\
+    l_{21} & l_{22} & 0 \\
+    l_{31} & l_{32} & l_{33} \\
+    \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix} = \begin{bmatrix}
+    b_1 \\ b_2 \\ b_3
+    \end{bmatrix}.
+    $$
+
+-   The solution for $x_1,x_2,x_3$ can be found sequentially: $$
+    x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x_3 = \frac{b_3 - l_{31}x_1 - l_{32}x_2}{l_{33}}.
+    $$
+
+-   Finding the [inverse]{.orange} $\bm{R}^{-1}$ is simple, again because $\bm{R}$
+    is upper triangular. Also note that $$
+    (\bm{X}^T \bm{X})^{-1} = (\bm{R}^T \bm{R})^{-1} = \bm{R}^{-1} (\bm{R}^{-1})^T.
+    $$
+:::
+
+## Computational complexity
+
+::: incremental
+-   The solution via Cholesky factorization is a [fast direct
+    approach]{.blue} for finding $\hat{\beta}$.
+
+-   The expensive steps are:
+
+    -   The formation of the matrix $\bm{X}^T\bm{X}$ requires
+        $\sim n p^2$ elementary operations
+    -   The Cholesky factorization of $\bm{X}^T\bm{X}$ requires
+        $\sim p^3 / 3$ elementary operations.
+
+-   This gives an overall computational complexity of order $$
+    \sim n p^2 + p^3 /3,
+    $$ which corrects the typographical error of the A&S textbook.
+
+-   This means, unfortunately, that in [high-dimensional]{.blue} settings (large $p$)
+    computations become [very costly]{.orange}, since the
+    complexity is cubic in $p$.
+:::
+
+## ☠️ - Error propagation in normal equations
+
+::: incremental
+-   The normal equations method is typically [quicker]{.blue} than other
+    algorithms, as it removes the dependency on $n$, but it is in
+    general numerically more [unstable]{.orange}.
+
+-   Consider for example the following matrix: $$
+    \bm{X} = \begin{bmatrix}1 & 1 \\
+    \epsilon & 0 \\
+    0 & \epsilon \end{bmatrix},
+    $$ for a small value $\epsilon > 0$. Then, we obtain that
+    $$\bm{X}^T \bm{X} = \begin{bmatrix}1 + \epsilon^2& 1 \\
+    1 & 1 + \epsilon^2 \end{bmatrix}.
+    $$
+
+-   The numerical computation of $\epsilon^2$ in $\bm{X}^T\bm{X}$
+    requires a higher precision compared to $\epsilon$, leading to
+    numerical instabilities and/or a [loss in accuracy]{.orange}.
+:::
+
+## ☠️ - Condition numbers and normal equations
+
+::: incremental
+-   Suppose $\bm{X} \in \mathbb{R}^{n \times p}$ with $n \ge p$ has full
+    rank and singular values $d_1 \ge d_2 \ge \dots \ge d_p$. Then its
+    [condition number]{.orange} is $$
+    \kappa(\bm{X}) = ||\bm{X}|| \cdot ||\bm{X}^+|| = \frac{d_1}{d_p},
+    $$ where $\bm{X}^+$ is the Moore-Penrose pseudo-inverse. Note that
+    $\kappa(\bm{X}) \ge 1$.
+
+-   If $\kappa(\bm{X})$ is small, the matrix $\bm{X}$ is [well
+    conditioned]{.blue}. Otherwise, we say it is [ill
+    conditioned]{.orange}.
+
+-   The condition number determines how accurately we can solve linear
+    systems.
+
+-   An important fact is: $$
+    \kappa(\bm{X}^T\bm{X}) = \kappa(\bm{X})^2, 
+    $$ implying that there is a clear loss of numerical accuracy when
+    using normal equations.
+:::
+
+# The QR decomposition
+
+## Orthogonal predictors
+
+- Another approach for computing least squares is based on the notion of orthogonality. 
+
+. . .
+
+-   If the [predictors]{.blue} were mutually [orthogonal]{.orange}, the
+    problem would be much simpler.
+
+-   In other words, consider a linear model of the form $$
+    \bm{Y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
+    $$ where $\bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p)$.
+    [Orthogonality]{.orange} means that
+    $\bm{Z}^T\bm{Z} = \text{diag}(\tilde{\bm{z}}_1^T\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p^T\tilde{\bm{z}}_p)$.
+
+. . .
+
+::: callout-note
+#### Proposition A.2. OLS with orthogonal predictors
+
+The least square estimate
+$\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T$ with orthogonal predictors is
+
+$$
+\hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j}, \qquad j=1,\dots,p.
+$$
+:::
+
+## Regression by successive orthogonalization
+::: incremental
+-   Clearly, the predictors of $\bm{X}$ are generally not orthogonal. Hence, we want to
+    find a suitable transformation $\bm{Z} = \bm{X} \bm{\Gamma}^{-1}$
+    that [orthogonalize]{.blue} the [predictors]{.orange}.
+
+
+-   Suppose for example that $p = 2$. We set [first orthogonal
+    predictor]{.orange} $\tilde{\bm{z}}_1 = \tilde{\bm{x}}_1$.
+
+-   We then consider the following [univariate]{.blue} regression
+    problem $$
+    \tilde{\bm{x}}_2 = \gamma \tilde{\bm{z}}_1 + \bm{\epsilon}, \qquad \text{which leads} \qquad \hat{\gamma} = \frac{\tilde{\bm{z}}_1^T\tilde{\bm{x}}_2}{\tilde{\bm{z}}_1^T\tilde{\bm{z}}_1}.
+    $$
+
+-   The [second orthogonal predictor]{.orange} is obtained as the
+    [residual term]{.blue}: $$
+    \tilde{\bm{z}}_2 = \tilde{\bm{x}}_2 - \hat{\gamma}\tilde{\bm{z}}_1.
+    $$
+
+-   The geometry of linear models guarantees that
+    $\tilde{\bm{z}}_1^T\tilde{\bm{z}}_2 = 0$.
+:::
+
+## Gram-Schmidt algorithm
+::: incremental
+-   Let us now consider the [general case]{.orange}, valid for any value of
+    $p$.
+
+-   [Initialization]{.blue}. Set $\tilde{\bm{z}}_1 = \tilde{\bm{x}}_1$.
+
+-   [For $j= 2,\dots,p$]{.blue}. Consider the regression problem with
+    $j-1$ orthogonal predictors $$
+    \tilde{\bm{x}}_j = \sum_{k=1}^{j-1}\gamma_{kj} \tilde{\bm{z}}_k + \bm{\epsilon}_j, \quad \text{which leads} \quad \hat{\gamma}_{kj} = \frac{\tilde{\bm{z}}_k^T\tilde{\bm{x}}_j}{\tilde{\bm{z}}_k^T\tilde{\bm{z}}_k}, \quad k=1,\dots,j-1,
+    $$ Then, compute the new vector $\bm{z}_j$ as the
+    [residual]{.orange} term $$
+    \tilde{\bm{z}}_j = \tilde{\bm{x}}_j - \sum_{k=1}^{j-1}\hat{\gamma}_{kj} \tilde{\bm{z}}_k
+    $$
+
+-   The geometry of linear models guarantees [orthogonality]{.orange},
+    that is $\tilde{\bm{z}}_j^T \tilde{\bm{z}}_{j'} = 0$ for any $j \neq j'$.
+:::
+
+## The QR decomposition I
+
+::: incremental
+-   By construction, the Gram-Schmidt algorithm produces the following
+    decomposition $$
+    \bm{X} = \bm{Z} \bm{\Gamma}, \qquad \bm{\Gamma} = 
+    \begin{bmatrix}
+    1 & \hat{\gamma}_{12} & \hat{\gamma}_{13} &\cdots & \hat{\gamma}_{1p} \\
+    0 &  1 & \hat{\gamma}_{23} &\cdots & \hat{\gamma}_{2p} \\
+    \vdots & \vdots & \vdots &\ddots & \vdots\\
+    0 & 0 & 0 & \cdots & 1
+    \end{bmatrix}, \qquad \bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p).
+    $$
+
+-   The $p \times p$ matrix $\bm{\Gamma}$ is [upper
+    triangular]{.orange}, whereas the columns of the $n \times p$ matrix
+    $\bm{Z}$ are [mutually orthogonal]{.blue}, due to the properties of the residuals of a linear model. 
+
+-   It is often convenient to [standardize]{.orange} the columns of
+    $\bm{Z}$, dividing them by their norm $||\tilde{\bm{z}}_j||$. Let
+    $\bm{D} = \text{diag}(||\tilde{\bm{z}}_1||, \dots, ||\tilde{\bm{z}}_p||)$, then in
+    matrix notation: $$
+    \bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}.
+    $$
+
+-   [Remark]{.orange}. Note that $\bm{Q}^T \bm{Q} = I_p$, i.e. the
+    columns of $\bm{Q}$ are [orthonormal]{.blue}.
+:::
+
+## The QR decomposition II
+
+::: callout-note
+#### Theorem (QR factorization)
+
+Suppose $\bm{X} \in \mathbb{R}^{n \times p}$ with $n \ge p$ has full
+rank, that is $\text{rk}(\bm{X}) = p$. Then, there exists a factorization
+of the form $$
+\bm{X} = \bm{Q} \bm{R},
+$$ where $\bm{Q} \in \mathbb{R}^{n \times p}$ has [orthonormal
+columns]{.orange} and $\bm{R} \in \mathbb{R}^{p \times p}$ is an [upper
+triangular]{.blue} matrix.
+:::
+
+. . .
+
+::: callout-tip
+#### Corollary (QR factorization)
+
+The QR decomposition is [unique]{.blue} up to [sign flips]{.blue} of the
+columns of $\bm{Q}$ and the rows of $\bm{R}$. Moreover, if $\bm{R}$ has
+positive diagonal entries, as the one obtained using Gram-Schmidt, then
+it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
+:::
+
+## The QR decomposition and least squares
+
+::: incremental
+-   The QR decomposition greatly facilitates computations for linear
+    models. Indeed: $$
+    \begin{aligned}
+    \hat{\beta} &= (\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{y} = [(\bm{Q}\bm{R})^T\bm{Q}\bm{R}]^{-1}(\bm{Q}\bm{R})^T\bm{y}\\
+    &= (\bm{R}^T\bm{Q}^T\bm{Q}\bm{R})^{-1}\bm{R}^T\bm{Q}^T\bm{y} \\
+    &= \bm{R}^{-1} (\bm{R}^T)^{-1} \bm{R}^T\bm{Q}^T\bm{y} \\
+    &= \bm{R}^{-1}\bm{Q}^T \bm{y}.
+    \end{aligned}
+    $$
+
+-   Hence, the least square estimate is obtained as the solution of the
+    [triangular system]{.blue} $$
+    \bm{R}\beta = \bm{Q}^T\bm{y},
+    $$ which can be easily solved via [backward substitution]{.orange}.
+
+-   As a special case of the above equation, one gets
+    $\hat{\beta}_p = (\tilde{\bm{z}}_p^T\bm{y}) / (\tilde{\bm{z}}_p^T \tilde{\bm{z}}_p)$.
+:::
+
+## The QR decomposition and linear models
+
+::: incremental
+-   An important advantage of the QR factorization is that many other
+    useful quantities can be readily computed. For example, the
+    [covariance matrix]{.orange} is obtained as: $$
+      s^2 (\bm{X}^T \bm{X})^{-1} = s^2 \bm{R}^{-1} (\bm{R}^{-1})^T.
+      $$
+
+-   The [predicted values]{.orange} and the [projection matrix]{.blue}
+    are also easily obtained as $$
+    \hat{\bm{y}} = \bm{H}\bm{y} = \bm{Q}\bm{Q}^T\bm{y}.
+    $$
+
+-   The diagonal elements $h_i = [\bm{H}]_{ii}$ of the hat matrix
+    $\bm{H}$ are called [leverages]{.orange} and one may want to compute
+    them without evaluating the full $n \times n$ matrix, using $$
+    h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
+    $$ where $q_{ij}$ are the entries of $\bm{Q}$.
+:::
+
+## Computational complexity
+
+::: incremental
+-   The solution via QR factorization is [numerically reliable]{.orange}
+    and it facilitates the computation of other quantities of interest.
+
+-   In practice, the QR is computed via a [modified
+    Gram-Schmidt]{.blue}, that fixes the instabilities of the naïve
+    Gram-Schmidt algorithm, or via [Householder reflections]{.orange}.
+
+-   The expensive step is the QR factorization. The overall
+    computational complexity is of order $$
+    \sim 2 n p^2$$ which is about twice that of the Cholesky, when $n$
+    is much larger than $p$, and about the same when $p \approx n$.
+
+-   Depending on the context, and assuming we only care about $\hat{\beta}$, we may prefer the Cholesky ([fast]{.blue} but [imprecise]{.orange}) or the QR ([slower]{.orange} but more [reliable]{.blue}). 
+
+- The default approach in R, i.e. the one implemented in the `lm`
+    function, is the QR factorization, because one typically also needs to compute $\bm{H}$, or the leverages. 
+:::
+
+## ☠️ - Pivoting and rank deficiencies
+
+::: incremental
+-   If $\text{rk}(\bm{X}) = k < p$ ([rank deficiency]{.orange}) then it
+    is still possibile to obtain a "QR" factorization of the form $$
+    \bm{X}\bm{P} = \bm{Q}\begin{bmatrix}\bm{R}_{11} & \bm{R}_{12} \\
+    0 & 0\end{bmatrix},
+    $$ where $\bm{P}$ is a $p × p$ permutation matrix and $\bm{R}_{11}$
+    is an $k \times k$ upper triangular and non-singular matrix.
+
+-   This operation is sometimes called [pivoting]{.blue} and it is
+    particularly important even when $\text{rk}(\bm{X}) = p$ to prevent
+    numerical issues when the condition number $\kappa(\bm{X})$ is high.
+
+-   In presence of perfect collinarity, the implementation of the QR
+    decomposition in R (`qr`) relies on pivoting. This is why the `lm`
+    function is able to automatically "omit" a predictor.
+:::
+
+# Iterative methods
+
+## When $n$ is very large...
+
+::: incremental
+-   When the [sample size]{.blue} $n$ is [extremely large]{.orange}, as it is common in data
+    mining problems, then the QR factorization cannot be computed.
+
+-   Indeed, even [loading]{.orange} $\bm{X}$ into [memory]{.orange}
+    could be problematic.
+
+-   In the normal equations approach, we only need to compute the
+    [sufficient statistics]{.blue}: $$
+    \bm{W} = \bm{X}^T\bm{X}, \qquad \bm{u} = \bm{X}^T\bm{y},
+    $$ which are of dimension $p\times p$ and $p \times 1$,
+    respectively.
+
+-   If we knew $\bm{W}$ and $\bm{u}$, then we could obtain the least square estimate
+    $\hat{\beta}$ using the Cholesky factorization.
+
+-   However, when $n$ is extremely large, the difficult part is indeed
+    computing $\bm{W}$ and $\bm{u}$!
+:::
+
+## Recursive data import {#recursive-data-import}
+
+::: incremental
+-   Using matrix notation, we express $\bm{W} = \bm{W}_{(n)}$ and
+    $\bm{u} = \bm{u}_{(n)}$ as follows $$
+    \bm{W}_{(n)} = \sum_{i=1}^n \bm{x}_i \bm{x}_i^T, \qquad \bm{u}_{(n)} = \sum_{i=1}^n\bm{x}_i y_i.
+    $$
+
+-   Let us define the [initial conditions]{.blue}
+    $\bm{W}_{(1)} = \bm{x}_1 \bm{x}_1^T$ and
+    $\bm{u}_{(1)} = \bm{x}_1 y_1$.
+
+-   Then, the following [recursive relationship]{.orange} holds: $$
+    \bm{W}_{(i)} = \bm{W}_{(i-1)} +  \bm{x}_i \bm{x}_i^T, \qquad \bm{u}_{(i)} = \bm{u}_{(i-1)} + \bm{x}_i y_i, \qquad i=2,\dots,n,
+    $$ where $\bm{W}_{(i)}$ is the matrix formed by the first $i$
+    summands of $\bm{W}_{(n)}$ and analogously $\bm{u}_{(i)}$.
+
+-   Hence $\bm{W}_{(n)}$ and $\bm{u}_{(n)}$ can be calculated by
+    [importing a single record]{.blue} at a time, which does not create
+    memory issues.
+:::
+
+## Recursive estimates
+
+::: incremental
+-   In many occasions, the data flow continuously, meaning that we get a
+    new pair of observations $(\bm{x}_{n+1}, y_{n+1})$ every
+    minute, or even every second.
+
+-   In these cases, we would like to [update]{.orange} the current least square estimate
+    $\hat{\beta}_{(n)}$ with the new information
+    $(\bm{x}_{n+1}, y_{n+1})$, but ideally without re-doing all
+    the calculations.
+
+-   The [recursive data import]{.blue} of the [previous
+    slide](#recursive-data-import) is partially unsatisfactory, because
+    one would need to invert (or factorize) a $p \times p$ matrix every
+    time, which could be costly.
+
+-   Let us define some useful quantity: $$
+    \bm{V}_{(n)} = \bm{W}_{(n)}^{-1} = (\bm{X}_{(n)}^T\bm{X}_{(n)})^{-1},
+    $$ where $\bm{X}_{(n)}$ denotes the design matrix with $n$
+    observations and analogously $\bm{y}_{(n)}$.
+:::
+
+## Sherman-Morrison formula
+
+-   When the new data points arrive, we can write the updated quantities
+    $$
+    \bm{X}_{(n+1)} = (\bm{X}_{(n)}, \bm{x}_{(n + 1)})^T, \quad \bm{W}_{(n + 1)} = (\bm{X}_{(n+1)}^T\bm{X}_{(n + 1)}) = (\bm{X}_{(n)}^T\bm{X}_{(n)} +  \bm{x}_{(n + 1)} \bm{x}_{(n + 1)}^T).
+    $$
+
+-   The difficult part is to [efficiently]{.orange} compute
+    $\bm{V}_{(n+1)} = \bm{W}_{(n + 1)}^{-1}$. The following result of
+    linear algebra is of incredible help in this regard.
+
+::: callout-note
+#### Sherman-Morrison formula
+
+Let $\bm{A} \in \mathbb{R}^{p\times p}$ be an invertible matrix and let
+$\bm{b},\bm{d}$ be $p$-dimensional vectors. Then $$
+(\bm{A} + \bm{b} \bm{d}^T)^{-1} = \bm{A}^{-1} - \frac{1}{1 + \bm{d}^T \bm{A}^{-1}\bm{b}}\bm{A}^{-1}\bm{b}\bm{d}^T\bm{A}^{-1}.
+$$
+:::
+
+## The recursive least squares algorithm I
+
+::: incremental
+-   Using the Sherman-Morrison formula, then we can express the new
+    matrix $\bm{V}_{(n + 1)}$ as a function of previously computed
+    quantities: $$
+    \bm{V}_{(n + 1)} = \bm{V}_{(n)} - v_{(n)}\bm{V}_{(n)} \bm{x}_{(n + 1)}\bm{x}_{(n + 1)}^T \bm{V}_{(n)}, \quad v_{(n)} = \frac{1}{(1 + \bm{x}_{(n + 1)}^T \bm{V}_{(n)}\bm{x}_{(n + 1)})}.
+    $$
+
+-   The [updated least square estimate]{.orange} therefore becomes $$
+    \begin{aligned}
+    \hat{\beta}_{(n+1)} &= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \bm{x}_{(n + 1)} y_{n+1}) \\
+    &=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\bm{x}_{(n + 1)}}_{k_n}\underbrace{(y_{n+1} - \bm{x}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
+    &= \hat{\beta}_{(n)} + k_n e_{n+1}.
+    \end{aligned}
+    $$
+
+-   The quantity $e_{n+1}$ is the [prediction error]{.blue} of $y_{n+1}$
+    based on the previous estimate $\hat{\beta}_{(n)}$.
+:::
+
+## The recursive least squares algorithm II
+
+-   The recursive estimation
+    $\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + k_n e_{n+1}$ takes the
+    form of a [linear filter]{.orange}, in which the new estimate
+    $\hat{\beta}_{(n+1)}$ is obtained by modifying the old one
+    $\hat{\beta}_{(n+1)}$.
+
+-   This is performed according to the [prediction error]{.blue}
+    $\epsilon_{n+1}$ and the [gain]{.orange} $k_n$ of the filter.
+
+-   Using a terminology typical of the machine learning field, we say
+    that the estimator "learns from its errors".
+
+-   If $n$ is sufficiently high, it is also possible to get an
+    [approximate]{.orange} solution by initializing the algorithm by
+    setting $\bm{V}_{(0)} = I_p$, to avoid any matrix inversion /
+    factorization.
+
+. . .
+
+-   With further algebraic steps, we also obtain a [recursive
+    formula]{.blue} for the [deviance]{.blue}
+
+$$
+||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n + 1)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2.
+$$
+
+-   The full algorithm is provided in A&S, Algorithm 2.2.
+
+# References
+
+## References
+
+-   [Main references]{.blue}
+    -   **Chapter 2** of Azzalini, A. and Scarpa, B. (2011), [*Data
+        Analysis and Data
+        Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
+        University Press.
+    -   **Chapter 3** of Hastie, T., Tibshirani, R. and Friedman, J.
+        (2009), [*The Elements of Statistical
+        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
+        Edition, Springer.
+-   [Advanced references]{.orange}
+    -   **Chapters 1--3** of Quarteroni, A., Sacco, R., and Saleri F.
+        (2007). *Numerical mathematics*. Second Edition, Springer.
+    -   **Chapters 1--5** of Golub, G.H., and Van Loan, C.F. (1983).
+        *Matrix computations*. Hopkins University Press.
+
