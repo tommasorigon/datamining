@@ -82,7 +82,12 @@ styler:::style_file("../code/un_C.R")
 
 - We consider the `Hitters` dataset, which contains information about $n = 263$ Major League [Baseball players]{.blue} from the 1986 and 1987 seasons. 
 
-- We are interested in predicting the [Salary]{.orange} of each player, as a function of 
+- We want to [predict]{.blue} the [Salary]{.orange} of 1987 of each player, as a function of several covariates: 
+  - number of hits/runs/walks in 1986 and during the whole career up to 1986
+  - number of years in the major leagues
+  - ...
+  
+- The logarithmic transformation of two variables has been considered, 
 
 - The dataset is available in the `ISLR` R package.
 
@@ -102,44 +107,44 @@ glimpse(Hitters)
 ```
     
 
-## 3D plots
+<!-- ## 3D plots -->
 
 
 
-```{r}
-#| message: false
-library(plotly)
-logYears <- seq(from = min(Hitters$logYears), to = max(Hitters$logYears), length = 100)
-Hits <- seq(from = min(Hitters$Hits), to = max(Hitters$Hits), length = 100)
-logSalary <- matrix(predict(lm(logSalary ~ Hits + logYears, data = Hitters),
-  newdata = data.frame(expand.grid(logYears = logYears, Hits = Hits, logSalary = NA))
-), ncol = length(logYears))
-```
+<!-- ```{r} -->
+<!-- #| message: false -->
+<!-- library(plotly) -->
+<!-- logYears <- seq(from = min(Hitters$logYears), to = max(Hitters$logYears), length = 100) -->
+<!-- Hits <- seq(from = min(Hitters$Hits), to = max(Hitters$Hits), length = 100) -->
+<!-- logSalary <- matrix(predict(lm(logSalary ~ Hits + logYears, data = Hitters), -->
+<!--   newdata = data.frame(expand.grid(logYears = logYears, Hits = Hits, logSalary = NA)) -->
+<!-- ), ncol = length(logYears)) -->
+<!-- ``` -->
 
 
-```{r}
-#| fig-width: 6
-#| fig-height: 4
-#| fig-align: center
-#| warning: false
-#| message: false
-plot_ly() %>%
-  add_surface(
-    x = ~logYears, y = ~Hits, z = ~logSalary, colors = "Reds",
-    contours = list(
-      x = list(show = TRUE, start = 0, end = 3, size = 0.3, color = "white"),
-      y = list(show = TRUE, start = 0, end = 200, size = 25, color = "white")
-    )
-  ) %>%
-  add_markers(x = ~ Hitters$logYears, y = ~ Hitters$Hits, z = ~ Hitters$logSalary, size = 0.15, marker = list(color = "black"), showlegend = FALSE) %>%
-  layout(
-    scene = list(
-      camera = list(
-        eye = list(x = 0.9, y = -2, z = 0.3)
-      )
-    )
-  ) %>% hide_colorbar()
-```
+<!-- ```{r} -->
+<!-- #| fig-width: 6 -->
+<!-- #| fig-height: 4 -->
+<!-- #| fig-align: center -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+<!-- plot_ly() %>% -->
+<!--   add_surface( -->
+<!--     x = ~logYears, y = ~Hits, z = ~logSalary, colors = "Reds", -->
+<!--     contours = list( -->
+<!--       x = list(show = TRUE, start = 0, end = 3, size = 0.15, color = "white"), -->
+<!--       y = list(show = TRUE, start = 0, end = 200, size = 25, color = "white") -->
+<!--     ) -->
+<!--   ) %>% -->
+<!--   add_markers(x = ~ Hitters$logYears, y = ~ Hitters$Hits, z = ~ Hitters$logSalary, size = 0.15, marker = list(color = "black"), showlegend = FALSE) %>% -->
+<!--   layout( -->
+<!--     scene = list( -->
+<!--       camera = list( -->
+<!--         eye = list(x = 0.9, y = -2, z = 0.3) -->
+<!--       ) -->
+<!--     ) -->
+<!--   ) %>% hide_colorbar() -->
+<!-- ``` -->
 
 
 ## asd
