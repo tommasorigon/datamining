@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -18,7 +18,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -124,7 +124,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#references-1" id="toc-references-1" class="nav-link" data-scroll-target="#references-1">References</a></li>
   </ul></li>
   </ul>
-</nav>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_A1_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
 <main class="content" id="quarto-document-content">
 
@@ -140,7 +140,7 @@ ul.task-list li input[type="checkbox"] {
   <div class="quarto-title-meta-heading">Affiliation</div>
   
     <div class="quarto-title-meta-contents">
-    <span class="orange">Tommaso Rigon</span> 
+    <p class="author"><span class="orange">Tommaso Rigon</span> </p>
   </div>
     <div class="quarto-title-meta-contents">
         <p class="affiliation">
@@ -247,20 +247,19 @@ D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
 <li><p>Let us consider again the variables <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
 <li><p>Which function <span class="math inline">f(x,z;\beta)</span> should we choose?</p></li>
 </ul>
-<div class="incremental">
+<p>. . .</p>
 <ul>
 <li>A first attempt is to consider a <span class="orange">polynomial term</span> combined with a <span class="blue">dummy variable</span> <span class="math display">
 f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}),
 </span> which is a special instance of <span class="orange">linear model</span>.</li>
 </ul>
-</div>
-<div class="incremental">
-<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<p>. . .</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Definition (Linear model)
 </div>
 </div>
@@ -268,7 +267,6 @@ Definition (Linear model)
 <p>In a <span class="blue">linear model</span> the response variable <span class="math inline">Y_i</span> is related to the covariates through the function<span class="math display">
     f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
     </span> where <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> is a vector of <span class="orange">covariates</span> and <span class="math inline">\beta = (\beta_1,\dots,\beta_p)^T</span> is the corresponding vector of <span class="orange">coefficients</span>.</p>
-</div>
 </div>
 </div>
 </section>
@@ -302,13 +300,13 @@ D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\be
 </span> known also as <span class="orange">residual sum of squares (RSS)</span>, where <span class="math display">
 ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2},</span> denotes the <span class="blue">Euclidean norm</span>.</li>
 </ul>
-<div class="incremental">
-<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<p>. . .</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Least square estimate (OLS)
 </div>
 </div>
@@ -316,7 +314,6 @@ Least square estimate (OLS)
 <p>If the design matrix has <span class="blue">full rank</span>, that is if <span class="math inline">\text{rk}(\bm{X}^T\bm{X}) = p</span>, then the <span class="orange">least square estimate</span> has an explicit solution: <span class="math display">
     \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y}.
     </span></p>
-</div>
 </div>
 </div>
 </section>
@@ -377,7 +374,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -432,7 +429,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">r.squared</th>
@@ -496,22 +493,20 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>A major advantage of linear models is that they can describe non-linear relationship via <span class="blue">variable transformations</span> such as polynomials, logarithms, etc.</li>
 </ul>
-<div class="incremental">
+<p>. . .</p>
 <ul>
 <li>This gives the statistician a lot of modelling flexibility. For instance we could let: <span class="math display">
 \log{Y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
 </span></li>
 </ul>
-</div>
-<div class="incremental">
+<p>. . .</p>
 <ul>
 <li>This specification is <span class="orange">linear in the parameters</span>, it fixes the domain issues, and it imposes a monotone relationship between engine size and consumption.</li>
 </ul>
-</div>
-<div class="incremental">
+<p>. . .</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -547,7 +542,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </table>
 </div>
 </div>
-</div>
 </section>
 <section id="second-model-fitted-values" class="level2">
 <h2 class="anchored" data-anchor-id="second-model-fitted-values">Second model: fitted values</h2>
@@ -580,7 +574,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">r.squared.original</th>
@@ -603,13 +597,12 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>Do not mix <span class="blue">apple</span> and <span class="orange">oranges</span>! Compare <span class="math inline">R^2</span>s only if they refer to the same scale!</li>
 </ul>
-<div class="incremental">
+<p>. . .</p>
 <ul>
 <li><p>This second model is <span class="blue">more parsimonious</span> and yet it reaches satisfactory predictive performance.</p></li>
 <li><p>It is also more coherent with the nature of the data: the predictions cannot be negative and the relationship between engine size and the consumption is monotone.</p></li>
 <li><p>Yet, there is still some heteroschedasticity in the residuals — is this due to a missing covariate that has not been included into the model?</p></li>
 </ul>
-</div>
 </section>
 <section id="a-third-model-additional-variables" class="level2">
 <h2 class="anchored" data-anchor-id="a-third-model-additional-variables">A third model: additional variables</h2>
@@ -619,10 +612,10 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 \log{Y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
   </span> for <span class="math inline">i=1,\dots,n</span>. The estimates are:</p></li>
 </ul>
-<div class="incremental">
+<p>. . .</p>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -672,7 +665,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </table>
 </div>
 </div>
-</div>
 </section>
 <section id="a-third-model-graphical-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="a-third-model-graphical-diagnostics">A third model: graphical diagnostics</h2>
@@ -693,7 +685,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<table class="table table-sm table-striped">
+<table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">r.squared.original</th>
@@ -735,7 +727,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </span> that is, using the R code <code>solve(t(X) %*% X) %*% t(X) %*% y</code>.</p></li>
 <li><p>This approach works reasonably well in many <span class="blue">simple cases</span>.</p></li>
 </ul>
-<div class="incremental">
+<p>. . .</p>
 <ul>
 <li>Unfortunately, in more challenging scenarios, e.g.&nbsp;when we have a lot of data (large <span class="math inline">n</span>) and correlated variables, the above code is
 <ul>
@@ -744,7 +736,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul></li>
 <li>The main computational bottleneck is the calculation of the inverse of <span class="math inline">\bm{X}^T\bm{X}</span>, which is very costly and often numerically unstable, especially when the predictors are almost collinear.</li>
 </ul>
-</div>
 </section>
 <section id="the-normal-equations" class="level2">
 <h2 class="anchored" data-anchor-id="the-normal-equations">The normal equations</h2>
@@ -755,7 +746,8 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <li><p>This system could be solved using <code>solve(crossprod(X), crossprod(X, y))</code>.</p></li>
 <li><p>This avoids the explicit computation of <span class="math inline">(\bm{X}^T\bm{X})^{-1}</span> and it is preferable compared to the “direct solution”. However, it does not exploit the properties of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>.</p></li>
 </ul>
-<div class="incremental">
+<p>. . .</p>
+<p>. . .</p>
 <ul>
 <li>Recall (from your favorite linear algebra textbook) that a <span class="blue">symmetric</span> matrix <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> is <span class="orange">positive definite</span> if and only if one the following properties is satisfied
 <ul>
@@ -764,16 +756,15 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul></li>
 <li>We now describe a strategy to compute <span class="math inline">\hat{\beta}</span> that exploits the fact that <span class="math inline">\bm{X}^T\bm{X}</span> is <span class="orange">positive definite</span>, resulting in more <span class="blue">efficient computations</span>.</li>
 </ul>
-</div>
 </section>
 <section id="cholesky-factorization-1" class="level2">
 <h2 class="anchored" data-anchor-id="cholesky-factorization-1">Cholesky factorization</h2>
-<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Proposition A.1
 </div>
 </div>
@@ -783,13 +774,13 @@ Proposition A.1
 </span> is <span class="blue">symmetric</span> and <span class="orange">positive definite</span>.</p>
 </div>
 </div>
-<div class="incremental">
-<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<p>. . .</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Theorem (Cholesky factorization)
 </div>
 </div>
@@ -797,7 +788,6 @@ Theorem (Cholesky factorization)
 <p>Let <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> be a symmetric and positive definite matrix. Then, there exists a unique <span class="orange">upper triangular</span> <span class="math inline">p \times p</span> matrix <span class="math inline">\bm{R}</span> with positive entries such that <span class="math display">
 \bm{A} = \bm{R}^T\bm{R}.
 </span></p>
-</div>
 </div>
 </div>
 </section>
@@ -898,21 +888,20 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <ul>
 <li>Another approach for computing least squares is based on the notion of orthogonality.</li>
 </ul>
-<div class="incremental">
+<p>. . .</p>
 <ul>
 <li><p>If the <span class="blue">predictors</span> were mutually <span class="orange">orthogonal</span>, the problem would be much simpler.</p></li>
 <li><p>In other words, consider a linear model of the form <span class="math display">
 \bm{Y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
 </span> where <span class="math inline">\bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p)</span>. <span class="orange">Orthogonality</span> means that <span class="math inline">\bm{Z}^T\bm{Z} = \text{diag}(\tilde{\bm{z}}_1^T\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p^T\tilde{\bm{z}}_p)</span>.</p></li>
 </ul>
-</div>
-<div class="incremental">
-<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<p>. . .</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Proposition A.2. OLS with orthogonal predictors
 </div>
 </div>
@@ -921,7 +910,6 @@ Proposition A.2. OLS with orthogonal predictors
 <p><span class="math display">
 \hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j}, \qquad j=1,\dots,p.
 </span></p>
-</div>
 </div>
 </div>
 </section>
@@ -979,12 +967,12 @@ Proposition A.2. OLS with orthogonal predictors
 </section>
 <section id="the-qr-decomposition-ii" class="level2">
 <h2 class="anchored" data-anchor-id="the-qr-decomposition-ii">The QR decomposition II</h2>
-<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Theorem (QR factorization)
 </div>
 </div>
@@ -994,19 +982,18 @@ Theorem (QR factorization)
 </span> where <span class="math inline">\bm{Q} \in \mathbb{R}^{n \times p}</span> has <span class="orange">orthonormal columns</span> and <span class="math inline">\bm{R} \in \mathbb{R}^{p \times p}</span> is an <span class="blue">upper triangular</span> matrix.</p>
 </div>
 </div>
-<div class="incremental">
-<div class="callout-tip callout callout-style-simple no-icon callout-captioned">
+<p>. . .</p>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Corollary (QR factorization)
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>The QR decomposition is <span class="blue">unique</span> up to <span class="blue">sign flips</span> of the columns of <span class="math inline">\bm{Q}</span> and the rows of <span class="math inline">\bm{R}</span>. Moreover, if <span class="math inline">\bm{R}</span> has positive diagonal entries, as the one obtained using Gram-Schmidt, then it coincides with the <span class="orange">Cholesky factor</span> of <span class="math inline">\bm{X}^T\bm{X}</span>.</p>
-</div>
 </div>
 </div>
 </section>
@@ -1124,12 +1111,12 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 </span></p></li>
 <li><p>The difficult part is to <span class="orange">efficiently</span> compute <span class="math inline">\bm{V}_{(n+1)} = \bm{W}_{(n + 1)}^{-1}</span>. The following result of linear algebra is of incredible help in this regard.</p></li>
 </ul>
-<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
-<div class="callout-caption-container flex-fill">
+<div class="callout-title-container flex-fill">
 Sherman-Morrison formula
 </div>
 </div>
@@ -1166,7 +1153,7 @@ Sherman-Morrison formula
 <li><p>Using a terminology typical of the machine learning field, we say that the estimator “learns from its errors”.</p></li>
 <li><p>If <span class="math inline">n</span> is sufficiently high, it is also possible to get an <span class="orange">approximate</span> solution by initializing the algorithm by setting <span class="math inline">\bm{V}_{(0)} = I_p</span>, to avoid any matrix inversion / factorization.</p></li>
 </ul>
-<div class="incremental">
+<p>. . .</p>
 <ul>
 <li>With further algebraic steps, we also obtain a <span class="blue">recursive formula</span> for the <span class="blue">deviance</span></li>
 </ul>
@@ -1176,7 +1163,6 @@ Sherman-Morrison formula
 <ul>
 <li>The full algorithm is provided in A&amp;S, Algorithm 2.2.</li>
 </ul>
-</div>
 </section>
 </section>
 <section id="references" class="level1">
@@ -1227,9 +1213,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -1294,6 +1294,92 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
