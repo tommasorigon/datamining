@@ -78,11 +78,20 @@ styler:::style_file("../code/un_C.R")
 
 ## The `Hitters` dataset
 
-- 
+::: incremental
+
+- We consider the `Hitters` dataset, which contains information about $n = 263$ Major League [Baseball players]{.blue} from the 1986 and 1987 seasons. 
+
+- We are interested in predicting the [Salary]{.orange} of each player, as a function of 
+
+- The dataset is available in the `ISLR` R package.
+
+:::
 
 ## A `glimpse` of the `Hitters` dataset
 
 ```{r}
+#| message: false
 rm(list = ls())
 library(ISLR)
 library(tidyverse)
@@ -98,6 +107,7 @@ glimpse(Hitters)
 
 
 ```{r}
+#| message: false
 library(plotly)
 logYears <- seq(from = min(Hitters$logYears), to = max(Hitters$logYears), length = 100)
 Hits <- seq(from = min(Hitters$Hits), to = max(Hitters$Hits), length = 100)

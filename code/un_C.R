@@ -1,4 +1,4 @@
-
+#| message: false
 rm(list = ls())
 library(ISLR)
 library(tidyverse)
@@ -8,7 +8,7 @@ Hitters <- mutate(Hitters, logYears = log10(Years), logSalary = log10(Salary)) %
 glimpse(Hitters)
 
 
-
+#| message: false
 library(plotly)
 logYears <- seq(from = min(Hitters$logYears), to = max(Hitters$logYears), length = 100)
 Hits <- seq(from = min(Hitters$Hits), to = max(Hitters$Hits), length = 100)
