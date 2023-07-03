@@ -4,6 +4,7 @@ library(tidyverse)
 data(Hitters)
 Hitters <- na.omit(Hitters)
 Hitters <- mutate(Hitters, Salary = log10(Salary), Years = log(Years))
+glimpse(Hitters)
 
 
 
@@ -20,22 +21,23 @@ Salary <- matrix(predict(lm(Salary ~ Hits + Years, data = Hitters),
 #| fig-align: center
 #| warning: false
 #| message: false
-plot_ly(
-  x = ~Years, y = ~Hits, z = ~Salary, type = "surface", colors = "Reds",
-  contours = list(
-    x = list(show = TRUE, start = 0, end = 3, size = 0.3, color = "white"),
-    y = list(show = TRUE, start = 0, end = 200, size = 25, color = "white")
-  )
-) %>%
-  add_markers(x = ~ Hitters$Years, y = ~ Hitters$Hits, z = ~ Hitters$Salary, size = 0.1) %>%
+plot_ly() %>%
+  add_surface(
+    x = ~Years, y = ~Hits, z = ~Salary, colors = "Reds",
+    contours = list(
+      x = list(show = TRUE, start = 0, end = 3, size = 0.3, color = "white"),
+      y = list(show = TRUE, start = 0, end = 200, size = 25, color = "white")
+    )
+  ) %>%
+  add_markers(x = ~ Hitters$Years, y = ~ Hitters$Hits, z = ~ Hitters$Salary, size = 0.15, marker = list(color = "black"), showlegend = FALSE) %>%
   layout(
-    showlegend = FALSE,
     scene = list(
       camera = list(
         eye = list(x = 0.9, y = -2, z = 0.3)
       )
     )
-  )
+  ) %>%
+  hide_colorbar()
 
 
 
