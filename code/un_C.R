@@ -1,19 +1,20 @@
 
+rm(list = ls())
 library(ISLR)
 library(tidyverse)
 data(Hitters)
 Hitters <- na.omit(Hitters)
-Hitters <- mutate(Hitters, Salary = log10(Salary), Years = log(Years))
+Hitters <- mutate(Hitters, logYears = log10(Years), logSalary = log10(Salary)) %>% select(-c(Salary, Years))
 glimpse(Hitters)
 
 
 
 library(plotly)
-Years <- seq(from = min(Hitters$Years), to = max(Hitters$Years), length = 100)
+logYears <- seq(from = min(Hitters$logYears), to = max(Hitters$logYears), length = 100)
 Hits <- seq(from = min(Hitters$Hits), to = max(Hitters$Hits), length = 100)
-Salary <- matrix(predict(lm(Salary ~ Hits + Years, data = Hitters),
-  newdata = data.frame(expand.grid(Years = Years, Hits = Hits, Salary = NA))
-), ncol = length(Years))
+logSalary <- matrix(predict(lm(logSalary ~ Hits + logYears, data = Hitters),
+  newdata = data.frame(expand.grid(logYears = logYears, Hits = Hits, logSalary = NA))
+), ncol = length(logYears))
 
 
 #| fig-width: 6
@@ -23,13 +24,13 @@ Salary <- matrix(predict(lm(Salary ~ Hits + Years, data = Hitters),
 #| message: false
 plot_ly() %>%
   add_surface(
-    x = ~Years, y = ~Hits, z = ~Salary, colors = "Reds",
+    x = ~logYears, y = ~Hits, z = ~logSalary, colors = "Reds",
     contours = list(
       x = list(show = TRUE, start = 0, end = 3, size = 0.3, color = "white"),
       y = list(show = TRUE, start = 0, end = 200, size = 25, color = "white")
     )
   ) %>%
-  add_markers(x = ~ Hitters$Years, y = ~ Hitters$Hits, z = ~ Hitters$Salary, size = 0.15, marker = list(color = "black"), showlegend = FALSE) %>%
+  add_markers(x = ~ Hitters$logYears, y = ~ Hitters$Hits, z = ~ Hitters$logSalary, size = 0.15, marker = list(color = "black"), showlegend = FALSE) %>%
   layout(
     scene = list(
       camera = list(
@@ -42,11 +43,11 @@ plot_ly() %>%
 
 
 library(leaps)
-fit <- regsubsets(Salary ~ ., data = Hitters, method = "exhaustive", nbest = 1, nvmax = 20)
+fit <- regsubsets(logSalary ~ ., data = Hitters, method = "exhaustive", nbest = 1, nvmax = 20)
 sum1 <- summary(fit)
 
 plot(rowSums(sum1$which), sum1$cp)
 
-fit <- regsubsets(Salary ~ ., data = Hitters, method = "backward", nbest = 1, nvmax = 20)
+fit <- regsubsets(logSalary ~ ., data = Hitters, method = "backward", nbest = 1, nvmax = 20)
 sum1 <- summary(fit)
 # plot(rowSums(sum1$which), sum1$cp)
