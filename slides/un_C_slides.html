@@ -335,6 +335,16 @@
       margin-right: 0; 
     }
   </style>
+  
+  <script src="un_C_files/libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+  <link href="un_C_files/libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+  <script src="un_C_files/libs/datatables-binding-0.28/datatables.js"></script>
+  <script src="un_C_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <link href="un_C_files/libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link href="un_C_files/libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet">
+  <script src="un_C_files/libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+  <link href="un_C_files/libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+  <script src="un_C_files/libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -359,9 +369,14 @@
 <section id="homepage" class="slide level2 center">
 <h2><a href="../index.html">Homepage</a></h2>
 <div class="columns">
-<div class="column" style="width:25%;">
-<p><img data-src="img/lasso.png"></p>
-</div><div class="column" style="width:75%;">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/baseball.png" style="width:60.0%"></p>
+</figure>
+</div>
+<p><em>“I never keep a scorecard or the batting averages. I hate statistics. What I got to know, I keep in my head.”</em> Dizzy Dean, baseball player in the ’30s and ’40s.</p>
+</div><div class="column" style="width:50%;">
 <ul>
 <li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
 <ul>
@@ -372,6 +387,7 @@
 </ul></li>
 <li><p>The common thread among these topics is the so-called <span class="blue">variable selection</span> problem.</p></li>
 <li><p>In other words: what do we do when we have many <span class="orange">irrelevant</span> variables?</p></li>
+<li><p>The running example is about baseball data… but a lot has changed since the ’30s!</p></li>
 </ul>
 </div>
 </div>
@@ -383,12 +399,14 @@
 <li class="fragment"><p>We consider the <code>Hitters</code> dataset, which contains information about <span class="math inline">n = 263</span> Major League <span class="blue">Baseball players</span> from the 1986 and 1987 seasons.</p></li>
 <li class="fragment"><p>We want to <span class="blue">predict</span> the <span class="orange">Salary</span> of 1987 of each player, as a function of several covariates:</p>
 <ul>
-<li class="fragment">number of hits/runs/walks in 1986 and during the whole career up to 1986</li>
-<li class="fragment">number of years in the major leagues</li>
-<li class="fragment">…</li>
+<li class="fragment">number of hits/runs/walks/assists/errors in 1986 and during the whole career;</li>
+<li class="fragment">number of years in the major leagues;</li>
+<li class="fragment">The league/division of the player at the end of 1986;</li>
+<li class="fragment">…and many others.</li>
 </ul></li>
-<li class="fragment"><p>The logarithmic transformation of two variables has been considered,</p></li>
-<li class="fragment"><p>The dataset is available in the <code>ISLR</code> R package.</p></li>
+<li class="fragment"><p>We considered the logarithmic transform of the salary (<code>logSalary</code>) and the logarithmic transform of the number of years in major leagues (<code>logYears</code>).</p></li>
+<li class="fragment"><p>Including the intercept, there are in total <span class="math inline">p = 20</span> <span class="orange">variables</span> that can be used to predict the salary of each player.</p></li>
+<li class="fragment"><p>The <a href="https://search.r-project.org/CRAN/refmans/ISLR/html/Hitters.html">original dataset</a> is available in the <code>ISLR</code> R package.</p></li>
 </ul>
 </div>
 </section>
@@ -404,6 +422,7 @@ $ HmRun     &lt;int&gt; 7, 18, 20, 10, 4, 1, 0, 6, 17, 21, 4, 13, 0, 7, 20, 2, 8
 $ Runs      &lt;int&gt; 24, 66, 65, 39, 74, 23, 24, 26, 49, 107, 31, 48, 30, 29, 89,…
 $ RBI       &lt;int&gt; 38, 72, 78, 42, 51, 8, 24, 32, 66, 75, 26, 61, 11, 27, 75, 8…
 $ Walks     &lt;int&gt; 39, 76, 37, 30, 35, 21, 7, 8, 65, 59, 27, 47, 22, 30, 73, 15…
+$ Years     &lt;int&gt; 14, 3, 11, 2, 11, 2, 3, 2, 13, 10, 9, 4, 6, 13, 15, 5, 8, 1,…
 $ CAtBat    &lt;int&gt; 3449, 1624, 5628, 396, 4408, 214, 509, 341, 5206, 4631, 1876…
 $ CHits     &lt;int&gt; 835, 457, 1575, 101, 1133, 42, 108, 86, 1332, 1300, 467, 392…
 $ CHmRun    &lt;int&gt; 69, 63, 225, 12, 19, 1, 0, 6, 253, 90, 15, 41, 4, 36, 177, 5…
@@ -415,9 +434,142 @@ $ Division  &lt;fct&gt; W, W, E, E, W, E, W, W, E, E, W, E, E, E, W, W, W, E, W,
 $ PutOuts   &lt;int&gt; 632, 880, 200, 805, 282, 76, 121, 143, 0, 238, 304, 211, 121…
 $ Assists   &lt;int&gt; 43, 82, 11, 40, 421, 127, 283, 290, 0, 445, 45, 11, 151, 45,…
 $ Errors    &lt;int&gt; 10, 14, 3, 4, 25, 7, 9, 19, 0, 22, 11, 7, 6, 8, 10, 16, 2, 5…
-$ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N, N, …
-$ logYears  &lt;dbl&gt; 1.1461280, 0.4771213, 1.0413927, 0.3010300, 1.0413927, 0.301…
-$ logSalary &lt;dbl&gt; 2.676694, 2.681241, 2.698970, 1.961421, 2.875061, 1.845098, …</code></pre>
+$ Salary    &lt;dbl&gt; 475.000, 480.000, 500.000, 91.500, 750.000, 70.000, 100.000,…
+$ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N, N, …</code></pre>
+</div>
+</div>
+</section>
+<section id="preliminary-operations" class="slide level2 center">
+<h2>Preliminary operations</h2>
+</section>
+<section id="the-variable-selection-problem" class="slide level2 center">
+<h2>The variable selection problem</h2>
+<div>
+<ul>
+<li class="fragment"><p>We consider a <span class="orange">linear model</span> in which the response variable <span class="math inline">Y_i</span> (<code>logSalary</code>) is related to the covariates through the function<span class="math display">
+  \mathbb{E}(Y_i) = f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
+  </span> using the same notation of <a href="un_A1.html">Unit A.1</a>.</p></li>
+<li class="fragment"><p>Among these <span class="math inline">p = 26</span> variables, some are likely to be <span class="blue">irrelevant</span>, because they might be <span class="orange">correlated</span> or even <span class="orange">collinear</span>.</p></li>
+<li class="fragment"><p>As we have seen in <a href="un_B.html">Unit B</a>, irrelevant variables are problematic because they <span class="orange">increase the variance</span> of the estimates without important gain in term of bias.</p></li>
+<li class="fragment"><p>For the polynomial regression problem of <a href="un_B.html">Unit B</a> we used <span class="blue">cross-validation</span> and other tools to find a good <span class="blue">bias-variance trade-off</span>. Can we use the same strategy in this example?</p></li>
+<li class="fragment"><p>In theory, yes… but here there are <span class="math inline">2^{20} = 1048576</span> competing models!</p></li>
+</ul>
+</div>
+</section>
+<section id="correlation-matrix-of-hitters" class="slide level2 center">
+<h2>Correlation matrix of <code>Hitters</code></h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-4-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
+<section id="old-friends-stepwise-regression" class="slide level2 center">
+<h2>Old friends: stepwise regression</h2>
+</section>
+<section id="forward-regression" class="slide level2 center">
+<h2>Forward regression</h2>
+</section>
+<section id="backward-regression" class="slide level2 center">
+<h2>Backward regression</h2>
+</section>
+<section id="backward-and-forward-regression-i" class="slide level2 center">
+<h2>Backward and forward regression I</h2>
+
+<!-- ## Backward and forward regression {.scrollable} -->
+<!-- ::: {style="font-size: 60%;"} -->
+<!-- ```{r} -->
+<!-- library(DT) -->
+<!-- # BIC based -->
+<!-- p <- ncol(sum_backward$which) -->
+<!-- tab <- data.frame(OLS =rep(0, p), BIC_backward = rep(0, p), BIC_forward = rep(0, p), AIC_backward = rep(0, p), AIC_forward = rep(0, p)) -->
+<!-- rownames(tab) <- colnames(sum_backward$which) -->
+<!-- tab$OLS <- coef(lm(logSalary ~ ., data = Hitters)) -->
+<!-- tab$BIC_backward[sum_backward$which[which.min(sum_backward$bic), ]] <- coef(fit_backward, which.min(sum_backward$bic)) -->
+<!-- tab$BIC_forward[sum_forward$which[which.min(sum_forward$bic), ]] <- coef(fit_forward, which.min(sum_forward$bic)) -->
+<!-- tab$AIC_backward[sum_backward$which[which.min(sum_backward$aic), ]] <- coef(fit_backward, which.min(sum_backward$aic)) -->
+<!-- tab$AIC_forward[sum_forward$which[which.min(sum_forward$aic), ]] <- coef(fit_forward, which.min(sum_forward$aic)) -->
+
+<!-- datatable(tab, colnames=c("OLS", "BIC backward", "BIC forward", "AIC backward", "AIC forward"), options = list( -->
+<!--   pageLength = 13, -->
+<!--   dom = "pt", -->
+<!--   order = list(list(0, "asc")))) %>% formatRound(columns = 1:5, digits = 2) %>% formatStyle( -->
+<!--     columns = 0,fontWeight = "bold" -->
+<!--   ) %>%formatStyle( -->
+<!--           columns = 1:5, -->
+<!--           backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA")) -->
+<!--         ) %>% formatStyle( -->
+<!--           columns = 1:5, -->
+<!--           backgroundColor = styleEqual(0, c("white")) -->
+<!--         )  -->
+<!-- ``` -->
+<!-- ::: -->
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-6-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
+<section id="the-multiple-testing-problem" class="slide level2 center">
+<h2>☠️ - The multiple testing problem</h2>
+</section>
+<section id="best-subset-regression-i" class="slide level2 center">
+<h2>Best subset regression I</h2>
+</section>
+<section id="best-subset-regression-ii" class="slide level2 center">
+<h2>Best subset regression II</h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-8-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
+<section id="best-subset-regression-iii" class="slide level2 center">
+<h2>Best subset regression III</h2>
+<div style="font-size: 55%;">
+<div class="cell">
+<div class="cell-output-display">
+
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-31a4210c82d4fd9f1013" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-31a4210c82d4fd9f1013">{"x":{"filter":"none","vertical":false,"data":[["(Intercept)","AtBat","Hits","HmRun","Runs","RBI","Walks","CAtBat","CHits","CHmRun","CRuns","CRBI","CWalks","LeagueN","DivisionW","PutOuts","Assists","Errors","NewLeagueN","logAHits","logAAtBat","logARuns","logARBI","logAWalks","logAHmRun","logYears"],[5.936091542753986,-0.08315995024012908,0.1887788723500464,0.04158921323442533,-0.0261418350199927,-0.151712093721507,0.2108063400660116,-0.6372227649893942,0.6043012605198043,0.1243777338521933,0.1926689467459882,-0.206879947361405,-0.1807638322952216,0.2163333909947036,-0.1112418193882813,0.09812969761682319,0.08808921241518911,-0.02928958578120165,-0.1168175990851249,0.3984116576795681,-0.805644895693668,0.3730718477583418,0.4049010407426789,-0.1252034629585142,-0.02076761719444367,0.5696541892335483],[5.927221541221401,0,0.2132315361781069,0,0,0,0,0,0,0,0,0,0,0,0,0.1014223774210267,0,0,0,0,-0.5613848598777821,0.5027960187332534,0.2198641657309092,0,0,0.5143214441500502],[5.981347429659539,0,0,0,0,0,0.1463988665647679,0,0,0,0,0,-0.145433698535852,0,-0.1062321541733602,0.1055978931780682,0.08112644903445959,0,0,1.034583815855855,-1.412523736636294,0.4182782445846569,0.2331919757282216,0,0,0.557925088412207]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>OLS<\/th>\n      <th>BIC best<\/th>\n      <th>AIC best<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":13,"dom":"pt","order":[[0,"asc"]],"columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3]},{"orderable":false,"targets":0}],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,13,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'font-weight':'bold'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':value == 0 ? \"white\" : null});\n}"}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.rowCallback"],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+</section>
+<section>
+<section id="principal-components" class="title-slide slide level1 center">
+<h1>Principal components</h1>
+
+</section>
+<section id="principal-component-analysis" class="slide level2 center">
+<h2>Principal component analysis</h2>
+</section>
+<section id="principal-components-regression" class="slide level2 center">
+<h2>Principal components regression</h2>
+</section></section>
+<section>
+<section id="ridge-regression" class="title-slide slide level1 center">
+<h1>Ridge regression</h1>
+
+</section>
+<section id="the-wrong-way-of-doing-cross-validation" class="slide level2 center">
+<h2>The wrong way of doing cross-validation</h2>
+<div>
+<ul>
+<li class="fragment"><p>Consider a regression problem with a <span class="blue">large number of predictors</span>, as may arise, for example, in genomic or proteomic applications.</p></li>
+<li class="fragment"><p>A typical strategy for analysis might be as follows:</p>
+<ol type="1">
+<li class="fragment">Screen the predictors: find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels;</li>
+<li class="fragment">Using just this subset of predictors, build a regression model;</li>
+<li class="fragment">Use cross-validation to estimate the unknown tuning parameters (i.e.&nbsp;degree of polynomials) and to estimate the prediction error of the final model.</li>
+</ol></li>
+<li class="fragment"><p>Is this a correct application of cross-validation?</p></li>
+<li class="fragment"><p>If your reaction was “<span class="orange">this is absolutely wrong!</span>”, it means you correctly understood the principles of cross-validation.</p></li>
+<li class="fragment"><p>If you though this was an ok-ish idea, please read <span class="blue">Section 7.10.2</span> of HTF (2009).</p></li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="lasso-lars-and-elastic-net" class="title-slide slide level1 center">
+<h1>Lasso, LARS, and elastic-net</h1>
+
+</section>
+<section id="lasso" class="slide level2 center">
+<h2>Lasso</h2>
+<div class="columns">
+<div class="column" style="width:25%;">
+<p><img data-src="img/lasso.png"></p>
+</div><div class="column" style="width:75%;">
+<ul>
+<li>asdasd</li>
+</ul>
 </div>
 </div>
 <!-- ## 3D plots -->
@@ -453,54 +605,6 @@ $ logSalary &lt;dbl&gt; 2.676694, 2.681241, 2.698970, 1.961421, 2.875061, 1.8450
 <!--     ) -->
 <!--   ) %>% hide_colorbar() -->
 <!-- ``` -->
-</section>
-<section id="asd" class="slide level2 center">
-<h2>asd</h2>
-
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-3-1.png" width="1500" class="r-stretch"></section>
-<section>
-<section id="best-subset-regression" class="title-slide slide level1 center">
-<h1>Best subset regression</h1>
-
-</section>
-<section id="the-wrong-way-of-doing-cross-validation" class="slide level2 center">
-<h2>The wrong way of doing cross-validation</h2>
-<div>
-<ul>
-<li class="fragment"><p>Consider a regression problem with a <span class="blue">large number of predictors</span>, as may arise, for example, in genomic or proteomic applications.</p></li>
-<li class="fragment"><p>A typical strategy for analysis might be as follows:</p>
-<ol type="1">
-<li class="fragment">Screen the predictors: find a subset of “good” predictors that show fairly strong (univariate) correlation with the class labels;</li>
-<li class="fragment">Using just this subset of predictors, build a regression model;</li>
-<li class="fragment">Use cross-validation to estimate the unknown tuning parameters (i.e.&nbsp;degree of polynomials) and to estimate the prediction error of the final model.</li>
-</ol></li>
-<li class="fragment"><p>Is this a correct application of cross-validation?</p></li>
-<li class="fragment"><p>If your reaction was “<span class="orange">this is absolutely wrong!</span>”, it means you correctly understood the principles of cross-validation.</p></li>
-<li class="fragment"><p>If you though this was an ok-ish idea, please read <span class="blue">Section 7.10.2</span> of HTF (2009).</p></li>
-</ul>
-</div>
-</section></section>
-<section id="ridge-regression" class="title-slide slide level1 center">
-<h1>Ridge regression</h1>
-
-</section>
-
-<section>
-<section id="lasso-lars-and-elastic-net" class="title-slide slide level1 center">
-<h1>Lasso, LARS, and elastic-net</h1>
-
-</section>
-<section id="lasso" class="slide level2 center">
-<h2>Lasso</h2>
-<div class="columns">
-<div class="column" style="width:25%;">
-<p><img data-src="img/lasso.png"></p>
-</div><div class="column" style="width:75%;">
-<ul>
-<li>asdasd</li>
-</ul>
-</div>
-</div>
 </section>
 <section id="references" class="slide level2 center">
 <h2>References</h2>

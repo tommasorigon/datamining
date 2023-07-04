@@ -7,6 +7,7 @@ execute:
   cache: false
 format:
   revealjs:
+    df-print: tibble
     auto-stretch: true
     center: true
     html-math-method: katex
@@ -58,11 +59,14 @@ styler:::style_file("../code/un_C.R")
 ```
 
 ::: columns
-::: {.column width="25%"}
-![](img/lasso.png){}
+::: {.column width="50%"}
+![](img/baseball.png){width=60% fig-align="center"} 
+
+*"I never keep a scorecard or the batting averages. I hate statistics. What I got to know, I keep in my head."* Dizzy Dean, baseball player in the '30s and '40s.
 :::
 
-::: {.column width="75%"}
+::: {.column width="50%"}
+
 -   In this unit we will cover the following [topics]{.orange}:
 
     -   Best subset regression
@@ -73,6 +77,8 @@ styler:::style_file("../code/un_C.R")
 - The common thread among these topics is the so-called [variable selection]{.blue} problem.
 
 - In other words: what do we do when we have many [irrelevant]{.orange} variables?
+
+- The running example is about baseball data... but a lot has changed since the '30s!
 :::
 :::
 
@@ -83,13 +89,16 @@ styler:::style_file("../code/un_C.R")
 - We consider the `Hitters` dataset, which contains information about $n = 263$ Major League [Baseball players]{.blue} from the 1986 and 1987 seasons. 
 
 - We want to [predict]{.blue} the [Salary]{.orange} of 1987 of each player, as a function of several covariates: 
-  - number of hits/runs/walks in 1986 and during the whole career up to 1986
-  - number of years in the major leagues
-  - ...
+  - number of hits/runs/walks/assists/errors in 1986 and during the whole career;
+  - number of years in the major leagues;
+  - The league/division of the player at the end of 1986;
+  - ...and many others.
   
-- The logarithmic transformation of two variables has been considered, 
+- We considered the logarithmic transform of the salary (`logSalary`) and the logarithmic transform of the number of years in major leagues (`logYears`).
 
-- The dataset is available in the `ISLR` R package.
+- Including the intercept, there are in total $p = 20$ [variables]{.orange} that can be used to predict the salary of each player.
+
+- The [original dataset](https://search.r-project.org/CRAN/refmans/ISLR/html/Hitters.html) is available in the `ISLR` R package.
 
 :::
 
@@ -102,10 +111,254 @@ library(ISLR)
 library(tidyverse)
 data(Hitters)
 Hitters <- na.omit(Hitters)
-Hitters <- mutate(Hitters, logYears = log10(Years), logSalary = log10(Salary)) %>% select(-c(Salary, Years))
 glimpse(Hitters)
 ```
-    
+
+## Preliminary operations
+
+```{r}
+Hitters <- mutate(Hitters,
+  logAHits = log1p(CHits / Years),
+  logAAtBat = log1p(CAtBat / Years),
+  logARuns = log1p(CRuns / Years),
+  logARBI = log1p(CRBI / Years),
+  logAWalks = log1p(CWalks / Years),
+  logAHmRun = log1p(CHmRun / Years),
+  logYears = log(Years),
+  logSalary = log(Salary)
+) %>% select(-c(Salary, Years))
+```
+
+
+## The variable selection problem
+
+::: incremental
+
+- We consider a [linear model]{.orange} in which the response variable $Y_i$ (`logSalary`) is related to the
+covariates through the function$$
+    \mathbb{E}(Y_i) = f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
+    $$ 
+using the same notation of [Unit A.1](un_A1.html).
+
+- Among these $p = 26$ variables, some are likely to be [irrelevant]{.blue}, because they might be [correlated]{.orange} or even [collinear]{.orange}.
+
+- As we have seen in [Unit B](un_B.html), irrelevant variables are problematic because they [increase the variance]{.orange} of the estimates without important gain in term of bias. 
+
+- For the polynomial regression problem of [Unit B](un_B.html) we used [cross-validation]{.blue} and other tools to find a good [bias-variance trade-off]{.blue}. Can we use the same strategy in this example?
+
+- In theory, yes... but here there are $2^{20} = 1048576$ competing models! 
+
+:::
+
+## Correlation matrix of `Hitters`
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+library(ggcorrplot)
+corr <- cor(Hitters[, -c(14, 13, 18, 26)]) # Remove logSalary
+ggcorrplot(corr,
+  hc.order = TRUE,
+  outline.col = "white",
+  ggtheme = ggplot2::theme_bw,
+  colors = c("#fc7d0b", "white", "#1170aa")
+)
+```
+
+
+## Old friends: stepwise regression
+
+## Forward regression
+
+## Backward regression
+
+## Backward and forward regression I
+
+```{r}
+library(leaps)
+n <- nrow(Hitters)
+
+Hitters[, -c(14, 13, 18, 26)] <- scale(Hitters[, -c(14, 13, 18, 26)])
+
+fit_forward <- regsubsets(logSalary ~ ., data = Hitters, method = "forward", nbest = 1, nvmax = 26)
+sum_forward <- summary(fit_forward)
+
+sum_forward$p <- rowSums(sum_forward$which)
+sum_forward$aic <- sum_forward$bic - log(n) * sum_forward$p + 2 * sum_forward$p
+
+fit_backward <- regsubsets(logSalary ~ ., data = Hitters, method = "backward", nbest = 1, nvmax = 26)
+sum_backward <- summary(fit_backward)
+
+sum_backward$p <- rowSums(sum_backward$which)
+sum_backward$aic <- sum_backward$bic - log(n) * sum_backward$p + 2 * sum_backward$p
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+
+library(ggplot2)
+library(ggthemes)
+data_ic <- data.frame(p = c(sum_forward$p, sum_backward$p), AIC = c(sum_forward$aic, sum_backward$aic), BIC = c(sum_forward$bic, sum_backward$bic), step = rep(c("Forward", "backward"), each = length(sum_forward$p)))
+data_ic <- reshape2::melt(data_ic, id = c("p", "step"))
+colnames(data_ic) <- c("p", "Stepwise", "IC", "value")
+
+ggplot(data = data_ic, aes(x = p, y = value, col = IC, linetype = Stepwise)) +
+  geom_point() +
+  geom_line() +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Information Criterion") #+ ylim(c(9e-05, 6e-4))
+```
+
+<!-- ## Backward and forward regression {.scrollable} -->
+<!-- ::: {style="font-size: 60%;"} -->
+
+<!-- ```{r} -->
+<!-- library(DT) -->
+<!-- # BIC based -->
+<!-- p <- ncol(sum_backward$which) -->
+<!-- tab <- data.frame(OLS =rep(0, p), BIC_backward = rep(0, p), BIC_forward = rep(0, p), AIC_backward = rep(0, p), AIC_forward = rep(0, p)) -->
+<!-- rownames(tab) <- colnames(sum_backward$which) -->
+
+<!-- tab$OLS <- coef(lm(logSalary ~ ., data = Hitters)) -->
+
+<!-- tab$BIC_backward[sum_backward$which[which.min(sum_backward$bic), ]] <- coef(fit_backward, which.min(sum_backward$bic)) -->
+<!-- tab$BIC_forward[sum_forward$which[which.min(sum_forward$bic), ]] <- coef(fit_forward, which.min(sum_forward$bic)) -->
+
+<!-- tab$AIC_backward[sum_backward$which[which.min(sum_backward$aic), ]] <- coef(fit_backward, which.min(sum_backward$aic)) -->
+<!-- tab$AIC_forward[sum_forward$which[which.min(sum_forward$aic), ]] <- coef(fit_forward, which.min(sum_forward$aic)) -->
+
+<!-- datatable(tab, colnames=c("OLS", "BIC backward", "BIC forward", "AIC backward", "AIC forward"), options = list( -->
+<!--   pageLength = 13, -->
+<!--   dom = "pt", -->
+<!--   order = list(list(0, "asc")))) %>% formatRound(columns = 1:5, digits = 2) %>% formatStyle( -->
+<!--     columns = 0,fontWeight = "bold" -->
+<!--   ) %>%formatStyle( -->
+<!--           columns = 1:5, -->
+<!--           backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA")) -->
+<!--         ) %>% formatStyle( -->
+<!--           columns = 1:5, -->
+<!--           backgroundColor = styleEqual(0, c("white")) -->
+<!--         )  -->
+<!-- ``` -->
+<!-- ::: -->
+
+## ☠️ - The multiple testing problem
+
+## Best subset regression I
+
+## Best subset regression II
+
+```{r}
+fit_best <- regsubsets(logSalary ~ ., data = Hitters, method = "exhaustive", nbest = 20, nvmax = 26)
+sum_best <- summary(fit_best)
+
+sum_best$p <- rowSums(sum_best$which)
+sum_best$aic <- sum_best$bic - log(n) * sum_best$p + 2 * sum_best$p
+```
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+
+library(ggplot2)
+library(ggthemes)
+data_ic <- data.frame(p = sum_best$p, AIC = sum_best$aic, BIC = sum_best$bic)
+data_ic <- reshape2::melt(data_ic, id = c("p"))
+colnames(data_ic) <- c("p", "IC", "value")
+
+ggplot(data = data_ic, aes(x = p, y = value, col = IC)) +
+  geom_point() +
+  # geom_line() +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Information Criterion") +
+  ylim(c(-260, -100))
+```
+
+## Best subset regression III
+
+::: {style="font-size: 55%;"}
+
+```{r}
+library(DT)
+p <- ncol(sum_best$which)
+tab <- data.frame(OLS =rep(0, p), BIC_best = rep(0, p), AIC_best = rep(0, p))
+rownames(tab) <- colnames(sum_backward$which)
+
+tab$OLS <- coef(lm(logSalary ~ ., data = Hitters))
+tab$BIC_best[sum_best$which[which.min(sum_best$bic), ]] <- coef(fit_best, which.min(sum_best$bic))
+tab$AIC_best[sum_best$which[which.min(sum_best$aic), ]] <- coef(fit_best, which.min(sum_best$aic))
+
+datatable(tab, colnames=c("OLS", "BIC best", "AIC best"), options = list(
+  pageLength = 13,
+  dom = "pt",
+  order = list(list(0, "asc")))) %>% formatRound(columns = 1:3, digits = 2) %>% formatStyle(
+    columns = 0,fontWeight = "bold"
+  ) %>%formatStyle(
+          columns = 1:5,
+          backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA"))
+        ) %>% formatStyle(
+          columns = 1:5,
+          backgroundColor = styleEqual(0, c("white"))
+        ) 
+```
+:::
+# Principal components
+
+## Principal component analysis
+
+## Principal components regression
+
+```{r}
+
+```
+
+
+# Ridge regression
+
+## The wrong way of doing cross-validation
+
+::: incremental
+
+- Consider a regression problem with a [large number of predictors]{.blue}, as may arise, for example, in genomic or proteomic applications. 
+
+- A typical strategy for analysis might be as follows:
+
+  1. Screen the predictors: find a subset of "good" predictors that show fairly strong (univariate) correlation with the class labels;
+  2. Using just this subset of predictors, build a regression model;
+  3. Use cross-validation to estimate the unknown tuning parameters (i.e. degree of polynomials) and to estimate the prediction error of the final model.
+
+- Is this a correct application of cross-validation? 
+
+- If your reaction was "[this is  absolutely wrong!]{.orange}", it means you correctly understood the principles of cross-validation. 
+
+- If you though this was an ok-ish idea, please read [Section 7.10.2]{.blue} of HTF (2009).
+:::
+
+# Lasso, LARS, and elastic-net
+
+## Lasso
+
+::: columns
+::: {.column width="25%"}
+![](img/lasso.png){}
+:::
+
+::: {.column width="75%"}
+-   asdasd
+:::
+:::
+
+
 
 <!-- ## 3D plots -->
 
@@ -146,60 +399,5 @@ glimpse(Hitters)
 <!--   ) %>% hide_colorbar() -->
 <!-- ``` -->
 
-
-## asd
-
-
-```{r}
-library(leaps)
-fit <- regsubsets(logSalary ~ ., data = Hitters, method = "exhaustive", nbest = 1, nvmax = 20)
-sum1 <- summary(fit)
-
-plot(rowSums(sum1$which), sum1$cp)
-
-fit <- regsubsets(logSalary ~ ., data = Hitters, method = "backward", nbest = 1, nvmax = 20)
-sum1 <- summary(fit)
-# plot(rowSums(sum1$which), sum1$cp)
-```
-
-
-
-# Best subset regression
-
-## The wrong way of doing cross-validation
-
-::: incremental
-
-- Consider a regression problem with a [large number of predictors]{.blue}, as may arise, for example, in genomic or proteomic applications. 
-
-- A typical strategy for analysis might be as follows:
-
-  1. Screen the predictors: find a subset of "good" predictors that show fairly strong (univariate) correlation with the class labels;
-  2. Using just this subset of predictors, build a regression model;
-  3. Use cross-validation to estimate the unknown tuning parameters (i.e. degree of polynomials) and to estimate the prediction error of the final model.
-
-- Is this a correct application of cross-validation? 
-
-- If your reaction was "[this is  absolutely wrong!]{.orange}", it means you correctly understood the principles of cross-validation. 
-
-- If you though this was an ok-ish idea, please read [Section 7.10.2]{.blue} of HTF (2009).
-:::
-
-
-# Ridge regression
-
-# Lasso, LARS, and elastic-net
-
-## Lasso
-
-::: columns
-::: {.column width="25%"}
-![](img/lasso.png){}
-:::
-
-::: {.column width="75%"}
--   asdasd
-:::
-:::
 
 ## References
