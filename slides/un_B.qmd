@@ -1035,7 +1035,30 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     $$\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].$$
 :::
 
-## Cross-validation III (`cholesterol` data)
+## Cross-validation III
+
+::: incremental
+
+- An advantage of CV is that [variance]{.blue} of the Monte Carlo estimate $\widehat{\mathrm{Err}}$ can be quantified.
+
+- Let us define cross-validated "[residuals]{.orange}" of our procedure as follows
+$$
+r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
+$$
+so that $\widehat{\text{Err}} = \bar{r}$. 
+
+- Then, a simple estimate for the standard error of $\widehat{\text{Err}}$ is
+$$
+\widehat{\text{se}} = \frac{1}{\sqrt{n}} \text{sd}(r) = \frac{1}{\sqrt{n}} \sqrt{\frac{1}{n-1}\sum_{i=1}^n (r_i - \bar{r})^2}.
+$$
+
+- The above formula is often criticized for producing intervals that are [too narrow]{.orange}!
+
+- Indeed, the estimate $\widehat{\text{se}}$ of the standard deviation of $\widehat{\text{Err}}$ assumes that the observed errors $r_1, \dots, r_n$ are independent, but this is not true! 
+
+:::
+
+## Cross-validation IV (`cholesterol` data)
 
 ```{r}
 #| message: false
@@ -1065,9 +1088,10 @@ fit_lin_cv <- wf_lin %>% tune_grid(resamples = CV_splits,
 #| fig-width: 8
 #| fig-height: 4.5
 #| fig-align: center
-data_bv <- collect_metrics(fit_lin_cv) %>% select(degree, mean) %>% mutate(p = degree + 1, `Error term` = "10-fold MSE")
-colnames(data_bv) <- c("degree","value", "p", "Error term")
+data_bv <- collect_metrics(fit_lin_cv) %>% select(degree, mean, std_err) %>% mutate(p = degree + 1, `Error term` = "10-fold MSE")
+colnames(data_bv) <- c("degree","value", "se", "p", "Error term")
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
+  geom_linerange(aes(ymin = value - se, ymax = value + se)) +
   geom_line() +
   geom_point() +
   geom_vline(xintercept = 2, linetype = "dotted") +
@@ -1131,7 +1155,9 @@ for (degree in degree_list) {
   fit <- lm(cholesterol.decrease ~ poly(compliance, degree = degree, raw = FALSE), data = dataset)
   # Computation of the leverages h_i efficiently (using QR)
   lev <- influence(fit)$hat
-  data_goodness$LOO_CV[degree] <- mean(((dataset$cholesterol.decrease - fitted(fit)) / (1 - lev))^2)
+  res_loo <- (dataset$cholesterol.decrease - fitted(fit)) / (1 - lev)
+  data_goodness$LOO_CV[degree] <- mean(res_loo^2)
+  data_goodness$LOO_CV_SE[degree] <- sd(res_loo) / sqrt(nrow(dataset))
   p <- degree + 1
   data_goodness$GCV[degree] <- mean(((dataset$cholesterol.decrease - fitted(fit)) / (1 - p / nrow(dataset)))^2)
   data_goodness$AICc[degree] <- AIC(fit) + 2 * p * (p + 1) / (nrow(dataset) - p - 1)
@@ -1140,10 +1166,11 @@ for (degree in degree_list) {
 }
 
 # Organization of the results for graphical purposes
-data_bv <- data.frame(p = p_list, GCV = data_goodness$GCV, LOO_CV = data_goodness$LOO_CV)
-data_bv <- reshape2::melt(data_bv, id = "p")
+data_bv <- data.frame(p = p_list, GCV = data_goodness$GCV, LOO_CV = data_goodness$LOO_CV, SE = data_goodness$LOO_CV_SE)
+data_bv <- reshape2::melt(data_bv, id = c("p", "SE"))
+data_bv$SE[data_bv$variable == "GCV"] <- NA
 levels(data_bv$variable) <- c("GCV", "LOO-CV")
-colnames(data_bv) <- c("p", "Error term", "value")
+colnames(data_bv) <- c("p", "SE", "Error term", "value")
 ```
 
 ```{r}
@@ -1152,6 +1179,7 @@ colnames(data_bv) <- c("p", "Error term", "value")
 #| fig-align: center
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
+  # geom_linerange(aes(ymin = value - SE, ymax = value + SE)) +
   geom_point() +
   geom_vline(xintercept = 4, linetype = "dotted") +
   theme_light() +
@@ -1287,7 +1315,6 @@ implying that for fixed values $\sigma^2$ the $C_p$ of Mallows and the Akaike's 
 
 - Several other proposals followed Akaike's original work, differing in their assumptions and the way they approximate certain quantities.
 
-. . .
 
 | Criterion      | Author                | Penalty                           |
 |----------------|-----------------------|-----------------------------------|
@@ -1295,13 +1322,11 @@ implying that for fixed values $\sigma^2$ the $C_p$ of Mallows and the Akaike's 
 | $\text{AIC}_c$ | Sugiura, Hurvich-Tsay | $2p + \frac{2p(p+1)}{n - (p +1)}$ |
 | $\text{BIC}$   | Akaike, Schwarz       | $p \log{n}$                       |
 
-. . .
 
 -   The $\text{AIC}_c$ is an [higher order correction]{.orange} of the
     $\text{AIC}$ and the differences tend to be negligible for high
     values of $n$.
 
-. . .
 
 - The justification of $\text{BIC}$ is comes from [Bayesian statistics]{.blue}.
 

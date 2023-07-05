@@ -925,8 +925,24 @@ x3                0  0  0  1</code></pre>
 </ul>
 </div>
 </section>
-<section id="cross-validation-iii-cholesterol-data" class="slide level2 center">
-<h2>Cross-validation III (<code>cholesterol</code> data)</h2>
+<section id="cross-validation-iii" class="slide level2 center">
+<h2>Cross-validation III</h2>
+<div>
+<ul>
+<li class="fragment"><p>An advantage of CV is that <span class="blue">variance</span> of the Monte Carlo estimate <span class="math inline">\widehat{\mathrm{Err}}</span> can be quantified.</p></li>
+<li class="fragment"><p>Let us define cross-validated “<span class="orange">residuals</span>” of our procedure as follows <span class="math display">
+r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
+</span> so that <span class="math inline">\widehat{\text{Err}} = \bar{r}</span>.</p></li>
+<li class="fragment"><p>Then, a simple estimate for the standard error of <span class="math inline">\widehat{\text{Err}}</span> is <span class="math display">
+\widehat{\text{se}} = \frac{1}{\sqrt{n}} \text{sd}(r) = \frac{1}{\sqrt{n}} \sqrt{\frac{1}{n-1}\sum_{i=1}^n (r_i - \bar{r})^2}.
+</span></p></li>
+<li class="fragment"><p>The above formula is often criticized for producing intervals that are <span class="orange">too narrow</span>!</p></li>
+<li class="fragment"><p>Indeed, the estimate <span class="math inline">\widehat{\text{se}}</span> of the standard deviation of <span class="math inline">\widehat{\text{Err}}</span> assumes that the observed errors <span class="math inline">r_1, \dots, r_n</span> are independent, but this is not true!</p></li>
+</ul>
+</div>
+</section>
+<section id="cross-validation-iv-cholesterol-data" class="slide level2 center">
+<h2>Cross-validation IV (<code>cholesterol</code> data)</h2>
 
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-22-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
 <section id="leave-one-out-cross-validation" class="slide level2 center">
@@ -1062,7 +1078,6 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <ul>
 <li>Several other proposals followed Akaike’s original work, differing in their assumptions and the way they approximate certain quantities.</li>
 </ul>
-<div class="fragment">
 <table>
 <colgroup>
 <col style="width: 21%">
@@ -1094,18 +1109,11 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </tr>
 </tbody>
 </table>
-</div>
-<div class="fragment">
 <ul>
-<li>The <span class="math inline">\text{AIC}_c</span> is an <span class="orange">higher order correction</span> of the <span class="math inline">\text{AIC}</span> and the differences tend to be negligible for high values of <span class="math inline">n</span>.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
+<li><p>The <span class="math inline">\text{AIC}_c</span> is an <span class="orange">higher order correction</span> of the <span class="math inline">\text{AIC}</span> and the differences tend to be negligible for high values of <span class="math inline">n</span>.</p></li>
 <li><p>The justification of <span class="math inline">\text{BIC}</span> is comes from <span class="blue">Bayesian statistics</span>.</p></li>
 <li><p>Since <span class="math inline">\log{n} &gt; 2</span> for any <span class="math inline">n &gt; 7</span>, it means that the <span class="math inline">\text{BIC}</span> <span class="blue">penalty</span> is typically <span class="orange">stronger</span> than the one of <span class="math inline">\text{AIC}</span> and it favors more parsimonious models.</p></li>
 </ul>
-</div>
 </section>
 <section id="aic-and-bic-cholesterol-data" class="slide level2 center">
 <h2>AIC and BIC (<code>cholesterol</code> data)</h2>

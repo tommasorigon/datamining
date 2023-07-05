@@ -371,10 +371,11 @@ fit_lin_cv <- wf_lin %>% tune_grid(
 #| fig-height: 4.5
 #| fig-align: center
 data_bv <- collect_metrics(fit_lin_cv) %>%
-  select(degree, mean) %>%
+  select(degree, mean, std_err) %>%
   mutate(p = degree + 1, `Error term` = "10-fold MSE")
-colnames(data_bv) <- c("degree", "value", "p", "Error term")
+colnames(data_bv) <- c("degree", "value", "se", "p", "Error term")
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
+  geom_linerange(aes(ymin = value - se, ymax = value + se)) +
   geom_line() +
   geom_point() +
   geom_vline(xintercept = 2, linetype = "dotted") +
@@ -393,7 +394,9 @@ for (degree in degree_list) {
   fit <- lm(cholesterol.decrease ~ poly(compliance, degree = degree, raw = FALSE), data = dataset)
   # Computation of the leverages h_i efficiently (using QR)
   lev <- influence(fit)$hat
-  data_goodness$LOO_CV[degree] <- mean(((dataset$cholesterol.decrease - fitted(fit)) / (1 - lev))^2)
+  res_loo <- (dataset$cholesterol.decrease - fitted(fit)) / (1 - lev)
+  data_goodness$LOO_CV[degree] <- mean(res_loo^2)
+  data_goodness$LOO_CV_SE[degree] <- sd(res_loo) / sqrt(nrow(dataset))
   p <- degree + 1
   data_goodness$GCV[degree] <- mean(((dataset$cholesterol.decrease - fitted(fit)) / (1 - p / nrow(dataset)))^2)
   data_goodness$AICc[degree] <- AIC(fit) + 2 * p * (p + 1) / (nrow(dataset) - p - 1)
@@ -402,10 +405,11 @@ for (degree in degree_list) {
 }
 
 # Organization of the results for graphical purposes
-data_bv <- data.frame(p = p_list, GCV = data_goodness$GCV, LOO_CV = data_goodness$LOO_CV)
-data_bv <- reshape2::melt(data_bv, id = "p")
+data_bv <- data.frame(p = p_list, GCV = data_goodness$GCV, LOO_CV = data_goodness$LOO_CV, SE = data_goodness$LOO_CV_SE)
+data_bv <- reshape2::melt(data_bv, id = c("p", "SE"))
+data_bv$SE[data_bv$variable == "GCV"] <- NA
 levels(data_bv$variable) <- c("GCV", "LOO-CV")
-colnames(data_bv) <- c("p", "Error term", "value")
+colnames(data_bv) <- c("p", "SE", "Error term", "value")
 
 
 #| fig-width: 8
@@ -413,6 +417,7 @@ colnames(data_bv) <- c("p", "Error term", "value")
 #| fig-align: center
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
+  # geom_linerange(aes(ymin = value - SE, ymax = value + SE)) +
   geom_point() +
   geom_vline(xintercept = 4, linetype = "dotted") +
   theme_light() +
