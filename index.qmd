@@ -63,7 +63,7 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)    | [Slides Unit B](slides/un_B_slides.html)    | [Code B](code/un_B.R)    |
 | *Exercises*                            | \[Exercises 2\]               |                                             |                          |
 | Lab 2                                  | \[Code Lab 2\]                |                                             |                          |
-| **Model selection for linear models**  | \[Unit C\]                    | \[Slides Unit C\]                           |                          |
+| **Shrinkage and variable selection**  | \[Unit C\]                    | \[Slides Unit C\]                           |                          |
 | *Exercises*                            | \[Exercises 3\]               |                                             |                          |
 | Lab 3                                  | \[Code Lab 3\]                |                                             |                          |
 | **Nonparametric estimation**           | \[Unit D\]                    | \[Slides Unit D\]                           |                          |

@@ -1,5 +1,5 @@
 ---
-title: "Methods for model selection"
+title: "Shrinkage and variable selection"
 subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
@@ -62,50 +62,53 @@ styler:::style_file("../code/un_C.R")
 
 ::: columns
 ::: {.column width="25%"}
-![](img/lasso.png){}
+![](img/lasso.png)
 :::
 
 ::: {.column width="75%"}
-
 -   In this unit we will cover the following [topics]{.orange}:
 
     -   Best subset regression
     -   Principal component regression
     -   Ridge regression
     -   Lasso, LARS, elastic-net
-    
-- The common thread among these topics is the so-called [variable selection]{.blue} problem.
 
-- The issue we face is the presence of several [potentially irrelevant]{.blue} variables among the covariates.
+-   The common thread among these topics is the so-called [variable
+    selection]{.blue} problem.
 
-- In the [extreme case]{.orange} $p > n$, is there even hope that we can fit a useful model?
+-   The issue we face is the presence of several [potentially
+    irrelevant]{.blue} variables among the covariates.
 
+-   In the [extreme case]{.orange} $p > n$, is there even hope that we
+    can fit a useful model?
 :::
 :::
 
 ## The `prostate` dataset
 
 ::: incremental
+-   The `prostate` cancer data investigates the relationship between the
+    prostate-specific [antigen]{.orange} and a number of clinical
+    measures, in men about to receive a prostatectomy.
 
-- The `prostate` cancer data investigates the relationship between the prostate-specific [antigen]{.orange} and a number of clinical measures, in men about to receive a prostatectomy.
+-   We want to [predict]{.blue} the logarithm of a [prostate-specific
+    antigen]{.orange} (`lpsa`) as a function of:
 
-- We want to [predict]{.blue} the logarithm of a [prostate-specific antigen]{.orange} (`lpsa`) as a function of:  
-  - logarithm of the cancer volume (`lcavol`);
-  - logarithm of the prostate weight (`lweight`);
-  - age each man (`age`);
-  - logarithm of the benign prostatic hyperplasia amount (`lbph`);
-  - seminal vesicle invasion (`svi`), a binary variable;
-  - logarithm of the capsular penetration (`lcp`);
-  - Gleason score (`gleason`), an ordered categorical variable;
-  - Percentage of Gleason scores $4$ and $5$ (`pgg45`).
-
-
+    -   logarithm of the cancer volume (`lcavol`);
+    -   logarithm of the prostate weight (`lweight`);
+    -   age each man (`age`);
+    -   logarithm of the benign prostatic hyperplasia amount (`lbph`);
+    -   seminal vesicle invasion (`svi`), a binary variable;
+    -   logarithm of the capsular penetration (`lcp`);
+    -   Gleason score (`gleason`), an ordered categorical variable;
+    -   Percentage of Gleason scores $4$ and $5$ (`pgg45`).
 :::
 
 ## A `glimpse` of the `prostate` dataset
 
-- The dataset is [available online](https://hastie.su.domains/ElemStatLearn/datasets/prostate.data). A description is given in [Section 3.2.1]{.blue} of HTF (2009).
-
+-   The dataset is [available
+    online](https://hastie.su.domains/ElemStatLearn/datasets/prostate.data).
+    A description is given in [Section 3.2.1]{.blue} of HTF (2009).
 
 ```{r}
 #| message: false
@@ -114,7 +117,6 @@ library(tidyverse)
 prostate <- read.table("../data/prostate_data.txt")
 glimpse(prostate)
 ```
-
 
 ```{r}
 # Standardize the predictors, as in Tibshirani (1996)
@@ -126,11 +128,14 @@ prostate_train <- filter(prostate, train) %>% select(-train)
 prostate_test <- filter(prostate, train == FALSE) %>% select(-train)
 ```
 
-- There are in total $8$ [variables]{.orange} that can be used to predict the antigen `lpsa`.
+-   There are in total $8$ [variables]{.orange} that can be used to
+    predict the antigen `lpsa`.
 
-- The variable `train` splits the data into a training and test set, as in the textbook. 
+-   The variable `train` splits the data into a training and test set,
+    as in the textbook.
 
-- There are $n = 67$ observations in the [training]{.orange} set and $30$ in the [test]{.blue} set. 
+-   There are $n = 67$ observations in the [training]{.orange} set and
+    $30$ in the [test]{.blue} set.
 
 ## Correlation matrix of `prostate`
 
@@ -148,46 +153,134 @@ ggcorrplot(corr,
 )
 ```
 
-
 ## The variable selection problem
 
 ::: incremental
+-   We consider a [linear model]{.orange} in which the response variable
+    $Y_i$ (`lpsa`) is related to the covariates through the function$$
+      f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
+      $$ In this unit the [intercept]{.blue} $\beta_0$ will play a
+    special role, therefore we use a slightly different notation
+    compared to [Unit A.1](unit_A1.html).
 
-- We consider a [linear model]{.orange} in which the response variable $Y_i$ (`lpsa`) is related to the
-covariates through the function$$
-    \mathbb{E}(Y_i) = f(\bm{x}_i; \alpha, \beta) = \alpha+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\alpha + \bm{x}_i^T\beta.
-    $$ 
+-   If we use all the $p = 8$ available covariates, the estimated
+    $f(\bm{x}; \hat{\beta_0}, \hat{\beta})$ might have a [high
+    variance]{.orange}, without important gain in term of bias, i.e. a
+    [large mean squared error]{.blue}.
 
-- If we use all the $p = 8$ available covariates, the estimated $f(\bm{x}; \hat{\alpha}, \hat{\beta})$ might have a [high variance]{.orange}, without important gain in term of bias. 
+-   Indeed, some variables are likely to be [irrelevant]{.blue}:
 
-- In other words, the full model is likely to have a [large mean squared error]{.blue}. 
+    -   they might be [correlated]{.orange} with other covariates and
+        therefore [redundant]{.orange};
+    -   they could be uncorrelated with the response `lpsa`.
 
-- Indeed, among the $p = 8$ variables of the `prostate` dataset, some are likely to be [irrelevant]{.blue}. For example, these variables might be [correlated]{.orange} and therefore [redundant]{.orange}. 
-
-
-- Hence, we are looking for a [simpler model]{.orange} that has low mean squared error. Besides, 
-
+-   Hence, we are looking for a [simpler model]{.orange} having
+    hopefully a lower mean squared error.
 :::
 
-## Best subset regression I
+## A naïve approach: (ab)using p-values
 
-## Best subset regression II
+::: {style="font-size: 75%;"}
+```{r}
+tab <- data.frame(broom::tidy(lm(lpsa ~ ., data = prostate_train), conf.int = FALSE))
+rownames(tab) <- tab[, 1]
+tab <- t(as.matrix(tab[, -1]))
+knitr::kable(tab, digits = 2)
+```
+:::
+
+::: incremental
+-   It is a common practice to use the [p-values]{.orange}, e.g. those
+    obtained through the `summary` function, to perform [model
+    selection]{.blue} in a stepwise fashion.
+
+-   A typical procedure is to omit "non significant" coefficients, refit
+    the model, and repeat this scheme until we obtain only "significant"
+    coefficients.
+
+-   This is [not the best idea]{.orange}, at least without careful
+    thinking and appropriate multiplicity corrections.
+
+-   In the first place, the p-values in the above table are meant to be
+    used in the context of a single hypothesis testing problem, not to
+    make several iterative choices.
+
+-   Such an iterative usage of p-values is formally [incorrect]{.orange}
+    because it leads to the well-known [multiple testing
+    problem]{.blue}, which would require suitable corrections.
+:::
+
+## A predictive perspective
+
+-   "*All models are approximations. Essentially, all models are wrong,
+    but some are useful*." George E.P. Box
+
+::: incremental
+-   There is another important reason for avoiding p-values. If the
+    [focus]{.blue} is just on [prediction]{.blue}, we do not necessarily
+    care about selecting the "true" set of parameters.
+
+-   In many data mining problems, the focus is on the
+    [minimization]{.orange} of the [prediction errors]{.orange}.
+
+-   Hence, often times we may [accept some bias]{.blue} (i.e. we use a
+    "wrong" but useful model), if this leads to a [reduction in
+    variance]{.orange}.
+
+-   Besides, in certain cases it does not even make much sense to speak
+    about the "true parameters".
+
+-   For example, what if the true $f(\bm{x})$ were not linear? In this
+    context, a [linear model]{.blue} is simply an approximation of the
+    unknown $f(\bm{x})$ and hypothesis testing procedures are ill-posed.
+:::
+
+## Best subset selection
+
+-   Instead of choosing the optimal model using p-values, a more
+    principled approach is based on the tools of [Unit B](un_B.html).
+
+-   Ideally, we could perform an [exhaustive search]{.orange}
+    considering all the $2^p$ possible models and then picking the one
+    having the best out-of-sample predictive performance.
+
+. . .
+
+::: callout-note
+#### Best subset procedure
+
+1.  Let $\mathcal{M}_0$ be the [null model]{.blue}, which contains no
+    predictors (just $\hat{\beta}_0 = \bar{y}$).
+
+2.  For $k =1,\dots,p$, do:
+
+    i.  Estimate [all]{.orange} the $\binom{p}{k}$ models that contain
+        exactly $k$ covariates;
+
+    ii. Identify the "best" model $\mathcal{M}_k$ with $k$ covariates
+        having the smallest $\text{MSE}_{k, \text{train}}$.
+:::
+
+-   By construction, a model with more variables
+    $\text{MSE}_{k + 1, \text{train}} \le \text{MSE}_{k, \text{train}}$
+    has lower [training]{.orange} error. Hence, the optimal subset size
+    $k$ is chosen e.g. via [cross-validation]{.blue}.
+
+## Step 1. and 2. of best subset selection
+
+```{r}
+# Here I compute some basic quantities
+X <- model.matrix(lpsa ~ ., data = prostate_train)[, -1]
+y <- prostate_train$lpsa
+n <- nrow(X)
+p <- ncol(X) # This does not include the intercept
+```
 
 ```{r}
 library(leaps)
-
-# Here I compute some basic quantities
-X <- model.matrix(lpsa ~ ., data = prostate_train)
-y <- prostate_train$lpsa
-n <- nrow(X)
-p <- ncol(X) # This includes the intercept as well
-```
-
-
-```{r}
-fit_best <- regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest = 10, nvmax = p)
+fit_best <- regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest = 40, nvmax = p)
 sum_best <- summary(fit_best)
-sum_best$p <- rowSums(sum_best$which)
+sum_best$p <- rowSums(sum_best$which) - 1 # Does not include the intercept here
 ```
 
 ```{r}
@@ -204,28 +297,24 @@ colnames(data_best_subset) <- c("p", "MSE", "value")
 data_best_subset2 <- data.frame(p = unique(sum_best$p), MSE = tapply(sum_best$rss / n, sum_best$p, min))
 
 ggplot(data = data_best_subset, aes(x = p, y = value)) +
-  geom_point(alpha = 0.6) +
+  geom_point() +
   theme_light() +
   theme(legend.position = "top") +
   geom_line(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b") +
-  geom_point(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b", size = 2.5) +
+  geom_point(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b", size = 1.5) +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Model complexity (p)") +
-  ylab("MSE (training)")
+  xlab("Number of covariates (p)") +
+  ylab("Mean squared error (training)")
 ```
 
-## ☠️ - The multiple testing problem
-
-## Effective degrees of freedom
-
-## Best subset regression: cross-validation
+## Step 3. of best subset selection via cross-validation
 
 ```{r}
 library(rsample)
 
 set.seed(123)
 cv_fold <- vfold_cv(prostate_train, v = 10)
-resid_subs <- matrix(0, n, p)
+resid_subs <- matrix(0, n, p + 1)
 
 for (k in 1:10) {
   
@@ -243,7 +332,7 @@ for (k in 1:10) {
   resid_subs[complement(cv_fold$splits[[k]]), 1] <- y_k - predict(fit_null, assessment(cv_fold$splits[[k]]))
   
   # MSE of the best models for different values of p
-  for (j in 2:p) {
+  for (j in 2:(p+1)) {
     y_hat <- X_k[, sum$which[j - 1, ]] %*% coef(fit, j - 1)
     resid_subs[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
   }
@@ -256,13 +345,13 @@ for (k in 1:10) {
 #| fig-align: center
 
 data_cv <- data.frame(
-  p = 1:p,
+  p = 0:p,
   MSE = apply(resid_subs^2, 2, mean),
   SE = apply(resid_subs^2, 2, function(x) sd(x) / sqrt(n))
 )
 
 se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)]
-p_optimal <- which(data_cv$MSE < se_rule)[1]
+p_optimal <- which(data_cv$MSE < se_rule)[1] - 1
 
 ggplot(data = data_cv, aes(x = p, y = MSE)) +
   geom_point() +
@@ -271,20 +360,20 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   geom_hline(yintercept = se_rule, linetype = "dotted") + 
   geom_vline(xintercept = p_optimal, linetype = "dotted") + 
   theme_light() +
-  scale_x_continuous(breaks = 1:9) +
+  scale_x_continuous(breaks = 0:9) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Model complexity (p)") +
+  xlab("Number of covariates (p)") +
   ylab("Mean squared error (10-fold cv)")
 ```
 
+## Comments and computational considerations
 
+-   asd
 
-## Forward regression
+## Forward and backward regression
 
-## Backward regression
-
-## Backward and forward regression I
+## Forward and backward regression
 
 ```{r}
 fit_forward <- regsubsets(lpsa ~ ., data = prostate_train, method = "forward", nbest = 1, nvmax = p)
@@ -299,10 +388,10 @@ sum_backward <- summary(fit_backward)
 #| fig-align: center
 
 # Organization of the results for graphical purposes
-data_stepwise <- data.frame(p = c(2:p, 2:p, 2:p), MSE = c(sum_forward$rss, 
+data_stepwise <- data.frame(p = c(1:p, 1:p, 1:p), MSE = c(sum_forward$rss, 
                                                           sum_backward$rss, 
                                                           tapply(sum_best$rss, sum_best$p, min)) / n,
-                            Stepwise = rep(c("Forward", "Backward", "Best subset"), each = p - 1))
+                            Stepwise = rep(c("Forward", "Backward", "Best subset"), each = p))
 data_stepwise <- reshape2::melt(data_stepwise, id = c("p", "Stepwise"))
 colnames(data_stepwise) <- c("p", "Stepwise", "MSE", "value")
 
@@ -312,8 +401,9 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
   facet_grid(. ~ Stepwise) +
   theme_light() +
   theme(legend.position = "none") +
+  scale_x_continuous(breaks = 0:9) +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Model complexity (p)") +
+  xlab("Number of covariates (p)") +
   ylab("MSE (training)")
 ```
 
@@ -366,8 +456,8 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   geom_point() +
   geom_line() +
   geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) +
-  geom_hline(yintercept = se_rule, linetype = "dotted") + 
-  geom_vline(xintercept = p_optimal, linetype = "dotted") + 
+  geom_hline(yintercept = se_rule, linetype = "dotted") +
+  geom_vline(xintercept = p_optimal, linetype = "dotted") +
   theme_light() +
   scale_x_continuous(breaks = 1:9) +
   theme(legend.position = "top") +
@@ -376,212 +466,285 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   ylab("Mean squared error (10-fold cv)")
 ```
 
+<!-- ## Summary of the estimated coefficients -->
 
+<!-- ::: {style="font-size: 70%;"} -->
 
-## Summary of the estimated coefficients
+<!-- ```{r} -->
 
-::: {style="font-size: 70%;"}
-```{r}
-library(DT)
+<!-- library(DT) -->
 
-tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p), PCR = rep(0, p))
-rownames(tab) <- colnames(sum_best$which)
+<!-- tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p), PCR = rep(0, p)) -->
 
-tab$OLS <- coef(lm(lpsa ~ ., data = prostate_train))
-tab$best_subset <- c(coef(lm(lpsa ~ lcavol + lweight, data = prostate_train)), rep(0, 6))
+<!-- rownames(tab) <- colnames(sum_best$which) -->
 
-# Principal components regression (PCR)
-fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE)
-beta <- c(coef(fit_pcr, 3))
-beta <- c(mean(prostate_train$lpsa) - colMeans(X[, -1]) %*% beta, beta)
-tab$PCR <- beta
+<!-- tab$OLS <- coef(lm(lpsa ~ ., data = prostate_train)) -->
 
-datatable(tab, colnames = c("OLS", "Best subset", "PCR"), options = list(
-  pageLength = 9,
-  dom = "t")) %>%
-  formatRound(columns = 1:3, digits = 3) %>%
-  formatStyle(
-    columns = 0, fontWeight = "bold"
-  ) %>%
-  formatStyle(
-    columns = 1:3,
-    backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA"))
-  ) %>%
-  formatStyle(
-    columns = 1:3,
-    backgroundColor = styleEqual(0, c("white"))
-  )
-```
-:::
+<!-- tab$best_subset <- c(coef(lm(lpsa ~ lcavol + lweight, data = prostate_train)), rep(0, 6)) -->
 
+<!-- # Principal components regression (PCR) -->
 
+<!-- fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE) -->
 
+<!-- beta <- c(coef(fit_pcr, 3)) -->
 
+<!-- beta <- c(mean(prostate_train$lpsa) - colMeans(X[, -1]) %*% beta, beta) -->
+
+<!-- tab$PCR <- beta -->
+
+<!-- datatable(tab, colnames = c("OLS", "Best subset", "PCR"), options = list( -->
+
+<!--   pageLength = 9, -->
+
+<!--   dom = "t")) %>% -->
+
+<!--   formatRound(columns = 1:3, digits = 3) %>% -->
+
+<!--   formatStyle( -->
+
+<!--     columns = 0, fontWeight = "bold" -->
+
+<!--   ) %>% -->
+
+<!--   formatStyle( -->
+
+<!--     columns = 1:3, -->
+
+<!--     backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA")) -->
+
+<!--   ) %>% -->
+
+<!--   formatStyle( -->
+
+<!--     columns = 1:3, -->
+
+<!--     backgroundColor = styleEqual(0, c("white")) -->
+
+<!--   ) -->
+
+<!-- ``` -->
+
+<!-- ::: -->
+
+## A summary and next directions
+
+|            | [Shrinkage]{.orange}                      | [Variable selection]{.orange}    |
+|------------|--------------------------------|-----------------------|
+| [Discrete]{.blue}   | Principal component regression | Best subset selection |
+| [Continuous]{.blue} | Ridge regression               | Lasso           |
 
 # Ridge regression
 
-## Ridge regression
-
-```{r}
-df_ridge <- function(lambda, X) {
-  X_tilde <- scale(X, TRUE, FALSE)
-  d2 <- eigen(crossprod(X_tilde))$values
-  sum(d2 / (d2 + lambda))
-}
-df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda")
-```
-
-```{r}
-library(glmnet)
-my_ridge <- function(X, y, lambda){
-  n <- nrow(X)
-  p <- ncol(X)
-  y_mean <- mean(y)
-  y <- y - y_mean
-  X_mean <- colMeans(X)
-  X <- X - rep(1,n) %*% t(X_mean)
-  X_scale <- sqrt( diag( (1/n) * crossprod(X) ) )
-  X <- X %*% diag( 1 / X_scale )
-  beta_scaled <- solve(crossprod(X) + lambda*diag(rep(1,p)), t(X) %*% y) 
-  beta <- diag( 1 / X_scale ) %*% beta_scaled
-  beta0 <- y_mean - X_mean %*% beta
-  return(c(beta0, beta))
-}
-
-l = 1
-my_ridge(X,y,lambda = l)
-coef(glmnet(X, y, alpha=0, lambda = l/n, thresh = 1e-20))
-
-y_std <- scale(y, center=TRUE, scale=sd(y)*sqrt((n-1)/n) )[,]
-my_ridge(X,y_std,lambda = l)
-coef(glmnet(X, y_std, alpha=0, lambda = l/n, thresh = 1e-20))
-```
-
-```{r}
-# 
-# 
-# lambda <- 100
-# XX <- X[,-1] #scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x)  sqrt(mean(x^2) - mean(x)^2)))
-# yy <- y #(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2)
-# 
-# cv_ridge_fit <- cv.glmnet(XX, yy, family = "gaussian", standardize = FALSE, lambda = exp(seq(-10, 12, length = 500)),
-#                     alpha = 0, thresh = 1e-16)
-# plot(cv_ridge_fit)
-# 
-# c(solve((crossprod(XX) + lambda * diag(p-1)), crossprod(XX, yy)))
-# c(coef(fit_ridge)[-1, ])
-```
-
-
-```{r}
-# plot(log(cv_ridge_fit$lambda), cv_ridge_fit$cvm, type = "l")
-# plot(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]), 
-#      cv_ridge_fit$cvm, type = "b", xlab = "Model complexity (p)", ylab = "MSE")
-# lines(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]), 
-#       cv_ridge_fit$cvup, type = "b", xlab = "Model complexity (p)", ylab = "MSE", lty = "dashed", col = "red")
-# 
-# 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.min, X[, -1])
-# 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.1se, X[, -1])
-# 
-# ridge_fit <- cv_ridge_fit$glmnet.fit
-# coef(ridge_fit)
-# plot(ridge_fit, , label = TRUE)
-```
-
-
-## The wrong way of doing cross-validation
-
-::: incremental
-
-- Consider a regression problem with a [large number of predictors]{.blue}, as may arise, for example, in genomic or proteomic applications. 
-
-- A typical strategy for analysis might be as follows:
-
-  1. Screen the predictors: find a subset of "good" predictors that show fairly strong (univariate) correlation with the class labels;
-  2. Using just this subset of predictors, build a regression model;
-  3. Use cross-validation to estimate the unknown tuning parameters (i.e. degree of polynomials) and to estimate the prediction error of the final model.
-
-- Is this a correct application of cross-validation? 
-
-- If your reaction was "[this is  absolutely wrong!]{.orange}", it means you correctly understood the principles of cross-validation. 
-
-- If you though this was an ok-ish idea, please read [Section 7.10.2]{.blue} of HTF (2009).
-:::
-
-# Lasso, LARS, and elastic-net
-
-## Lasso
-
-::: columns
-::: {.column width="25%"}
-![](img/lasso.png){}
-:::
-
-::: {.column width="75%"}
--   asdasd
-:::
-:::
-
-## Lasso
-
-```{r}
-library(lars)
-lambda <- 100
-XX <- scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x)  sqrt(mean(x^2) - mean(x)^2)))
-yy <- y#(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2)
-
-cv_lars <- cv.lars(x = XX, y = yy, K = 10, type = "lasso", mode = "step")
-fit_lars <- lars(x = XX, y = yy, type ="lasso", normalize = FALSE)
-
-cv_lasso_fit <- cv.glmnet(XX, yy, standardize = FALSE, 
-                          family = "gaussian", alpha = 1, nfolds = 10,
-                          lambda = 1 / n * fit_lars$lambda, thresh = 1e-16)
-plot(cv_lasso_fit)
-lasso_fit <- cv_lasso_fit$glmnet.fit
-lambda_sel <- 4
-round(coef(fit_lars)[lambda_sel, ], 5)
-round(coef(lasso_fit, mode = "lambda")[-1, lambda_sel], 5)
-```
-
-
-<!-- ## 3D plots -->
-
-
+<!-- ## Ridge regression -->
 
 <!-- ```{r} -->
-<!-- #| message: false -->
-<!-- library(plotly) -->
-<!-- logYears <- seq(from = min(prostate$logYears), to = max(prostate$logYears), length = 100) -->
-<!-- Hits <- seq(from = min(prostate$Hits), to = max(prostate$Hits), length = 100) -->
-<!-- lpsa <- matrix(predict(lm(lpsa ~ Hits + logYears, data = prostate_train), -->
-<!--   newdata = data.frame(expand.grid(logYears = logYears, Hits = Hits, lpsa = NA)) -->
-<!-- ), ncol = length(logYears)) -->
-<!-- ``` -->
 
+<!-- df_ridge <- function(lambda, X) { -->
+
+<!--   X_tilde <- scale(X, TRUE, FALSE) -->
+
+<!--   d2 <- eigen(crossprod(X_tilde))$values -->
+
+<!--   sum(d2 / (d2 + lambda)) -->
+
+<!-- } -->
+
+<!-- df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda") -->
+
+<!-- ``` -->
 
 <!-- ```{r} -->
-<!-- #| fig-width: 6 -->
-<!-- #| fig-height: 4 -->
-<!-- #| fig-align: center -->
-<!-- #| warning: false -->
-<!-- #| message: false -->
-<!-- plot_ly() %>% -->
-<!--   add_surface( -->
-<!--     x = ~logYears, y = ~Hits, z = ~lpsa, colors = "Reds", -->
-<!--     contours = list( -->
-<!--       x = list(show = TRUE, start = 0, end = 3, size = 0.15, color = "white"), -->
-<!--       y = list(show = TRUE, start = 0, end = 200, size = 25, color = "white") -->
-<!--     ) -->
-<!--   ) %>% -->
-<!--   add_markers(x = ~ prostate$logYears, y = ~ prostate$Hits, z = ~ prostate$lpsa, size = 0.15, marker = list(color = "black"), showlegend = FALSE) %>% -->
-<!--   layout( -->
-<!--     scene = list( -->
-<!--       camera = list( -->
-<!--         eye = list(x = 0.9, y = -2, z = 0.3) -->
-<!--       ) -->
-<!--     ) -->
-<!--   ) %>% hide_colorbar() -->
+
+<!-- library(glmnet) -->
+
+<!-- my_ridge <- function(X, y, lambda){ -->
+
+<!--   n <- nrow(X) -->
+
+<!--   p <- ncol(X) -->
+
+<!--   y_mean <- mean(y) -->
+
+<!--   y <- y - y_mean -->
+
+<!--   X_mean <- colMeans(X) -->
+
+<!--   X <- X - rep(1,n) %*% t(X_mean) -->
+
+<!--   X_scale <- sqrt( diag( (1/n) * crossprod(X) ) ) -->
+
+<!--   X <- X %*% diag( 1 / X_scale ) -->
+
+<!--   beta_scaled <- solve(crossprod(X) + lambda*diag(rep(1,p)), t(X) %*% y)  -->
+
+<!--   beta <- diag( 1 / X_scale ) %*% beta_scaled -->
+
+<!--   beta0 <- y_mean - X_mean %*% beta -->
+
+<!--   return(c(beta0, beta)) -->
+
+<!-- } -->
+
+<!-- l = 1 -->
+
+<!-- my_ridge(X,y,lambda = l) -->
+
+<!-- coef(glmnet(X, y, alpha=0, lambda = l/n, thresh = 1e-20)) -->
+
+<!-- y_std <- scale(y, center=TRUE, scale=sd(y)*sqrt((n-1)/n) )[,] -->
+
+<!-- my_ridge(X,y_std,lambda = l) -->
+
+<!-- coef(glmnet(X, y_std, alpha=0, lambda = l/n, thresh = 1e-20)) -->
+
 <!-- ``` -->
 
+<!-- ```{r} -->
+
+<!-- #  -->
+
+<!-- #  -->
+
+<!-- # lambda <- 100 -->
+
+<!-- # XX <- X[,-1] #scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x)  sqrt(mean(x^2) - mean(x)^2))) -->
+
+<!-- # yy <- y #(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2) -->
+
+<!-- #  -->
+
+<!-- # cv_ridge_fit <- cv.glmnet(XX, yy, family = "gaussian", standardize = FALSE, lambda = exp(seq(-10, 12, length = 500)), -->
+
+<!-- #                     alpha = 0, thresh = 1e-16) -->
+
+<!-- # plot(cv_ridge_fit) -->
+
+<!-- #  -->
+
+<!-- # c(solve((crossprod(XX) + lambda * diag(p-1)), crossprod(XX, yy))) -->
+
+<!-- # c(coef(fit_ridge)[-1, ]) -->
+
+<!-- ``` -->
+
+<!-- ```{r} -->
+
+<!-- # plot(log(cv_ridge_fit$lambda), cv_ridge_fit$cvm, type = "l") -->
+
+<!-- # plot(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),  -->
+
+<!-- #      cv_ridge_fit$cvm, type = "b", xlab = "Model complexity (p)", ylab = "MSE") -->
+
+<!-- # lines(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),  -->
+
+<!-- #       cv_ridge_fit$cvup, type = "b", xlab = "Model complexity (p)", ylab = "MSE", lty = "dashed", col = "red") -->
+
+<!-- #  -->
+
+<!-- # 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.min, X[, -1]) -->
+
+<!-- # 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.1se, X[, -1]) -->
+
+<!-- #  -->
+
+<!-- # ridge_fit <- cv_ridge_fit$glmnet.fit -->
+
+<!-- # coef(ridge_fit) -->
+
+<!-- # plot(ridge_fit, , label = TRUE) -->
+
+<!-- ``` -->
+
+<!-- ## The wrong way of doing cross-validation -->
+
+<!-- ::: incremental -->
+
+<!-- -   Consider a regression problem with a [large number of -->
+
+<!--     predictors]{.blue}, as may arise, for example, in genomic or -->
+
+<!--     proteomic applications. -->
+
+<!-- -   A typical strategy for analysis might be as follows: -->
+
+<!--     1.  Screen the predictors: find a subset of "good" predictors that -->
+
+<!--         show fairly strong (univariate) correlation with the class -->
+
+<!--         labels; -->
+
+<!--     2.  Using just this subset of predictors, build a regression model; -->
+
+<!--     3.  Use cross-validation to estimate the unknown tuning parameters -->
+
+<!--         (i.e. degree of polynomials) and to estimate the prediction -->
+
+<!--         error of the final model. -->
+
+<!-- -   Is this a correct application of cross-validation? -->
+
+<!-- -   If your reaction was "[this is absolutely wrong!]{.orange}", it -->
+
+<!--     means you correctly understood the principles of cross-validation. -->
+
+<!-- -   If you though this was an ok-ish idea, please read [Section -->
+
+<!--     7.10.2]{.blue} of HTF (2009). -->
+
+<!-- ::: -->
+
+<!-- # Lasso, LARS, and elastic-net -->
+
+<!-- ## Lasso -->
+
+<!-- ::: columns -->
+
+<!-- ::: {.column width="25%"} -->
+
+<!-- ![](img/lasso.png) -->
+
+<!-- ::: -->
+
+<!-- ::: {.column width="75%"} -->
+
+<!-- -   asdasd -->
+
+<!-- ::: -->
+
+<!-- ::: -->
+
+<!-- ## Lasso -->
+
+<!-- ```{r} -->
+
+<!-- library(lars) -->
+
+<!-- lambda <- 100 -->
+
+<!-- XX <- scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x)  sqrt(mean(x^2) - mean(x)^2))) -->
+
+<!-- yy <- y#(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2) -->
+
+<!-- cv_lars <- cv.lars(x = XX, y = yy, K = 10, type = "lasso", mode = "step") -->
+
+<!-- fit_lars <- lars(x = XX, y = yy, type ="lasso", normalize = FALSE) -->
+
+<!-- cv_lasso_fit <- cv.glmnet(XX, yy, standardize = FALSE,  -->
+
+<!--                           family = "gaussian", alpha = 1, nfolds = 10, -->
+
+<!--                           lambda = 1 / n * fit_lars$lambda, thresh = 1e-16) -->
+
+<!-- plot(cv_lasso_fit) -->
+
+<!-- lasso_fit <- cv_lasso_fit$glmnet.fit -->
+
+<!-- lambda_sel <- 4 -->
+
+<!-- round(coef(fit_lars)[lambda_sel, ], 5) -->
+
+<!-- round(coef(lasso_fit, mode = "lambda")[-1, lambda_sel], 5) -->
+
+<!-- ``` -->
 
 ## References

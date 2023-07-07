@@ -140,7 +140,7 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
 -   A simple approach is using the tools of [Unit
     A.1](unit_A1_slides.html), such as [polynomial regression]{.orange}:
     $$
-    f(x) = f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
+    f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
     $$ namely $f(x)$ is [approximated]{.orange} with a polynomial of
     degree $p-1$ (i.e., Taylor expansions).
 

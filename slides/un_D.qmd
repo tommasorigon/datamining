@@ -5,6 +5,8 @@ author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
 execute:
   cache: true
+filters: 
+  - remove-pause.lua
 format:
   revealjs:
     auto-stretch: false
