@@ -1,46 +1,27 @@
 #| message: false
 rm(list = ls())
-library(ISLR)
 library(tidyverse)
-data(Hitters)
-Hitters <- na.omit(Hitters)
-glimpse(Hitters)
+prostate <- read.table("../data/prostate_data.txt")
+glimpse(prostate)
 
 
 
-Hitters <- mutate(Hitters,
-  TotalScore = (RBI + Assists + Walks - Errors) / AtBat,
-  logAHits = log1p(CHits / Years),
-  logAAtBat = log1p(CAtBat / Years),
-  logARuns = log1p(CRuns / Years),
-  logARBI = log1p(CRBI / Years),
-  logAWalks = log1p(CWalks / Years),
-  logAHmRun = log1p(CHmRun / Years),
-  RatioHits = Hits / CHits,
-  RatioAtBat = AtBat / CAtBat,
-  RatioRuns = Runs / CRuns,
-  RatioRBI = RBI / CRBI,
-  RatioWalks = Walks / CWalks,
-  RatioHmRun = HmRun / (CHmRun + 1),
-  logYears = log(Years),
-  logSalary = log(Salary)
-) %>% select(-c(Salary, Years))
+# Standardize the predictors, as in Tibshirani (1996)
+which_vars <- which(colnames(prostate) %in% c("lpsa", "train"))
+prostate[, -which_vars] <- apply(prostate[, -which_vars], 2, function(x) (x - mean(x)) / sd(x))
 
-# Data splitting
-set.seed(123)
-id_train <- sample(1:nrow(Hitters), size = floor(0.75 * nrow(Hitters)), replace = FALSE)
-id_test <- setdiff(1:nrow(Hitters), id_train)
-Hitters_train <- Hitters[id_train, ]
-Hitters_test <- Hitters[id_test, ]
+# Split in training and test
+prostate_train <- filter(prostate, train) %>% select(-train)
+prostate_test <- filter(prostate, train == FALSE) %>% select(-train)
 
 
 #| fig-width: 15
 #| fig-height: 7
 #| fig-align: center
 library(ggcorrplot)
-corr <- cor(subset(Hitters_train, select = -c(logSalary, Division, League, NewLeague))) # Remove logSalary
+corr <- cor(subset(prostate_train, select = -lpsa)) # Remove the outcome lpsa
 ggcorrplot(corr,
-  hc.order = TRUE,
+  hc.order = FALSE,
   outline.col = "white",
   ggtheme = ggplot2::theme_bw,
   colors = c("#fc7d0b", "white", "#1170aa")
@@ -49,146 +30,104 @@ ggcorrplot(corr,
 
 
 library(leaps)
-n <- nrow(Hitters_train)
-which_vars <- which(colnames(Hitters_train) %in% c("logSalary", "Division", "League", "NewLeague"))
-Hitters_train[, -which_vars] <- scale(Hitters_train[, -which_vars])
 
-fit_forward <- regsubsets(logSalary ~ ., data = Hitters_train, method = "forward", nbest = 1, nvmax = 33)
-sum_forward <- summary(fit_forward)
+# Here I compute some basic quantities
+X <- model.matrix(lpsa ~ ., data = prostate_train)
+y <- prostate_train$lpsa
+n <- nrow(X)
+p <- ncol(X) # This includes the intercept as well
 
-sum_forward$p <- rowSums(sum_forward$which)
-sum_forward$aic <- n * log(2 * pi * sum_forward$rss / n) + n + 2 * (sum_forward$p + 1)
-sum_forward$bic <- n * log(2 * pi * sum_forward$rss / n) + n + log(n) * (sum_forward$p + 1)
-sum_forward$gcv <- (sum_forward$rss / n) / (1 - sum_forward$p / n)^2
 
-fit_backward <- regsubsets(logSalary ~ ., data = Hitters_train, method = "backward", nbest = 1, nvmax = 33)
-sum_backward <- summary(fit_backward)
 
-sum_backward$p <- rowSums(sum_backward$which)
-sum_backward$aic <- n * log(2 * pi * sum_backward$rss / n) + n + 2 * (sum_backward$p + 1)
-sum_backward$bic <- n * log(2 * pi * sum_backward$rss / n) + n + log(n) * (sum_backward$p + 1)
-sum_backward$gcv <- (sum_backward$rss / n) / (1 - sum_backward$p / n)^2
+fit_best <- regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest = 10, nvmax = p)
+sum_best <- summary(fit_best)
+sum_best$p <- rowSums(sum_best$which)
 
 
 #| fig-width: 10
-#| fig-height: 3.5
+#| fig-height: 5
 #| fig-align: center
 
 library(ggplot2)
 library(ggthemes)
-data_ic <- data.frame(
-  p = c(sum_forward$p, sum_backward$p),
-  BIC = c(sum_forward$bic, sum_backward$bic),
-  AIC = c(sum_forward$aic, sum_backward$aic),
-  GCV = c(sum_forward$gcv, sum_backward$gcv),
-  step = rep(c("Forward", "Backward"), each = length(sum_forward$p))
-)
-data_ic <- reshape2::melt(data_ic, id = c("p", "step"))
-colnames(data_ic) <- c("p", "Stepwise", "Criterion", "value")
+data_best_subset <- data.frame(p = sum_best$p, MSE = sum_best$rss / n)
+data_best_subset <- reshape2::melt(data_best_subset, id = c("p"))
+colnames(data_best_subset) <- c("p", "MSE", "value")
 
-ggplot(data = data_ic, aes(x = p, y = value, col = Stepwise)) +
+data_best_subset2 <- data.frame(p = unique(sum_best$p), MSE = tapply(sum_best$rss / n, sum_best$p, min))
+
+ggplot(data = data_best_subset, aes(x = p, y = value)) +
+  geom_point(alpha = 0.6) +
+  theme_light() +
+  theme(legend.position = "top") +
+  geom_line(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b") +
+  geom_point(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b", size = 2.5) +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("MSE (training)")
+
+
+
+library(rsample)
+
+set.seed(123)
+cv_fold <- vfold_cv(prostate_train, v = 10)
+resid_subs <- matrix(0, n, p)
+
+for (k in 1:10) {
+  # Estimation of the null model
+  fit_null <- lm(lpsa ~ 1, data = analysis(cv_fold$splits[[k]]))
+  # Best subset using branch and bound
+  fit <- regsubsets(lpsa ~ ., data = analysis(cv_fold$splits[[k]]), method = "exhaustive", nbest = 1, nvmax = p)
+  sum <- summary(fit)
+
+  # Hold-out quantities
+  X_k <- as.matrix(cbind(1, assessment(cv_fold$splits[[k]]) %>% select(-lpsa)))
+  y_k <- assessment(cv_fold$splits[[k]])$lpsa
+
+  # MSE of the null model
+  resid_subs[complement(cv_fold$splits[[k]]), 1] <- y_k - predict(fit_null, assessment(cv_fold$splits[[k]]))
+
+  # MSE of the best models for different values of p
+  for (j in 2:p) {
+    y_hat <- X_k[, sum$which[j - 1, ]] %*% coef(fit, j - 1)
+    resid_subs[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
+  }
+}
+
+
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+
+data_cv <- data.frame(
+  p = 1:p,
+  MSE = apply(resid_subs^2, 2, mean),
+  SE = apply(resid_subs^2, 2, function(x) sd(x) / sqrt(n))
+)
+
+se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)]
+p_optimal <- which(data_cv$MSE < se_rule)[1]
+
+ggplot(data = data_cv, aes(x = p, y = MSE)) +
   geom_point() +
   geom_line() +
-  facet_wrap(. ~ Criterion, scales = "free") +
+  geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) +
+  geom_hline(yintercept = se_rule, linetype = "dotted") +
+  geom_vline(xintercept = p_optimal, linetype = "dotted") +
   theme_light() +
+  scale_x_continuous(breaks = 1:9) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Model complexity (p)") +
-  ylab("Error terms") #+ ylim(c(9e-05, 6e-4))
+  ylab("Mean squared error (10-fold cv)")
 
 
 
-fit_best <- regsubsets(logSalary ~ ., data = Hitters_train, method = "exhaustive", nbest = 20, nvmax = 33)
-sum_best <- summary(fit_best)
-
-sum_best$p <- rowSums(sum_best$which)
-sum_best$aic <- n * log(2 * pi * sum_best$rss / n) + n + 2 * (sum_best$p + 1)
-sum_best$bic <- n * log(2 * pi * sum_best$rss / n) + n + log(n) * (sum_best$p + 1)
-sum_best$gcv <- (sum_best$rss / n) / (1 - sum_best$p / n)^2
-
-
-#| fig-width: 10
-#| fig-height: 3.5
-#| fig-align: center
-
-library(ggplot2)
-library(ggthemes)
-data_ic <- data.frame(p = sum_best$p, BIC = sum_best$bic, AIC = sum_best$aic, GCV = sum_best$gcv)
-data_ic <- reshape2::melt(data_ic, id = c("p"))
-colnames(data_ic) <- c("p", "Criterion", "value")
-
-ggplot(data = data_ic, aes(x = p, y = value, col = Criterion)) +
-  geom_point() +
-  # geom_line() +
-  facet_wrap(. ~ Criterion, scales = "free") +
-  theme_light() +
-  theme(legend.position = "top") +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("Model complexity (p)") +
-  ylab("Information Criterion")
-
-
-
-library(DT)
-p <- ncol(sum_best$which)
-tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p))
-rownames(tab) <- colnames(sum_best$which)
-
-tab$OLS <- coef(lm(logSalary ~ ., data = Hitters_train))
-tab$best_subset[sum_best$which[which.min(sum_best$bic), ]] <- coef(fit_best, which.min(sum_best$bic))
-
-datatable(tab[-1, ], colnames = c("OLS", "Best subset"), options = list(
-  pageLength = 13,
-  dom = "pt",
-  order = list(list(0, "asc"))
-)) %>%
-  formatRound(columns = 1:2, digits = 2) %>%
-  formatStyle(
-    columns = 0, fontWeight = "bold"
-  ) %>%
-  formatStyle(
-    columns = 1:2,
-    backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA"))
-  ) %>%
-  formatStyle(
-    columns = 1:2,
-    backgroundColor = styleEqual(0, c("white"))
-  )
-
-
-
-# I use cor = FALSE because the variables have been standardized
-pr <- princomp(model.matrix(logSalary ~ ., data = Hitters_train)[, -1], cor = FALSE)
-
-X <- model.matrix(logSalary ~ ., data = Hitters_train)
-y <- Hitters_train$logSalary
-Z <- pr$scores
-V <- as.matrix(pr$loadings)
-n <- length(y)
-
-# Main chunk of code; fitting several models and storing some relevant quantities
-ncomp_list <- 1:ncol(Z)
-
-# Initialization
-data_goodness <- data.frame(ncomp = ncomp_list, BIC = NA, AIC = NA, GCV = NA)
-
-# Code execution
-for (ncomp in ncomp_list) {
-  # Fitting a model with
-  # Equivalent to lm(y ~ Z)
-  Z_comp <- matrix(Z[, 1:ncomp], ncol = ncomp)
-  V_comp <- matrix(V[, 1:ncomp], ncol = ncomp)
-  gamma <- apply(Z_comp, 2, function(x) crossprod(x, y)) / apply(Z_comp, 2, function(x) crossprod(x))
-  # beta <- c(mean(y), V_comp %*% gamma) # Equivalent to coef()
-  # fit <- lm(logSalary ~ Z_comp, data = Hitters_train)
-  # y_hat <- fitted(fit)
-  y_hat <- c(mean(y) + Z_comp %*% gamma)
-  sigma2 <- mean((y - y_hat)^2)
-  # Training goodness of fit
-  data_goodness$BIC[ncomp] <- n * log(2 * pi * sigma2) + n + log(n) * (ncomp + 2)
-  data_goodness$AIC[ncomp] <- n * log(2 * pi * sigma2) + n + 2 * (ncomp + 2)
-  data_goodness$GCV[ncomp] <- sigma2 / (1 - (ncomp + 1) / n)^2
-}
+fit_forward <- regsubsets(lpsa ~ ., data = prostate_train, method = "forward", nbest = 1, nvmax = p)
+sum_forward <- summary(fit_forward)
+fit_backward <- regsubsets(lpsa ~ ., data = prostate_train, method = "backward", nbest = 1, nvmax = p)
+sum_backward <- summary(fit_backward)
 
 
 #| fig-width: 10
@@ -196,40 +135,94 @@ for (ncomp in ncomp_list) {
 #| fig-align: center
 
 # Organization of the results for graphical purposes
-data_bv <- data.frame(p = ncomp_list + 1, BIC = data_goodness$BIC, AIC = data_goodness$AIC, GCV = data_goodness$GCV)
-data_bv <- reshape2::melt(data_bv, id = "p")
-levels(data_bv$variable) <- c("BIC", "AIC", "GCV")
-colnames(data_bv) <- c("p", "Criterion", "value")
+data_stepwise <- data.frame(
+  p = c(2:p, 2:p, 2:p), MSE = c(
+    sum_forward$rss,
+    sum_backward$rss,
+    tapply(sum_best$rss, sum_best$p, min)
+  ) / n,
+  Stepwise = rep(c("Forward", "Backward", "Best subset"), each = p - 1)
+)
+data_stepwise <- reshape2::melt(data_stepwise, id = c("p", "Stepwise"))
+colnames(data_stepwise) <- c("p", "Stepwise", "MSE", "value")
 
-ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
+ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
   geom_line() +
   geom_point() +
-  facet_wrap(. ~ Criterion, scales = "free") +
+  facet_grid(. ~ Stepwise) +
   theme_light() +
   theme(legend.position = "none") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Model complexity (p)") +
-  ylab("Error term")
+  ylab("MSE (training)")
+
+
+
+library(pls)
+resid_pcr <- matrix(0, n, p)
+
+for (k in 1:10) {
+  # Hold-out dataset
+  y_k <- assessment(cv_fold$splits[[k]])$lpsa
+  # MSE of the null model
+  resid_pcr[complement(cv_fold$splits[[k]]), 1] <- y_k - predict(fit_null, assessment(cv_fold$splits[[k]]))
+  # Fitting PCR (all the components at once)
+  fit_pcr <- pcr(lpsa ~ ., data = analysis(cv_fold$splits[[k]]), center = TRUE, scale = FALSE)
+
+  for (j in 2:p) {
+    # Predictions
+    y_hat <- predict(fit_pcr, newdata = assessment(cv_fold$splits[[k]]))[, , j - 1]
+    # MSE of the best models for different values of p
+    resid_pcr[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
+  }
+}
+
+
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+
+data_cv <- data.frame(
+  p = 1:p,
+  MSE = apply(resid_pcr^2, 2, mean),
+  SE = apply(resid_pcr^2, 2, function(x) sd(x) / sqrt(n))
+)
+
+se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)]
+p_optimal <- which(data_cv$MSE < se_rule)[1]
+
+ggplot(data = data_cv, aes(x = p, y = MSE)) +
+  geom_point() +
+  geom_line() +
+  geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) +
+  geom_hline(yintercept = se_rule, linetype = "dotted") +
+  geom_vline(xintercept = p_optimal, linetype = "dotted") +
+  theme_light() +
+  scale_x_continuous(breaks = 1:9) +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Mean squared error (10-fold cv)")
 
 
 
 library(DT)
+
 tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p), PCR = rep(0, p))
 rownames(tab) <- colnames(sum_best$which)
 
-tab$OLS <- coef(lm(logSalary ~ ., data = Hitters_train))
-tab$best_subset[sum_best$which[which.min(sum_best$bic), ]] <- coef(fit_best, which.min(sum_best$bic))
+tab$OLS <- coef(lm(lpsa ~ ., data = prostate_train))
+tab$best_subset <- c(coef(lm(lpsa ~ lcavol + lweight, data = prostate_train)), rep(0, 6))
 
-Z_comp <- Z[, 1:21]
-V_comp <- V[, 1:21]
-gamma <- apply(Z_comp, 2, function(x) crossprod(x, y)) / apply(Z_comp, 2, function(x) crossprod(x))
-tab$PCR <- c(mean(y), V_comp %*% gamma)
+# Principal components regression (PCR)
+fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE)
+beta <- c(coef(fit_pcr, 3))
+beta <- c(mean(prostate_train$lpsa) - colMeans(X[, -1]) %*% beta, beta)
+tab$PCR <- beta
 
-
-datatable(tab[-1, ], colnames = c("OLS", "Best subset", "PCR"), options = list(
-  pageLength = 13,
-  dom = "pt",
-  order = list(list(0, "asc"))
+datatable(tab, colnames = c("OLS", "Best subset", "PCR"), options = list(
+  pageLength = 9,
+  dom = "t"
 )) %>%
   formatRound(columns = 1:3, digits = 3) %>%
   formatStyle(
@@ -246,10 +239,86 @@ datatable(tab[-1, ], colnames = c("OLS", "Best subset", "PCR"), options = list(
 
 
 
-library(glmnet)
-asd <- cv.glmnet(X, y, family = "gaussian", alpha = 0.5, lambda = exp(seq(-6, 1, length = 100)), nfolds = 263, grouped = FALSE)
-asd
-plot(asd)
+df_ridge <- function(lambda, X) {
+  X_tilde <- scale(X, TRUE, FALSE)
+  d2 <- eigen(crossprod(X_tilde))$values
+  sum(d2 / (d2 + lambda))
+}
+df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda")
 
-lasso.mod <- glmnet(X, y, alpha = 0.5)
-plot(lasso.mod, "lambda", label = TRUE)
+
+
+library(glmnet)
+my_ridge <- function(X, y, lambda) {
+  n <- nrow(X)
+  p <- ncol(X)
+  y_mean <- mean(y)
+  y <- y - y_mean
+  X_mean <- colMeans(X)
+  X <- X - rep(1, n) %*% t(X_mean)
+  X_scale <- sqrt(diag((1 / n) * crossprod(X)))
+  X <- X %*% diag(1 / X_scale)
+  beta_scaled <- solve(crossprod(X) + lambda * diag(rep(1, p)), t(X) %*% y)
+  beta <- diag(1 / X_scale) %*% beta_scaled
+  beta0 <- y_mean - X_mean %*% beta
+  return(c(beta0, beta))
+}
+
+l <- 1
+my_ridge(X, y, lambda = l)
+coef(glmnet(X, y, alpha = 0, lambda = l / n, thresh = 1e-20))
+
+y_std <- scale(y, center = TRUE, scale = sd(y) * sqrt((n - 1) / n))[, ]
+my_ridge(X, y_std, lambda = l)
+coef(glmnet(X, y_std, alpha = 0, lambda = l / n, thresh = 1e-20))
+
+
+
+#
+#
+# lambda <- 100
+# XX <- X[,-1] #scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x)  sqrt(mean(x^2) - mean(x)^2)))
+# yy <- y #(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2)
+#
+# cv_ridge_fit <- cv.glmnet(XX, yy, family = "gaussian", standardize = FALSE, lambda = exp(seq(-10, 12, length = 500)),
+#                     alpha = 0, thresh = 1e-16)
+# plot(cv_ridge_fit)
+#
+# c(solve((crossprod(XX) + lambda * diag(p-1)), crossprod(XX, yy)))
+# c(coef(fit_ridge)[-1, ])
+
+
+
+# plot(log(cv_ridge_fit$lambda), cv_ridge_fit$cvm, type = "l")
+# plot(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),
+#      cv_ridge_fit$cvm, type = "b", xlab = "Model complexity (p)", ylab = "MSE")
+# lines(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),
+#       cv_ridge_fit$cvup, type = "b", xlab = "Model complexity (p)", ylab = "MSE", lty = "dashed", col = "red")
+#
+# 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.min, X[, -1])
+# 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.1se, X[, -1])
+#
+# ridge_fit <- cv_ridge_fit$glmnet.fit
+# coef(ridge_fit)
+# plot(ridge_fit, , label = TRUE)
+
+
+
+library(lars)
+lambda <- 100
+XX <- scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x) sqrt(mean(x^2) - mean(x)^2)))
+yy <- y # (y - mean(y)) / sqrt(mean(y^2) - mean(y)^2)
+
+cv_lars <- cv.lars(x = XX, y = yy, K = 10, type = "lasso", mode = "step")
+fit_lars <- lars(x = XX, y = yy, type = "lasso", normalize = FALSE)
+
+cv_lasso_fit <- cv.glmnet(XX, yy,
+  standardize = FALSE,
+  family = "gaussian", alpha = 1, nfolds = 10,
+  lambda = 1 / n * fit_lars$lambda, thresh = 1e-16
+)
+plot(cv_lasso_fit)
+lasso_fit <- cv_lasso_fit$glmnet.fit
+lambda_sel <- 4
+round(coef(fit_lars)[lambda_sel, ], 5)
+round(coef(lasso_fit, mode = "lambda")[-1, lambda_sel], 5)

@@ -369,14 +369,9 @@
 <section id="homepage" class="slide level2 center">
 <h2><a href="../index.html">Homepage</a></h2>
 <div class="columns">
-<div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/baseball.png" style="width:60.0%"></p>
-</figure>
-</div>
-<p><em>“I never keep a scorecard or the batting averages. I hate statistics. What I got to know, I keep in my head.”</em> Dizzy Dean, baseball player in the ’30s and ’40s.</p>
-</div><div class="column" style="width:50%;">
+<div class="column" style="width:25%;">
+<p><img data-src="img/lasso.png"></p>
+</div><div class="column" style="width:75%;">
 <ul>
 <li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
 <ul>
@@ -386,83 +381,93 @@
 <li>Lasso, LARS, elastic-net</li>
 </ul></li>
 <li><p>The common thread among these topics is the so-called <span class="blue">variable selection</span> problem.</p></li>
-<li><p>In other words: what do we do when we have many <span class="orange">irrelevant</span> variables?</p></li>
-<li><p>The running example is about baseball data… but a lot has changed since the ’30s!</p></li>
+<li><p>The issue we face is the presence of several <span class="blue">potentially irrelevant</span> variables among the covariates.</p></li>
+<li><p>In the <span class="orange">extreme case</span> <span class="math inline">p &gt; n</span>, is there even hope that we can fit a useful model?</p></li>
 </ul>
 </div>
 </div>
 </section>
-<section id="the-hitters-dataset" class="slide level2 center">
-<h2>The <code>Hitters</code> dataset</h2>
+<section id="the-prostate-dataset" class="slide level2 center">
+<h2>The <code>prostate</code> dataset</h2>
 <div>
 <ul>
-<li class="fragment"><p>We consider the <code>Hitters</code> dataset, which contains information about <span class="math inline">n = 263</span> Major League <span class="blue">Baseball players</span> from the 1986 and 1987 seasons.</p></li>
-<li class="fragment"><p>We want to <span class="blue">predict</span> the <span class="orange">Salary</span> of 1987 of each player, as a function of several covariates:</p>
+<li class="fragment"><p>The <code>prostate</code> cancer data investigates the relationship between the prostate-specific <span class="orange">antigen</span> and a number of clinical measures, in men about to receive a prostatectomy.</p></li>
+<li class="fragment"><p>We want to <span class="blue">predict</span> the logarithm of a <span class="orange">prostate-specific antigen</span> (<code>lpsa</code>) as a function of:</p>
 <ul>
-<li class="fragment">number of hits/runs/walks/assists/errors in 1986 and during the whole career;</li>
-<li class="fragment">number of years in the major leagues;</li>
-<li class="fragment">The league/division of the player at the end of 1986;</li>
-<li class="fragment">…and many others.</li>
+<li class="fragment">logarithm of the cancer volume (<code>lcavol</code>);</li>
+<li class="fragment">logarithm of the prostate weight (<code>lweight</code>);</li>
+<li class="fragment">age each man (<code>age</code>);</li>
+<li class="fragment">logarithm of the benign prostatic hyperplasia amount (<code>lbph</code>);</li>
+<li class="fragment">seminal vesicle invasion (<code>svi</code>), a binary variable;</li>
+<li class="fragment">logarithm of the capsular penetration (<code>lcp</code>);</li>
+<li class="fragment">Gleason score (<code>gleason</code>), an ordered categorical variable;</li>
+<li class="fragment">Percentage of Gleason scores <span class="math inline">4</span> and <span class="math inline">5</span> (<code>pgg45</code>).</li>
 </ul></li>
-<li class="fragment"><p>We considered the logarithmic transform of the salary (<code>logSalary</code>) and the logarithmic transform of the number of years in major leagues (<code>logYears</code>).</p></li>
-<li class="fragment"><p>Including the intercept, there are in total <span class="math inline">p = 20</span> <span class="orange">variables</span> that can be used to predict the salary of each player.</p></li>
-<li class="fragment"><p>The <a href="https://search.r-project.org/CRAN/refmans/ISLR/html/Hitters.html">original dataset</a> is available in the <code>ISLR</code> R package.</p></li>
 </ul>
 </div>
 </section>
-<section id="a-glimpse-of-the-hitters-dataset" class="slide level2 center">
-<h2>A <code>glimpse</code> of the <code>Hitters</code> dataset</h2>
+<section id="a-glimpse-of-the-prostate-dataset" class="slide level2 center">
+<h2>A <code>glimpse</code> of the <code>prostate</code> dataset</h2>
+<ul>
+<li>The dataset is <a href="https://hastie.su.domains/ElemStatLearn/datasets/prostate.data">available online</a>. A description is given in <span class="blue">Section 3.2.1</span> of HTF (2009).</li>
+</ul>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 263
-Columns: 20
-$ AtBat     &lt;int&gt; 315, 479, 496, 321, 594, 185, 298, 323, 401, 574, 202, 418, …
-$ Hits      &lt;int&gt; 81, 130, 141, 87, 169, 37, 73, 81, 92, 159, 53, 113, 60, 43,…
-$ HmRun     &lt;int&gt; 7, 18, 20, 10, 4, 1, 0, 6, 17, 21, 4, 13, 0, 7, 20, 2, 8, 16…
-$ Runs      &lt;int&gt; 24, 66, 65, 39, 74, 23, 24, 26, 49, 107, 31, 48, 30, 29, 89,…
-$ RBI       &lt;int&gt; 38, 72, 78, 42, 51, 8, 24, 32, 66, 75, 26, 61, 11, 27, 75, 8…
-$ Walks     &lt;int&gt; 39, 76, 37, 30, 35, 21, 7, 8, 65, 59, 27, 47, 22, 30, 73, 15…
-$ Years     &lt;int&gt; 14, 3, 11, 2, 11, 2, 3, 2, 13, 10, 9, 4, 6, 13, 15, 5, 8, 1,…
-$ CAtBat    &lt;int&gt; 3449, 1624, 5628, 396, 4408, 214, 509, 341, 5206, 4631, 1876…
-$ CHits     &lt;int&gt; 835, 457, 1575, 101, 1133, 42, 108, 86, 1332, 1300, 467, 392…
-$ CHmRun    &lt;int&gt; 69, 63, 225, 12, 19, 1, 0, 6, 253, 90, 15, 41, 4, 36, 177, 5…
-$ CRuns     &lt;int&gt; 321, 224, 828, 48, 501, 30, 41, 32, 784, 702, 192, 205, 309,…
-$ CRBI      &lt;int&gt; 414, 266, 838, 46, 336, 9, 37, 34, 890, 504, 186, 204, 103, …
-$ CWalks    &lt;int&gt; 375, 263, 354, 33, 194, 24, 12, 8, 866, 488, 161, 203, 207, …
-$ League    &lt;fct&gt; N, A, N, N, A, N, A, N, A, A, N, N, A, N, N, A, N, N, A, N, …
-$ Division  &lt;fct&gt; W, W, E, E, W, E, W, W, E, E, W, E, E, E, W, W, W, E, W, W, …
-$ PutOuts   &lt;int&gt; 632, 880, 200, 805, 282, 76, 121, 143, 0, 238, 304, 211, 121…
-$ Assists   &lt;int&gt; 43, 82, 11, 40, 421, 127, 283, 290, 0, 445, 45, 11, 151, 45,…
-$ Errors    &lt;int&gt; 10, 14, 3, 4, 25, 7, 9, 19, 0, 22, 11, 7, 6, 8, 10, 16, 2, 5…
-$ Salary    &lt;dbl&gt; 475.000, 480.000, 500.000, 91.500, 750.000, 70.000, 100.000,…
-$ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N, N, …</code></pre>
+<pre><code>Rows: 97
+Columns: 10
+$ lcavol  &lt;dbl&gt; -0.5798185, -0.9942523, -0.5108256, -1.2039728, 0.7514161, -1.…
+$ lweight &lt;dbl&gt; 2.769459, 3.319626, 2.691243, 3.282789, 3.432373, 3.228826, 3.…
+$ age     &lt;int&gt; 50, 58, 74, 58, 62, 50, 64, 58, 47, 63, 65, 63, 63, 67, 57, 66…
+$ lbph    &lt;dbl&gt; -1.3862944, -1.3862944, -1.3862944, -1.3862944, -1.3862944, -1…
+$ svi     &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ lcp     &lt;dbl&gt; -1.3862944, -1.3862944, -1.3862944, -1.3862944, -1.3862944, -1…
+$ gleason &lt;int&gt; 6, 6, 7, 6, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 6, 7, 6, 6, 6, 6,…
+$ pgg45   &lt;int&gt; 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 30, 5, 5, 0, 30, 0, 0, 0,…
+$ lpsa    &lt;dbl&gt; -0.4307829, -0.1625189, -0.1625189, -0.1625189, 0.3715636, 0.7…
+$ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE,…</code></pre>
 </div>
 </div>
+<ul>
+<li><p>There are in total <span class="math inline">8</span> <span class="orange">variables</span> that can be used to predict the antigen <code>lpsa</code>.</p></li>
+<li><p>The variable <code>train</code> splits the data into a training and test set, as in the textbook.</p></li>
+<li><p>There are <span class="math inline">n = 67</span> observations in the <span class="orange">training</span> set and <span class="math inline">30</span> in the <span class="blue">test</span> set.</p></li>
+</ul>
 </section>
-<section id="preliminary-operations" class="slide level2 center">
-<h2>Preliminary operations</h2>
-</section>
+<section id="correlation-matrix-of-prostate" class="slide level2 center">
+<h2>Correlation matrix of <code>prostate</code></h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-4-1.png" width="2250" class="r-stretch quarto-figure-center"></section>
 <section id="the-variable-selection-problem" class="slide level2 center">
 <h2>The variable selection problem</h2>
 <div>
 <ul>
-<li class="fragment"><p>We consider a <span class="orange">linear model</span> in which the response variable <span class="math inline">Y_i</span> (<code>logSalary</code>) is related to the covariates through the function<span class="math display">
-  \mathbb{E}(Y_i) = f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
-  </span> using the same notation of <a href="un_A1.html">Unit A.1</a>.</p></li>
-<li class="fragment"><p>Among these <span class="math inline">p = 26</span> variables, some are likely to be <span class="blue">irrelevant</span>, because they might be <span class="orange">correlated</span> or even <span class="orange">collinear</span>.</p></li>
-<li class="fragment"><p>As we have seen in <a href="un_B.html">Unit B</a>, irrelevant variables are problematic because they <span class="orange">increase the variance</span> of the estimates without important gain in term of bias.</p></li>
-<li class="fragment"><p>For the polynomial regression problem of <a href="un_B.html">Unit B</a> we used <span class="blue">cross-validation</span> and other tools to find a good <span class="blue">bias-variance trade-off</span>. Can we use the same strategy in this example?</p></li>
-<li class="fragment"><p>In theory, yes… but here there are <span class="math inline">2^{20} = 1048576</span> competing models!</p></li>
+<li class="fragment"><p>We consider a <span class="orange">linear model</span> in which the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) is related to the covariates through the function<span class="math display">
+  \mathbb{E}(Y_i) = f(\bm{x}_i; \alpha, \beta) = \alpha+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\alpha + \bm{x}_i^T\beta.
+  </span></p></li>
+<li class="fragment"><p>If we use all the <span class="math inline">p = 8</span> available covariates, the estimated <span class="math inline">f(\bm{x}; \hat{\alpha}, \hat{\beta})</span> might have a <span class="orange">high variance</span>, without important gain in term of bias.</p></li>
+<li class="fragment"><p>In other words, the full model is likely to have a <span class="blue">large mean squared error</span>.</p></li>
+<li class="fragment"><p>Indeed, among the <span class="math inline">p = 8</span> variables of the <code>prostate</code> dataset, some are likely to be <span class="blue">irrelevant</span>. For example, these variables might be <span class="orange">correlated</span> and therefore <span class="orange">redundant</span>.</p></li>
+<li class="fragment"><p>Hence, we are looking for a <span class="orange">simpler model</span> that has low mean squared error. Besides,</p></li>
 </ul>
 </div>
 </section>
-<section id="correlation-matrix-of-hitters" class="slide level2 center">
-<h2>Correlation matrix of <code>Hitters</code></h2>
-
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-4-1.png" width="2250" class="r-stretch quarto-figure-center"></section>
-<section id="old-friends-stepwise-regression" class="slide level2 center">
-<h2>Old friends: stepwise regression</h2>
+<section id="best-subset-regression-i" class="slide level2 center">
+<h2>Best subset regression I</h2>
 </section>
+<section id="best-subset-regression-ii" class="slide level2 center">
+<h2>Best subset regression II</h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-7-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
+<section id="the-multiple-testing-problem" class="slide level2 center">
+<h2>☠️ - The multiple testing problem</h2>
+</section>
+<section id="effective-degrees-of-freedom" class="slide level2 center">
+<h2>Effective degrees of freedom</h2>
+</section>
+<section id="best-subset-regression-cross-validation" class="slide level2 center">
+<h2>Best subset regression: cross-validation</h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-9-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
 <section id="forward-regression" class="slide level2 center">
 <h2>Forward regression</h2>
 </section>
@@ -472,56 +477,9 @@ $ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N,
 <section id="backward-and-forward-regression-i" class="slide level2 center">
 <h2>Backward and forward regression I</h2>
 
-<!-- ## Backward and forward regression {.scrollable} -->
-<!-- ::: {style="font-size: 60%;"} -->
-<!-- ```{r} -->
-<!-- library(DT) -->
-<!-- # BIC based -->
-<!-- p <- ncol(sum_backward$which) -->
-<!-- tab <- data.frame(OLS =rep(0, p), BIC_backward = rep(0, p), BIC_forward = rep(0, p), AIC_backward = rep(0, p), AIC_forward = rep(0, p)) -->
-<!-- rownames(tab) <- colnames(sum_backward$which) -->
-<!-- tab$OLS <- coef(lm(logSalary ~ ., data = Hitters_train)) -->
-<!-- tab$BIC_backward[sum_backward$which[which.min(sum_backward$bic), ]] <- coef(fit_backward, which.min(sum_backward$bic)) -->
-<!-- tab$BIC_forward[sum_forward$which[which.min(sum_forward$bic), ]] <- coef(fit_forward, which.min(sum_forward$bic)) -->
-<!-- tab$AIC_backward[sum_backward$which[which.min(sum_backward$aic), ]] <- coef(fit_backward, which.min(sum_backward$aic)) -->
-<!-- tab$AIC_forward[sum_forward$which[which.min(sum_forward$aic), ]] <- coef(fit_forward, which.min(sum_forward$aic)) -->
-
-<!-- datatable(tab, colnames=c("OLS", "BIC backward", "BIC forward", "AIC backward", "AIC forward"), options = list( -->
-<!--   pageLength = 13, -->
-<!--   dom = "pt", -->
-<!--   order = list(list(0, "asc")))) %>% formatRound(columns = 1:5, digits = 2) %>% formatStyle( -->
-<!--     columns = 0,fontWeight = "bold" -->
-<!--   ) %>%formatStyle( -->
-<!--           columns = 1:5, -->
-<!--           backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA")) -->
-<!--         ) %>% formatStyle( -->
-<!--           columns = 1:5, -->
-<!--           backgroundColor = styleEqual(0, c("white")) -->
-<!--         )  -->
-<!-- ``` -->
-<!-- ::: -->
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-6-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
-<section id="the-multiple-testing-problem" class="slide level2 center">
-<h2>☠️ - The multiple testing problem</h2>
-</section>
-<section id="best-subset-regression-i" class="slide level2 center">
-<h2>Best subset regression I</h2>
-</section>
-<section id="best-subset-regression-ii" class="slide level2 center">
-<h2>Best subset regression II</h2>
-
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-8-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
-<section id="best-subset-regression-iii" class="slide level2 center">
-<h2>Best subset regression III</h2>
-<div style="font-size: 55%;">
-<div class="cell">
-<div class="cell-output-display">
-
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-3435cc6a0a1833198698" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-3435cc6a0a1833198698">{"x":{"filter":"none","vertical":false,"data":[["AtBat","Hits","HmRun","Runs","RBI","Walks","CAtBat","CHits","CHmRun","CRuns","CRBI","CWalks","LeagueN","DivisionW","PutOuts","Assists","Errors","NewLeagueN","TotalScore","logAHits","logAAtBat","logARuns","logARBI","logAWalks","logAHmRun","RatioHits","RatioAtBat","RatioRuns","RatioRBI","RatioWalks","RatioHmRun","logYears"],[-0.07407250159775701,-0.02031867562052453,0.06623556625658419,-0.03275482530999467,0.08296801613415274,0.4475851353413992,-0.5705223085722072,-0.3304862101238244,-0.06243081104552029,0.6812705550321165,0.4829473892663035,-0.3501852300072954,0.0109666427319012,-0.07566484046492458,0.0456927657744756,-0.08333625108069655,-0.06210244594001921,0.0856081694202379,0.2310120123653712,0.9128752120623417,-0.1681374721655719,-0.1948923424140284,-0.1569203829174848,-0.1930086972550818,-0.04841301913524736,0.5121695980810406,0.1294797613158787,-0.3028548385053604,-0.2794883282871239,-0.5750393996922873,0.03376127052528084,0.1586706784007542],[0,0,0,0,0,0.4918392021111269,0,0,0,0,0,0,0,0,0,-0.1827290899181941,0,0,0.2366156215505739,0.4744486595391955,0,0,0,-0.3779186775964132,0,0,0,0,0,-0.5495570336377812,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>OLS<\/th>\n      <th>Best subset<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":13,"dom":"pt","order":[[0,"asc"]],"columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 2, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2]},{"orderable":false,"targets":0}],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,13,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'font-weight':'bold'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 0 ? \"white\" : null});\n}"}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.rowCallback"],"jsHooks":[]}</script>
-</div>
-</div>
-</div>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-11-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
+<section id="comments" class="slide level2 center">
+<h2>Comments</h2>
 </section>
 <section>
 <section id="principal-components" class="title-slide slide level1 center">
@@ -537,15 +495,15 @@ $ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N,
 <section id="pcr" class="slide level2 center">
 <h2>PCR</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-11-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
-<section id="pcr-beta" class="slide level2 center">
-<h2>PCR beta</h2>
-<div style="font-size: 55%;">
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-13-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
+<section id="summary-of-the-estimated-coefficients" class="slide level2 center">
+<h2>Summary of the estimated coefficients</h2>
+<div style="font-size: 70%;">
 <div class="cell">
 <div class="cell-output-display">
 
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-d6599fd3fc9738c86864" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-d6599fd3fc9738c86864">{"x":{"filter":"none","vertical":false,"data":[["AtBat","Hits","HmRun","Runs","RBI","Walks","CAtBat","CHits","CHmRun","CRuns","CRBI","CWalks","LeagueN","DivisionW","PutOuts","Assists","Errors","NewLeagueN","TotalScore","logAHits","logAAtBat","logARuns","logARBI","logAWalks","logAHmRun","RatioHits","RatioAtBat","RatioRuns","RatioRBI","RatioWalks","RatioHmRun","logYears"],[-0.07407250159775701,-0.02031867562052453,0.06623556625658419,-0.03275482530999467,0.08296801613415274,0.4475851353413992,-0.5705223085722072,-0.3304862101238244,-0.06243081104552029,0.6812705550321165,0.4829473892663035,-0.3501852300072954,0.0109666427319012,-0.07566484046492458,0.0456927657744756,-0.08333625108069655,-0.06210244594001921,0.0856081694202379,0.2310120123653712,0.9128752120623417,-0.1681374721655719,-0.1948923424140284,-0.1569203829174848,-0.1930086972550818,-0.04841301913524736,0.5121695980810406,0.1294797613158787,-0.3028548385053604,-0.2794883282871239,-0.5750393996922873,0.03376127052528084,0.1586706784007542],[0,0,0,0,0,0.4918392021111269,0,0,0,0,0,0,0,0,0,-0.1827290899181941,0,0,0.2366156215505739,0.4744486595391955,0,0,0,-0.3779186775964132,0,0,0,0,0,-0.5495570336377812,0,0],[0.02623213360767309,0.08194928331554187,-0.04755465811589082,0.04962781619180967,0.0815630921740309,0.2581662032992784,-0.005422083218788431,0.05131685997633222,0.09795355954916356,0.01531064415924407,0.08706841996725059,-0.1501940603559901,0.06038688627451903,-0.1283851403784941,0.03986824122599301,-0.1061571174981095,-0.05812359389991716,0.02142692885146639,0.2069768621198056,0.09884082222113935,0.04327163631293202,0.0327387255687388,0.002483713814766591,-0.1138190918113232,-0.03651922620617757,-0.1934929526060154,-0.1412913148815384,-0.1566221333061645,-0.1084422477169778,-0.02482863174352397,0.03312652937694059,-0.07924098664384084]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>OLS<\/th>\n      <th>Best subset<\/th>\n      <th>PCR<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":13,"dom":"pt","order":[[0,"asc"]],"columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3]},{"orderable":false,"targets":0}],"autoWidth":false,"orderClasses":false,"lengthMenu":[10,13,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'font-weight':'bold'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 0 ? \"white\" : null});\n}"}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.rowCallback"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-030c44f57ef298331558" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-030c44f57ef298331558">{"x":{"filter":"none","vertical":false,"data":[["(Intercept)","lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45"],[2.464932922123746,0.679528141237975,0.2630530657325436,-0.1414648335361718,0.2101465572218274,0.3052005971250977,-0.2884927724535462,-0.02130503880294821,0.2669557621199238],[2.477357342449561,0.7397136698758426,0.3163281888271424,0,0,0,0,0,0],[2.455021592228732,0.2866612827183797,0.3391036880563062,0.05628528949356448,0.101528380690821,0.2614850538133574,0.2186806183758074,-0.01605594153820378,0.06170971163528384]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>OLS<\/th>\n      <th>Best subset<\/th>\n      <th>PCR<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":9,"dom":"t","columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[9,10,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'font-weight':'bold'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 0 ? \"white\" : null});\n}"}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.rowCallback"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -553,22 +511,44 @@ $ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N,
 <section>
 <section id="ridge-regression" class="title-slide slide level1 center">
 <h1>Ridge regression</h1>
+
+</section>
+<section id="ridge-regression-1" class="slide level2 center">
+<h2>Ridge regression</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:  cv.glmnet(x = X, y = y, lambda = exp(seq(-6, 1, length = 100)),      nfolds = 263, grouped = FALSE, family = "gaussian", alpha = 0.5) 
-
-Measure: Mean-Squared Error 
-
-      Lambda Index Measure      SE Nonzero
-min 0.006215    87  0.1961 0.03599      20
-1se 0.013528    76  0.2311 0.04754      19</code></pre>
+<pre><code> [1] NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN</code></pre>
 </div>
-<div class="cell-output-display">
-<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-13-1.png" width="1500"></p>
+<div class="cell-output cell-output-stdout">
+<pre><code>10 x 1 sparse Matrix of class "dgCMatrix"
+                     s0
+(Intercept)  2.46561582
+(Intercept)  .         
+lcavol       0.65889936
+lweight      0.26242509
+age         -0.13544689
+lbph         0.20847469
+svi          0.30046585
+lcp         -0.26106960
+gleason     -0.01302354
+pgg45        0.25111666</code></pre>
 </div>
-<div class="cell-output-display">
-<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-13-2.png" width="1500"></p>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] NaN NaN NaN NaN NaN NaN NaN NaN NaN NaN</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>10 x 1 sparse Matrix of class "dgCMatrix"
+                      s0
+(Intercept)  0.011164693
+(Intercept)  .          
+lcavol       0.546423528
+lweight      0.218790967
+age         -0.112023920
+lbph         0.173628937
+svi          0.249893989
+lcp         -0.213551767
+gleason     -0.009633958
+pgg45        0.207092444</code></pre>
 </div>
 </div>
 </section>
@@ -605,14 +585,33 @@ min 0.006215    87  0.1961 0.03599      20
 </ul>
 </div>
 </div>
+</section>
+<section id="lasso-1" class="slide level2 center">
+<h2>Lasso</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-19-1.png" width="1500"></p>
+</div>
+<div class="cell-output-display">
+<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-19-2.png" width="1500"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code> lcavol lweight     age    lbph     svi     lcp gleason   pgg45 
+0.55681 0.18637 0.00000 0.00000 0.09226 0.00000 0.00000 0.00000 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code> lcavol lweight     age    lbph     svi     lcp gleason   pgg45 
+0.55681 0.18637 0.00000 0.00000 0.09226 0.00000 0.00000 0.00000 </code></pre>
+</div>
+</div>
 <!-- ## 3D plots -->
 <!-- ```{r} -->
 <!-- #| message: false -->
 <!-- library(plotly) -->
-<!-- logYears <- seq(from = min(Hitters$logYears), to = max(Hitters$logYears), length = 100) -->
-<!-- Hits <- seq(from = min(Hitters$Hits), to = max(Hitters$Hits), length = 100) -->
-<!-- logSalary <- matrix(predict(lm(logSalary ~ Hits + logYears, data = Hitters_train), -->
-<!--   newdata = data.frame(expand.grid(logYears = logYears, Hits = Hits, logSalary = NA)) -->
+<!-- logYears <- seq(from = min(prostate$logYears), to = max(prostate$logYears), length = 100) -->
+<!-- Hits <- seq(from = min(prostate$Hits), to = max(prostate$Hits), length = 100) -->
+<!-- lpsa <- matrix(predict(lm(lpsa ~ Hits + logYears, data = prostate_train), -->
+<!--   newdata = data.frame(expand.grid(logYears = logYears, Hits = Hits, lpsa = NA)) -->
 <!-- ), ncol = length(logYears)) -->
 <!-- ``` -->
 <!-- ```{r} -->
@@ -623,13 +622,13 @@ min 0.006215    87  0.1961 0.03599      20
 <!-- #| message: false -->
 <!-- plot_ly() %>% -->
 <!--   add_surface( -->
-<!--     x = ~logYears, y = ~Hits, z = ~logSalary, colors = "Reds", -->
+<!--     x = ~logYears, y = ~Hits, z = ~lpsa, colors = "Reds", -->
 <!--     contours = list( -->
 <!--       x = list(show = TRUE, start = 0, end = 3, size = 0.15, color = "white"), -->
 <!--       y = list(show = TRUE, start = 0, end = 200, size = 25, color = "white") -->
 <!--     ) -->
 <!--   ) %>% -->
-<!--   add_markers(x = ~ Hitters$logYears, y = ~ Hitters$Hits, z = ~ Hitters$logSalary, size = 0.15, marker = list(color = "black"), showlegend = FALSE) %>% -->
+<!--   add_markers(x = ~ prostate$logYears, y = ~ prostate$Hits, z = ~ prostate$lpsa, size = 0.15, marker = list(color = "black"), showlegend = FALSE) %>% -->
 <!--   layout( -->
 <!--     scene = list( -->
 <!--       camera = list( -->

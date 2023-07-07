@@ -247,13 +247,11 @@ D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
 <li><p>Let us consider again the variables <code>city.distance</code> (<span class="math inline">y</span>), <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>).</p></li>
 <li><p>Which function <span class="math inline">f(x,z;\beta)</span> should we choose?</p></li>
 </ul>
-<p>. . .</p>
 <ul>
 <li>A first attempt is to consider a <span class="orange">polynomial term</span> combined with a <span class="blue">dummy variable</span> <span class="math display">
 f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}),
 </span> which is a special instance of <span class="orange">linear model</span>.</li>
 </ul>
-<p>. . .</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -300,7 +298,6 @@ D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\be
 </span> known also as <span class="orange">residual sum of squares (RSS)</span>, where <span class="math display">
 ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2},</span> denotes the <span class="blue">Euclidean norm</span>.</li>
 </ul>
-<p>. . .</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -493,17 +490,14 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>A major advantage of linear models is that they can describe non-linear relationship via <span class="blue">variable transformations</span> such as polynomials, logarithms, etc.</li>
 </ul>
-<p>. . .</p>
 <ul>
 <li>This gives the statistician a lot of modelling flexibility. For instance we could let: <span class="math display">
 \log{Y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
 </span></li>
 </ul>
-<p>. . .</p>
 <ul>
 <li>This specification is <span class="orange">linear in the parameters</span>, it fixes the domain issues, and it imposes a monotone relationship between engine size and consumption.</li>
 </ul>
-<p>. . .</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -597,7 +591,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>Do not mix <span class="blue">apple</span> and <span class="orange">oranges</span>! Compare <span class="math inline">R^2</span>s only if they refer to the same scale!</li>
 </ul>
-<p>. . .</p>
 <ul>
 <li><p>This second model is <span class="blue">more parsimonious</span> and yet it reaches satisfactory predictive performance.</p></li>
 <li><p>It is also more coherent with the nature of the data: the predictions cannot be negative and the relationship between engine size and the consumption is monotone.</p></li>
@@ -612,7 +605,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 \log{Y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
   </span> for <span class="math inline">i=1,\dots,n</span>. The estimates are:</p></li>
 </ul>
-<p>. . .</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
@@ -727,7 +719,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </span> that is, using the R code <code>solve(t(X) %*% X) %*% t(X) %*% y</code>.</p></li>
 <li><p>This approach works reasonably well in many <span class="blue">simple cases</span>.</p></li>
 </ul>
-<p>. . .</p>
 <ul>
 <li>Unfortunately, in more challenging scenarios, e.g.&nbsp;when we have a lot of data (large <span class="math inline">n</span>) and correlated variables, the above code is
 <ul>
@@ -746,8 +737,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <li><p>This system could be solved using <code>solve(crossprod(X), crossprod(X, y))</code>.</p></li>
 <li><p>This avoids the explicit computation of <span class="math inline">(\bm{X}^T\bm{X})^{-1}</span> and it is preferable compared to the “direct solution”. However, it does not exploit the properties of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>.</p></li>
 </ul>
-<p>. . .</p>
-<p>. . .</p>
 <ul>
 <li>Recall (from your favorite linear algebra textbook) that a <span class="blue">symmetric</span> matrix <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> is <span class="orange">positive definite</span> if and only if one the following properties is satisfied
 <ul>
@@ -774,7 +763,6 @@ Proposition A.1
 </span> is <span class="blue">symmetric</span> and <span class="orange">positive definite</span>.</p>
 </div>
 </div>
-<p>. . .</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -888,14 +876,12 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <ul>
 <li>Another approach for computing least squares is based on the notion of orthogonality.</li>
 </ul>
-<p>. . .</p>
 <ul>
 <li><p>If the <span class="blue">predictors</span> were mutually <span class="orange">orthogonal</span>, the problem would be much simpler.</p></li>
 <li><p>In other words, consider a linear model of the form <span class="math display">
 \bm{Y} = \bm{Z}\bm{\beta} + \bm{\epsilon},
 </span> where <span class="math inline">\bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p)</span>. <span class="orange">Orthogonality</span> means that <span class="math inline">\bm{Z}^T\bm{Z} = \text{diag}(\tilde{\bm{z}}_1^T\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p^T\tilde{\bm{z}}_p)</span>.</p></li>
 </ul>
-<p>. . .</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -982,7 +968,6 @@ Theorem (QR factorization)
 </span> where <span class="math inline">\bm{Q} \in \mathbb{R}^{n \times p}</span> has <span class="orange">orthonormal columns</span> and <span class="math inline">\bm{R} \in \mathbb{R}^{p \times p}</span> is an <span class="blue">upper triangular</span> matrix.</p>
 </div>
 </div>
-<p>. . .</p>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1153,7 +1138,6 @@ Sherman-Morrison formula
 <li><p>Using a terminology typical of the machine learning field, we say that the estimator “learns from its errors”.</p></li>
 <li><p>If <span class="math inline">n</span> is sufficiently high, it is also possible to get an <span class="orange">approximate</span> solution by initializing the algorithm by setting <span class="math inline">\bm{V}_{(0)} = I_p</span>, to avoid any matrix inversion / factorization.</p></li>
 </ul>
-<p>. . .</p>
 <ul>
 <li>With further algebraic steps, we also obtain a <span class="blue">recursive formula</span> for the <span class="blue">deviance</span></li>
 </ul>
