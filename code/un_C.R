@@ -1,11 +1,11 @@
-## ----r------------------------------------------------------------------------
+#| message: false
 rm(list = ls())
 library(tidyverse)
 prostate <- read.table("../data/prostate_data.txt")
 glimpse(prostate)
 
 
-## ----r------------------------------------------------------------------------
+
 # Standardize the predictors, as in Tibshirani (1996)
 which_vars <- which(colnames(prostate) %in% c("lpsa", "train"))
 prostate[, -which_vars] <- apply(prostate[, -which_vars], 2, function(x) (x - mean(x)) / sd(x))
@@ -14,8 +14,12 @@ prostate[, -which_vars] <- apply(prostate[, -which_vars], 2, function(x) (x - me
 prostate_train <- filter(prostate, train) %>% select(-train)
 prostate_test <- filter(prostate, train == FALSE) %>% select(-train)
 
+glimpse(prostate)
 
-## ----r------------------------------------------------------------------------
+
+#| fig-width: 15
+#| fig-height: 7
+#| fig-align: center
 library(ggcorrplot)
 corr <- cor(subset(prostate_train, select = -lpsa)) # Remove the outcome lpsa
 ggcorrplot(corr,
@@ -26,14 +30,14 @@ ggcorrplot(corr,
 )
 
 
-## ----r------------------------------------------------------------------------
+
 tab <- data.frame(broom::tidy(lm(lpsa ~ ., data = prostate_train), conf.int = FALSE))
 rownames(tab) <- tab[, 1]
 tab <- t(as.matrix(tab[, -1]))
 knitr::kable(tab, digits = 2)
 
 
-## ----r------------------------------------------------------------------------
+
 # Here I compute some basic quantities
 X <- model.matrix(lpsa ~ ., data = prostate_train)[, -1]
 y <- prostate_train$lpsa
@@ -41,14 +45,17 @@ n <- nrow(X)
 p <- ncol(X) # This does not include the intercept
 
 
-## ----r------------------------------------------------------------------------
+
 library(leaps)
 fit_best <- regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest = 40, nvmax = p)
 sum_best <- summary(fit_best)
 sum_best$p <- rowSums(sum_best$which) - 1 # Does not include the intercept here
 
 
-## ----r------------------------------------------------------------------------
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+
 library(ggplot2)
 library(ggthemes)
 data_best_subset <- data.frame(p = sum_best$p, MSE = sum_best$rss / n)
@@ -68,7 +75,11 @@ ggplot(data = data_best_subset, aes(x = p, y = value)) +
   ylab("Mean squared error (training)")
 
 
-## ----r------------------------------------------------------------------------
+
+summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest = 1, nvmax = p))$outmat
+
+
+
 library(rsample)
 
 set.seed(123)
@@ -97,7 +108,10 @@ for (k in 1:10) {
 }
 
 
-## ----r------------------------------------------------------------------------
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+
 data_cv <- data.frame(
   p = 0:p,
   MSE = apply(resid_subs^2, 2, mean),
@@ -121,14 +135,17 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   ylab("Mean squared error (10-fold cv)")
 
 
-## ----r------------------------------------------------------------------------
+
 fit_forward <- regsubsets(lpsa ~ ., data = prostate_train, method = "forward", nbest = 1, nvmax = p)
 sum_forward <- summary(fit_forward)
 fit_backward <- regsubsets(lpsa ~ ., data = prostate_train, method = "backward", nbest = 1, nvmax = p)
 sum_backward <- summary(fit_backward)
 
 
-## ----r------------------------------------------------------------------------
+#| fig-width: 10
+#| fig-height: 3.5
+#| fig-align: center
+
 # Organization of the results for graphical purposes
 data_stepwise <- data.frame(
   p = c(1:p, 1:p, 1:p), MSE = c(
@@ -153,8 +170,21 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
   ylab("MSE (training)")
 
 
-## ----r------------------------------------------------------------------------
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+pr <- princomp(prostate_train[, -9], cor = FALSE)
+ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p, xmin = p, xmax = p, y = vars, ymax = vars, , ymin = 0)) +
+  geom_pointrange() +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Number of principal components (p)") +
+  ylab("Fraction of explained variance")
+
+
+
 library(pls)
+
 resid_pcr <- matrix(0, n, p)
 
 for (k in 1:10) {
@@ -174,7 +204,10 @@ for (k in 1:10) {
 }
 
 
-## ----r------------------------------------------------------------------------
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+
 data_cv <- data.frame(
   p = 1:p,
   MSE = apply(resid_pcr^2, 2, mean),
@@ -194,5 +227,5 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   scale_x_continuous(breaks = 1:9) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Model complexity (p)") +
+  xlab("Number of principal components (p)") +
   ylab("Mean squared error (10-fold cv)")

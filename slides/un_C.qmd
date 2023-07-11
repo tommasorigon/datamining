@@ -18,7 +18,7 @@ format:
     slide-number: true
     callout-appearance: minimal
     code-line-numbers: true
-    theme: [default, template.css] # alternative themes (subset): default, night, dark
+    theme: [default, ../template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: false
     fig-dpi: 150
@@ -30,7 +30,7 @@ format:
     html-math-method: katex
     echo: false
     callout-appearance: minimal
-    theme: [cosmo, template.css]
+    theme: [cosmo, ../template.css]
     toc: true
     toc-title: Table of contents
     embed-resources: false
@@ -61,11 +61,11 @@ styler:::style_file("../code/un_C.R")
 ```
 
 ::: columns
-::: {.column width="25%"}
+::: {.column width="20%"}
 ![](img/lasso.png)
 :::
 
-::: {.column width="75%"}
+::: {.column width="80%"}
 -   In this unit we will cover the following [topics]{.orange}:
 
     -   Best subset regression
@@ -73,14 +73,15 @@ styler:::style_file("../code/un_C.R")
     -   Ridge regression
     -   Lasso, LARS, elastic-net
 
--   The common thread among these topics is the so-called [variable
-    selection]{.blue} problem.
+-   The common themes are called [variable
+    selection]{.blue} and [shrinkage estimation]{.orange}.
 
--   The issue we face is the presence of several [potentially
-    irrelevant]{.blue} variables among the covariates.
+-   The issue we face is the presence of a high number $p$ of covariates that are [potentially
+    irrelevant]{.blue}.
+    
+- This problem is quite challenging when the [ratio]{.blue} $p / n$ is [large]{.blue}. 
 
--   In the [extreme case]{.orange} $p > n$, is there even hope that we
-    can fit a useful model?
+- In the [extreme case]{.orange} $p > n$, is there any hope to fit a meaningful model?
 :::
 :::
 
@@ -102,13 +103,14 @@ styler:::style_file("../code/un_C.R")
     -   logarithm of the capsular penetration (`lcp`);
     -   Gleason score (`gleason`), an ordered categorical variable;
     -   Percentage of Gleason scores $4$ and $5$ (`pgg45`).
+- This [dataset](https://hastie.su.domains/ElemStatLearn/datasets/prostate.data) has been used in the [original paper]{.orange} by Tibshirani (1996) to present the lasso and a description is given in [Section 3.2.1]{.blue} of HTF (2009).
+
 :::
 
 ## A `glimpse` of the `prostate` dataset
 
--   The dataset is [available
-    online](https://hastie.su.domains/ElemStatLearn/datasets/prostate.data).
-    A description is given in [Section 3.2.1]{.blue} of HTF (2009).
+::: {.panel-tabset}
+## Original dataset
 
 ```{r}
 #| message: false
@@ -118,6 +120,8 @@ prostate <- read.table("../data/prostate_data.txt")
 glimpse(prostate)
 ```
 
+## Standardized dataset
+
 ```{r}
 # Standardize the predictors, as in Tibshirani (1996)
 which_vars <- which(colnames(prostate) %in% c("lpsa", "train"))
@@ -126,16 +130,19 @@ prostate[, -which_vars] <- apply(prostate[, -which_vars], 2, function(x) (x - me
 # Split in training and test
 prostate_train <- filter(prostate, train) %>% select(-train)
 prostate_test <- filter(prostate, train == FALSE) %>% select(-train)
-```
 
--   There are in total $8$ [variables]{.orange} that can be used to
-    predict the antigen `lpsa`.
+glimpse(prostate)
+```
+:::
 
 -   The variable `train` splits the data into a training and test set,
     as in the textbook.
 
--   There are $n = 67$ observations in the [training]{.orange} set and
+-   Thus, there are $n = 67$ observations in the [training]{.orange} set and
     $30$ in the [test]{.blue} set.
+    
+-   There are in total $8$ [variables]{.orange} that can be used to predict the antigen `lpsa`. We [centered]{.orange} and [standardized]{.blue} all the covariates before the training/test split.
+
 
 ## Correlation matrix of `prostate`
 
@@ -160,22 +167,24 @@ ggcorrplot(corr,
     $Y_i$ (`lpsa`) is related to the covariates through the function$$
       f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
       $$ In this unit the [intercept]{.blue} $\beta_0$ will play a
-    special role, therefore we use a slightly different notation
+    special role, therefore we use this slightly different notation
     compared to [Unit A.1](unit_A1.html).
 
--   If we use all the $p = 8$ available covariates, the estimated
-    $f(\bm{x}; \hat{\beta_0}, \hat{\beta})$ might have a [high
-    variance]{.orange}, without important gain in term of bias, i.e. a
-    [large mean squared error]{.blue}.
+- Including a lot of covariates into the model is not necessarily a good thing!
 
 -   Indeed, some variables are likely to be [irrelevant]{.blue}:
 
     -   they might be [correlated]{.orange} with other covariates and
         therefore [redundant]{.orange};
     -   they could be uncorrelated with the response `lpsa`.
+    
+-   If we use all the $p = 8$ available covariates, the estimated
+    $f(\bm{x}; \hat{\beta_0}, \hat{\beta})$ might have a [high
+    variance]{.orange}, without important gain in term of bias, i.e. a
+    [large mean squared error]{.blue}.
 
--   Hence, we are looking for a [simpler model]{.orange} having
-    hopefully a lower mean squared error.
+-   We are looking for a [simpler model]{.orange} having,
+    hopefully, a lower mean squared error.
 :::
 
 ## A naïve approach: (ab)using p-values
@@ -190,7 +199,7 @@ knitr::kable(tab, digits = 2)
 :::
 
 ::: incremental
--   It is a common practice to use the [p-values]{.orange}, e.g. those
+-   It is common practice to use the [p-values]{.orange}, e.g. those
     obtained through the `summary` function, to perform [model
     selection]{.blue} in a stepwise fashion.
 
@@ -198,25 +207,24 @@ knitr::kable(tab, digits = 2)
     the model, and repeat this scheme until we obtain only "significant"
     coefficients.
 
--   This is [not the best idea]{.orange}, at least without careful
-    thinking and appropriate multiplicity corrections.
+-   Unfortunately, this is [not a good idea]{.orange}, at least when done without appropriate [multiplicity corrections]{.blue}.
 
--   In the first place, the p-values in the above table are meant to be
-    used in the context of a single hypothesis testing problem, not to
-    make several iterative choices.
+-   In the first place, the p-values of the above table are meant to be
+    used in the context of a single hypothesis testing problem, [not]{.orange} to
+    make [several iterative choices]{.orange}.
 
--   Such an iterative usage of p-values is formally [incorrect]{.orange}
+-   Such an iterative usage of "univariate" p-values is formally [incorrect]{.orange}
     because it leads to the well-known [multiple testing
-    problem]{.blue}, which would require suitable corrections.
+    problem]{.blue}.
 :::
 
 ## A predictive perspective
 
 -   "*All models are approximations. Essentially, all models are wrong,
-    but some are useful*." George E.P. Box
+    but some are useful*." George E. P. Box
 
 ::: incremental
--   There is another important reason for avoiding p-values. If the
+-   It is important to stress that if the
     [focus]{.blue} is just on [prediction]{.blue}, we do not necessarily
     care about selecting the "true" set of parameters.
 
@@ -237,11 +245,10 @@ knitr::kable(tab, digits = 2)
 
 ## Best subset selection
 
--   Instead of choosing the optimal model using p-values, a more
-    principled approach is based on the tools of [Unit B](un_B.html).
+-   A more principled approach is based on the tools of [Unit B](un_B.html).
 
 -   Ideally, we could perform an [exhaustive search]{.orange}
-    considering all the $2^p$ possible models and then picking the one
+    considering all the $2^p$ possible models and then selecting the one
     having the best out-of-sample predictive performance.
 
 . . .
@@ -250,21 +257,19 @@ knitr::kable(tab, digits = 2)
 #### Best subset procedure
 
 1.  Let $\mathcal{M}_0$ be the [null model]{.blue}, which contains no
-    predictors (just $\hat{\beta}_0 = \bar{y}$).
+    predictors, i.e. set $\hat{y}_i = \hat{\beta}_0 = \bar{y}$.
 
 2.  For $k =1,\dots,p$, do:
 
     i.  Estimate [all]{.orange} the $\binom{p}{k}$ models that contain
         exactly $k$ covariates;
 
-    ii. Identify the "best" model $\mathcal{M}_k$ with $k$ covariates
-        having the smallest $\text{MSE}_{k, \text{train}}$.
+    ii. Identify the "best" model with $k$ covariates
+        having the smallest $\text{MSE}_{k, \text{train}}$; call it $\mathcal{M}_k$.
 :::
 
--   By construction, a model with more variables
-    $\text{MSE}_{k + 1, \text{train}} \le \text{MSE}_{k, \text{train}}$
-    has lower [training]{.orange} error. Hence, the optimal subset size
-    $k$ is chosen e.g. via [cross-validation]{.blue}.
+-   A model with more variables has lower [training]{.orange} error, namely $\text{MSE}_{k + 1, \text{train}} \le \text{MSE}_{k, \text{train}}$ by construction. Hence, the optimal subset size
+    $k$ must be chosen e.g. via [cross-validation]{.blue}.
 
 ## Step 1. and 2. of best subset selection
 
@@ -306,6 +311,49 @@ ggplot(data = data_best_subset, aes(x = p, y = value)) +
   xlab("Number of covariates (p)") +
   ylab("Mean squared error (training)")
 ```
+
+## The "best" models $\mathcal{M}_1,\dots, \mathcal{M}_p$
+
+- The output of the [best subset selection]{.orange}, on the training set is:
+
+```{r}
+summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest = 1, nvmax = p))$outmat
+```
+
+::: incremental
+
+- The above table means that the best model with $k = 1$ uses the variable `lcavol`, whereas when $k = 2$ the selected variables are `lcavol` and `lweight`, and so on and so forth.
+
+- Note that, in general, these models are [not]{.orange} necessarily [nested]{.orange}, i.e. a variable selected at step $k$ is not necessarily included at step $k +1$.  
+
+- What is the optimal subset size $k$ in terms on out-of-sample mean squared error?
+
+- Clearly, we cannot use the training $\text{MSE}$. A possibility is cross-validation. 
+
+:::
+
+## The wrong way of doing cross-validation
+
+::: incremental
+
+-   Consider a regression problem with a [large number of predictors]{.orange} (relative to $n$) such as the `prostate` dataset.
+
+-   A typical strategy for analysis might be as follows:
+
+    1.  Screen the predictors: find a subset of "good" predictors that show fairly strong correlation with the response;
+
+    2.  Using this subset of predictors (i.e. `lcavol`, `lweight` and `svi`), build a regression model;
+
+    3.  Use cross-validation to estimate the prediction error of the model in 2.
+
+-   Is this a correct application of cross-validation?
+
+-   If your reaction was "[this is absolutely wrong!]{.orange}", it means you correctly understood the principles of cross-validation.
+
+-   If you though this was an ok-ish idea, you may want to read [Section 7.10.2]{.blue} of HTF (2009).
+
+:::
+
 
 ## Step 3. of best subset selection via cross-validation
 
@@ -367,13 +415,76 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   ylab("Mean squared error (10-fold cv)")
 ```
 
-## Comments and computational considerations
+- By applying the informal "1 standard error rule", we select $k = 2$, corresponding to the model using the variables `lcavol` and `lweight` on the [full training]{.orange} set. 
 
--   asd
 
-## Forward and backward regression
+## Comments and computations
 
-## Forward and backward regression
+::: incremental
+
+-   The correct way of doing cross-validation requires that the [best subset selection]{.blue} is performed on [every fold]{.blue}, possibly obtaining different "best" models with the same size. 
+
+- Best subset selection is conceptually appealing, but it has a [major limitation]{.orange}. There are: $$
+\sum_{k=1}^p \binom{n}{k} = 2^p
+$$
+models to consider, which is [computationally prohibitive]{.orange}!
+
+- There exists very clever algorithms (i.e. [leaps and bounds]{.blue}) that makes this feasible for $p$ as large as $30$ or $40$.  
+
+- Recently, [Bertsimas et al., 2016](https://projecteuclid.org/journals/annals-of-statistics/volume-44/issue-2/Best-subset-selection-via-a-modern-optimization-lens/10.1214/15-AOS1388.full) proposed the usage of a mixed integer optimization formulation, allowing $p$ to be in the order of hundreds. 
+
+- Despite these advances, this problem remains [computationally very expensive]{.orange}. See also [Hastie et al. (2020)](https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full) for additional considerations and comparisons.
+
+:::
+
+## Forward regression
+
+::: callout-note
+#### Forward regression
+
+1.  Let $\mathcal{M}_0$ be the [null model]{.blue}, which contains no
+    predictors, i.e. set $\hat{y}_i = \hat{\beta}_0 = \bar{y}$.
+
+2.  For $k = 0,\dots, \min(n - 1, p - 1)$, do:
+
+    i.  Consider the $p − k$ models that augment the predictors in $\mathcal{M}_k$ with [one additional covariate]{.orange}.
+
+    ii. Identify the "best" model among the above $p - k$ competitors
+        having the smallest $\text{MSE}_{k, \text{train}}$ and call it $\mathcal{M}_k$. 
+:::
+
+
+- Forward regression can be regarded as [greedy approximation]{.orange} of best subset selection. The advantage is that it is computationally feasible and it can be applied even when $p > n$. 
+
+- By construction, it produces a [nested]{.blue} sequence of models.
+
+- It can be shown that the identification of the [optimal new predictor]{.blue} can be efficiently computed using the [QR decomposition]{.orange} (see Exercises).
+
+## Backward regression
+
+::: callout-note
+#### Backward regression
+
+1.  Let $\mathcal{M}_p$ be the [full model]{.blue}, which contains all the
+    predictors.
+
+2.  For $k = p, p - 1,\dots, 1$, do:
+
+    i.  Consider the $k$ models that contain [all but one]{.orange} of the predictors in $\mathcal{M}_k$, for a total of $k − 1$ predictors.
+
+    ii. Identify the "best" model $\mathcal{M}_k$ among these $k$ models
+        having the smallest $\text{MSE}_{k, \text{train}}$. 
+:::
+
+- Backward regression is another computationally feasible [greedy approximation]{.orange} of best subset selection. 
+
+- Note that in this case we need  $p < n$, otherwise it is not possible to estimate the full model.
+
+- Backward regression produces a [nested]{.blue} sequence of models. 
+
+- It can be shown that the [dropped predictor]{.blue} is the one with the lowest absolute $Z$-score or, equivalently, the [highest p-value]{.orange} (see Exercises).
+
+## Forward, backward and best subset
 
 ```{r}
 fit_forward <- regsubsets(lpsa ~ ., data = prostate_train, method = "forward", nbest = 1, nvmax = p)
@@ -407,16 +518,74 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
   ylab("MSE (training)")
 ```
 
-## Comments
+- In the `prostate` dataset, forward, backward and best subset selection all gave exactly the [same path of solutions]{.orange} on the full training set.
 
-# Principal components
+# Principal components regression
 
-## Principal component analysis
+## Centering the predictors I
+
+::: incremental
+
+- Let us consider a [reparametrization]{.blue} of the linear model using  [centered predictors]{.orange}
+$$
+\begin{aligned}
+f(\bm{x}_i; \alpha, \beta) & = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdots + \beta_p (x_{ip} - \bar{x}_{ip}) = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta \\
+& = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta = \beta_0 + \bm{x}_i^T\beta, \quad \text{where} \quad \beta_0 = \alpha - \bar{\bm{x}}^T\beta.
+\end{aligned}
+$$
+
+- In this reparametrization the centered predictors are [orthogonal]{.blue} to the [intercept]{.blue}. Thus, the estimates for $(\alpha, \beta)$ can be computed [in two steps]{.orange}.
+
+- The [estimate]{.orange} of the [intercept]{.orange} with centered predictors is $\hat{\alpha} = \bar{y}$. In fact: $$
+\hat{\alpha} = \arg\min_{\alpha \in \mathbb{R}}\sum_{i=1}^n\{y_i - \alpha - (\bm{x}_i -\bar{\bm{x}})^T\beta\}^2 = \frac{1}{n}\sum_{i=1}^n\{y_i - (\bm{x}_i -\bar{\bm{x}})^T\beta\} = \frac{1}{n}\sum_{i=1}^ny_i.
+$$
+
+- Then, the [estimate of $\beta$]{.blue} can be obtained considering a linear model [without intercept]{.blue}:
+$$
+      f(\bm{x}_i; \beta) = (\bm{x}_i -\bar{\bm{x}})^T\beta,
+$$
+used to predict the [centered responses]{.blue} $y_i - \bar{y}$. 
+:::
+
+## Centering the predictors II
+
+- From here on, and without loss of generality, we assume that everything is [centered]{.orange}:
+$$
+\sum_{i=1}^ny_i = 0, \qquad \sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
+$$
+
+- Hence, because of the previous results, we can focus on linear models [without intercept]{.blue}:
+$$
+f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta.
+$$
+- Under such an assumption the [covariance matrix]{.orange} of the data is simply
+$$
+S = \frac{1}{n} \bm{X}^T\bm{X}.
+$$
+- If in addition each variable has been [scaled]{.blue} by their standard deviations, then $n^{-1} \bm{X}^T\bm{X}$ corresponds to the [correlation]{.blue} matrix.
+
+## Principal component analysis I
+
+
+## Principal component analysis II
+
+```{r}
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+pr <- princomp(prostate_train[,-9], cor = FALSE)
+ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x= p, xmin = p, xmax = p, y=vars, ymax = vars, , ymin = 0)) + geom_pointrange() + theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Number of principal components (p)") +
+  ylab("Fraction of explained variance")
+```
+
 
 ## Principal components regression
 
 ```{r}
 library(pls)
+
 resid_pcr <- matrix(0, n, p)
 
 for (k in 1:10) {
@@ -435,6 +604,7 @@ for (k in 1:10) {
   }
 }
 ```
+
 
 ## PCR
 
@@ -462,9 +632,11 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   scale_x_continuous(breaks = 1:9) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Model complexity (p)") +
+  xlab("Number of principal components (p)") +
   ylab("Mean squared error (10-fold cv)")
 ```
+
+
 
 <!-- ## Summary of the estimated coefficients -->
 
@@ -526,14 +698,16 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 
 <!-- ::: -->
 
-## A summary and next directions
+
+# Ridge regression
+
+## A summary
 
 |            | [Shrinkage]{.orange}                      | [Variable selection]{.orange}    |
 |------------|--------------------------------|-----------------------|
-| [Discrete]{.blue}   | Principal component regression | Best subset selection |
-| [Continuous]{.blue} | Ridge regression               | Lasso           |
+| [Discrete]{.blue}   | Principal component regression | Best subset selection, stepwise |
+| [Continuous]{.blue} | Ridge regression               | Relaxed Lasso           |
 
-# Ridge regression
 
 <!-- ## Ridge regression -->
 
@@ -655,43 +829,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 
 <!-- ``` -->
 
-<!-- ## The wrong way of doing cross-validation -->
 
-<!-- ::: incremental -->
-
-<!-- -   Consider a regression problem with a [large number of -->
-
-<!--     predictors]{.blue}, as may arise, for example, in genomic or -->
-
-<!--     proteomic applications. -->
-
-<!-- -   A typical strategy for analysis might be as follows: -->
-
-<!--     1.  Screen the predictors: find a subset of "good" predictors that -->
-
-<!--         show fairly strong (univariate) correlation with the class -->
-
-<!--         labels; -->
-
-<!--     2.  Using just this subset of predictors, build a regression model; -->
-
-<!--     3.  Use cross-validation to estimate the unknown tuning parameters -->
-
-<!--         (i.e. degree of polynomials) and to estimate the prediction -->
-
-<!--         error of the final model. -->
-
-<!-- -   Is this a correct application of cross-validation? -->
-
-<!-- -   If your reaction was "[this is absolutely wrong!]{.orange}", it -->
-
-<!--     means you correctly understood the principles of cross-validation. -->
-
-<!-- -   If you though this was an ok-ish idea, please read [Section -->
-
-<!--     7.10.2]{.blue} of HTF (2009). -->
-
-<!-- ::: -->
 
 <!-- # Lasso, LARS, and elastic-net -->
 

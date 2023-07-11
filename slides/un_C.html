@@ -72,20 +72,26 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#a-predictive-perspective" id="toc-a-predictive-perspective" class="nav-link" data-scroll-target="#a-predictive-perspective">A predictive perspective</a></li>
   <li><a href="#best-subset-selection" id="toc-best-subset-selection" class="nav-link" data-scroll-target="#best-subset-selection">Best subset selection</a></li>
   <li><a href="#step-1.-and-2.-of-best-subset-selection" id="toc-step-1.-and-2.-of-best-subset-selection" class="nav-link" data-scroll-target="#step-1.-and-2.-of-best-subset-selection">Step 1. and 2. of best subset selection</a></li>
+  <li><a href="#the-best-models-mathcalm_1dots-mathcalm_p" id="toc-the-best-models-mathcalm_1dots-mathcalm_p" class="nav-link" data-scroll-target="#the-best-models-mathcalm_1dots-mathcalm_p">The “best” models <span class="math inline">\mathcal{M}_1,\dots, \mathcal{M}_p</span></a></li>
+  <li><a href="#the-wrong-way-of-doing-cross-validation" id="toc-the-wrong-way-of-doing-cross-validation" class="nav-link" data-scroll-target="#the-wrong-way-of-doing-cross-validation">The wrong way of doing cross-validation</a></li>
   <li><a href="#step-3.-of-best-subset-selection-via-cross-validation" id="toc-step-3.-of-best-subset-selection-via-cross-validation" class="nav-link" data-scroll-target="#step-3.-of-best-subset-selection-via-cross-validation">Step 3. of best subset selection via cross-validation</a></li>
-  <li><a href="#comments-and-computational-considerations" id="toc-comments-and-computational-considerations" class="nav-link" data-scroll-target="#comments-and-computational-considerations">Comments and computational considerations</a></li>
-  <li><a href="#forward-and-backward-regression" id="toc-forward-and-backward-regression" class="nav-link" data-scroll-target="#forward-and-backward-regression">Forward and backward regression</a></li>
-  <li><a href="#forward-and-backward-regression-1" id="toc-forward-and-backward-regression-1" class="nav-link" data-scroll-target="#forward-and-backward-regression-1">Forward and backward regression</a></li>
-  <li><a href="#comments" id="toc-comments" class="nav-link" data-scroll-target="#comments">Comments</a></li>
+  <li><a href="#comments-and-computations" id="toc-comments-and-computations" class="nav-link" data-scroll-target="#comments-and-computations">Comments and computations</a></li>
+  <li><a href="#forward-regression" id="toc-forward-regression" class="nav-link" data-scroll-target="#forward-regression">Forward regression</a></li>
+  <li><a href="#backward-regression" id="toc-backward-regression" class="nav-link" data-scroll-target="#backward-regression">Backward regression</a></li>
+  <li><a href="#forward-backward-and-best-subset" id="toc-forward-backward-and-best-subset" class="nav-link" data-scroll-target="#forward-backward-and-best-subset">Forward, backward and best subset</a></li>
   <li><a href="#principal-components" id="toc-principal-components" class="nav-link" data-scroll-target="#principal-components">Principal components</a>
   <ul class="collapse">
+  <li><a href="#centering-the-predictors-i" id="toc-centering-the-predictors-i" class="nav-link" data-scroll-target="#centering-the-predictors-i">Centering the predictors I</a></li>
+  <li><a href="#centering-the-predictors-ii" id="toc-centering-the-predictors-ii" class="nav-link" data-scroll-target="#centering-the-predictors-ii">Centering the predictors II</a></li>
+  <li><a href="#centering-the-predictors-iii" id="toc-centering-the-predictors-iii" class="nav-link" data-scroll-target="#centering-the-predictors-iii">Centering the predictors III</a></li>
   <li><a href="#principal-component-analysis" id="toc-principal-component-analysis" class="nav-link" data-scroll-target="#principal-component-analysis">Principal component analysis</a></li>
+  <li><a href="#pca" id="toc-pca" class="nav-link" data-scroll-target="#pca">PCA</a></li>
   <li><a href="#principal-components-regression" id="toc-principal-components-regression" class="nav-link" data-scroll-target="#principal-components-regression">Principal components regression</a></li>
   <li><a href="#pcr" id="toc-pcr" class="nav-link" data-scroll-target="#pcr">PCR</a></li>
-  <li><a href="#a-summary-and-next-directions" id="toc-a-summary-and-next-directions" class="nav-link" data-scroll-target="#a-summary-and-next-directions">A summary and next directions</a></li>
   </ul></li>
   <li><a href="#ridge-regression" id="toc-ridge-regression" class="nav-link" data-scroll-target="#ridge-regression">Ridge regression</a>
   <ul class="collapse">
+  <li><a href="#a-summary" id="toc-a-summary" class="nav-link" data-scroll-target="#a-summary">A summary</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
@@ -127,9 +133,9 @@ ul.task-list li input[type="checkbox"] {
 <section id="homepage" class="level2">
 <h2 class="anchored" data-anchor-id="homepage"><a href="../index.html">Homepage</a></h2>
 <div class="columns">
-<div class="column" style="width:25%;">
+<div class="column" style="width:20%;">
 <p><img src="img/lasso.png" class="img-fluid"></p>
-</div><div class="column" style="width:75%;">
+</div><div class="column" style="width:80%;">
 <ul>
 <li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
 <ul>
@@ -138,9 +144,10 @@ ul.task-list li input[type="checkbox"] {
 <li>Ridge regression</li>
 <li>Lasso, LARS, elastic-net</li>
 </ul></li>
-<li><p>The common thread among these topics is the so-called <span class="blue">variable selection</span> problem.</p></li>
-<li><p>The issue we face is the presence of several <span class="blue">potentially irrelevant</span> variables among the covariates.</p></li>
-<li><p>In the <span class="orange">extreme case</span> <span class="math inline">p &gt; n</span>, is there even hope that we can fit a useful model?</p></li>
+<li><p>The common themes are called <span class="blue">variable selection</span> and <span class="orange">shrinkage estimation</span>.</p></li>
+<li><p>The issue we face is the presence of a high number <span class="math inline">p</span> of covariates that are <span class="blue">potentially irrelevant</span>.</p></li>
+<li><p>This problem is quite challenging when the <span class="blue">ratio</span> <span class="math inline">p / n</span> is <span class="blue">large</span>.</p></li>
+<li><p>In the <span class="orange">extreme case</span> <span class="math inline">p &gt; n</span>, is there any hope to fit a meaningful model?</p></li>
 </ul>
 </div>
 </div>
@@ -161,14 +168,16 @@ ul.task-list li input[type="checkbox"] {
 <li>Gleason score (<code>gleason</code>), an ordered categorical variable;</li>
 <li>Percentage of Gleason scores <span class="math inline">4</span> and <span class="math inline">5</span> (<code>pgg45</code>).</li>
 </ul></li>
+<li><p>This <a href="https://hastie.su.domains/ElemStatLearn/datasets/prostate.data">dataset</a> has been used in the <span class="orange">original paper</span> by Tibshirani (1996) to present the lasso and a description is given in <span class="blue">Section 3.2.1</span> of HTF (2009).</p></li>
 </ul>
 </div>
 </section>
 <section id="a-glimpse-of-the-prostate-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="a-glimpse-of-the-prostate-dataset">A <code>glimpse</code> of the <code>prostate</code> dataset</h2>
-<ul>
-<li>The dataset is <a href="https://hastie.su.domains/ElemStatLearn/datasets/prostate.data">available online</a>. A description is given in <span class="blue">Section 3.2.1</span> of HTF (2009).</li>
-</ul>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Original dataset</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Standardized dataset</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 97
@@ -185,10 +194,31 @@ $ lpsa    &lt;dbl&gt; -0.4307829, -0.1625189, -0.1625189, -0.1625189, 0.3715636,
 $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE,…</code></pre>
 </div>
 </div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 97
+Columns: 10
+$ lcavol  &lt;dbl&gt; -1.63735563, -1.98898046, -1.57881888, -2.16691708, -0.5078744…
+$ lweight &lt;dbl&gt; -2.00621178, -0.72200876, -2.18878403, -0.80799390, -0.4588340…
+$ age     &lt;dbl&gt; -1.86242597, -0.78789619, 1.36116337, -0.78789619, -0.25063130…
+$ lbph    &lt;dbl&gt; -1.0247058, -1.0247058, -1.0247058, -1.0247058, -1.0247058, -1…
+$ svi     &lt;dbl&gt; -0.5229409, -0.5229409, -0.5229409, -0.5229409, -0.5229409, -0…
+$ lcp     &lt;dbl&gt; -0.8631712, -0.8631712, -0.8631712, -0.8631712, -0.8631712, -0…
+$ gleason &lt;dbl&gt; -1.0421573, -1.0421573, 0.3426271, -1.0421573, -1.0421573, -1.…
+$ pgg45   &lt;dbl&gt; -0.8644665, -0.8644665, -0.1553481, -0.8644665, -0.8644665, -0…
+$ lpsa    &lt;dbl&gt; -0.4307829, -0.1625189, -0.1625189, -0.1625189, 0.3715636, 0.7…
+$ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FALSE,…</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 <ul>
-<li><p>There are in total <span class="math inline">8</span> <span class="orange">variables</span> that can be used to predict the antigen <code>lpsa</code>.</p></li>
 <li><p>The variable <code>train</code> splits the data into a training and test set, as in the textbook.</p></li>
-<li><p>There are <span class="math inline">n = 67</span> observations in the <span class="orange">training</span> set and <span class="math inline">30</span> in the <span class="blue">test</span> set.</p></li>
+<li><p>Thus, there are <span class="math inline">n = 67</span> observations in the <span class="orange">training</span> set and <span class="math inline">30</span> in the <span class="blue">test</span> set.</p></li>
+<li><p>There are in total <span class="math inline">8</span> <span class="orange">variables</span> that can be used to predict the antigen <code>lpsa</code>. We <span class="orange">centered</span> and <span class="blue">standardized</span> all the covariates before the training/test split.</p></li>
 </ul>
 </section>
 <section id="correlation-matrix-of-prostate" class="level2">
@@ -209,14 +239,15 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <ul class="incremental">
 <li><p>We consider a <span class="orange">linear model</span> in which the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) is related to the covariates through the function<span class="math display">
   f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
-  </span> In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use a slightly different notation compared to <a href="unit_A1.html">Unit A.1</a>.</p></li>
-<li><p>If we use all the <span class="math inline">p = 8</span> available covariates, the estimated <span class="math inline">f(\bm{x}; \hat{\beta_0}, \hat{\beta})</span> might have a <span class="orange">high variance</span>, without important gain in term of bias, i.e.&nbsp;a <span class="blue">large mean squared error</span>.</p></li>
+  </span> In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A1.html">Unit A.1</a>.</p></li>
+<li><p>Including a lot of covariates into the model is not necessarily a good thing!</p></li>
 <li><p>Indeed, some variables are likely to be <span class="blue">irrelevant</span>:</p>
 <ul class="incremental">
 <li>they might be <span class="orange">correlated</span> with other covariates and therefore <span class="orange">redundant</span>;</li>
 <li>they could be uncorrelated with the response <code>lpsa</code>.</li>
 </ul></li>
-<li><p>Hence, we are looking for a <span class="orange">simpler model</span> having hopefully a lower mean squared error.</p></li>
+<li><p>If we use all the <span class="math inline">p = 8</span> available covariates, the estimated <span class="math inline">f(\bm{x}; \hat{\beta_0}, \hat{\beta})</span> might have a <span class="orange">high variance</span>, without important gain in term of bias, i.e.&nbsp;a <span class="blue">large mean squared error</span>.</p></li>
+<li><p>We are looking for a <span class="orange">simpler model</span> having, hopefully, a lower mean squared error.</p></li>
 </ul>
 </div>
 </section>
@@ -308,22 +339,22 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li><p>It is a common practice to use the <span class="orange">p-values</span>, e.g.&nbsp;those obtained through the <code>summary</code> function, to perform <span class="blue">model selection</span> in a stepwise fashion.</p></li>
+<li><p>It is common practice to use the <span class="orange">p-values</span>, e.g.&nbsp;those obtained through the <code>summary</code> function, to perform <span class="blue">model selection</span> in a stepwise fashion.</p></li>
 <li><p>A typical procedure is to omit “non significant” coefficients, refit the model, and repeat this scheme until we obtain only “significant” coefficients.</p></li>
-<li><p>This is <span class="orange">not the best idea</span>, at least without careful thinking and appropriate multiplicity corrections.</p></li>
-<li><p>In the first place, the p-values in the above table are meant to be used in the context of a single hypothesis testing problem, not to make several iterative choices.</p></li>
-<li><p>Such an iterative usage of p-values is formally <span class="orange">incorrect</span> because it leads to the well-known <span class="blue">multiple testing problem</span>, which would require suitable corrections.</p></li>
+<li><p>Unfortunately, this is <span class="orange">not a good idea</span>, at least when done without appropriate <span class="blue">multiplicity corrections</span>.</p></li>
+<li><p>In the first place, the p-values of the above table are meant to be used in the context of a single hypothesis testing problem, <span class="orange">not</span> to make <span class="orange">several iterative choices</span>.</p></li>
+<li><p>Such an iterative usage of “univariate” p-values is formally <span class="orange">incorrect</span> because it leads to the well-known <span class="blue">multiple testing problem</span>.</p></li>
 </ul>
 </div>
 </section>
 <section id="a-predictive-perspective" class="level2">
 <h2 class="anchored" data-anchor-id="a-predictive-perspective">A predictive perspective</h2>
 <ul>
-<li>“<em>All models are approximations. Essentially, all models are wrong, but some are useful</em>.” George E.P. Box</li>
+<li>“<em>All models are approximations. Essentially, all models are wrong, but some are useful</em>.” George E. P. Box</li>
 </ul>
 <div class="incremental">
 <ul class="incremental">
-<li><p>There is another important reason for avoiding p-values. If the <span class="blue">focus</span> is just on <span class="blue">prediction</span>, we do not necessarily care about selecting the “true” set of parameters.</p></li>
+<li><p>It is important to stress that if the <span class="blue">focus</span> is just on <span class="blue">prediction</span>, we do not necessarily care about selecting the “true” set of parameters.</p></li>
 <li><p>In many data mining problems, the focus is on the <span class="orange">minimization</span> of the <span class="orange">prediction errors</span>.</p></li>
 <li><p>Hence, often times we may <span class="blue">accept some bias</span> (i.e.&nbsp;we use a “wrong” but useful model), if this leads to a <span class="orange">reduction in variance</span>.</p></li>
 <li><p>Besides, in certain cases it does not even make much sense to speak about the “true parameters”.</p></li>
@@ -334,8 +365,8 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <section id="best-subset-selection" class="level2">
 <h2 class="anchored" data-anchor-id="best-subset-selection">Best subset selection</h2>
 <ul>
-<li><p>Instead of choosing the optimal model using p-values, a more principled approach is based on the tools of <a href="un_B.html">Unit B</a>.</p></li>
-<li><p>Ideally, we could perform an <span class="orange">exhaustive search</span> considering all the <span class="math inline">2^p</span> possible models and then picking the one having the best out-of-sample predictive performance.</p></li>
+<li><p>A more principled approach is based on the tools of <a href="un_B.html">Unit B</a>.</p></li>
+<li><p>Ideally, we could perform an <span class="orange">exhaustive search</span> considering all the <span class="math inline">2^p</span> possible models and then selecting the one having the best out-of-sample predictive performance.</p></li>
 </ul>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -348,17 +379,17 @@ Best subset procedure
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><p>Let <span class="math inline">\mathcal{M}_0</span> be the <span class="blue">null model</span>, which contains no predictors (just <span class="math inline">\hat{\beta}_0 = \bar{y}</span>).</p></li>
+<li><p>Let <span class="math inline">\mathcal{M}_0</span> be the <span class="blue">null model</span>, which contains no predictors, i.e.&nbsp;set <span class="math inline">\hat{y}_i = \hat{\beta}_0 = \bar{y}</span>.</p></li>
 <li><p>For <span class="math inline">k =1,\dots,p</span>, do:</p>
 <ol type="i">
 <li><p>Estimate <span class="orange">all</span> the <span class="math inline">\binom{p}{k}</span> models that contain exactly <span class="math inline">k</span> covariates;</p></li>
-<li><p>Identify the “best” model <span class="math inline">\mathcal{M}_k</span> with <span class="math inline">k</span> covariates having the smallest <span class="math inline">\text{MSE}_{k, \text{train}}</span>.</p></li>
+<li><p>Identify the “best” model with <span class="math inline">k</span> covariates having the smallest <span class="math inline">\text{MSE}_{k, \text{train}}</span>; call it <span class="math inline">\mathcal{M}_k</span>.</p></li>
 </ol></li>
 </ol>
 </div>
 </div>
 <ul>
-<li>By construction, a model with more variables <span class="math inline">\text{MSE}_{k + 1, \text{train}} \le \text{MSE}_{k, \text{train}}</span> has lower <span class="orange">training</span> error. Hence, the optimal subset size <span class="math inline">k</span> is chosen e.g.&nbsp;via <span class="blue">cross-validation</span>.</li>
+<li>A model with more variables has lower <span class="orange">training</span> error, namely <span class="math inline">\text{MSE}_{k + 1, \text{train}} \le \text{MSE}_{k, \text{train}}</span> by construction. Hence, the optimal subset size <span class="math inline">k</span> must be chosen e.g.&nbsp;via <span class="blue">cross-validation</span>.</li>
 </ul>
 </section>
 <section id="step-1.-and-2.-of-best-subset-selection" class="level2">
@@ -373,49 +404,187 @@ Best subset procedure
 </div>
 </div>
 </section>
+<section id="the-best-models-mathcalm_1dots-mathcalm_p" class="level2">
+<h2 class="anchored" data-anchor-id="the-best-models-mathcalm_1dots-mathcalm_p">The “best” models <span class="math inline">\mathcal{M}_1,\dots, \mathcal{M}_p</span></h2>
+<ul>
+<li>The output of the <span class="orange">best subset selection</span>, on the training set is:</li>
+</ul>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>         lcavol lweight age lbph svi lcp gleason pgg45
+1  ( 1 ) "*"    " "     " " " "  " " " " " "     " "  
+2  ( 1 ) "*"    "*"     " " " "  " " " " " "     " "  
+3  ( 1 ) "*"    "*"     " " " "  "*" " " " "     " "  
+4  ( 1 ) "*"    "*"     " " "*"  "*" " " " "     " "  
+5  ( 1 ) "*"    "*"     " " "*"  "*" " " " "     "*"  
+6  ( 1 ) "*"    "*"     " " "*"  "*" "*" " "     "*"  
+7  ( 1 ) "*"    "*"     "*" "*"  "*" "*" " "     "*"  
+8  ( 1 ) "*"    "*"     "*" "*"  "*" "*" "*"     "*"  </code></pre>
+</div>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The above table means that the best model with <span class="math inline">k = 1</span> uses the variable <code>lcavol</code>, whereas when <span class="math inline">k = 2</span> the selected variables are <code>lcavol</code> and <code>lweight</code>, and so on and so forth.</p></li>
+<li><p>Note that, in general, these models are <span class="orange">not</span> necessarily <span class="orange">nested</span>, i.e.&nbsp;a variable selected at step <span class="math inline">k</span> is not necessarily included at step <span class="math inline">k +1</span>.</p></li>
+<li><p>What is the optimal subset size <span class="math inline">k</span> in terms on out-of-sample mean squared error?</p></li>
+<li><p>Clearly, we cannot use the training <span class="math inline">\text{MSE}</span>. A possibility is cross-validation.</p></li>
+</ul>
+</div>
+</section>
+<section id="the-wrong-way-of-doing-cross-validation" class="level2">
+<h2 class="anchored" data-anchor-id="the-wrong-way-of-doing-cross-validation">The wrong way of doing cross-validation</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Consider a regression problem with a <span class="orange">large number of predictors</span> (relative to <span class="math inline">n</span>) such as the <code>prostate</code> dataset.</p></li>
+<li><p>A typical strategy for analysis might be as follows:</p>
+<ol class="incremental" type="1">
+<li><p>Screen the predictors: find a subset of “good” predictors that show fairly strong correlation with the response;</p></li>
+<li><p>Using this subset of predictors (i.e.&nbsp;<code>lcavol</code>, <code>lweight</code> and <code>svi</code>), build a regression model;</p></li>
+<li><p>Use cross-validation to estimate the prediction error of the model in 2.</p></li>
+</ol></li>
+<li><p>Is this a correct application of cross-validation?</p></li>
+<li><p>If your reaction was “<span class="orange">this is absolutely wrong!</span>”, it means you correctly understood the principles of cross-validation.</p></li>
+<li><p>If you though this was an ok-ish idea, you may want to read <span class="blue">Section 7.10.2</span> of HTF (2009).</p></li>
+</ul>
+</div>
+</section>
 <section id="step-3.-of-best-subset-selection-via-cross-validation" class="level2">
 <h2 class="anchored" data-anchor-id="step-3.-of-best-subset-selection-via-cross-validation">Step 3. of best subset selection via cross-validation</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_C_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="1500"></p>
+<p><img src="un_C_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="1500"></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="comments-and-computational-considerations" class="level2">
-<h2 class="anchored" data-anchor-id="comments-and-computational-considerations">Comments and computational considerations</h2>
 <ul>
-<li>asd</li>
+<li>By applying the informal “1 standard error rule”, we select <span class="math inline">k = 2</span>, corresponding to the model using the variables <code>lcavol</code> and <code>lweight</code> on the <span class="orange">full training</span> set.</li>
 </ul>
 </section>
-<section id="forward-and-backward-regression" class="level2">
-<h2 class="anchored" data-anchor-id="forward-and-backward-regression">Forward and backward regression</h2>
+<section id="comments-and-computations" class="level2">
+<h2 class="anchored" data-anchor-id="comments-and-computations">Comments and computations</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The correct way of doing cross-validation requires that the <span class="blue">best subset selection</span> is performed on <span class="blue">every fold</span>, possibly obtaining different “best” models with the same size.</p></li>
+<li><p>Best subset selection is conceptually appealing, but it has a <span class="orange">major limitation</span>. There are: <span class="math display">
+\sum_{k=1}^p \binom{n}{k} = 2^p
+</span> models that has to be considered, which is <span class="orange">computationally prohibitive</span>!</p></li>
+<li><p>There exists very clever algorithms (i.e.&nbsp;<span class="blue">leaps and bounds</span>) that makes this feasible for <span class="math inline">p</span> as large as <span class="math inline">30</span> or <span class="math inline">40</span>.</p></li>
+<li><p>Recently, <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-44/issue-2/Best-subset-selection-via-a-modern-optimization-lens/10.1214/15-AOS1388.full">Bertsimas et al., 2016</a> proposed the usage of a mixed integer optimization formulation, allowing <span class="math inline">p</span> to be in the order of hundreds.</p></li>
+<li><p>Despite these advances, this problem remains <span class="orange">computationally very expensive</span>. See also <a href="https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full">Hastie et al.&nbsp;(2020)</a> for additional considerations and comparisons.</p></li>
+</ul>
+</div>
 </section>
-<section id="forward-and-backward-regression-1" class="level2">
-<h2 class="anchored" data-anchor-id="forward-and-backward-regression-1">Forward and backward regression</h2>
+<section id="forward-regression" class="level2">
+<h2 class="anchored" data-anchor-id="forward-regression">Forward regression</h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Forward regression
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>Let <span class="math inline">\mathcal{M}_0</span> be the <span class="blue">null model</span>, which contains no predictors, i.e.&nbsp;set <span class="math inline">\hat{y}_i = \hat{\beta}_0 = \bar{y}</span>.</p></li>
+<li><p>For <span class="math inline">k = 0,\dots, \min(n - 1, p - 1)</span>, do:</p>
+<ol type="i">
+<li><p>Consider the <span class="math inline">p − k</span> models that augment the predictors in <span class="math inline">\mathcal{M}_k</span> with <span class="orange">one additional covariate</span>.</p></li>
+<li><p>Identify the “best” model among the above <span class="math inline">p - k</span> competitors having the smallest <span class="math inline">\text{MSE}_{k, \text{train}}</span> and call it <span class="math inline">\mathcal{M}_k</span>.</p></li>
+</ol></li>
+</ol>
+</div>
+</div>
+<ul>
+<li><p>Forward regression can be regarded as <span class="orange">greedy approximation</span> of best subset selection. The advantage is that it is computationally feasible and it can be applied even when <span class="math inline">p &gt; n</span>.</p></li>
+<li><p>By construction, it produces a <span class="blue">nested</span> sequence of models.</p></li>
+<li><p>It can be shown that the identification of the <span class="blue">optimal new predictor</span> can be efficiently computed using the <span class="orange">QR decomposition</span> (see Exercises).</p></li>
+</ul>
+</section>
+<section id="backward-regression" class="level2">
+<h2 class="anchored" data-anchor-id="backward-regression">Backward regression</h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Backward regression
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>Let <span class="math inline">\mathcal{M}_p</span> be the <span class="blue">full model</span>, which contains all the predictors.</p></li>
+<li><p>For <span class="math inline">k = p, p - 1,\dots, 1</span>, do:</p>
+<ol type="i">
+<li><p>Consider the <span class="math inline">k</span> models that contain <span class="orange">all but one</span> of the predictors in <span class="math inline">\mathcal{M}_k</span>, for a total of <span class="math inline">k − 1</span> predictors.</p></li>
+<li><p>Identify the “best” model <span class="math inline">\mathcal{M}_k</span> among these <span class="math inline">k</span> models having the smallest <span class="math inline">\text{MSE}_{k, \text{train}}</span>.</p></li>
+</ol></li>
+</ol>
+</div>
+</div>
+<ul>
+<li><p>Backward regression is another computationally feasible <span class="orange">greedy approximation</span> of best subset selection.</p></li>
+<li><p>Note that in this case we need <span class="math inline">p &lt; n</span>, otherwise it is not possible to estimate the full model.</p></li>
+<li><p>Backward regression produces a <span class="blue">nested</span> sequence of models.</p></li>
+<li><p>It can be shown that the <span class="blue">dropped predictor</span> is the one with the lowest absolute <span class="math inline">Z</span>-score or, equivalently, the <span class="orange">highest p-value</span> (see Exercises).</p></li>
+</ul>
+</section>
+<section id="forward-backward-and-best-subset" class="level2">
+<h2 class="anchored" data-anchor-id="forward-backward-and-best-subset">Forward, backward and best subset</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_C_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="1500"></p>
+<p><img src="un_C_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="1500"></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="comments" class="level2">
-<h2 class="anchored" data-anchor-id="comments">Comments</h2>
+<ul>
+<li>In the <code>prostate</code> dataset, forward, backward and best subset selection all gave exactly the <span class="orange">same path of solutions</span> on the full training set.</li>
+</ul>
 </section>
 <section id="principal-components" class="level1">
 <h1>Principal components</h1>
+<section id="centering-the-predictors-i" class="level2">
+<h2 class="anchored" data-anchor-id="centering-the-predictors-i">Centering the predictors I</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Let us consider a <span class="orange">reparametrization</span> of the linear model using <span class="orange">centered predictors</span> <span class="math display">
+f(\bm{x}_i; \alpha, \beta) = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdots + \beta_p (x_{ip} - \bar{x}_{ip}) = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta = \underbrace{\alpha - \bar{\bm{x}}^T\beta}_{\beta_0} + \bm{x}_i\beta.
+</span></p></li>
+<li><p>Such a makes the predictors <span class="blue">orthogonal</span> to the <span class="blue">intercept</span>. The estimation of the parameters can then be computed <span class="orange">in two steps</span>.</p></li>
+<li><p>The <span class="orange">estimate</span> of the <span class="orange">intercept</span> with centered predictors is <span class="math inline">\bar{y}</span>, in fact: <span class="math display">
+\hat{\beta} = \arg\min_{\beta_0}\sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta) = \frac{1}{n}\sum_{i=1}^ny_i = \bar{y}.
+</span></p></li>
+<li><p>Then, the estimate of <span class="math inline">\beta</span> can be obtained considering a model <span class="orange">without intercept</span> <span class="math display">
+    f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
+</span> on the <span class="blue">centered responses</span> <span class="math inline">y_i - \bar{y}</span>. We will use a similar trick for ridge and lasso as well.</p></li>
+</ul>
+</div>
+</section>
+<section id="centering-the-predictors-ii" class="level2">
+<h2 class="anchored" data-anchor-id="centering-the-predictors-ii">Centering the predictors II</h2>
+<ul>
+<li>From here on, we assume without loss of generality that the response and predictors have been <span class="orange">centered</span>, that is <span class="math display">
+\sum_{i=1}^ny_i = 0, \qquad \sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
+</span></li>
+<li>Iasdas</li>
+</ul>
+</section>
+<section id="centering-the-predictors-iii" class="level2">
+<h2 class="anchored" data-anchor-id="centering-the-predictors-iii">Centering the predictors III</h2>
+</section>
 <section id="principal-component-analysis" class="level2">
 <h2 class="anchored" data-anchor-id="principal-component-analysis">Principal component analysis</h2>
 </section>
-<section id="principal-components-regression" class="level2">
-<h2 class="anchored" data-anchor-id="principal-components-regression">Principal components regression</h2>
+<section id="pca" class="level2">
+<h2 class="anchored" data-anchor-id="pca">PCA</h2>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>
@@ -426,7 +595,16 @@ Attaching package: 'pls'</code></pre>
 
     loadings</code></pre>
 </div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Comp.1     Comp.2     Comp.3     Comp.4     Comp.5     Comp.6     Comp.7 
+0.25679420 0.18135213 0.14121747 0.10773451 0.09727600 0.08586260 0.07216570 
+    Comp.8 
+0.05759738 </code></pre>
 </div>
+</div>
+</section>
+<section id="principal-components-regression" class="level2">
+<h2 class="anchored" data-anchor-id="principal-components-regression">Principal components regression</h2>
 </section>
 <section id="pcr" class="level2">
 <h2 class="anchored" data-anchor-id="pcr">PCR</h2>
@@ -434,7 +612,7 @@ Attaching package: 'pls'</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_C_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="1500"></p>
+<p><img src="un_C_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="1500"></p>
 </figure>
 </div>
 </div>
@@ -471,8 +649,11 @@ Attaching package: 'pls'</code></pre>
 <!-- ``` -->
 <!-- ::: -->
 </section>
-<section id="a-summary-and-next-directions" class="level2">
-<h2 class="anchored" data-anchor-id="a-summary-and-next-directions">A summary and next directions</h2>
+</section>
+<section id="ridge-regression" class="level1">
+<h1>Ridge regression</h1>
+<section id="a-summary" class="level2">
+<h2 class="anchored" data-anchor-id="a-summary">A summary</h2>
 <table class="table">
 <colgroup>
 <col style="width: 17%">
@@ -490,19 +671,15 @@ Attaching package: 'pls'</code></pre>
 <tr class="odd">
 <td><span class="blue">Discrete</span></td>
 <td>Principal component regression</td>
-<td>Best subset selection</td>
+<td>Best subset selection, stepwise</td>
 </tr>
 <tr class="even">
 <td><span class="blue">Continuous</span></td>
 <td>Ridge regression</td>
-<td>Lasso</td>
+<td>Relaxed Lasso</td>
 </tr>
 </tbody>
 </table>
-</section>
-</section>
-<section id="ridge-regression" class="level1">
-<h1>Ridge regression</h1>
 <!-- ## Ridge regression -->
 <!-- ```{r} -->
 <!-- df_ridge <- function(lambda, X) { -->
@@ -563,25 +740,6 @@ Attaching package: 'pls'</code></pre>
 <!-- # coef(ridge_fit) -->
 <!-- # plot(ridge_fit, , label = TRUE) -->
 <!-- ``` -->
-<!-- ## The wrong way of doing cross-validation -->
-<!-- ::: incremental -->
-<!-- -   Consider a regression problem with a [large number of -->
-<!--     predictors]{.blue}, as may arise, for example, in genomic or -->
-<!--     proteomic applications. -->
-<!-- -   A typical strategy for analysis might be as follows: -->
-<!--     1.  Screen the predictors: find a subset of "good" predictors that -->
-<!--         show fairly strong (univariate) correlation with the class -->
-<!--         labels; -->
-<!--     2.  Using just this subset of predictors, build a regression model; -->
-<!--     3.  Use cross-validation to estimate the unknown tuning parameters -->
-<!--         (i.e. degree of polynomials) and to estimate the prediction -->
-<!--         error of the final model. -->
-<!-- -   Is this a correct application of cross-validation? -->
-<!-- -   If your reaction was "[this is absolutely wrong!]{.orange}", it -->
-<!--     means you correctly understood the principles of cross-validation. -->
-<!-- -   If you though this was an ok-ish idea, please read [Section -->
-<!--     7.10.2]{.blue} of HTF (2009). -->
-<!-- ::: -->
 <!-- # Lasso, LARS, and elastic-net -->
 <!-- ## Lasso -->
 <!-- ::: columns -->
@@ -609,6 +767,7 @@ Attaching package: 'pls'</code></pre>
 <!-- round(coef(fit_lars)[lambda_sel, ], 5) -->
 <!-- round(coef(lasso_fit, mode = "lambda")[-1, lambda_sel], 5) -->
 <!-- ``` -->
+</section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 </section>

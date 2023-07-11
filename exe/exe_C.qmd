@@ -1,0 +1,80 @@
+---
+title: "Exercises - Unit C"
+subtitle: "Data Mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+execute:
+  cache: false
+format:
+  html:
+    html-math-method: katex
+    echo: true
+    callout-appearance: minimal
+    theme: [cosmo, ../template.css]
+    toc: true
+    toc-title: Table of contents
+    embed-resources: false
+    code-line-numbers: true
+    smooth-scroll: true
+    code-fold: false
+    code-summary: "Show the code"
+    fig-dpi: 150
+    highlight-style: github
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+## [Homepage](../index.html)
+
+## Theoretical exercises
+
+### Exercise T.1
+
+```{r}
+set.seed(123)
+x <- seq(from = 0, to = 4, length = 100)
+y <- 2 + x + rnorm(100, 0, 1)
+x_center <- x - mean(x)
+y_center <- y - mean(y)
+```
+
+```{r}
+mean(y)
+```
+
+
+- To fix the ideas, the OLS estimed with [uncentered predictors]{.blue} is
+
+```{r}
+#| echo: true
+coef(lm(y ~ x))
+```
+
+- After centering, we obtain the 
+
+
+```{r}
+#| echo: true
+round(coef(lm(y_center ~ x_center)), 6)
+```
+
+- asd
+
+```{r}
+#| echo: true
+coef(lm(y ~ x_center))
+```
+
+```{r}
+#| echo: true
+coef(lm(y ~ 0 + x_center))
+```
+
+
+
+## Practical exercises
+
+### Exercise P.1

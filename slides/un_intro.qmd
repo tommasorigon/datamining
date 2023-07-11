@@ -16,7 +16,7 @@ format:
     slide-number: true
     callout-appearance: minimal
     code-line-numbers: true
-    theme: [default, template.css] # alternative themes (subset): default, night, dark
+    theme: [default, ../template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: false
     fig-dpi: 300
@@ -27,7 +27,7 @@ format:
     html-math-method: katex
     echo: false
     callout-appearance: minimal
-    theme: [cosmo, template.css]
+    theme: [cosmo, ../template.css]
     toc: true
     toc-title: Table of contents
     embed-resources: false
