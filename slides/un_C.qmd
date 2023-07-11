@@ -87,10 +87,16 @@ styler:::style_file("../code/un_C.R")
 
 ## The `prostate` dataset
 
-::: incremental
 -   The `prostate` cancer data investigates the relationship between the
     prostate-specific [antigen]{.orange} and a number of clinical
     measures, in men about to receive a prostatectomy.
+    
+. . .
+    
+- This [dataset](https://hastie.su.domains/ElemStatLearn/datasets/prostate.data) has been used in the [original paper]{.orange} by Tibshirani (1996) to present the lasso. A description is given in [Section 3.2.1]{.blue} of HTF (2009).
+
+
+. . .
 
 -   We want to [predict]{.blue} the logarithm of a [prostate-specific
     antigen]{.orange} (`lpsa`) as a function of:
@@ -103,11 +109,19 @@ styler:::style_file("../code/un_C.R")
     -   logarithm of the capsular penetration (`lcp`);
     -   Gleason score (`gleason`), an ordered categorical variable;
     -   Percentage of Gleason scores $4$ and $5$ (`pgg45`).
-- This [dataset](https://hastie.su.domains/ElemStatLearn/datasets/prostate.data) has been used in the [original paper]{.orange} by Tibshirani (1996) to present the lasso and a description is given in [Section 3.2.1]{.blue} of HTF (2009).
 
-:::
+
 
 ## A `glimpse` of the `prostate` dataset
+
+-   Summarizing, there are in total $8$ [variables]{.orange} that can be used to predict the antigen `lpsa`. 
+
+- We [centered]{.orange} and [standardized]{.blue} all the covariates before the training/test split.
+
+-   There are $n = 67$ observations in the [training]{.orange} set and
+    $30$ in the [test]{.blue} set.
+
+. . .
 
 ::: {.panel-tabset}
 ## Original dataset
@@ -135,13 +149,9 @@ glimpse(prostate)
 ```
 :::
 
--   The variable `train` splits the data into a training and test set,
-    as in the textbook.
+<!-- -   The variable `train` splits the data into a training and test set, -->
+<!--     as in the textbook. -->
 
--   Thus, there are $n = 67$ observations in the [training]{.orange} set and
-    $30$ in the [test]{.blue} set.
-    
--   There are in total $8$ [variables]{.orange} that can be used to predict the antigen `lpsa`. We [centered]{.orange} and [standardized]{.blue} all the covariates before the training/test split.
 
 
 ## Correlation matrix of `prostate`
@@ -162,13 +172,14 @@ ggcorrplot(corr,
 
 ## The variable selection problem
 
-::: incremental
--   We consider a [linear model]{.orange} in which the response variable
-    $Y_i$ (`lpsa`) is related to the covariates through the function$$
+-   We consider a [linear model]{.orange} in which the relationship between the response variable
+    $Y_i$ (`lpsa`) and the covariates is modelled through the function$$
       f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
       $$ In this unit the [intercept]{.blue} $\beta_0$ will play a
     special role, therefore we use this slightly different notation
     compared to [Unit A.1](unit_A1.html).
+
+. . .
 
 - Including a lot of covariates into the model is not necessarily a good thing!
 
@@ -177,6 +188,8 @@ ggcorrplot(corr,
     -   they might be [correlated]{.orange} with other covariates and
         therefore [redundant]{.orange};
     -   they could be uncorrelated with the response `lpsa`.
+
+. . .
     
 -   If we use all the $p = 8$ available covariates, the estimated
     $f(\bm{x}; \hat{\beta_0}, \hat{\beta})$ might have a [high
@@ -185,7 +198,6 @@ ggcorrplot(corr,
 
 -   We are looking for a [simpler model]{.orange} having,
     hopefully, a lower mean squared error.
-:::
 
 ## A naïve approach: (ab)using p-values
 
@@ -202,20 +214,18 @@ knitr::kable(tab, digits = 2)
 -   It is common practice to use the [p-values]{.orange}, e.g. those
     obtained through the `summary` function, to perform [model
     selection]{.blue} in a stepwise fashion.
+<!-- -   A typical procedure is to omit "non significant" coefficients, refit -->
+<!--     the model, and repeat this scheme until we obtain only "significant" -->
+<!--     coefficients. -->
+-   This is [not a good idea]{.orange}, at least when done without appropriate [multiplicity corrections]{.blue}.
 
--   A typical procedure is to omit "non significant" coefficients, refit
-    the model, and repeat this scheme until we obtain only "significant"
-    coefficients.
-
--   Unfortunately, this is [not a good idea]{.orange}, at least when done without appropriate [multiplicity corrections]{.blue}.
-
--   In the first place, the p-values of the above table are meant to be
+-   The above p-values are meant to be
     used in the context of a single hypothesis testing problem, [not]{.orange} to
-    make [several iterative choices]{.orange}.
+    make [iterative choices]{.orange}.
 
--   Such an iterative usage of "univariate" p-values is formally [incorrect]{.orange}
-    because it leads to the well-known [multiple testing
-    problem]{.blue}.
+<!-- -   Such an iterative usage of "univariate" p-values is formally [incorrect]{.orange} -->
+<!--     because it leads to the well-known [multiple testing -->
+<!--     problem]{.blue}. -->
 :::
 
 ## A predictive perspective
@@ -223,17 +233,22 @@ knitr::kable(tab, digits = 2)
 -   "*All models are approximations. Essentially, all models are wrong,
     but some are useful*." George E. P. Box
 
-::: incremental
--   It is important to stress that if the
-    [focus]{.blue} is just on [prediction]{.blue}, we do not necessarily
+. . .
+
+-   If the
+    [focus]{.blue} is on [prediction]{.blue}, we do not necessarily
     care about selecting the "true" set of parameters.
 
--   In many data mining problems, the focus is on the
-    [minimization]{.orange} of the [prediction errors]{.orange}.
+-   In many data mining problems, the focus is on
+    [minimizing]{.orange} the [prediction errors]{.orange}.
+
+. . .
 
 -   Hence, often times we may [accept some bias]{.blue} (i.e. we use a
     "wrong" but useful model), if this leads to a [reduction in
     variance]{.orange}.
+
+. . .
 
 -   Besides, in certain cases it does not even make much sense to speak
     about the "true parameters".
@@ -241,7 +256,6 @@ knitr::kable(tab, digits = 2)
 -   For example, what if the true $f(\bm{x})$ were not linear? In this
     context, a [linear model]{.blue} is simply an approximation of the
     unknown $f(\bm{x})$ and hypothesis testing procedures are ill-posed.
-:::
 
 ## Best subset selection
 

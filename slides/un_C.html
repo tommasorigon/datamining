@@ -79,14 +79,13 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#forward-regression" id="toc-forward-regression" class="nav-link" data-scroll-target="#forward-regression">Forward regression</a></li>
   <li><a href="#backward-regression" id="toc-backward-regression" class="nav-link" data-scroll-target="#backward-regression">Backward regression</a></li>
   <li><a href="#forward-backward-and-best-subset" id="toc-forward-backward-and-best-subset" class="nav-link" data-scroll-target="#forward-backward-and-best-subset">Forward, backward and best subset</a></li>
-  <li><a href="#principal-components" id="toc-principal-components" class="nav-link" data-scroll-target="#principal-components">Principal components</a>
+  <li><a href="#principal-components-regression" id="toc-principal-components-regression" class="nav-link" data-scroll-target="#principal-components-regression">Principal components regression</a>
   <ul class="collapse">
   <li><a href="#centering-the-predictors-i" id="toc-centering-the-predictors-i" class="nav-link" data-scroll-target="#centering-the-predictors-i">Centering the predictors I</a></li>
   <li><a href="#centering-the-predictors-ii" id="toc-centering-the-predictors-ii" class="nav-link" data-scroll-target="#centering-the-predictors-ii">Centering the predictors II</a></li>
-  <li><a href="#centering-the-predictors-iii" id="toc-centering-the-predictors-iii" class="nav-link" data-scroll-target="#centering-the-predictors-iii">Centering the predictors III</a></li>
-  <li><a href="#principal-component-analysis" id="toc-principal-component-analysis" class="nav-link" data-scroll-target="#principal-component-analysis">Principal component analysis</a></li>
-  <li><a href="#pca" id="toc-pca" class="nav-link" data-scroll-target="#pca">PCA</a></li>
-  <li><a href="#principal-components-regression" id="toc-principal-components-regression" class="nav-link" data-scroll-target="#principal-components-regression">Principal components regression</a></li>
+  <li><a href="#principal-component-analysis-i" id="toc-principal-component-analysis-i" class="nav-link" data-scroll-target="#principal-component-analysis-i">Principal component analysis I</a></li>
+  <li><a href="#principal-component-analysis-ii" id="toc-principal-component-analysis-ii" class="nav-link" data-scroll-target="#principal-component-analysis-ii">Principal component analysis II</a></li>
+  <li><a href="#principal-components-regression-1" id="toc-principal-components-regression-1" class="nav-link" data-scroll-target="#principal-components-regression-1">Principal components regression</a></li>
   <li><a href="#pcr" id="toc-pcr" class="nav-link" data-scroll-target="#pcr">PCR</a></li>
   </ul></li>
   <li><a href="#ridge-regression" id="toc-ridge-regression" class="nav-link" data-scroll-target="#ridge-regression">Ridge regression</a>
@@ -154,11 +153,15 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="the-prostate-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="the-prostate-dataset">The <code>prostate</code> dataset</h2>
-<div class="incremental">
-<ul class="incremental">
-<li><p>The <code>prostate</code> cancer data investigates the relationship between the prostate-specific <span class="orange">antigen</span> and a number of clinical measures, in men about to receive a prostatectomy.</p></li>
+<ul>
+<li>The <code>prostate</code> cancer data investigates the relationship between the prostate-specific <span class="orange">antigen</span> and a number of clinical measures, in men about to receive a prostatectomy.</li>
+</ul>
+<ul>
+<li>This <a href="https://hastie.su.domains/ElemStatLearn/datasets/prostate.data">dataset</a> has been used in the <span class="orange">original paper</span> by Tibshirani (1996) to present the lasso. A description is given in <span class="blue">Section 3.2.1</span> of HTF (2009).</li>
+</ul>
+<ul>
 <li><p>We want to <span class="blue">predict</span> the logarithm of a <span class="orange">prostate-specific antigen</span> (<code>lpsa</code>) as a function of:</p>
-<ul class="incremental">
+<ul>
 <li>logarithm of the cancer volume (<code>lcavol</code>);</li>
 <li>logarithm of the prostate weight (<code>lweight</code>);</li>
 <li>age each man (<code>age</code>);</li>
@@ -168,12 +171,15 @@ ul.task-list li input[type="checkbox"] {
 <li>Gleason score (<code>gleason</code>), an ordered categorical variable;</li>
 <li>Percentage of Gleason scores <span class="math inline">4</span> and <span class="math inline">5</span> (<code>pgg45</code>).</li>
 </ul></li>
-<li><p>This <a href="https://hastie.su.domains/ElemStatLearn/datasets/prostate.data">dataset</a> has been used in the <span class="orange">original paper</span> by Tibshirani (1996) to present the lasso and a description is given in <span class="blue">Section 3.2.1</span> of HTF (2009).</p></li>
 </ul>
-</div>
 </section>
 <section id="a-glimpse-of-the-prostate-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="a-glimpse-of-the-prostate-dataset">A <code>glimpse</code> of the <code>prostate</code> dataset</h2>
+<ul>
+<li><p>Summarizing, there are in total <span class="math inline">8</span> <span class="orange">variables</span> that can be used to predict the antigen <code>lpsa</code>.</p></li>
+<li><p>We <span class="orange">centered</span> and <span class="blue">standardized</span> all the covariates before the training/test split.</p></li>
+<li><p>There are <span class="math inline">n = 67</span> observations in the <span class="orange">training</span> set and <span class="math inline">30</span> in the <span class="blue">test</span> set.</p></li>
+</ul>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Original dataset</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">Standardized dataset</a></li></ul>
 <div class="tab-content">
@@ -215,11 +221,8 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </div>
 </div>
 </div>
-<ul>
-<li><p>The variable <code>train</code> splits the data into a training and test set, as in the textbook.</p></li>
-<li><p>Thus, there are <span class="math inline">n = 67</span> observations in the <span class="orange">training</span> set and <span class="math inline">30</span> in the <span class="blue">test</span> set.</p></li>
-<li><p>There are in total <span class="math inline">8</span> <span class="orange">variables</span> that can be used to predict the antigen <code>lpsa</code>. We <span class="orange">centered</span> and <span class="blue">standardized</span> all the covariates before the training/test split.</p></li>
-</ul>
+<!-- -   The variable `train` splits the data into a training and test set, -->
+<!--     as in the textbook. -->
 </section>
 <section id="correlation-matrix-of-prostate" class="level2">
 <h2 class="anchored" data-anchor-id="correlation-matrix-of-prostate">Correlation matrix of <code>prostate</code></h2>
@@ -235,21 +238,23 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </section>
 <section id="the-variable-selection-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-variable-selection-problem">The variable selection problem</h2>
-<div class="incremental">
-<ul class="incremental">
-<li><p>We consider a <span class="orange">linear model</span> in which the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) is related to the covariates through the function<span class="math display">
+<ul>
+<li>We consider a <span class="orange">linear model</span> in which the relationship between the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) and the covariates is modelled through the function<span class="math display">
   f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
-  </span> In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A1.html">Unit A.1</a>.</p></li>
+  </span> In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A1.html">Unit A.1</a>.</li>
+</ul>
+<ul>
 <li><p>Including a lot of covariates into the model is not necessarily a good thing!</p></li>
 <li><p>Indeed, some variables are likely to be <span class="blue">irrelevant</span>:</p>
-<ul class="incremental">
+<ul>
 <li>they might be <span class="orange">correlated</span> with other covariates and therefore <span class="orange">redundant</span>;</li>
 <li>they could be uncorrelated with the response <code>lpsa</code>.</li>
 </ul></li>
+</ul>
+<ul>
 <li><p>If we use all the <span class="math inline">p = 8</span> available covariates, the estimated <span class="math inline">f(\bm{x}; \hat{\beta_0}, \hat{\beta})</span> might have a <span class="orange">high variance</span>, without important gain in term of bias, i.e.&nbsp;a <span class="blue">large mean squared error</span>.</p></li>
 <li><p>We are looking for a <span class="orange">simpler model</span> having, hopefully, a lower mean squared error.</p></li>
 </ul>
-</div>
 </section>
 <section id="a-naïve-approach-abusing-p-values" class="level2">
 <h2 class="anchored" data-anchor-id="a-naïve-approach-abusing-p-values">A naïve approach: (ab)using p-values</h2>
@@ -339,12 +344,13 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li><p>It is common practice to use the <span class="orange">p-values</span>, e.g.&nbsp;those obtained through the <code>summary</code> function, to perform <span class="blue">model selection</span> in a stepwise fashion.</p></li>
-<li><p>A typical procedure is to omit “non significant” coefficients, refit the model, and repeat this scheme until we obtain only “significant” coefficients.</p></li>
-<li><p>Unfortunately, this is <span class="orange">not a good idea</span>, at least when done without appropriate <span class="blue">multiplicity corrections</span>.</p></li>
-<li><p>In the first place, the p-values of the above table are meant to be used in the context of a single hypothesis testing problem, <span class="orange">not</span> to make <span class="orange">several iterative choices</span>.</p></li>
-<li><p>Such an iterative usage of “univariate” p-values is formally <span class="orange">incorrect</span> because it leads to the well-known <span class="blue">multiple testing problem</span>.</p></li>
+<li><p>It is common practice to use the <span class="orange">p-values</span>, e.g.&nbsp;those obtained through the <code>summary</code> function, to perform <span class="blue">model selection</span> in a stepwise fashion. <!-- -   A typical procedure is to omit "non significant" coefficients, refit --> <!--     the model, and repeat this scheme until we obtain only "significant" --> <!--     coefficients. --></p></li>
+<li><p>This is <span class="orange">not a good idea</span>, at least when done without appropriate <span class="blue">multiplicity corrections</span>.</p></li>
+<li><p>The above p-values are meant to be used in the context of a single hypothesis testing problem, <span class="orange">not</span> to make <span class="orange">iterative choices</span>.</p></li>
 </ul>
+<!-- -   Such an iterative usage of "univariate" p-values is formally [incorrect]{.orange} -->
+<!--     because it leads to the well-known [multiple testing -->
+<!--     problem]{.blue}. -->
 </div>
 </section>
 <section id="a-predictive-perspective" class="level2">
@@ -352,15 +358,17 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <ul>
 <li>“<em>All models are approximations. Essentially, all models are wrong, but some are useful</em>.” George E. P. Box</li>
 </ul>
-<div class="incremental">
-<ul class="incremental">
-<li><p>It is important to stress that if the <span class="blue">focus</span> is just on <span class="blue">prediction</span>, we do not necessarily care about selecting the “true” set of parameters.</p></li>
-<li><p>In many data mining problems, the focus is on the <span class="orange">minimization</span> of the <span class="orange">prediction errors</span>.</p></li>
-<li><p>Hence, often times we may <span class="blue">accept some bias</span> (i.e.&nbsp;we use a “wrong” but useful model), if this leads to a <span class="orange">reduction in variance</span>.</p></li>
+<ul>
+<li><p>If the <span class="blue">focus</span> is on <span class="blue">prediction</span>, we do not necessarily care about selecting the “true” set of parameters.</p></li>
+<li><p>In many data mining problems, the focus is on <span class="orange">minimizing</span> the <span class="orange">prediction errors</span>.</p></li>
+</ul>
+<ul>
+<li>Hence, often times we may <span class="blue">accept some bias</span> (i.e.&nbsp;we use a “wrong” but useful model), if this leads to a <span class="orange">reduction in variance</span>.</li>
+</ul>
+<ul>
 <li><p>Besides, in certain cases it does not even make much sense to speak about the “true parameters”.</p></li>
 <li><p>For example, what if the true <span class="math inline">f(\bm{x})</span> were not linear? In this context, a <span class="blue">linear model</span> is simply an approximation of the unknown <span class="math inline">f(\bm{x})</span> and hypothesis testing procedures are ill-posed.</p></li>
 </ul>
-</div>
 </section>
 <section id="best-subset-selection" class="level2">
 <h2 class="anchored" data-anchor-id="best-subset-selection">Best subset selection</h2>
@@ -470,7 +478,7 @@ Best subset procedure
 <li><p>The correct way of doing cross-validation requires that the <span class="blue">best subset selection</span> is performed on <span class="blue">every fold</span>, possibly obtaining different “best” models with the same size.</p></li>
 <li><p>Best subset selection is conceptually appealing, but it has a <span class="orange">major limitation</span>. There are: <span class="math display">
 \sum_{k=1}^p \binom{n}{k} = 2^p
-</span> models that has to be considered, which is <span class="orange">computationally prohibitive</span>!</p></li>
+</span> models to consider, which is <span class="orange">computationally prohibitive</span>!</p></li>
 <li><p>There exists very clever algorithms (i.e.&nbsp;<span class="blue">leaps and bounds</span>) that makes this feasible for <span class="math inline">p</span> as large as <span class="math inline">30</span> or <span class="math inline">40</span>.</p></li>
 <li><p>Recently, <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-44/issue-2/Best-subset-selection-via-a-modern-optimization-lens/10.1214/15-AOS1388.full">Bertsimas et al., 2016</a> proposed the usage of a mixed integer optimization formulation, allowing <span class="math inline">p</span> to be in the order of hundreds.</p></li>
 <li><p>Despite these advances, this problem remains <span class="orange">computationally very expensive</span>. See also <a href="https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full">Hastie et al.&nbsp;(2020)</a> for additional considerations and comparisons.</p></li>
@@ -549,42 +557,60 @@ Backward regression
 <li>In the <code>prostate</code> dataset, forward, backward and best subset selection all gave exactly the <span class="orange">same path of solutions</span> on the full training set.</li>
 </ul>
 </section>
-<section id="principal-components" class="level1">
-<h1>Principal components</h1>
+<section id="principal-components-regression" class="level1">
+<h1>Principal components regression</h1>
 <section id="centering-the-predictors-i" class="level2">
 <h2 class="anchored" data-anchor-id="centering-the-predictors-i">Centering the predictors I</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Let us consider a <span class="orange">reparametrization</span> of the linear model using <span class="orange">centered predictors</span> <span class="math display">
-f(\bm{x}_i; \alpha, \beta) = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdots + \beta_p (x_{ip} - \bar{x}_{ip}) = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta = \underbrace{\alpha - \bar{\bm{x}}^T\beta}_{\beta_0} + \bm{x}_i\beta.
+<li><p>Let us consider a <span class="blue">reparametrization</span> of the linear model using <span class="orange">centered predictors</span> <span class="math display">
+\begin{aligned}
+f(\bm{x}_i; \alpha, \beta) &amp; = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdots + \beta_p (x_{ip} - \bar{x}_{ip}) = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta \\
+&amp; = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta = \beta_0 + \bm{x}_i^T\beta, \quad \text{where} \quad \beta_0 = \alpha - \bar{\bm{x}}^T\beta.
+\end{aligned}
 </span></p></li>
-<li><p>Such a makes the predictors <span class="blue">orthogonal</span> to the <span class="blue">intercept</span>. The estimation of the parameters can then be computed <span class="orange">in two steps</span>.</p></li>
-<li><p>The <span class="orange">estimate</span> of the <span class="orange">intercept</span> with centered predictors is <span class="math inline">\bar{y}</span>, in fact: <span class="math display">
-\hat{\beta} = \arg\min_{\beta_0}\sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta) = \frac{1}{n}\sum_{i=1}^ny_i = \bar{y}.
+<li><p>In this reparametrization the centered predictors are <span class="blue">orthogonal</span> to the <span class="blue">intercept</span>. Thus, the estimates for <span class="math inline">(\alpha, \beta)</span> can be computed <span class="orange">in two steps</span>.</p></li>
+<li><p>The <span class="orange">estimate</span> of the <span class="orange">intercept</span> with centered predictors is <span class="math inline">\hat{\alpha} = \bar{y}</span>. In fact: <span class="math display">
+\hat{\alpha} = \arg\min_{\alpha \in \mathbb{R}}\sum_{i=1}^n\{y_i - \alpha - (\bm{x}_i -\bar{\bm{x}})^T\beta\}^2 = \frac{1}{n}\sum_{i=1}^n\{y_i - (\bm{x}_i -\bar{\bm{x}})^T\beta\} = \frac{1}{n}\sum_{i=1}^ny_i.
 </span></p></li>
-<li><p>Then, the estimate of <span class="math inline">\beta</span> can be obtained considering a model <span class="orange">without intercept</span> <span class="math display">
-    f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
-</span> on the <span class="blue">centered responses</span> <span class="math inline">y_i - \bar{y}</span>. We will use a similar trick for ridge and lasso as well.</p></li>
+<li><p>Then, the <span class="blue">estimate of <span class="math inline">\beta</span></span> can be obtained considering a linear model <span class="blue">without intercept</span>: <span class="math display">
+    f(\bm{x}_i; \beta) = (\bm{x}_i -\bar{\bm{x}})^T\beta,
+</span> used to predict the <span class="blue">centered responses</span> <span class="math inline">y_i - \bar{y}</span>.</p></li>
 </ul>
 </div>
 </section>
 <section id="centering-the-predictors-ii" class="level2">
 <h2 class="anchored" data-anchor-id="centering-the-predictors-ii">Centering the predictors II</h2>
 <ul>
-<li>From here on, we assume without loss of generality that the response and predictors have been <span class="orange">centered</span>, that is <span class="math display">
+<li><p>From here on, and without loss of generality, we assume that everything is <span class="orange">centered</span>: <span class="math display">
 \sum_{i=1}^ny_i = 0, \qquad \sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
-</span></li>
-<li>Iasdas</li>
+</span></p></li>
+<li><p>Hence, because of the previous results, we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
+f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta.
+</span></p></li>
+<li><p>Under such an assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
+S = \frac{1}{n} \bm{X}^T\bm{X}.
+</span></p></li>
+<li><p>If in addition each variable has been <span class="blue">scaled</span> by their standard deviations, then <span class="math inline">n^{-1} \bm{X}^T\bm{X}</span> corresponds to the <span class="blue">correlation</span> matrix.</p></li>
 </ul>
 </section>
-<section id="centering-the-predictors-iii" class="level2">
-<h2 class="anchored" data-anchor-id="centering-the-predictors-iii">Centering the predictors III</h2>
+<section id="principal-component-analysis-i" class="level2">
+<h2 class="anchored" data-anchor-id="principal-component-analysis-i">Principal component analysis I</h2>
 </section>
-<section id="principal-component-analysis" class="level2">
-<h2 class="anchored" data-anchor-id="principal-component-analysis">Principal component analysis</h2>
+<section id="principal-component-analysis-ii" class="level2">
+<h2 class="anchored" data-anchor-id="principal-component-analysis-ii">Principal component analysis II</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_C_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="1500"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
-<section id="pca" class="level2">
-<h2 class="anchored" data-anchor-id="pca">PCA</h2>
+<section id="principal-components-regression-1" class="level2">
+<h2 class="anchored" data-anchor-id="principal-components-regression-1">Principal components regression</h2>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>
@@ -595,16 +621,7 @@ Attaching package: 'pls'</code></pre>
 
     loadings</code></pre>
 </div>
-<div class="cell-output cell-output-stdout">
-<pre><code>    Comp.1     Comp.2     Comp.3     Comp.4     Comp.5     Comp.6     Comp.7 
-0.25679420 0.18135213 0.14121747 0.10773451 0.09727600 0.08586260 0.07216570 
-    Comp.8 
-0.05759738 </code></pre>
 </div>
-</div>
-</section>
-<section id="principal-components-regression" class="level2">
-<h2 class="anchored" data-anchor-id="principal-components-regression">Principal components regression</h2>
 </section>
 <section id="pcr" class="level2">
 <h2 class="anchored" data-anchor-id="pcr">PCR</h2>

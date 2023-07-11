@@ -380,26 +380,38 @@
 </section>
 <section id="the-prostate-dataset" class="slide level2 center">
 <h2>The <code>prostate</code> dataset</h2>
-<div>
 <ul>
-<li class="fragment"><p>The <code>prostate</code> cancer data investigates the relationship between the prostate-specific <span class="orange">antigen</span> and a number of clinical measures, in men about to receive a prostatectomy.</p></li>
-<li class="fragment"><p>We want to <span class="blue">predict</span> the logarithm of a <span class="orange">prostate-specific antigen</span> (<code>lpsa</code>) as a function of:</p>
+<li>The <code>prostate</code> cancer data investigates the relationship between the prostate-specific <span class="orange">antigen</span> and a number of clinical measures, in men about to receive a prostatectomy.</li>
+</ul>
+<div class="fragment">
 <ul>
-<li class="fragment">logarithm of the cancer volume (<code>lcavol</code>);</li>
-<li class="fragment">logarithm of the prostate weight (<code>lweight</code>);</li>
-<li class="fragment">age each man (<code>age</code>);</li>
-<li class="fragment">logarithm of the benign prostatic hyperplasia amount (<code>lbph</code>);</li>
-<li class="fragment">seminal vesicle invasion (<code>svi</code>), a binary variable;</li>
-<li class="fragment">logarithm of the capsular penetration (<code>lcp</code>);</li>
-<li class="fragment">Gleason score (<code>gleason</code>), an ordered categorical variable;</li>
-<li class="fragment">Percentage of Gleason scores <span class="math inline">4</span> and <span class="math inline">5</span> (<code>pgg45</code>).</li>
+<li>This <a href="https://hastie.su.domains/ElemStatLearn/datasets/prostate.data">dataset</a> has been used in the <span class="orange">original paper</span> by Tibshirani (1996) to present the lasso. A description is given in <span class="blue">Section 3.2.1</span> of HTF (2009).</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>We want to <span class="blue">predict</span> the logarithm of a <span class="orange">prostate-specific antigen</span> (<code>lpsa</code>) as a function of:</p>
+<ul>
+<li>logarithm of the cancer volume (<code>lcavol</code>);</li>
+<li>logarithm of the prostate weight (<code>lweight</code>);</li>
+<li>age each man (<code>age</code>);</li>
+<li>logarithm of the benign prostatic hyperplasia amount (<code>lbph</code>);</li>
+<li>seminal vesicle invasion (<code>svi</code>), a binary variable;</li>
+<li>logarithm of the capsular penetration (<code>lcp</code>);</li>
+<li>Gleason score (<code>gleason</code>), an ordered categorical variable;</li>
+<li>Percentage of Gleason scores <span class="math inline">4</span> and <span class="math inline">5</span> (<code>pgg45</code>).</li>
 </ul></li>
-<li class="fragment"><p>This <a href="https://hastie.su.domains/ElemStatLearn/datasets/prostate.data">dataset</a> has been used in the <span class="orange">original paper</span> by Tibshirani (1996) to present the lasso and a description is given in <span class="blue">Section 3.2.1</span> of HTF (2009).</p></li>
 </ul>
 </div>
 </section>
 <section id="a-glimpse-of-the-prostate-dataset" class="slide level2 center">
 <h2>A <code>glimpse</code> of the <code>prostate</code> dataset</h2>
+<ul>
+<li><p>Summarizing, there are in total <span class="math inline">8</span> <span class="orange">variables</span> that can be used to predict the antigen <code>lpsa</code>.</p></li>
+<li><p>We <span class="orange">centered</span> and <span class="blue">standardized</span> all the covariates before the training/test split.</p></li>
+<li><p>There are <span class="math inline">n = 67</span> observations in the <span class="orange">training</span> set and <span class="math inline">30</span> in the <span class="blue">test</span> set.</p></li>
+</ul>
+<div class="fragment">
 <div class="panel-tabset">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Original dataset</a></li><li><a href="#tabset-1-2">Standardized dataset</a></li></ul>
 <div class="tab-content">
@@ -441,11 +453,9 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </div>
 </div>
 </div>
-<ul>
-<li><p>The variable <code>train</code> splits the data into a training and test set, as in the textbook.</p></li>
-<li><p>Thus, there are <span class="math inline">n = 67</span> observations in the <span class="orange">training</span> set and <span class="math inline">30</span> in the <span class="blue">test</span> set.</p></li>
-<li><p>There are in total <span class="math inline">8</span> <span class="orange">variables</span> that can be used to predict the antigen <code>lpsa</code>. We <span class="orange">centered</span> and <span class="blue">standardized</span> all the covariates before the training/test split.</p></li>
-</ul>
+<!-- -   The variable `train` splits the data into a training and test set, -->
+<!--     as in the textbook. -->
+</div>
 </section>
 <section id="correlation-matrix-of-prostate" class="slide level2 center">
 <h2>Correlation matrix of <code>prostate</code></h2>
@@ -453,19 +463,25 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-4-1.png" width="2250" class="r-stretch quarto-figure-center"></section>
 <section id="the-variable-selection-problem" class="slide level2 center">
 <h2>The variable selection problem</h2>
-<div>
 <ul>
-<li class="fragment"><p>We consider a <span class="orange">linear model</span> in which the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) is related to the covariates through the function<span class="math display">
+<li>We consider a <span class="orange">linear model</span> in which the relationship between the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) and the covariates is modelled through the function<span class="math display">
   f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
-  </span> In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A1.html">Unit A.1</a>.</p></li>
-<li class="fragment"><p>Including a lot of covariates into the model is not necessarily a good thing!</p></li>
-<li class="fragment"><p>Indeed, some variables are likely to be <span class="blue">irrelevant</span>:</p>
+  </span> In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A1.html">Unit A.1</a>.</li>
+</ul>
+<div class="fragment">
 <ul>
-<li class="fragment">they might be <span class="orange">correlated</span> with other covariates and therefore <span class="orange">redundant</span>;</li>
-<li class="fragment">they could be uncorrelated with the response <code>lpsa</code>.</li>
+<li><p>Including a lot of covariates into the model is not necessarily a good thing!</p></li>
+<li><p>Indeed, some variables are likely to be <span class="blue">irrelevant</span>:</p>
+<ul>
+<li>they might be <span class="orange">correlated</span> with other covariates and therefore <span class="orange">redundant</span>;</li>
+<li>they could be uncorrelated with the response <code>lpsa</code>.</li>
 </ul></li>
-<li class="fragment"><p>If we use all the <span class="math inline">p = 8</span> available covariates, the estimated <span class="math inline">f(\bm{x}; \hat{\beta_0}, \hat{\beta})</span> might have a <span class="orange">high variance</span>, without important gain in term of bias, i.e.&nbsp;a <span class="blue">large mean squared error</span>.</p></li>
-<li class="fragment"><p>We are looking for a <span class="orange">simpler model</span> having, hopefully, a lower mean squared error.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>If we use all the <span class="math inline">p = 8</span> available covariates, the estimated <span class="math inline">f(\bm{x}; \hat{\beta_0}, \hat{\beta})</span> might have a <span class="orange">high variance</span>, without important gain in term of bias, i.e.&nbsp;a <span class="blue">large mean squared error</span>.</p></li>
+<li><p>We are looking for a <span class="orange">simpler model</span> having, hopefully, a lower mean squared error.</p></li>
 </ul>
 </div>
 </section>
@@ -557,12 +573,13 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </div>
 <div>
 <ul>
-<li class="fragment"><p>It is common practice to use the <span class="orange">p-values</span>, e.g.&nbsp;those obtained through the <code>summary</code> function, to perform <span class="blue">model selection</span> in a stepwise fashion.</p></li>
-<li class="fragment"><p>A typical procedure is to omit “non significant” coefficients, refit the model, and repeat this scheme until we obtain only “significant” coefficients.</p></li>
-<li class="fragment"><p>Unfortunately, this is <span class="orange">not a good idea</span>, at least when done without appropriate <span class="blue">multiplicity corrections</span>.</p></li>
-<li class="fragment"><p>In the first place, the p-values of the above table are meant to be used in the context of a single hypothesis testing problem, <span class="orange">not</span> to make <span class="orange">several iterative choices</span>.</p></li>
-<li class="fragment"><p>Such an iterative usage of “univariate” p-values is formally <span class="orange">incorrect</span> because it leads to the well-known <span class="blue">multiple testing problem</span>.</p></li>
+<li class="fragment"><p>It is common practice to use the <span class="orange">p-values</span>, e.g.&nbsp;those obtained through the <code>summary</code> function, to perform <span class="blue">model selection</span> in a stepwise fashion. <!-- -   A typical procedure is to omit "non significant" coefficients, refit --> <!--     the model, and repeat this scheme until we obtain only "significant" --> <!--     coefficients. --></p></li>
+<li class="fragment"><p>This is <span class="orange">not a good idea</span>, at least when done without appropriate <span class="blue">multiplicity corrections</span>.</p></li>
+<li class="fragment"><p>The above p-values are meant to be used in the context of a single hypothesis testing problem, <span class="orange">not</span> to make <span class="orange">iterative choices</span>.</p></li>
 </ul>
+<!-- -   Such an iterative usage of "univariate" p-values is formally [incorrect]{.orange} -->
+<!--     because it leads to the well-known [multiple testing -->
+<!--     problem]{.blue}. -->
 </div>
 </section>
 <section id="a-predictive-perspective" class="slide level2 center">
@@ -570,13 +587,21 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <ul>
 <li>“<em>All models are approximations. Essentially, all models are wrong, but some are useful</em>.” George E. P. Box</li>
 </ul>
-<div>
+<div class="fragment">
 <ul>
-<li class="fragment"><p>It is important to stress that if the <span class="blue">focus</span> is just on <span class="blue">prediction</span>, we do not necessarily care about selecting the “true” set of parameters.</p></li>
-<li class="fragment"><p>In many data mining problems, the focus is on the <span class="orange">minimization</span> of the <span class="orange">prediction errors</span>.</p></li>
-<li class="fragment"><p>Hence, often times we may <span class="blue">accept some bias</span> (i.e.&nbsp;we use a “wrong” but useful model), if this leads to a <span class="orange">reduction in variance</span>.</p></li>
-<li class="fragment"><p>Besides, in certain cases it does not even make much sense to speak about the “true parameters”.</p></li>
-<li class="fragment"><p>For example, what if the true <span class="math inline">f(\bm{x})</span> were not linear? In this context, a <span class="blue">linear model</span> is simply an approximation of the unknown <span class="math inline">f(\bm{x})</span> and hypothesis testing procedures are ill-posed.</p></li>
+<li><p>If the <span class="blue">focus</span> is on <span class="blue">prediction</span>, we do not necessarily care about selecting the “true” set of parameters.</p></li>
+<li><p>In many data mining problems, the focus is on <span class="orange">minimizing</span> the <span class="orange">prediction errors</span>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Hence, often times we may <span class="blue">accept some bias</span> (i.e.&nbsp;we use a “wrong” but useful model), if this leads to a <span class="orange">reduction in variance</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Besides, in certain cases it does not even make much sense to speak about the “true parameters”.</p></li>
+<li><p>For example, what if the true <span class="math inline">f(\bm{x})</span> were not linear? In this context, a <span class="blue">linear model</span> is simply an approximation of the unknown <span class="math inline">f(\bm{x})</span> and hypothesis testing procedures are ill-posed.</p></li>
 </ul>
 </div>
 </section>
