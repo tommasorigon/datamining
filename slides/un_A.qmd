@@ -1097,6 +1097,10 @@ $$
 
 -   The full algorithm is provided in A&S, Algorithm 2.2.
 
+# Generalized linear models
+
+## asd
+
 # References
 
 ## References
