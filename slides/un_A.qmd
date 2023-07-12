@@ -13,7 +13,7 @@ format:
     center: true
     html-math-method: katex
     transition: none
-    output-file: un_A1_slides.html
+    output-file: un_A_slides.html
     slide-number: true
     callout-appearance: minimal
     code-line-numbers: true
@@ -56,8 +56,8 @@ editor_options:
 #| purl: false
 
 # Please ignore this chunk
-knitr::purl("un_A1.qmd", output = "../code/un_A1.R")
-styler:::style_file("../code/un_A1.R")
+knitr::purl("un_A.qmd", output = "../code/un_A.R")
+styler:::style_file("../code/un_A.R")
 ```
 
 

@@ -46,7 +46,11 @@ editor_options:
   chunk_output_type: console
 ---
 
+
+
 ## [Homepage](../index.html)
+
+
 
 ```{r}
 #| warning: false
@@ -58,6 +62,8 @@ editor_options:
 knitr::purl("un_B.qmd", output = "../code/un_B.R")
 styler:::style_file("../code/un_B.R")
 ```
+
+
 
 ::: columns
 ::: {.column width="40%"}
@@ -89,6 +95,8 @@ William of Ockham
 
 ::: columns
 ::: {.column width="50%"}
+
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
@@ -110,6 +118,8 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
   xlab("x") +
   ylab("y")
 ```
+
+
 :::
 
 ::: {.column width="50%"}
@@ -161,6 +171,8 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
 
 ## Yesterday's data, polynomial regression
 
+
+
 ```{r}
 #| fig-width: 7.8
 #| fig-height: 4.55
@@ -199,7 +211,11 @@ ggplot(data = data_pred) +
   ylim(c(0.42, 0.56)) # Manual identification of an "interesting" region
 ```
 
+
+
 ## Yesterday's data, goodness of fit
+
+
 
 ```{r}
 # Main chunk of code; fitting several models and storing some relevant quantities
@@ -227,8 +243,12 @@ for (degree in degree_list) {
 }
 ```
 
+
+
 ::: columns
 ::: {.column width="50%"}
+
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
@@ -239,9 +259,13 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = MSE)) +
   xlab("# of parameters p") +
   ylab("MSE")
 ```
+
+
 :::
 
 ::: {.column width="50%"}
+
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
@@ -252,10 +276,14 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared)) +
   xlab("# of parameters p") +
   ylab(expression(R^2))
 ```
+
+
 :::
 :::
 
 ## Yesterday's data, polynomial interpolation ($p = n$) {#yesterdays-data-polynomial-interpolation-p-n}
+
+
 
 ```{r}
 #| fig-width: 9
@@ -272,6 +300,8 @@ f <- lagrange(dataset$x, dataset$y.yesterday)
 plot(dataset$x, dataset$y.yesterday, pch = 16, xlab = "x", ylab = "y", main = "Degree of the polynomial: n-1")
 curve(f(x), n = 300, add = TRUE)
 ```
+
+
 
 ## Yesterday's data, tomorrow's prediction
 
@@ -303,6 +333,8 @@ curve(f(x), n = 300, add = TRUE)
 
 ## Tomorrow's data, polynomial regression
 
+
+
 ```{r}
 #| fig-width: 8
 #| fig-height: 4.5
@@ -319,10 +351,14 @@ ggplot(data = data_pred) +
   ylim(c(0.42, 0.56))
 ```
 
+
+
 ## Tomorrow's data, goodness of fit
 
 ::: columns
 ::: {.column width="50%"}
+
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
@@ -333,9 +369,13 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = MSE_test)) +
   xlab("# of parameters p") +
   ylab("MSE")
 ```
+
+
 :::
 
 ::: {.column width="50%"}
+
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
@@ -346,6 +386,8 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
   xlab("# of parameters p") +
   ylab(expression(R^2))
 ```
+
+
 :::
 :::
 
@@ -387,6 +429,8 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
     an [orthogonal basis]{.orange} of the original covariates
     $(1, x, x^2,\dots,x^{p-1})$ through the QR decomposition:
 
+
+
 ```{r}
 #| echo: true
 fit <- lm(y.yesterday ~ poly(x, degree = 3, raw = FALSE), data = dataset)
@@ -394,6 +438,8 @@ X <- model.matrix(fit)
 colnames(X) = c("Intercept","x1","x2","x3")
 round(t(X) %*% X, 8)
 ```
+
+
 
 -   Polynomial regression becomes numerically unstable when $p \ge 13$
     (`raw = TRUE`, i.e., using the original polynomials) and $p \ge 25$
@@ -597,6 +643,8 @@ $$
 
 ## If we knew $f(x)$...
 
+
+
 ```{r}
 # I am storing this information for simplicity
 x <- dataset$x
@@ -653,6 +701,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   xlab("Model complexity (p)") +
   ylab("Error")
 ```
+
+
 
 ## Bias-variance trade-off
 
@@ -712,6 +762,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 ## MSE on training and test set (recap)
 
+
+
 ```{r}
 #| fig-width: 8
 #| fig-height: 4.5
@@ -733,6 +785,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   xlab("Model complexity (p)") +
   ylab("Error")
 ```
+
+
 
 ## Optimism I
 
@@ -784,6 +838,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 ## Optimism III
 
+
+
 ```{r}
 # Code execution and storage of the interesting quantities
 for (degree in degree_list) {
@@ -815,12 +871,16 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab(expression(C[p])) + xlim(c(2, 15))
 ```
 
+
+
 # Cross-validation
 
 ## Another example: `cholesterol` data
 
 ::: columns
 ::: {.column width="50%"}
+
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
@@ -835,6 +895,8 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
   xlab("Compliance") +
   ylab("Cholesterol Decrease")
 ```
+
+
 :::
 
 ::: {.column width="50%"}
@@ -906,6 +968,8 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 
 ## MSE on training and test (`cholesterol` data)
 
+
+
 ```{r}
 # Main chunk of code; fitting several models and storing some relevant quantities
 degree_list <- 1:14
@@ -959,6 +1023,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Error")
 ```
 
+
+
 ## Training, validation, and test I
 
 ::: incremental
@@ -988,9 +1054,13 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     a rule of thumb is given in the picture below.
 
 ::: {.flourish-embed .flourish-chart data-src="visualisation/14246499"}
+
+
 ```{=html}
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 ```
+
+
 :::
 
 -   The training, validation, and test setup [reduces]{.orange} the
@@ -1011,9 +1081,13 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   In the following scheme we let $K = 5$.
 
 ::: {.flourish-embed .flourish-hierarchy data-src="visualisation/14247663"}
+
+
 ```{=html}
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 ```
+
+
 :::
 
 ## Cross-validation II
@@ -1062,6 +1136,8 @@ $$
 
 ## Cross-validation IV (`cholesterol` data)
 
+
+
 ```{r}
 #| message: false
 #| warning: false
@@ -1103,6 +1179,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   xlab("Model complexity (p)") +
   ylab("Mean Squared Error (MSE)")
 ```
+
+
 
 ## Leave-one-out cross-validation
 
@@ -1149,6 +1227,8 @@ $$\widehat{\mathrm{Err}} = \frac{1}{n} \sum_{i=1}^{n} \widehat{\text{Err}}_{V_i}
 
 ## LOO-CV and GCV (`cholesterol` data)
 
+
+
 ```{r}
 # Code execution and storage of the interesting quantities
 data_goodness <- data.frame(degree = degree_list)
@@ -1190,6 +1270,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   xlab("Model complexity (p)") +
   ylab("Mean Squared Error (MSE)") #+ ylim(c(9e-05, 6e-4))
 ```
+
+
 
 ## On the choice of $K$
 
@@ -1342,6 +1424,8 @@ implying that for fixed values $\sigma^2$ the $C_p$ of Mallows and the Akaike's 
 
 ::: columns
 ::: {.column width="50%"}
+
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
@@ -1362,9 +1446,13 @@ ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
   xlab("Model complexity (p)") +
   ylab("Information Criterion (IC)")
 ```
+
+
 :::
 
 ::: {.column width="50%"}
+
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
@@ -1384,6 +1472,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
   xlab("Model complexity (p)") +
   ylab("Information Criterion (IC)")
 ```
+
+
 :::
 :::
 
@@ -1409,6 +1499,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
 
 ## The `cholesterol` data: final model ($p = 4$)
 
+
+
 ```{r}
 #| fig-width: 8
 #| fig-height: 4.5
@@ -1423,6 +1515,8 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
   xlab("Compliance") +
   ylab("Cholesterol Decrease")
 ```
+
+
 
 # References
 
@@ -1446,3 +1540,4 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
         "[Cross-validation: what does it estimate and how well does it
         do it?](https://doi.org/10.1080/01621459.2023.2197686)" Journal
         of the American Statistical Association, in press.
+

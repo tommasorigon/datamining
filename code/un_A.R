@@ -1,7 +1,4 @@
-#| warning: false
-#| message: false
-#| fig-width: 5
-#| fig-height: 4.5
+## ----r------------------------------------------------------------------------
 library(tidyverse)
 library(broom)
 library(knitr)
@@ -26,8 +23,7 @@ p0 <- ggpairs(auto,
 p0
 
 
-#| fig-width: 4
-#| fig-height: 3.7
+## ----r------------------------------------------------------------------------
 ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
   geom_point() +
   theme_light() +
@@ -37,18 +33,16 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
   ylab("Urban distance (km/L)")
 
 
-
+## ----r------------------------------------------------------------------------
 m1 <- lm(city.distance ~ engine.size + I(engine.size^2) + I(engine.size^3) + fuel, data = auto)
 kable(tidy(m1, conf.int = FALSE), digits = 3)
 
 
-
+## ----r------------------------------------------------------------------------
 kable(glance(m1)[c(1, 3, 10)])
 
 
-#| fig-width: 7.8
-#| fig-height: 4.55
-#| fig-align: center
+## ----r------------------------------------------------------------------------
 augmented_m1 <- augment(m1)
 ggplot(data = augmented_m1, aes(x = engine.size, y = city.distance, col = fuel)) +
   geom_point() +
@@ -60,9 +54,7 @@ ggplot(data = augmented_m1, aes(x = engine.size, y = city.distance, col = fuel))
   ylab("Urban distance (km/L)")
 
 
-#| fig-width: 7.8
-#| fig-height: 4.55
-#| fig-align: center
+## ----r------------------------------------------------------------------------
 ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
   geom_point() +
   geom_hline(aes(yintercept = 0), linetype = "dotted") +
@@ -73,14 +65,12 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
   ylab("Residuals")
 
 
-
+## ----r------------------------------------------------------------------------
 m2 <- lm(log(city.distance) ~ I(log(engine.size)) + fuel, data = auto)
 kable(tidy(m2, conf.int = FALSE), digits = 3)
 
 
-#| fig-width: 7.8
-#| fig-height: 4.55
-#| fig-align: center
+## ----r------------------------------------------------------------------------
 augmented_m2 <- augment(m2, data = auto)
 ggplot(data = augmented_m2, aes(x = engine.size, y = city.distance, col = fuel)) +
   geom_point() +
@@ -92,9 +82,7 @@ ggplot(data = augmented_m2, aes(x = engine.size, y = city.distance, col = fuel))
   ylab("Urban distance (km/L)")
 
 
-#| fig-width: 7.8
-#| fig-height: 4.55
-#| fig-align: center
+## ----r------------------------------------------------------------------------
 ggplot(data = augmented_m2, aes(x = .fitted, y = .resid, col = fuel)) +
   geom_point() +
   geom_hline(aes(yintercept = 0), linetype = "dotted") +
@@ -105,20 +93,18 @@ ggplot(data = augmented_m2, aes(x = .fitted, y = .resid, col = fuel)) +
   ylab("Residuals")
 
 
-
+## ----r------------------------------------------------------------------------
 r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m2)))^2)) / sum(mean((auto$city.distance - mean(auto$city.distance))^2))
 kable(data.frame(r.squared.original = r.squared.original, glance(m2)[c(1, 3, 10)]))
 
 
-
+## ----r------------------------------------------------------------------------
 auto$cylinders2 <- factor(auto$n.cylinders == 2)
 m3 <- lm(log(city.distance) ~ I(log(engine.size)) + I(log(curb.weight)) + fuel + cylinders2, data = auto)
 kable(tidy(m3, conf.int = FALSE), digits = 3)
 
 
-#| fig-width: 7.8
-#| fig-height: 4.55
-#| fig-align: center
+## ----r------------------------------------------------------------------------
 augmented_m3 <- augment(m3, data = auto)
 ggplot(data = augmented_m3, aes(x = .fitted, y = .resid, col = fuel)) +
   geom_point() +
@@ -130,6 +116,6 @@ ggplot(data = augmented_m3, aes(x = .fitted, y = .resid, col = fuel)) +
   ylab("Residuals")
 
 
-
+## ----r------------------------------------------------------------------------
 r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m3)))^2)) / sum(mean((auto$city.distance - mean(auto$city.distance))^2))
 kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)]))

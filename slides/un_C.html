@@ -69,7 +69,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#correlation-matrix-of-prostate" id="toc-correlation-matrix-of-prostate" class="nav-link" data-scroll-target="#correlation-matrix-of-prostate">Correlation matrix of <code>prostate</code></a></li>
   <li><a href="#the-variable-selection-problem" id="toc-the-variable-selection-problem" class="nav-link" data-scroll-target="#the-variable-selection-problem">The variable selection problem</a></li>
   <li><a href="#a-naïve-approach-abusing-p-values" id="toc-a-naïve-approach-abusing-p-values" class="nav-link" data-scroll-target="#a-naïve-approach-abusing-p-values">A naïve approach: (ab)using p-values</a></li>
-  <li><a href="#a-predictive-perspective" id="toc-a-predictive-perspective" class="nav-link" data-scroll-target="#a-predictive-perspective">A predictive perspective</a></li>
+  <li><a href="#to-explain-or-to-predict" id="toc-to-explain-or-to-predict" class="nav-link" data-scroll-target="#to-explain-or-to-predict">To explain or to predict?</a></li>
   <li><a href="#best-subset-selection" id="toc-best-subset-selection" class="nav-link" data-scroll-target="#best-subset-selection">Best subset selection</a></li>
   <li><a href="#step-1.-and-2.-of-best-subset-selection" id="toc-step-1.-and-2.-of-best-subset-selection" class="nav-link" data-scroll-target="#step-1.-and-2.-of-best-subset-selection">Step 1. and 2. of best subset selection</a></li>
   <li><a href="#the-best-models-mathcalm_1dots-mathcalm_p" id="toc-the-best-models-mathcalm_1dots-mathcalm_p" class="nav-link" data-scroll-target="#the-best-models-mathcalm_1dots-mathcalm_p">The “best” models <span class="math inline">\mathcal{M}_1,\dots, \mathcal{M}_p</span></a></li>
@@ -79,19 +79,23 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#forward-regression" id="toc-forward-regression" class="nav-link" data-scroll-target="#forward-regression">Forward regression</a></li>
   <li><a href="#backward-regression" id="toc-backward-regression" class="nav-link" data-scroll-target="#backward-regression">Backward regression</a></li>
   <li><a href="#forward-backward-and-best-subset" id="toc-forward-backward-and-best-subset" class="nav-link" data-scroll-target="#forward-backward-and-best-subset">Forward, backward and best subset</a></li>
+  <li><a href="#extension-to-generalized-linear-models" id="toc-extension-to-generalized-linear-models" class="nav-link" data-scroll-target="#extension-to-generalized-linear-models">Extension to generalized linear models</a></li>
   <li><a href="#principal-components-regression" id="toc-principal-components-regression" class="nav-link" data-scroll-target="#principal-components-regression">Principal components regression</a>
   <ul class="collapse">
+  <li><a href="#data-compression" id="toc-data-compression" class="nav-link" data-scroll-target="#data-compression">Data compression</a></li>
   <li><a href="#centering-the-predictors-i" id="toc-centering-the-predictors-i" class="nav-link" data-scroll-target="#centering-the-predictors-i">Centering the predictors I</a></li>
   <li><a href="#centering-the-predictors-ii" id="toc-centering-the-predictors-ii" class="nav-link" data-scroll-target="#centering-the-predictors-ii">Centering the predictors II</a></li>
   <li><a href="#singular-value-decomposition-svd" id="toc-singular-value-decomposition-svd" class="nav-link" data-scroll-target="#singular-value-decomposition-svd">Singular value decomposition (SVD)</a></li>
   <li><a href="#principal-component-analysis-i" id="toc-principal-component-analysis-i" class="nav-link" data-scroll-target="#principal-component-analysis-i">Principal component analysis I</a></li>
   <li><a href="#principal-component-analysis-ii" id="toc-principal-component-analysis-ii" class="nav-link" data-scroll-target="#principal-component-analysis-ii">Principal component analysis II</a></li>
   <li><a href="#principal-component-analysis-prostate-data" id="toc-principal-component-analysis-prostate-data" class="nav-link" data-scroll-target="#principal-component-analysis-prostate-data">Principal component analysis: <code>prostate</code> data</a></li>
-  <li><a href="#principal-components-regression-1" id="toc-principal-components-regression-1" class="nav-link" data-scroll-target="#principal-components-regression-1">Principal components regression</a></li>
+  <li><a href="#principal-components-regression-pcr" id="toc-principal-components-regression-pcr" class="nav-link" data-scroll-target="#principal-components-regression-pcr">Principal components regression (PCR)</a></li>
+  <li><a href="#selection-of-k-cross-validation" id="toc-selection-of-k-cross-validation" class="nav-link" data-scroll-target="#selection-of-k-cross-validation">Selection of <span class="math inline">k</span>: cross-validation</a></li>
   <li><a href="#shrinkage-effect-of-principal-components-i" id="toc-shrinkage-effect-of-principal-components-i" class="nav-link" data-scroll-target="#shrinkage-effect-of-principal-components-i">Shrinkage effect of principal components I</a></li>
   <li><a href="#shrinkage-effect-of-principal-components-ii" id="toc-shrinkage-effect-of-principal-components-ii" class="nav-link" data-scroll-target="#shrinkage-effect-of-principal-components-ii">Shrinkage effect of principal components II</a></li>
-  <li><a href="#selection-of-k-cross-validation" id="toc-selection-of-k-cross-validation" class="nav-link" data-scroll-target="#selection-of-k-cross-validation">Selection of <span class="math inline">k</span>: cross-validation</a></li>
-  <li><a href="#a-summary" id="toc-a-summary" class="nav-link" data-scroll-target="#a-summary">A summary</a></li>
+  <li><a href="#shrinkage-effect-of-principal-components-iii" id="toc-shrinkage-effect-of-principal-components-iii" class="nav-link" data-scroll-target="#shrinkage-effect-of-principal-components-iii">Shrinkage effect of principal components III</a></li>
+  <li><a href="#extension-to-generalized-linear-models-1" id="toc-extension-to-generalized-linear-models-1" class="nav-link" data-scroll-target="#extension-to-generalized-linear-models-1">Extension to generalized linear models</a></li>
+  <li><a href="#summary-and-next-steps" id="toc-summary-and-next-steps" class="nav-link" data-scroll-target="#summary-and-next-steps">Summary and next steps</a></li>
   </ul></li>
   <li><a href="#ridge-regression" id="toc-ridge-regression" class="nav-link" data-scroll-target="#ridge-regression">Ridge regression</a>
   <ul class="collapse">
@@ -136,9 +140,9 @@ ul.task-list li input[type="checkbox"] {
 <section id="homepage" class="level2">
 <h2 class="anchored" data-anchor-id="homepage"><a href="../index.html">Homepage</a></h2>
 <div class="columns">
-<div class="column" style="width:20%;">
-<p><img src="img/lasso.png" class="img-fluid"></p>
-</div><div class="column" style="width:80%;">
+<div class="column" style="width:30%;">
+<p><img src="img/cowboy.jpg" class="img-fluid"></p>
+</div><div class="column" style="width:70%;">
 <ul>
 <li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
 <ul>
@@ -245,7 +249,7 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <ul>
 <li>We consider a <span class="orange">linear model</span> in which the relationship between the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) and the covariates is modelled through the function<span class="math display">
   f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
-  </span> In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A1.html">Unit A.1</a>.</li>
+  </span> In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A.html">Unit A</a>.</li>
 </ul>
 <ul>
 <li><p>Including a lot of covariates into the model is not necessarily a good thing!</p></li>
@@ -357,8 +361,8 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <!--     problem]{.blue}. -->
 </div>
 </section>
-<section id="a-predictive-perspective" class="level2">
-<h2 class="anchored" data-anchor-id="a-predictive-perspective">A predictive perspective</h2>
+<section id="to-explain-or-to-predict" class="level2">
+<h2 class="anchored" data-anchor-id="to-explain-or-to-predict">To explain or to predict?</h2>
 <ul>
 <li>“<em>All models are approximations. Essentially, all models are wrong, but some are useful</em>.” George E. P. Box</li>
 </ul>
@@ -563,8 +567,28 @@ Backward regression
 <li>In the <code>prostate</code> dataset, forward, backward and best subset selection all gave exactly the <span class="orange">same path of solutions</span> on the full training set.</li>
 </ul>
 </section>
+<section id="extension-to-generalized-linear-models" class="level2">
+<h2 class="anchored" data-anchor-id="extension-to-generalized-linear-models">Extension to generalized linear models</h2>
+</section>
 <section id="principal-components-regression" class="level1">
 <h1>Principal components regression</h1>
+<section id="data-compression" class="level2">
+<h2 class="anchored" data-anchor-id="data-compression">Data compression</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<p><img src="img/cowboy_pixel.jpg" class="img-fluid"></p>
+</div><div class="column" style="width:70%;">
+<ul>
+<li><p>At this point we established that <span class="orange">many covariates = many problems</span>.</p></li>
+<li><p>Instead of selecting the “best” variables, let us consider a different perspective.</p></li>
+<li><p>We consider a <span class="blue">compressed</span> version of the covariates that has smaller dimension <span class="math inline">k</span> but retains most information.</p></li>
+<li><p>Intuitively, we want to <span class="orange">reduce the variance</span> by finding a good compression, without sacrificing too much bias.</p></li>
+<li><p>The main statistical tool, unsurprisingly, will be the celebrated <span class="blue">principal components analysis</span> (PCA).</p></li>
+<li><p>You should already know PCA as a tool for explorative analysis… We will focus on its usage for regression purposes.</p></li>
+</ul>
+</div>
+</div>
+</section>
 <section id="centering-the-predictors-i" class="level2">
 <h2 class="anchored" data-anchor-id="centering-the-predictors-i">Centering the predictors I</h2>
 <div class="incremental">
@@ -639,13 +663,13 @@ z_{ij} = x_{i1}v_{i1} + \cdots + x_{ip} v_{ip} = \bm{x}_i^T\tilde{\bm{v}}_j.
 <h2 class="anchored" data-anchor-id="principal-component-analysis-ii">Principal component analysis II</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Principal components form an orthogonal basis of <span class="math inline">\bm{X}</span>, but they are not a “random” choice and they do <span class="orange">not</span> coincide with them <span class="orange">Gram-Schmidt</span> basis of <a href="un_A1.html#the-qr-decomposition-i">Unit A.1</a>.</p></li>
-<li><p>Indeed, the first principal component is the linear combination having <span class="blue">maximimal variance</span>: <span class="math display">
-\tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}^T\bm{X} \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1,
+<li><p>Principal components form an orthogonal basis of <span class="math inline">\bm{X}</span>, but they are not a “random” choice and they do <span class="orange">not</span> coincide with them <span class="orange">Gram-Schmidt</span> basis of <a href="un_A.html#the-qr-decomposition-i">Unit A</a>.</p></li>
+<li><p>Indeed, the <span class="blue">first principal component</span> is the linear combination having <span class="orange">maximal variance</span>: <span class="math display">
+\tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}^T\bm{X} \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1.
 </span></p></li>
-<li><p>The second principal component maximizes the variance under the additional constraint of being orthogonal to the former. And so on and so forth.</p></li>
-<li><p>The values <span class="math inline">d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 &gt; 0</span> are the <span class="orange">eigenvalues</span> of <span class="math inline">\bm{X}^T\bm{X}</span> and they correspond to the <span class="blue">variance</span> of each principal component (up to a factor <span class="math inline">n</span>), that is <span class="math inline">\text{var}(\tilde{\bm{z}}_j) = d^2_j / n</span>.</p></li>
-<li><p>Hence, the quantity <span class="math inline">d_j^2 / \sum_{j'=1}^p d_{j'}^2</span> is often used to measure the amount of total variance captured by principal components.</p></li>
+<li><p>The <span class="blue">second principal component</span> maximizes the variance under the additional constraint of being <span class="orange">orthogonal</span> to the former. And so on and so forth.</p></li>
+<li><p>The values <span class="math inline">d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 &gt; 0</span> are the <span class="orange">eigenvalues</span> of <span class="math inline">\bm{X}^T\bm{X}</span> and correspond to the rescaled <span class="blue">variances</span> of each principal component, that is <span class="math inline">\text{var}(\tilde{\bm{z}}_j) = \tilde{\bm{z}}_j^T \tilde{\bm{z}}_j/n = d^2_j / n</span>.</p></li>
+<li><p>Hence, the quantity <span class="math inline">d_j^2 / \sum_{j'=1}^p d_{j'}^2</span> measures the amount of total variance captured by principal components.</p></li>
 </ul>
 </div>
 </section>
@@ -661,31 +685,20 @@ z_{ij} = x_{i1}v_{i1} + \cdots + x_{ip} v_{ip} = \bm{x}_i^T\tilde{\bm{v}}_j.
 </div>
 </div>
 </section>
-<section id="principal-components-regression-1" class="level2">
-<h2 class="anchored" data-anchor-id="principal-components-regression-1">Principal components regression</h2>
-</section>
-<section id="shrinkage-effect-of-principal-components-i" class="level2">
-<h2 class="anchored" data-anchor-id="shrinkage-effect-of-principal-components-i">Shrinkage effect of principal components I</h2>
-</section>
-<section id="shrinkage-effect-of-principal-components-ii" class="level2">
-<h2 class="anchored" data-anchor-id="shrinkage-effect-of-principal-components-ii">Shrinkage effect of principal components II</h2>
-<div class="cell" data-layout-align="center">
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'pls'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:stats':
-
-    loadings</code></pre>
-</div>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="un_C_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="1350"></p>
-</figure>
-</div>
-</div>
+<section id="principal-components-regression-pcr" class="level2">
+<h2 class="anchored" data-anchor-id="principal-components-regression-pcr">Principal components regression (PCR)</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>We use the first <span class="math inline">k \le p</span> <span class="blue">principal components</span> to predict the responses <span class="math inline">Y_i</span> via <span class="math display">
+f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dots,n,
+</span></p></li>
+<li><p>Because of orthogonality, the least squares solution is straightforward to compute: <span class="math display">
+\hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \frac{1}{d_j^2}\tilde{\bm{z}}_j^T\bm{y}, \qquad j=1,\dots,k.
+</span></p></li>
+<li><p>The principal components are in <span class="blue">order of importance</span> and effectively <span class="blue">compressing the information</span> contained in <span class="math inline">\bm{X}</span> using only <span class="math inline">k \le p</span> variables.</p></li>
+<li><p>When <span class="math inline">k = p</span> we are simply rotating the original matrix <span class="math inline">\bm{X} = \bm{Z}\bm{V}</span>, i.e.&nbsp;performing <span class="orange">no compression</span>. The predicted values coincide with OLS.</p></li>
+<li><p>The number <span class="math inline">k</span> is a <span class="blue">complexity parameter</span> which should be chosen via information criteria or cross-validation.</p></li>
+</ul>
 </div>
 </section>
 <section id="selection-of-k-cross-validation" class="level2">
@@ -694,14 +707,69 @@ Attaching package: 'pls'</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_C_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="1500"></p>
+<p><img src="un_C_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="1500"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="a-summary" class="level2">
-<h2 class="anchored" data-anchor-id="a-summary">A summary</h2>
+<section id="shrinkage-effect-of-principal-components-i" class="level2">
+<h2 class="anchored" data-anchor-id="shrinkage-effect-of-principal-components-i">Shrinkage effect of principal components I</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>A closer look to the PCR solution reveals some interesting aspects. Recall that: <span class="math display">
+\tilde{\bm{z}}_j = \bm{X}\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
+</span></p></li>
+<li><p>The <span class="orange">predicted values</span> <span class="math inline">\hat{\bm{y}} = (\hat{y}_1,\dots,\hat{y}_n)</span> of the PCR with <span class="math inline">k</span> components are: <span class="math display">
+\hat{\bm{y}} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j = \bm{X}\hat{\beta}_\text{pcr}, \quad \text{ where } \quad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
+</span></p></li>
+<li><p>This representation highlights two important aspects:</p>
+<ul class="incremental">
+<li>It is possible to express the PCR solution in the original scale, for better <span class="orange">interpretability</span>;</li>
+<li>The vector <span class="math inline">\hat{\beta}_\text{pcr}</span> is a <span class="blue">constrained solution</span>, being a combination of <span class="math inline">k \le p</span> coefficients, therefore <span class="orange">reducing</span> the <span class="orange">complexity</span> of the model and <span class="blue">shrinking</span> the coefficients.</li>
+</ul></li>
+<li><p>When <span class="math inline">k = 1</span>, then the <span class="math inline">\hat{\beta}_\text{pcr}</span> estimate coincide with the scaled loading vector <span class="math inline">\hat{\beta}_\text{pcr} = \hat{\gamma}_1 \tilde{\bm{v}}_1</span>;</p></li>
+<li><p>When <span class="math inline">k = p</span> then the <span class="math inline">\hat{\beta}_\text{pcr}</span> coincides with <span class="blue">ordinary least squares</span> (see Exercises).</p></li>
+</ul>
+</div>
+</section>
+<section id="shrinkage-effect-of-principal-components-ii" class="level2">
+<h2 class="anchored" data-anchor-id="shrinkage-effect-of-principal-components-ii">Shrinkage effect of principal components II</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{pcr}</span>, assuming iid errors <span class="math inline">\epsilon_i</span> and after some algebraic manipulation, results: <span class="math display">
+\text{var}(\hat{\beta}_\text{pcr}) = \sigma^2\sum_{j=1}^k \frac{1}{d_j^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T.
+</span></p></li>
+<li><p>Thus, if a <span class="blue">multicollinearity</span> exists, then it appears as a principal component with very small variance, i.e.&nbsp;a small <span class="math inline">d_j^2</span>. Its removal therefore drastically <span class="orange">reduces</span> the <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{pcr}</span>.</p></li>
+<li><p>Furthermore, the predicted values can be expressed as <span class="math display">
+\hat{\bm{y}} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
+</span></p></li>
+<li><p>The columns of <span class="math inline">\bm{U}</span>, namely the vectors <span class="math inline">\tilde{\bm{u}}_j</span> are the <span class="blue">normalized principal components</span>.</p></li>
+<li><p>Hence, we are shrinking the predictions towards the main <span class="orange">principal directions</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="shrinkage-effect-of-principal-components-iii" class="level2">
+<h2 class="anchored" data-anchor-id="shrinkage-effect-of-principal-components-iii">Shrinkage effect of principal components III</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_C_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="1350"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="extension-to-generalized-linear-models-1" class="level2">
+<h2 class="anchored" data-anchor-id="extension-to-generalized-linear-models-1">Extension to generalized linear models</h2>
+</section>
+<section id="summary-and-next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="summary-and-next-steps">Summary and next steps</h2>
+<ul>
+<li><p>We have see so far two “discrete” methods: best subset selection and PCR</p></li>
+<li><p>Best subset selection perform variable selection, whereas PCR reduces the variance of the coefficients.</p></li>
+</ul>
 <table class="table">
 <colgroup>
 <col style="width: 17%">

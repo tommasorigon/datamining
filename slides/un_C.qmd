@@ -177,7 +177,7 @@ ggcorrplot(corr,
       f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
       $$ In this unit the [intercept]{.blue} $\beta_0$ will play a
     special role, therefore we use this slightly different notation
-    compared to [Unit A.1](unit_A1.html).
+    compared to [Unit A](unit_A.html).
 
 . . .
 
@@ -228,7 +228,7 @@ knitr::kable(tab, digits = 2)
 <!--     problem]{.blue}. -->
 :::
 
-## A predictive perspective
+## To explain or to predict?
 
 -   "*All models are approximations. Essentially, all models are wrong,
     but some are useful*." George E. P. Box
@@ -496,6 +496,8 @@ models to consider, which is [computationally prohibitive]{.orange}!
         having the smallest $\text{MSE}_{k, \text{train}}$. 
 :::
 
+. . .
+
 - It can be shown that the [dropped predictor]{.blue} is the one with the lowest absolute $Z$-score or, equivalently, the [highest p-value]{.orange} (see Exercises).
 
 ## Forward, backward and best subset
@@ -538,6 +540,8 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 
 - In the `prostate` dataset, forward, backward and best subset selection all gave exactly the [same path of solutions]{.orange} on the full training set.
 
+## Extension to generalized linear models
+
 # Principal components regression
 
 ## Data compression
@@ -554,6 +558,8 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 - Instead of selecting the "best" variables, let us consider a different perspective.
 
 - We consider a [compressed]{.blue} version of the covariates that has smaller dimension $k$ but retains most information.
+
+- Intuitively, we want to [reduce the variance]{.orange} by finding a good compression, without sacrificing too much bias. 
 
 - The main statistical tool, unsurprisingly, will be the celebrated [principal components analysis]{.blue} (PCA).
 
@@ -656,18 +662,18 @@ The columns $\tilde{\bm{v}}_1,\dots,\tilde{\bm{v}}_p$ of $\bm{V}$ are sometimes 
 
 ::: incremental
 
-- Principal components form an orthogonal basis of $\bm{X}$, but they are not a "random" choice and they do [not]{.orange} coincide with them [Gram-Schmidt]{.orange} basis of [Unit A.1](un_A1.html#the-qr-decomposition-i). 
+- Principal components form an orthogonal basis of $\bm{X}$, but they are not a "random" choice and they do [not]{.orange} coincide with them [Gram-Schmidt]{.orange} basis of [Unit A](un_A.html#the-qr-decomposition-i). 
 
-- Indeed, the first principal component is the linear combination having [maximal variance]{.blue}:
+- Indeed, the [first principal component]{.blue} is the linear combination having [maximal variance]{.orange}:
 $$
 \tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}^T\bm{X} \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1.
 $$
 
-- The second principal component maximizes the variance under the additional constraint of being orthogonal to the former. And so on and so forth. 
+- The [second principal component]{.blue} maximizes the variance under the additional constraint of being [orthogonal]{.orange} to the former. And so on and so forth. 
 
 - The values $d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 > 0$ are the [eigenvalues]{.orange} of $\bm{X}^T\bm{X}$ and correspond to the rescaled [variances]{.blue} of each principal component, that is $\text{var}(\tilde{\bm{z}}_j) = \tilde{\bm{z}}_j^T \tilde{\bm{z}}_j/n = d^2_j / n$.
 
-- Hence, the quantity $d_j^2 / \sum_{j'=1}^p d_{j'}^2$ is often used to measure the amount of total variance captured by principal components.  
+- Hence, the quantity $d_j^2 / \sum_{j'=1}^p d_{j'}^2$ measures the amount of total variance captured by principal components.  
 
 :::
 
@@ -688,11 +694,33 @@ ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p,
 ```
 
 
-## Principal components regression
+## Principal components regression (PCR)
+
+
+::: incremental
+
+- We use the first $k \le p$ [principal components]{.blue} to predict the responses $Y_i$ via 
+$$
+f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dots,n,
+$$
+
+- Because of orthogonality, the least squares solution is straightforward to compute:
+$$
+\hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \frac{1}{d_j^2}\tilde{\bm{z}}_j^T\bm{y}, \qquad j=1,\dots,k.
+$$
+
+- The principal components are in [order of importance]{.blue} and effectively [compressing the information]{.blue} contained in $\bm{X}$ using only $k \le p$ variables.
+
+- When $k = p$ we are simply rotating the original matrix $\bm{X} = \bm{Z}\bm{V}$, i.e. performing [no compression]{.orange}. The predicted values coincide with OLS. 
+
+- The number $k$ is a [complexity parameter]{.blue} which should be chosen via information criteria or cross-validation.
+
+:::
 
 ## Selection of $k$: cross-validation
 
 ```{r}
+#| message: false
 library(pls)
 resid_pcr <- matrix(0, n, p)
 
@@ -745,7 +773,48 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 
 ## Shrinkage effect of principal components I
 
+::: incremental
+
+- A closer look to the PCR solution reveals some interesting aspects. Recall that:
+$$
+\tilde{\bm{z}}_j = \bm{X}\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
+$$
+
+- The [predicted values]{.orange} $\hat{\bm{y}} = (\hat{y}_1,\dots,\hat{y}_n)$ of the PCR with $k$ components are:
+$$
+\hat{\bm{y}} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j = \bm{X}\hat{\beta}_\text{pcr}, \quad \text{ where } \quad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
+$$
+
+- This representation highlights two important aspects:
+  - It is possible to express the PCR solution in the original scale, for better [interpretability]{.orange};
+  - The vector $\hat{\beta}_\text{pcr}$ is a [constrained solution]{.blue}, being a combination of $k \le p$ coefficients, therefore [reducing]{.orange} the [complexity]{.orange} of the model and [shrinking]{.blue} the coefficients. 
+  
+  
+- When $k = 1$, then the $\hat{\beta}_\text{pcr}$ estimate coincide with the scaled loading vector $\hat{\beta}_\text{pcr} = \hat{\gamma}_1 \tilde{\bm{v}}_1$;
+- When $k = p$ then the $\hat{\beta}_\text{pcr}$ coincides with [ordinary least squares]{.blue} (see Exercises). 
+
+:::
+ 
 ## Shrinkage effect of principal components II
+
+::: incremental
+
+- The [variance]{.orange} of $\hat{\beta}_\text{pcr}$, assuming iid errors $\epsilon_i$ and after some algebraic manipulation, results: $$
+\text{var}(\hat{\beta}_\text{pcr}) = \sigma^2\sum_{j=1}^k \frac{1}{d_j^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T.
+$$
+- Thus, if a [multicollinearity]{.blue} exists, then it appears as a principal component with very small variance, i.e. a small $d_j^2$. Its removal therefore drastically [reduces]{.orange} the [variance]{.orange} of $\hat{\beta}_\text{pcr}$. 
+
+- Furthermore, the predicted values can be expressed as
+$$
+\hat{\bm{y}} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
+$$
+- The columns of $\bm{U}$, namely the vectors $\tilde{\bm{u}}_j$ are the [normalized principal components]{.blue}.
+
+- Hence, we are shrinking the predictions towards the main [principal directions]{.orange}.
+
+:::
+
+## Shrinkage effect of principal components III
 
 ```{r}
 #| fig-width: 9
@@ -768,21 +837,20 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
   ylab("Regression coefficients")
 ```
 
+## Extension to generalized linear models
 
 
+## Summary and next steps
 
+- We have see so far two "discrete" methods: best subset selection and PCR
 
-
-
-
-
-
-## A summary
+- Best subset selection perform variable selection, whereas PCR reduces the variance of the coefficients.
 
 |            | [Shrinkage]{.orange}                      | [Variable selection]{.orange}    |
 |------------|--------------------------------|-----------------------|
 | [Discrete]{.blue}   | Principal component regression | Best subset selection, stepwise |
 | [Continuous]{.blue} | Ridge regression               | Relaxed Lasso           |
+
 
 # Ridge regression
 
