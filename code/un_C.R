@@ -71,7 +71,7 @@ ggplot(data = data_best_subset, aes(x = p, y = value)) +
   geom_line(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b") +
   geom_point(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b", size = 1.5) +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of covariates (p)") +
+  xlab("Number of covariates") +
   ylab("Mean squared error (training)")
 
 
@@ -131,7 +131,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   scale_x_continuous(breaks = 0:9) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of covariates (p)") +
+  xlab("Number of covariates") +
   ylab("Mean squared error (10-fold cv)")
 
 
@@ -166,7 +166,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
   theme(legend.position = "none") +
   scale_x_continuous(breaks = 0:9) +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of covariates (p)") +
+  xlab("Number of covariates") +
   ylab("MSE (training)")
 
 
@@ -174,17 +174,17 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 #| fig-height: 5
 #| fig-align: center
 pr <- princomp(prostate_train[, -9], cor = FALSE)
-ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p, xmin = p, xmax = p, y = vars, ymax = vars, , ymin = 0)) +
+ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p, xmin = p, xmax = p, y = vars, ymax = vars, ymin = 0)) +
   geom_pointrange() +
   theme_light() +
+  scale_x_continuous(breaks = 1:9) +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of principal components (p)") +
+  xlab("Number of principal components") +
   ylab("Fraction of explained variance")
 
 
 
 library(pls)
-
 resid_pcr <- matrix(0, n, p)
 
 for (k in 1:10) {
@@ -227,5 +227,25 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   scale_x_continuous(breaks = 1:9) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of principal components (p)") +
+  xlab("Number of principal components") +
   ylab("Mean squared error (10-fold cv)")
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE)
+
+data_pcr <- reshape2::melt(coef(fit_pcr, 1:8))
+colnames(data_pcr) <- c("Covariate", "lpsa", "Components", "value")
+data_pcr$Components <- as.numeric(data_pcr$Components)
+data_pcr <- rbind(data_pcr, data.frame(Covariate = data_pcr$Covariate[data_pcr$Components == 1], lpsa = NA, Components = 0, value = 0))
+ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
+  geom_point() +
+  geom_line() +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_x_continuous(breaks = 0:9) +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Number of principal components") +
+  ylab("Regression coefficients")

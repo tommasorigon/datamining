@@ -359,9 +359,9 @@
 <section id="homepage" class="slide level2 center">
 <h2><a href="../index.html">Homepage</a></h2>
 <div class="columns">
-<div class="column" style="width:20%;">
-<p><img data-src="img/lasso.png"></p>
-</div><div class="column" style="width:80%;">
+<div class="column" style="width:30%;">
+<p><img data-src="img/cowboy.jpg"></p>
+</div><div class="column" style="width:70%;">
 <ul>
 <li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
 <ul>
@@ -608,8 +608,8 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <section id="best-subset-selection" class="slide level2 center">
 <h2>Best subset selection</h2>
 <ul>
-<li><p>A more principled approach is based on the tools of <a href="un_B.html">Unit B</a>.</p></li>
-<li><p>Ideally, we could perform an <span class="orange">exhaustive search</span> considering all the <span class="math inline">2^p</span> possible models and then selecting the one having the best out-of-sample predictive performance.</p></li>
+<li><p>Let us get back to our <span class="blue">variable selection problem</span>.</p></li>
+<li><p>In principle, we could perform an <span class="orange">exhaustive search</span> considering all the <span class="math inline">2^p</span> possible models and then selecting the one having the best out-of-sample predictive performance.</p></li>
 </ul>
 <div class="fragment">
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
@@ -659,9 +659,12 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <div>
 <ul>
 <li class="fragment"><p>The above table means that the best model with <span class="math inline">k = 1</span> uses the variable <code>lcavol</code>, whereas when <span class="math inline">k = 2</span> the selected variables are <code>lcavol</code> and <code>lweight</code>, and so on and so forth.</p></li>
-<li class="fragment"><p>Note that, in general, these models are <span class="orange">not</span> necessarily <span class="orange">nested</span>, i.e.&nbsp;a variable selected at step <span class="math inline">k</span> is not necessarily included at step <span class="math inline">k +1</span>.</p></li>
-<li class="fragment"><p>What is the optimal subset size <span class="math inline">k</span> in terms on out-of-sample mean squared error?</p></li>
-<li class="fragment"><p>Clearly, we cannot use the training <span class="math inline">\text{MSE}</span>. A possibility is cross-validation.</p></li>
+<li class="fragment"><p>Note that, in general, these models are <span class="orange">not</span> necessarily <span class="orange">nested</span>, i.e.&nbsp;a variable selected at step <span class="math inline">k</span> is not necessarily included at step <span class="math inline">k +1</span>. Here they are, but it is a coincidence.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>What is the <span class="orange">optimal subset size</span> <span class="math inline">k</span> in terms on out-of-sample mean squared error?</li>
 </ul>
 </div>
 </section>
@@ -673,12 +676,12 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <li class="fragment"><p>A typical strategy for analysis might be as follows:</p>
 <ol type="1">
 <li class="fragment"><p>Screen the predictors: find a subset of “good” predictors that show fairly strong correlation with the response;</p></li>
-<li class="fragment"><p>Using this subset of predictors (i.e.&nbsp;<code>lcavol</code>, <code>lweight</code> and <code>svi</code>), build a regression model;</p></li>
-<li class="fragment"><p>Use cross-validation to estimate the prediction error of the model in 2.</p></li>
+<li class="fragment"><p>Using this subset of predictors (e.g.&nbsp;<code>lcavol</code>, <code>lweight</code> and <code>svi</code>), build a regression model;</p></li>
+<li class="fragment"><p>Use cross-validation to estimate the prediction error of the model of the step 2.</p></li>
 </ol></li>
 <li class="fragment"><p>Is this a correct application of cross-validation?</p></li>
 <li class="fragment"><p>If your reaction was “<span class="orange">this is absolutely wrong!</span>”, it means you correctly understood the principles of cross-validation.</p></li>
-<li class="fragment"><p>If you though this was an ok-ish idea, you may want to read <span class="blue">Section 7.10.2</span> of HTF (2009).</p></li>
+<li class="fragment"><p>If you though this was an ok-ish idea, you may want to read <span class="blue">Section 7.10.2</span> of HTF (2009), called “the wrong way of doing cross-validation”.</p></li>
 </ul>
 </div>
 </section>
@@ -686,25 +689,29 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <h2>Step 3. of best subset selection via cross-validation</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-11-1.png" width="1500" class="r-stretch quarto-figure-center"><ul>
-<li>By applying the informal “1 standard error rule”, we select <span class="math inline">k = 2</span>, corresponding to the model using the variables <code>lcavol</code> and <code>lweight</code> on the <span class="orange">full training</span> set.</li>
+<li>By applying the “1 standard error rule”, we select <span class="math inline">k = 2</span>, i.e.&nbsp;<code>lcavol</code> and <code>lweight</code>.</li>
 </ul>
 </section>
 <section id="comments-and-computations" class="slide level2 center">
 <h2>Comments and computations</h2>
 <div>
 <ul>
-<li class="fragment"><p>The correct way of doing cross-validation requires that the <span class="blue">best subset selection</span> is performed on <span class="blue">every fold</span>, possibly obtaining different “best” models with the same size.</p></li>
-<li class="fragment"><p>Best subset selection is conceptually appealing, but it has a <span class="orange">major limitation</span>. There are: <span class="math display">
+<li class="fragment"><p>The correct way of doing cross-validation requires that the <span class="blue">best subset selection</span> is performed on <span class="orange">every fold</span>, possibly obtaining different “best” models with the same size.</p></li>
+<li class="fragment"><p>Best subset selection is conceptually appealing, but it has a <span class="orange">major limitation</span>. There are <span class="math display">
 \sum_{k=1}^p \binom{n}{k} = 2^p
 </span> models to consider, which is <span class="orange">computationally prohibitive</span>!</p></li>
-<li class="fragment"><p>There exists very clever algorithms (i.e.&nbsp;<span class="blue">leaps and bounds</span>) that makes this feasible for <span class="math inline">p</span> as large as <span class="math inline">30</span> or <span class="math inline">40</span>.</p></li>
+<li class="fragment"><p>There exists algorithms (i.e.&nbsp;<span class="blue">leaps and bounds</span>) that makes this feasible for <span class="math inline">p \approx 30</span>.</p></li>
 <li class="fragment"><p>Recently, <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-44/issue-2/Best-subset-selection-via-a-modern-optimization-lens/10.1214/15-AOS1388.full">Bertsimas et al., 2016</a> proposed the usage of a mixed integer optimization formulation, allowing <span class="math inline">p</span> to be in the order of hundreds.</p></li>
-<li class="fragment"><p>Despite these advances, this problem remains <span class="orange">computationally very expensive</span>. See also <a href="https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full">Hastie et al.&nbsp;(2020)</a> for additional considerations and comparisons.</p></li>
+<li class="fragment"><p>Despite these advances, this problem remains <span class="orange">computationally very expensive</span>. See also the recent paper <a href="https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full">Hastie et al.&nbsp;(2020)</a> for additional considerations and comparisons.</p></li>
 </ul>
 </div>
 </section>
 <section id="forward-regression" class="slide level2 center">
 <h2>Forward regression</h2>
+<ul>
+<li>Forward regression is <span class="orange">greedy approximation</span> of best subset selection, that produces a sequence of <span class="blue">nested</span> models. It is computationally feasible and can be applied when <span class="math inline">p &gt; n</span>.</li>
+</ul>
+<div class="fragment">
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -722,14 +729,19 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </div>
 </div>
 </div>
+</div>
+<div class="fragment">
 <ul>
-<li><p>Forward regression can be regarded as <span class="orange">greedy approximation</span> of best subset selection. The advantage is that it is computationally feasible and it can be applied even when <span class="math inline">p &gt; n</span>.</p></li>
-<li><p>By construction, it produces a <span class="blue">nested</span> sequence of models.</p></li>
-<li><p>It can be shown that the identification of the <span class="blue">optimal new predictor</span> can be efficiently computed using the <span class="orange">QR decomposition</span> (see Exercises).</p></li>
+<li>It can be shown that the identification of the <span class="blue">optimal new predictor</span> can be efficiently computed using the <span class="orange">QR decomposition</span> (see Exercises).</li>
 </ul>
+</div>
 </section>
 <section id="backward-regression" class="slide level2 center">
 <h2>Backward regression</h2>
+<ul>
+<li>When <span class="math inline">p &lt; n</span>, an alternative greedy approach is <span class="orange">backward regression</span>, which also produces a sequence of <span class="blue">nested</span> models.</li>
+</ul>
+<div class="fragment">
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -748,11 +760,9 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </div>
 </div>
 <ul>
-<li><p>Backward regression is another computationally feasible <span class="orange">greedy approximation</span> of best subset selection.</p></li>
-<li><p>Note that in this case we need <span class="math inline">p &lt; n</span>, otherwise it is not possible to estimate the full model.</p></li>
-<li><p>Backward regression produces a <span class="blue">nested</span> sequence of models.</p></li>
-<li><p>It can be shown that the <span class="blue">dropped predictor</span> is the one with the lowest absolute <span class="math inline">Z</span>-score or, equivalently, the <span class="orange">highest p-value</span> (see Exercises).</p></li>
+<li>It can be shown that the <span class="blue">dropped predictor</span> is the one with the lowest absolute <span class="math inline">Z</span>-score or, equivalently, the <span class="orange">highest p-value</span> (see Exercises).</li>
 </ul>
+</div>
 </section>
 <section id="forward-backward-and-best-subset" class="slide level2 center">
 <h2>Forward, backward and best subset</h2>
@@ -765,6 +775,22 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <section id="principal-components-regression" class="title-slide slide level1 center">
 <h1>Principal components regression</h1>
 
+</section>
+<section id="data-compression" class="slide level2 center">
+<h2>Data compression</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<p><img data-src="img/cowboy_pixel.jpg"></p>
+</div><div class="column" style="width:70%;">
+<ul>
+<li><p>At this point we established that <span class="orange">many covariates = many problems</span>.</p></li>
+<li><p>Instead of selecting the “best” variables, let us consider a different perspective.</p></li>
+<li><p>We consider a <span class="blue">compressed</span> version of the covariates that has smaller dimension <span class="math inline">k</span> but retains most information.</p></li>
+<li><p>The main statistical tool, unsurprisingly, will be the celebrated <span class="blue">principal components analysis</span> (PCA).</p></li>
+<li><p>You should already know PCA as a tool for explorative analysis… We will focus on its usage for regression purposes.</p></li>
+</ul>
+</div>
+</div>
 </section>
 <section id="centering-the-predictors-i" class="slide level2 center">
 <h2>Centering the predictors I</h2>
@@ -788,69 +814,86 @@ f(\bm{x}_i; \alpha, \beta) &amp; = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdot
 </section>
 <section id="centering-the-predictors-ii" class="slide level2 center">
 <h2>Centering the predictors II</h2>
+<div>
 <ul>
-<li><p>From here on, and without loss of generality, we assume that everything is <span class="orange">centered</span>: <span class="math display">
+<li class="fragment"><p>From here on, and without loss of generality, we assume that everything is <span class="orange">centered</span>: <span class="math display">
 \sum_{i=1}^ny_i = 0, \qquad \sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
 </span></p></li>
-<li><p>Hence, because of the previous results, we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
+<li class="fragment"><p>Hence, because of the previous results, we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
 f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta.
 </span></p></li>
-<li><p>Under such an assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
+<li class="fragment"><p>Under such an assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
 S = \frac{1}{n} \bm{X}^T\bm{X}.
 </span></p></li>
-<li><p>If in addition each variable has been <span class="blue">scaled</span> by their standard deviations, then <span class="math inline">n^{-1} \bm{X}^T\bm{X}</span> corresponds to the <span class="blue">correlation</span> matrix.</p></li>
+<li class="fragment"><p>If in addition each variable has been <span class="blue">scaled</span> by their standard deviations, then <span class="math inline">n^{-1} \bm{X}^T\bm{X}</span> corresponds to the <span class="blue">correlation</span> matrix.</p></li>
+</ul>
+</div>
+</section>
+<section id="singular-value-decomposition-svd" class="slide level2 center">
+<h2>Singular value decomposition (SVD)</h2>
+<ul>
+<li><p>Let <span class="math inline">\bm{X}</span> be a <span class="math inline">n \times p</span> matrix. Then, its full form <span class="orange">singular value decomposition</span> is: <span class="math display">
+\bm{X} = \bm{U} \bm{D} \bm{V}^T = \sum_{j=1}^m d_j \tilde{\bm{u}}_j \tilde{\bm{v}}_j^T,
+</span> with <span class="math inline">m =\min\{n, p\}</span> and where:</p>
+<ul>
+<li>the <span class="math inline">n \times n</span> matrix <span class="math inline">\bm{U} = (\tilde{\bm{u}}_1, \dots, \tilde{\bm{u}}_n)</span> is <span class="orange">orthogonal</span>, namely: <span class="math inline">\bm{U}^T \bm{U} = \bm{U}\bm{U}^T= I_n</span>;</li>
+<li>the <span class="math inline">p \times p</span> matrix <span class="math inline">\bm{V} = (\tilde{\bm{v}}_1,\dots,\tilde{\bm{v}}_p)</span> is <span class="orange">orthogonal</span>, namely: <span class="math inline">\bm{V}^T \bm{V} = \bm{V}\bm{V}^T= I_p</span>;</li>
+<li>the <span class="math inline">n \times p</span> matrix <span class="math inline">\bm{D}</span> has <span class="blue">diagonal</span> entries <span class="math inline">[\bm{D}]_{jj} = d_j</span>, for <span class="math inline">j=1,\dots,m</span>, and zero entries elsewhere;</li>
+</ul></li>
+<li><p>The real numbers <span class="math inline">d_1 \ge d_2 \ge \cdots \ge d_m \ge 0</span> are called <span class="blue">singular values</span>.</p></li>
+<li><p>If one or more <span class="math inline">d_j = 0</span>, then the matrix <span class="math inline">\bm{X}</span> is singular.</p></li>
 </ul>
 </section>
 <section id="principal-component-analysis-i" class="slide level2 center">
 <h2>Principal component analysis I</h2>
+<div>
+<ul>
+<li class="fragment"><p>Le us assume that <span class="math inline">p &lt; n</span> and that <span class="math inline">\text{rk}(\bm{X}) = p</span>, recalling that <span class="math inline">\bm{X}</span> is a <span class="orange">centered</span> matrix.</p></li>
+<li class="fragment"><p>Using SVD, the matrix <span class="math inline">\bm{X}^T\bm{X}</span> can be expressed as <span class="math display">
+\bm{X}^T\bm{X} = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V},
+</span> where <span class="math inline">\bm{\Delta}^2 = \bm{D}^T\bm{D}</span> is a <span class="math inline">p \times p</span> <span class="blue">diagonal</span> matrix with entries <span class="math inline">d_1^2,\dots,d_p^2</span>.</p></li>
+<li class="fragment"><p>This equation is at the heart of <span class="blue">principal component analysis</span> (PCA). Define the matrix <span class="math display">
+\bm{Z} = \bm{X}\bm{V} = \bm{U}\bm{D},
+</span> whose columns <span class="math inline">\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p</span> are called <span class="orange">principal components</span>.</p></li>
+<li class="fragment"><p>The matrix <span class="math inline">\bm{Z}</span> is orthogonal, because <span class="math inline">\bm{Z}^T\bm{Z} = \bm{D}^T\textcolor{red}{\bm{U}^T \bm{U}} \bm{D} = \bm{\Delta}^2</span>, which is diagonal.</p></li>
+<li class="fragment"><p>Moreover, by definition the entries of <span class="math inline">\bm{Z}</span> are linear combination of the original variables: <span class="math display">
+z_{ij} = x_{i1}v_{i1} + \cdots + x_{ip} v_{ip} = \bm{x}_i^T\tilde{\bm{v}}_j.
+</span> The columns <span class="math inline">\tilde{\bm{v}}_1,\dots,\tilde{\bm{v}}_p</span> of <span class="math inline">\bm{V}</span> are sometimes called <span class="blue">loadings</span>.</p></li>
+</ul>
+</div>
 </section>
 <section id="principal-component-analysis-ii" class="slide level2 center">
 <h2>Principal component analysis II</h2>
+<div>
+<ul>
+<li class="fragment"><p>Principal components form an orthogonal basis of <span class="math inline">\bm{X}</span>, but they are not a “random” choice and they do <span class="orange">not</span> coincide with them <span class="orange">Gram-Schmidt</span> basis of <a href="un_A1.html#the-qr-decomposition-i">Unit A.1</a>.</p></li>
+<li class="fragment"><p>Indeed, the first principal component is the linear combination having <span class="blue">maximal variance</span>: <span class="math display">
+\tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}^T\bm{X} \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1.
+</span></p></li>
+<li class="fragment"><p>The second principal component maximizes the variance under the additional constraint of being orthogonal to the former. And so on and so forth.</p></li>
+<li class="fragment"><p>The values <span class="math inline">d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 &gt; 0</span> are the <span class="orange">eigenvalues</span> of <span class="math inline">\bm{X}^T\bm{X}</span> and correspond to the rescaled <span class="blue">variances</span> of each principal component, that is <span class="math inline">\text{var}(\tilde{\bm{z}}_j) = \tilde{\bm{z}}_j^T \tilde{\bm{z}}_j/n = d^2_j / n</span>.</p></li>
+<li class="fragment"><p>Hence, the quantity <span class="math inline">d_j^2 / \sum_{j'=1}^p d_{j'}^2</span> is often used to measure the amount of total variance captured by principal components.</p></li>
+</ul>
+</div>
+</section>
+<section id="principal-component-analysis-prostate-data" class="slide level2 center">
+<h2>Principal component analysis: <code>prostate</code> data</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-14-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
 <section id="principal-components-regression-1" class="slide level2 center">
 <h2>Principal components regression</h2>
 </section>
-<section id="pcr" class="slide level2 center">
-<h2>PCR</h2>
+<section id="selection-of-k-cross-validation" class="slide level2 center">
+<h2>Selection of <span class="math inline">k</span>: cross-validation</h2>
 
-<!-- ## Summary of the estimated coefficients -->
-<!-- ::: {style="font-size: 70%;"} -->
-<!-- ```{r} -->
-<!-- library(DT) -->
-<!-- tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p), PCR = rep(0, p)) -->
-<!-- rownames(tab) <- colnames(sum_best$which) -->
-<!-- tab$OLS <- coef(lm(lpsa ~ ., data = prostate_train)) -->
-<!-- tab$best_subset <- c(coef(lm(lpsa ~ lcavol + lweight, data = prostate_train)), rep(0, 6)) -->
-<!-- # Principal components regression (PCR) -->
-<!-- fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE) -->
-<!-- beta <- c(coef(fit_pcr, 3)) -->
-<!-- beta <- c(mean(prostate_train$lpsa) - colMeans(X[, -1]) %*% beta, beta) -->
-<!-- tab$PCR <- beta -->
-
-<!-- datatable(tab, colnames = c("OLS", "Best subset", "PCR"), options = list( -->
-<!--   pageLength = 9, -->
-<!--   dom = "t")) %>% -->
-<!--   formatRound(columns = 1:3, digits = 3) %>% -->
-<!--   formatStyle( -->
-<!--     columns = 0, fontWeight = "bold" -->
-<!--   ) %>% -->
-<!--   formatStyle( -->
-<!--     columns = 1:3, -->
-<!--     backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA")) -->
-<!--   ) %>% -->
-<!--   formatStyle( -->
-<!--     columns = 1:3, -->
-<!--     backgroundColor = styleEqual(0, c("white")) -->
-<!--   ) -->
-<!-- ``` -->
-<!-- ::: -->
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-16-1.png" width="1500" class="r-stretch quarto-figure-center"></section></section>
-<section>
-<section id="ridge-regression" class="title-slide slide level1 center">
-<h1>Ridge regression</h1>
-
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-16-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
+<section id="shrinkage-effect-of-principal-components-i" class="slide level2 center">
+<h2>Shrinkage effect of principal components I</h2>
 </section>
+<section id="shrinkage-effect-of-principal-components-ii" class="slide level2 center">
+<h2>Shrinkage effect of principal components II</h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-17-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
 <section id="a-summary" class="slide level2 center">
 <h2>A summary</h2>
 <table>
@@ -879,6 +922,10 @@ S = \frac{1}{n} \bm{X}^T\bm{X}.
 </tr>
 </tbody>
 </table>
+</section></section>
+<section>
+<section id="ridge-regression" class="title-slide slide level1 center">
+<h1>Ridge regression</h1>
 <!-- ## Ridge regression -->
 <!-- ```{r} -->
 <!-- df_ridge <- function(lambda, X) { -->
@@ -928,9 +975,9 @@ S = \frac{1}{n} \bm{X}^T\bm{X}.
 <!-- ```{r} -->
 <!-- # plot(log(cv_ridge_fit$lambda), cv_ridge_fit$cvm, type = "l") -->
 <!-- # plot(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),  -->
-<!-- #      cv_ridge_fit$cvm, type = "b", xlab = "Model complexity (p)", ylab = "MSE") -->
+<!-- #      cv_ridge_fit$cvm, type = "b", xlab = "Model complexity", ylab = "MSE") -->
 <!-- # lines(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),  -->
-<!-- #       cv_ridge_fit$cvup, type = "b", xlab = "Model complexity (p)", ylab = "MSE", lty = "dashed", col = "red") -->
+<!-- #       cv_ridge_fit$cvup, type = "b", xlab = "Model complexity", ylab = "MSE", lty = "dashed", col = "red") -->
 <!-- #  -->
 <!-- # 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.min, X[, -1]) -->
 <!-- # 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.1se, X[, -1]) -->
@@ -966,6 +1013,37 @@ S = \frac{1}{n} \bm{X}^T\bm{X}.
 <!-- round(coef(fit_lars)[lambda_sel, ], 5) -->
 <!-- round(coef(lasso_fit, mode = "lambda")[-1, lambda_sel], 5) -->
 <!-- ``` -->
+<!-- ## Summary of the estimated coefficients -->
+<!-- ::: {style="font-size: 70%;"} -->
+<!-- ```{r} -->
+<!-- library(DT) -->
+<!-- tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p), PCR = rep(0, p)) -->
+<!-- rownames(tab) <- colnames(sum_best$which) -->
+<!-- tab$OLS <- coef(lm(lpsa ~ ., data = prostate_train)) -->
+<!-- tab$best_subset <- c(coef(lm(lpsa ~ lcavol + lweight, data = prostate_train)), rep(0, 6)) -->
+<!-- # Principal components regression (PCR) -->
+<!-- fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE) -->
+<!-- beta <- c(coef(fit_pcr, 3)) -->
+<!-- beta <- c(mean(prostate_train$lpsa) - colMeans(X[, -1]) %*% beta, beta) -->
+<!-- tab$PCR <- beta -->
+
+<!-- datatable(tab, colnames = c("OLS", "Best subset", "PCR"), options = list( -->
+<!--   pageLength = 9, -->
+<!--   dom = "t")) %>% -->
+<!--   formatRound(columns = 1:3, digits = 3) %>% -->
+<!--   formatStyle( -->
+<!--     columns = 0, fontWeight = "bold" -->
+<!--   ) %>% -->
+<!--   formatStyle( -->
+<!--     columns = 1:3, -->
+<!--     backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA")) -->
+<!--   ) %>% -->
+<!--   formatStyle( -->
+<!--     columns = 1:3, -->
+<!--     backgroundColor = styleEqual(0, c("white")) -->
+<!--   ) -->
+<!-- ``` -->
+<!-- ::: -->
 </section>
 <section id="references" class="slide level2 center">
 <h2>References</h2>

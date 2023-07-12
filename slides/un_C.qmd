@@ -61,11 +61,11 @@ styler:::style_file("../code/un_C.R")
 ```
 
 ::: columns
-::: {.column width="20%"}
-![](img/lasso.png)
+::: {.column width="30%"}
+![](img/cowboy.jpg)
 :::
 
-::: {.column width="80%"}
+::: {.column width="70%"}
 -   In this unit we will cover the following [topics]{.orange}:
 
     -   Best subset regression
@@ -259,9 +259,9 @@ knitr::kable(tab, digits = 2)
 
 ## Best subset selection
 
--   A more principled approach is based on the tools of [Unit B](un_B.html).
+-   Let us get back to our [variable selection problem]{.blue}.
 
--   Ideally, we could perform an [exhaustive search]{.orange}
+-   In principle, we could perform an [exhaustive search]{.orange}
     considering all the $2^p$ possible models and then selecting the one
     having the best out-of-sample predictive performance.
 
@@ -322,7 +322,7 @@ ggplot(data = data_best_subset, aes(x = p, y = value)) +
   geom_line(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b") +
   geom_point(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b", size = 1.5) +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of covariates (p)") +
+  xlab("Number of covariates") +
   ylab("Mean squared error (training)")
 ```
 
@@ -336,15 +336,15 @@ summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest
 
 ::: incremental
 
-- The above table means that the best model with $k = 1$ uses the variable `lcavol`, whereas when $k = 2$ the selected variables are `lcavol` and `lweight`, and so on and so forth.
+- The above table means that the best model with $k = 1$ uses the variable `lcavol`, whereas when $k = 2$ the selected variables are `lcavol` and `lweight`, and so on and so forth. 
 
-- Note that, in general, these models are [not]{.orange} necessarily [nested]{.orange}, i.e. a variable selected at step $k$ is not necessarily included at step $k +1$.  
-
-- What is the optimal subset size $k$ in terms on out-of-sample mean squared error?
-
-- Clearly, we cannot use the training $\text{MSE}$. A possibility is cross-validation. 
-
+- Note that, in general, these models are [not]{.orange} necessarily [nested]{.orange}, i.e. a variable selected at step $k$ is not necessarily included at step $k +1$.  Here they are, but it is a coincidence.
 :::
+
+. . .
+
+- What is the [optimal subset size]{.orange} $k$ in terms on out-of-sample mean squared error?
+
 
 ## The wrong way of doing cross-validation
 
@@ -356,15 +356,15 @@ summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest
 
     1.  Screen the predictors: find a subset of "good" predictors that show fairly strong correlation with the response;
 
-    2.  Using this subset of predictors (i.e. `lcavol`, `lweight` and `svi`), build a regression model;
+    2.  Using this subset of predictors (e.g. `lcavol`, `lweight` and `svi`), build a regression model;
 
-    3.  Use cross-validation to estimate the prediction error of the model in 2.
+    3.  Use cross-validation to estimate the prediction error of the model of the step 2.
 
 -   Is this a correct application of cross-validation?
 
 -   If your reaction was "[this is absolutely wrong!]{.orange}", it means you correctly understood the principles of cross-validation.
 
--   If you though this was an ok-ish idea, you may want to read [Section 7.10.2]{.blue} of HTF (2009).
+-   If you though this was an ok-ish idea, you may want to read [Section 7.10.2]{.blue} of HTF (2009), called "the wrong way of doing cross-validation". 
 
 :::
 
@@ -379,7 +379,6 @@ cv_fold <- vfold_cv(prostate_train, v = 10)
 resid_subs <- matrix(0, n, p + 1)
 
 for (k in 1:10) {
-  
   # Estimation of the null model
   fit_null <- lm(lpsa ~ 1, data = analysis(cv_fold$splits[[k]]))
   # Best subset using branch and bound
@@ -392,9 +391,9 @@ for (k in 1:10) {
 
   # MSE of the null model
   resid_subs[complement(cv_fold$splits[[k]]), 1] <- y_k - predict(fit_null, assessment(cv_fold$splits[[k]]))
-  
+
   # MSE of the best models for different values of p
-  for (j in 2:(p+1)) {
+  for (j in 2:(p + 1)) {
     y_hat <- X_k[, sum$which[j - 1, ]] %*% coef(fit, j - 1)
     resid_subs[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
   }
@@ -419,39 +418,44 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   geom_point() +
   geom_line() +
   geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) +
-  geom_hline(yintercept = se_rule, linetype = "dotted") + 
-  geom_vline(xintercept = p_optimal, linetype = "dotted") + 
+  geom_hline(yintercept = se_rule, linetype = "dotted") +
+  geom_vline(xintercept = p_optimal, linetype = "dotted") +
   theme_light() +
   scale_x_continuous(breaks = 0:9) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of covariates (p)") +
+  xlab("Number of covariates") +
   ylab("Mean squared error (10-fold cv)")
 ```
 
-- By applying the informal "1 standard error rule", we select $k = 2$, corresponding to the model using the variables `lcavol` and `lweight` on the [full training]{.orange} set. 
+- By applying the "1 standard error rule", we select $k = 2$, i.e. `lcavol` and `lweight`. 
 
 
 ## Comments and computations
 
 ::: incremental
 
--   The correct way of doing cross-validation requires that the [best subset selection]{.blue} is performed on [every fold]{.blue}, possibly obtaining different "best" models with the same size. 
+-   The correct way of doing cross-validation requires that the [best subset selection]{.blue} is performed on [every fold]{.orange}, possibly obtaining different "best" models with the same size. 
 
-- Best subset selection is conceptually appealing, but it has a [major limitation]{.orange}. There are: $$
+- Best subset selection is conceptually appealing, but it has a [major limitation]{.orange}. There are $$
 \sum_{k=1}^p \binom{n}{k} = 2^p
 $$
 models to consider, which is [computationally prohibitive]{.orange}!
 
-- There exists very clever algorithms (i.e. [leaps and bounds]{.blue}) that makes this feasible for $p$ as large as $30$ or $40$.  
+- There exists algorithms (i.e. [leaps and bounds]{.blue}) that makes this feasible for $p \approx 30$.  
 
 - Recently, [Bertsimas et al., 2016](https://projecteuclid.org/journals/annals-of-statistics/volume-44/issue-2/Best-subset-selection-via-a-modern-optimization-lens/10.1214/15-AOS1388.full) proposed the usage of a mixed integer optimization formulation, allowing $p$ to be in the order of hundreds. 
 
-- Despite these advances, this problem remains [computationally very expensive]{.orange}. See also [Hastie et al. (2020)](https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full) for additional considerations and comparisons.
+- Despite these advances, this problem remains [computationally very expensive]{.orange}. See also the recent paper [Hastie et al. (2020)](https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full) for additional considerations and comparisons.
 
 :::
 
 ## Forward regression
+
+
+- Forward regression is [greedy approximation]{.orange} of best subset selection, that produces a sequence of [nested]{.blue} models. It is computationally feasible and can be applied when $p > n$. 
+
+. . .
 
 ::: callout-note
 #### Forward regression
@@ -467,14 +471,16 @@ models to consider, which is [computationally prohibitive]{.orange}!
         having the smallest $\text{MSE}_{k, \text{train}}$ and call it $\mathcal{M}_k$. 
 :::
 
+. . .
 
-- Forward regression can be regarded as [greedy approximation]{.orange} of best subset selection. The advantage is that it is computationally feasible and it can be applied even when $p > n$. 
-
-- By construction, it produces a [nested]{.blue} sequence of models.
 
 - It can be shown that the identification of the [optimal new predictor]{.blue} can be efficiently computed using the [QR decomposition]{.orange} (see Exercises).
 
 ## Backward regression
+
+- When $p < n$, an alternative greedy approach is [backward regression]{.orange}, which also produces a sequence of [nested]{.blue} models. 
+
+. . .
 
 ::: callout-note
 #### Backward regression
@@ -489,12 +495,6 @@ models to consider, which is [computationally prohibitive]{.orange}!
     ii. Identify the "best" model $\mathcal{M}_k$ among these $k$ models
         having the smallest $\text{MSE}_{k, \text{train}}$. 
 :::
-
-- Backward regression is another computationally feasible [greedy approximation]{.orange} of best subset selection. 
-
-- Note that in this case we need  $p < n$, otherwise it is not possible to estimate the full model.
-
-- Backward regression produces a [nested]{.blue} sequence of models. 
 
 - It can be shown that the [dropped predictor]{.blue} is the one with the lowest absolute $Z$-score or, equivalently, the [highest p-value]{.orange} (see Exercises).
 
@@ -513,10 +513,14 @@ sum_backward <- summary(fit_backward)
 #| fig-align: center
 
 # Organization of the results for graphical purposes
-data_stepwise <- data.frame(p = c(1:p, 1:p, 1:p), MSE = c(sum_forward$rss, 
-                                                          sum_backward$rss, 
-                                                          tapply(sum_best$rss, sum_best$p, min)) / n,
-                            Stepwise = rep(c("Forward", "Backward", "Best subset"), each = p))
+data_stepwise <- data.frame(
+  p = c(1:p, 1:p, 1:p), MSE = c(
+    sum_forward$rss,
+    sum_backward$rss,
+    tapply(sum_best$rss, sum_best$p, min)
+  ) / n,
+  Stepwise = rep(c("Forward", "Backward", "Best subset"), each = p)
+)
 data_stepwise <- reshape2::melt(data_stepwise, id = c("p", "Stepwise"))
 colnames(data_stepwise) <- c("p", "Stepwise", "MSE", "value")
 
@@ -528,13 +532,34 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
   theme(legend.position = "none") +
   scale_x_continuous(breaks = 0:9) +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of covariates (p)") +
+  xlab("Number of covariates") +
   ylab("MSE (training)")
 ```
 
 - In the `prostate` dataset, forward, backward and best subset selection all gave exactly the [same path of solutions]{.orange} on the full training set.
 
 # Principal components regression
+
+## Data compression
+
+::: columns
+::: {.column width="30%"}
+![](img/cowboy_pixel.jpg)
+:::
+
+::: {.column width="70%"}
+
+- At this point we established that [many covariates = many problems]{.orange}.
+
+- Instead of selecting the "best" variables, let us consider a different perspective.
+
+- We consider a [compressed]{.blue} version of the covariates that has smaller dimension $k$ but retains most information.
+
+- The main statistical tool, unsurprisingly, will be the celebrated [principal components analysis]{.blue} (PCA).
+
+- You should already know PCA as a tool for explorative analysis... We will focus on its usage for regression purposes. 
+:::
+:::
 
 ## Centering the predictors I
 
@@ -563,6 +588,8 @@ used to predict the [centered responses]{.blue} $y_i - \bar{y}$.
 
 ## Centering the predictors II
 
+::: incremental
+
 - From here on, and without loss of generality, we assume that everything is [centered]{.orange}:
 $$
 \sum_{i=1}^ny_i = 0, \qquad \sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
@@ -578,28 +605,95 @@ S = \frac{1}{n} \bm{X}^T\bm{X}.
 $$
 - If in addition each variable has been [scaled]{.blue} by their standard deviations, then $n^{-1} \bm{X}^T\bm{X}$ corresponds to the [correlation]{.blue} matrix.
 
+:::
+
+## Singular value decomposition (SVD)
+
+- Let $\bm{X}$ be a $n \times p$ matrix. Then, its full form [singular value decomposition]{.orange} is: $$
+\bm{X} = \bm{U} \bm{D} \bm{V}^T = \sum_{j=1}^m d_j \tilde{\bm{u}}_j \tilde{\bm{v}}_j^T,
+$$
+with $m =\min\{n, p\}$ and where:
+  - the $n \times n$ matrix $\bm{U} = (\tilde{\bm{u}}_1, \dots, \tilde{\bm{u}}_n)$ is [orthogonal]{.orange}, namely: $\bm{U}^T \bm{U} = \bm{U}\bm{U}^T= I_n$; 
+  - the $p \times p$ matrix $\bm{V} = (\tilde{\bm{v}}_1,\dots,\tilde{\bm{v}}_p)$ is [orthogonal]{.orange}, namely: $\bm{V}^T \bm{V} = \bm{V}\bm{V}^T= I_p$;
+  - the $n \times p$ matrix $\bm{D}$ has [diagonal]{.blue} entries $[\bm{D}]_{jj} = d_j$, for $j=1,\dots,m$, and zero entries elsewhere;
+
+- The real numbers $d_1 \ge d_2 \ge \cdots \ge d_m \ge 0$ are called [singular values]{.blue}.
+
+- If one or more $d_j = 0$, then the matrix $\bm{X}$ is singular.
+
 ## Principal component analysis I
 
+::: incremental
+
+- Le us assume that $p < n$ and that $\text{rk}(\bm{X}) = p$, recalling that $\bm{X}$ is a [centered]{.orange} matrix.  
+
+- Using SVD, the matrix $\bm{X}^T\bm{X}$ can be expressed as
+$$
+\bm{X}^T\bm{X} = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V},
+$$
+where $\bm{\Delta}^2 = \bm{D}^T\bm{D}$ is a $p \times p$ [diagonal]{.blue} matrix with entries $d_1^2,\dots,d_p^2$.
+
+- This equation is at the heart of [principal component analysis]{.blue} (PCA). Define the matrix
+$$
+\bm{Z} = \bm{X}\bm{V} = \bm{U}\bm{D},
+$$
+whose columns $\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p$ are called [principal components]{.orange}.
+
+- The matrix $\bm{Z}$ is orthogonal, because $\bm{Z}^T\bm{Z} = \bm{D}^T\textcolor{red}{\bm{U}^T \bm{U}} \bm{D} = \bm{\Delta}^2$, which is diagonal. 
+
+- Moreover, by definition the entries of $\bm{Z}$ are linear combination of the original variables:
+$$
+z_{ij} = x_{i1}v_{i1} + \cdots + x_{ip} v_{ip} = \bm{x}_i^T\tilde{\bm{v}}_j.
+$$
+The columns $\tilde{\bm{v}}_1,\dots,\tilde{\bm{v}}_p$ of $\bm{V}$ are sometimes called [loadings]{.blue}.
+
+
+
+
+:::
 
 ## Principal component analysis II
+
+::: incremental
+
+- Principal components form an orthogonal basis of $\bm{X}$, but they are not a "random" choice and they do [not]{.orange} coincide with them [Gram-Schmidt]{.orange} basis of [Unit A.1](un_A1.html#the-qr-decomposition-i). 
+
+- Indeed, the first principal component is the linear combination having [maximal variance]{.blue}:
+$$
+\tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}^T\bm{X} \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1.
+$$
+
+- The second principal component maximizes the variance under the additional constraint of being orthogonal to the former. And so on and so forth. 
+
+- The values $d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 > 0$ are the [eigenvalues]{.orange} of $\bm{X}^T\bm{X}$ and correspond to the rescaled [variances]{.blue} of each principal component, that is $\text{var}(\tilde{\bm{z}}_j) = \tilde{\bm{z}}_j^T \tilde{\bm{z}}_j/n = d^2_j / n$.
+
+- Hence, the quantity $d_j^2 / \sum_{j'=1}^p d_{j'}^2$ is often used to measure the amount of total variance captured by principal components.  
+
+:::
+
+## Principal component analysis: `prostate` data
 
 ```{r}
 #| fig-width: 10
 #| fig-height: 5
 #| fig-align: center
-pr <- princomp(prostate_train[,-9], cor = FALSE)
-ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x= p, xmin = p, xmax = p, y=vars, ymax = vars, , ymin = 0)) + geom_pointrange() + theme_light() +
+pr <- princomp(prostate_train[, -9], cor = FALSE)
+ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p, xmin = p, xmax = p, y = vars, ymax = vars, ymin = 0)) +
+  geom_pointrange() +
+  theme_light() +
+  scale_x_continuous(breaks = 1:9) +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of principal components (p)") +
+  xlab("Number of principal components") +
   ylab("Fraction of explained variance")
 ```
 
 
 ## Principal components regression
 
+## Selection of $k$: cross-validation
+
 ```{r}
 library(pls)
-
 resid_pcr <- matrix(0, n, p)
 
 for (k in 1:10) {
@@ -618,9 +712,6 @@ for (k in 1:10) {
   }
 }
 ```
-
-
-## PCR
 
 ```{r}
 #| fig-width: 10
@@ -646,74 +737,45 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   scale_x_continuous(breaks = 1:9) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of principal components (p)") +
+  xlab("Number of principal components") +
   ylab("Mean squared error (10-fold cv)")
 ```
 
 
 
-<!-- ## Summary of the estimated coefficients -->
+## Shrinkage effect of principal components I
 
-<!-- ::: {style="font-size: 70%;"} -->
+## Shrinkage effect of principal components II
 
-<!-- ```{r} -->
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE)
 
-<!-- library(DT) -->
-
-<!-- tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p), PCR = rep(0, p)) -->
-
-<!-- rownames(tab) <- colnames(sum_best$which) -->
-
-<!-- tab$OLS <- coef(lm(lpsa ~ ., data = prostate_train)) -->
-
-<!-- tab$best_subset <- c(coef(lm(lpsa ~ lcavol + lweight, data = prostate_train)), rep(0, 6)) -->
-
-<!-- # Principal components regression (PCR) -->
-
-<!-- fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE) -->
-
-<!-- beta <- c(coef(fit_pcr, 3)) -->
-
-<!-- beta <- c(mean(prostate_train$lpsa) - colMeans(X[, -1]) %*% beta, beta) -->
-
-<!-- tab$PCR <- beta -->
-
-<!-- datatable(tab, colnames = c("OLS", "Best subset", "PCR"), options = list( -->
-
-<!--   pageLength = 9, -->
-
-<!--   dom = "t")) %>% -->
-
-<!--   formatRound(columns = 1:3, digits = 3) %>% -->
-
-<!--   formatStyle( -->
-
-<!--     columns = 0, fontWeight = "bold" -->
-
-<!--   ) %>% -->
-
-<!--   formatStyle( -->
-
-<!--     columns = 1:3, -->
-
-<!--     backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA")) -->
-
-<!--   ) %>% -->
-
-<!--   formatStyle( -->
-
-<!--     columns = 1:3, -->
-
-<!--     backgroundColor = styleEqual(0, c("white")) -->
-
-<!--   ) -->
-
-<!-- ``` -->
-
-<!-- ::: -->
+data_pcr <- reshape2::melt(coef(fit_pcr, 1:8))
+colnames(data_pcr) <- c("Covariate", "lpsa", "Components", "value")
+data_pcr$Components <- as.numeric(data_pcr$Components)
+data_pcr <- rbind(data_pcr, data.frame(Covariate = data_pcr$Covariate[data_pcr$Components == 1], lpsa = NA, Components = 0, value = 0))
+ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
+  geom_point() +
+  geom_line() +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_x_continuous(breaks = 0:9) +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Number of principal components") +
+  ylab("Regression coefficients")
+```
 
 
-# Ridge regression
+
+
+
+
+
+
+
 
 ## A summary
 
@@ -721,6 +783,8 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 |------------|--------------------------------|-----------------------|
 | [Discrete]{.blue}   | Principal component regression | Best subset selection, stepwise |
 | [Continuous]{.blue} | Ridge regression               | Relaxed Lasso           |
+
+# Ridge regression
 
 
 <!-- ## Ridge regression -->
@@ -821,11 +885,11 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 
 <!-- # plot(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),  -->
 
-<!-- #      cv_ridge_fit$cvm, type = "b", xlab = "Model complexity (p)", ylab = "MSE") -->
+<!-- #      cv_ridge_fit$cvm, type = "b", xlab = "Model complexity", ylab = "MSE") -->
 
 <!-- # lines(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),  -->
 
-<!-- #       cv_ridge_fit$cvup, type = "b", xlab = "Model complexity (p)", ylab = "MSE", lty = "dashed", col = "red") -->
+<!-- #       cv_ridge_fit$cvup, type = "b", xlab = "Model complexity", ylab = "MSE", lty = "dashed", col = "red") -->
 
 <!-- #  -->
 
@@ -898,5 +962,66 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 <!-- round(coef(lasso_fit, mode = "lambda")[-1, lambda_sel], 5) -->
 
 <!-- ``` -->
+
+<!-- ## Summary of the estimated coefficients -->
+
+<!-- ::: {style="font-size: 70%;"} -->
+
+<!-- ```{r} -->
+
+<!-- library(DT) -->
+
+<!-- tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p), PCR = rep(0, p)) -->
+
+<!-- rownames(tab) <- colnames(sum_best$which) -->
+
+<!-- tab$OLS <- coef(lm(lpsa ~ ., data = prostate_train)) -->
+
+<!-- tab$best_subset <- c(coef(lm(lpsa ~ lcavol + lweight, data = prostate_train)), rep(0, 6)) -->
+
+<!-- # Principal components regression (PCR) -->
+
+<!-- fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE) -->
+
+<!-- beta <- c(coef(fit_pcr, 3)) -->
+
+<!-- beta <- c(mean(prostate_train$lpsa) - colMeans(X[, -1]) %*% beta, beta) -->
+
+<!-- tab$PCR <- beta -->
+
+<!-- datatable(tab, colnames = c("OLS", "Best subset", "PCR"), options = list( -->
+
+<!--   pageLength = 9, -->
+
+<!--   dom = "t")) %>% -->
+
+<!--   formatRound(columns = 1:3, digits = 3) %>% -->
+
+<!--   formatStyle( -->
+
+<!--     columns = 0, fontWeight = "bold" -->
+
+<!--   ) %>% -->
+
+<!--   formatStyle( -->
+
+<!--     columns = 1:3, -->
+
+<!--     backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA")) -->
+
+<!--   ) %>% -->
+
+<!--   formatStyle( -->
+
+<!--     columns = 1:3, -->
+
+<!--     backgroundColor = styleEqual(0, c("white")) -->
+
+<!--   ) -->
+
+<!-- ``` -->
+
+<!-- ::: -->
+
 
 ## References
