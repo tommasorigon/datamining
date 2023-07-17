@@ -503,7 +503,7 @@ Error decomposition (reducible and irreducible)
 \hat{y}_{i, \text{bayes}} = \arg\max_{y \in \{0, 1\}} \mathbb{P}(\tilde{Y}_i = y) = \mathbb{I}(p(\bm{x}_i) &gt; 0.5),
 </span> which depends on the unknown probabilities <span class="math inline">p(\bm{x}_i)</span>.</p></li>
 <li><p>We call the <span class="blue">Bayes rate</span> the optimal in-sample prediction error: <span class="math display">
-\mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_{i, \text{bayes}})\}\right] = \frac{1}{n}\sum_{i=1}^n\min\{p(\bm{x}_i), 1 - p(\bm{x}_i)\}.
+\mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; p(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n\min\{p(\bm{x}_i), 1 - p(\bm{x}_i)\}.
 </span></p></li>
 <li><p>The <span class="blue">Bayes rate</span> is the error rate we would get if we knew the true <span class="math inline">p(\bm{x})</span> and can be regarded as the <span class="orange">irreducible error</span> for classification problems.</p></li>
 </ul>

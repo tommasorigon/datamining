@@ -837,7 +837,6 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
   ylab("Regression coefficients")
 ```
 
-## Extension to generalized linear models
 
 
 ## Summary and next steps
@@ -1091,5 +1090,6 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 <!-- ::: -->
 
+# Generalized linear models
 
 ## References

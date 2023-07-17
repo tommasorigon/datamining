@@ -564,7 +564,7 @@ which depends on the unknown probabilities $p(\bm{x}_i)$.
 
 - We call the [Bayes rate]{.blue} the optimal in-sample prediction error:
 $$
-\mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_{i, \text{bayes}})\}\right] = \frac{1}{n}\sum_{i=1}^n\min\{p(\bm{x}_i), 1 - p(\bm{x}_i)\}.
+\mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; p(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n\min\{p(\bm{x}_i), 1 - p(\bm{x}_i)\}.
 $$
 
 - The [Bayes rate]{.blue} is the error rate we would get if we knew the true $p(\bm{x})$ and can be regarded as the [irreducible error]{.orange} for classification problems.  
