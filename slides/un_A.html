@@ -121,18 +121,19 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a>
   <ul class="collapse">
-  <li><a href="#the-hearth-dataset" id="toc-the-hearth-dataset" class="nav-link" data-scroll-target="#the-hearth-dataset">The <code>hearth</code> dataset</a></li>
+  <li><a href="#the-heart-dataset" id="toc-the-heart-dataset" class="nav-link" data-scroll-target="#the-heart-dataset">The <code>heart</code> dataset</a></li>
+  <li><a href="#the-heart-dataset-1" id="toc-the-heart-dataset-1" class="nav-link" data-scroll-target="#the-heart-dataset-1">The <code>heart</code> dataset</a></li>
   <li><a href="#generalized-linear-models-1" id="toc-generalized-linear-models-1" class="nav-link" data-scroll-target="#generalized-linear-models-1">Generalized linear models</a></li>
   <li><a href="#likelihood-based-inference" id="toc-likelihood-based-inference" class="nav-link" data-scroll-target="#likelihood-based-inference">Likelihood-based inference</a></li>
   <li><a href="#linear-models-with-gaussian-errors" id="toc-linear-models-with-gaussian-errors" class="nav-link" data-scroll-target="#linear-models-with-gaussian-errors">Linear models with Gaussian errors</a></li>
   <li><a href="#binary-classification-via-logistic-regression" id="toc-binary-classification-via-logistic-regression" class="nav-link" data-scroll-target="#binary-classification-via-logistic-regression">Binary classification via logistic regression</a></li>
-  <li><a href="#iteratively-re-weighted-least-squares-irls" id="toc-iteratively-re-weighted-least-squares-irls" class="nav-link" data-scroll-target="#iteratively-re-weighted-least-squares-irls">Iteratively re-weighted least squares (IRLS)</a></li>
+  <li><a href="#iteratively-re-weighted-least-squares-i" id="toc-iteratively-re-weighted-least-squares-i" class="nav-link" data-scroll-target="#iteratively-re-weighted-least-squares-i">Iteratively re-weighted least squares I</a></li>
+  <li><a href="#iteratively-re-weighted-least-squares-ii" id="toc-iteratively-re-weighted-least-squares-ii" class="nav-link" data-scroll-target="#iteratively-re-weighted-least-squares-ii">Iteratively re-weighted least squares II</a></li>
   <li><a href="#computational-considerations" id="toc-computational-considerations" class="nav-link" data-scroll-target="#computational-considerations">Computational considerations</a></li>
   <li><a href="#the-estimated-model" id="toc-the-estimated-model" class="nav-link" data-scroll-target="#the-estimated-model">The estimated model</a></li>
   <li><a href="#prediction-and-model-assessment-i" id="toc-prediction-and-model-assessment-i" class="nav-link" data-scroll-target="#prediction-and-model-assessment-i">Prediction and model assessment I</a></li>
   <li><a href="#prediction-and-model-assessment-ii" id="toc-prediction-and-model-assessment-ii" class="nav-link" data-scroll-target="#prediction-and-model-assessment-ii">Prediction and model assessment II</a></li>
-  <li><a href="#the-roc-curve-i" id="toc-the-roc-curve-i" class="nav-link" data-scroll-target="#the-roc-curve-i">The ROC curve I</a></li>
-  <li><a href="#the-roc-curve-ii" id="toc-the-roc-curve-ii" class="nav-link" data-scroll-target="#the-roc-curve-ii">The ROC curve II</a></li>
+  <li><a href="#the-roc-curve" id="toc-the-roc-curve" class="nav-link" data-scroll-target="#the-roc-curve">The ROC curve</a></li>
   <li><a href="#other-topics" id="toc-other-topics" class="nav-link" data-scroll-target="#other-topics">Other topics</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a>
@@ -188,6 +189,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Cholesky factorization</li>
 <li>Orthogonalization and QR decomposition</li>
 <li>Iterative methods</li>
+<li>Generalized linear models</li>
 </ul></li>
 <li><p>The <span class="blue">computational aspects</span> of linear models will be novel to most of you…</p></li>
 <li><p>… but you should be already <span class="orange">very familiar</span> with linear models!</p></li>
@@ -279,7 +281,7 @@ Definition (Linear model)
 </div>
 <div class="callout-body-container callout-body">
 <p>In a <span class="blue">linear model</span> the response variable <span class="math inline">Y_i</span> is related to the covariates through the function<span class="math display">
-    f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
+    \mathbb{E}(Y_i) =f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
     </span> where <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> is a vector of <span class="orange">covariates</span> and <span class="math inline">\beta = (\beta_1,\dots,\beta_p)^T</span> is the corresponding vector of <span class="orange">coefficients</span>.</p>
 </div>
 </div>
@@ -1167,79 +1169,359 @@ Sherman-Morrison formula
 </section>
 <section id="generalized-linear-models" class="level1">
 <h1>Generalized linear models</h1>
-<section id="the-hearth-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="the-hearth-dataset">The <code>hearth</code> dataset</h2>
+<section id="the-heart-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="the-heart-dataset">The <code>heart</code> dataset</h2>
 <div class="columns">
 <div class="column" style="width:40%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="un_A_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="600"></p>
+<p><img src="un_A_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="750"></p>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
 <ul>
-<li><p>The <code>heart</code> dataset.</p></li>
-<li><p>This <a href="https://hastie.su.domains/ElemStatLearn/datasets/SAheart.data">dataset</a> is described is given in <span class="blue">Section XXX</span> of HTF (2009).</p></li>
-<li><p>We want to <span class="blue">predict</span></p></li>
+<li><p>Let us consider the South African <code>heart</code> <a href="https://hastie.su.domains/ElemStatLearn/datasets/SAheart.data">dataset</a>, described is <span class="blue">Section 4.4.2</span> of HTF (2009).</p></li>
+<li><p>We want to <span class="blue">predict</span> the insurgence of <span class="orange">coronary heart disease</span> (<code>chd</code>) as function of known risks factors:</p>
+<ul>
+<li>Colesterol level (<code>ldl</code>) and obesity (<code>obesity</code>)</li>
+<li>Consumption of tobacco (<code>tobacco</code>) and alcool (<code>alcool</code>)</li>
+<li>Systolic blood pressure (<code>sbp</code>)</li>
+<li>Age (<code>age</code>) and family history ( <code>famhist</code>)</li>
+</ul></li>
+<li><p>The response variable is <span class="orange">binary</span>: we cannot rely on linear regression models.</p></li>
 </ul>
 </div>
 </div>
-<!-- ## The `hearth` dataset -->
-<!-- ```{r} -->
-<!-- #| warning: false -->
-<!-- #| message: false -->
-<!-- #| fig-width: 11 -->
-<!-- #| fig-height: 6 -->
-<!-- #| fig-align: center -->
-<!-- p0 <- ggpairs(hearth, -->
-<!--   columns = c(1:4, 6:9), aes(colour = chd), -->
-<!--   lower = list(continuous = wrap("points", size = 0.2)), -->
-<!--   upper = list(continuous = wrap("points", size = 0.2)), -->
-<!--   diag = "blank" -->
-<!-- ) + -->
-<!--   theme_light() + -->
-
-<!--   scale_color_tableau(palette = "Color Blind") + -->
-<!--   xlab("") + -->
-<!--   ylab("") -->
-<!-- p0 -->
-<!-- ``` -->
+</section>
+<section id="the-heart-dataset-1" class="level2">
+<h2 class="anchored" data-anchor-id="the-heart-dataset-1">The <code>heart</code> dataset</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_A_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="1650"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="generalized-linear-models-1" class="level2">
 <h2 class="anchored" data-anchor-id="generalized-linear-models-1">Generalized linear models</h2>
+<ul>
+<li><p>If the outcome is binary, a count, or if the errors are heteroschedastic, then the Gaussian linear regression model might be inappropriate.</p></li>
+<li><p>We let <span class="math inline">Y_i</span> be iid draws from an <span class="blue">exponentialy dispersion family</span>, which includes the Binomial, the Poisson, and the Gaussian distribution as special cases.</p></li>
+<li><p>The canonical statistical solution are <span class="orange">generalized linear models</span>, which are usually thought in undergraduate courses (e.g.&nbsp;Statistica III). This is just a short recap.</p></li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Generalized linear model (GLMs)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In a <span class="blue">generalized linear model</span> the response variable is related to the covariates through: <span class="math display">
+\mathbb{E}(Y_i) = g\{f(\bm{x}_i; \beta)\} = g(\beta_1 x_{i1} + \cdots + \beta_p x_{ip}) = g(\bm{x}_i^T\beta),
+</span> where <span class="math inline">g(\cdot)</span> is the so-called <span class="orange">link function</span>, which is known and invertible.</p>
+</div>
+</div>
 </section>
 <section id="likelihood-based-inference" class="level2">
 <h2 class="anchored" data-anchor-id="likelihood-based-inference">Likelihood-based inference</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Let <span class="math inline">\pi(y; \bm{x}, \theta)</span> be the <span class="blue">density</span> associated to each <span class="math inline">Y_i</span>. Here <span class="math inline">\theta</span> is a vector of parameters.</p></li>
+<li><p>The <span class="orange">log-likelihood</span> of a GLM is <span class="math display">
+\ell(\theta) = \ell(\theta;\bm{y}) = \sum_{i=1}^n \log{\pi(y_i; \bm{x}_i, \theta)} + c,
+</span> where <span class="math inline">c</span> is an additive constant not depending on <span class="math inline">\beta</span>.</p></li>
+<li><p>The <span class="orange">maximum likelihood estimate</span> for the regression coefficients <span class="math inline">\beta</span> is <span class="math display">
+\hat{\theta} = \arg\max_\theta \ell(\theta).
+</span></p></li>
+<li><p>Standard errors, tests and confidence intervals can be easily obtained from (derivatives of) the log-likelihood, as you have seen in undergraduate courses (e.g.&nbsp;Statistica II and III).</p></li>
+<li><p>The aforementioned inferential results are often grounded on <span class="orange">asymptotic theory</span> and <span class="blue">quadratic approximations</span> of the log-likelihood.</p></li>
+</ul>
+</div>
 </section>
 <section id="linear-models-with-gaussian-errors" class="level2">
 <h2 class="anchored" data-anchor-id="linear-models-with-gaussian-errors">Linear models with Gaussian errors</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>When <span class="math inline">Y_i</span> are Gaussian random variables, then the log-likelihood is <span class="math display">
+\ell(\beta, \sigma^2) = -\frac{n}{2}\log{\sigma^2} - \frac{1}{\sigma^2}D(\beta),
+</span> where <span class="math inline">D(\beta)</span> is the same quantity we have <a href="/#/linear-regression-estimation-i">defined before</a>.</p></li>
+<li><p>Hence, the <span class="blue">ordinary least squares</span> estimate <span class="math inline">\hat{\beta}</span> is also the <span class="orange">maximum likelihood</span> estimate. Indeed, the maximizer of the log-likelihood with respect to <span class="math inline">\beta</span> is also the minimizer of <span class="math inline">D(\beta)</span>.</p></li>
+<li><p>Instead, the maximum likelihood estimate for the variance is <span class="math inline">\hat{\sigma}^2 = D(\hat{\beta}) / n</span>.</p></li>
+<li><p>Note in addition that the log-likelihood, evaluated at its maximum, is <span class="math display">
+-2 \ell(\hat{\beta},\hat{\sigma}^2) =  n \log\{D(\beta)/n\} + n,
+</span> a quantity that will turn useful in <a href="un_B.html">Unit B</a>.</p></li>
+</ul>
+</div>
 </section>
 <section id="binary-classification-via-logistic-regression" class="level2">
 <h2 class="anchored" data-anchor-id="binary-classification-via-logistic-regression">Binary classification via logistic regression</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The <code>heart</code> dataset presents a <span class="blue">classification</span> problem, in which we assume that <span class="math display">
+Y_i \overset{\text{ind}}{\sim} \text{Bern}\{p(\bm{x}_i; \beta)\}, \qquad i=1,\dots,n.
+</span></p></li>
+<li><p>The <span class="blue">canonical link</span> function <span class="math inline">g(x) = e^x / (1 + e^{x})</span> leads to the GLM <span class="math display">
+\mathbb{P}(Y_i = 1)= p(\bm{x}_i; \beta) = \frac{\exp\{f(\bm{x}_i; \beta)\}}{1 + \exp\{f(\bm{x}_i; \beta)\}} = \frac{\exp(\beta_1 x_{i1} + \cdots + \beta_p x_{ip})}{1 + \exp(\beta_1 x_{i1} + \cdots + \beta_p x_{ip})},
+</span> known as <span class="orange">logistic regression</span>. Note that in this model <span class="math inline">\mathbb{E}(Y_i) = \mathbb{P}(Y_i = 1)</span>.</p></li>
+<li><p>After some algebra, it can be shown that the log-likelihood is <span class="math display">
+\ell(\beta) = \sum_{i=1}^n y_i (\bm{x}_i^T\beta) - \log\{1 + \exp(\bm{x}_i^T\beta)\}.
+</span></p></li>
+<li><p>Moreover, the <span class="orange">predicted values</span> <span class="math inline">p(\bm{x}_i; \hat{\beta})</span> are <span class="blue">probabilities</span> and they belong to <span class="math inline">(0,1)</span>.</p></li>
+</ul>
+</div>
 </section>
-<section id="iteratively-re-weighted-least-squares-irls" class="level2">
-<h2 class="anchored" data-anchor-id="iteratively-re-weighted-least-squares-irls">Iteratively re-weighted least squares (IRLS)</h2>
+<section id="iteratively-re-weighted-least-squares-i" class="level2">
+<h2 class="anchored" data-anchor-id="iteratively-re-weighted-least-squares-i">Iteratively re-weighted least squares I</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Let us define the so-called <span class="blue">score function</span>: <span class="math display">
+\ell'(\beta) = \frac{\partial}{\partial \beta}\ell(\beta) = \sum_{i=1}^n\bm{x}_i \{y_i - p(\bm{x}_i; \beta)\}, \qquad
+</span></p></li>
+<li><p>Moreover, the so-called <span class="blue">observed information matrix</span> is <span class="math display">
+j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\sum_{i=1}^n \bm{x}_i\bm{x}_i^T w_i(\beta), \quad w_i(\beta) = p(\bm{x}_i; \beta)\{1 - p(\bm{x}_i; \beta)\}.
+</span></p></li>
+<li><p>In <span class="orange">matrix notation</span>, we will write <span class="math display">
+\ell'(\beta) = \bm{X}^T(\bm{y} - \bm{p}), \qquad j(\beta) = \bm{X}^T\bm{W}\bm{X},
+</span> where <span class="math inline">\bm{p} = (p(\bm{x}_1; \beta), \dots, p(\bm{x}_n; \beta))</span> and <span class="math inline">W = \text{diag}(w_1(\beta),\dots, w_n(\beta))</span>.</p></li>
+<li><p>Unfortunately, a closed-form expression for <span class="math inline">\hat{\beta}</span>, solving the <span class="blue">likelihood equations</span> <span class="math inline">\bm{X}^T(\bm{y} - \bm{p}) = 0</span>, is not available. We need to use <span class="orange">iterative algorithms</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="iteratively-re-weighted-least-squares-ii" class="level2">
+<h2 class="anchored" data-anchor-id="iteratively-re-weighted-least-squares-ii">Iteratively re-weighted least squares II</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>As you <a href="https://tommasorigon.github.io/introR/lezioni/un_K.html#il-metodo-di-newton-raphson-i">may remember</a>, in the Newton-Raphson <span class="orange">iterative method</span> we consider a <span class="blue">quadratic approximation</span> of the log-likelihood on <span class="math inline">\beta_0</span>, so that: <span class="math display">
+\ell(\beta) \approx \ell(\beta_0) + \ell'(\beta_0)^T(\beta - \beta_0) - \frac{1}{2}(\beta - \beta_0)^Tj(\beta)(\beta - \beta_0).
+</span></p></li>
+<li><p>By maximizing the quadratic approximation, in logistic regression we get the update <span class="math display">
+\begin{aligned}
+\beta^{\text{new}} &amp;= \beta^{(\text{old})} + j(\beta^{\text{old}})^{-1}\ell'(\beta^{\text{old}}) = \beta^{(\text{old})} + (\bm{X}^T\bm{W}\bm{X})^{-1}\bm{X}^T(\bm{y} - \bm{p}) \\
+&amp; = (\bm{X}^T\bm{W}\bm{X})^{-1}\bm{X}^T\bm{W}\bm{z},
+\end{aligned}
+</span> where <span class="math inline">\bm{z} = \bm{X}\beta^{(\text{old})} + \bm{W}^{-1}(\bm{y} - \bm{p})</span>, which we <span class="orange">cycle repeatedly</span> until <span class="blue">convergence</span>.</p></li>
+<li><p>This algorithm is sometimes called <span class="blue">iteratively re-weighted least squares</span> (IRLS), because <span class="orange">each step</span> can be seen as the solution of the weighted least squares problem <span class="math display">
+\beta^{\text{new}} = \arg\min_\beta (\bm{z} - \bm{X}\beta)^T \bm{W}(\bm{z} - \bm{X}\beta).
+</span></p></li>
+</ul>
+</div>
 </section>
 <section id="computational-considerations" class="level2">
 <h2 class="anchored" data-anchor-id="computational-considerations">Computational considerations</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Each <span class="orange">step</span> of the IRLS algorithm finds the solution of the likelihood equations <span class="math display">
+(\bm{X}^T\bm{W}\bm{X})\beta = \bm{X}^T\bm{W}\bm{z}.
+</span></p></li>
+<li><p>Once again the Cholesky and the QR decomposition can be exploited to speed up computations. See Section 5.4 of Arnold et al.&nbsp;(2019) for further details.</p></li>
+<li><p>It can be shown that <span class="math inline">\beta = (0,\dots,0)^T</span> is a good starting point for the initialization.</p></li>
+<li><p>Unfortunately, the IRLS is <span class="orange">not</span> garanteed to <span class="orange">converge</span> nor to increase the log-likelihood at every step, but there are easy fixes.</p></li>
+<li><p>See this <a href="https://github.com/tommasorigon/logisticVB/blob/master/em_logistic_tutorial.md">tutorial</a> for an example of the <span class="orange">failure</span> of IRLS.</p></li>
+<li><p>These considerations and the IRLS algorithm can be easily generalized to all GLMs.</p></li>
+</ul>
+</div>
 </section>
 <section id="the-estimated-model" class="level2">
 <h2 class="anchored" data-anchor-id="the-estimated-model">The estimated model</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">-4.130</td>
+<td style="text-align: right;">0.964</td>
+<td style="text-align: right;">-4.283</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">sbp</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">1.023</td>
+<td style="text-align: right;">0.306</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">tobacco</td>
+<td style="text-align: right;">0.080</td>
+<td style="text-align: right;">0.026</td>
+<td style="text-align: right;">3.034</td>
+<td style="text-align: right;">0.002</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">ldl</td>
+<td style="text-align: right;">0.185</td>
+<td style="text-align: right;">0.057</td>
+<td style="text-align: right;">3.219</td>
+<td style="text-align: right;">0.001</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">famhistPresent</td>
+<td style="text-align: right;">0.939</td>
+<td style="text-align: right;">0.225</td>
+<td style="text-align: right;">4.177</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">obesity</td>
+<td style="text-align: right;">-0.035</td>
+<td style="text-align: right;">0.029</td>
+<td style="text-align: right;">-1.187</td>
+<td style="text-align: right;">0.235</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">alcohol</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.136</td>
+<td style="text-align: right;">0.892</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">age</td>
+<td style="text-align: right;">0.043</td>
+<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">4.181</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>Results of the IRLS algorithm applied to the logistic regression model using <code>heart</code> data.</li>
+</ul>
 </section>
 <section id="prediction-and-model-assessment-i" class="level2">
 <h2 class="anchored" data-anchor-id="prediction-and-model-assessment-i">Prediction and model assessment I</h2>
+<ul>
+<li><p>The <span class="orange">predicted probabilities</span> <span class="math inline">p(\bm{x}_i; \hat{\beta})</span> are often <span class="blue">thresholded</span>, to obtain 0-1 predicted values, mostly useful for interpretative reasons <span class="math display">
+\hat{y}_i = \mathbb{I}(p(\bm{x}_i; \hat{\beta}) &gt; c), \qquad i=1,\dots,n
+</span> for some threshold <span class="math inline">c</span>, which is <span class="orange">usually</span> set equal to <span class="math inline">1/2</span>.</p></li>
+<li><p>We can then compare the responses with the predicted values using the <span class="blue">confusion matrix</span>:</p></li>
+</ul>
+<table class="table">
+<tbody>
+<tr class="odd">
+<td></td>
+<td><strong>Actual response</strong></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>Prediction</strong></td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+<td><strong>Total</strong></td>
+</tr>
+<tr class="odd">
+<td><strong>0</strong></td>
+<td><span class="math inline">n_{00}</span></td>
+<td><span class="math inline">n_{01}</span></td>
+<td><span class="math inline">n_{0.}</span></td>
+</tr>
+<tr class="even">
+<td><strong>1</strong></td>
+<td><span class="math inline">n_{10}</span></td>
+<td><span class="math inline">n_{11}</span></td>
+<td><span class="math inline">n_{1.}</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Total</strong></td>
+<td><span class="math inline">n_{.0}</span></td>
+<td><span class="math inline">n_{.1}</span></td>
+<td><span class="math inline">n</span></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="prediction-and-model-assessment-ii" class="level2">
 <h2 class="anchored" data-anchor-id="prediction-and-model-assessment-ii">Prediction and model assessment II</h2>
+<ul>
+<li>In the <code>heart</code> dataset, using <span class="math inline">c = 0.5</span>, we get the following <span class="blue">confusion matrix</span>:</li>
+</ul>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Actual 0</th>
+<th style="text-align: right;">Actual 1</th>
+<th style="text-align: right;">Actual total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Predicted 0</td>
+<td style="text-align: right;">255</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">333</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Predicted 1</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">129</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Predicted total</td>
+<td style="text-align: right;">302</td>
+<td style="text-align: right;">160</td>
+<td style="text-align: right;">462</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>Hence, the <span class="orange">overall accuracy</span> is <span class="math inline">(255 + 82) / 462 \approx 0.72</span>.</li>
+</ul>
+<ul>
+<li>The <span class="blue">true positive rate</span> (<span class="orange">specificity</span>) is defined as <span class="math display">
+\text{specificity} = 1 - \mathbb{P}(``\text{false positive}") \approx \frac{n_{00}}{n_{00} + n_{10}} = \frac{255}{255 + 47} = 0.844.
+</span></li>
+<li>On the other hand, the <span class="blue">true negative rate</span> (<span class="orange">sensitivity</span>) is defined as <span class="math display">
+\text{sensitivity} = 1 - \mathbb{P}(``\text{false negative}") \approx \frac{n_{11}}{n_{01} + n_{11}} = \frac{82}{72 + 82} = 0.532.
+</span></li>
+</ul>
 </section>
-<section id="the-roc-curve-i" class="level2">
-<h2 class="anchored" data-anchor-id="the-roc-curve-i">The ROC curve I</h2>
-</section>
-<section id="the-roc-curve-ii" class="level2">
-<h2 class="anchored" data-anchor-id="the-roc-curve-ii">The ROC curve II</h2>
+<section id="the-roc-curve" class="level2">
+<h2 class="anchored" data-anchor-id="the-roc-curve">The ROC curve</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_A_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="1050"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="other-topics" class="level2">
 <h2 class="anchored" data-anchor-id="other-topics">Other topics</h2>
+<ul>
+<li><p>When the number of responses labels <span class="math inline">K &gt; 2</span> we cannot use anymore logistic regression.</p></li>
+<li><p>The natural extension is called <span class="orange">multinomial regression</span>, in which we model the probabilities <span class="math display">
+\mathbb{P}(Y_i = k) = p_k(\bm{x}_i,\beta), \qquad k=1,\dots,K,
+</span> for example using <span class="orange">multinomial logit</span>. The ideas of GLMs can be easily borrowed.</p></li>
+<li><p>An alternative and simple approach is <span class="blue">linear discriminant analysis</span>, which is based on Bayes theorem.</p></li>
+<li><p>You can find these topics in the textbook A&amp;S (2011), although it is likely you have already seen these models in the previous courses.</p></li>
+</ul>
 </section>
 </section>
 <section id="references" class="level1">
@@ -1247,12 +1529,16 @@ Sherman-Morrison formula
 <section id="references-1" class="level2">
 <h2 class="anchored" data-anchor-id="references-1">References</h2>
 <ul>
-<li><span class="blue">Main references</span>
+<li><span class="blue">Main references (M.Sc. level)</span>
 <ul>
 <li><strong>Chapter 2</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
 <li><strong>Chapter 3</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
 </ul></li>
-<li><span class="orange">Advanced references</span>
+<li><span class="grey">Basic references (B.Sc. level)</span>
+<ul>
+<li><strong>Chapters 5 and 6</strong> of A. Azzalini (2000), <a href="http://azzalini.stat.unipd.it/Book_inference/copertina2000.jpg"><em>Inferenza Statistica. Una presentazione basata sul concetto di verosimiglianza</em></a>, Springer.</li>
+</ul></li>
+<li><span class="orange">Specialized references</span>
 <ul>
 <li><strong>Chapters 1–3</strong> of Quarteroni, A., Sacco, R., and Saleri F. (2007). <em>Numerical mathematics</em>. Second Edition, Springer.</li>
 <li><strong>Chapters 1–5</strong> of Golub, G.H., and Van Loan, C.F. (1983). <em>Matrix computations</em>. Hopkins University Press.</li>

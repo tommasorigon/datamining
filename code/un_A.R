@@ -139,7 +139,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 #| fig-height: 4.7
 rm(list = ls())
 # The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/heart.txt
-heart <- read.table("../data/heart.txt", header = TRUE, sep = ",", row.names = 1)
+heart <- read.table("../data/heart.txt", header = TRUE, sep = ",", row.names = 1) %>% select(-c(adiposity, typea))
 heart$chd <- factor(heart$chd)
 
 ggplot(data = heart, aes(x = ldl, y = age, col = chd)) +
@@ -149,3 +149,50 @@ ggplot(data = heart, aes(x = ldl, y = age, col = chd)) +
   theme(legend.position = "top") +
   xlab("Cumulative tobacco (kg)") +
   ylab("Low density lipoprotein cholesterol")
+
+
+#| warning: false
+#| message: false
+#| fig-width: 11
+#| fig-height: 6
+#| fig-align: center
+
+p0 <- ggpairs(heart,
+  columns = c(1:3, 5:7), aes(colour = chd),
+  lower = list(continuous = wrap("points", size = 0.2)),
+  upper = list(continuous = wrap("points", size = 0.2)),
+  diag = "blank"
+) +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("") +
+  ylab("")
+p0
+
+
+
+m1 <- glm(chd ~ ., data = heart, family = "binomial")
+kable(tidy(m1, conf.int = FALSE), digits = 3)
+
+
+
+p_hat <- predict(m1, type = "response")
+y_hat <- p_hat > 0.5
+tab <- addmargins(table(y_hat, heart$chd))
+rownames(tab) <- c("Predicted 0", "Predicted 1", "Predicted total")
+colnames(tab) <- c("Actual 0", "Actual 1", "Actual total")
+kable(tab)
+
+
+#| message: false
+#| #| fig-width: 7.8
+#| fig-height: 6.0
+#| fig-align: center
+library(pROC)
+roc_heart <- roc(response = heart$chd, predictor = p_hat)
+p <- ggroc(roc_heart, legacy.axes = TRUE) + ggtitle(paste("Receiver Operating Characteristic Curve (ROC) - AUC: ", round(auc(roc_heart), 2))) + ylab("Sensitivity") + xlab("1 - specificity") + geom_segment(
+  aes(x = 0, xend = 1, y = 0, yend = 1),
+  color = "grey", linetype = "dashed"
+) + theme_bw() + geom_vline(aes(xintercept = 1 - 255 / (255 + 47)), linetype = "dotted") + geom_vline(aes(xintercept = 0.5), linetype = "dotted")
+
+p

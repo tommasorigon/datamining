@@ -60,7 +60,6 @@ knitr::purl("un_A.qmd", output = "../code/un_A.R")
 styler:::style_file("../code/un_A.R")
 ```
 
-
 ::: columns
 ::: {.column width="40%"}
 ![](img/ABC.png) *"Everything should be made as simple as possible, but
@@ -81,7 +80,6 @@ not simpler"* Attributed to Albert Einstein
 
 -   ... but you should be already [very familiar]{.orange} with linear
     models!
-
 :::
 :::
 
@@ -124,8 +122,8 @@ p0
 ::: {.column width="50%"}
 -   We consider data for $n = 203$ models of cars in circulation in 1985
     in the USA.
--   We want to [predict]{.blue} the distance per unit of
-    fuel, as a function of the vehicle features.
+-   We want to [predict]{.blue} the distance per unit of fuel, as a
+    function of the vehicle features.
 -   We consider the following [variables]{.orange}:
     -   The city distance per unit of fuel (km/L, `city.distance`)
     -   The engine size (L, `engine.size`)
@@ -134,7 +132,6 @@ p0
     -   The fuel type (gasoline or diesel, `fuel`).
 :::
 :::
-
 
 ## Linear regression
 
@@ -154,8 +151,8 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 :::
 
 ::: {.column width="60%"}
--   Let us consider the variables `city.distance` ($y$), `engine.size` ($x$) and `fuel`
-    ($z$).
+-   Let us consider the variables `city.distance` ($y$), `engine.size`
+    ($x$) and `fuel` ($z$).
 
 -   A [simple linear regression]{.blue} $$
     Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
@@ -173,41 +170,42 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
 ## Regression models
 
 ::: incremental
--   A [general]{.orange} and [more flexible formulation]{.orange} for modeling the relationship
-    between a vector of [fixed covariates]{.blue}
-    $\bm{x}_i = (x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p$ and a random variable
-    $Y_i \in \mathbb{R}$ is $$
+-   A [general]{.orange} and [more flexible formulation]{.orange} for
+    modeling the relationship between a vector of [fixed
+    covariates]{.blue}
+    $\bm{x}_i = (x_{i1},\dots,x_{ip})^T \in \mathbb{R}^p$ and a random
+    variable $Y_i \in \mathbb{R}$ is $$
     Y_i = f(\bm{x}_i; \beta) + \epsilon_i, \qquad i=1,\dots,n,
-    $$
-    where the "errors" $\epsilon_i$ are iid random variables, having
+    $$ where the "errors" $\epsilon_i$ are iid random variables, having
     zero mean and variance $\sigma^2$.
 
 -   To estimate the unknown parameters $\beta$, a possibility is to rely
     on the [least squares criterion]{.blue}: we seek the
     [minimum]{.orange} of the objective function $$
     D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
-    $$ using $n$ pairs of covariates $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ and
-    the observed realizations $y_i$ of the random variables $Y_i$, for $i = 1,\dots,n$. The [optimal value]{.orange} is denoted by $\hat{\beta}$.
+    $$ using $n$ pairs of covariates
+    $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ and the observed realizations
+    $y_i$ of the random variables $Y_i$, for $i = 1,\dots,n$. The
+    [optimal value]{.orange} is denoted by $\hat{\beta}$.
 
--   The [predicted values]{.blue} $\hat{y}_i$ are 
+-   The [predicted values]{.blue} $\hat{y}_i$ are
     $\hat{y}_i = \mathbb{E}(Y_i) = f(\bm{x}_i; \hat{\beta})$, for
     $i=1,\dots,n.$
 :::
 
 ## Linear models
 
--   Let us consider again the variables `city.distance` ($y$), `engine.size`
-    ($x$) and `fuel` ($z$).
+-   Let us consider again the variables `city.distance` ($y$),
+    `engine.size` ($x$) and `fuel` ($z$).
 
-- Which function $f(x,z;\beta)$ should we choose?
+-   Which function $f(x,z;\beta)$ should we choose?
 
 . . .
 
--   A first attempt is to consider a [polynomial term]{.orange}
-    combined with a [dummy variable]{.blue} $$
+-   A first attempt is to consider a [polynomial term]{.orange} combined
+    with a [dummy variable]{.blue} $$
     f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}),
-    $$
-which is a special instance of [linear model]{.orange}.
+    $$ which is a special instance of [linear model]{.orange}.
 
 . . .
 
@@ -225,7 +223,9 @@ corresponding vector of [coefficients]{.orange}.
 ## Matrix notation
 
 ::: incremental
--   The [response random variables]{.orange} are collected in the random vector $\bm{Y} = (Y_1,\dots,Y_n)^T$, whose [observed realization]{.blue} is $\bm{y} = (y_1,\dots,y_n)^T$.
+-   The [response random variables]{.orange} are collected in the random
+    vector $\bm{Y} = (Y_1,\dots,Y_n)^T$, whose [observed
+    realization]{.blue} is $\bm{y} = (y_1,\dots,y_n)^T$.
 
 -   The [design matrix]{.blue} is a $n \times p$ matrix, comprising the
     covariate's values, defined by $$
@@ -243,8 +243,8 @@ corresponding vector of [coefficients]{.orange}.
     $$ where $\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T$ is a
     vector of iid error terms with zero mean and variance $\sigma^2$.
 
--   The $j$th variable (column) is denoted with $\tilde{\bm{x}}_j$, whereas the
-    $i$th observation (row) is $\bm{x}_i$: $$
+-   The $j$th variable (column) is denoted with $\tilde{\bm{x}}_j$,
+    whereas the $i$th observation (row) is $\bm{x}_i$: $$
     \bm{X} = (\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p) = (\bm{x}_1, \dots,\bm{x}_n)^T.
     $$
 :::
@@ -255,8 +255,8 @@ corresponding vector of [coefficients]{.orange}.
     the [least squared criterion]{.orange} $$
     D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
     $$ known also as [residual sum of squares (RSS)]{.orange}, where $$
-    ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2},$$
-    denotes the [Euclidean norm]{.blue}.
+    ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2},$$ denotes the [Euclidean
+    norm]{.blue}.
 
 . . .
 
@@ -283,8 +283,8 @@ estimate]{.orange} has an explicit solution: $$
 -   It can be shown that $\text{tr}(\bm{H}) = \text{rk}(\bm{H}) = p$.
     Moreover, it holds $\bm{H} = \bm{H}^T$ and $\bm{H}^2 = \bm{H}$.
 
--   The quantity $D(\hat{\beta})$ is the so-called [deviance]{.blue}, which is
-    equal to $$
+-   The quantity $D(\hat{\beta})$ is the so-called [deviance]{.blue},
+    which is equal to $$
     D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{H})\bm{y}.
     $$
 
@@ -301,8 +301,8 @@ estimate]{.orange} has an explicit solution: $$
     distribution:
     $\epsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)$.
 
--   This implies that the [distribution]{.orange} of the [estimator]{.orange} $\hat{\beta}$ is
-    $$
+-   This implies that the [distribution]{.orange} of the
+    [estimator]{.orange} $\hat{\beta}$ is $$
     \hat{\beta} \sim N_p(\beta, \sigma^2 (\bm{X}^T\bm{X})^{-1}).
     $$
 
@@ -316,20 +316,20 @@ estimate]{.orange} has an explicit solution: $$
 
 -   Confidence interval and Wald's tests can be obtained through
     classical inferential theory.
-    
-- Ok, we are ready to get back to the original problem...
+
+-   Ok, we are ready to get back to the original problem...
 :::
 
 ## Car data, a first model
 
 ::: incremental
--   Our first attempt for predicting `city.distance` ($y$) via `engine.size`
-    ($x$) and `fuel` ($z$) is: $$
+-   Our first attempt for predicting `city.distance` ($y$) via
+    `engine.size` ($x$) and `fuel` ($z$) is: $$
       f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}).
       $$
 
--   Indeed, by looking at the plot of the data, it is plausible that we need a
-    [polynomial]{.orange} of degree $3$ or $4$
+-   Indeed, by looking at the plot of the data, it is plausible that we
+    need a [polynomial]{.orange} of degree $3$ or $4$
 
 -   It is also clear from the plot that `fuel` is a relevant variable.
     Categorical variables are [encoded]{.orange} using [indicator
@@ -351,7 +351,8 @@ m1 <- lm(city.distance ~ engine.size + I(engine.size^2) + I(engine.size^3) + fue
 kable(tidy(m1, conf.int = FALSE), digits = 3)
 ```
 
--   Moreover, the coefficient $R^2$ and the residual standard deviation $s$ are:
+-   Moreover, the coefficient $R^2$ and the residual standard deviation
+    $s$ are:
 
 ```{r}
 kable(glance(m1)[c(1, 3, 10)])
@@ -393,8 +394,7 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
 ## Comments and criticisms
 
 ::: incremental
-
-- Is this a good model?
+-   Is this a good model?
 
 -   The overall fit [seems satisfactory]{.blue} at first glance,
     especially if we aim at predicting the urban distance of cars when
@@ -405,27 +405,30 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
     assumption, i.e. $\text{var}(\epsilon_i) = \sigma^2$, might be
     violated.
 
--   Also, this model in not suitable for [extrapolation]{.orange}. Indeed:
+-   Also, this model in not suitable for [extrapolation]{.orange}.
+    Indeed:
+
     -   It has no grounding in physics or engineering, which leads to
-    difficulties in the interpretation of the trend and/or paradoxical
-    situations.
+        difficulties in the interpretation of the trend and/or
+        paradoxical situations.
     -   For example, the curve of the set of gasoline cars shows a local
-    minimum around $4.6 L$ and then rises again!
-    
--  It is plausible that we can find a better one, so what's next?
+        minimum around $4.6 L$ and then rises again!
+
+-   It is plausible that we can find a better one, so what's next?
 :::
 
 ## Linear models and non-linear patterns
 
 -   A major advantage of linear models is that they can describe
-    non-linear relationship via [variable transformations]{.blue} such as polynomials, logarithms, etc.
+    non-linear relationship via [variable transformations]{.blue} such
+    as polynomials, logarithms, etc.
 
 . . .
 
 -   This gives the statistician a lot of modelling flexibility. For
     instance we could let: $$
-\log{Y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
-$$
+    \log{Y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
+    $$
 
 . . .
 
@@ -482,7 +485,8 @@ r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m2)))^2)) /
 kable(data.frame(r.squared.original = r.squared.original, glance(m2)[c(1, 3, 10)]))
 ```
 
--   Do not mix [apple]{.blue} and [oranges]{.orange}! Compare $R^2$s only if they refer to the same scale!
+-   Do not mix [apple]{.blue} and [oranges]{.orange}! Compare $R^2$s
+    only if they refer to the same scale!
 
 . . .
 
@@ -493,18 +497,18 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m2)[c(1, 3, 10)
     predictions cannot be negative and the relationship between engine
     size and the consumption is monotone.
 
--   Yet, there is still some heteroschedasticity in the residuals --- is this
-    due to a missing covariate that has not been included into the
+-   Yet, there is still some heteroschedasticity in the residuals --- is
+    this due to a missing covariate that has not been included into the
     model?
 
 ## A third model: additional variables
 
 -   Let us consider [two additional variables]{.blue}: `curb.weight`
-    ($w$) and `n.cylinders` ($v$). 
-    
-- A richer model therefore could be: $$
-\log{Y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
-    $$ for $i=1,\dots,n$. The estimates are:
+    ($w$) and `n.cylinders` ($v$).
+
+-   A richer model therefore could be: $$
+    \log{Y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
+      $$ for $i=1,\dots,n$. The estimates are:
 
 . . .
 
@@ -540,18 +544,22 @@ r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m3)))^2)) /
 kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)]))
 ```
 
--   In this third model, we took care of the [outliers]{.orange} appearing in the residual plots, which it turns out are identified by the group of cars having 2 cylinders.
+-   In this third model, we took care of the [outliers]{.orange}
+    appearing in the residual plots, which it turns out are identified
+    by the group of cars having 2 cylinders.
 
--   The diagnostic plots are also very much improved, although still not perfect.
+-   The diagnostic plots are also very much improved, although still not
+    perfect.
 
 -   The estimates are coherent with our expectations, based on common
     knowledge. Have a look at the textbook (A&S) for a detailed
     explaination about $\beta_4$!
-    
-- The car dataset is available from the textbook (A\&S) website:
-  - Dataset <http://azzalini.stat.unipd.it/Book-DM/auto.dat>
-  - Variable description <http://azzalini.stat.unipd.it/Book-DM/auto.names>
 
+-   The car dataset is available from the textbook (A&S) website:
+
+    -   Dataset <http://azzalini.stat.unipd.it/Book-DM/auto.dat>
+    -   Variable description
+        <http://azzalini.stat.unipd.it/Book-DM/auto.names>
 
 # Cholesky factorization
 
@@ -562,38 +570,33 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
     \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y},
     $$ that is, using the R code `solve(t(X) %*% X) %*% t(X) %*% y`.
 
--   This approach works reasonably
-    well in many [simple cases]{.blue}.
+-   This approach works reasonably well in many [simple cases]{.blue}.
 
 . . .
 
--   Unfortunately, in more challenging scenarios, e.g. when we have a lot of data (large
-    $n$) and correlated variables, the above code is 
-     - [computationally
-    inefficient]{.orange}
-     - [numerically inaccurate]{.blue}
-
--   The main computational bottleneck is the calculation of the inverse of
-    $\bm{X}^T\bm{X}$, which is very costly and often numerically
+-   Unfortunately, in more challenging scenarios, e.g. when we have a
+    lot of data (large $n$) and correlated variables, the above code is
+    -   [computationally inefficient]{.orange}
+    -   [numerically inaccurate]{.blue}
+-   The main computational bottleneck is the calculation of the inverse
+    of $\bm{X}^T\bm{X}$, which is very costly and often numerically
     unstable, especially when the predictors are almost collinear.
 
 ## The normal equations
 
--   The least square estimate is the solution of the system of equations ([normal
-    equations]{.orange}):$$
+-   The least square estimate is the solution of the system of equations
+    ([normal equations]{.orange}):$$
     \bm{X}^T\bm{X} \beta = \bm{X}^T \bm{y}.
     $$
 
 -   This system could be solved using
     `solve(crossprod(X), crossprod(X, y))`.
 
--   This avoids the explicit computation of
-    $(\bm{X}^T\bm{X})^{-1}$ and it is preferable compared to the "direct
-    solution". However, it does not exploit the properties of the matrix
-    $\bm{X}^T\bm{X}$.
+-   This avoids the explicit computation of $(\bm{X}^T\bm{X})^{-1}$ and
+    it is preferable compared to the "direct solution". However, it does
+    not exploit the properties of the matrix $\bm{X}^T\bm{X}$.
 
 . . .
-
 
 . . .
 
@@ -601,12 +604,14 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
     [symmetric]{.blue} matrix $\bm{A} \in \mathbb{R}^{p \times p}$ is
     [positive definite]{.orange} if and only if one the following
     properties is satisfied
-    -   The quadratic form $\tilde{\bm{x}}^T \bm{A} \tilde{\bm{x}} > 0$ for all
-        $\tilde{\bm{x}} \in \mathbb{R}^p$ such that $\tilde{\bm{x}} \neq 0$.
+    -   The quadratic form $\tilde{\bm{x}}^T \bm{A} \tilde{\bm{x}} > 0$
+        for all $\tilde{\bm{x}} \in \mathbb{R}^p$ such that
+        $\tilde{\bm{x}} \neq 0$.
     -   The eigenvalues $\lambda_1,\dots,\lambda_p$ of $\bm{A}$ are all
         strictly positive.
-
-- We now describe a strategy to compute $\hat{\beta}$ that exploits the fact that $\bm{X}^T\bm{X}$ is [positive definite]{.orange}, resulting in more [efficient computations]{.blue}. 
+-   We now describe a strategy to compute $\hat{\beta}$ that exploits
+    the fact that $\bm{X}^T\bm{X}$ is [positive definite]{.orange},
+    resulting in more [efficient computations]{.blue}.
 
 ## Cholesky factorization
 
@@ -634,8 +639,8 @@ $$
 ## Cholesky factorization and least squares
 
 ::: incremental
-
-- The Cholesky factorization is incredibly helpful for computing least squares. Indeed:
+-   The Cholesky factorization is incredibly helpful for computing least
+    squares. Indeed:
 
 -   Let $\bm{R}^T\bm{R}$ be the Cholesky factorization of the matrix
     $\bm{X}^T\bm{X}$. Then, the [normal equations]{.orange} can be
@@ -643,23 +648,25 @@ $$
     \bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y}.
     $$ This system can now solved in [two steps]{.orange}:
 
--   [Step 1 (Forwardsolve)]{.blue}. Solve with respect to $\bm{z}$ the system
-    of equations $$
+-   [Step 1 (Forwardsolve)]{.blue}. Solve with respect to $\bm{z}$ the
+    system of equations $$
     \bm{R}^T \bm{z} = \bm{X}^T \bm{y}.
     $$
 
--   [Step 2 (Backsolve)]{.blue}. Given $\bm{z}$, now solve with respect to
-    $\beta$ the system of equations $$
+-   [Step 2 (Backsolve)]{.blue}. Given $\bm{z}$, now solve with respect
+    to $\beta$ the system of equations $$
     \bm{R} \beta = \bm{z}.
     $$
-- Why is this procedure computationally more efficient than the naïve solution?
+
+-   Why is this procedure computationally more efficient than the naïve
+    solution?
 :::
 
 ## Forward and backward substitutions
 
 ::: incremental
--   The key observation is that the solution of [triangular systems]{.blue} is computationally 
-    [straightforward]{.orange}.
+-   The key observation is that the solution of [triangular
+    systems]{.blue} is computationally [straightforward]{.orange}.
 
 -   As an example, consider the following $3 \times 3$ lower triangular
     system: $$
@@ -676,8 +683,8 @@ $$
     x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x_3 = \frac{b_3 - l_{31}x_1 - l_{32}x_2}{l_{33}}.
     $$
 
--   Finding the [inverse]{.orange} $\bm{R}^{-1}$ is simple, again because $\bm{R}$
-    is upper triangular. Also note that $$
+-   Finding the [inverse]{.orange} $\bm{R}^{-1}$ is simple, again
+    because $\bm{R}$ is upper triangular. Also note that $$
     (\bm{X}^T \bm{X})^{-1} = (\bm{R}^T \bm{R})^{-1} = \bm{R}^{-1} (\bm{R}^{-1})^T.
     $$
 :::
@@ -699,9 +706,9 @@ $$
     \sim n p^2 + p^3 /3,
     $$ which corrects the typographical error of the A&S textbook.
 
--   This means, unfortunately, that in [high-dimensional]{.blue} settings (large $p$)
-    computations become [very costly]{.orange}, since the
-    complexity is cubic in $p$.
+-   This means, unfortunately, that in [high-dimensional]{.blue}
+    settings (large $p$) computations become [very costly]{.orange},
+    since the complexity is cubic in $p$.
 :::
 
 ## ☠️ - Error propagation in normal equations
@@ -752,7 +759,8 @@ $$
 
 ## Orthogonal predictors
 
-- Another approach for computing least squares is based on the notion of orthogonality. 
+-   Another approach for computing least squares is based on the notion
+    of orthogonality.
 
 . . .
 
@@ -771,7 +779,8 @@ $$
 #### Proposition A.2. OLS with orthogonal predictors
 
 The least square estimate
-$\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T$ with orthogonal predictors is
+$\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T$ with
+orthogonal predictors is
 
 $$
 \hat{\beta}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j}, \qquad j=1,\dots,p.
@@ -779,11 +788,12 @@ $$
 :::
 
 ## Regression by successive orthogonalization
-::: incremental
--   Clearly, the predictors of $\bm{X}$ are generally not orthogonal. Hence, we want to
-    find a suitable transformation $\bm{Z} = \bm{X} \bm{\Gamma}^{-1}$
-    that [orthogonalize]{.blue} the [predictors]{.orange}.
 
+::: incremental
+-   Clearly, the predictors of $\bm{X}$ are generally not orthogonal.
+    Hence, we want to find a suitable transformation
+    $\bm{Z} = \bm{X} \bm{\Gamma}^{-1}$ that [orthogonalize]{.blue} the
+    [predictors]{.orange}.
 
 -   Suppose for example that $p = 2$. We set [first orthogonal
     predictor]{.orange} $\tilde{\bm{z}}_1 = \tilde{\bm{x}}_1$.
@@ -803,9 +813,10 @@ $$
 :::
 
 ## Gram-Schmidt algorithm
+
 ::: incremental
--   Let us now consider the [general case]{.orange}, valid for any value of
-    $p$.
+-   Let us now consider the [general case]{.orange}, valid for any value
+    of $p$.
 
 -   [Initialization]{.blue}. Set $\tilde{\bm{z}}_1 = \tilde{\bm{x}}_1$.
 
@@ -818,7 +829,8 @@ $$
     $$
 
 -   The geometry of linear models guarantees [orthogonality]{.orange},
-    that is $\tilde{\bm{z}}_j^T \tilde{\bm{z}}_{j'} = 0$ for any $j \neq j'$.
+    that is $\tilde{\bm{z}}_j^T \tilde{\bm{z}}_{j'} = 0$ for any
+    $j \neq j'$.
 :::
 
 ## The QR decomposition I
@@ -837,12 +849,13 @@ $$
 
 -   The $p \times p$ matrix $\bm{\Gamma}$ is [upper
     triangular]{.orange}, whereas the columns of the $n \times p$ matrix
-    $\bm{Z}$ are [mutually orthogonal]{.blue}, due to the properties of the residuals of a linear model. 
+    $\bm{Z}$ are [mutually orthogonal]{.blue}, due to the properties of
+    the residuals of a linear model.
 
 -   It is often convenient to [standardize]{.orange} the columns of
     $\bm{Z}$, dividing them by their norm $||\tilde{\bm{z}}_j||$. Let
-    $\bm{D} = \text{diag}(||\tilde{\bm{z}}_1||, \dots, ||\tilde{\bm{z}}_p||)$, then in
-    matrix notation: $$
+    $\bm{D} = \text{diag}(||\tilde{\bm{z}}_1||, \dots, ||\tilde{\bm{z}}_p||)$,
+    then in matrix notation: $$
     \bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}.
     $$
 
@@ -856,8 +869,8 @@ $$
 #### Theorem (QR factorization)
 
 Suppose $\bm{X} \in \mathbb{R}^{n \times p}$ with $n \ge p$ has full
-rank, that is $\text{rk}(\bm{X}) = p$. Then, there exists a factorization
-of the form $$
+rank, that is $\text{rk}(\bm{X}) = p$. Then, there exists a
+factorization of the form $$
 \bm{X} = \bm{Q} \bm{R},
 $$ where $\bm{Q} \in \mathbb{R}^{n \times p}$ has [orthonormal
 columns]{.orange} and $\bm{R} \in \mathbb{R}^{p \times p}$ is an [upper
@@ -933,10 +946,14 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     \sim 2 n p^2$$ which is about twice that of the Cholesky, when $n$
     is much larger than $p$, and about the same when $p \approx n$.
 
--   Depending on the context, and assuming we only care about $\hat{\beta}$, we may prefer the Cholesky ([fast]{.blue} but [imprecise]{.orange}) or the QR ([slower]{.orange} but more [reliable]{.blue}). 
+-   Depending on the context, and assuming we only care about
+    $\hat{\beta}$, we may prefer the Cholesky ([fast]{.blue} but
+    [imprecise]{.orange}) or the QR ([slower]{.orange} but more
+    [reliable]{.blue}).
 
-- The default approach in R, i.e. the one implemented in the `lm`
-    function, is the QR factorization, because one typically also needs to compute $\bm{H}$, or the leverages. 
+-   The default approach in R, i.e. the one implemented in the `lm`
+    function, is the QR factorization, because one typically also needs
+    to compute $\bm{H}$, or the leverages.
 :::
 
 ## ☠️ - Pivoting and rank deficiencies
@@ -963,8 +980,9 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 ## When $n$ is very large...
 
 ::: incremental
--   When the [sample size]{.blue} $n$ is [extremely large]{.orange}, as it is common in data
-    mining problems, then the QR factorization cannot be computed.
+-   When the [sample size]{.blue} $n$ is [extremely large]{.orange}, as
+    it is common in data mining problems, then the QR factorization
+    cannot be computed.
 
 -   Indeed, even [loading]{.orange} $\bm{X}$ into [memory]{.orange}
     could be problematic.
@@ -975,8 +993,8 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     $$ which are of dimension $p\times p$ and $p \times 1$,
     respectively.
 
--   If we knew $\bm{W}$ and $\bm{u}$, then we could obtain the least square estimate
-    $\hat{\beta}$ using the Cholesky factorization.
+-   If we knew $\bm{W}$ and $\bm{u}$, then we could obtain the least
+    square estimate $\hat{\beta}$ using the Cholesky factorization.
 
 -   However, when $n$ is extremely large, the difficult part is indeed
     computing $\bm{W}$ and $\bm{u}$!
@@ -1008,13 +1026,13 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 
 ::: incremental
 -   In many occasions, the data flow continuously, meaning that we get a
-    new pair of observations $(\bm{x}_{n+1}, y_{n+1})$ every
-    minute, or even every second.
+    new pair of observations $(\bm{x}_{n+1}, y_{n+1})$ every minute, or
+    even every second.
 
--   In these cases, we would like to [update]{.orange} the current least square estimate
-    $\hat{\beta}_{(n)}$ with the new information
-    $(\bm{x}_{n+1}, y_{n+1})$, but ideally without re-doing all
-    the calculations.
+-   In these cases, we would like to [update]{.orange} the current least
+    square estimate $\hat{\beta}_{(n)}$ with the new information
+    $(\bm{x}_{n+1}, y_{n+1})$, but ideally without re-doing all the
+    calculations.
 
 -   The [recursive data import]{.blue} of the [previous
     slide](#recursive-data-import) is partially unsatisfactory, because
@@ -1037,6 +1055,8 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 -   The difficult part is to [efficiently]{.orange} compute
     $\bm{V}_{(n+1)} = \bm{W}_{(n + 1)}^{-1}$. The following result of
     linear algebra is of incredible help in this regard.
+
+. . .
 
 ::: callout-note
 #### Sherman-Morrison formula
@@ -1109,7 +1129,7 @@ $$
 #| fig-height: 4.7
 rm(list = ls())
 # The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/heart.txt
-heart <- read.table("../data/heart.txt", header = TRUE, sep = ",", row.names = 1) 
+heart <- read.table("../data/heart.txt", header = TRUE, sep = ",", row.names = 1) %>% select(-c(adiposity, typea))
 heart$chd <- factor(heart$chd)
 
 ggplot(data = heart, aes(x = ldl, y = age, col = chd)) +
@@ -1123,84 +1143,303 @@ ggplot(data = heart, aes(x = ldl, y = age, col = chd)) +
 :::
 
 ::: {.column width="60%"}
+-   Let us consider the South African `heart`
+    [dataset](https://hastie.su.domains/ElemStatLearn/datasets/SAheart.data),
+    described is [Section 4.4.2]{.blue} of HTF (2009).
 
--   Let us consider the South African `heart`  [dataset](https://hastie.su.domains/ElemStatLearn/datasets/SAheart.data), described is [Section 4.4.2]{.blue} of HTF (2009).
+-   We want to [predict]{.blue} the insurgence of [coronary heart
+    disease]{.orange} (`chd`) as function of known risks factors:
 
--   We want to [predict]{.blue} the insurgence of [coronary heart disease]{.orange} (`chd`) as function of known risks factors:
-    - Colesterol level (`ldl`) and obesity (`obesity`)
-    - Consumption of tobacco (`tobacco`) and alcool (`alcool`)
-    - Systolic blood pressure (`sbp`)
-    - Age (`age`) and family history ( `famhist`)
-    - ... and a couple of other variables
-- The response variable is [binary]{.orange}: we cannot rely on linear regression models.
+    -   Colesterol level (`ldl`) and obesity (`obesity`)
+    -   Consumption of tobacco (`tobacco`) and alcool (`alcool`)
+    -   Systolic blood pressure (`sbp`)
+    -   Age (`age`) and family history ( `famhist`)
+
+-   The response variable is [binary]{.orange}: we cannot rely on linear
+    regression models.
 :::
 :::
 
+## The `heart` dataset
 
-    
-<!-- ## The `heart` dataset -->
+```{r}
+#| warning: false
+#| message: false
+#| fig-width: 11
+#| fig-height: 6
+#| fig-align: center
 
-<!-- ```{r} -->
-<!-- #| warning: false -->
-<!-- #| message: false -->
-<!-- #| fig-width: 11 -->
-<!-- #| fig-height: 6 -->
-<!-- #| fig-align: center -->
-
-<!-- p0 <- ggpairs(heart, -->
-<!--   columns = c(1:4, 6:9), aes(colour = chd), -->
-<!--   lower = list(continuous = wrap("points", size = 0.2)), -->
-<!--   upper = list(continuous = wrap("points", size = 0.2)), -->
-<!--   diag = "blank" -->
-<!-- ) + -->
-<!--   theme_light() + -->
-<!--   scale_color_tableau(palette = "Color Blind") + -->
-<!--   xlab("") + -->
-<!--   ylab("") -->
-<!-- p0 -->
-<!-- ``` -->
+p0 <- ggpairs(heart,
+  columns = c(1:3, 5:7), aes(colour = chd),
+  lower = list(continuous = wrap("points", size = 0.2)),
+  upper = list(continuous = wrap("points", size = 0.2)),
+  diag = "blank"
+) +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("") +
+  ylab("")
+p0
+```
 
 ## Generalized linear models
 
-- If the outcome is binary, a count, or if the errors are heteroschedastic, then the Gaussian linear regression model might be inappropriate.
+-   If the outcome is binary, a count, or if the errors are
+    heteroschedastic, then the Gaussian linear regression model might be
+    inappropriate.
 
-- Hence, we let $Y_i$ be iid draws from an [exponentialy dispersion family]{.blue}, which includes  the Binomial, the Poisson, and the Gaussian distribution as special cases.
+-   We let $Y_i$ be iid draws from an [exponentialy dispersion
+    family]{.blue}, which includes the Binomial, the Poisson, and the
+    Gaussian distribution as special cases.
 
-- The canonical statistical solution are [generalized linear models]{.orange}, which are usually thought in undergraduate courses (e.g. Statistica III). This is just a short recap.
+-   The canonical statistical solution are [generalized linear
+    models]{.orange}, which are usually thought in undergraduate courses
+    (e.g. Statistica III). This is just a short recap.
 
 . . .
 
 ::: callout-note
 #### Generalized linear model (GLMs)
 
-In a [generalized linear model]{.blue} the response variable is related to the covariates through:
-$$
+In a [generalized linear model]{.blue} the response variable is related
+to the covariates through: $$
 \mathbb{E}(Y_i) = g\{f(\bm{x}_i; \beta)\} = g(\beta_1 x_{i1} + \cdots + \beta_p x_{ip}) = g(\bm{x}_i^T\beta),
-$$
-where $g(\cdot)$ is the so-called [link function]{.orange}, which is known and invertible.
+$$ where $g(\cdot)$ is the so-called [link function]{.orange}, which is
+known and invertible.
 :::
 
 ## Likelihood-based inference
 
+::: incremental
+-   Let $\pi(y; \bm{x}, \theta)$ be the [density]{.blue} associated to
+    each $Y_i$. Here $\theta$ is a vector of parameters.
+
+-   The [log-likelihood]{.orange} of a GLM is $$
+    \ell(\theta) = \ell(\theta;\bm{y}) = \sum_{i=1}^n \log{\pi(y_i; \bm{x}_i, \theta)} + c,
+    $$ where $c$ is an additive constant not depending on $\beta$.
+
+-   The [maximum likelihood estimate]{.orange} for the regression
+    coefficients $\beta$ is $$
+    \hat{\theta} = \arg\max_\theta \ell(\theta).
+    $$
+
+-   Standard errors, tests and confidence intervals can be easily
+    obtained from (derivatives of) the log-likelihood, as you have seen
+    in undergraduate courses (e.g. Statistica II and III).
+
+-   The aforementioned inferential results are often grounded on
+    [asymptotic theory]{.orange} and [quadratic approximations]{.blue}
+    of the log-likelihood.
+:::
+
 ## Linear models with Gaussian errors
+
+::: incremental
+-   When $Y_i$ are Gaussian random variables, then the log-likelihood is
+    $$
+    \ell(\beta, \sigma^2) = -\frac{n}{2}\log{\sigma^2} - \frac{1}{\sigma^2}D(\beta),
+    $$ where $D(\beta)$ is the same quantity we have [defined
+    before](/#/linear-regression-estimation-i).
+
+-   Hence, the [ordinary least squares]{.blue} estimate $\hat{\beta}$ is
+    also the [maximum likelihood]{.orange} estimate. Indeed, the
+    maximizer of the log-likelihood with respect to $\beta$ is also the
+    minimizer of $D(\beta)$.
+
+-   Instead, the maximum likelihood estimate for the variance is
+    $\hat{\sigma}^2 = D(\hat{\beta}) / n$.
+
+-   Note in addition that the log-likelihood, evaluated at its maximum,
+    is $$
+    -2 \ell(\hat{\beta},\hat{\sigma}^2) =  n \log\{D(\beta)/n\} + n,
+    $$ a quantity that will turn useful in [Unit B](un_B.html).
+:::
 
 ## Binary classification via logistic regression
 
-## Iteratively re-weighted least squares (IRLS)
+::: incremental
+-   The `heart` dataset presents a [classification]{.blue} problem, in
+    which we assume that $$
+    Y_i \overset{\text{ind}}{\sim} \text{Bern}\{p(\bm{x}_i; \beta)\}, \qquad i=1,\dots,n.
+    $$
+
+-   The [canonical link]{.blue} function $g(x) = e^x / (1 + e^{x})$
+    leads to the GLM $$
+    \mathbb{P}(Y_i = 1)= p(\bm{x}_i; \beta) = \frac{\exp\{f(\bm{x}_i; \beta)\}}{1 + \exp\{f(\bm{x}_i; \beta)\}} = \frac{\exp(\beta_1 x_{i1} + \cdots + \beta_p x_{ip})}{1 + \exp(\beta_1 x_{i1} + \cdots + \beta_p x_{ip})},
+    $$ known as [logistic regression]{.orange}. Note that in this model
+    $\mathbb{E}(Y_i) = \mathbb{P}(Y_i = 1)$.
+
+-   After some algebra, it can be shown that the log-likelihood is $$
+    \ell(\beta) = \sum_{i=1}^n y_i (\bm{x}_i^T\beta) - \log\{1 + \exp(\bm{x}_i^T\beta)\}.
+    $$
+
+-   Moreover, the [predicted values]{.orange} $p(\bm{x}_i; \hat{\beta})$
+    are [probabilities]{.blue} and they belong to $(0,1)$.
+:::
+
+## Iteratively re-weighted least squares I
+
+::: incremental
+-   Let us define the so-called [score function]{.blue}: $$
+    \ell'(\beta) = \frac{\partial}{\partial \beta}\ell(\beta) = \sum_{i=1}^n\bm{x}_i \{y_i - p(\bm{x}_i; \beta)\}, \qquad 
+    $$
+
+-   Moreover, the so-called [observed information matrix]{.blue} is $$
+    j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\sum_{i=1}^n \bm{x}_i\bm{x}_i^T w_i(\beta), \quad w_i(\beta) = p(\bm{x}_i; \beta)\{1 - p(\bm{x}_i; \beta)\}.
+    $$
+
+-   In [matrix notation]{.orange}, we will write $$
+    \ell'(\beta) = \bm{X}^T(\bm{y} - \bm{p}), \qquad j(\beta) = \bm{X}^T\bm{W}\bm{X},
+    $$ where $\bm{p} = (p(\bm{x}_1; \beta), \dots, p(\bm{x}_n; \beta))$
+    and $W = \text{diag}(w_1(\beta),\dots, w_n(\beta))$.
+
+-   Unfortunately, a closed-form expression for $\hat{\beta}$, solving
+    the [likelihood equations]{.blue} $\bm{X}^T(\bm{y} - \bm{p}) = 0$,
+    is not available. We need to use [iterative algorithms]{.orange}.
+:::
+
+## Iteratively re-weighted least squares II
+
+::: incremental
+-   As you [may
+    remember](https://tommasorigon.github.io/introR/lezioni/un_K.html#il-metodo-di-newton-raphson-i),
+    in the Newton-Raphson [iterative method]{.orange} we consider a
+    [quadratic approximation]{.blue} of the log-likelihood on $\beta_0$,
+    so that: $$
+    \ell(\beta) \approx \ell(\beta_0) + \ell'(\beta_0)^T(\beta - \beta_0) - \frac{1}{2}(\beta - \beta_0)^Tj(\beta)(\beta - \beta_0).
+    $$
+
+-   By maximizing the quadratic approximation, in logistic regression we
+    get the update $$
+    \begin{aligned}
+    \beta^{\text{new}} &= \beta^{(\text{old})} + j(\beta^{\text{old}})^{-1}\ell'(\beta^{\text{old}}) = \beta^{(\text{old})} + (\bm{X}^T\bm{W}\bm{X})^{-1}\bm{X}^T(\bm{y} - \bm{p}) \\
+    & = (\bm{X}^T\bm{W}\bm{X})^{-1}\bm{X}^T\bm{W}\bm{z},
+    \end{aligned}
+    $$ where
+    $\bm{z} = \bm{X}\beta^{(\text{old})} + \bm{W}^{-1}(\bm{y} - \bm{p})$,
+    which we [cycle repeatedly]{.orange} until [convergence]{.blue}.
+
+-   This algorithm is sometimes called [iteratively re-weighted least
+    squares]{.blue} (IRLS), because [each step]{.orange} can be seen as
+    the solution of the weighted least squares problem $$
+    \beta^{\text{new}} = \arg\min_\beta (\bm{z} - \bm{X}\beta)^T \bm{W}(\bm{z} - \bm{X}\beta).
+    $$
+:::
 
 ## Computational considerations
 
+::: incremental
+-   Each [step]{.orange} of the IRLS algorithm finds the solution of the
+    likelihood equations $$
+    (\bm{X}^T\bm{W}\bm{X})\beta = \bm{X}^T\bm{W}\bm{z}.
+    $$
+
+-   Once again the Cholesky and the QR decomposition can be exploited to
+    speed up computations. See Section 5.4 of Arnold et al. (2019) for
+    further details.
+
+-   It can be shown that $\beta = (0,\dots,0)^T$ is a good starting
+    point for the initialization.
+
+-   Unfortunately, the IRLS is [not]{.orange} garanteed to
+    [converge]{.orange} nor to increase the log-likelihood at every
+    step, but there are easy fixes.
+
+-   See this
+    [tutorial](https://github.com/tommasorigon/logisticVB/blob/master/em_logistic_tutorial.md)
+    for an example of the [failure]{.orange} of IRLS.
+
+-   These considerations and the IRLS algorithm can be easily
+    generalized to all GLMs.
+:::
+
 ## The estimated model
+
+```{r}
+m1 <- glm(chd ~ ., data = heart, family = "binomial")
+kable(tidy(m1, conf.int = FALSE), digits = 3)
+```
+
+-   Results of the IRLS algorithm applied to the logistic regression
+    model using `heart` data.
 
 ## Prediction and model assessment I
 
+-   The [predicted probabilities]{.orange} $p(\bm{x}_i; \hat{\beta})$
+    are often [thresholded]{.blue}, to obtain 0-1 predicted values,
+    mostly useful for interpretative reasons $$
+    \hat{y}_i = \mathbb{I}(p(\bm{x}_i; \hat{\beta}) > c), \qquad i=1,\dots,n
+    $$ for some threshold $c$, which is [usually]{.orange} set equal to
+    $1/2$.
+
+-   We can then compare the responses with the predicted values using
+    the [confusion matrix]{.blue}:
+
+|                |                     |          |           |
+|----------------|---------------------|----------|-----------|
+|                | **Actual response** |          |           |
+| **Prediction** | **0**               | **1**    | **Total** |
+| **0**          | $n_{00}$            | $n_{01}$ | $n_{0.}$  |
+| **1**          | $n_{10}$            | $n_{11}$ | $n_{1.}$  |
+| **Total**      | $n_{.0}$            | $n_{.1}$ | $n$       |
+
 ## Prediction and model assessment II
 
-## The ROC curve I
+-   In the `heart` dataset, using $c = 0.5$, we get the following
+    [confusion matrix]{.blue}:
 
-## The ROC curve II
+```{r}
+p_hat <- predict(m1, type = "response")
+y_hat <- p_hat > 0.5
+tab <- addmargins(table(y_hat, heart$chd))
+rownames(tab) <- c("Predicted 0", "Predicted 1", "Predicted total")
+colnames(tab) <- c("Actual 0", "Actual 1", "Actual total")
+kable(tab)
+```
+
+-   Hence, the [overall accuracy]{.orange} is $(255 + 82) / 462 \approx 0.72$.
+
+. . .
+
+- The [true positive rate]{.blue} ([specificity]{.orange}) is defined as
+$$
+\text{specificity} = 1 - \mathbb{P}(``\text{false positive}") \approx \frac{n_{00}}{n_{00} + n_{10}} = \frac{255}{255 + 47} = 0.844.
+$$
+- On the other hand, the [true negative rate]{.blue} ([sensitivity]{.orange}) is defined as
+$$
+\text{sensitivity} = 1 - \mathbb{P}(``\text{false negative}") \approx \frac{n_{11}}{n_{01} + n_{11}} = \frac{82}{72 + 82} = 0.532.
+$$
+
+## The ROC curve
+
+```{r}
+#| message: false
+#| #| fig-width: 7.8
+#| fig-height: 6.0
+#| fig-align: center
+library(pROC)
+roc_heart <- roc(response = heart$chd, predictor = p_hat)
+p <- ggroc(roc_heart, legacy.axes = TRUE) + ggtitle(paste("Receiver Operating Characteristic Curve (ROC) - AUC: ", round(auc(roc_heart), 2))) + ylab("Sensitivity") + xlab("1 - specificity") + geom_segment(
+  aes(x = 0, xend = 1, y = 0, yend = 1),
+  color = "grey", linetype = "dashed"
+) + theme_bw() + geom_vline(aes(xintercept = 1 - 255 / (255 + 47)), linetype = "dotted") + geom_vline(aes(xintercept = 0.5), linetype = "dotted")
+
+p
+```
 
 ## Other topics
+
+- When the number of responses labels $K > 2$ we cannot use anymore logistic regression.
+
+- The natural extension is called [multinomial regression]{.orange}, in which we model the probabilities
+$$
+\mathbb{P}(Y_i = k) = p_k(\bm{x}_i,\beta), \qquad k=1,\dots,K,
+$$
+for example using [multinomial logit]{.orange}. The ideas of GLMs can be easily borrowed.
+
+- An alternative and simple approach is [linear discriminant analysis]{.blue}, which is based on Bayes theorem. 
+
+- You can find these topics in the textbook A&S (2011), although it is likely you have already seen these models in the previous courses. 
 
 # References
 
@@ -1215,14 +1454,12 @@ where $g(\cdot)$ is the so-called [link function]{.orange}, which is known and i
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
-        
--   [Basic references (B.Sc. level)]{.gray}
-    -   **Chapters 5 and 6** of A. Azzalini (2000), [*Inferenza Statistica. Una presentazione basata sul concetto di verosimiglianza*](http://azzalini.stat.unipd.it/Book-DM/), Springer.
-    -   **Chapter 3** of Hastie, T., Tibshirani, R. and Friedman, J.
-        (2009), [*The Elements of Statistical
-        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
-        Edition, Springer.
--   [Advanced references (Ph.D. level)]{.orange}
+-   [Basic references (B.Sc. level)]{.grey}
+    -   **Chapters 5 and 6** of A. Azzalini (2000), [*Inferenza
+        Statistica. Una presentazione basata sul concetto di
+        verosimiglianza*](http://azzalini.stat.unipd.it/Book_inference/copertina2000.jpg),
+        Springer.
+-   [Specialized references]{.orange}
     -   **Chapters 1--3** of Quarteroni, A., Sacco, R., and Saleri F.
         (2007). *Numerical mathematics*. Second Edition, Springer.
     -   **Chapters 1--5** of Golub, G.H., and Van Loan, C.F. (1983).
