@@ -116,11 +116,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#summary-and-notation-fixed-x" id="toc-summary-and-notation-fixed-x" class="nav-link" data-scroll-target="#summary-and-notation-fixed-x">Summary and notation (fixed-<span class="math inline">X</span>)</a></li>
   <li><a href="#the-in-sample-prediction-error" id="toc-the-in-sample-prediction-error" class="nav-link" data-scroll-target="#the-in-sample-prediction-error">The in-sample prediction error</a></li>
-  <li><a href="#quadratic-loss-and-the-mean-squared-error" id="toc-quadratic-loss-and-the-mean-squared-error" class="nav-link" data-scroll-target="#quadratic-loss-and-the-mean-squared-error">Quadratic loss and the mean squared error</a></li>
-  <li><a href="#reducible-and-irreducible-errors" id="toc-reducible-and-irreducible-errors" class="nav-link" data-scroll-target="#reducible-and-irreducible-errors">Reducible and irreducible errors</a></li>
-  <li><a href="#classification-problems" id="toc-classification-problems" class="nav-link" data-scroll-target="#classification-problems">Classification problems</a></li>
+  <li><a href="#loss-functions" id="toc-loss-functions" class="nav-link" data-scroll-target="#loss-functions">Loss functions</a></li>
+  <li><a href="#regression-under-quadratic-loss-i" id="toc-regression-under-quadratic-loss-i" class="nav-link" data-scroll-target="#regression-under-quadratic-loss-i">Regression under quadratic loss I</a></li>
+  <li><a href="#regression-under-quadratic-loss-ii" id="toc-regression-under-quadratic-loss-ii" class="nav-link" data-scroll-target="#regression-under-quadratic-loss-ii">Regression under quadratic loss II</a></li>
+  <li><a href="#classification-under-misclassification-loss" id="toc-classification-under-misclassification-loss" class="nav-link" data-scroll-target="#classification-under-misclassification-loss">Classification under misclassification loss</a></li>
   <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
-  <li><a href="#in-sample-prediction-error-of-ordinary-least-squares" id="toc-in-sample-prediction-error-of-ordinary-least-squares" class="nav-link" data-scroll-target="#in-sample-prediction-error-of-ordinary-least-squares">In-sample prediction error of ordinary least squares</a></li>
+  <li><a href="#example-bias-variance-in-linear-regression-models" id="toc-example-bias-variance-in-linear-regression-models" class="nav-link" data-scroll-target="#example-bias-variance-in-linear-regression-models">Example: bias-variance in linear regression models</a></li>
   <li><a href="#if-we-knew-fx" id="toc-if-we-knew-fx" class="nav-link" data-scroll-target="#if-we-knew-fx">If we knew <span class="math inline">f(x)</span>…</a></li>
   <li><a href="#bias-variance-trade-off-1" id="toc-bias-variance-trade-off-1" class="nav-link" data-scroll-target="#bias-variance-trade-off-1">Bias-variance trade-off</a></li>
   <li><a href="#but-since-we-do-not-know-fx" id="toc-but-since-we-do-not-know-fx" class="nav-link" data-scroll-target="#but-since-we-do-not-know-fx">But since we do not know <span class="math inline">f(x)</span>…</a></li>
@@ -404,7 +405,6 @@ x3                0  0  0  1</code></pre>
 <h2 class="anchored" data-anchor-id="summary-and-notation-fixed-x">Summary and notation (fixed-<span class="math inline">X</span>)</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Let us better formalize the analysis we have done so far using the appropriate mathematical tools.</p></li>
 <li><p>In the previous example, we consider two sets of <span class="blue">random variables</span>:</p>
 <ul class="incremental">
 <li>The <span class="orange">training set</span> (yesterday) <span class="math inline">Y_1,\dots, Y_n</span>, whose realization is <span class="math inline">y_1,\dots,y_n</span>.</li>
@@ -415,7 +415,9 @@ x3                0  0  0  1</code></pre>
 <li><p>In <span class="orange">regression</span> problems we customarily assume that <span class="math display">
     Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
   </span> where <span class="math inline">\epsilon_i</span> and <span class="math inline">\tilde{\epsilon}_i</span> are iid “<span class="orange">error</span>” terms, with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
-<li><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span>. We hope our predictions work well on the <span class="blue">test set</span>.</p></li>
+<li><p>In <span class="blue">classification</span> problems the relationship between <span class="math inline">\bm{x}_i</span> and the <span class="orange">Bernoulli</span> r.v. <span class="math inline">Y_i \in \{0, 1\}</span> is <span class="math display">
+\mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
+</span> where <span class="math inline">g(x) :\mathbb{R} \rightarrow (0,1)</span> is monotone transformation, such as the inverse logit.</p></li>
 </ul>
 </div>
 </section>
@@ -423,21 +425,38 @@ x3                0  0  0  1</code></pre>
 <h2 class="anchored" data-anchor-id="the-in-sample-prediction-error">The in-sample prediction error</h2>
 <div class="incremental">
 <ul class="incremental">
+<li><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span>. We hope our predictions work well on the <span class="blue">test set</span>.</p></li>
 <li><p>A measure of quality for the predictions is the <span class="blue">in-sample prediction error</span>: <span class="math display">
 \text{ErrF} =  \mathbb{E}\left[\frac{1}{n} \sum_{i=1}^n \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right],
 </span> where <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}</span> is a <span class="orange">loss function</span>. The “<span class="blue">F</span>” is a reminder of the <span class="blue">f</span>ixed-<span class="math inline">X</span> design.</p></li>
 <li><p>The expectation is taken with respect to training random variable <span class="math inline">Y_1,\dots,Y_n</span>, implicitly appearing in <span class="math inline">\hat{f}(\bm{x})</span>, and the new data points <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>.</p></li>
 <li><p>The in-sample prediction error is measuring the <span class="blue">average</span> “discrepancy” between the <span class="orange">new data points</span> and the corresponding predictions based on the training.</p></li>
+</ul>
+</div>
+</section>
+<section id="loss-functions" class="level2">
+<h2 class="anchored" data-anchor-id="loss-functions">Loss functions</h2>
+<div class="incremental">
+<ul class="incremental">
 <li><p>Examples of loss functions for <span class="blue">regression problems</span> <span class="math inline">Y \in \mathbb{R}</span> are:</p>
 <ul class="incremental">
-<li>The quadratic loss <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2</span>, leading to the MSE.</li>
-<li>The absolute loss <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = |\tilde{Y}_i - \hat{f}(\bm{x}_i)|</span>, leading to the MAE.</li>
+<li>The <span class="orange">quadratic loss</span> <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2</span>, leading to the MSE.</li>
+<li>The <span class="orange">absolute loss</span> <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = |\tilde{Y}_i - \hat{f}(\bm{x}_i)|</span>, leading to the MAE.</li>
+</ul></li>
+<li><p>Examples of loss functions for <span class="blue">binary classification problems</span> <span class="math inline">Y \in \{0, 1\}</span> are:</p>
+<ul class="incremental">
+<li>The <span class="orange">misclassification loss</span>, which is defined as <span class="math display">
+\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i  \neq \hat{y}_i).
+</span> The predictions are obtained dichotomizing the probabilities <span class="math inline">\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) &gt; 1/2)</span>.</li>
+<li>The <span class="orange">deviance</span> or <span class="orange">cross-entropy</span> loss functions are defined as <span class="math display">
+\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
+</span></li>
 </ul></li>
 </ul>
 </div>
 </section>
-<section id="quadratic-loss-and-the-mean-squared-error" class="level2">
-<h2 class="anchored" data-anchor-id="quadratic-loss-and-the-mean-squared-error">Quadratic loss and the mean squared error</h2>
+<section id="regression-under-quadratic-loss-i" class="level2">
+<h2 class="anchored" data-anchor-id="regression-under-quadratic-loss-i">Regression under quadratic loss I</h2>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -458,8 +477,8 @@ Error decomposition (reducible and irreducible)
 </div>
 </div>
 </section>
-<section id="reducible-and-irreducible-errors" class="level2">
-<h2 class="anchored" data-anchor-id="reducible-and-irreducible-errors">Reducible and irreducible errors</h2>
+<section id="regression-under-quadratic-loss-ii" class="level2">
+<h2 class="anchored" data-anchor-id="regression-under-quadratic-loss-ii">Regression under quadratic loss II</h2>
 <div class="incremental">
 <ul class="incremental">
 <li><p>We would like to make the <span class="orange">mean squared error</span> as <span class="orange">small</span> as possible, e.g., by choosing an “optimal” degree of the polynomial <span class="math inline">p-1</span> that minimizes it.</p></li>
@@ -473,22 +492,20 @@ Error decomposition (reducible and irreducible)
 </ul>
 </div>
 </section>
-<section id="classification-problems" class="level2">
-<h2 class="anchored" data-anchor-id="classification-problems">Classification problems</h2>
+<section id="classification-under-misclassification-loss" class="level2">
+<h2 class="anchored" data-anchor-id="classification-under-misclassification-loss">Classification under misclassification loss</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>After the appropriate adjustments, the principles described for regression settings also apply to <span class="blue">classification problems</span>. We focus on the binary case <span class="math inline">Y \in \{0, 1\}</span>.</p></li>
-<li><p>In this context, the relationship between <span class="math inline">\bm{x}_i</span> and the <span class="orange">Bernoulli</span> r.v. <span class="math inline">Y_i</span> is such that <span class="math display">
-\mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
-</span> where <span class="math inline">g(x) :\mathbb{R} \rightarrow (0,1)</span> is monotone transformation, such as the inverse logit.</p></li>
-<li><p>Examples of loss functions for <span class="blue">binary classification problems</span> <span class="math inline">Y \in \{0, 1\}</span> are:</p>
-<ul class="incremental">
-<li>The <span class="orange">misclassification rate</span> <span class="math inline">\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)</span>, where the predictions are obtained dichotomizing the estimated probabilities <span class="math inline">\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) &gt; 1/2)</span>.</li>
-<li>The <span class="orange">deviance</span> or <span class="orange">cross-entropy</span> loss functions are defined as <span class="math display">
-\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
-</span></li>
-</ul></li>
-<li><p>Under a misclassification loss, the <span class="blue">Bayes rate</span> is the error rate we would get if we knew the true <span class="math inline">p(\bm{x}_i)</span>. This is the <span class="orange">irreducible error</span> for classification problems.</p></li>
+<li><p>In <span class="orange">classification problems</span>, under a <span class="blue">misclassification loss</span>, the in sample prediction error is <span class="math display">
+\text{ErrF} = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n  \mathbb{E}\{\mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)\}= \frac{1}{n}\sum_{i=1}^n\mathbb{P}(\tilde{Y}_i \neq \hat{y}_i).
+</span></p></li>
+<li><p>The above error is <span class="orange">minimized</span> whenever <span class="math inline">\hat{y}_i</span> corresponds to <span class="orange">Bayes classifier</span> <span class="math display">
+\hat{y}_{i, \text{bayes}} = \arg\max_{y \in \{0, 1\}} \mathbb{P}(\tilde{Y}_i = y) = \mathbb{I}(p(\bm{x}_i) &gt; 0.5),
+</span> which depends on the unknown probabilities <span class="math inline">p(\bm{x}_i)</span>.</p></li>
+<li><p>We call the <span class="blue">Bayes rate</span> the optimal in-sample prediction error: <span class="math display">
+\mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_{i, \text{bayes}})\}\right] = \frac{1}{n}\sum_{i=1}^n\min\{p(\bm{x}_i), 1 - p(\bm{x}_i)\}.
+</span></p></li>
+<li><p>The <span class="blue">Bayes rate</span> is the error rate we would get if we knew the true <span class="math inline">p(\bm{x})</span> and can be regarded as the <span class="orange">irreducible error</span> for classification problems.</p></li>
 </ul>
 </div>
 </section>
@@ -497,7 +514,7 @@ Error decomposition (reducible and irreducible)
 <ul>
 <li><p>In many textbooks, including A&amp;S, the starting point of the analysis is the <span class="blue">reducible error</span>, because it is the only one we can control and has a transparent interpretation.</p></li>
 <li><p>The reducible error measures the <span class="orange">discrepancy</span> between the unknown function <span class="math inline">f(\bm{x})</span> and its estimate <span class="math inline">\hat{f}(\bm{x})</span> and therefore it is a <span class="orange">natural measure</span> of the goodness of fit.</p></li>
-<li><p>What follows is the <span class="blue">most important result</span> of this unit.</p></li>
+<li><p>What follows holds both for <span class="blue">regression</span> and <span class="orange">classification</span> problems.</p></li>
 </ul>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -515,11 +532,11 @@ Bias-variance decomposition
 </div>
 </div>
 </section>
-<section id="in-sample-prediction-error-of-ordinary-least-squares" class="level2">
-<h2 class="anchored" data-anchor-id="in-sample-prediction-error-of-ordinary-least-squares">In-sample prediction error of ordinary least squares</h2>
+<section id="example-bias-variance-in-linear-regression-models" class="level2">
+<h2 class="anchored" data-anchor-id="example-bias-variance-in-linear-regression-models">Example: bias-variance in linear regression models</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Summarizing, the <span class="orange">in-sample prediction error</span> under <span class="blue">squared loss</span> can be decomposed as <span class="math display">
+<li><p>In <span class="blue">regression problems</span> the <span class="orange">in-sample prediction error</span> under <span class="blue">squared loss</span> is <span class="math display">
 \begin{aligned}
 \text{ErrF} = \sigma^2 + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
 \end{aligned}
@@ -587,7 +604,7 @@ Bias-variance decomposition
 <div class="incremental">
 <ul class="incremental">
 <li><p>Let us investigate this discrepancy between training and test more in-depth.</p></li>
-<li><p>Under a <span class="blue">squared loss function</span>, the <span class="orange">in-sample prediction error</span> is <span class="math display">
+<li><p>In <span class="blue">regression problems</span>, under a <span class="blue">squared loss function</span>, the <span class="orange">in-sample prediction error</span> is <span class="math display">
 \text{ErrF} = \mathbb{E}(\text{MSE}_\text{test}) = \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right]
 </span></p></li>
 <li><p>Similarly, the <span class="orange">in-sample training error</span> can be defined as follows <span class="math display">

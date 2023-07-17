@@ -495,7 +495,7 @@ where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone transformation, such as t
         
 -   Examples of loss functions for [binary classification problems]{.blue}
     $Y \in \{0, 1\}$ are:
-    -   The [misclassification rate]{.orange}, wich is defined as
+    -   The [misclassification loss]{.orange}, which is defined as
         $$
         \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i  \neq \hat{y}_i).
         $$
@@ -548,15 +548,26 @@ and for any $i = 1,\dots,n$.
     minimizing the [reducible error]{.blue}.
 :::
 
-## The Bayes rate
+##  Classification under misclassification loss
 
 ::: incremental
 
-- In classification problems, under a misclassification loss, the [Bayes rate]{.blue} is the error rate we would get if we knew the true $p(\bm{x})$. 
+- In [classification problems]{.orange}, under a [misclassification loss]{.blue}, the in sample prediction error is
+$$
+\text{ErrF} = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n  \mathbb{E}\{\mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)\}= \frac{1}{n}\sum_{i=1}^n\mathbb{P}(\tilde{Y}_i \neq \hat{y}_i).
+$$
+- The above error is [minimized]{.orange} whenever $\hat{y}_i$ corresponds to [Bayes classifier]{.orange}
+$$
+\hat{y}_{i, \text{bayes}} = \arg\max_{y \in \{0, 1\}} \mathbb{P}(\tilde{Y}_i = y) = \mathbb{I}(p(\bm{x}_i) > 0.5),
+$$
+which depends on the unknown probabilities $p(\bm{x}_i)$.
 
-- asd
+- We call the [Bayes rate]{.blue} the optimal in-sample prediction error:
+$$
+\mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_{i, \text{bayes}})\}\right] = \frac{1}{n}\sum_{i=1}^n\min\{p(\bm{x}_i), 1 - p(\bm{x}_i)\}.
+$$
 
-- The Bayes rate is the [irreducible error]{.orange} for classification problems.  
+- The [Bayes rate]{.blue} is the error rate we would get if we knew the true $p(\bm{x})$ and can be regarded as the [irreducible error]{.orange} for classification problems.  
 
 :::
 

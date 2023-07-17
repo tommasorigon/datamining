@@ -652,7 +652,7 @@ x3                0  0  0  1</code></pre>
 </ul></li>
 <li class="fragment"><p>Examples of loss functions for <span class="blue">binary classification problems</span> <span class="math inline">Y \in \{0, 1\}</span> are:</p>
 <ul>
-<li class="fragment">The <span class="orange">misclassification rate</span>, wich is defined as <span class="math display">
+<li class="fragment">The <span class="orange">misclassification loss</span>, which is defined as <span class="math display">
 \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i  \neq \hat{y}_i).
 </span> The predictions are obtained dichotomizing the probabilities <span class="math inline">\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) &gt; 1/2)</span>.</li>
 <li class="fragment">The <span class="orange">deviance</span> or <span class="orange">cross-entropy</span> loss functions are defined as <span class="math display">
@@ -696,13 +696,20 @@ x3                0  0  0  1</code></pre>
 </ul>
 </div>
 </section>
-<section id="the-bayes-rate" class="slide level2 center">
-<h2>The Bayes rate</h2>
+<section id="classification-under-misclassification-loss" class="slide level2 center">
+<h2>Classification under misclassification loss</h2>
 <div>
 <ul>
-<li class="fragment"><p>In classification problems, under a misclassification loss, the <span class="blue">Bayes rate</span> is the error rate we would get if we knew the true <span class="math inline">p(\bm{x})</span>.</p></li>
-<li class="fragment"><p>asd</p></li>
-<li class="fragment"><p>The Bayes rate is the <span class="orange">irreducible error</span> for classification problems.</p></li>
+<li class="fragment"><p>In <span class="orange">classification problems</span>, under a <span class="blue">misclassification loss</span>, the in sample prediction error is <span class="math display">
+\text{ErrF} = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n  \mathbb{E}\{\mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)\}= \frac{1}{n}\sum_{i=1}^n\mathbb{P}(\tilde{Y}_i \neq \hat{y}_i).
+</span></p></li>
+<li class="fragment"><p>The above error is <span class="orange">minimized</span> whenever <span class="math inline">\hat{y}_i</span> corresponds to <span class="orange">Bayes classifier</span> <span class="math display">
+\hat{y}_{i, \text{bayes}} = \arg\max_{y \in \{0, 1\}} \mathbb{P}(\tilde{Y}_i = y) = \mathbb{I}(p(\bm{x}_i) &gt; 0.5),
+</span> which depends on the unknown probabilities <span class="math inline">p(\bm{x}_i)</span>.</p></li>
+<li class="fragment"><p>We call the <span class="blue">Bayes rate</span> the optimal in-sample prediction error: <span class="math display">
+\mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_{i, \text{bayes}})\}\right] = \frac{1}{n}\sum_{i=1}^n\min\{p(\bm{x}_i), 1 - p(\bm{x}_i)\}.
+</span></p></li>
+<li class="fragment"><p>The <span class="blue">Bayes rate</span> is the error rate we would get if we knew the true <span class="math inline">p(\bm{x})</span> and can be regarded as the <span class="orange">irreducible error</span> for classification problems.</p></li>
 </ul>
 </div>
 </section>
@@ -788,7 +795,7 @@ x3                0  0  0  1</code></pre>
 <div>
 <ul>
 <li class="fragment"><p>Let us investigate this discrepancy between training and test more in-depth.</p></li>
-<li class="fragment"><p>In <span class="blue">regression problems</span> and under a <span class="blue">squared loss function</span>, the <span class="orange">in-sample prediction error</span> is <span class="math display">
+<li class="fragment"><p>In <span class="blue">regression problems</span>, under a <span class="blue">squared loss function</span>, the <span class="orange">in-sample prediction error</span> is <span class="math display">
 \text{ErrF} = \mathbb{E}(\text{MSE}_\text{test}) = \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right]
 </span></p></li>
 <li class="fragment"><p>Similarly, the <span class="orange">in-sample training error</span> can be defined as follows <span class="math display">
