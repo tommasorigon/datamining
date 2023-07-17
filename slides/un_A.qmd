@@ -74,6 +74,7 @@ not simpler"* Attributed to Albert Einstein
     -   Cholesky factorization
     -   Orthogonalization and QR decomposition
     -   Iterative methods
+    -   Generalized linear models
 
 -   The [computational aspects]{.blue} of linear models will be novel to
     most of you...
@@ -215,7 +216,7 @@ which is a special instance of [linear model]{.orange}.
 
 In a [linear model]{.blue} the response variable $Y_i$ is related to the
 covariates through the function$$
-    f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
+    \mathbb{E}(Y_i) =f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
     $$ where $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ is a vector of
 [covariates]{.orange} and $\beta = (\beta_1,\dots,\beta_p)^T$ is the
 corresponding vector of [coefficients]{.orange}.
@@ -1099,13 +1100,113 @@ $$
 
 # Generalized linear models
 
-## asd
+## The `heart` dataset
+
+::: columns
+::: {.column width="40%"}
+```{r}
+#| fig-width: 5
+#| fig-height: 4.7
+rm(list = ls())
+# The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/heart.txt
+heart <- read.table("../data/heart.txt", header = TRUE, sep = ",", row.names = 1) 
+heart$chd <- factor(heart$chd)
+
+ggplot(data = heart, aes(x = ldl, y = age, col = chd)) +
+  geom_point() +
+  theme_light() +
+  scale_color_tableau(palette = "Color Blind") +
+  theme(legend.position = "top") +
+  xlab("Cumulative tobacco (kg)") +
+  ylab("Low density lipoprotein cholesterol")
+```
+:::
+
+::: {.column width="60%"}
+
+-   Let us consider the South African `heart`  [dataset](https://hastie.su.domains/ElemStatLearn/datasets/SAheart.data), described is [Section 4.4.2]{.blue} of HTF (2009).
+
+-   We want to [predict]{.blue} the insurgence of [coronary heart disease]{.orange} (`chd`) as function of known risks factors:
+    - Colesterol level (`ldl`) and obesity (`obesity`)
+    - Consumption of tobacco (`tobacco`) and alcool (`alcool`)
+    - Systolic blood pressure (`sbp`)
+    - Age (`age`) and family history ( `famhist`)
+    - ... and a couple of other variables
+- The response variable is [binary]{.orange}: we cannot rely on linear regression models.
+:::
+:::
+
+
+    
+<!-- ## The `heart` dataset -->
+
+<!-- ```{r} -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+<!-- #| fig-width: 11 -->
+<!-- #| fig-height: 6 -->
+<!-- #| fig-align: center -->
+
+<!-- p0 <- ggpairs(heart, -->
+<!--   columns = c(1:4, 6:9), aes(colour = chd), -->
+<!--   lower = list(continuous = wrap("points", size = 0.2)), -->
+<!--   upper = list(continuous = wrap("points", size = 0.2)), -->
+<!--   diag = "blank" -->
+<!-- ) + -->
+<!--   theme_light() + -->
+<!--   scale_color_tableau(palette = "Color Blind") + -->
+<!--   xlab("") + -->
+<!--   ylab("") -->
+<!-- p0 -->
+<!-- ``` -->
+
+## Generalized linear models
+
+- If the outcome is binary, a count, or if the errors are heteroschedastic, then the Gaussian linear regression model might be inappropriate.
+
+- Hence, we let $Y_i$ be iid draws from an [exponentialy dispersion family]{.blue}, which includes  the Binomial, the Poisson, and the Gaussian distribution as special cases.
+
+- The canonical statistical solution are [generalized linear models]{.orange}, which are usually thought in undergraduate courses (e.g. Statistica III). This is just a short recap.
+
+. . .
+
+::: callout-note
+#### Generalized linear model (GLMs)
+
+In a [generalized linear model]{.blue} the response variable is related to the covariates through:
+$$
+\mathbb{E}(Y_i) = g\{f(\bm{x}_i; \beta)\} = g(\beta_1 x_{i1} + \cdots + \beta_p x_{ip}) = g(\bm{x}_i^T\beta),
+$$
+where $g(\cdot)$ is the so-called [link function]{.orange}, which is known and invertible.
+:::
+
+## Likelihood-based inference
+
+## Linear models with Gaussian errors
+
+## Binary classification via logistic regression
+
+## Iteratively re-weighted least squares (IRLS)
+
+## Computational considerations
+
+## The estimated model
+
+## Prediction and model assessment I
+
+## Prediction and model assessment II
+
+## The ROC curve I
+
+## The ROC curve II
+
+## Other topics
 
 # References
 
 ## References
 
--   [Main references]{.blue}
+-   [Main references (M.Sc. level)]{.blue}
     -   **Chapter 2** of Azzalini, A. and Scarpa, B. (2011), [*Data
         Analysis and Data
         Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
@@ -1114,7 +1215,14 @@ $$
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
--   [Advanced references]{.orange}
+        
+-   [Basic references (B.Sc. level)]{.gray}
+    -   **Chapters 5 and 6** of A. Azzalini (2000), [*Inferenza Statistica. Una presentazione basata sul concetto di verosimiglianza*](http://azzalini.stat.unipd.it/Book-DM/), Springer.
+    -   **Chapter 3** of Hastie, T., Tibshirani, R. and Friedman, J.
+        (2009), [*The Elements of Statistical
+        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
+        Edition, Springer.
+-   [Advanced references (Ph.D. level)]{.orange}
     -   **Chapters 1--3** of Quarteroni, A., Sacco, R., and Saleri F.
         (2007). *Numerical mathematics*. Second Edition, Springer.
     -   **Chapters 1--5** of Golub, G.H., and Van Loan, C.F. (1983).

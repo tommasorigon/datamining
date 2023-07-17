@@ -119,6 +119,22 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-recursive-least-squares-algorithm-i" id="toc-the-recursive-least-squares-algorithm-i" class="nav-link" data-scroll-target="#the-recursive-least-squares-algorithm-i">The recursive least squares algorithm I</a></li>
   <li><a href="#the-recursive-least-squares-algorithm-ii" id="toc-the-recursive-least-squares-algorithm-ii" class="nav-link" data-scroll-target="#the-recursive-least-squares-algorithm-ii">The recursive least squares algorithm II</a></li>
   </ul></li>
+  <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a>
+  <ul class="collapse">
+  <li><a href="#the-hearth-dataset" id="toc-the-hearth-dataset" class="nav-link" data-scroll-target="#the-hearth-dataset">The <code>hearth</code> dataset</a></li>
+  <li><a href="#generalized-linear-models-1" id="toc-generalized-linear-models-1" class="nav-link" data-scroll-target="#generalized-linear-models-1">Generalized linear models</a></li>
+  <li><a href="#likelihood-based-inference" id="toc-likelihood-based-inference" class="nav-link" data-scroll-target="#likelihood-based-inference">Likelihood-based inference</a></li>
+  <li><a href="#linear-models-with-gaussian-errors" id="toc-linear-models-with-gaussian-errors" class="nav-link" data-scroll-target="#linear-models-with-gaussian-errors">Linear models with Gaussian errors</a></li>
+  <li><a href="#binary-classification-via-logistic-regression" id="toc-binary-classification-via-logistic-regression" class="nav-link" data-scroll-target="#binary-classification-via-logistic-regression">Binary classification via logistic regression</a></li>
+  <li><a href="#iteratively-re-weighted-least-squares-irls" id="toc-iteratively-re-weighted-least-squares-irls" class="nav-link" data-scroll-target="#iteratively-re-weighted-least-squares-irls">Iteratively re-weighted least squares (IRLS)</a></li>
+  <li><a href="#computational-considerations" id="toc-computational-considerations" class="nav-link" data-scroll-target="#computational-considerations">Computational considerations</a></li>
+  <li><a href="#the-estimated-model" id="toc-the-estimated-model" class="nav-link" data-scroll-target="#the-estimated-model">The estimated model</a></li>
+  <li><a href="#prediction-and-model-assessment-i" id="toc-prediction-and-model-assessment-i" class="nav-link" data-scroll-target="#prediction-and-model-assessment-i">Prediction and model assessment I</a></li>
+  <li><a href="#prediction-and-model-assessment-ii" id="toc-prediction-and-model-assessment-ii" class="nav-link" data-scroll-target="#prediction-and-model-assessment-ii">Prediction and model assessment II</a></li>
+  <li><a href="#the-roc-curve-i" id="toc-the-roc-curve-i" class="nav-link" data-scroll-target="#the-roc-curve-i">The ROC curve I</a></li>
+  <li><a href="#the-roc-curve-ii" id="toc-the-roc-curve-ii" class="nav-link" data-scroll-target="#the-roc-curve-ii">The ROC curve II</a></li>
+  <li><a href="#other-topics" id="toc-other-topics" class="nav-link" data-scroll-target="#other-topics">Other topics</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a>
   <ul class="collapse">
   <li><a href="#references-1" id="toc-references-1" class="nav-link" data-scroll-target="#references-1">References</a></li>
@@ -1147,6 +1163,83 @@ Sherman-Morrison formula
 <ul>
 <li>The full algorithm is provided in A&amp;S, Algorithm 2.2.</li>
 </ul>
+</section>
+</section>
+<section id="generalized-linear-models" class="level1">
+<h1>Generalized linear models</h1>
+<section id="the-hearth-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="the-hearth-dataset">The <code>hearth</code> dataset</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="un_A_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="600"></p>
+</div>
+</div>
+</div><div class="column" style="width:60%;">
+<ul>
+<li><p>The <code>heart</code> dataset.</p></li>
+<li><p>This <a href="https://hastie.su.domains/ElemStatLearn/datasets/SAheart.data">dataset</a> is described is given in <span class="blue">Section XXX</span> of HTF (2009).</p></li>
+<li><p>We want to <span class="blue">predict</span></p></li>
+</ul>
+</div>
+</div>
+<!-- ## The `hearth` dataset -->
+<!-- ```{r} -->
+<!-- #| warning: false -->
+<!-- #| message: false -->
+<!-- #| fig-width: 11 -->
+<!-- #| fig-height: 6 -->
+<!-- #| fig-align: center -->
+<!-- p0 <- ggpairs(hearth, -->
+<!--   columns = c(1:4, 6:9), aes(colour = chd), -->
+<!--   lower = list(continuous = wrap("points", size = 0.2)), -->
+<!--   upper = list(continuous = wrap("points", size = 0.2)), -->
+<!--   diag = "blank" -->
+<!-- ) + -->
+<!--   theme_light() + -->
+
+<!--   scale_color_tableau(palette = "Color Blind") + -->
+<!--   xlab("") + -->
+<!--   ylab("") -->
+<!-- p0 -->
+<!-- ``` -->
+</section>
+<section id="generalized-linear-models-1" class="level2">
+<h2 class="anchored" data-anchor-id="generalized-linear-models-1">Generalized linear models</h2>
+</section>
+<section id="likelihood-based-inference" class="level2">
+<h2 class="anchored" data-anchor-id="likelihood-based-inference">Likelihood-based inference</h2>
+</section>
+<section id="linear-models-with-gaussian-errors" class="level2">
+<h2 class="anchored" data-anchor-id="linear-models-with-gaussian-errors">Linear models with Gaussian errors</h2>
+</section>
+<section id="binary-classification-via-logistic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="binary-classification-via-logistic-regression">Binary classification via logistic regression</h2>
+</section>
+<section id="iteratively-re-weighted-least-squares-irls" class="level2">
+<h2 class="anchored" data-anchor-id="iteratively-re-weighted-least-squares-irls">Iteratively re-weighted least squares (IRLS)</h2>
+</section>
+<section id="computational-considerations" class="level2">
+<h2 class="anchored" data-anchor-id="computational-considerations">Computational considerations</h2>
+</section>
+<section id="the-estimated-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-estimated-model">The estimated model</h2>
+</section>
+<section id="prediction-and-model-assessment-i" class="level2">
+<h2 class="anchored" data-anchor-id="prediction-and-model-assessment-i">Prediction and model assessment I</h2>
+</section>
+<section id="prediction-and-model-assessment-ii" class="level2">
+<h2 class="anchored" data-anchor-id="prediction-and-model-assessment-ii">Prediction and model assessment II</h2>
+</section>
+<section id="the-roc-curve-i" class="level2">
+<h2 class="anchored" data-anchor-id="the-roc-curve-i">The ROC curve I</h2>
+</section>
+<section id="the-roc-curve-ii" class="level2">
+<h2 class="anchored" data-anchor-id="the-roc-curve-ii">The ROC curve II</h2>
+</section>
+<section id="other-topics" class="level2">
+<h2 class="anchored" data-anchor-id="other-topics">Other topics</h2>
 </section>
 </section>
 <section id="references" class="level1">

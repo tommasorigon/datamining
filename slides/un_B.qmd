@@ -423,9 +423,6 @@ $$
 
 ::: incremental
 
--   Let us better formalize the analysis we have done so far using the appropriate
-    mathematical tools.
-
 -   In the previous example, we consider two sets of [random
     variables]{.blue}:
 
@@ -448,15 +445,23 @@ $$
     $$ where $\epsilon_i$ and $\tilde{\epsilon}_i$ are iid
     "[error]{.orange}" terms, with $\mathbb{E}(\epsilon_i)=0$ and
     $\text{var}(\epsilon_i)=\sigma^2$.
-
--   The [training data]{.orange} is used to estimate a function of the
-    covariates $\hat{f}(\bm{x}_i)$. We hope our predictions work well on the [test set]{.blue}.
     
+- In [classification]{.blue} problems the relationship between $\bm{x}_i$ and the [Bernoulli]{.orange} r.v. $Y_i \in \{0, 1\}$ is 
+$$
+\mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
+$$
+where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone transformation, such as the inverse logit.    
+
 :::
 
 ## The in-sample prediction error
 
 ::: incremental
+
+-   The [training data]{.orange} is used to estimate a function of the
+    covariates $\hat{f}(\bm{x}_i)$. We hope our predictions work well on the [test set]{.blue}.
+
+
 -   A measure of quality for the predictions is the [in-sample
     prediction error]{.blue}: $$
     \text{ErrF} =  \mathbb{E}\left[\frac{1}{n} \sum_{i=1}^n \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right],
@@ -472,18 +477,37 @@ $$
     "discrepancy" between the [new data points]{.orange} and the
     corresponding predictions based on the training.
 
+:::
+
+## Loss functions
+
+::: incremental
+
 -   Examples of loss functions for [regression problems]{.blue}
     $Y \in \mathbb{R}$ are:
 
-    -   The quadratic loss
+    -   The [quadratic loss]{.orange}
         $\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2$,
         leading to the MSE.
-    -   The absolute loss
+    -   The [absolute loss]{.orange}
         $\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = |\tilde{Y}_i - \hat{f}(\bm{x}_i)|$,
         leading to the MAE.
+        
+-   Examples of loss functions for [binary classification problems]{.blue}
+    $Y \in \{0, 1\}$ are:
+    -   The [misclassification rate]{.orange}, wich is defined as
+        $$
+        \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i  \neq \hat{y}_i).
+        $$
+        The predictions are obtained dichotomizing the probabilities $\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) > 1/2)$.
+    -   The [deviance]{.orange} or [cross-entropy]{.orange} loss functions are defined as
+        $$
+        \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
+        $$
+
 :::
 
-## Quadratic loss and the mean squared error
+## Regression under quadratic loss I
 
 ::: callout-note
 #### Error decomposition (reducible and irreducible)
@@ -500,7 +524,7 @@ $\mathbb{E}(\tilde{\epsilon}_i^2) = \text{var}(\tilde{\epsilon}_i) = \sigma^2$
 and for any $i = 1,\dots,n$.
 :::
 
-## Reducible and irreducible errors
+## Regression under quadratic loss II
 
 ::: incremental
 -   We would like to make the [mean squared error]{.orange} as
@@ -524,28 +548,15 @@ and for any $i = 1,\dots,n$.
     minimizing the [reducible error]{.blue}.
 :::
 
-## Classification problems
+## The Bayes rate
 
 ::: incremental
 
-- After the appropriate adjustments, the principles described for regression settings also apply to [classification problems]{.blue}. We focus on the binary case $Y \in \{0, 1\}$.
+- In classification problems, under a misclassification loss, the [Bayes rate]{.blue} is the error rate we would get if we knew the true $p(\bm{x})$. 
 
-- In this context, the relationship between $\bm{x}_i$ and the [Bernoulli]{.orange} r.v. $Y_i$ is such that 
-$$
-\mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
-$$
-where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone transformation, such as the inverse logit.
+- asd
 
--   Examples of loss functions for [binary classification problems]{.blue}
-    $Y \in \{0, 1\}$ are:
-    -   The [misclassification rate]{.orange}
-        $\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i  \neq \hat{y}_i)$,
-        where the predictions are obtained dichotomizing the estimated probabilities $\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) > 1/2)$.
-    -   The [deviance]{.orange} or [cross-entropy]{.orange} loss functions are defined as
-        $$
-        \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
-        $$
-- Under a misclassification loss, the [Bayes rate]{.blue} is the error rate we would get if we knew the true $p(\bm{x}_i)$. This is the [irreducible error]{.orange} for classification problems.  
+- The Bayes rate is the [irreducible error]{.orange} for classification problems.  
 
 :::
 
@@ -559,7 +570,7 @@ where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone transformation, such as t
     unknown function $f(\bm{x})$ and its estimate $\hat{f}(\bm{x})$ and
     therefore it is a [natural measure]{.orange} of the goodness of fit.
 
--   What follows is the [most important result]{.blue} of this unit.
+-   What follows  holds both for [regression]{.blue} and [classification]{.orange} problems.
 
 . . .
 
@@ -572,11 +583,11 @@ decomposition: $$
 $$
 :::
 
-## In-sample prediction error of ordinary least squares
+## Example: bias-variance in linear regression models
 
 ::: incremental
--   Summarizing, the [in-sample prediction error]{.orange} under
-    [squared loss]{.blue} can be decomposed as $$
+-   In [regression problems]{.blue} the [in-sample prediction error]{.orange} under
+    [squared loss]{.blue} is $$
     \begin{aligned}
     \text{ErrF} = \sigma^2 + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
     \end{aligned}
@@ -740,7 +751,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 - Let us investigate this discrepancy between training and test more in-depth.
 
--   Under a [squared loss function]{.blue}, the [in-sample prediction
+-   In [regression problems]{.blue}, under a [squared loss function]{.blue}, the [in-sample prediction
     error]{.orange} is $$
     \text{ErrF} = \mathbb{E}(\text{MSE}_\text{test}) = \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right]
     $$
