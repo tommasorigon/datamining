@@ -70,7 +70,9 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-variable-selection-problem" id="toc-the-variable-selection-problem" class="nav-link" data-scroll-target="#the-variable-selection-problem">The variable selection problem</a></li>
   <li><a href="#a-naïve-approach-abusing-p-values" id="toc-a-naïve-approach-abusing-p-values" class="nav-link" data-scroll-target="#a-naïve-approach-abusing-p-values">A naïve approach: (ab)using p-values</a></li>
   <li><a href="#to-explain-or-to-predict" id="toc-to-explain-or-to-predict" class="nav-link" data-scroll-target="#to-explain-or-to-predict">To explain or to predict?</a></li>
-  <li><a href="#best-subset-selection" id="toc-best-subset-selection" class="nav-link" data-scroll-target="#best-subset-selection">Best subset selection</a></li>
+  <li><a href="#best-subset-selection" id="toc-best-subset-selection" class="nav-link" data-scroll-target="#best-subset-selection">Best subset selection</a>
+  <ul class="collapse">
+  <li><a href="#best-subset-selection-1" id="toc-best-subset-selection-1" class="nav-link" data-scroll-target="#best-subset-selection-1">Best subset selection</a></li>
   <li><a href="#step-1.-and-2.-of-best-subset-selection" id="toc-step-1.-and-2.-of-best-subset-selection" class="nav-link" data-scroll-target="#step-1.-and-2.-of-best-subset-selection">Step 1. and 2. of best subset selection</a></li>
   <li><a href="#the-best-models-mathcalm_1dots-mathcalm_p" id="toc-the-best-models-mathcalm_1dots-mathcalm_p" class="nav-link" data-scroll-target="#the-best-models-mathcalm_1dots-mathcalm_p">The “best” models <span class="math inline">\mathcal{M}_1,\dots, \mathcal{M}_p</span></a></li>
   <li><a href="#the-wrong-way-of-doing-cross-validation" id="toc-the-wrong-way-of-doing-cross-validation" class="nav-link" data-scroll-target="#the-wrong-way-of-doing-cross-validation">The wrong way of doing cross-validation</a></li>
@@ -80,6 +82,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#backward-regression" id="toc-backward-regression" class="nav-link" data-scroll-target="#backward-regression">Backward regression</a></li>
   <li><a href="#forward-backward-and-best-subset" id="toc-forward-backward-and-best-subset" class="nav-link" data-scroll-target="#forward-backward-and-best-subset">Forward, backward and best subset</a></li>
   <li><a href="#extension-to-generalized-linear-models" id="toc-extension-to-generalized-linear-models" class="nav-link" data-scroll-target="#extension-to-generalized-linear-models">Extension to generalized linear models</a></li>
+  </ul></li>
   <li><a href="#principal-components-regression" id="toc-principal-components-regression" class="nav-link" data-scroll-target="#principal-components-regression">Principal components regression</a>
   <ul class="collapse">
   <li><a href="#data-compression" id="toc-data-compression" class="nav-link" data-scroll-target="#data-compression">Data compression</a></li>
@@ -96,10 +99,33 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#shrinkage-effect-of-principal-components-iii" id="toc-shrinkage-effect-of-principal-components-iii" class="nav-link" data-scroll-target="#shrinkage-effect-of-principal-components-iii">Shrinkage effect of principal components III</a></li>
   <li><a href="#summary-and-next-steps" id="toc-summary-and-next-steps" class="nav-link" data-scroll-target="#summary-and-next-steps">Summary and next steps</a></li>
   </ul></li>
-  <li><a href="#ridge-regression" id="toc-ridge-regression" class="nav-link" data-scroll-target="#ridge-regression">Ridge regression</a></li>
-  <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a>
+  <li><a href="#ridge-regression" id="toc-ridge-regression" class="nav-link" data-scroll-target="#ridge-regression">Ridge regression</a>
   <ul class="collapse">
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#a-regularization-method" id="toc-a-regularization-method" class="nav-link" data-scroll-target="#a-regularization-method">A regularization method</a></li>
+  <li><a href="#lagrange-multipliers-and-ridge-solution" id="toc-lagrange-multipliers-and-ridge-solution" class="nav-link" data-scroll-target="#lagrange-multipliers-and-ridge-solution">Lagrange multipliers and ridge solution</a></li>
+  <li><a href="#the-geometry-of-the-ridge-solution" id="toc-the-geometry-of-the-ridge-solution" class="nav-link" data-scroll-target="#the-geometry-of-the-ridge-solution">The geometry of the ridge solution</a></li>
+  <li><a href="#a-historical-perspective" id="toc-a-historical-perspective" class="nav-link" data-scroll-target="#a-historical-perspective">A historical perspective</a></li>
+  <li><a href="#important-details" id="toc-important-details" class="nav-link" data-scroll-target="#important-details">Important details</a></li>
+  <li><a href="#shrinkage-effect-i" id="toc-shrinkage-effect-i" class="nav-link" data-scroll-target="#shrinkage-effect-i">Shrinkage effect I</a></li>
+  <li><a href="#shrinkage-effect-ii" id="toc-shrinkage-effect-ii" class="nav-link" data-scroll-target="#shrinkage-effect-ii">Shrinkage effect II</a></li>
+  <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
+  <li><a href="#the-orthogonal-case" id="toc-the-orthogonal-case" class="nav-link" data-scroll-target="#the-orthogonal-case">The orthogonal case</a></li>
+  <li><a href="#equivalent-degrees-of-freedom" id="toc-equivalent-degrees-of-freedom" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom">Equivalent degrees of freedom</a></li>
+  <li><a href="#equivalent-degrees-of-freedom-of-best-subset" id="toc-equivalent-degrees-of-freedom-of-best-subset" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-of-best-subset">☠️ - Equivalent degrees of freedom of best subset</a></li>
+  <li><a href="#selection-of-lambda" id="toc-selection-of-lambda" class="nav-link" data-scroll-target="#selection-of-lambda">Selection of <span class="math inline">\lambda</span></a></li>
+  <li><a href="#the-p-n-case-i" id="toc-the-p-n-case-i" class="nav-link" data-scroll-target="#the-p-n-case-i">The <span class="math inline">p &gt; n</span> case I</a></li>
+  <li><a href="#the-p-n-case-ii" id="toc-the-p-n-case-ii" class="nav-link" data-scroll-target="#the-p-n-case-ii">The <span class="math inline">p &gt; n</span> case II</a></li>
+  </ul></li>
+  <li><a href="#the-lasso" id="toc-the-lasso" class="nav-link" data-scroll-target="#the-lasso">The lasso</a></li>
+  <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic net</a>
+  <ul class="collapse">
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#pathwise-coordinate-optimization" id="toc-pathwise-coordinate-optimization" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization">Pathwise coordinate optimization</a></li>
+  </ul></li>
+  <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a>
+  <ul class="collapse">
+  <li><a href="#references-1" id="toc-references-1" class="nav-link" data-scroll-target="#references-1">References</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_C_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
@@ -378,8 +404,10 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <li><p>For example, what if the true <span class="math inline">f(\bm{x})</span> were not linear? In this context, a <span class="blue">linear model</span> is simply an approximation of the unknown <span class="math inline">f(\bm{x})</span> and hypothesis testing procedures are ill-posed.</p></li>
 </ul>
 </section>
-<section id="best-subset-selection" class="level2">
-<h2 class="anchored" data-anchor-id="best-subset-selection">Best subset selection</h2>
+<section id="best-subset-selection" class="level1">
+<h1>Best subset selection</h1>
+<section id="best-subset-selection-1" class="level2">
+<h2 class="anchored" data-anchor-id="best-subset-selection-1">Best subset selection</h2>
 <ul>
 <li><p>Let us get back to our <span class="blue">variable selection problem</span>.</p></li>
 <li><p>In principle, we could perform an <span class="orange">exhaustive search</span> considering all the <span class="math inline">2^p</span> possible models and then selecting the one having the best out-of-sample predictive performance.</p></li>
@@ -569,6 +597,7 @@ Backward regression
 </section>
 <section id="extension-to-generalized-linear-models" class="level2">
 <h2 class="anchored" data-anchor-id="extension-to-generalized-linear-models">Extension to generalized linear models</h2>
+</section>
 </section>
 <section id="principal-components-regression" class="level1">
 <h1>Principal components regression</h1>
@@ -764,8 +793,9 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="summary-and-next-steps" class="level2">
 <h2 class="anchored" data-anchor-id="summary-and-next-steps">Summary and next steps</h2>
 <ul>
-<li><p>We have see so far two “discrete” methods: best subset selection and PCR</p></li>
-<li><p>Best subset selection perform variable selection, whereas PCR reduces the variance of the coefficients.</p></li>
+<li><p>We have see so far two “discrete” methods: best subset selection and principal components regression.</p></li>
+<li><p>Best subset selection perform <span class="orange">variable selection</span>, whereas principal components regression <span class="orange">reduces the variance</span> of the coefficients.</p></li>
+<li><p>These “discrete” methods can be seen as the naïve counterpart of more advanced and <span class="blue">continuous</span> ideas, that are presented in the second part of the Unit.</p></li>
 </ul>
 <table class="table">
 <colgroup>
@@ -793,10 +823,81 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </tr>
 </tbody>
 </table>
+<ul>
+<li>Finally, the <span class="blue">lasso</span> and the <span class="orange">elastic net</span> perform both shrinkage and variable selection.</li>
+</ul>
 </section>
 </section>
 <section id="ridge-regression" class="level1">
 <h1>Ridge regression</h1>
+<section id="a-regularization-method" class="level2">
+<h2 class="anchored" data-anchor-id="a-regularization-method">A regularization method</h2>
+</section>
+<section id="lagrange-multipliers-and-ridge-solution" class="level2">
+<h2 class="anchored" data-anchor-id="lagrange-multipliers-and-ridge-solution">Lagrange multipliers and ridge solution</h2>
+</section>
+<section id="the-geometry-of-the-ridge-solution" class="level2">
+<h2 class="anchored" data-anchor-id="the-geometry-of-the-ridge-solution">The geometry of the ridge solution</h2>
+</section>
+<section id="a-historical-perspective" class="level2">
+<h2 class="anchored" data-anchor-id="a-historical-perspective">A historical perspective</h2>
+</section>
+<section id="important-details" class="level2">
+<h2 class="anchored" data-anchor-id="important-details">Important details</h2>
+</section>
+<section id="shrinkage-effect-i" class="level2">
+<h2 class="anchored" data-anchor-id="shrinkage-effect-i">Shrinkage effect I</h2>
+<ul>
+<li>Use SVD</li>
+</ul>
+</section>
+<section id="shrinkage-effect-ii" class="level2">
+<h2 class="anchored" data-anchor-id="shrinkage-effect-ii">Shrinkage effect II</h2>
+<ul>
+<li>Plot here</li>
+</ul>
+</section>
+<section id="bias-variance-trade-off" class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-trade-off">Bias-variance trade-off</h2>
+<ul>
+<li>Theorem by Theobald</li>
+</ul>
+</section>
+<section id="the-orthogonal-case" class="level2">
+<h2 class="anchored" data-anchor-id="the-orthogonal-case">The orthogonal case</h2>
+<ul>
+<li>Orthonormal case</li>
+</ul>
+</section>
+<section id="equivalent-degrees-of-freedom" class="level2">
+<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom">Equivalent degrees of freedom</h2>
+</section>
+<section id="equivalent-degrees-of-freedom-of-best-subset" class="level2">
+<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-of-best-subset">☠️ - Equivalent degrees of freedom of best subset</h2>
+</section>
+<section id="selection-of-lambda" class="level2">
+<h2 class="anchored" data-anchor-id="selection-of-lambda">Selection of <span class="math inline">\lambda</span></h2>
+<ul>
+<li>Plot of cross-validation and AIC</li>
+</ul>
+</section>
+<section id="the-p-n-case-i" class="level2">
+<h2 class="anchored" data-anchor-id="the-p-n-case-i">The <span class="math inline">p &gt; n</span> case I</h2>
+</section>
+<section id="the-p-n-case-ii" class="level2">
+<h2 class="anchored" data-anchor-id="the-p-n-case-ii">The <span class="math inline">p &gt; n</span> case II</h2>
+</section>
+</section>
+<section id="the-lasso" class="level1">
+<h1>The lasso</h1>
+</section>
+<section id="elastic-net" class="level1">
+<h1>Elastic net</h1>
+<section id="definition" class="level2">
+<h2 class="anchored" data-anchor-id="definition">Definition</h2>
+</section>
+<section id="pathwise-coordinate-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization">Pathwise coordinate optimization</h2>
 <!-- ## Ridge regression -->
 <!-- ```{r} -->
 <!-- df_ridge <- function(lambda, X) { -->
@@ -916,10 +1017,25 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <!-- ``` -->
 <!-- ::: -->
 </section>
+</section>
 <section id="generalized-linear-models" class="level1">
 <h1>Generalized linear models</h1>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<section id="references-1" class="level2">
+<h2 class="anchored" data-anchor-id="references-1">References</h2>
+<ul>
+<li><span class="blue">Main references</span>
+<ul>
+<li><strong>Chapter 3</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
+<li><strong>Chapter 7</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+</ul></li>
+<li><span class="orange">Advanced references</span>
+<ul>
+<li>Hastie, T. (2020). Ridge regularization: an essential concept in data science. <em>Technometrics</em>, 62(4), 426-433.</li>
+</ul></li>
+</ul>
 </section>
 </section>
 

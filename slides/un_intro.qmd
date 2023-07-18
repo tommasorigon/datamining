@@ -1,15 +1,17 @@
 ---
-title: "Introduction"
+title: "Introduction to the course"
 subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
 execute:
-  cache: true
+  cache: false
 filters: 
   - remove-pause.lua
 format:
   revealjs:
-    auto-stretch: false
+    df-print: tibble
+    auto-stretch: true
+    center: true
     html-math-method: katex
     transition: none
     output-file: un_intro_slides.html
@@ -19,10 +21,11 @@ format:
     theme: [default, ../template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: false
-    fig-dpi: 300
+    fig-dpi: 150
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
+    highlight-style: github
   html:
     html-math-method: katex
     echo: false
@@ -33,9 +36,10 @@ format:
     embed-resources: false
     code-line-numbers: true
     smooth-scroll: true
-    code-fold: true
+    code-fold: false
     code-summary: "Show the code"
-    fig-dpi: 300
+    fig-dpi: 150
+    highlight-style: github
 editor: 
   markdown: 
     wrap: 72
@@ -43,20 +47,70 @@ editor_options:
   chunk_output_type: console
 ---
 
+## [Homepage](../index.html)
 
-## 
+- Personal introduction
 
-```{r}
-#| echo: true
-rm(list = ls())
-X <- matrix(runif(100 * 5, 0, 1), 100, 5)
-# X <- cbind(X, X[, 1] + rnorm(10, sd = 1e-6))
+## New problems and new opportunities
 
-XtX <- crossprod(X)
-beta <- rnorm(5)
-y <- rnorm(100, X %*% beta, )
+## Fraud detection
 
-kappa(X, exact = TRUE)^2
-kappa(XtX, exact = TRUE)
-```
+## Genetic applications
 
+## Another nice application 
+
+## The old fashioned way I
+
+- p-values that are always significant
+- bias is often neglected
+- tons of variables
+- need for being nonparametric
+- curse of dimensionality
+- complex data structures (networks, functional data, high-dimensional time-series)
+
+## The old fashioned way II
+
+## Models and algorithms
+
+## Trevor Hastie (2015)
+
+## Robert Tibshirani (2015?)
+
+## David Dunson (2018)
+
+- Failure of the machines; warning that there is currently a 
+
+## To explain or to predict?
+
+## Predictive performance and interpretability
+
+## Bradley Efron
+
+- Not everything is a prediction problem. Also, statistics is both inference and prediction.
+
+## From classical to computer age statistical inference
+
+## Data Mining, Machine Learning, and Statistical Learning
+
+## Data mining, Data Science, and friends
+
+- Friedman, Jerome (1997). Data Mining and Statistics: What’s the connection? http://www.stats.org.uk/Friedman1997.pdf
+
+- Larry Wasserman (2012) <https://normaldeviate.wordpress.com/2012/06/12/> statistics-versus-machine-learning-5-2/
+
+- Donoho, David (2017). 50 years of data science. Journal of Computational and Graphical Statistics 26: 745-766
+
+## Broad overview of the topics I
+
+- Data mining
+
+## Broad overview of the topics II
+
+- Machine Learning
+- Statistical Learning
+
+## A matter of style
+
+## Course material
+
+## Examination

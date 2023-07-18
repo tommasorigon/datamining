@@ -73,6 +73,8 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | *Exercises*                            | \[Exercises 5\]                   |                                          |                       |
 | Lab 5                                  | \[Code Lab 5\]                    |                                          |                       |
 | Lab 6                                  | \[Code Lab 6\]                    |                                          |                       |
+| **Prediction, estimation, and attribution**                    | \[Unit G\]                        | \[Slides Unit G\]                        |                       |
+
 
 ## Prerequisites
 

@@ -605,7 +605,12 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </ul>
 </div>
 </section>
-<section id="best-subset-selection" class="slide level2 center">
+<section>
+<section id="best-subset-selection" class="title-slide slide level1 center">
+<h1>Best subset selection</h1>
+
+</section>
+<section id="best-subset-selection-1" class="slide level2 center">
 <h2>Best subset selection</h2>
 <ul>
 <li><p>Let us get back to our <span class="blue">variable selection problem</span>.</p></li>
@@ -772,10 +777,7 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-13-1.png" width="1500" class="r-stretch quarto-figure-center"><ul>
 <li>In the <code>prostate</code> dataset, forward, backward and best subset selection all gave exactly the <span class="orange">same path of solutions</span> on the full training set.</li>
 </ul>
-</section>
-<section id="extension-to-generalized-linear-models" class="slide level2 center">
-<h2>Extension to generalized linear models</h2>
-</section>
+</section></section>
 <section>
 <section id="principal-components-regression" class="title-slide slide level1 center">
 <h1>Principal components regression</h1>
@@ -946,15 +948,14 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>Shrinkage effect of principal components III</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-17-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
-<section id="extension-to-generalized-linear-models-1" class="slide level2 center">
-<h2>Extension to generalized linear models</h2>
-</section>
 <section id="summary-and-next-steps" class="slide level2 center">
 <h2>Summary and next steps</h2>
 <ul>
-<li><p>We have see so far two “discrete” methods: best subset selection and PCR</p></li>
-<li><p>Best subset selection perform variable selection, whereas PCR reduces the variance of the coefficients.</p></li>
+<li><p>We have see so far two “discrete” methods: best subset selection and principal components regression.</p></li>
+<li><p>Best subset selection perform <span class="orange">variable selection</span>, whereas principal components regression <span class="orange">reduces the variance</span> of the coefficients.</p></li>
+<li><p>These “discrete” methods can be seen as the naïve counterpart of more advanced and <span class="blue">continuous</span> ideas, that are presented in the second part of the Unit.</p></li>
 </ul>
+<div class="fragment">
 <table>
 <colgroup>
 <col style="width: 17%">
@@ -981,10 +982,90 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </tr>
 </tbody>
 </table>
+</div>
+<div class="fragment">
+<ul>
+<li>Finally, the <span class="blue">lasso</span> and the <span class="orange">elastic net</span> perform both shrinkage and variable selection.</li>
+</ul>
+</div>
 </section></section>
 <section>
 <section id="ridge-regression" class="title-slide slide level1 center">
 <h1>Ridge regression</h1>
+
+</section>
+<section id="a-regularization-method" class="slide level2 center">
+<h2>A regularization method</h2>
+</section>
+<section id="lagrange-multipliers-and-ridge-solution" class="slide level2 center">
+<h2>Lagrange multipliers and ridge solution</h2>
+</section>
+<section id="the-geometry-of-the-ridge-solution" class="slide level2 center">
+<h2>The geometry of the ridge solution</h2>
+</section>
+<section id="a-historical-perspective" class="slide level2 center">
+<h2>A historical perspective</h2>
+</section>
+<section id="important-details" class="slide level2 center">
+<h2>Important details</h2>
+</section>
+<section id="shrinkage-effect-i" class="slide level2 center">
+<h2>Shrinkage effect I</h2>
+<ul>
+<li>Use SVD</li>
+</ul>
+</section>
+<section id="shrinkage-effect-ii" class="slide level2 center">
+<h2>Shrinkage effect II</h2>
+<ul>
+<li>Plot here</li>
+</ul>
+</section>
+<section id="bias-variance-trade-off" class="slide level2 center">
+<h2>Bias-variance trade-off</h2>
+<ul>
+<li>Theorem by Theobald</li>
+</ul>
+</section>
+<section id="the-orthogonal-case" class="slide level2 center">
+<h2>The orthogonal case</h2>
+<ul>
+<li>Orthonormal case</li>
+</ul>
+</section>
+<section id="equivalent-degrees-of-freedom" class="slide level2 center">
+<h2>Equivalent degrees of freedom</h2>
+</section>
+<section id="equivalent-degrees-of-freedom-of-best-subset" class="slide level2 center">
+<h2>☠️ - Equivalent degrees of freedom of best subset</h2>
+</section>
+<section id="selection-of-lambda" class="slide level2 center">
+<h2>Selection of <span class="math inline">\lambda</span></h2>
+<ul>
+<li>Plot of cross-validation and AIC</li>
+</ul>
+</section>
+<section id="the-p-n-case-i" class="slide level2 center">
+<h2>The <span class="math inline">p &gt; n</span> case I</h2>
+</section>
+<section id="the-p-n-case-ii" class="slide level2 center">
+<h2>The <span class="math inline">p &gt; n</span> case II</h2>
+</section></section>
+<section id="the-lasso" class="title-slide slide level1 center">
+<h1>The lasso</h1>
+
+</section>
+
+<section>
+<section id="elastic-net" class="title-slide slide level1 center">
+<h1>Elastic net</h1>
+
+</section>
+<section id="definition" class="slide level2 center">
+<h2>Definition</h2>
+</section>
+<section id="pathwise-coordinate-optimization" class="slide level2 center">
+<h2>Pathwise coordinate optimization</h2>
 <!-- ## Ridge regression -->
 <!-- ```{r} -->
 <!-- df_ridge <- function(lambda, X) { -->
@@ -1103,9 +1184,30 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <!--   ) -->
 <!-- ``` -->
 <!-- ::: -->
+</section></section>
+<section id="generalized-linear-models" class="title-slide slide level1 center">
+<h1>Generalized linear models</h1>
+
 </section>
-<section id="references" class="slide level2 center">
+
+<section>
+<section id="references" class="title-slide slide level1 center">
+<h1>References</h1>
+
+</section>
+<section id="references-1" class="slide level2 center">
 <h2>References</h2>
+<ul>
+<li><span class="blue">Main references</span>
+<ul>
+<li><strong>Chapter 3</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
+<li><strong>Chapter 7</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+</ul></li>
+<li><span class="orange">Advanced references</span>
+<ul>
+<li>Hastie, T. (2020). Ridge regularization: an essential concept in data science. <em>Technometrics</em>, 62(4), 426-433.</li>
+</ul></li>
+</ul>
 
 <img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>

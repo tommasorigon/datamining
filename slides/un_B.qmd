@@ -1466,5 +1466,4 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
         138--51.
     -   Bates, S., Hastie, T., and R. Tibshirani (2023).
         "[Cross-validation: what does it estimate and how well does it
-        do it?](https://doi.org/10.1080/01621459.2023.2197686)" Journal
-        of the American Statistical Association, in press.
+        do it?](https://doi.org/10.1080/01621459.2023.2197686)" *Journal of the American Statistical Association*, in press.

@@ -257,6 +257,8 @@ knitr::kable(tab, digits = 2)
     context, a [linear model]{.blue} is simply an approximation of the
     unknown $f(\bm{x})$ and hypothesis testing procedures are ill-posed.
 
+# Best subset selection
+
 ## Best subset selection
 
 -   Let us get back to our [variable selection problem]{.blue}.
@@ -539,8 +541,6 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 ```
 
 - In the `prostate` dataset, forward, backward and best subset selection all gave exactly the [same path of solutions]{.orange} on the full training set.
-
-## Extension to generalized linear models
 
 # Principal components regression
 
@@ -841,18 +841,70 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 ## Summary and next steps
 
-- We have see so far two "discrete" methods: best subset selection and PCR
+- We have see so far two "discrete" methods: best subset selection and principal components regression.
 
-- Best subset selection perform variable selection, whereas PCR reduces the variance of the coefficients.
+- Best subset selection perform [variable selection]{.orange}, whereas principal components regression [reduces the variance]{.orange} of the coefficients.
+
+- These "discrete" methods can be seen as the naïve counterpart of more advanced and [continuous]{.blue} ideas, that are presented in the second part of the Unit. 
+
+. . .
 
 |            | [Shrinkage]{.orange}                      | [Variable selection]{.orange}    |
 |------------|--------------------------------|-----------------------|
 | [Discrete]{.blue}   | Principal component regression | Best subset selection, stepwise |
 | [Continuous]{.blue} | Ridge regression               | Relaxed Lasso           |
 
+. . .
+
+- Finally, the [lasso]{.blue} and the [elastic net]{.orange} perform both shrinkage and variable selection.
 
 # Ridge regression
 
+## A regularization method
+
+## Lagrange multipliers and ridge solution
+
+## The geometry of the ridge solution
+
+## A historical perspective
+
+## Important details
+
+## Shrinkage effect I
+
+- Use SVD
+
+## Shrinkage effect II
+
+- Plot here
+
+## Bias-variance trade-off
+
+- Theorem by Theobald
+
+## The orthogonal case
+
+- Orthonormal case
+
+## Equivalent degrees of freedom 
+
+## ☠️ - Equivalent degrees of freedom of best subset
+
+## Selection of $\lambda$
+
+- Plot of cross-validation and AIC
+
+## The $p > n$ case I
+
+## The $p > n$ case II
+
+# The lasso
+
+# Elastic net
+
+## Definition
+
+## Pathwise coordinate optimization
 
 <!-- ## Ridge regression -->
 
@@ -1092,4 +1144,18 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 # Generalized linear models
 
+# References 
+
 ## References
+
+-   [Main references]{.blue}
+    -   **Chapter 3** of Azzalini, A. and Scarpa, B. (2011), [*Data
+        Analysis and Data
+        Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
+        University Press.
+    -   **Chapter 7** of Hastie, T., Tibshirani, R. and Friedman, J.
+        (2009), [*The Elements of Statistical
+        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
+        Edition, Springer.
+-   [Advanced references]{.orange}
+    - Hastie, T. (2020). Ridge regularization: an essential concept in data science. *Technometrics*, 62(4), 426-433.
