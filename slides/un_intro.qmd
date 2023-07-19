@@ -265,26 +265,26 @@ editor_options:
 ::: incremental
 -   If you are in this class today, it means...
 
-    1.  You already studied a lot of [real analysis]{.orange}, [linear
+    -  You already studied a lot of [real analysis]{.orange}, [linear
         algebra]{.grey} and [probability]{.blue};
 
-    2.  You know how to [estimate the parameters]{.blue} of a
+    -  You know how to [estimate the parameters]{.blue} of a
         statistical model, to construct and interpret confidence
         intervals, p-values, etc. You know the [principles]{.orange} of
         [inference]{.orange};
 
-    3.  You know how to [explore data]{.orange} using the **R**
+    -  You know how to [explore data]{.orange} using the **R**
         statistical software and other tools (SAS, python, etc.). You
         know [principal component analysis]{.blue} and perhaps even
         factor models;
 
-    4.  You know how to fit [linear models]{.blue} and how to interpret
+    -  You know how to fit [linear models]{.blue} and how to interpret
         the associated empirical findings. You are familiar with $R^2$s,
         likelihood ratio tests, [logistic regression]{.orange}, and so
         on;
 
-    5.  You may have attended a course named "data mining" before and
-        studied linear discriminant analysis, $k$-nearest neighbors...
+    -  You may have attended a course named "data mining" before, and
+        studied basic tools like linear discriminant analysis, $k$-nearest neighbors...
 :::
 
 . . .
@@ -305,40 +305,247 @@ editor_options:
 . . .
 
 -   Trees, bagging, random forests, boosting, neural networks, support
-    vector machine are left out from program because of [time
+    vector machine are not in the program due to [time
     constraints]{.orange}... but you will study them in other courses!
 
 ## A tension between prediction and interpretability
 
-![](img/flex.png){fig-align="center"}
+![](img/flex.png){fig-align="center" width=50%}
 
-- There is a tension between the [interpretability]{.orange} of a method and its [flexibility]{.blue}.
+::: incremental
 
-- Important caveat. Less flexible methods can be [more accurate]{.orange} in many cases, on top of being interpretable!
+- There is often a tension between the [interpretability]{.orange} of a method and its [flexibility]{.blue}.
 
-## Data mining, machine learning, and statistical learning
+- Important [caveat]{.blue}. Less flexible methods may have [more accurate predictions]{.orange} in many case studies, on top of being more interpretable!
+
+:::
+
+## Predictive interpretability $\neq$ causality
+
+![](img/causality.png){fig-align="center" width=50%}
+
+::: incremental
+
+- Predictive [interpretability]{.blue} means transparent understanding the [driving factors]{.blue} of the predictions. An example are linear models with few (highly relevant) variables. 
+
+- For example, if I change the value of a set covariates, what is the impact on predictions?
+
+- This is [useful]{.blue}, especially within the context of [ethical]{.orange} AI and machine learning.
+
+- However, the [predictive relevance]{.blue} of a variable does [not]{.orange} imply a [causal effect]{.orange} on the response. 
+
+- Finding causal relationship requires [careful thinking]{.orange}, a suitable [sampling design]{.blue}, or both. 
+:::
+
+## A definition of "data mining"
+
+::: callout-note
+#### Azzalini & Scarpa (2011)
+Data mining represents the work of processing, graphically or numerically, [large]{.orange} amounts or continuous streams of [data]{.orange}, with the aim of [extracting information]{.blue} useful to those who possess them.
+:::
+
+. . .
+
+::: callout-tip
+#### Hand et al. (2001)
+Data mining is fundamentally an applied discipline [...] data mining requires an understanding of both [statistical]{.orange} and [computational]{.blue} issues. (p. xxviii)
+
+[...]
+
+The most fundamental difference between classical statistical applications and data mining is the [size]{.orange} of the [data]{.orange}. (p. 19)
+:::
+
+## Back to the 1800s
+
+::: incremental
+- At this point, it may sound natural to ask yourself: what is [statistics]{.orange}? 
+
+- Statistics was there before data mining, machine learning, data science and before all these fancy new names. 
+
+- Statistical regression methods go back to Gauss and Legendre in the early 1800s. Their goal was indeed [prediction]{.blue}!
+:::
+
+. . .
+
+:::callout-note
+#### Davison (2003) 
+Statistics concerns what can be [learned]{.orange} from [data]{.orange}.
+:::
+
+. . .
+
+::: callout-tip
+#### Hand (2011)
+Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.blue}. 
+:::
+
+
+## 50 years of data science (Donoho, 2017)
+
+::: columns
+::: {.column width="50%"}
+![](img/donoho1.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+![](img/donoho2.png){fig-align="center"}
+:::
+:::
+
+## Statistics, an evolving science
+
+
+::: columns
+::: {.column width="50%"}
+![](img/donoho3.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+::: incremental
+
+- Sure, old-fashioned statistics is often insufficient to address [modern challenges]{.blue}.
+
+- But statistics has profoundly changed over the years, [broadening]{.orange} its [boundaries]{.orange}. 
+
+- The road was paved by [Tukey]{.orange} in the 60s, with further exhortations  by [Breiman]{.blue}.
+
+- [Modern statistics]{.blue} encompasses [also]{.orange}:
+  - Data gathering and representation;
+  - Computational aspects;
+  - Algorithmic and modelling culture to prediction.
+
+- Feel free to call it "data science", if you like the bright shiny new term. 
+:::
+:::
+:::
+
+## A glossary
+
+::: incremental
+
+- While it might seem that [data science]{.blue} and [data mining]{.blue} have [strong roots]{.orange} in [statistics]{.orange}, it cannot be denied the existence of two distinct, albeit often overlapping, [communities]{.blue}.
+
+- For the lack of a better term, we will call these communities the [statisticians]{.orange} and the [computer scientists]{.blue}, as identified by their [background]{.blue} and studies. 
+
+:::
+
+. . .
+
+| [Statisticians]{.orange} | [Computer Scientists]{.blue} |
+|----------|----------|
+| Parameters | Weights |
+| Covariate | Feature |
+| Observation | Instance |
+| Response | Label |
+| **R** | Python |
+| Regression / Classification | Supervised learning |
+| Density estimation, clustering | Unsupervised learning |
+| Lasso / Ridge penalty |$L^1$ and $L^2$ penalty |
+
+## Press the button?
+
+::: columns
+::: {.column width="20%"}
+![](img/button.png){fig-align="center"}
+:::
+
+::: {.column width="80%"}
+::: incremental
+
+- Several "automatic" tools have been developed over the years, tempting generations of analysts with [automatic pipelines]{.blue}.
+
+- Those who choose to "[press the button]{.orange}": 
+    - do not know which method is used, they may only know the name of the method they are using;
+    - are not aware of its [advantages]{.blue} and [disadvantages]{.orange}.
+    
+- More or less advanced [knowledge]{.blue} of the methods is essential for:
+  - choosing the most suitable method;
+  - interpreting the results.
+
+- Competence in [computational aspects]{.blue} is helpful to better evaluate the output of the computer, e.g. in terms of its [reliability]{.orange}.
+
+- If you are not making the choices, somebody else is!
+:::
+:::
+:::
+
 
 ## A matter of style
 
+![](img/leonardo.jpg){fig-align="center" height=8cm}
+
+
+"*Quelli che s'innamoran di pratica sanza scienzia son come 'l nocchier ch'entra in navilio senza timone o bussola, che mai ha certezza dove si vada.*"
+
+[Leonardo da Vinci]{.blue}
+
 ## Course material
 
-## Examination
+::: columns
+
+::: {.column width="15%"}
+:::
+::: {.column width="25%"}
+![A&S (2011)](img/AS.png){fig-align="center"}
+:::
+
+::: {.column width="20%"}
+:::
+
+::: {.column width="25%"}
+![HTF (2009)](img/HTF.png){fig-align="center"}
+:::
+
+::: {.column width="15%"}
+:::
+
+:::
+
+- Azzalini, A. and Scarpa, B. (2011), [*Data Analysis and Data Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford University Press.
+- Hastie, T., Tibshirani, R. and Friedman, J.
+        (2009), [*The Elements of Statistical
+        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
+        Edition, Springer.
+
+## Exam
+
+
+- The exam is made of [two parts]{.orange}:
+
+- (20 / 30) A [written examination]{.blue}: a pen-and-paper exam about the theoretical aspects.
+
+- (10 / 30) An [individual assignment]{.blue}: data challenge. 
+   - You will be given a prediction task and you will need to submit your [predictions]{.orange} and produce a [report]{.orange} of about 4-5 pages;
+   - You will make use of the [Kaggle](https://www.kaggle.com) platform;
+   - The data challenge will be announced in the second half of the course.
+   - Further info will be provided in due time.
+  
+- Both parts are [mandatory]{.orange} and you need to submit the assignment [before]{.orange} attempting the written part.
+
+- The final grade is obtained as the [sum]{.blue} of the above scores. 
+
+## Epilogue
+
+![](img/efron.jpg){fig-align="center" height=7cm}
+
+- "*Those who ignore statistics are condemned to reinvent it*". [Bradley Efron]{.grey}, Stanford University.
 
 ## References
 
 -   [Main references]{.blue}
-    -   Breiman, Leo (2001). [Statistical modeling: the two
+    -   **Chapter 1** of Azzalini, A. and Scarpa, B. (2011), [*Data
+        Analysis and Data
+        Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
+        University Press.
+    -   Breiman, L. (2001). [Statistical modeling: the two
         cultures](http://projecteuclid.org/euclid.ss/1009213726).
         *Statistical Science*, **16** (3), 199--215.
-    -   Donoho, David (2017). [50 years of data
+    -   Donoho, D. (2017). [50 years of data
         science](https://www.tandfonline.com/doi/full/10.1080/10618600.2017.1384734).
         *Journal of Computational and Graphical Statistics*, **26**,
         745-766
 -   [Specialized references]{.orange}
-    -   Yu, Bin, and Karl Kumbier (2020). [Veridical Data
-        Science](https://doi.org/10.1073/pnas.1901326117). *Proceedings
-        of the National Academy of Sciences of the United States of
-        America*, **117** (8), 3920--3929.
-    -   Tukey, John W. (1962). [The future of data
+    - Efron, B. (2020). [Prediction, Estimation, and Attribution](https://doi.org/10.1080/01621459.2020.1762613). *Journal of the American Statistical Association* **115** (530), 636–55.
+    -   Tukey, J. W. (1962). [The future of data
         analysis](https://doi.org/10.1162/99608f92.f09d7aa3). *Annals of
         Mathematical Statistics*, **33**, 1--67.

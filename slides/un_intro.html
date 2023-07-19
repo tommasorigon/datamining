@@ -75,10 +75,17 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a></li>
   <li><a href="#overview-of-the-topics" id="toc-overview-of-the-topics" class="nav-link" data-scroll-target="#overview-of-the-topics">Overview of the topics</a></li>
   <li><a href="#a-tension-between-prediction-and-interpretability" id="toc-a-tension-between-prediction-and-interpretability" class="nav-link" data-scroll-target="#a-tension-between-prediction-and-interpretability">A tension between prediction and interpretability</a></li>
-  <li><a href="#data-mining-machine-learning-and-statistical-learning" id="toc-data-mining-machine-learning-and-statistical-learning" class="nav-link" data-scroll-target="#data-mining-machine-learning-and-statistical-learning">Data mining, machine learning, and statistical learning</a></li>
+  <li><a href="#predictive-interpretability-neq-causality" id="toc-predictive-interpretability-neq-causality" class="nav-link" data-scroll-target="#predictive-interpretability-neq-causality">Predictive interpretability <span class="math inline">\neq</span> causality</a></li>
+  <li><a href="#a-definition-of-data-mining" id="toc-a-definition-of-data-mining" class="nav-link" data-scroll-target="#a-definition-of-data-mining">A definition of “data mining”</a></li>
+  <li><a href="#back-to-the-1800s" id="toc-back-to-the-1800s" class="nav-link" data-scroll-target="#back-to-the-1800s">Back to the 1800s</a></li>
+  <li><a href="#years-of-data-science-donoho-2017" id="toc-years-of-data-science-donoho-2017" class="nav-link" data-scroll-target="#years-of-data-science-donoho-2017">50 years of data science (Donoho, 2017)</a></li>
+  <li><a href="#statistics-an-evolving-science" id="toc-statistics-an-evolving-science" class="nav-link" data-scroll-target="#statistics-an-evolving-science">Statistics, an evolving science</a></li>
+  <li><a href="#a-glossary" id="toc-a-glossary" class="nav-link" data-scroll-target="#a-glossary">A glossary</a></li>
+  <li><a href="#press-the-button" id="toc-press-the-button" class="nav-link" data-scroll-target="#press-the-button">Press the button?</a></li>
   <li><a href="#a-matter-of-style" id="toc-a-matter-of-style" class="nav-link" data-scroll-target="#a-matter-of-style">A matter of style</a></li>
   <li><a href="#course-material" id="toc-course-material" class="nav-link" data-scroll-target="#course-material">Course material</a></li>
-  <li><a href="#examination" id="toc-examination" class="nav-link" data-scroll-target="#examination">Examination</a></li>
+  <li><a href="#exam" id="toc-exam" class="nav-link" data-scroll-target="#exam">Exam</a></li>
+  <li><a href="#epilogue" id="toc-epilogue" class="nav-link" data-scroll-target="#epilogue">Epilogue</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_intro_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
@@ -294,13 +301,13 @@ ul.task-list li input[type="checkbox"] {
 <div class="incremental">
 <ul class="incremental">
 <li><p>If you are in this class today, it means…</p>
-<ol class="incremental" type="1">
+<ul class="incremental">
 <li><p>You already studied a lot of <span class="orange">real analysis</span>, <span class="grey">linear algebra</span> and <span class="blue">probability</span>;</p></li>
 <li><p>You know how to <span class="blue">estimate the parameters</span> of a statistical model, to construct and interpret confidence intervals, p-values, etc. You know the <span class="orange">principles</span> of <span class="orange">inference</span>;</p></li>
 <li><p>You know how to <span class="orange">explore data</span> using the <strong>R</strong> statistical software and other tools (SAS, python, etc.). You know <span class="blue">principal component analysis</span> and perhaps even factor models;</p></li>
 <li><p>You know how to fit <span class="blue">linear models</span> and how to interpret the associated empirical findings. You are familiar with <span class="math inline">R^2</span>s, likelihood ratio tests, <span class="orange">logistic regression</span>, and so on;</p></li>
-<li><p>You may have attended a course named “data mining” before and studied linear discriminant analysis, <span class="math inline">k</span>-nearest neighbors…</p></li>
-</ol></li>
+<li><p>You may have attended a course named “data mining” before, and studied basic tools like linear discriminant analysis, <span class="math inline">k</span>-nearest neighbors…</p></li>
+</ul></li>
 </ul>
 </div>
 <ul>
@@ -344,45 +351,313 @@ ul.task-list li input[type="checkbox"] {
 </tbody>
 </table>
 <ul>
-<li>Trees, bagging, random forests, boosting, neural networks, support vector machine are left out from program because of <span class="orange">time constraints</span>… but you will study them in other courses!</li>
+<li>Trees, bagging, random forests, boosting, neural networks, support vector machine are not in the program due to <span class="orange">time constraints</span>… but you will study them in other courses!</li>
 </ul>
 </section>
 <section id="a-tension-between-prediction-and-interpretability" class="level2">
 <h2 class="anchored" data-anchor-id="a-tension-between-prediction-and-interpretability">A tension between prediction and interpretability</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="img/flex.png" class="img-fluid figure-img"></p>
+<p><img src="img/flex.png" class="img-fluid figure-img" style="width:50.0%"></p>
 </figure>
 </div>
-<ul>
-<li><p>There is a tension between the <span class="orange">interpretability</span> of a method and its <span class="blue">flexibility</span>.</p></li>
-<li><p>Important caveat. Less flexible methods can be <span class="orange">more accurate</span> in many cases, on top of being interpretable!</p></li>
+<div class="incremental">
+<ul class="incremental">
+<li><p>There is often a tension between the <span class="orange">interpretability</span> of a method and its <span class="blue">flexibility</span>.</p></li>
+<li><p>Important <span class="blue">caveat</span>. Less flexible methods may have <span class="orange">more accurate predictions</span> in many case studies, on top of being more interpretable!</p></li>
 </ul>
+</div>
 </section>
-<section id="data-mining-machine-learning-and-statistical-learning" class="level2">
-<h2 class="anchored" data-anchor-id="data-mining-machine-learning-and-statistical-learning">Data mining, machine learning, and statistical learning</h2>
+<section id="predictive-interpretability-neq-causality" class="level2">
+<h2 class="anchored" data-anchor-id="predictive-interpretability-neq-causality">Predictive interpretability <span class="math inline">\neq</span> causality</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/causality.png" class="img-fluid figure-img" style="width:50.0%"></p>
+</figure>
+</div>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Predictive <span class="blue">interpretability</span> means transparent understanding the <span class="blue">driving factors</span> of the predictions. An example are linear models with few (highly relevant) variables.</p></li>
+<li><p>For example, if I change the value of a set covariates, what is the impact on predictions?</p></li>
+<li><p>This is <span class="blue">useful</span>, especially within the context of <span class="orange">ethical</span> AI and machine learning.</p></li>
+<li><p>However, the <span class="blue">predictive relevance</span> of a variable does <span class="orange">not</span> imply a <span class="orange">causal effect</span> on the response.</p></li>
+<li><p>Finding causal relationship requires <span class="orange">careful thinking</span>, a suitable <span class="blue">sampling design</span>, or both.</p></li>
+</ul>
+</div>
+</section>
+<section id="a-definition-of-data-mining" class="level2">
+<h2 class="anchored" data-anchor-id="a-definition-of-data-mining">A definition of “data mining”</h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Azzalini &amp; Scarpa (2011)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Data mining represents the work of processing, graphically or numerically, <span class="orange">large</span> amounts or continuous streams of <span class="orange">data</span>, with the aim of <span class="blue">extracting information</span> useful to those who possess them.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hand et al.&nbsp;(2001)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Data mining is fundamentally an applied discipline […] data mining requires an understanding of both <span class="orange">statistical</span> and <span class="blue">computational</span> issues. (p.&nbsp;xxviii)</p>
+<p>[…]</p>
+<p>The most fundamental difference between classical statistical applications and data mining is the <span class="orange">size</span> of the <span class="orange">data</span>. (p.&nbsp;19)</p>
+</div>
+</div>
+</section>
+<section id="back-to-the-1800s" class="level2">
+<h2 class="anchored" data-anchor-id="back-to-the-1800s">Back to the 1800s</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>At this point, it may sound natural to ask yourself: what is <span class="orange">statistics</span>?</p></li>
+<li><p>Statistics was there before data mining, machine learning, data science and before all these fancy new names.</p></li>
+<li><p>Statistical regression methods go back to Gauss and Legendre in the early 1800s. Their goal was indeed <span class="blue">prediction</span>!</p></li>
+</ul>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Davison (2003)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Statistics concerns what can be <span class="orange">learned</span> from <span class="orange">data</span>.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Hand (2011)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Statistics […] is the technology of <span class="blue">extracting meaning</span> from <span class="blue">data</span>.</p>
+</div>
+</div>
+</section>
+<section id="years-of-data-science-donoho-2017" class="level2">
+<h2 class="anchored" data-anchor-id="years-of-data-science-donoho-2017">50 years of data science (Donoho, 2017)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/donoho1.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/donoho2.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="statistics-an-evolving-science" class="level2">
+<h2 class="anchored" data-anchor-id="statistics-an-evolving-science">Statistics, an evolving science</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/donoho3.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="incremental">
+<ul class="incremental">
+<li><p>Sure, old-fashioned statistics is often insufficient to address <span class="blue">modern challenges</span>.</p></li>
+<li><p>But statistics has profoundly changed over the years, <span class="orange">broadening</span> its <span class="orange">boundaries</span>.</p></li>
+<li><p>The road was paved by <span class="orange">Tukey</span> in the 60s, with further exhortations by <span class="blue">Breiman</span>.</p></li>
+<li><p><span class="blue">Modern statistics</span> encompasses <span class="orange">also</span>:</p>
+<ul class="incremental">
+<li>Data gathering and representation;</li>
+<li>Computational aspects;</li>
+<li>Algorithmic and modelling culture to prediction.</li>
+</ul></li>
+<li><p>Feel free to call it “data science”, if you like the bright shiny new term.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="a-glossary" class="level2">
+<h2 class="anchored" data-anchor-id="a-glossary">A glossary</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>While it might seem that <span class="blue">data science</span> and <span class="blue">data mining</span> have <span class="orange">strong roots</span> in <span class="orange">statistics</span>, it cannot be denied the existence of two distinct, albeit often overlapping, <span class="blue">communities</span>.</p></li>
+<li><p>For the lack of a better term, we will call these communities the <span class="orange">statisticians</span> and the <span class="blue">computer scientists</span>, as identified by their <span class="blue">background</span> and studies.</p></li>
+</ul>
+</div>
+<table class="table">
+<thead>
+<tr class="header">
+<th><span class="orange">Statisticians</span></th>
+<th><span class="blue">Computer Scientists</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Parameters</td>
+<td>Weights</td>
+</tr>
+<tr class="even">
+<td>Covariate</td>
+<td>Feature</td>
+</tr>
+<tr class="odd">
+<td>Observation</td>
+<td>Instance</td>
+</tr>
+<tr class="even">
+<td>Response</td>
+<td>Label</td>
+</tr>
+<tr class="odd">
+<td><strong>R</strong></td>
+<td>Python</td>
+</tr>
+<tr class="even">
+<td>Regression / Classification</td>
+<td>Supervised learning</td>
+</tr>
+<tr class="odd">
+<td>Density estimation, clustering</td>
+<td>Unsupervised learning</td>
+</tr>
+<tr class="even">
+<td>Lasso / Ridge penalty</td>
+<td><span class="math inline">L^1</span> and <span class="math inline">L^2</span> penalty</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="press-the-button" class="level2">
+<h2 class="anchored" data-anchor-id="press-the-button">Press the button?</h2>
+<div class="columns">
+<div class="column" style="width:20%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/button.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div><div class="column" style="width:80%;">
+<div class="incremental">
+<ul class="incremental">
+<li><p>Several “automatic” tools have been developed over the years, tempting generations of analysts with <span class="blue">automatic pipelines</span>.</p></li>
+<li><p>Those who choose to “<span class="orange">press the button</span>”:</p>
+<ul class="incremental">
+<li>do not know which method is used, they may only know the name of the method they are using;</li>
+<li>are not aware of its <span class="blue">advantages</span> and <span class="orange">disadvantages</span>.</li>
+</ul></li>
+<li><p>More or less advanced <span class="blue">knowledge</span> of the methods is essential for:</p>
+<ul class="incremental">
+<li>choosing the most suitable method;</li>
+<li>interpreting the results.</li>
+</ul></li>
+<li><p>Competence in <span class="blue">computational aspects</span> is helpful to better evaluate the output of the computer, e.g.&nbsp;in terms of its <span class="orange">reliability</span>.</p></li>
+<li><p>If you are not making the choices, somebody else is!</p></li>
+</ul>
+</div>
+</div>
+</div>
 </section>
 <section id="a-matter-of-style" class="level2">
 <h2 class="anchored" data-anchor-id="a-matter-of-style">A matter of style</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/leonardo.jpg" style="height:8cm" class="figure-img"></p>
+</figure>
+</div>
+<p>“<em>Quelli che s’innamoran di pratica sanza scienzia son come ’l nocchier ch’entra in navilio senza timone o bussola, che mai ha certezza dove si vada.</em>”</p>
+<p><span class="blue">Leonardo da Vinci</span></p>
 </section>
 <section id="course-material" class="level2">
 <h2 class="anchored" data-anchor-id="course-material">Course material</h2>
+<div class="columns">
+<div class="column" style="width:15%;">
+
+</div><div class="column" style="width:25%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/AS.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">A&amp;S (2011)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:20%;">
+
+</div><div class="column" style="width:25%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/HTF.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">HTF (2009)</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:15%;">
+
+</div>
+</div>
+<ul>
+<li>Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
+<li>Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+</ul>
 </section>
-<section id="examination" class="level2">
-<h2 class="anchored" data-anchor-id="examination">Examination</h2>
+<section id="exam" class="level2">
+<h2 class="anchored" data-anchor-id="exam">Exam</h2>
+<ul>
+<li><p>The exam is made of <span class="orange">two parts</span>:</p></li>
+<li><p>(20 / 30) A <span class="blue">written examination</span>: a pen-and-paper exam about the theoretical aspects.</p></li>
+<li><p>(10 / 30) An <span class="blue">individual assignment</span>: data challenge.</p>
+<ul>
+<li>You will be given a prediction task and you will need to submit your <span class="orange">predictions</span> and produce a <span class="orange">report</span> of about 4-5 pages;</li>
+<li>You will make use of the <a href="https://www.kaggle.com">Kaggle</a> platform;</li>
+<li>The data challenge will be announced in the second half of the course.</li>
+<li>Further info will be provided in due time.</li>
+</ul></li>
+<li><p>Both parts are <span class="orange">mandatory</span> and you need to submit the assignment <span class="orange">before</span> attempting the written part.</p></li>
+<li><p>The final grade is obtained as the <span class="blue">sum</span> of the above scores.</p></li>
+</ul>
+</section>
+<section id="epilogue" class="level2">
+<h2 class="anchored" data-anchor-id="epilogue">Epilogue</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/efron.jpg" style="height:7cm" class="figure-img"></p>
+</figure>
+</div>
+<ul>
+<li>“<em>Those who ignore statistics are condemned to reinvent it</em>”. <span class="grey">Bradley Efron</span>, Stanford University.</li>
+</ul>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <ul>
 <li><span class="blue">Main references</span>
 <ul>
-<li>Breiman, Leo (2001). <a href="http://projecteuclid.org/euclid.ss/1009213726">Statistical modeling: the two cultures</a>. <em>Statistical Science</em>, <strong>16</strong> (3), 199–215.</li>
-<li>Donoho, David (2017). <a href="https://www.tandfonline.com/doi/full/10.1080/10618600.2017.1384734">50 years of data science</a>. <em>Journal of Computational and Graphical Statistics</em>, <strong>26</strong>, 745-766</li>
+<li><strong>Chapter 1</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
+<li>Breiman, L. (2001). <a href="http://projecteuclid.org/euclid.ss/1009213726">Statistical modeling: the two cultures</a>. <em>Statistical Science</em>, <strong>16</strong> (3), 199–215.</li>
+<li>Donoho, D. (2017). <a href="https://www.tandfonline.com/doi/full/10.1080/10618600.2017.1384734">50 years of data science</a>. <em>Journal of Computational and Graphical Statistics</em>, <strong>26</strong>, 745-766</li>
 </ul></li>
 <li><span class="orange">Specialized references</span>
 <ul>
-<li>Yu, Bin, and Karl Kumbier (2020). <a href="https://doi.org/10.1073/pnas.1901326117">Veridical Data Science</a>. <em>Proceedings of the National Academy of Sciences of the United States of America</em>, <strong>117</strong> (8), 3920–3929.</li>
-<li>Tukey, John W. (1962). <a href="https://doi.org/10.1162/99608f92.f09d7aa3">The future of data analysis</a>. <em>Annals of Mathematical Statistics</em>, <strong>33</strong>, 1–67.</li>
+<li>Efron, B. (2020). <a href="https://doi.org/10.1080/01621459.2020.1762613">Prediction, Estimation, and Attribution</a>. <em>Journal of the American Statistical Association</em> <strong>115</strong> (530), 636–55.</li>
+<li>Tukey, J. W. (1962). <a href="https://doi.org/10.1162/99608f92.f09d7aa3">The future of data analysis</a>. <em>Annals of Mathematical Statistics</em>, <strong>33</strong>, 1–67.</li>
 </ul></li>
 </ul>
 </section>
