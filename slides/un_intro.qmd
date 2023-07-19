@@ -212,7 +212,7 @@ editor_options:
 
 ## Data models vs algorithmic models
 
-![](img/Breiman2.png){fig-align="center"}
+![](img/breiman2.png){fig-align="center"}
 
 ## Focus on predictive accuracy & business solutions
 
