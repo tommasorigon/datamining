@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.3.433">
 
   <meta name="author" content="Tommaso Rigon">
-  <title>Introduction to the course</title>
+  <title>Introduction</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -31,6 +31,22 @@
     }
   </style>
   <link rel="stylesheet" href="un_intro_files/libs/revealjs/dist/theme/quarto.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
   <link href="un_intro_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="un_intro_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="un_intro_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -325,7 +341,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Introduction to the course</h1>
+  <h1 class="title">Introduction</h1>
   <p class="subtitle">Data Mining - CdL CLAMSES</p>
 
 <div class="quarto-title-authors">
@@ -342,74 +358,247 @@
 </section>
 <section id="homepage" class="slide level2 center">
 <h2><a href="../index.html">Homepage</a></h2>
+<div class="columns">
+<div class="column" style="width:25%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/intro.jpg"></p>
+</figure>
+</div>
+</div><div class="column" style="width:75%;">
+<div>
 <ul>
-<li>Personal introduction</li>
+<li class="fragment"><p>Nowadays <span class="blue">predictive algorithms</span> have become <span class="orange">mainstream</span> in the <span class="orange">popular culture</span> due to some spectacular successes:</p>
+<ul>
+<li class="fragment">iPhone’s Siri;</li>
+<li class="fragment">Google translate;</li>
+<li class="fragment">recommendation systems (Netflix challenge);</li>
+<li class="fragment">business analytics (churn prediction, credit risk assessment);</li>
+<li class="fragment">and, more recently, chatGPT.</li>
+</ul></li>
+<li class="fragment"><p>And yet, there is a lot of <span class="orange">confusion</span> about the <span class="blue">history</span> and the <span class="blue">boundaries</span> of the field. For instance, what is “data mining”?</p></li>
+<li class="fragment"><p>And what are then the differences, <span class="orange">if any</span>, with statistics, machine learning, statistical learning, and data science?</p></li>
+<li class="fragment"><p>What kind of applied problems cannot be solved with <span class="orange">classical statistical</span> tools? Why?</p></li>
+<li class="fragment"><p>Let us consider some real <span class="blue">case studies</span>…</p></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="traffic-prediction-in-telecommunications" class="slide level2 center">
+<h2>Traffic prediction in telecommunications</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/phone.png"></p>
+</figure>
+</div>
+</div><div class="column" style="width:70%;">
+<div>
+<ul>
+<li class="fragment"><p>The marketing section of a telecommunications company is interested in analyzing the <span class="orange">customer behavior</span>.</p></li>
+<li class="fragment"><p>Hence, the data science team would like to <span class="blue">predict</span>, for every single customer, the <span class="orange">telephone traffic</span>.</p></li>
+<li class="fragment"><p>Traffic is measured as the total <span class="blue">number of seconds</span> of <span class="blue">outgoing calls</span> made in a given month by each customer.</p></li>
+<li class="fragment"><p>Appropriate estimations of the <span class="orange">overall traffic</span> provide necessary elements for:</p>
+<ul>
+<li class="fragment">predicting the company’s budget;</li>
+<li class="fragment">early identification of possible dissatisfaction;</li>
+<li class="fragment">finding issues in the main services of the company;</li>
+<li class="fragment">spotting fraudulent situations.</li>
+</ul></li>
+<li class="fragment"><p>The dataset has <span class="math inline">n = 30.619</span> customers and <span class="math inline">p = 99</span> <span class="blue">covariates</span>, i.e.&nbsp;the customer activity during the <span class="orange">previous months</span>.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="traffic-prediction-in-telecommunications-ii" class="slide level2 center">
+<h2>Traffic prediction in telecommunications II</h2>
+<ul>
+<li>The focus is on <span class="blue">prediction</span> and on <span class="orange">learning something useful</span> from the data, not much on hypothesis testing.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>Observational data: data have been collected for other purposes, not for their analysis. Data simply “exists”, there is <span class="orange">no sampling design</span>.</p></li>
+<li><p>Data are <span class="orange">dirty</span> and often stored in big datawarehouse (DWH).</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>The <span class="blue">dimension of the data</span> is <span class="orange">large</span> in both directions: large <span class="math inline">n</span> and large <span class="math inline">p</span>. Hence:</p>
+<ul>
+<li>All <span class="orange">p-values</span> are <span class="orange">ultra-significant</span> and not very informative in this setting;</li>
+<li><span class="blue">Computations</span> are a crucial aspect of the analysis.</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>The relationship between covariates and the response is complex, thus it is hard to believe that any of our models will be “true”. They are <span class="orange">all wrong</span>!</p></li>
+<li><p>However, having a lot of data means we can <span class="blue">split</span> them, using the first half for estimation and the other half for testing.</p></li>
+</ul>
+</div>
+</section>
+<section id="microarray-cancer-data" class="slide level2 center">
+<h2>Microarray cancer data</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/gene.png"></p>
+</figure>
+</div>
+</div><div class="column" style="width:70%;">
+<div>
+<ul>
+<li class="fragment"><p><span class="orange">Expression matrix</span> of <span class="math inline">p = 6830</span> genes (rows) and <span class="math inline">n = 64</span> samples (columns), for the <span class="blue">human tumor data</span>.</p></li>
+<li class="fragment"><p>100 randomly chosen rows are shown</p></li>
+<li class="fragment"><p>The picture is a <span class="blue">heatmap</span>, ranging from bright green (under expressed) to bright red (over expressed).</p></li>
+<li class="fragment"><p><span class="grey">Missing values</span> are gray. The rows and columns are displayed in a randomly chosen order.</p></li>
+<li class="fragment"><p>Goal: <span class="blue">predict</span> cancer class based on expression values.</p></li>
+<li class="fragment"><p>The main <span class="orange">statistical difficulty</span> here is that <span class="math inline">p &gt; n</span>!</p></li>
+<li class="fragment"><p>Logistic regression and discriminant analysis wouldn’t work, the estimates do not exist.</p></li>
+<li class="fragment"><p>Is it even possible to fit a model in this context?</p></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="the-pitfalls-of-the-old-fashioned-way" class="slide level2 center">
+<h2>The pitfalls of the old fashioned way</h2>
+<div>
+<ul>
+<li class="fragment"><p>All the previous case studies cannot be solved using traditional tools, in fact:</p>
+<ul>
+<li class="fragment">there are <span class="orange">tons of variables</span>, sometimes even with <span class="math inline">p &gt; n</span>, and most of them are irrelevant. It is not clear how to select the most useful ones.</li>
+<li class="fragment"><span class="blue">p-values</span> are always <span class="blue">ultra-significant</span> and potentially meaningless.</li>
+<li class="fragment">there are <span class="orange">no true models</span> in these contexts. There is little hope that reality follows a linear specification.</li>
+</ul></li>
+<li class="fragment"><p>The objective is <span class="blue">predicting</span> a response variable, in the most accurate way. Classical statistics has <span class="orange">broaders goals</span> including, but not limiting to, prediction.</p></li>
+<li class="fragment"><p>To address the above issues, we need a <span class="orange">paradigm shift</span>.</p></li>
+<li class="fragment"><p>For instance, if reality is non-linear, what about going <span class="blue">nonparametric</span>? We could let the data speak, without making any assumption about the relationship between <span class="math inline">y</span> and <span class="math inline">\bm{x}</span>.</p></li>
+<li class="fragment"><p>Moreover, if p-values and residuals plots are no longer informative in this context, how do we <span class="orange">validate</span> our predictions?</p></li>
+</ul>
+</div>
+</section>
+<section id="a-highly-influential-paper-breiman-2001" class="slide level2 center">
+<h2>A highly influential paper (Breiman, 2001)</h2>
+
+<img data-src="img/breiman1.png" class="r-stretch quarto-figure-center"></section>
+<section id="data-models-vs-algorithmic-models" class="slide level2 center">
+<h2>Data models vs algorithmic models</h2>
+
+<img data-src="img/Breiman2.png" class="r-stretch quarto-figure-center"></section>
+<section id="focus-on-predictive-accuracy-business-solutions" class="slide level2 center">
+<h2>Focus on predictive accuracy &amp; business solutions</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/breiman3.png"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="img/breiman4.jpg"></p>
+<figcaption>Leo Breiman, 2003</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li><p>After the Ph.D., Breiman resigned and went into full-time <span class="orange">free-lance consulting</span>, and it worked as a consultant for thirteen years.</p></li>
+<li><p>Breiman joined the UC Berkeley <span class="blue">Statistics</span> Department in 1980.</p></li>
+<li><p>Leo Breiman died in 2005, at the age of 77. He <span class="orange">invented</span> many of the mainstream predictive tools: CART, bagging, random forests, stacking.</p></li>
 </ul>
 </section>
-<section id="new-problems-and-new-opportunities" class="slide level2 center">
-<h2>New problems and new opportunities</h2>
-</section>
-<section id="fraud-detection" class="slide level2 center">
-<h2>Fraud detection</h2>
-</section>
-<section id="genetic-applications" class="slide level2 center">
-<h2>Genetic applications</h2>
-</section>
-<section id="the-old-fashioned-way-i" class="slide level2 center">
-<h2>The old fashioned way I</h2>
+<section id="statistical-modeling-the-two-cultures" class="slide level2 center">
+<h2>Statistical modeling: the two cultures</h2>
+<div>
 <ul>
-<li>p-values that are always significant</li>
-<li>bias is often neglected</li>
-<li>tons of variables</li>
-<li>need for being nonparametric</li>
-<li>curse of dimensionality</li>
-<li>complex data structures (networks, high-dimensional time-series)</li>
+<li class="fragment"><p>It is <span class="orange">tempting</span> to fully embrace the <span class="blue">pure predictive viewpoint</span>, as Breiman did in his career, especially in light of the recent media attention and public interest.</p></li>
+<li class="fragment"><p>“<em>Statistical modeling: the two cultures</em>” has been a highly influential paper written by an outstanding statistician.</p></li>
+<li class="fragment"><p>In some cases, the paper may sound exaggerated and at times <span class="orange">confrontational</span>. These were different times.</p></li>
+<li class="fragment"><p>It was also a <span class="blue">discussion paper</span>!</p></li>
+<li class="fragment"><p>Two other pillars of the discipline, <span class="blue">Sir David Cox</span> (died in 2022) and <span class="orange">Bradley Efron</span> were among the discussants and raised several critical points.</p></li>
+<li class="fragment"><p>It is <span class="orange">premature</span> to delve into those criticisms. We will get back to them at the end of the course, once you will have enough knowledge to understand them.</p></li>
 </ul>
+</div>
 </section>
-<section id="the-old-fashioned-way-ii" class="slide level2 center">
-<h2>The old fashioned way II</h2>
+<section id="prerequisites" class="slide level2 center">
+<h2>Prerequisites</h2>
+<div>
+<ul>
+<li class="fragment"><p>If you are in this class today, it means…</p>
+<ol type="1">
+<li class="fragment"><p>You already studied a lot of <span class="orange">real analysis</span>, <span class="grey">linear algebra</span> and <span class="blue">probability</span>;</p></li>
+<li class="fragment"><p>You know how to <span class="blue">estimate the parameters</span> of a statistical model, to construct and interpret confidence intervals, p-values, etc. You know the <span class="orange">principles</span> of <span class="orange">inference</span>;</p></li>
+<li class="fragment"><p>You know how to <span class="orange">explore data</span> using the <strong>R</strong> statistical software and other tools (SAS, python, etc.). You know <span class="blue">principal component analysis</span> and perhaps even factor models;</p></li>
+<li class="fragment"><p>You know how to fit <span class="blue">linear models</span> and how to interpret the associated empirical findings. You are familiar with <span class="math inline">R^2</span>s, likelihood ratio tests, <span class="orange">logistic regression</span>, and so on;</p></li>
+<li class="fragment"><p>You may have attended a course named “data mining” before and studied linear discriminant analysis, <span class="math inline">k</span>-nearest neighbors…</p></li>
+</ol></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>These classical statistical tools are the <span class="orange">prerequisites</span> of <span class="blue">Data Mining M</span>. We will start from there.</li>
+</ul>
+</div>
+</section>
+<section id="overview-of-the-topics" class="slide level2 center">
+<h2>Overview of the topics</h2>
+<table>
+<colgroup>
+<col style="width: 39%">
+<col style="width: 60%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="orange">Unit</span></th>
+<th><span class="blue">Description</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A-B-C</td>
+<td>Linear models. Data modelling, the old fashion way. Advanced computations.</td>
+</tr>
+<tr class="even">
+<td>Optimism, conflicts and trade-offs</td>
+<td>Bias-variance trade-off. Training and test paradigm, cross-validation. Information criteria, optimism</td>
+</tr>
+<tr class="odd">
+<td>Shrinkage and variable selection</td>
+<td>Best subset selection, principal component regression. Ridge regression. Lasso and LARS. Elastic net.</td>
+</tr>
+<tr class="even">
+<td>Nonparametric estimation</td>
+<td>Local linear regression. Regression and smoothing splines.</td>
+</tr>
+<tr class="odd">
+<td>Additive models</td>
+<td>Generalized additive models (GAM). Multivariate adaptive regression spline (MARS).</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li>Trees, bagging, random forests, boosting, neural networks, support vector machine are left out from program because of <span class="orange">time constraints</span>… but you will study them in other courses!</li>
+</ul>
+</div>
+</section>
+<section id="a-tension-between-prediction-and-interpretability" class="slide level2 center">
+<h2>A tension between prediction and interpretability</h2>
+
+<img data-src="img/flex.png" class="r-stretch quarto-figure-center"><ul>
+<li><p>There is a tension between the <span class="orange">interpretability</span> of a method and its <span class="blue">flexibility</span>.</p></li>
+<li><p>Important caveat. Less flexible methods can be <span class="orange">more accurate</span> in many cases, on top of being interpretable!</p></li>
+</ul>
 </section>
 <section id="data-mining-machine-learning-and-statistical-learning" class="slide level2 center">
-<h2>Data Mining, Machine Learning, and Statistical Learning</h2>
-</section>
-<section id="data-mining-data-science-and-friends" class="slide level2 center">
-<h2>Data mining, Data Science, and friends</h2>
-<ul>
-<li><p>Friedman, Jerome (1997). Data Mining and Statistics: What’s the connection? http://www.stats.org.uk/Friedman1997.pdf</p></li>
-<li><p>Larry Wasserman (2012) <a href="https://normaldeviate.wordpress.com/2012/06/12/" class="uri">https://normaldeviate.wordpress.com/2012/06/12/</a> statistics-versus-machine-learning-5-2/</p></li>
-<li><p>Donoho, David (2017). 50 years of data science. Journal of Computational and Graphical Statistics 26: 745-766</p></li>
-</ul>
-</section>
-<section id="statistical-modelling-the-two-cultures" class="slide level2 center">
-<h2>Statistical modelling: the two cultures</h2>
-</section>
-<section id="trevor-hastie-2015" class="slide level2 center">
-<h2>Trevor Hastie (2015)</h2>
-</section>
-<section id="robert-tibshirani-2015" class="slide level2 center">
-<h2>Robert Tibshirani (2015?)</h2>
-</section>
-<section id="david-dunson-2018" class="slide level2 center">
-<h2>David Dunson (2018)</h2>
-</section>
-<section id="bradley-efron" class="slide level2 center">
-<h2>Bradley Efron</h2>
-</section>
-<section id="prediction-estimation-and-attribution" class="slide level2 center">
-<h2>Prediction, Estimation, and Attribution</h2>
-</section>
-<section id="broad-overview-of-the-topics-i" class="slide level2 center">
-<h2>Broad overview of the topics I</h2>
-<ul>
-<li>Data mining</li>
-</ul>
-</section>
-<section id="broad-overview-of-the-topics-ii" class="slide level2 center">
-<h2>Broad overview of the topics II</h2>
-<ul>
-<li>Machine Learning</li>
-<li>Statistical Learning</li>
-</ul>
+<h2>Data mining, machine learning, and statistical learning</h2>
 </section>
 <section id="a-matter-of-style" class="slide level2 center">
 <h2>A matter of style</h2>
@@ -419,6 +608,21 @@
 </section>
 <section id="examination" class="slide level2 center">
 <h2>Examination</h2>
+</section>
+<section id="references" class="slide level2 center">
+<h2>References</h2>
+<ul>
+<li><span class="blue">Main references</span>
+<ul>
+<li>Breiman, Leo (2001). <a href="http://projecteuclid.org/euclid.ss/1009213726">Statistical modeling: the two cultures</a>. <em>Statistical Science</em>, <strong>16</strong> (3), 199–215.</li>
+<li>Donoho, David (2017). <a href="https://www.tandfonline.com/doi/full/10.1080/10618600.2017.1384734">50 years of data science</a>. <em>Journal of Computational and Graphical Statistics</em>, <strong>26</strong>, 745-766</li>
+</ul></li>
+<li><span class="orange">Specialized references</span>
+<ul>
+<li>Yu, Bin, and Karl Kumbier (2020). <a href="https://doi.org/10.1073/pnas.1901326117">Veridical Data Science</a>. <em>Proceedings of the National Academy of Sciences of the United States of America</em>, <strong>117</strong> (8), 3920–3929.</li>
+<li>Tukey, John W. (1962). <a href="https://doi.org/10.1162/99608f92.f09d7aa3">The future of data analysis</a>. <em>Annals of Mathematical Statistics</em>, <strong>33</strong>, 1–67.</li>
+</ul></li>
+</ul>
 
 <img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>

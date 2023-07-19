@@ -1,5 +1,5 @@
 ---
-title: "Introduction to the course"
+title: "Introduction"
 subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
@@ -47,70 +47,298 @@ editor_options:
   chunk_output_type: console
 ---
 
+
+
 ## [Homepage](../index.html)
 
-- Personal introduction
+::: columns
+::: {.column width="25%"}
+![](img/intro.jpg){fig-align="center"}
+:::
 
-## New problems and new opportunities
+::: {.column width="75%"}
+::: incremental
+-   Nowadays [predictive algorithms]{.blue} have become
+    [mainstream]{.orange} in the [popular culture]{.orange} due to some
+    spectacular successes:
 
-## Fraud detection
+    -   iPhone's Siri;
+    -   Google translate;
+    -   recommendation systems (Netflix challenge);
+    -   business analytics (churn prediction, credit risk assessment);
+    -   and, more recently, chatGPT.
 
-## Genetic applications
+-   And yet, there is a lot of [confusion]{.orange} about the
+    [history]{.blue} and the [boundaries]{.blue} of the field. For
+    instance, what is "data mining"?
 
-## Another nice application 
+-   And what are then the differences, [if any]{.orange}, with
+    statistics, machine learning, statistical learning, and data
+    science?
 
-## The old fashioned way I
+-   What kind of applied problems cannot be solved with [classical
+    statistical]{.orange} tools? Why?
 
-- p-values that are always significant
-- bias is often neglected
-- tons of variables
-- need for being nonparametric
-- curse of dimensionality
-- complex data structures (networks, functional data, high-dimensional time-series)
+-   Let us consider some real [case studies]{.blue}...
+:::
+:::
+:::
 
-## The old fashioned way II
+## Traffic prediction in telecommunications
 
-## Models and algorithms
+::: columns
+::: {.column width="30%"}
+![](img/phone.png){fig-align="center"}
+:::
 
-## Trevor Hastie (2015)
+::: {.column width="70%"}
+::: incremental
+-   The marketing section of a telecommunications company is interested
+    in analyzing the [customer behavior]{.orange}.
 
-## Robert Tibshirani (2015?)
+-   Hence, the data science team would like to [predict]{.blue}, for
+    every single customer, the [telephone traffic]{.orange}.
 
-## David Dunson (2018)
+-   Traffic is measured as the total [number of seconds]{.blue} of
+    [outgoing calls]{.blue} made in a given month by each customer.
 
-- Failure of the machines; warning that there is currently a 
+-   Appropriate estimations of the [overall traffic]{.orange} provide
+    necessary elements for:
 
-## To explain or to predict?
+    -   predicting the company's budget;
+    -   early identification of possible dissatisfaction;
+    -   finding issues in the main services of the company;
+    -   spotting fraudulent situations.
 
-## Predictive performance and interpretability
+-   The dataset has $n = 30.619$ customers and $p = 99$
+    [covariates]{.blue}, i.e. the customer activity during the [previous
+    months]{.orange}.
+:::
+:::
+:::
 
-## Bradley Efron
+## Traffic prediction in telecommunications II
 
-- Not everything is a prediction problem. Also, statistics is both inference and prediction.
+-   The focus is on [prediction]{.blue} and on [learning something
+    useful]{.orange} from the data, not much on hypothesis testing.
 
-## From classical to computer age statistical inference
+. . .
 
-## Data Mining, Machine Learning, and Statistical Learning
+-   Observational data: data have been collected for other purposes, not
+    for their analysis. Data simply "exists", there is [no sampling
+    design]{.orange}.
 
-## Data mining, Data Science, and friends
+-   Data are [dirty]{.orange} and often stored in big datawarehouse
+    (DWH).
 
-- Friedman, Jerome (1997). Data Mining and Statistics: What’s the connection? http://www.stats.org.uk/Friedman1997.pdf
+. . .
 
-- Larry Wasserman (2012) <https://normaldeviate.wordpress.com/2012/06/12/> statistics-versus-machine-learning-5-2/
+-   The [dimension of the data]{.blue} is [large]{.orange} in both
+    directions: large $n$ and large $p$. Hence:
 
-- Donoho, David (2017). 50 years of data science. Journal of Computational and Graphical Statistics 26: 745-766
+    -   All [p-values]{.orange} are [ultra-significant]{.orange} and not
+        very informative in this setting;
+    -   [Computations]{.blue} are a crucial aspect of the analysis.
 
-## Broad overview of the topics I
+. . .
 
-- Data mining
+-   The relationship between covariates and the response is complex,
+    thus it is hard to believe that any of our models will be "true".
+    They are [all wrong]{.orange}!
 
-## Broad overview of the topics II
+-   However, having a lot of data means we can [split]{.blue} them,
+    using the first half for estimation and the other half for testing.
 
-- Machine Learning
-- Statistical Learning
+## Microarray cancer data
+
+::: columns
+::: {.column width="30%"}
+![](img/gene.png){fig-align="center"}
+:::
+
+::: {.column width="70%"}
+::: incremental
+-   [Expression matrix]{.orange} of $p = 6830$ genes (rows) and $n = 64$
+    samples (columns), for the [human tumor data]{.blue}.
+
+-   100 randomly chosen rows are shown
+
+-   The picture is a [heatmap]{.blue}, ranging from bright green (under
+    expressed) to bright red (over expressed).
+
+-   [Missing values]{.grey} are gray. The rows and columns are displayed
+    in a randomly chosen order.
+
+-   Goal: [predict]{.blue} cancer class based on expression values.
+
+-   The main [statistical difficulty]{.orange} here is that $p > n$!
+
+-   Logistic regression and discriminant analysis wouldn't work, the
+    estimates do not exist.
+
+-   Is it even possible to fit a model in this context?
+:::
+:::
+:::
+
+## The pitfalls of the old fashioned way
+
+::: incremental
+-   All the previous case studies cannot be solved using traditional
+    tools, in fact:
+
+    -   there are [tons of variables]{.orange}, sometimes even with
+        $p > n$, and most of them are irrelevant. It is not clear how to
+        select the most useful ones.
+    -   [p-values]{.blue} are always [ultra-significant]{.blue} and
+        potentially meaningless.
+    -   there are [no true models]{.orange} in these contexts. There is
+        little hope that reality follows a linear specification.
+
+-   The objective is [predicting]{.blue} a response variable, in the
+    most accurate way. Classical statistics has [broaders
+    goals]{.orange} including, but not limiting to, prediction.
+
+-   To address the above issues, we need a [paradigm shift]{.orange}.
+
+-   For instance, if reality is non-linear, what about going [nonparametric]{.blue}? We could let the data speak, without making any assumption about the relationship between $y$ and $\bm{x}$.
+
+-   Moreover, if p-values and residuals plots are no longer informative in this context, how do we [validate]{.orange} our predictions?
+:::
+
+## A highly influential paper (Breiman, 2001)
+
+![](img/breiman1.png){fig-align="center"}
+
+## Data models vs algorithmic models
+
+![](img/Breiman2.png){fig-align="center"}
+
+## Focus on predictive accuracy & business solutions
+
+::: columns
+::: {.column width="50%"}
+![](img/breiman3.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+![Leo Breiman, 2003](img/breiman4.jpg){fig-align="left"}
+:::
+:::
+
+-   After the Ph.D., Breiman resigned and went into full-time
+    [free-lance consulting]{.orange}, and it worked as a consultant for
+    thirteen years.
+
+-   Breiman joined the UC Berkeley [Statistics]{.blue} Department in 1980. 
+
+-   Leo Breiman died in 2005, at the age of 77. He [invented]{.orange}
+    many of the mainstream predictive tools: CART, bagging, random
+    forests, stacking.
+
+## Statistical modeling: the two cultures
+
+::: incremental
+-   It is [tempting]{.orange} to fully embrace the [pure predictive
+    viewpoint]{.blue}, as Breiman did in his career, especially in light
+    of the recent media attention and public interest.
+
+-   "*Statistical modeling: the two cultures*" has been a highly
+    influential paper written by an outstanding statistician.
+
+-   In some cases, the paper may sound exaggerated and at times
+    [confrontational]{.orange}. These were different times.
+
+-   It was also a [discussion paper]{.blue}!
+
+-   Two other pillars of the discipline, [Sir David Cox]{.blue} (died
+    in 2022) and [Bradley Efron]{.orange} were among the discussants and
+    raised several critical points.
+
+-   It is [premature]{.orange} to delve into those criticisms. We will
+    get back to them at the end of the course, once you will have enough
+    knowledge to understand them.
+:::
+
+## Prerequisites
+
+::: incremental
+-   If you are in this class today, it means...
+
+    1.  You already studied a lot of [real analysis]{.orange}, [linear
+        algebra]{.grey} and [probability]{.blue};
+
+    2.  You know how to [estimate the parameters]{.blue} of a
+        statistical model, to construct and interpret confidence
+        intervals, p-values, etc. You know the [principles]{.orange} of
+        [inference]{.orange};
+
+    3.  You know how to [explore data]{.orange} using the **R**
+        statistical software and other tools (SAS, python, etc.). You
+        know [principal component analysis]{.blue} and perhaps even
+        factor models;
+
+    4.  You know how to fit [linear models]{.blue} and how to interpret
+        the associated empirical findings. You are familiar with $R^2$s,
+        likelihood ratio tests, [logistic regression]{.orange}, and so
+        on;
+
+    5.  You may have attended a course named "data mining" before and
+        studied linear discriminant analysis, $k$-nearest neighbors...
+:::
+
+. . .
+
+-   These classical statistical tools are the [prerequisites]{.orange} of [Data
+    Mining M]{.blue}. We will start from there.
+
+## Overview of the topics
+
+| [Unit]{.orange}                    | [Description]{.blue}                                                                                  |
+|------------------------------|----------------------------------------------|
+| A-B-C                              | Linear models. Data modelling, the old fashion way. Advanced computations.                             |
+| Optimism, conflicts and trade-offs | Bias-variance trade-off. Training and test paradigm, cross-validation. Information criteria, optimism |
+| Shrinkage and variable selection   | Best subset selection, principal component regression. Ridge regression. Lasso and LARS. Elastic net. |
+| Nonparametric estimation           | Local linear regression. Regression and smoothing splines.                                            |
+| Additive models                    | Generalized additive models (GAM). Multivariate adaptive regression spline (MARS).                    |
+
+. . .
+
+-   Trees, bagging, random forests, boosting, neural networks, support
+    vector machine are left out from program because of [time
+    constraints]{.orange}... but you will study them in other courses!
+
+## A tension between prediction and interpretability
+
+![](img/flex.png){fig-align="center"}
+
+- There is a tension between the [interpretability]{.orange} of a method and its [flexibility]{.blue}.
+
+- Important caveat. Less flexible methods can be [more accurate]{.orange} in many cases, on top of being interpretable!
+
+## Data mining, machine learning, and statistical learning
 
 ## A matter of style
 
 ## Course material
 
 ## Examination
+
+## References
+
+-   [Main references]{.blue}
+    -   Breiman, Leo (2001). [Statistical modeling: the two
+        cultures](http://projecteuclid.org/euclid.ss/1009213726).
+        *Statistical Science*, **16** (3), 199--215.
+    -   Donoho, David (2017). [50 years of data
+        science](https://www.tandfonline.com/doi/full/10.1080/10618600.2017.1384734).
+        *Journal of Computational and Graphical Statistics*, **26**,
+        745-766
+-   [Specialized references]{.orange}
+    -   Yu, Bin, and Karl Kumbier (2020). [Veridical Data
+        Science](https://doi.org/10.1073/pnas.1901326117). *Proceedings
+        of the National Academy of Sciences of the United States of
+        America*, **117** (8), 3920--3929.
+    -   Tukey, John W. (1962). [The future of data
+        analysis](https://doi.org/10.1162/99608f92.f09d7aa3). *Annals of
+        Mathematical Statistics*, **33**, 1--67.

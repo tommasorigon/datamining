@@ -1157,5 +1157,5 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
--   [Advanced references]{.orange}
+-   [Specialized references]{.orange}
     - Hastie, T. (2020). Ridge regularization: an essential concept in data science. *Technometrics*, 62(4), 426-433.

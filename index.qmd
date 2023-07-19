@@ -55,7 +55,7 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 
 | Topic                                  | Notes                             | Slides                                   | Code                  |
 |------------------|------------------|-------------------|------------------|
-| **Introduction**                       | \[Intro\]                         | \[Slides intro\]                         |                       |
+| **Introduction**                       | [Intro](slides/un_intro.html)                         | [Slides intro](slides/un_intro_slides.html)                         |                       |
 | **A-B-C**                              | [Unit A](slides/un_A.html)        | [Slides Unit A](slides/un_A_slides.html) | [Code A](code/un_A.R) |
 | Lab 1                                  | \[Code Lab 1\]                    |                                          |                       |
 | *Exercises*                            | [Exercises A](exe/exe_A.html)     |                                          |                       |
