@@ -251,7 +251,7 @@ editor_options:
 
 -   It was also a [discussion paper]{.blue}!
 
--   Two other pillars of the discipline, [Sir David Cox]{.blue} (died
+-   Two other giants of the discipline, [Sir David Cox]{.blue} (died
     in 2022) and [Bradley Efron]{.orange} were among the discussants and
     raised several critical points.
 
@@ -520,7 +520,7 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
    - The data challenge will be announced in the second half of the course.
    - Further info will be provided in due time.
   
-- Both parts are [mandatory]{.orange} and you need to submit the assignment [before]{.orange} attempting the written part.
+- Both parts are [mandatory]{.orange} and you need to submit the assignment [before]{.orange} attempting the written part. The report expires after one year from the end of the course.
 
 - The final grade is obtained as the [sum]{.blue} of the above scores. 
 

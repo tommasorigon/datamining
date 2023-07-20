@@ -563,11 +563,23 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
         
 ## A tour inside old-fashioned statistics
 
-# Computations for linear models
+::: incremental
 
-## Computations for linear models
+- The first part of the unit is a tour in the "old style" data modelling, the kind of culture that Leo Breiman so [heavily criticized]{.orange} in his 2001 *Statistical Science* paper.
 
-# Cholesky factorization
+- However, this dataset was sufficiently small, meaning that it could be "manually" analyzed and modeled. We gained a lot of [understanding]{.blue} by doing so. 
+
+- Hence, these old tools are should not be simply disregarded as useless nor irrelevant. 
+
+- The second half of the unit will have an entirely different flavor, though. 
+
+- Given the huge amount of data we now have, it makes a lot of sense to focus on [computations]{.orange} for fitting linear models.
+
+- As we will see, the mathematical simplicity of linear models leads to extremely [fast computations]{.blue}, an important advantage in the era of big data. 
+
+:::
+
+# Normal equations and Cholesky factorization
 
 ## How to obtain the least squares estimate?
 

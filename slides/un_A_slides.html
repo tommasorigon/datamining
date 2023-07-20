@@ -878,10 +878,23 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <li>Variable description <a href="http://azzalini.stat.unipd.it/Book-DM/auto.names" class="uri">http://azzalini.stat.unipd.it/Book-DM/auto.names</a></li>
 </ul></li>
 </ul>
+</section>
+<section id="a-tour-inside-old-fashioned-statistics" class="slide level2 center">
+<h2>A tour inside old-fashioned statistics</h2>
+<div>
+<ul>
+<li class="fragment"><p>The first part of the unit is a tour in the “old style” data modelling, the kind of culture that Leo Breiman so <span class="orange">heavily criticized</span> in his 2001 <em>Statistical Science</em> paper.</p></li>
+<li class="fragment"><p>However, this dataset was sufficiently small, meaning that it could be “manually” analyzed and modeled. We gained a lot of <span class="blue">understanding</span> by doing so.</p></li>
+<li class="fragment"><p>Hence, these old tools are should not be simply disregarded as useless nor irrelevant.</p></li>
+<li class="fragment"><p>The second half of the unit will have an entirely different flavor, though.</p></li>
+<li class="fragment"><p>Given the huge amount of data we now have, it makes a lot of sense to focus on <span class="orange">computations</span> for fitting linear models.</p></li>
+<li class="fragment"><p>As we will see, the mathematical simplicity of linear models leads to extremely <span class="blue">fast computations</span>, an important advantage in the era of big data.</p></li>
+</ul>
+</div>
 </section></section>
 <section>
-<section id="cholesky-factorization" class="title-slide slide level1 center">
-<h1>Cholesky factorization</h1>
+<section id="normal-equations-and-cholesky-factorization" class="title-slide slide level1 center">
+<h1>Normal equations and Cholesky factorization</h1>
 
 </section>
 <section id="how-to-obtain-the-least-squares-estimate" class="slide level2 center">
@@ -923,7 +936,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 </div>
 </section>
-<section id="cholesky-factorization-1" class="slide level2 center">
+<section id="cholesky-factorization" class="slide level2 center">
 <h2>Cholesky factorization</h2>
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">

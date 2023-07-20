@@ -88,15 +88,11 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#comments-and-criticisms-2" id="toc-comments-and-criticisms-2" class="nav-link" data-scroll-target="#comments-and-criticisms-2">Comments and criticisms</a></li>
   <li><a href="#a-tour-inside-old-fashioned-statistics" id="toc-a-tour-inside-old-fashioned-statistics" class="nav-link" data-scroll-target="#a-tour-inside-old-fashioned-statistics">A tour inside old-fashioned statistics</a></li>
   </ul></li>
-  <li><a href="#computations-for-linear-models" id="toc-computations-for-linear-models" class="nav-link" data-scroll-target="#computations-for-linear-models">Computations for linear models</a>
-  <ul class="collapse">
-  <li><a href="#computations-for-linear-models-1" id="toc-computations-for-linear-models-1" class="nav-link" data-scroll-target="#computations-for-linear-models-1">Computations for linear models</a></li>
-  </ul></li>
-  <li><a href="#cholesky-factorization" id="toc-cholesky-factorization" class="nav-link" data-scroll-target="#cholesky-factorization">Cholesky factorization</a>
+  <li><a href="#normal-equations-and-cholesky-factorization" id="toc-normal-equations-and-cholesky-factorization" class="nav-link" data-scroll-target="#normal-equations-and-cholesky-factorization">Normal equations and Cholesky factorization</a>
   <ul class="collapse">
   <li><a href="#how-to-obtain-the-least-squares-estimate" id="toc-how-to-obtain-the-least-squares-estimate" class="nav-link" data-scroll-target="#how-to-obtain-the-least-squares-estimate">How to obtain the least squares estimate?</a></li>
   <li><a href="#the-normal-equations" id="toc-the-normal-equations" class="nav-link" data-scroll-target="#the-normal-equations">The normal equations</a></li>
-  <li><a href="#cholesky-factorization-1" id="toc-cholesky-factorization-1" class="nav-link" data-scroll-target="#cholesky-factorization-1">Cholesky factorization</a></li>
+  <li><a href="#cholesky-factorization" id="toc-cholesky-factorization" class="nav-link" data-scroll-target="#cholesky-factorization">Cholesky factorization</a></li>
   <li><a href="#cholesky-factorization-and-least-squares" id="toc-cholesky-factorization-and-least-squares" class="nav-link" data-scroll-target="#cholesky-factorization-and-least-squares">Cholesky factorization and least squares</a></li>
   <li><a href="#forward-and-backward-substitutions" id="toc-forward-and-backward-substitutions" class="nav-link" data-scroll-target="#forward-and-backward-substitutions">Forward and backward substitutions</a></li>
   <li><a href="#computational-complexity" id="toc-computational-complexity" class="nav-link" data-scroll-target="#computational-complexity">Computational complexity</a></li>
@@ -733,16 +729,20 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="a-tour-inside-old-fashioned-statistics" class="level2">
 <h2 class="anchored" data-anchor-id="a-tour-inside-old-fashioned-statistics">A tour inside old-fashioned statistics</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The first part of the unit is a tour in the “old style” data modelling, the kind of culture that Leo Breiman so <span class="orange">heavily criticized</span> in his 2001 <em>Statistical Science</em> paper.</p></li>
+<li><p>However, this dataset was sufficiently small, meaning that it could be “manually” analyzed and modeled. We gained a lot of <span class="blue">understanding</span> by doing so.</p></li>
+<li><p>Hence, these old tools are should not be simply disregarded as useless nor irrelevant.</p></li>
+<li><p>The second half of the unit will have an entirely different flavor, though.</p></li>
+<li><p>Given the huge amount of data we now have, it makes a lot of sense to focus on <span class="orange">computations</span> for fitting linear models.</p></li>
+<li><p>As we will see, the mathematical simplicity of linear models leads to extremely <span class="blue">fast computations</span>, an important advantage in the era of big data.</p></li>
+</ul>
+</div>
 </section>
 </section>
-<section id="computations-for-linear-models" class="level1">
-<h1>Computations for linear models</h1>
-<section id="computations-for-linear-models-1" class="level2">
-<h2 class="anchored" data-anchor-id="computations-for-linear-models-1">Computations for linear models</h2>
-</section>
-</section>
-<section id="cholesky-factorization" class="level1">
-<h1>Cholesky factorization</h1>
+<section id="normal-equations-and-cholesky-factorization" class="level1">
+<h1>Normal equations and Cholesky factorization</h1>
 <section id="how-to-obtain-the-least-squares-estimate" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-obtain-the-least-squares-estimate">How to obtain the least squares estimate?</h2>
 <ul>
@@ -778,8 +778,8 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <li>We now describe a strategy to compute <span class="math inline">\hat{\beta}</span> that exploits the fact that <span class="math inline">\bm{X}^T\bm{X}</span> is <span class="orange">positive definite</span>, resulting in more <span class="blue">efficient computations</span>.</li>
 </ul>
 </section>
-<section id="cholesky-factorization-1" class="level2">
-<h2 class="anchored" data-anchor-id="cholesky-factorization-1">Cholesky factorization</h2>
+<section id="cholesky-factorization" class="level2">
+<h2 class="anchored" data-anchor-id="cholesky-factorization">Cholesky factorization</h2>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
