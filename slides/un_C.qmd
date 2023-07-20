@@ -1144,8 +1144,6 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 # Generalized linear models
 
-# References 
-
 ## References
 
 -   [Main references]{.blue}

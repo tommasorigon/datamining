@@ -533,10 +533,6 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
 ## References
 
 -   [Main references]{.blue}
-    -   **Chapter 1** of Azzalini, A. and Scarpa, B. (2011), [*Data
-        Analysis and Data
-        Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
-        University Press.
     -   Breiman, L. (2001). [Statistical modeling: the two
         cultures](http://projecteuclid.org/euclid.ss/1009213726).
         *Statistical Science*, **16** (3), 199--215.
