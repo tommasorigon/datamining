@@ -1211,8 +1211,8 @@ p0
     Gaussian distribution as special cases.
 
 -   The canonical statistical solution are [generalized linear
-    models]{.orange}, which are usually thought in undergraduate courses
-    (e.g. Statistica III). This is just a short recap.
+    models]{.orange}, which are usually taught in undergraduate courses
+    (e.g. Statistica III). This is just a [short recap]{.orange}.
 
 . . .
 

@@ -310,15 +310,13 @@ editor_options:
 
 ## A tension between prediction and interpretability
 
-![](img/flex.png){fig-align="center" width=50%}
-
-::: incremental
+<div class="flourish-embed flourish-scatter" data-src="visualisation/14498992"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
 
 - There is often a tension between the [interpretability]{.orange} of a method and its [flexibility]{.blue}.
 
 - Important [caveat]{.blue}. Less flexible methods may have [more accurate predictions]{.orange} in many case studies, on top of being more interpretable!
 
-:::
+
 
 ## Predictive interpretability $\neq$ causality
 
