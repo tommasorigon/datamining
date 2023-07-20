@@ -527,7 +527,9 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
 
 ![](img/efron.jpg){fig-align="center" height=7cm}
 
-- "*Those who ignore statistics are condemned to reinvent it*". [Bradley Efron]{.grey}, Stanford University.
+"*Those who ignore statistics are condemned to reinvent it.*" 
+
+[Bradley Efron]{.grey}, Stanford University.
 
 ## References
 
