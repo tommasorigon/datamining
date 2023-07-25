@@ -996,29 +996,79 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </section>
 <section id="a-regularization-method" class="slide level2 center">
 <h2>A regularization method</h2>
+<ul>
+<li><p>Ridge regression is the most common <span class="blue">shrinkage method</span>, in which the variability of the estimates is <span class="orange">bounded</span>.</p></li>
+<li><p>The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the <span class="orange">minimizer</span> of <span class="math display">
+\sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
+</span></p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>If the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is large enough, then <span class="math inline">\hat{\beta}_\text{ridge}</span> is equivalent to <span class="math inline">\hat{\beta}</span>.</p></li>
+<li><p>But when <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{ridge}</span> are explicitly <span class="blue">shrinked towards zero</span>. Note that the intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Using the same <span class="blue">mathematical trick</span> as <a href="/#centering-the-predictors-i">before</a> (see Exercises), we can <span class="orange">omit the intercept</span> term <span class="math inline">\beta_0</span> after <span class="orange">centering</span> the inputs and the response, that is <span class="math inline">\bar{y} = 0</span> and <span class="math inline">\bar{x}_{j} = 0</span>.</p></li>
+<li><p>The ridge solutions are <span class="orange">not equivariant</span> under <span class="orange">scalings of the input</span>, so one normally <span class="blue">standardizes</span> the input if they are not in the same scale.</p></li>
+</ul>
+</div>
 </section>
 <section id="lagrange-multipliers-and-ridge-solution" class="slide level2 center">
 <h2>Lagrange multipliers and ridge solution</h2>
+<ul>
+<li>An <span class="blue">equivalent formulation</span> can be obtained expressing the ridge problem in its <span class="orange">Lagrangian form</span> (<a href="https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions">Karush–Kuhn–Tucker multiplier method</a>). The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the minimizer of <span class="math display">
+\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = ||\bm{y} - \bm{X}\beta||^2 + \lambda||\beta||^2,
+</span> for some <span class="orange">complexity parameter</span> <span class="math inline">\lambda &gt; 0</span>, such that <span class="math inline">s = ||\hat{\beta}_\text{ridge} ||^2</span>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>When <span class="math inline">\lambda = 0</span> and <span class="math inline">\bm{X}</span> is full rank, then <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}</span>. Conversely, when <span class="math inline">\lambda \rightarrow \infty</span> then <span class="math inline">\hat{\beta}_\text{ridge} = 0</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Theorem</strong></p>
+</div>
+<div class="callout-content">
+<p>For any <span class="math inline">n\times p</span> design matrix <span class="math inline">\bm{X}</span>, not necessarily of full-rank, the ridge estimator is <span class="math display">
+\hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y}.
+</span> Such an estimator <span class="blue">always exists</span> and is <span class="orange">unique</span>.</p>
+</div>
+</div>
+</div>
+<!-- ## Mathematical details -->
+<!-- ::: incremental -->
+<!-- - The matrix $\bm{X}^T\bm{X} + \lambda I_p$ is [invertible]{.blue} for any $\lambda > 0$.  -->
+<!-- - For any $\lambda >0$, the ridge solution is always at the [boundary]{.orange}, that is, is never an interior point. Indeed, if $\bm{X}$ is full rank, it can be shown that -->
+<!-- $$ -->
+<!-- ||\hat{\beta}_\text{ridge}||^2 \le ||\hat{\beta}||^2. -->
+<!-- $$ -->
+<!-- - The size of the spherical ridge parameter constraint [shrinks monotonously]{.orange} as $\lambda$ increases: -->
+<!-- $$ -->
+<!-- \frac{\partial}{\partial \lambda} ||\hat{\beta}_\text{ridge}||^2 < 0, -->
+<!-- $$ -->
+<!-- ::: -->
+</div>
 </section>
 <section id="the-geometry-of-the-ridge-solution" class="slide level2 center">
 <h2>The geometry of the ridge solution</h2>
-</section>
+
+<img data-src="img/ridge.png" class="r-stretch quarto-figure-center"></section>
+<section id="the-ridge-path" class="slide level2 center">
+<h2>The ridge path</h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-20-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
 <section id="a-historical-perspective" class="slide level2 center">
 <h2>A historical perspective</h2>
-</section>
-<section id="important-details" class="slide level2 center">
-<h2>Important details</h2>
 </section>
 <section id="shrinkage-effect-i" class="slide level2 center">
 <h2>Shrinkage effect I</h2>
 <ul>
 <li>Use SVD</li>
-</ul>
-</section>
-<section id="shrinkage-effect-ii" class="slide level2 center">
-<h2>Shrinkage effect II</h2>
-<ul>
-<li>Plot here</li>
 </ul>
 </section>
 <section id="bias-variance-trade-off" class="slide level2 center">
@@ -1033,17 +1083,26 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li>Orthonormal case</li>
 </ul>
 </section>
-<section id="equivalent-degrees-of-freedom" class="slide level2 center">
-<h2>Equivalent degrees of freedom</h2>
+<section id="equivalent-degrees-of-freedom-i" class="slide level2 center">
+<h2>Equivalent degrees of freedom I</h2>
 </section>
-<section id="equivalent-degrees-of-freedom-of-best-subset" class="slide level2 center">
-<h2>☠️ - Equivalent degrees of freedom of best subset</h2>
+<section id="equivalent-degrees-of-freedom-ii" class="slide level2 center">
+<h2>Equivalent degrees of freedom II</h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-21-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
+<section id="important-details" class="slide level2 center">
+<h2>Important details</h2>
+<ul>
+<li><p>The 1/n penalty</p></li>
+<li><p>glmnet and rescaling of the input</p></li>
+</ul>
 </section>
 <section id="selection-of-lambda" class="slide level2 center">
 <h2>Selection of <span class="math inline">\lambda</span></h2>
-<ul>
-<li>Plot of cross-validation and AIC</li>
-</ul>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-23-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
+<section id="equivalent-degrees-of-freedom-of-best-subset" class="slide level2 center">
+<h2>☠️ - Equivalent degrees of freedom of best subset</h2>
 </section>
 <section id="the-p-n-case-i" class="slide level2 center">
 <h2>The <span class="math inline">p &gt; n</span> case I</h2>
@@ -1066,66 +1125,6 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </section>
 <section id="pathwise-coordinate-optimization" class="slide level2 center">
 <h2>Pathwise coordinate optimization</h2>
-<!-- ## Ridge regression -->
-<!-- ```{r} -->
-<!-- df_ridge <- function(lambda, X) { -->
-<!--   X_tilde <- scale(X, TRUE, FALSE) -->
-<!--   d2 <- eigen(crossprod(X_tilde))$values -->
-<!--   sum(d2 / (d2 + lambda)) -->
-<!-- } -->
-<!-- df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda") -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- library(glmnet) -->
-<!-- my_ridge <- function(X, y, lambda){ -->
-<!--   n <- nrow(X) -->
-<!--   p <- ncol(X) -->
-<!--   y_mean <- mean(y) -->
-<!--   y <- y - y_mean -->
-<!--   X_mean <- colMeans(X) -->
-<!--   X <- X - rep(1,n) %*% t(X_mean) -->
-<!--   X_scale <- sqrt( diag( (1/n) * crossprod(X) ) ) -->
-<!--   X <- X %*% diag( 1 / X_scale ) -->
-<!--   beta_scaled <- solve(crossprod(X) + lambda*diag(rep(1,p)), t(X) %*% y)  -->
-<!--   beta <- diag( 1 / X_scale ) %*% beta_scaled -->
-<!--   beta0 <- y_mean - X_mean %*% beta -->
-<!--   return(c(beta0, beta)) -->
-<!-- } -->
-<!-- l = 1 -->
-<!-- my_ridge(X,y,lambda = l) -->
-<!-- coef(glmnet(X, y, alpha=0, lambda = l/n, thresh = 1e-20)) -->
-<!-- y_std <- scale(y, center=TRUE, scale=sd(y)*sqrt((n-1)/n) )[,] -->
-<!-- my_ridge(X,y_std,lambda = l) -->
-<!-- coef(glmnet(X, y_std, alpha=0, lambda = l/n, thresh = 1e-20)) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- #  -->
-<!-- #  -->
-<!-- # lambda <- 100 -->
-<!-- # XX <- X[,-1] #scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x)  sqrt(mean(x^2) - mean(x)^2))) -->
-<!-- # yy <- y #(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2) -->
-<!-- #  -->
-<!-- # cv_ridge_fit <- cv.glmnet(XX, yy, family = "gaussian", standardize = FALSE, lambda = exp(seq(-10, 12, length = 500)), -->
-<!-- #                     alpha = 0, thresh = 1e-16) -->
-<!-- # plot(cv_ridge_fit) -->
-<!-- #  -->
-<!-- # c(solve((crossprod(XX) + lambda * diag(p-1)), crossprod(XX, yy))) -->
-<!-- # c(coef(fit_ridge)[-1, ]) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- # plot(log(cv_ridge_fit$lambda), cv_ridge_fit$cvm, type = "l") -->
-<!-- # plot(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),  -->
-<!-- #      cv_ridge_fit$cvm, type = "b", xlab = "Model complexity", ylab = "MSE") -->
-<!-- # lines(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),  -->
-<!-- #       cv_ridge_fit$cvup, type = "b", xlab = "Model complexity", ylab = "MSE", lty = "dashed", col = "red") -->
-<!-- #  -->
-<!-- # 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.min, X[, -1]) -->
-<!-- # 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.1se, X[, -1]) -->
-<!-- #  -->
-<!-- # ridge_fit <- cv_ridge_fit$glmnet.fit -->
-<!-- # coef(ridge_fit) -->
-<!-- # plot(ridge_fit, , label = TRUE) -->
-<!-- ``` -->
 <!-- # Lasso, LARS, and elastic-net -->
 <!-- ## Lasso -->
 <!-- ::: columns -->
@@ -1185,17 +1184,12 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <!-- ``` -->
 <!-- ::: -->
 </section></section>
+<section>
 <section id="generalized-linear-models" class="title-slide slide level1 center">
 <h1>Generalized linear models</h1>
 
 </section>
-
-<section>
-<section id="references" class="title-slide slide level1 center">
-<h1>References</h1>
-
-</section>
-<section id="references-1" class="slide level2 center">
+<section id="references" class="slide level2 center">
 <h2>References</h2>
 <ul>
 <li><span class="blue">Main references</span>

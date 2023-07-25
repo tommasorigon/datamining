@@ -249,3 +249,199 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Number of principal components") +
   ylab("Regression coefficients")
+
+
+
+my_ridge <- function(X, y, lambda, standardize = FALSE) {
+  n <- nrow(X)
+  p <- ncol(X)
+  y_mean <- mean(y) # Center the response
+  y <- y - y_mean
+
+  # Centering the covariates
+  X_mean <- colMeans(X)
+  if (standardize) {
+    X_scale <- apply(X, 2, function(x) sqrt(mean(x^2) - mean(x)^2))
+  } else {
+    X_scale <- rep(1, p)
+  }
+
+  X <- scale(X, center = X_mean, scale = X_scale)
+
+  # Ridge solution (scaled data)
+  beta_scaled <- solve(crossprod(X) + lambda * diag(rep(1, p)), crossprod(X, y))
+
+  # Transform back to the original scale
+  beta <- beta_scaled / X_scale
+  # Compute the intercept
+  beta0 <- y_mean - X_mean %*% beta
+  return(c(beta0, beta))
+}
+
+
+
+df_ridge <- function(lambda, X, standardize = FALSE) {
+  # Rescale the predictors
+  X_mean <- colMeans(X)
+  if (standardize) {
+    X_scale <- apply(X, 2, function(x) sqrt(mean(x^2) - mean(x)^2))
+  } else {
+    X_scale <- rep(1, p)
+  }
+  X <- scale(X, center = X_mean, scale = X_scale)
+  d2 <- eigen(crossprod(X))$values
+  sum(d2 / (d2 + lambda))
+}
+
+df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda")
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+lambda_seq <- exp(seq(from = -1, to = 9, length = 50))
+data_ridge <- cbind(lambda_seq, matrix(0, length(lambda_seq), p))
+for (i in 1:length(lambda_seq)) {
+  data_ridge[i, -1] <- my_ridge(X, y, lambda = lambda_seq[i])[-1]
+}
+
+colnames(data_ridge)[-1] <- colnames(X)
+data_ridge <- tidyr::gather(data.frame(data_ridge), lambda, value, lcavol:pgg45)
+colnames(data_ridge) <- c("lambda", "Covariate", "value")
+
+ggplot(data = data_ridge, aes(x = lambda, y = value, col = Covariate)) +
+  geom_point() +
+  geom_line() +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_x_log10() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab(expression(lambda)) +
+  ylab("Regression coefficients")
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+ggplot(data = data_ridge, aes(x = df_ridge(lambda, X), y = value, col = Covariate)) +
+  geom_point() +
+  geom_line() +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Equivalent degrees of freedom") +
+  ylab("Regression coefficients")
+
+
+#| message: false
+resid_ridge <- matrix(0, n, length(lambda_seq))
+
+for (k in 1:10) {
+  # Hold-out dataset
+  X_test_k <- as.matrix(subset(assessment(cv_fold$splits[[k]]), select = -c(lpsa)))
+  y_test_k <- assessment(cv_fold$splits[[k]])$lpsa
+
+  X_train_k <- as.matrix(subset(analysis(cv_fold$splits[[k]]), select = -c(lpsa)))
+  y_train_k <- analysis(cv_fold$splits[[k]])$lpsa
+
+  for (j in 1:length(lambda_seq)) {
+    # Estimates
+    beta_hat <- my_ridge(X_train_k, y_train_k, lambda = lambda_seq[j], standardize = FALSE)
+    # Predictions
+    y_hat <- cbind(1, X_test_k) %*% beta_hat
+    # MSE of the best models for different values of lambda
+    resid_ridge[complement(cv_fold$splits[[k]]), j] <- y_test_k - y_hat
+  }
+}
+
+
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+
+data_cv <- data.frame(
+  lambda = lambda_seq,
+  MSE = apply(resid_ridge^2, 2, mean),
+  SE = apply(resid_ridge^2, 2, function(x) sd(x) / sqrt(n))
+)
+
+se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)]
+lambda_optimal <- lambda_seq[tail(which(data_cv$MSE < se_rule), 1)]
+
+ggplot(data = data_cv, aes(x = lambda, y = MSE)) +
+  geom_point() +
+  geom_line() +
+  geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) +
+  geom_hline(yintercept = se_rule, linetype = "dotted") +
+  geom_vline(xintercept = lambda_optimal, linetype = "dotted") +
+  theme_light() +
+  scale_x_log10() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab(expression(lambda)) +
+  ylab("Mean squared error (10-fold cv)")
+
+
+
+# l = 10
+#
+# my_ridge(X, y, lambda = l)
+# coef(glmnet(X, y, alpha = 0, lambda = l/n, thresh = 1e-20))
+#
+# y_std <-  scale(y, center=TRUE, scale=sd(y)*sqrt((n-1)/n) )[,]
+# my_ridge(X, y_std, lambda = l, standardize = TRUE)
+# as.numeric(coef(glmnet(X, y_std, alpha=0, lambda = l/(n), thresh = 1e-20)))
+
+
+
+
+#
+
+#
+
+# lambda <- 100
+
+# XX <- X[,-1] #scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x)  sqrt(mean(x^2) - mean(x)^2)))
+
+# yy <- y #(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2)
+
+#
+
+# cv_ridge_fit <- cv.glmnet(XX, yy, family = "gaussian", standardize = FALSE, lambda = exp(seq(-10, 12, length = 500)),
+
+#                     alpha = 0, thresh = 1e-16)
+
+# plot(cv_ridge_fit)
+
+#
+
+# c(solve((crossprod(XX) + lambda * diag(p-1)), crossprod(XX, yy)))
+
+# c(coef(fit_ridge)[-1, ])
+
+
+
+
+# plot(log(cv_ridge_fit$lambda), cv_ridge_fit$cvm, type = "l")
+
+# plot(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),
+
+#      cv_ridge_fit$cvm, type = "b", xlab = "Model complexity", ylab = "MSE")
+
+# lines(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),
+
+#       cv_ridge_fit$cvup, type = "b", xlab = "Model complexity", ylab = "MSE", lty = "dashed", col = "red")
+
+#
+
+# 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.min, X[, -1])
+
+# 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.1se, X[, -1])
+
+#
+
+# ridge_fit <- cv_ridge_fit$glmnet.fit
+
+# coef(ridge_fit)
+
+# plot(ridge_fit, , label = TRUE)

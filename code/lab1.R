@@ -1,10 +1,59 @@
-rm(list = ls())
-X <- matrix(runif(100 * 5, 0, 1), 100, 5)
-# X <- cbind(X, X[, 1] + rnorm(10, sd = 1e-6))
+#' ---
+#' title: "Lab 1 - Data mining"
+#' author: "Tommaso Rigon"
+#' ---
 
+rm(list = ls())
+
+# Informazioni addizionali
+
+# Source of the data: https://dati.mit.gov.it/hfs/patenti_Lombardia.csv
+# Documentation: http://dati.mit.gov.it/catalog/dataset/patenti
+
+# Author:	Direzione generale per la motorizzazione - Div7 - Centro elaborazione dati motorizzazione
+# Last update:	21 December 2022, 17:16 (UTC+01:00)
+# Created:	20 febbraio 2022, 18:21 (UTC+01:00)
+# Temporal extension (end)	31 December 2019
+
+library(tidyverse)
+library(lubridate)
+
+# Use n_max = 1000 for most preliminary operations
+drivers <- read_csv("../data/drivers.csv", col_types = "iiffffffcfccfd")
+
+# Change the name of the columns
+colnames(drivers) <- c("id", "birth", "town", "city", "region", "state", "gender", "category", "date", "habilit", "date_habilit", "expiration", "date_foreigners", "points")
+
+# Change the format of the date
+drivers <- drivers %>% mutate(date = ymd_hms(date), experience = 2019 - year(date), age = 2019 - birth) 
+
+# Select patent B and other things
+drivers <- drivers %>% filter(category == "B", is.na(state), !is.na(points)) %>% filter(experience > 0)
+
+# Remove irrelevant columns
+drivers <- drivers %>% select(-c(id, category, state, date_foreigners, expiration, date_habilit, birth, date, region))
+
+drivers <- drivers %>% mutate(hazard = sqrt(-(points - 30)))
+
+glimpse(drivers)
+summary(drivers)
+
+
+# Start simple, use a subset!
+set.seed(12)
+drivers_sub <- sample_n(drivers, 50000, replace = FALSE)
+
+ggplot(data = drivers_sub, aes(x = experience, y = hazard)) + geom_point() +theme_bw()
+ggplot(data = drivers_sub, aes(x = age, y = hazard)) + geom_point() +theme_bw()
+
+drivers_sub <- na.omit(drivers_sub)
+m <- lm(hazard ~ poly(age, 10) + habilit + gender + poly(experience, 10) + town, data = drivers_sub)
+summary(m)
+
+
+X <- model.matrix(hazard ~ poly(age, 10) + habilit + gender + poly(experience, 10) + town, data = drivers_sub)
 XtX <- crossprod(X)
-beta <- rnorm(5)
-y <- rnorm(100, X %*% beta, )
+y <- drivers_sub$hazard
 
 kappa(X, exact = TRUE)^2
 kappa(XtX, exact = TRUE)
@@ -62,19 +111,11 @@ ols_eig <- function(X, y){
   crossprod(t(eig$vectors) / sqrt(eig$values)) %*% Xty
 }
 
-set.seed(1991)
-n <- 50
-p <- 5
-b0 <- c(3, 1.5, 0, -1.5, -3)
-beta <- rep(b0, each = p / 5)
-X <- matrix(rnorm(n * (p), 0, sqrt(1 / n)), n, p)
-y <- rnorm(n, X %*% beta, 1)
-
-ols_manual(X, y)
-ols_solve(X, y)
-ols_qr(X, y)
-ols_chol(X, y)
-ols_eig(X, y)
+system.time(ols_manual(X, y))
+system.time(ols_solve(X, y))
+system.time(ols_qr(X, y))
+system.time(ols_chol(X, y))
+system.time(ols_eig(X, y))
 
 
 library(microbenchmark)
@@ -109,4 +150,3 @@ ols_eig(X, y)
 library(QR)
 Q <- QR(X, complete = TRUE)$Q
 crossprod(Q)
-tcrossprod()

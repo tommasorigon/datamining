@@ -81,7 +81,6 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#forward-regression" id="toc-forward-regression" class="nav-link" data-scroll-target="#forward-regression">Forward regression</a></li>
   <li><a href="#backward-regression" id="toc-backward-regression" class="nav-link" data-scroll-target="#backward-regression">Backward regression</a></li>
   <li><a href="#forward-backward-and-best-subset" id="toc-forward-backward-and-best-subset" class="nav-link" data-scroll-target="#forward-backward-and-best-subset">Forward, backward and best subset</a></li>
-  <li><a href="#extension-to-generalized-linear-models" id="toc-extension-to-generalized-linear-models" class="nav-link" data-scroll-target="#extension-to-generalized-linear-models">Extension to generalized linear models</a></li>
   </ul></li>
   <li><a href="#principal-components-regression" id="toc-principal-components-regression" class="nav-link" data-scroll-target="#principal-components-regression">Principal components regression</a>
   <ul class="collapse">
@@ -103,16 +102,18 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#a-regularization-method" id="toc-a-regularization-method" class="nav-link" data-scroll-target="#a-regularization-method">A regularization method</a></li>
   <li><a href="#lagrange-multipliers-and-ridge-solution" id="toc-lagrange-multipliers-and-ridge-solution" class="nav-link" data-scroll-target="#lagrange-multipliers-and-ridge-solution">Lagrange multipliers and ridge solution</a></li>
+  <li><a href="#technical-details" id="toc-technical-details" class="nav-link" data-scroll-target="#technical-details">☠️ - Technical details</a></li>
   <li><a href="#the-geometry-of-the-ridge-solution" id="toc-the-geometry-of-the-ridge-solution" class="nav-link" data-scroll-target="#the-geometry-of-the-ridge-solution">The geometry of the ridge solution</a></li>
+  <li><a href="#the-ridge-path" id="toc-the-ridge-path" class="nav-link" data-scroll-target="#the-ridge-path">The ridge path</a></li>
   <li><a href="#a-historical-perspective" id="toc-a-historical-perspective" class="nav-link" data-scroll-target="#a-historical-perspective">A historical perspective</a></li>
-  <li><a href="#important-details" id="toc-important-details" class="nav-link" data-scroll-target="#important-details">Important details</a></li>
   <li><a href="#shrinkage-effect-i" id="toc-shrinkage-effect-i" class="nav-link" data-scroll-target="#shrinkage-effect-i">Shrinkage effect I</a></li>
-  <li><a href="#shrinkage-effect-ii" id="toc-shrinkage-effect-ii" class="nav-link" data-scroll-target="#shrinkage-effect-ii">Shrinkage effect II</a></li>
   <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
   <li><a href="#the-orthogonal-case" id="toc-the-orthogonal-case" class="nav-link" data-scroll-target="#the-orthogonal-case">The orthogonal case</a></li>
-  <li><a href="#equivalent-degrees-of-freedom" id="toc-equivalent-degrees-of-freedom" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom">Equivalent degrees of freedom</a></li>
-  <li><a href="#equivalent-degrees-of-freedom-of-best-subset" id="toc-equivalent-degrees-of-freedom-of-best-subset" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-of-best-subset">☠️ - Equivalent degrees of freedom of best subset</a></li>
+  <li><a href="#equivalent-degrees-of-freedom-i" id="toc-equivalent-degrees-of-freedom-i" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-i">Equivalent degrees of freedom I</a></li>
+  <li><a href="#equivalent-degrees-of-freedom-ii" id="toc-equivalent-degrees-of-freedom-ii" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-ii">Equivalent degrees of freedom II</a></li>
+  <li><a href="#important-details" id="toc-important-details" class="nav-link" data-scroll-target="#important-details">Important details</a></li>
   <li><a href="#selection-of-lambda" id="toc-selection-of-lambda" class="nav-link" data-scroll-target="#selection-of-lambda">Selection of <span class="math inline">\lambda</span></a></li>
+  <li><a href="#equivalent-degrees-of-freedom-of-best-subset" id="toc-equivalent-degrees-of-freedom-of-best-subset" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-of-best-subset">☠️ - Equivalent degrees of freedom of best subset</a></li>
   <li><a href="#the-p-n-case-i" id="toc-the-p-n-case-i" class="nav-link" data-scroll-target="#the-p-n-case-i">The <span class="math inline">p &gt; n</span> case I</a></li>
   <li><a href="#the-p-n-case-ii" id="toc-the-p-n-case-ii" class="nav-link" data-scroll-target="#the-p-n-case-ii">The <span class="math inline">p &gt; n</span> case II</a></li>
   </ul></li>
@@ -122,10 +123,9 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
   <li><a href="#pathwise-coordinate-optimization" id="toc-pathwise-coordinate-optimization" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization">Pathwise coordinate optimization</a></li>
   </ul></li>
-  <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a>
+  <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a>
   <ul class="collapse">
-  <li><a href="#references-1" id="toc-references-1" class="nav-link" data-scroll-target="#references-1">References</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_C_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
@@ -595,9 +595,6 @@ Backward regression
 <li>In the <code>prostate</code> dataset, forward, backward and best subset selection all gave exactly the <span class="orange">same path of solutions</span> on the full training set.</li>
 </ul>
 </section>
-<section id="extension-to-generalized-linear-models" class="level2">
-<h2 class="anchored" data-anchor-id="extension-to-generalized-linear-models">Extension to generalized linear models</h2>
-</section>
 </section>
 <section id="principal-components-regression" class="level1">
 <h1>Principal components regression</h1>
@@ -832,29 +829,90 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h1>Ridge regression</h1>
 <section id="a-regularization-method" class="level2">
 <h2 class="anchored" data-anchor-id="a-regularization-method">A regularization method</h2>
+<ul>
+<li><p>Ridge regression is the most common <span class="blue">shrinkage method</span>, in which the variability of the estimates is <span class="orange">bounded</span>.</p></li>
+<li><p>The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the <span class="orange">minimizer</span> of <span class="math display">
+\sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
+</span></p></li>
+</ul>
+<ul>
+<li><p>If the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is large enough, then <span class="math inline">\hat{\beta}_\text{ridge}</span> is equivalent to <span class="math inline">\hat{\beta}</span>.</p></li>
+<li><p>But when <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{ridge}</span> are explicitly <span class="blue">shrinked towards zero</span>. Note that we do not want to penalize the intercept term <span class="math inline">\beta_0</span>.</p></li>
+</ul>
+<ul>
+<li><p>Using the same <span class="blue">mathematical trick</span> as <a href="/#centering-the-predictors-i">before</a> (see Exercises), we can <span class="orange">omit the intercept</span> term <span class="math inline">\beta_0</span> after <span class="orange">centering</span> the inputs and the response, that is <span class="math inline">\bar{y} = 0</span> and <span class="math inline">\bar{x}_{j} = 0</span>.</p></li>
+<li><p>The ridge solutions are <span class="orange">not equivariant</span> under <span class="orange">scalings of the input</span>, so one normally <span class="blue">standardizes</span> the input, if they are not in the same scale already.</p></li>
+</ul>
 </section>
 <section id="lagrange-multipliers-and-ridge-solution" class="level2">
 <h2 class="anchored" data-anchor-id="lagrange-multipliers-and-ridge-solution">Lagrange multipliers and ridge solution</h2>
+<ul>
+<li>An <span class="blue">equivalent formulation</span> of the ridge problem can be obtained with the <span class="orange">Lagrange form</span> <span class="math display">
+\hat{\beta}_\text{ridge} = \arg\min_\beta \left\{\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2\right\} = \arg\min_\beta \left\{||\bm{y} - \bm{X}\beta||^2 + \lambda||\beta||^2\right\},
+</span> for some <span class="orange">complexity parameter</span> <span class="math inline">\lambda &gt; 0</span>, such that <span class="math inline">s = ||\hat{\beta}_\text{ridge} ||^2</span>.</li>
+</ul>
+<ul>
+<li>When <span class="math inline">\lambda = 0</span>, then <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}</span>. Viceversa, when <span class="math inline">\lambda \rightarrow \infty</span> then <span class="math inline">\hat{\beta}_\text{ridge} = 0</span>.</li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Theorem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For any <span class="math inline">n\times p</span> design matrix <span class="math inline">\bm{X}</span>, not necessarily of full-rank, the ridge estimator is <span class="math display">
+\hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y}.
+</span> Such an estimator <span class="blue">always exists</span> and is <span class="orange">unique</span>.</p>
+</div>
+</div>
+</section>
+<section id="technical-details" class="level2">
+<h2 class="anchored" data-anchor-id="technical-details">☠️ - Technical details</h2>
+<ul>
+<li><p>The equivalence between the constrained definition of ridge regression and its Lagrange form is ensured by the <a href="https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions">Karush–Kuhn–Tucker multiplier method</a>.</p></li>
+<li><p>For any <span class="math inline">\lambda &gt;0</span>, the ridge solution is always at the <span class="orange">boundary</span>, that is, is never an interior point. Indeed, if <span class="math inline">\bm{X}</span> is full rank, it can be shown that <span class="math display">
+||\hat{\beta}_\text{ridge}||^2 \le ||\hat{\beta}||^2.
+</span></p></li>
+<li><p>The matrix <span class="math inline">\bm{X}^T\bm{X} + \lambda I_p</span> is <span class="blue">invertible</span> for any <span class="math inline">\lambda &gt; 0</span>.</p></li>
+<li><p>The size of the spherical ridge parameter constraint <span class="orange">shrinks monotonously</span> as <span class="math inline">\lambda</span> increases: <span class="math display">
+\frac{\partial}{\partial \lambda} ||\hat{\beta}_\text{ridge}||^2 &lt; 0,
+</span></p></li>
+<li><p>Eventually, when <span class="math inline">\lambda \rightarrow \infty</span> the size collapses to zero, i.e.&nbsp; <span class="math display">
+\lim_{\lambda \rightarrow \infty} ||\hat{\beta}_\text{ridge}||^2 = 0.
+</span></p></li>
+</ul>
 </section>
 <section id="the-geometry-of-the-ridge-solution" class="level2">
 <h2 class="anchored" data-anchor-id="the-geometry-of-the-ridge-solution">The geometry of the ridge solution</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/ridge.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="the-ridge-path" class="level2">
+<h2 class="anchored" data-anchor-id="the-ridge-path">The ridge path</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_C_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="1350"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="a-historical-perspective" class="level2">
 <h2 class="anchored" data-anchor-id="a-historical-perspective">A historical perspective</h2>
-</section>
-<section id="important-details" class="level2">
-<h2 class="anchored" data-anchor-id="important-details">Important details</h2>
 </section>
 <section id="shrinkage-effect-i" class="level2">
 <h2 class="anchored" data-anchor-id="shrinkage-effect-i">Shrinkage effect I</h2>
 <ul>
 <li>Use SVD</li>
-</ul>
-</section>
-<section id="shrinkage-effect-ii" class="level2">
-<h2 class="anchored" data-anchor-id="shrinkage-effect-ii">Shrinkage effect II</h2>
-<ul>
-<li>Plot here</li>
 </ul>
 </section>
 <section id="bias-variance-trade-off" class="level2">
@@ -869,17 +927,42 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li>Orthonormal case</li>
 </ul>
 </section>
-<section id="equivalent-degrees-of-freedom" class="level2">
-<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom">Equivalent degrees of freedom</h2>
+<section id="equivalent-degrees-of-freedom-i" class="level2">
+<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-i">Equivalent degrees of freedom I</h2>
 </section>
-<section id="equivalent-degrees-of-freedom-of-best-subset" class="level2">
-<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-of-best-subset">☠️ - Equivalent degrees of freedom of best subset</h2>
+<section id="equivalent-degrees-of-freedom-ii" class="level2">
+<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-ii">Equivalent degrees of freedom II</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_C_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="1350"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="important-details" class="level2">
+<h2 class="anchored" data-anchor-id="important-details">Important details</h2>
+<ul>
+<li><p>The 1/n penalty</p></li>
+<li><p>glmnet and rescaling of the input</p></li>
+</ul>
 </section>
 <section id="selection-of-lambda" class="level2">
 <h2 class="anchored" data-anchor-id="selection-of-lambda">Selection of <span class="math inline">\lambda</span></h2>
-<ul>
-<li>Plot of cross-validation and AIC</li>
-</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_C_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="1500"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="equivalent-degrees-of-freedom-of-best-subset" class="level2">
+<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-of-best-subset">☠️ - Equivalent degrees of freedom of best subset</h2>
 </section>
 <section id="the-p-n-case-i" class="level2">
 <h2 class="anchored" data-anchor-id="the-p-n-case-i">The <span class="math inline">p &gt; n</span> case I</h2>
@@ -898,66 +981,6 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </section>
 <section id="pathwise-coordinate-optimization" class="level2">
 <h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization">Pathwise coordinate optimization</h2>
-<!-- ## Ridge regression -->
-<!-- ```{r} -->
-<!-- df_ridge <- function(lambda, X) { -->
-<!--   X_tilde <- scale(X, TRUE, FALSE) -->
-<!--   d2 <- eigen(crossprod(X_tilde))$values -->
-<!--   sum(d2 / (d2 + lambda)) -->
-<!-- } -->
-<!-- df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda") -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- library(glmnet) -->
-<!-- my_ridge <- function(X, y, lambda){ -->
-<!--   n <- nrow(X) -->
-<!--   p <- ncol(X) -->
-<!--   y_mean <- mean(y) -->
-<!--   y <- y - y_mean -->
-<!--   X_mean <- colMeans(X) -->
-<!--   X <- X - rep(1,n) %*% t(X_mean) -->
-<!--   X_scale <- sqrt( diag( (1/n) * crossprod(X) ) ) -->
-<!--   X <- X %*% diag( 1 / X_scale ) -->
-<!--   beta_scaled <- solve(crossprod(X) + lambda*diag(rep(1,p)), t(X) %*% y)  -->
-<!--   beta <- diag( 1 / X_scale ) %*% beta_scaled -->
-<!--   beta0 <- y_mean - X_mean %*% beta -->
-<!--   return(c(beta0, beta)) -->
-<!-- } -->
-<!-- l = 1 -->
-<!-- my_ridge(X,y,lambda = l) -->
-<!-- coef(glmnet(X, y, alpha=0, lambda = l/n, thresh = 1e-20)) -->
-<!-- y_std <- scale(y, center=TRUE, scale=sd(y)*sqrt((n-1)/n) )[,] -->
-<!-- my_ridge(X,y_std,lambda = l) -->
-<!-- coef(glmnet(X, y_std, alpha=0, lambda = l/n, thresh = 1e-20)) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- #  -->
-<!-- #  -->
-<!-- # lambda <- 100 -->
-<!-- # XX <- X[,-1] #scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x)  sqrt(mean(x^2) - mean(x)^2))) -->
-<!-- # yy <- y #(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2) -->
-<!-- #  -->
-<!-- # cv_ridge_fit <- cv.glmnet(XX, yy, family = "gaussian", standardize = FALSE, lambda = exp(seq(-10, 12, length = 500)), -->
-<!-- #                     alpha = 0, thresh = 1e-16) -->
-<!-- # plot(cv_ridge_fit) -->
-<!-- #  -->
-<!-- # c(solve((crossprod(XX) + lambda * diag(p-1)), crossprod(XX, yy))) -->
-<!-- # c(coef(fit_ridge)[-1, ]) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- # plot(log(cv_ridge_fit$lambda), cv_ridge_fit$cvm, type = "l") -->
-<!-- # plot(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),  -->
-<!-- #      cv_ridge_fit$cvm, type = "b", xlab = "Model complexity", ylab = "MSE") -->
-<!-- # lines(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),  -->
-<!-- #       cv_ridge_fit$cvup, type = "b", xlab = "Model complexity", ylab = "MSE", lty = "dashed", col = "red") -->
-<!-- #  -->
-<!-- # 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.min, X[, -1]) -->
-<!-- # 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.1se, X[, -1]) -->
-<!-- #  -->
-<!-- # ridge_fit <- cv_ridge_fit$glmnet.fit -->
-<!-- # coef(ridge_fit) -->
-<!-- # plot(ridge_fit, , label = TRUE) -->
-<!-- ``` -->
 <!-- # Lasso, LARS, and elastic-net -->
 <!-- ## Lasso -->
 <!-- ::: columns -->
@@ -1020,18 +1043,15 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </section>
 <section id="generalized-linear-models" class="level1">
 <h1>Generalized linear models</h1>
-</section>
-<section id="references" class="level1">
-<h1>References</h1>
-<section id="references-1" class="level2">
-<h2 class="anchored" data-anchor-id="references-1">References</h2>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
 <ul>
 <li><span class="blue">Main references</span>
 <ul>
 <li><strong>Chapter 3</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
 <li><strong>Chapter 7</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
 </ul></li>
-<li><span class="orange">Advanced references</span>
+<li><span class="orange">Specialized references</span>
 <ul>
 <li>Hastie, T. (2020). Ridge regularization: an essential concept in data science. <em>Technometrics</em>, 62(4), 426-433.</li>
 </ul></li>

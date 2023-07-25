@@ -3,6 +3,7 @@ title: "Data mining"
 subtitle: "CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
+lang: it
 execute:
   cache: true
 format:
@@ -62,7 +63,7 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)        | [Slides Unit B](slides/un_B_slides.html) | [Code B](code/un_B.R) |
 | *Exercises*                            | [Exercises B](exe/exe_B.qmd.html) |                                          |                       |
 | Lab 2                                  | \[Code Lab 2\]                    |                                          |                       |
-| **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)        | [Slides Unit C](slides/un_C_slides.html) |                       |
+| **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)        | [Slides Unit C](slides/un_C_slides.html) | [Code C](code/un_C.R) |
 | *Exercises*                            | [Exercises C](exe/exe_C.html)     |                                          |                       |
 | Lab 3                                  | \[Code Lab 3\]                    |                                          |                       |
 | **Nonparametric estimation**           | \[Unit D\]                        | \[Slides Unit D\]                        |                       |
