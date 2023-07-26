@@ -1080,6 +1080,12 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>The ridge path</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-20-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
+<section id="comments-and-criticism" class="slide level2 center">
+<h2>Comments and criticism</h2>
+<ul>
+<li>Which parameters are shrinked to zero? At which speed?</li>
+</ul>
+</section>
 <section id="shrinkage-effect-of-ridge-regression-i" class="slide level2 center">
 <h2>Shrinkage effect of ridge regression I</h2>
 <ul>
@@ -1176,8 +1182,26 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </ul>
 </div>
 </section>
-<section id="selection-of-lambda" class="slide level2 center">
-<h2>Selection of <span class="math inline">\lambda</span></h2>
+<section id="on-the-choice-of-lambda" class="slide level2 center">
+<h2>On the choice of <span class="math inline">\lambda</span></h2>
+<ul>
+<li><p>The <span class="orange">penalty parameter</span> <span class="math inline">\lambda</span> determines the amount of bias and variance of <span class="math inline">\hat{\beta}_\text{ridge}</span>.</p></li>
+<li><p>How do we <span class="blue">estimate</span> <span class="math inline">\lambda</span>? What about selecting <span class="math inline">\lambda</span> so that <span class="math inline">||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2</span> is <span class="blue">minimal</span>?</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>Minimizing <span class="math inline">||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2</span> over <span class="math inline">\lambda</span>, as suggested in the above bullet point, is a <span class="orange">very bad idea</span>. It would always choose <span class="math inline">\lambda =0</span>!</p></li>
+<li><p><span class="math inline">\lambda</span> is a <span class="blue">complexity</span> parameter and, like the number of covariates, should be selected using <span class="orange">information criteria</span> or training/test and <span class="orange">cross-validation</span>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Suppose we wish to use an <span class="blue">information criteria</span> such as the AIC or BIC, of the form <span class="math display">
+  \text{IC}(p) = -2 \ell(\hat{\beta}_\text{ridge}) + \text{penalty}(\text{``degrees of freedom"}).
+  </span> However, what do we mean with the <span class="blue">degrees of freedom</span> in this context?</p></li>
+<li><p>The current definition of degrees of freedom, e.g.&nbsp;the number of <span class="orange">non-zero coefficients</span>, is <span class="orange">not appropriate</span> for ridge regression, because it would be equal to <span class="math inline">p</span> for any value of <span class="math inline">\lambda</span>.</p></li>
+</ul>
+</div>
 </section>
 <section id="equivalent-degrees-of-freedom-i" class="slide level2 center">
 <h2>Equivalent degrees of freedom I</h2>
@@ -1195,17 +1219,23 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="equivalent-degrees-of-freedom-of-best-subset" class="slide level2 center">
 <h2>☠️ - Equivalent degrees of freedom of best subset</h2>
 </section>
-<section id="cross-validation-for-ridge-regression" class="slide level2 center">
-<h2>Cross-validation for ridge regression</h2>
-</section>
-<section id="important-details" class="slide level2 center">
-<h2>Important details</h2>
+<section id="cross-validation-for-ridge-regression-i" class="slide level2 center">
+<h2>Cross-validation for ridge regression I</h2>
 <ul>
 <li><p>The 1/n penalty</p></li>
 <li><p>glmnet and rescaling of the input</p></li>
 </ul>
+</section>
+<section id="cross-validation-for-ridge-regression-ii" class="slide level2 center">
+<h2>Cross-validation for ridge regression II</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-23-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
+<section id="leave-one-out-cross-validation-for-ridge-i" class="slide level2 center">
+<h2>Leave-one-out cross-validation for ridge I</h2>
+</section>
+<section id="leave-one-out-cross-validation-for-ridge-ii" class="slide level2 center">
+<h2>Leave-one-out cross-validation for ridge II</h2>
+</section>
 <section id="the-p-n-case-i" class="slide level2 center">
 <h2>The <span class="math inline">p &gt; n</span> case I</h2>
 </section>

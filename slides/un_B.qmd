@@ -792,12 +792,12 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 -   If the predicted values are obtained using [ordinary least
     squares]{.blue}, then $\hat{\bm{f}} = \bm{H}\bm{Y}$, therefore $$
-    \text{Opt} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{H}\bm{Y})\} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{Y}) \bm{H}^T\} = \frac{2 \sigma^2}{n}\text{tr} \{\bm{H}\} = \frac{2 \sigma^2 p}{n}.
+    \text{Opt}_\text{ols} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{H}\bm{Y})\} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{Y}) \bm{H}^T\} = \frac{2 \sigma^2}{n}\text{tr} \{\bm{H}\} = \frac{2 \sigma^2 p}{n}.
     $$
 
 -   This leads to an estimate for the in-sample prediction error, known
     as [$C_p$ of Mallows]{.blue}: $$
-    \widehat{\mathrm{ErrF}} = \text{MSE}_\text{train} + \text{Opt} = \frac{1}{n}\sum_{i=1}^n\{y_i - \hat{f}(\bm{x}_i)\}^2 + \frac{2 \sigma^2 p}{n}.
+    \widehat{\mathrm{ErrF}} = \text{MSE}_\text{train} + \text{Opt}_\text{ols} = \frac{1}{n}\sum_{i=1}^n\{y_i - \hat{f}(\bm{x}_i)\}^2 + \frac{2 \sigma^2 p}{n}.
     $$
 
 -   If $\sigma^2$ is unknown, then it must be [estimated]{.orange} using

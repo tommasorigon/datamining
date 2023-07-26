@@ -105,17 +105,22 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#lagrange-multipliers-and-ridge-solution" id="toc-lagrange-multipliers-and-ridge-solution" class="nav-link" data-scroll-target="#lagrange-multipliers-and-ridge-solution">Lagrange multipliers and ridge solution</a></li>
   <li><a href="#the-geometry-of-the-ridge-solution" id="toc-the-geometry-of-the-ridge-solution" class="nav-link" data-scroll-target="#the-geometry-of-the-ridge-solution">The geometry of the ridge solution</a></li>
   <li><a href="#the-ridge-path" id="toc-the-ridge-path" class="nav-link" data-scroll-target="#the-ridge-path">The ridge path</a></li>
+  <li><a href="#comments-and-criticism" id="toc-comments-and-criticism" class="nav-link" data-scroll-target="#comments-and-criticism">Comments and criticism</a></li>
   <li><a href="#shrinkage-effect-of-ridge-regression-i" id="toc-shrinkage-effect-of-ridge-regression-i" class="nav-link" data-scroll-target="#shrinkage-effect-of-ridge-regression-i">Shrinkage effect of ridge regression I</a></li>
   <li><a href="#shrinkage-effect-of-ridge-regression-ii" id="toc-shrinkage-effect-of-ridge-regression-ii" class="nav-link" data-scroll-target="#shrinkage-effect-of-ridge-regression-ii">Shrinkage effect of ridge regression II</a></li>
   <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
-  <li><a href="#the-orthogonal-case" id="toc-the-orthogonal-case" class="nav-link" data-scroll-target="#the-orthogonal-case">The orthogonal case</a></li>
   <li><a href="#a-historical-perspective-i" id="toc-a-historical-perspective-i" class="nav-link" data-scroll-target="#a-historical-perspective-i">☠️ - A historical perspective I</a></li>
   <li><a href="#a-historical-perspective-ii" id="toc-a-historical-perspective-ii" class="nav-link" data-scroll-target="#a-historical-perspective-ii">☠️ - A historical perspective II</a></li>
+  <li><a href="#selection-of-lambda" id="toc-selection-of-lambda" class="nav-link" data-scroll-target="#selection-of-lambda">Selection of <span class="math inline">\lambda</span></a></li>
   <li><a href="#equivalent-degrees-of-freedom-i" id="toc-equivalent-degrees-of-freedom-i" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-i">Equivalent degrees of freedom I</a></li>
   <li><a href="#equivalent-degrees-of-freedom-ii" id="toc-equivalent-degrees-of-freedom-ii" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-ii">Equivalent degrees of freedom II</a></li>
-  <li><a href="#important-details" id="toc-important-details" class="nav-link" data-scroll-target="#important-details">Important details</a></li>
-  <li><a href="#selection-of-lambda" id="toc-selection-of-lambda" class="nav-link" data-scroll-target="#selection-of-lambda">Selection of <span class="math inline">\lambda</span></a></li>
+  <li><a href="#equivalent-degrees-of-freedom-iii" id="toc-equivalent-degrees-of-freedom-iii" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-iii">Equivalent degrees of freedom III</a></li>
+  <li><a href="#equivalent-degrees-of-freedom-iv" id="toc-equivalent-degrees-of-freedom-iv" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-iv">Equivalent degrees of freedom IV</a></li>
   <li><a href="#equivalent-degrees-of-freedom-of-best-subset" id="toc-equivalent-degrees-of-freedom-of-best-subset" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-of-best-subset">☠️ - Equivalent degrees of freedom of best subset</a></li>
+  <li><a href="#cross-validation-for-ridge-regression-i" id="toc-cross-validation-for-ridge-regression-i" class="nav-link" data-scroll-target="#cross-validation-for-ridge-regression-i">Cross-validation for ridge regression I</a></li>
+  <li><a href="#cross-validation-for-ridge-regression-ii" id="toc-cross-validation-for-ridge-regression-ii" class="nav-link" data-scroll-target="#cross-validation-for-ridge-regression-ii">Cross-validation for ridge regression II</a></li>
+  <li><a href="#leave-one-out-cross-validation-for-ridge-i" id="toc-leave-one-out-cross-validation-for-ridge-i" class="nav-link" data-scroll-target="#leave-one-out-cross-validation-for-ridge-i">Leave-one-out cross-validation for ridge I</a></li>
+  <li><a href="#leave-one-out-cross-validation-for-ridge-ii" id="toc-leave-one-out-cross-validation-for-ridge-ii" class="nav-link" data-scroll-target="#leave-one-out-cross-validation-for-ridge-ii">Leave-one-out cross-validation for ridge II</a></li>
   <li><a href="#the-p-n-case-i" id="toc-the-p-n-case-i" class="nav-link" data-scroll-target="#the-p-n-case-i">The <span class="math inline">p &gt; n</span> case I</a></li>
   <li><a href="#the-p-n-case-ii" id="toc-the-p-n-case-ii" class="nav-link" data-scroll-target="#the-p-n-case-ii">The <span class="math inline">p &gt; n</span> case II</a></li>
   </ul></li>
@@ -920,6 +925,12 @@ Ridge regression estimator
 </div>
 </div>
 </section>
+<section id="comments-and-criticism" class="level2">
+<h2 class="anchored" data-anchor-id="comments-and-criticism">Comments and criticism</h2>
+<ul>
+<li>Which parameters are shrinked to zero? At which speed?</li>
+</ul>
+</section>
 <section id="shrinkage-effect-of-ridge-regression-i" class="level2">
 <h2 class="anchored" data-anchor-id="shrinkage-effect-of-ridge-regression-i">Shrinkage effect of ridge regression I</h2>
 <ul>
@@ -936,24 +947,49 @@ Ridge regression estimator
 <li><p>This means that ridge regression <span class="blue">shrinks</span> the <span class="blue">principal directions</span> by an amount that depends on the <span class="orange">eigenvalues</span> <span class="math inline">d_j^2</span>.</p></li>
 <li><p>In other words, it <span class="orange">smoothly reduces</span> the impact of the <span class="orange">redundant</span> information.</p></li>
 </ul>
-<ul>
-<li>A sharp <span class="blue">connection</span> with <span class="blue">principal components regression</span> is therefore revealed. Compare the above formula with <a href="#shrinkage-effect-of-principal-components-ii">the one we previously obtained</a> for <span class="math inline">\bm{X}\hat{\beta}_\text{pcr}</span>.</li>
-</ul>
 </section>
 <section id="shrinkage-effect-of-ridge-regression-ii" class="level2">
 <h2 class="anchored" data-anchor-id="shrinkage-effect-of-ridge-regression-ii">Shrinkage effect of ridge regression II</h2>
+<ul>
+<li><p>A sharp <span class="blue">connection</span> with <span class="blue">principal components regression</span> is therefore revealed.</p></li>
+<li><p>Compare the previous formula for <span class="math inline">\bm{X}\hat{\beta}_\text{ridge}</span> with <a href="#shrinkage-effect-of-principal-components-ii">the one we previously obtained</a> for <span class="math inline">\bm{X}\hat{\beta}_\text{pcr}</span>.</p></li>
+</ul>
+<ul>
+<li>More explicitly, for <span class="orange">ridge regression</span> we will have that <span class="math display">
+\hat{\beta}_\text{ridge} = \bm{V}\text{diag}\left(\frac{d_1}{d_1^2 + \lambda}, \dots, \frac{d_p}{d_p^2 + \lambda}\right)\bm{U}^T\bm{y}.
+</span> whereas for <span class="blue">principal components regression</span> with <span class="math inline">k</span> components we get <span class="math display">
+\hat{\beta}_\text{pcr} = \bm{V}\text{diag}\left(\frac{1}{d_1}, \dots, \frac{1}{d_k}, 0, \dots, 0\right)\bm{U}^T\bm{y}.
+</span></li>
+</ul>
+<ul>
+<li>Both operate on the singular values, but where principal component regression <span class="blue">thresholds</span> the singular values, <span class="orange">ridge regression</span> shrinks them.</li>
+</ul>
 </section>
 <section id="bias-variance-trade-off" class="level2">
 <h2 class="anchored" data-anchor-id="bias-variance-trade-off">Bias-variance trade-off</h2>
 <ul>
-<li>Theorem by Theobald</li>
+<li>The ridge regression <span class="orange">add some bias</span> in the estimates, but it has the advantage of <span class="blue">reducing</span> their <span class="blue">variance</span>.</li>
 </ul>
-</section>
-<section id="the-orthogonal-case" class="level2">
-<h2 class="anchored" data-anchor-id="the-orthogonal-case">The orthogonal case</h2>
 <ul>
-<li>Orthonormal case</li>
+<li>The <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{ridge}</span>, assuming iid errors <span class="math inline">\epsilon_i</span> with variance <span class="math inline">\sigma^2</span>, results: <span class="math display">
+\text{var}(\hat{\beta}_\text{ridge}) = \sigma^2\sum_{j=1}^p \frac{d_j^2}{(d_j^2 + \lambda)^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T,
+</span> whose diagonal elements are always smaller than those of <span class="math inline">\text{var}(\hat{\beta})</span>.</li>
 </ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Theorem (Theobald, 1974)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let us assume that <span class="math inline">y_i = \bm{x}_i^T\beta + \epsilon_i</span>, where <span class="math inline">\epsilon_i</span> are iid errors with variance <span class="math inline">\sigma^2</span>. Then, there exist a <span class="math inline">\lambda &gt; 0</span> such that <span class="math display">
+\mathbb{E}\left(||\hat{\beta}_\text{ridge} - \beta)||^2\right) &lt; \mathbb{E}\left(||\hat{\beta} - \beta||^2\right) = \text{var}(\hat{\beta}).
+</span></p>
+</div>
+</div>
 </section>
 <section id="a-historical-perspective-i" class="level2">
 <h2 class="anchored" data-anchor-id="a-historical-perspective-i">☠️ - A historical perspective I</h2>
@@ -980,15 +1016,24 @@ Ridge regression estimator
 \kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
 </span></p></li>
 <li><p>Notice that even if <span class="math inline">d_p = 0</span>, i.e.&nbsp;the matrix <span class="math inline">\bm{X}</span> is <span class="blue">singular</span>, then condition number will be finite as long as <span class="math inline">\lambda &gt; 0</span>.</p></li>
-<li><p>This technique is known as <span class="orange">Tikhonov regularization</span>, after the Russian mathematician Andrey Tikhonov</p></li>
+<li><p>This technique is known as <span class="orange">Tikhonov regularization</span>, after the Russian mathematician Andrey Tikhonov.</p></li>
 </ul>
 </div>
+</section>
+<section id="selection-of-lambda" class="level2">
+<h2 class="anchored" data-anchor-id="selection-of-lambda">Selection of <span class="math inline">\lambda</span></h2>
 </section>
 <section id="equivalent-degrees-of-freedom-i" class="level2">
 <h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-i">Equivalent degrees of freedom I</h2>
 </section>
 <section id="equivalent-degrees-of-freedom-ii" class="level2">
 <h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-ii">Equivalent degrees of freedom II</h2>
+</section>
+<section id="equivalent-degrees-of-freedom-iii" class="level2">
+<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-iii">Equivalent degrees of freedom III</h2>
+</section>
+<section id="equivalent-degrees-of-freedom-iv" class="level2">
+<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-iv">Equivalent degrees of freedom IV</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -999,15 +1044,18 @@ Ridge regression estimator
 </div>
 </div>
 </section>
-<section id="important-details" class="level2">
-<h2 class="anchored" data-anchor-id="important-details">Important details</h2>
+<section id="equivalent-degrees-of-freedom-of-best-subset" class="level2">
+<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-of-best-subset">☠️ - Equivalent degrees of freedom of best subset</h2>
+</section>
+<section id="cross-validation-for-ridge-regression-i" class="level2">
+<h2 class="anchored" data-anchor-id="cross-validation-for-ridge-regression-i">Cross-validation for ridge regression I</h2>
 <ul>
 <li><p>The 1/n penalty</p></li>
 <li><p>glmnet and rescaling of the input</p></li>
 </ul>
 </section>
-<section id="selection-of-lambda" class="level2">
-<h2 class="anchored" data-anchor-id="selection-of-lambda">Selection of <span class="math inline">\lambda</span></h2>
+<section id="cross-validation-for-ridge-regression-ii" class="level2">
+<h2 class="anchored" data-anchor-id="cross-validation-for-ridge-regression-ii">Cross-validation for ridge regression II</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1018,8 +1066,11 @@ Ridge regression estimator
 </div>
 </div>
 </section>
-<section id="equivalent-degrees-of-freedom-of-best-subset" class="level2">
-<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-of-best-subset">☠️ - Equivalent degrees of freedom of best subset</h2>
+<section id="leave-one-out-cross-validation-for-ridge-i" class="level2">
+<h2 class="anchored" data-anchor-id="leave-one-out-cross-validation-for-ridge-i">Leave-one-out cross-validation for ridge I</h2>
+</section>
+<section id="leave-one-out-cross-validation-for-ridge-ii" class="level2">
+<h2 class="anchored" data-anchor-id="leave-one-out-cross-validation-for-ridge-ii">Leave-one-out cross-validation for ridge II</h2>
 </section>
 <section id="the-p-n-case-i" class="level2">
 <h2 class="anchored" data-anchor-id="the-p-n-case-i">The <span class="math inline">p &gt; n</span> case I</h2>

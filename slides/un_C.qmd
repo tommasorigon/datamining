@@ -1023,6 +1023,10 @@ ggplot(data = data_ridge, aes(x = lambda, y = value, col = Covariate)) +
 ```
 
 
+## Comments and criticism
+
+- Which parameters are shrinked to zero? At which speed?
+
 ## Shrinkage effect of ridge regression I
 
 - Considering, once again, the [singular value decomposition]{.orange}, we get: $$\begin{aligned}
@@ -1118,7 +1122,28 @@ $$
 
 :::
 
-## Selection of $\lambda$
+## On the choice of $\lambda$
+
+
+
+- The [penalty parameter]{.orange} $\lambda$ determines the amount of bias and variance of  $\hat{\beta}_\text{ridge}$.
+
+- How do we [estimate]{.blue} $\lambda$? What about selecting $\lambda$ so that $||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2$ is [minimal]{.blue}?
+
+. . .
+
+- Minimizing $||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2$ over $\lambda$, as suggested in the above bullet point, is a [very bad idea]{.orange}. It would always choose $\lambda =0$!
+
+- $\lambda$ is a [complexity]{.blue} parameter and, like the number of covariates, should be selected using [information criteria]{.orange} or training/test and [cross-validation]{.orange}.
+
+. . .
+
+- Suppose we wish to use an [information criteria]{.blue} such as the AIC or BIC, of the form $$
+    \text{IC}(p) = -2 \ell(\hat{\beta}_\text{ridge}) + \text{penalty}(\text{``degrees of freedom"}).
+    $$
+However, what do we mean with the [degrees of freedom]{.blue} in this context?
+
+- The current definition of degrees of freedom, i.e. the number of [non-zero coefficients]{.orange}, is [not appropriate]{.orange} for ridge regression, because it would be equal to $p$ for any value of $\lambda$. 
 
 ## Equivalent degrees of freedom I
 
@@ -1144,13 +1169,15 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda, X), y = value, col = Covariat
 
 ## ☠️ - Equivalent degrees of freedom of best subset
 
-## Cross-validation for ridge regression
-
-## Important details
+## Cross-validation for ridge regression I
 
 - The 1/n penalty
 
 - glmnet and rescaling of the input
+
+
+## Cross-validation for ridge regression II
+
 
 ```{r}
 #| message: false
@@ -1202,6 +1229,10 @@ ggplot(data = data_cv, aes(x = lambda, y = MSE)) +
   xlab(expression(lambda)) +
   ylab("Mean squared error (10-fold cv)")
 ```
+
+## Leave-one-out cross-validation for ridge I
+
+## Leave-one-out cross-validation for ridge II
 
 ## The $p > n$ case I
 
