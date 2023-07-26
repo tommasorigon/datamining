@@ -937,7 +937,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </span></p></li>
 <li class="fragment"><p>Thus, if a <span class="blue">multicollinearity</span> exists, then it appears as a principal component with very small variance, i.e.&nbsp;a small <span class="math inline">d_j^2</span>. Its removal therefore drastically <span class="orange">reduces</span> the <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{pcr}</span>.</p></li>
 <li class="fragment"><p>Furthermore, the predicted values can be expressed as <span class="math display">
-\hat{\bm{y}} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
+\bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
 </span></p></li>
 <li class="fragment"><p>The columns of <span class="math inline">\bm{U}</span>, namely the vectors <span class="math inline">\tilde{\bm{u}}_j</span> are the <span class="blue">normalized principal components</span>.</p></li>
 <li class="fragment"><p>Hence, we are shrinking the predictions towards the main <span class="orange">principal directions</span>.</p></li>
@@ -1038,7 +1038,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <ul>
 <li>The ridge regression problem can be <span class="orange">equivalently expressed</span> in its <a href="https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions">Lagrangian form</a>, which greatly facilitates computations. The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the <span class="orange">minimizer</span> of <span class="math display">
 \sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y} - \bm{X}\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{penalty}}},
-</span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span>. Actually, it holds that <span class="math inline">s = ||\hat{\beta}_\text{ridge} ||^2</span>.</li>
+</span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>. It holds that <span class="math inline">s = ||\hat{\beta}_\text{ridge} ||^2</span>.</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -1080,6 +1080,73 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>The ridge path</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-20-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
+<section id="shrinkage-effect-of-ridge-regression-i" class="slide level2 center">
+<h2>Shrinkage effect of ridge regression I</h2>
+<ul>
+<li>Considering, once again, the <span class="orange">singular value decomposition</span>, we get: <span class="math display">\begin{aligned}
+\bm{X}\hat{\beta}_\text{ridge} &amp;= \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} \\
+&amp; = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}  \\
+&amp; = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y} \\
+&amp; = \bm{U}\bm{D}(\bm{D}^T\bm{D} + \lambda I_p)^{-1}\bm{D}^T\bm{U}^T\bm{y} \\
+&amp; = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y}
+\end{aligned}
+</span></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>This means that ridge regression <span class="blue">shrinks</span> the <span class="blue">principal directions</span> by an amount that depends on the <span class="orange">eigenvalues</span> <span class="math inline">d_j^2</span>.</p></li>
+<li><p>In other words, it <span class="orange">smoothly reduces</span> the impact of the <span class="orange">redundant</span> information.</p></li>
+</ul>
+</div>
+</section>
+<section id="shrinkage-effect-of-ridge-regression-ii" class="slide level2 center">
+<h2>Shrinkage effect of ridge regression II</h2>
+<ul>
+<li><p>A sharp <span class="blue">connection</span> with <span class="blue">principal components regression</span> is therefore revealed.</p></li>
+<li><p>Compare the previous formula for <span class="math inline">\bm{X}\hat{\beta}_\text{ridge}</span> with <a href="#/shrinkage-effect-of-principal-components-ii">the one we previously obtained</a> for <span class="math inline">\bm{X}\hat{\beta}_\text{pcr}</span>.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>More explicitly, for <span class="orange">ridge regression</span> we will have that <span class="math display">
+\hat{\beta}_\text{ridge} = \bm{V}\text{diag}\left(\frac{d_1}{d_1^2 + \lambda}, \dots, \frac{d_p}{d_p^2 + \lambda}\right)\bm{U}^T\bm{y}.
+</span> whereas for <span class="blue">principal components regression</span> with <span class="math inline">k</span> components we get <span class="math display">
+\hat{\beta}_\text{pcr} = \bm{V}\text{diag}\left(\frac{1}{d_1}, \dots, \frac{1}{d_k}, 0, \dots, 0\right)\bm{U}^T\bm{y}.
+</span></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Both operate on the singular values, but where principal component regression <span class="blue">thresholds</span> the singular values, <span class="orange">ridge regression</span> shrinks them.</li>
+</ul>
+</div>
+</section>
+<section id="bias-variance-trade-off" class="slide level2 center">
+<h2>Bias-variance trade-off</h2>
+<ul>
+<li>The ridge regression <span class="orange">add some bias</span> in the estimates, but it has the advantage of <span class="blue">reducing</span> their <span class="blue">variance</span>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>The <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{ridge}</span>, assuming iid errors <span class="math inline">\epsilon_i</span> with variance <span class="math inline">\sigma^2</span>, results: <span class="math display">
+\text{var}(\hat{\beta}_\text{ridge}) = \sigma^2\sum_{j=1}^p \frac{d_j^2}{(d_j^2 + \lambda)^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T,
+</span> whose diagonal elements are always smaller than those of <span class="math inline">\text{var}(\hat{\beta})</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Theorem (Theobald, 1974)</strong></p>
+</div>
+<div class="callout-content">
+<p>Let us assume that <span class="math inline">y_i = \bm{x}_i^T\beta + \epsilon_i</span>, where <span class="math inline">\epsilon_i</span> are iid errors with variance <span class="math inline">\sigma^2</span>. Then, there exist a <span class="math inline">\lambda &gt; 0</span> such that <span class="math display">
+\mathbb{E}\left(||\hat{\beta}_\text{ridge} - \beta)||^2\right) &lt; \mathbb{E}\left(||\hat{\beta} - \beta||^2\right) = \text{var}(\hat{\beta}).
+</span></p>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="a-historical-perspective-i" class="slide level2 center">
 <h2>☠️ - A historical perspective I</h2>
 <div>
@@ -1105,49 +1172,40 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 \kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
 </span></p></li>
 <li class="fragment"><p>Notice that even if <span class="math inline">d_p = 0</span>, i.e.&nbsp;the matrix <span class="math inline">\bm{X}</span> is <span class="blue">singular</span>, then condition number will be finite as long as <span class="math inline">\lambda &gt; 0</span>.</p></li>
-<li class="fragment"><p>This technique is known as <span class="orange">Tikhonov regularization</span>, after the Russian mathematician Andrey Tikhonov</p></li>
+<li class="fragment"><p>This technique is known as <span class="orange">Tikhonov regularization</span>, after the Russian mathematician Andrey Tikhonov.</p></li>
 </ul>
 </div>
 </section>
-<section id="shrinkage-effect-i" class="slide level2 center">
-<h2>Shrinkage effect I</h2>
-<ul>
-<li>Use SVD</li>
-</ul>
-</section>
-<section id="bias-variance-trade-off" class="slide level2 center">
-<h2>Bias-variance trade-off</h2>
-<ul>
-<li>Theorem by Theobald</li>
-</ul>
-</section>
-<section id="the-orthogonal-case" class="slide level2 center">
-<h2>The orthogonal case</h2>
-<ul>
-<li>Orthonormal case</li>
-</ul>
+<section id="selection-of-lambda" class="slide level2 center">
+<h2>Selection of <span class="math inline">\lambda</span></h2>
 </section>
 <section id="equivalent-degrees-of-freedom-i" class="slide level2 center">
 <h2>Equivalent degrees of freedom I</h2>
 </section>
 <section id="equivalent-degrees-of-freedom-ii" class="slide level2 center">
 <h2>Equivalent degrees of freedom II</h2>
+</section>
+<section id="equivalent-degrees-of-freedom-iii" class="slide level2 center">
+<h2>Equivalent degrees of freedom III</h2>
+</section>
+<section id="equivalent-degrees-of-freedom-iv" class="slide level2 center">
+<h2>Equivalent degrees of freedom IV</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-21-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
+<section id="equivalent-degrees-of-freedom-of-best-subset" class="slide level2 center">
+<h2>☠️ - Equivalent degrees of freedom of best subset</h2>
+</section>
+<section id="cross-validation-for-ridge-regression" class="slide level2 center">
+<h2>Cross-validation for ridge regression</h2>
+</section>
 <section id="important-details" class="slide level2 center">
 <h2>Important details</h2>
 <ul>
 <li><p>The 1/n penalty</p></li>
 <li><p>glmnet and rescaling of the input</p></li>
 </ul>
-</section>
-<section id="selection-of-lambda" class="slide level2 center">
-<h2>Selection of <span class="math inline">\lambda</span></h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-23-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
-<section id="equivalent-degrees-of-freedom-of-best-subset" class="slide level2 center">
-<h2>☠️ - Equivalent degrees of freedom of best subset</h2>
-</section>
 <section id="the-p-n-case-i" class="slide level2 center">
 <h2>The <span class="math inline">p &gt; n</span> case I</h2>
 </section>

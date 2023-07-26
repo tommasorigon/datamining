@@ -806,7 +806,7 @@ $$
 
 - Furthermore, the predicted values can be expressed as
 $$
-\hat{\bm{y}} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
+\bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
 $$
 - The columns of $\bm{U}$, namely the vectors $\tilde{\bm{u}}_j$ are the [normalized principal components]{.blue}.
 
@@ -909,7 +909,7 @@ $$
 $$
 \sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y} - \bm{X}\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{penalty}}},
 $$
-where $\lambda > 0$ is a [complexity parameter]{.blue}. Actually, it holds that $s = ||\hat{\beta}_\text{ridge} ||^2$.
+where $\lambda > 0$ is a [complexity parameter]{.blue} controlling the [penalty]{.orange}. It holds that $s = ||\hat{\beta}_\text{ridge} ||^2$.
 
 . . .
 
@@ -1022,6 +1022,65 @@ ggplot(data = data_ridge, aes(x = lambda, y = value, col = Covariate)) +
   ylab("Regression coefficients")
 ```
 
+
+## Shrinkage effect of ridge regression I
+
+- Considering, once again, the [singular value decomposition]{.orange}, we get: $$\begin{aligned}
+\bm{X}\hat{\beta}_\text{ridge} &= \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} \\
+& = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}  \\
+& = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y} \\
+& = \bm{U}\bm{D}(\bm{D}^T\bm{D} + \lambda I_p)^{-1}\bm{D}^T\bm{U}^T\bm{y} \\
+& = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y}
+\end{aligned}
+$$
+
+. . .
+
+- This means that ridge regression [shrinks]{.blue} the [principal directions]{.blue} by an amount that depends on the [eigenvalues]{.orange} $d_j^2$. 
+
+- In other words, it [smoothly reduces]{.orange} the impact of the [redundant]{.orange} information. 
+
+
+## Shrinkage effect of ridge regression II
+
+- A sharp [connection]{.blue} with [principal components regression]{.blue} is therefore revealed. 
+
+- Compare the previous formula for $\bm{X}\hat{\beta}_\text{ridge}$ with [the one we previously obtained](#shrinkage-effect-of-principal-components-ii) for $\bm{X}\hat{\beta}_\text{pcr}$.
+
+. . .
+
+- More explicitly, for [ridge regression]{.orange} we will have that $$
+\hat{\beta}_\text{ridge} = \bm{V}\text{diag}\left(\frac{d_1}{d_1^2 + \lambda}, \dots, \frac{d_p}{d_p^2 + \lambda}\right)\bm{U}^T\bm{y}.
+$$
+whereas for [principal components regression]{.blue} with $k$ components we get
+$$
+\hat{\beta}_\text{pcr} = \bm{V}\text{diag}\left(\frac{1}{d_1}, \dots, \frac{1}{d_k}, 0, \dots, 0\right)\bm{U}^T\bm{y}.
+$$
+
+. . .
+
+- Both operate on the singular values, but where principal component regression [thresholds]{.blue} the singular values, [ridge regression]{.orange} shrinks them.
+
+## Bias-variance trade-off
+
+- The ridge regression [add some bias]{.orange} in the estimates, but it has the advantage of [reducing]{.blue} their [variance]{.blue}. 
+
+. . .
+
+- The [variance]{.orange} of $\hat{\beta}_\text{ridge}$, assuming iid errors $\epsilon_i$ with variance $\sigma^2$, results: $$
+\text{var}(\hat{\beta}_\text{ridge}) = \sigma^2\sum_{j=1}^p \frac{d_j^2}{(d_j^2 + \lambda)^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T,
+$$
+whose diagonal elements are always smaller than those of $\text{var}(\hat{\beta})$.
+
+. . .
+
+::: callout-note
+#### Theorem (Theobald, 1974)
+Let us assume that $y_i = \bm{x}_i^T\beta + \epsilon_i$, where $\epsilon_i$ are iid errors with variance $\sigma^2$. Then, there exist a $\lambda > 0$ such that $$
+\mathbb{E}\left(||\hat{\beta}_\text{ridge} - \beta)||^2\right) < \mathbb{E}\left(||\hat{\beta} - \beta||^2\right) = \text{var}(\hat{\beta}).
+$$
+:::
+
 ## ☠️ - A historical perspective I
 
 ::: incremental
@@ -1055,27 +1114,19 @@ $$
 $$
 - Notice that even if $d_p = 0$, i.e. the matrix $\bm{X}$ is [singular]{.blue}, then condition number will be finite as long as $\lambda > 0$. 
 
-- This technique is known as [Tikhonov regularization]{.orange}, after the Russian mathematician Andrey Tikhonov
+- This technique is known as [Tikhonov regularization]{.orange}, after the Russian mathematician Andrey Tikhonov.
 
 :::
 
-## Shrinkage effect I
-
-- Use SVD
-
-## Bias-variance trade-off
-
-- Theorem by Theobald
-
-## The orthogonal case
-
-- Orthonormal case
-
-
+## Selection of $\lambda$
 
 ## Equivalent degrees of freedom I
 
 ## Equivalent degrees of freedom II
+
+## Equivalent degrees of freedom III
+
+## Equivalent degrees of freedom IV
 
 ```{r}
 #| fig-width: 9
@@ -1091,14 +1142,15 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda, X), y = value, col = Covariat
   ylab("Regression coefficients")
 ```
 
+## ☠️ - Equivalent degrees of freedom of best subset
+
+## Cross-validation for ridge regression
 
 ## Important details
 
 - The 1/n penalty
 
 - glmnet and rescaling of the input
-
-## Selection of $\lambda$
 
 ```{r}
 #| message: false
@@ -1150,9 +1202,6 @@ ggplot(data = data_cv, aes(x = lambda, y = MSE)) +
   xlab(expression(lambda)) +
   ylab("Mean squared error (10-fold cv)")
 ```
-
-
-## ☠️ - Equivalent degrees of freedom of best subset
 
 ## The $p > n$ case I
 

@@ -816,7 +816,7 @@ x3                0  0  0  1</code></pre>
 \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \hat{\bm{f}})\}.
 </span></p></li>
 <li class="fragment"><p>If the predicted values are obtained using <span class="blue">ordinary least squares</span>, then <span class="math inline">\hat{\bm{f}} = \bm{H}\bm{Y}</span>, therefore <span class="math display">
-\text{Opt} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{H}\bm{Y})\} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{Y}) \bm{H}^T\} = \frac{2 \sigma^2}{n}\text{tr} \{\text{cov}(\bm{H})\} = \frac{2 \sigma^2 p}{n}.
+\text{Opt} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{H}\bm{Y})\} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{Y}) \bm{H}^T\} = \frac{2 \sigma^2}{n}\text{tr} \{\bm{H}\} = \frac{2 \sigma^2 p}{n}.
 </span></p></li>
 <li class="fragment"><p>This leads to an estimate for the in-sample prediction error, known as <span class="blue"><span class="math inline">C_p</span> of Mallows</span>: <span class="math display">
 \widehat{\mathrm{ErrF}} = \text{MSE}_\text{train} + \text{Opt} = \frac{1}{n}\sum_{i=1}^n\{y_i - \hat{f}(\bm{x}_i)\}^2 + \frac{2 \sigma^2 p}{n}.

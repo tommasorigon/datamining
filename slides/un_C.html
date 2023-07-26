@@ -105,11 +105,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#lagrange-multipliers-and-ridge-solution" id="toc-lagrange-multipliers-and-ridge-solution" class="nav-link" data-scroll-target="#lagrange-multipliers-and-ridge-solution">Lagrange multipliers and ridge solution</a></li>
   <li><a href="#the-geometry-of-the-ridge-solution" id="toc-the-geometry-of-the-ridge-solution" class="nav-link" data-scroll-target="#the-geometry-of-the-ridge-solution">The geometry of the ridge solution</a></li>
   <li><a href="#the-ridge-path" id="toc-the-ridge-path" class="nav-link" data-scroll-target="#the-ridge-path">The ridge path</a></li>
-  <li><a href="#a-historical-perspective-i" id="toc-a-historical-perspective-i" class="nav-link" data-scroll-target="#a-historical-perspective-i">☠️ - A historical perspective I</a></li>
-  <li><a href="#a-historical-perspective-ii" id="toc-a-historical-perspective-ii" class="nav-link" data-scroll-target="#a-historical-perspective-ii">☠️ - A historical perspective II</a></li>
-  <li><a href="#shrinkage-effect-i" id="toc-shrinkage-effect-i" class="nav-link" data-scroll-target="#shrinkage-effect-i">Shrinkage effect I</a></li>
+  <li><a href="#shrinkage-effect-of-ridge-regression-i" id="toc-shrinkage-effect-of-ridge-regression-i" class="nav-link" data-scroll-target="#shrinkage-effect-of-ridge-regression-i">Shrinkage effect of ridge regression I</a></li>
+  <li><a href="#shrinkage-effect-of-ridge-regression-ii" id="toc-shrinkage-effect-of-ridge-regression-ii" class="nav-link" data-scroll-target="#shrinkage-effect-of-ridge-regression-ii">Shrinkage effect of ridge regression II</a></li>
   <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
   <li><a href="#the-orthogonal-case" id="toc-the-orthogonal-case" class="nav-link" data-scroll-target="#the-orthogonal-case">The orthogonal case</a></li>
+  <li><a href="#a-historical-perspective-i" id="toc-a-historical-perspective-i" class="nav-link" data-scroll-target="#a-historical-perspective-i">☠️ - A historical perspective I</a></li>
+  <li><a href="#a-historical-perspective-ii" id="toc-a-historical-perspective-ii" class="nav-link" data-scroll-target="#a-historical-perspective-ii">☠️ - A historical perspective II</a></li>
   <li><a href="#equivalent-degrees-of-freedom-i" id="toc-equivalent-degrees-of-freedom-i" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-i">Equivalent degrees of freedom I</a></li>
   <li><a href="#equivalent-degrees-of-freedom-ii" id="toc-equivalent-degrees-of-freedom-ii" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-ii">Equivalent degrees of freedom II</a></li>
   <li><a href="#important-details" id="toc-important-details" class="nav-link" data-scroll-target="#important-details">Important details</a></li>
@@ -769,7 +770,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </span></p></li>
 <li><p>Thus, if a <span class="blue">multicollinearity</span> exists, then it appears as a principal component with very small variance, i.e.&nbsp;a small <span class="math inline">d_j^2</span>. Its removal therefore drastically <span class="orange">reduces</span> the <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{pcr}</span>.</p></li>
 <li><p>Furthermore, the predicted values can be expressed as <span class="math display">
-\hat{\bm{y}} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
+\bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
 </span></p></li>
 <li><p>The columns of <span class="math inline">\bm{U}</span>, namely the vectors <span class="math inline">\tilde{\bm{u}}_j</span> are the <span class="blue">normalized principal components</span>.</p></li>
 <li><p>Hence, we are shrinking the predictions towards the main <span class="orange">principal directions</span>.</p></li>
@@ -866,7 +867,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <ul>
 <li>The ridge regression problem can be <span class="orange">equivalently expressed</span> in its <a href="https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions">Lagrangian form</a>, which greatly facilitates computations. The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the <span class="orange">minimizer</span> of <span class="math display">
 \sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y} - \bm{X}\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{penalty}}},
-</span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span>. Actually, it holds that <span class="math inline">s = ||\hat{\beta}_\text{ridge} ||^2</span>.</li>
+</span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>. It holds that <span class="math inline">s = ||\hat{\beta}_\text{ridge} ||^2</span>.</li>
 </ul>
 <ul>
 <li>When <span class="math inline">\lambda = 0</span> then <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}</span> whereas when <span class="math inline">\lambda \rightarrow \infty</span> we get <span class="math inline">\hat{\beta}_\text{ridge} = 0</span>.</li>
@@ -919,6 +920,41 @@ Ridge regression estimator
 </div>
 </div>
 </section>
+<section id="shrinkage-effect-of-ridge-regression-i" class="level2">
+<h2 class="anchored" data-anchor-id="shrinkage-effect-of-ridge-regression-i">Shrinkage effect of ridge regression I</h2>
+<ul>
+<li>Considering, once again, the <span class="orange">singular value decomposition</span>, we get: <span class="math display">\begin{aligned}
+\bm{X}\hat{\beta}_\text{ridge} &amp;= \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} \\
+&amp; = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}  \\
+&amp; = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y} \\
+&amp; = \bm{U}\bm{D}(\bm{D}^T\bm{D} + \lambda I_p)^{-1}\bm{D}^T\bm{U}^T\bm{y} \\
+&amp; = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y}
+\end{aligned}
+</span></li>
+</ul>
+<ul>
+<li><p>This means that ridge regression <span class="blue">shrinks</span> the <span class="blue">principal directions</span> by an amount that depends on the <span class="orange">eigenvalues</span> <span class="math inline">d_j^2</span>.</p></li>
+<li><p>In other words, it <span class="orange">smoothly reduces</span> the impact of the <span class="orange">redundant</span> information.</p></li>
+</ul>
+<ul>
+<li>A sharp <span class="blue">connection</span> with <span class="blue">principal components regression</span> is therefore revealed. Compare the above formula with <a href="#shrinkage-effect-of-principal-components-ii">the one we previously obtained</a> for <span class="math inline">\bm{X}\hat{\beta}_\text{pcr}</span>.</li>
+</ul>
+</section>
+<section id="shrinkage-effect-of-ridge-regression-ii" class="level2">
+<h2 class="anchored" data-anchor-id="shrinkage-effect-of-ridge-regression-ii">Shrinkage effect of ridge regression II</h2>
+</section>
+<section id="bias-variance-trade-off" class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-trade-off">Bias-variance trade-off</h2>
+<ul>
+<li>Theorem by Theobald</li>
+</ul>
+</section>
+<section id="the-orthogonal-case" class="level2">
+<h2 class="anchored" data-anchor-id="the-orthogonal-case">The orthogonal case</h2>
+<ul>
+<li>Orthonormal case</li>
+</ul>
+</section>
 <section id="a-historical-perspective-i" class="level2">
 <h2 class="anchored" data-anchor-id="a-historical-perspective-i">☠️ - A historical perspective I</h2>
 <div class="incremental">
@@ -947,24 +983,6 @@ Ridge regression estimator
 <li><p>This technique is known as <span class="orange">Tikhonov regularization</span>, after the Russian mathematician Andrey Tikhonov</p></li>
 </ul>
 </div>
-</section>
-<section id="shrinkage-effect-i" class="level2">
-<h2 class="anchored" data-anchor-id="shrinkage-effect-i">Shrinkage effect I</h2>
-<ul>
-<li>Use SVD</li>
-</ul>
-</section>
-<section id="bias-variance-trade-off" class="level2">
-<h2 class="anchored" data-anchor-id="bias-variance-trade-off">Bias-variance trade-off</h2>
-<ul>
-<li>Theorem by Theobald</li>
-</ul>
-</section>
-<section id="the-orthogonal-case" class="level2">
-<h2 class="anchored" data-anchor-id="the-orthogonal-case">The orthogonal case</h2>
-<ul>
-<li>Orthonormal case</li>
-</ul>
 </section>
 <section id="equivalent-degrees-of-freedom-i" class="level2">
 <h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-i">Equivalent degrees of freedom I</h2>
