@@ -858,7 +858,7 @@ S = \frac{1}{n} \bm{X}^T\bm{X}.
 <ul>
 <li class="fragment"><p>Le us assume that <span class="math inline">p &lt; n</span> and that <span class="math inline">\text{rk}(\bm{X}) = p</span>, recalling that <span class="math inline">\bm{X}</span> is a <span class="orange">centered</span> matrix.</p></li>
 <li class="fragment"><p>Using SVD, the matrix <span class="math inline">\bm{X}^T\bm{X}</span> can be expressed as <span class="math display">
-\bm{X}^T\bm{X} = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V},
+\bm{X}^T\bm{X} = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V}^T,
 </span> where <span class="math inline">\bm{\Delta}^2 = \bm{D}^T\bm{D}</span> is a <span class="math inline">p \times p</span> <span class="blue">diagonal</span> matrix with entries <span class="math inline">d_1^2,\dots,d_p^2</span>.</p></li>
 <li class="fragment"><p>This equation is at the heart of <span class="blue">principal component analysis</span> (PCA). Define the matrix <span class="math display">
 \bm{Z} = \bm{X}\bm{V} = \bm{U}\bm{D},
@@ -997,41 +997,59 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="a-regularization-method" class="slide level2 center">
 <h2>A regularization method</h2>
 <ul>
-<li><p>Ridge regression is the most common <span class="blue">shrinkage method</span>, in which the variability of the estimates is <span class="orange">bounded</span>.</p></li>
-<li><p>The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the <span class="orange">minimizer</span> of <span class="math display">
+<li>The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the most common <span class="blue">shrinkage method</span> and is the <span class="orange">minimizer</span> of <span class="math display">
 \sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
-</span></p></li>
+</span></li>
 </ul>
 <div class="fragment">
 <ul>
-<li><p>If the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is large enough, then <span class="math inline">\hat{\beta}_\text{ridge}</span> is equivalent to <span class="math inline">\hat{\beta}</span>.</p></li>
-<li><p>But when <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{ridge}</span> are explicitly <span class="blue">shrinked towards zero</span>. Note that the intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>.</p></li>
+<li><p>When <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{ridge}</span> are explicitly <span class="orange">shrinked</span>, i.e.&nbsp;biased, <span class="orange">towards zero</span>.</p></li>
+<li><p>On the other hand, if <span class="math inline">s</span> is large enough, then <span class="math inline">\hat{\beta}_\text{ridge}</span> is equivalent to <span class="math inline">\hat{\beta}</span>.</p></li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li><p>Using the same <span class="blue">mathematical trick</span> as <a href="/#centering-the-predictors-i">before</a> (see Exercises), we can <span class="orange">omit the intercept</span> term <span class="math inline">\beta_0</span> after <span class="orange">centering</span> the inputs and the response, that is <span class="math inline">\bar{y} = 0</span> and <span class="math inline">\bar{x}_{j} = 0</span>.</p></li>
-<li><p>The ridge solutions are <span class="orange">not equivariant</span> under <span class="orange">scalings of the input</span>, so one normally <span class="blue">standardizes</span> the input if they are not in the same scale.</p></li>
+<li>In ridge regression, the <span class="orange">variability</span> of the estimator is explicitly <span class="orange">bounded</span>, although this comes with some <span class="blue">bias</span>. The parameter <span class="math inline">s</span> controls the bias-variance trade-off.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Note that the intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>.</li>
+</ul>
+</div>
+</section>
+<section id="centering-and-scaling-the-predictors" class="slide level2 center">
+<h2>Centering and scaling the predictors</h2>
+<div>
+<ul>
+<li class="fragment"><p>We can use the same <span class="blue">mathematical trick</span> that we <a href="/#centering-the-predictors-i">exploited before</a> to simplify computations.</p></li>
+<li class="fragment"><p>Under centered predictors, one can show that <span class="math inline">\hat{\beta}_0 = \bar{y}</span> even in the ridge regression case. The proof is almost identical as before (see Exercises).</p></li>
+<li class="fragment"><p>Hence, we can <span class="orange">omit the intercept</span> term <span class="math inline">\beta_0</span> after <span class="orange">centering</span> the inputs and the response: <span class="math display">
+\bar{y} = 0, \qquad \bar{x}_{j} = 0, \quad j=1,\dots,p.
+</span></p></li>
+<li class="fragment"><p>The ridge solutions are <span class="orange">not equivariant</span> under <span class="orange">scalings of the input</span>, so one normally <span class="blue">standardizes</span> the input to have unit variance, if they are not in the same scale.</p></li>
+<li class="fragment"><p>Standardization is often times performed under the hood in most statistical software.</p></li>
+<li class="fragment"><p>Different R packages have <span class="blue">different defaults</span>. For instance <code>glmnet</code> also <span class="blue">standardizes the response</span> <span class="math inline">y</span> and then <span class="orange">transforms back</span> the estimated coefficients into the <span class="orange">original scale</span>.</p></li>
 </ul>
 </div>
 </section>
 <section id="lagrange-multipliers-and-ridge-solution" class="slide level2 center">
 <h2>Lagrange multipliers and ridge solution</h2>
 <ul>
-<li>An <span class="blue">equivalent formulation</span> can be obtained expressing the ridge problem in its <span class="orange">Lagrangian form</span> (<a href="https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions">Karush–Kuhn–Tucker multiplier method</a>). The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the minimizer of <span class="math display">
-\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = ||\bm{y} - \bm{X}\beta||^2 + \lambda||\beta||^2,
-</span> for some <span class="orange">complexity parameter</span> <span class="math inline">\lambda &gt; 0</span>, such that <span class="math inline">s = ||\hat{\beta}_\text{ridge} ||^2</span>.</li>
+<li>The ridge regression problem can be <span class="orange">equivalently expressed</span> in its <a href="https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions">Lagrangian form</a>, which greatly facilitates computations. The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the <span class="orange">minimizer</span> of <span class="math display">
+\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y} - \bm{X}\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{penalty}}},
+</span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span>. Actually, it holds that <span class="math inline">s = ||\hat{\beta}_\text{ridge} ||^2</span>.</li>
 </ul>
 <div class="fragment">
 <ul>
-<li>When <span class="math inline">\lambda = 0</span> and <span class="math inline">\bm{X}</span> is full rank, then <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}</span>. Conversely, when <span class="math inline">\lambda \rightarrow \infty</span> then <span class="math inline">\hat{\beta}_\text{ridge} = 0</span>.</li>
+<li>When <span class="math inline">\lambda = 0</span> then <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}</span> whereas when <span class="math inline">\lambda \rightarrow \infty</span> we get <span class="math inline">\hat{\beta}_\text{ridge} = 0</span>.</li>
 </ul>
 </div>
 <div class="fragment">
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>Theorem</strong></p>
+<p><strong>Ridge regression estimator</strong></p>
 </div>
 <div class="callout-content">
 <p>For any <span class="math inline">n\times p</span> design matrix <span class="math inline">\bm{X}</span>, not necessarily of full-rank, the ridge estimator is <span class="math display">
@@ -1062,8 +1080,34 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>The ridge path</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-20-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
-<section id="a-historical-perspective" class="slide level2 center">
-<h2>A historical perspective</h2>
+<section id="a-historical-perspective-i" class="slide level2 center">
+<h2>☠️ - A historical perspective I</h2>
+<div>
+<ul>
+<li class="fragment"><p>The ridge regression estimator was originally proposed by Hoerl and Kennard (1970) with a quite different motivation in mind.</p></li>
+<li class="fragment"><p>In linear models, the estimate of <span class="math inline">\beta</span> is obtained by solving the <span class="blue">normal equations</span> <span class="math display">
+(\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
+</span> which could be <span class="orange">ill-conditioned</span>.</p></li>
+<li class="fragment"><p>In other words, the <span class="blue">condition number</span> <span class="math display">
+\kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
+</span> might be very large, leading to <span class="orange">numerical inaccuracies</span>, since the matrix <span class="math inline">\bm{X}^T\bm{X}</span> is <span class="blue">numerically singular</span> and therefore not invertible in practice.</p></li>
+</ul>
+</div>
+</section>
+<section id="a-historical-perspective-ii" class="slide level2 center">
+<h2>☠️ - A historical perspective II</h2>
+<div>
+<ul>
+<li class="fragment"><p>Ridge provides a <span class="blue">remedy</span> for <span class="orange">ill-conditioning</span>, by adding a “ridge” to the diagonal of <span class="math inline">\bm{X}^T\bm{X}</span>, obtaining the modified normal equations <span class="math display">
+(\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
+</span></p></li>
+<li class="fragment"><p>The <span class="orange">condition number</span> of the modified <span class="math inline">(\bm{X}^T\bm{X} + \lambda I_p)</span> matrix becomes <span class="math display">
+\kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
+</span></p></li>
+<li class="fragment"><p>Notice that even if <span class="math inline">d_p = 0</span>, i.e.&nbsp;the matrix <span class="math inline">\bm{X}</span> is <span class="blue">singular</span>, then condition number will be finite as long as <span class="math inline">\lambda &gt; 0</span>.</p></li>
+<li class="fragment"><p>This technique is known as <span class="orange">Tikhonov regularization</span>, after the Russian mathematician Andrey Tikhonov</p></li>
+</ul>
+</div>
 </section>
 <section id="shrinkage-effect-i" class="slide level2 center">
 <h2>Shrinkage effect I</h2>

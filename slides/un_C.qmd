@@ -635,7 +635,7 @@ with $m =\min\{n, p\}$ and where:
 
 - Using SVD, the matrix $\bm{X}^T\bm{X}$ can be expressed as
 $$
-\bm{X}^T\bm{X} = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V},
+\bm{X}^T\bm{X} = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V}^T,
 $$
 where $\bm{\Delta}^2 = \bm{D}^T\bm{D}$ is a $p \times p$ [diagonal]{.blue} matrix with entries $d_1^2,\dots,d_p^2$.
 
@@ -862,41 +862,63 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 ## A regularization method
 
-- Ridge regression is the most common [shrinkage method]{.blue}, in which the variability of the estimates is [bounded]{.orange}.
 
-- The ridge estimator $\hat{\beta}_\text{ridge}$ is the [minimizer]{.orange} of $$
+- The ridge estimator $\hat{\beta}_\text{ridge}$ is the most common [shrinkage method]{.blue} and is the [minimizer]{.orange} of $$
 \sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
 $$
 
 . . .
 
-- If the [complexity parameter]{.blue} $s$ is large enough, then $\hat{\beta}_\text{ridge}$ is equivalent to 
- $\hat{\beta}$. 
+- When [complexity parameter]{.blue} $s$ is small, the coefficients of $\hat{\beta}_\text{ridge}$ are explicitly [shrinked]{.orange}, i.e. biased, [towards zero]{.orange}. 
 
-- But when $s$ is small, the coefficients of $\hat{\beta}_\text{ridge}$ are explicitly [shrinked towards zero]{.blue}. Note that the intercept term $\beta_0$ is [not penalized]{.orange}. 
+- On the other hand, if $s$ is large enough, then $\hat{\beta}_\text{ridge}$ is equivalent to 
+ $\hat{\beta}$. 
 
 . . .
 
-- Using the same [mathematical trick]{.blue} as [before](/#centering-the-predictors-i) (see Exercises), we can [omit the intercept]{.orange} term $\beta_0$ after [centering]{.orange} the inputs and the response, that is $\bar{y} = 0$ and $\bar{x}_{j} = 0$.
+- In ridge regression, the [variability]{.orange} of the estimator is explicitly [bounded]{.orange}, although this comes with some [bias]{.blue}. The parameter $s$ controls the bias-variance trade-off. 
 
-- The ridge solutions are [not equivariant]{.orange} under [scalings of the input]{.orange}, so one normally [standardizes]{.blue} the input if they are not in the same scale. 
+. . .
+
+- Note that the intercept term $\beta_0$ is [not penalized]{.orange}.
+
+## Centering and scaling the predictors
+
+::: incremental
+
+- We can use the same [mathematical trick]{.blue} that we [exploited before](/#centering-the-predictors-i) to simplify computations.
+
+- Under centered predictors, one can show that $\hat{\beta}_0 = \bar{y}$ even in the ridge regression case. The proof is almost identical as before (see Exercises).
+
+- Hence, we can [omit the intercept]{.orange} term $\beta_0$ after [centering]{.orange} the inputs and the response: $$
+\bar{y} = 0, \qquad \bar{x}_{j} = 0, \quad j=1,\dots,p.
+$$
+
+- The ridge solutions are [not equivariant]{.orange} under [scalings of the input]{.orange}, so one normally [standardizes]{.blue} the input to have unit variance, if they are not in the same scale.
+
+- Standardization is often times performed under the hood in most statistical software. 
+
+- Different R packages have [different defaults]{.blue}. For instance `glmnet` also [standardizes the response]{.blue} $y$ and then [transforms back]{.orange} the estimated coefficients into the [original scale]{.orange}.
+
+
+:::
 
 ## Lagrange multipliers and ridge solution
 
-- An [equivalent formulation]{.blue}  can be obtained expressing the ridge problem in its [Lagrangian form]{.orange} ([Karush–Kuhn–Tucker multiplier method](https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions)). The ridge estimator $\hat{\beta}_\text{ridge}$ is the minimizer of
+- The ridge regression problem can be [equivalently expressed]{.orange} in its [Lagrangian form](https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions), which greatly facilitates computations. The ridge estimator $\hat{\beta}_\text{ridge}$ is the [minimizer]{.orange} of
 $$
-\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = ||\bm{y} - \bm{X}\beta||^2 + \lambda||\beta||^2,
+\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y} - \bm{X}\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{penalty}}},
 $$
-for some [complexity parameter]{.orange} $\lambda > 0$, such that $s = ||\hat{\beta}_\text{ridge} ||^2$.
+where $\lambda > 0$ is a [complexity parameter]{.blue}. Actually, it holds that $s = ||\hat{\beta}_\text{ridge} ||^2$.
 
 . . .
 
-- When $\lambda = 0$ and $\bm{X}$ is full rank, then $\hat{\beta}_\text{ridge} = \hat{\beta}$. Conversely, when $\lambda \rightarrow \infty$ then $\hat{\beta}_\text{ridge} = 0$.
+- When $\lambda = 0$ then $\hat{\beta}_\text{ridge} = \hat{\beta}$ whereas when $\lambda \rightarrow \infty$ we get $\hat{\beta}_\text{ridge} = 0$.
 
 . . .
 
 ::: callout-note
-#### Theorem
+#### Ridge regression estimator
 
 For any $n\times p$ design matrix $\bm{X}$, not necessarily of full-rank, the ridge estimator is 
 $$
@@ -1000,7 +1022,42 @@ ggplot(data = data_ridge, aes(x = lambda, y = value, col = Covariate)) +
   ylab("Regression coefficients")
 ```
 
-## A historical perspective
+## ☠️ - A historical perspective I
+
+::: incremental
+
+- The ridge regression estimator was originally proposed by Hoerl and Kennard (1970) with a quite different motivation in mind.
+
+- In linear models, the estimate of $\beta$ is obtained by solving the [normal equations]{.blue} $$
+(\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
+$$
+which could be [ill-conditioned]{.orange}.
+
+- In other words, the [condition number]{.blue}
+$$
+\kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
+$$
+might be very large, leading to [numerical inaccuracies]{.orange}, since the matrix $\bm{X}^T\bm{X}$ is [numerically singular]{.blue} and therefore not invertible in practice.
+
+:::
+
+## ☠️ - A historical perspective II
+
+::: incremental
+- Ridge provides a [remedy]{.blue} for [ill-conditioning]{.orange}, by adding a "ridge" to the diagonal of $\bm{X}^T\bm{X}$, obtaining the modified normal equations
+$$
+(\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
+$$
+
+- The [condition number]{.orange} of the modified $(\bm{X}^T\bm{X} + \lambda I_p)$ matrix becomes
+$$
+\kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
+$$
+- Notice that even if $d_p = 0$, i.e. the matrix $\bm{X}$ is [singular]{.blue}, then condition number will be finite as long as $\lambda > 0$. 
+
+- This technique is known as [Tikhonov regularization]{.orange}, after the Russian mathematician Andrey Tikhonov
+
+:::
 
 ## Shrinkage effect I
 
