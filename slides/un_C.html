@@ -67,6 +67,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-prostate-dataset" id="toc-the-prostate-dataset" class="nav-link" data-scroll-target="#the-prostate-dataset">The <code>prostate</code> dataset</a></li>
   <li><a href="#a-glimpse-of-the-prostate-dataset" id="toc-a-glimpse-of-the-prostate-dataset" class="nav-link" data-scroll-target="#a-glimpse-of-the-prostate-dataset">A <code>glimpse</code> of the <code>prostate</code> dataset</a></li>
   <li><a href="#correlation-matrix-of-prostate" id="toc-correlation-matrix-of-prostate" class="nav-link" data-scroll-target="#correlation-matrix-of-prostate">Correlation matrix of <code>prostate</code></a></li>
+  <li><a href="#the-regression-framework" id="toc-the-regression-framework" class="nav-link" data-scroll-target="#the-regression-framework">The regression framework</a></li>
   <li><a href="#the-variable-selection-problem" id="toc-the-variable-selection-problem" class="nav-link" data-scroll-target="#the-variable-selection-problem">The variable selection problem</a></li>
   <li><a href="#a-naïve-approach-abusing-p-values" id="toc-a-naïve-approach-abusing-p-values" class="nav-link" data-scroll-target="#a-naïve-approach-abusing-p-values">A naïve approach: (ab)using p-values</a></li>
   <li><a href="#to-explain-or-to-predict" id="toc-to-explain-or-to-predict" class="nav-link" data-scroll-target="#to-explain-or-to-predict">To explain or to predict?</a></li>
@@ -111,12 +112,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
   <li><a href="#a-historical-perspective-i" id="toc-a-historical-perspective-i" class="nav-link" data-scroll-target="#a-historical-perspective-i">☠️ - A historical perspective I</a></li>
   <li><a href="#a-historical-perspective-ii" id="toc-a-historical-perspective-ii" class="nav-link" data-scroll-target="#a-historical-perspective-ii">☠️ - A historical perspective II</a></li>
-  <li><a href="#selection-of-lambda" id="toc-selection-of-lambda" class="nav-link" data-scroll-target="#selection-of-lambda">Selection of <span class="math inline">\lambda</span></a></li>
-  <li><a href="#equivalent-degrees-of-freedom-i" id="toc-equivalent-degrees-of-freedom-i" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-i">Equivalent degrees of freedom I</a></li>
-  <li><a href="#equivalent-degrees-of-freedom-ii" id="toc-equivalent-degrees-of-freedom-ii" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-ii">Equivalent degrees of freedom II</a></li>
-  <li><a href="#equivalent-degrees-of-freedom-iii" id="toc-equivalent-degrees-of-freedom-iii" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-iii">Equivalent degrees of freedom III</a></li>
-  <li><a href="#equivalent-degrees-of-freedom-iv" id="toc-equivalent-degrees-of-freedom-iv" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-iv">Equivalent degrees of freedom IV</a></li>
-  <li><a href="#equivalent-degrees-of-freedom-of-best-subset" id="toc-equivalent-degrees-of-freedom-of-best-subset" class="nav-link" data-scroll-target="#equivalent-degrees-of-freedom-of-best-subset">☠️ - Equivalent degrees of freedom of best subset</a></li>
+  <li><a href="#on-the-choice-of-lambda" id="toc-on-the-choice-of-lambda" class="nav-link" data-scroll-target="#on-the-choice-of-lambda">On the choice of <span class="math inline">\lambda</span></a></li>
+  <li><a href="#effective-degrees-of-freedom-i" id="toc-effective-degrees-of-freedom-i" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-i">Effective degrees of freedom I</a></li>
+  <li><a href="#effective-degrees-of-freedom-ii" id="toc-effective-degrees-of-freedom-ii" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-ii">Effective degrees of freedom II</a></li>
+  <li><a href="#effective-degrees-of-freedom-iii" id="toc-effective-degrees-of-freedom-iii" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-iii">Effective degrees of freedom III</a></li>
+  <li><a href="#effective-degrees-of-freedom-iv" id="toc-effective-degrees-of-freedom-iv" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-iv">Effective degrees of freedom IV</a></li>
+  <li><a href="#effective-degrees-of-freedom-of-best-subset" id="toc-effective-degrees-of-freedom-of-best-subset" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-of-best-subset">☠️ - Effective degrees of freedom of best subset</a></li>
   <li><a href="#cross-validation-for-ridge-regression-i" id="toc-cross-validation-for-ridge-regression-i" class="nav-link" data-scroll-target="#cross-validation-for-ridge-regression-i">Cross-validation for ridge regression I</a></li>
   <li><a href="#cross-validation-for-ridge-regression-ii" id="toc-cross-validation-for-ridge-regression-ii" class="nav-link" data-scroll-target="#cross-validation-for-ridge-regression-ii">Cross-validation for ridge regression II</a></li>
   <li><a href="#leave-one-out-cross-validation-for-ridge-i" id="toc-leave-one-out-cross-validation-for-ridge-i" class="nav-link" data-scroll-target="#leave-one-out-cross-validation-for-ridge-i">Leave-one-out cross-validation for ridge I</a></li>
@@ -277,15 +278,24 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </div>
 </div>
 </section>
+<section id="the-regression-framework" class="level2">
+<h2 class="anchored" data-anchor-id="the-regression-framework">The regression framework</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Recall here some basic quantities</p></li>
+<li><p>We consider a <span class="orange">linear model</span> in which the relationship between the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) and the covariates is modelled through the function<span class="math display">
+  f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
+  </span></p></li>
+<li><p>In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A.html">Unit A</a>.</p></li>
+</ul>
+</div>
+</section>
 <section id="the-variable-selection-problem" class="level2">
 <h2 class="anchored" data-anchor-id="the-variable-selection-problem">The variable selection problem</h2>
 <ul>
-<li>We consider a <span class="orange">linear model</span> in which the relationship between the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) and the covariates is modelled through the function<span class="math display">
-  f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
-  </span> In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A.html">Unit A</a>.</li>
+<li>Including a lot of covariates into the model is not necessarily a good thing!</li>
 </ul>
 <ul>
-<li><p>Including a lot of covariates into the model is not necessarily a good thing!</p></li>
 <li><p>Indeed, some variables are likely to be <span class="blue">irrelevant</span>:</p>
 <ul>
 <li>they might be <span class="orange">correlated</span> with other covariates and therefore <span class="orange">redundant</span>;</li>
@@ -407,8 +417,9 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <li>Hence, often times we may <span class="blue">accept some bias</span> (i.e.&nbsp;we use a “wrong” but useful model), if this leads to a <span class="orange">reduction in variance</span>.</li>
 </ul>
 <ul>
-<li><p>Besides, in certain cases it does not even make much sense to speak about the “true parameters”.</p></li>
-<li><p>For example, what if the true <span class="math inline">f(\bm{x})</span> were not linear? In this context, a <span class="blue">linear model</span> is simply an approximation of the unknown <span class="math inline">f(\bm{x})</span> and hypothesis testing procedures are ill-posed.</p></li>
+<li><p>Besides, in certain cases it does not make much sense to speak about the “true parameters”.</p></li>
+<li><p>For example, what if the true <span class="math inline">f(\bm{x})</span> were not linear?</p></li>
+<li><p>In this context, a <span class="blue">linear model</span> is simply an approximation of the unknown <span class="math inline">f(\bm{x})</span> and hypothesis testing procedures are ill-posed.</p></li>
 </ul>
 </section>
 <section id="best-subset-selection" class="level1">
@@ -939,9 +950,9 @@ Ridge regression estimator
 &amp; = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}  \\
 &amp; = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y} \\
 &amp; = \bm{U}\bm{D}(\bm{D}^T\bm{D} + \lambda I_p)^{-1}\bm{D}^T\bm{U}^T\bm{y} \\
-&amp; = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y}
+&amp; = \bm{H}_\text{ridge}\bm{y} = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y},
 \end{aligned}
-</span></li>
+</span> where <span class="math inline">\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T</span> is the so-called <span class="blue">hat matrix</span> of ridge regression.</li>
 </ul>
 <ul>
 <li><p>This means that ridge regression <span class="blue">shrinks</span> the <span class="blue">principal directions</span> by an amount that depends on the <span class="orange">eigenvalues</span> <span class="math inline">d_j^2</span>.</p></li>
@@ -1020,32 +1031,88 @@ Theorem (Theobald, 1974)
 </ul>
 </div>
 </section>
-<section id="selection-of-lambda" class="level2">
-<h2 class="anchored" data-anchor-id="selection-of-lambda">Selection of <span class="math inline">\lambda</span></h2>
+<section id="on-the-choice-of-lambda" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-choice-of-lambda">On the choice of <span class="math inline">\lambda</span></h2>
+<ul>
+<li><p>The <span class="orange">penalty parameter</span> <span class="math inline">\lambda</span> determines the amount of bias and variance of <span class="math inline">\hat{\beta}_\text{ridge}</span>.</p></li>
+<li><p>How do we <span class="blue">estimate</span> <span class="math inline">\lambda</span>? What about selecting <span class="math inline">\lambda</span> so that <span class="math inline">||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2</span> is <span class="blue">minimal</span>?</p></li>
+</ul>
+<ul>
+<li><p>Minimizing <span class="math inline">||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2</span> over <span class="math inline">\lambda</span>, as suggested in the above bullet point, is a <span class="orange">very bad idea</span>. It would always choose <span class="math inline">\lambda =0</span>!</p></li>
+<li><p><span class="math inline">\lambda</span> is a <span class="blue">complexity</span> parameter and, like the number of covariates, should be selected using <span class="orange">information criteria</span> or training/test and <span class="orange">cross-validation</span>.</p></li>
+</ul>
+<ul>
+<li><p>Suppose we wish to use an <span class="blue">information criteria</span> such as the AIC or BIC, of the form <span class="math display">
+  \text{IC}(p) = -2 \ell(\hat{\beta}_\text{ridge}) + \text{penalty}(\text{``degrees of freedom"}).
+  </span> However, what do we mean with the <span class="blue">degrees of freedom</span> in this context?</p></li>
+<li><p>The current definition of degrees of freedom, i.e.&nbsp;the number of <span class="orange">non-zero coefficients</span>, is <span class="orange">not appropriate</span> for ridge regression, because it would be equal to <span class="math inline">p</span> for any value of <span class="math inline">\lambda</span>.</p></li>
+</ul>
 </section>
-<section id="equivalent-degrees-of-freedom-i" class="level2">
-<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-i">Equivalent degrees of freedom I</h2>
+<section id="effective-degrees-of-freedom-i" class="level2">
+<h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-i">Effective degrees of freedom I</h2>
+<ul>
+<li>Let us recall that the <span class="orange">optimism</span> for a generic estimator <span class="math inline">\hat{f}(\bm{x})</span> is defined as the following average of covariances <span class="math display">
+\text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) \quad  \Longrightarrow \quad \text{Opt}_\text{ols} = \frac{2\sigma^2p}{n}.
+</span></li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Effective degrees of freedom
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\hat{f}(\bm{x})</span> be an estimate for the regression function <span class="math inline">f(\bm{x})</span> based on the data <span class="math inline">Y_1,\dots,Y_n</span>. The <span class="orange">effective degrees of freedom</span> are defined as <span class="math display">
+\text{df} = \frac{1}{\sigma^2}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)).
+</span></p>
+</div>
+</div>
 </section>
-<section id="equivalent-degrees-of-freedom-ii" class="level2">
-<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-ii">Equivalent degrees of freedom II</h2>
+<section id="effective-degrees-of-freedom-ii" class="level2">
+<h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-ii">Effective degrees of freedom II</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The effective degrees of freedom of <span class="blue">ordinary least squares</span> and <span class="blue">principal component regression</span> are <span class="math display">
+\text{df}_\text{ols} = p, \qquad \text{df}_\text{pcr} = k.
+</span></p></li>
+<li><p>After some algebra, one finds that the effective degrees of freedom of <span class="orange">ridge regression</span> are <span class="math display">
+\text{df}_\text{ridge} = \text{tr}(\bm{H}_\text{ridge}) = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda},
+</span> where <span class="math inline">\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T</span> is the <span class="orange">hat matrix</span> of ridge regression.</p></li>
+<li><p>Hence, we can <span class="orange">plug-in</span> <span class="math inline">\text{df}_\text{ridge}</span> e.g.&nbsp;into the formula of the <span class="blue"><span class="math inline">C_p</span> of Mallows</span>, obtaining <span class="math display">
+  C_p = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
+  </span> where the residual variance is estimated as <span class="math inline">\hat{\sigma}^2 = (n - \text{df}_\text{ridge})^{-1} \sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2</span>.</p></li>
+</ul>
+</div>
 </section>
-<section id="equivalent-degrees-of-freedom-iii" class="level2">
-<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-iii">Equivalent degrees of freedom III</h2>
-</section>
-<section id="equivalent-degrees-of-freedom-iv" class="level2">
-<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-iv">Equivalent degrees of freedom IV</h2>
+<section id="effective-degrees-of-freedom-iii" class="level2">
+<h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-iii">Effective degrees of freedom III</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_C_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="1350"></p>
+<p><img src="un_C_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="1200"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="equivalent-degrees-of-freedom-of-best-subset" class="level2">
-<h2 class="anchored" data-anchor-id="equivalent-degrees-of-freedom-of-best-subset">☠️ - Equivalent degrees of freedom of best subset</h2>
+<section id="effective-degrees-of-freedom-iv" class="level2">
+<h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-iv">Effective degrees of freedom IV</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_C_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="1350"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="effective-degrees-of-freedom-of-best-subset" class="level2">
+<h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-of-best-subset">☠️ - Effective degrees of freedom of best subset</h2>
 </section>
 <section id="cross-validation-for-ridge-regression-i" class="level2">
 <h2 class="anchored" data-anchor-id="cross-validation-for-ridge-regression-i">Cross-validation for ridge regression I</h2>
@@ -1060,7 +1127,7 @@ Theorem (Theobald, 1974)
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_C_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="1500"></p>
+<p><img src="un_C_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid figure-img" width="1500"></p>
 </figure>
 </div>
 </div>

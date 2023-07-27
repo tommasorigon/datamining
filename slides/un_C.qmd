@@ -170,20 +170,29 @@ ggcorrplot(corr,
 )
 ```
 
-## The variable selection problem
+## The regression framework
+
+::: incremental
+
+- Recall here some basic quantities
+
 
 -   We consider a [linear model]{.orange} in which the relationship between the response variable
     $Y_i$ (`lpsa`) and the covariates is modelled through the function$$
       f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
-      $$ In this unit the [intercept]{.blue} $\beta_0$ will play a
-    special role, therefore we use this slightly different notation
-    compared to [Unit A](unit_A.html).
+      $$ 
+      
+- In this unit the [intercept]{.blue} $\beta_0$ will play a special role, therefore we use this slightly different notation compared to [Unit A](unit_A.html).
 
-. . .
+:::
+
+## The variable selection problem
 
 - Including a lot of covariates into the model is not necessarily a good thing!
 
--   Indeed, some variables are likely to be [irrelevant]{.blue}:
+. . .
+
+- Indeed, some variables are likely to be [irrelevant]{.blue}:
 
     -   they might be [correlated]{.orange} with other covariates and
         therefore [redundant]{.orange};
@@ -250,11 +259,11 @@ knitr::kable(tab, digits = 2)
 
 . . .
 
--   Besides, in certain cases it does not even make much sense to speak
-    about the "true parameters".
+- Besides, in certain cases it does not make much sense to speak about the "true parameters".
 
--   For example, what if the true $f(\bm{x})$ were not linear? In this
-    context, a [linear model]{.blue} is simply an approximation of the
+- For example, what if the true $f(\bm{x})$ were not linear? 
+
+- In this context, a [linear model]{.blue} is simply an approximation of the
     unknown $f(\bm{x})$ and hypothesis testing procedures are ill-posed.
 
 # Best subset selection
@@ -1001,10 +1010,16 @@ df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda")
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
-lambda_seq <- exp(seq(from = -1, to = 9, length = 50))
+lambda_seq <- exp(seq(from = 0, to = 8, length = 50))
 data_ridge <- cbind(lambda_seq, matrix(0, length(lambda_seq), p))
+
+mse_ridge  <- data.frame(lambda_seq, Cp = NA, mse = NA, df = 1 + df_ridge(lambda_seq, X, standardize = FALSE), sigma2 = NA) 
+
 for(i in 1:length(lambda_seq)){
-  data_ridge[i, -1] <- my_ridge(X, y, lambda = lambda_seq[i])[-1]
+  data_ridge[i, -1] <- my_ridge(X, y, lambda = lambda_seq[i], standardize = FALSE)[-1]
+  mse_ridge$mse[i] <-  mean((y - mean(y) -  X %*% data_ridge[i, -1])^2)
+  mse_ridge$sigma2[i] <- mse_ridge$mse[i] * n / (n - mse_ridge$df[i])
+  mse_ridge$Cp[i] <- mse_ridge$mse[i] + 2 * mse_ridge$sigma2[i] / n * mse_ridge$df[i]
 }
 
 colnames(data_ridge)[-1] <- colnames(X)
@@ -1034,9 +1049,10 @@ ggplot(data = data_ridge, aes(x = lambda, y = value, col = Covariate)) +
 & = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}  \\
 & = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y} \\
 & = \bm{U}\bm{D}(\bm{D}^T\bm{D} + \lambda I_p)^{-1}\bm{D}^T\bm{U}^T\bm{y} \\
-& = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y}
+& = \bm{H}_\text{ridge}\bm{y} = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y},
 \end{aligned}
 $$
+where $\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T$ is the so-called [hat matrix]{.blue} of ridge regression.
 
 . . .
 
@@ -1124,8 +1140,6 @@ $$
 
 ## On the choice of $\lambda$
 
-
-
 - The [penalty parameter]{.orange} $\lambda$ determines the amount of bias and variance of  $\hat{\beta}_\text{ridge}$.
 
 - How do we [estimate]{.blue} $\lambda$? What about selecting $\lambda$ so that $||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2$ is [minimal]{.blue}?
@@ -1145,29 +1159,86 @@ However, what do we mean with the [degrees of freedom]{.blue} in this context?
 
 - The current definition of degrees of freedom, i.e. the number of [non-zero coefficients]{.orange}, is [not appropriate]{.orange} for ridge regression, because it would be equal to $p$ for any value of $\lambda$. 
 
-## Equivalent degrees of freedom I
+## Effective degrees of freedom I
 
-## Equivalent degrees of freedom II
+- Let us recall that the [optimism]{.orange} for a generic estimator $\hat{f}(\bm{x})$ is defined as the following average of covariances
+$$
+\text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) \quad  \Longrightarrow \quad \text{Opt}_\text{ols} = \frac{2\sigma^2p}{n}.
+$$
 
-## Equivalent degrees of freedom III
+::: callout-note
+#### Effective degrees of freedom
 
-## Equivalent degrees of freedom IV
+Let $\hat{f}(\bm{x})$ be an estimate for the regression function $f(\bm{x})$ based on the data $Y_1,\dots,Y_n$. The [effective degrees of freedom]{.orange} are defined as $$
+\text{df} = \frac{1}{\sigma^2}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)).
+$$
+
+:::
+
+
+
+## Effective degrees of freedom II
+
+::: incremental
+
+- The effective degrees of freedom of [ordinary least squares]{.blue} and [principal component regression]{.blue} are
+$$
+\text{df}_\text{ols} = p, \qquad \text{df}_\text{pcr} = k.
+$$
+
+- After some algebra, one finds that the effective degrees of freedom of [ridge regression]{.orange} are
+$$
+\text{df}_\text{ridge} = \text{tr}(\bm{H}_\text{ridge}) = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda},
+$$
+where $\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T$ is the [hat matrix]{.orange} of ridge regression.
+
+- Hence, we can [plug-in]{.orange} $\text{df}_\text{ridge}$ e.g. into the formula of the [$C_p$ of Mallows]{.blue}, obtaining $$
+    C_p = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
+    $$
+where the residual variance is estimated as $\hat{\sigma}^2 = (n - \text{df}_\text{ridge})^{-1} \sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2$.
+
+:::
+
+## Effective degrees of freedom III
+
+```{r}
+#| fig-width: 8
+#| fig-height: 4.5
+#| fig-align: center
+df_min <- mse_ridge$df[which.min(mse_ridge$Cp)]
+lambda_min <- mse_ridge$lambda_seq[which.min(mse_ridge$Cp)]
+
+ggplot(data = mse_ridge, aes(x = df, y = Cp)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = df_min, linetype = "dotted") +
+  theme_light() +
+  scale_x_continuous(breaks = 1:9) +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Effective degrees of freedom") +
+  ylab(expression(C[p])) #+ ylim(c(9e-05, 6e-4))
+```
+
+## Effective degrees of freedom IV
 
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
-ggplot(data = data_ridge, aes(x = df_ridge(lambda, X), y = value, col = Covariate)) +
+ggplot(data = data_ridge, aes(x = 1 + df_ridge(lambda, X), y = value, col = Covariate)) +
   geom_point() +
   geom_line() +
   theme_light() +
+  geom_vline(xintercept = df_min, linetype = "dotted") +
+  scale_x_continuous(breaks = 1:9) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
-  xlab("Equivalent degrees of freedom") +
+  xlab("Effective degrees of freedom") +
   ylab("Regression coefficients")
 ```
 
-## ☠️ - Equivalent degrees of freedom of best subset
+## ☠️ - Effective degrees of freedom of best subset
 
 ## Cross-validation for ridge regression I
 
@@ -1209,21 +1280,24 @@ for (k in 1:10) {
 
 data_cv <- data.frame(
   lambda = lambda_seq,
+  df = 1 + df_ridge(lambda_seq, X, standardize = FALSE),
   MSE = apply(resid_ridge^2, 2, mean),
   SE = apply(resid_ridge^2, 2, function(x) sd(x) / sqrt(n))
 )
 
 se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)]
 lambda_optimal <- lambda_seq[tail(which(data_cv$MSE < se_rule), 1)]
+df_optimal <- data_cv$df[tail(which(data_cv$MSE < se_rule), 1)]
 
-ggplot(data = data_cv, aes(x = lambda, y = MSE)) +
+
+ggplot(data = data_cv, aes(x = df, y = MSE)) +
   geom_point() +
   geom_line() +
   geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) +
+  scale_x_continuous(breaks = 1:9) +
   geom_hline(yintercept = se_rule, linetype = "dotted") +
-  geom_vline(xintercept = lambda_optimal, linetype = "dotted") +
+  geom_vline(xintercept = df_optimal, linetype = "dotted") +
   theme_light() +
-  scale_x_log10() +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
   xlab(expression(lambda)) +

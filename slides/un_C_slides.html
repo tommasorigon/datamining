@@ -461,16 +461,25 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <h2>Correlation matrix of <code>prostate</code></h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-4-1.png" width="2250" class="r-stretch quarto-figure-center"></section>
+<section id="the-regression-framework" class="slide level2 center">
+<h2>The regression framework</h2>
+<div>
+<ul>
+<li class="fragment"><p>Recall here some basic quantities</p></li>
+<li class="fragment"><p>We consider a <span class="orange">linear model</span> in which the relationship between the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) and the covariates is modelled through the function<span class="math display">
+  f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
+  </span></p></li>
+<li class="fragment"><p>In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A.html">Unit A</a>.</p></li>
+</ul>
+</div>
+</section>
 <section id="the-variable-selection-problem" class="slide level2 center">
 <h2>The variable selection problem</h2>
 <ul>
-<li>We consider a <span class="orange">linear model</span> in which the relationship between the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) and the covariates is modelled through the function<span class="math display">
-  f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
-  </span> In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A.html">Unit A</a>.</li>
+<li>Including a lot of covariates into the model is not necessarily a good thing!</li>
 </ul>
 <div class="fragment">
 <ul>
-<li><p>Including a lot of covariates into the model is not necessarily a good thing!</p></li>
 <li><p>Indeed, some variables are likely to be <span class="blue">irrelevant</span>:</p>
 <ul>
 <li>they might be <span class="orange">correlated</span> with other covariates and therefore <span class="orange">redundant</span>;</li>
@@ -600,8 +609,9 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </div>
 <div class="fragment">
 <ul>
-<li><p>Besides, in certain cases it does not even make much sense to speak about the “true parameters”.</p></li>
-<li><p>For example, what if the true <span class="math inline">f(\bm{x})</span> were not linear? In this context, a <span class="blue">linear model</span> is simply an approximation of the unknown <span class="math inline">f(\bm{x})</span> and hypothesis testing procedures are ill-posed.</p></li>
+<li><p>Besides, in certain cases it does not make much sense to speak about the “true parameters”.</p></li>
+<li><p>For example, what if the true <span class="math inline">f(\bm{x})</span> were not linear?</p></li>
+<li><p>In this context, a <span class="blue">linear model</span> is simply an approximation of the unknown <span class="math inline">f(\bm{x})</span> and hypothesis testing procedures are ill-posed.</p></li>
 </ul>
 </div>
 </section>
@@ -1094,9 +1104,9 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 &amp; = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}  \\
 &amp; = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y} \\
 &amp; = \bm{U}\bm{D}(\bm{D}^T\bm{D} + \lambda I_p)^{-1}\bm{D}^T\bm{U}^T\bm{y} \\
-&amp; = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y}
+&amp; = \bm{H}_\text{ridge}\bm{y} = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y},
 \end{aligned}
-</span></li>
+</span> where <span class="math inline">\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T</span> is the so-called <span class="blue">hat matrix</span> of ridge regression.</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -1199,25 +1209,56 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li><p>Suppose we wish to use an <span class="blue">information criteria</span> such as the AIC or BIC, of the form <span class="math display">
   \text{IC}(p) = -2 \ell(\hat{\beta}_\text{ridge}) + \text{penalty}(\text{``degrees of freedom"}).
   </span> However, what do we mean with the <span class="blue">degrees of freedom</span> in this context?</p></li>
-<li><p>The current definition of degrees of freedom, e.g.&nbsp;the number of <span class="orange">non-zero coefficients</span>, is <span class="orange">not appropriate</span> for ridge regression, because it would be equal to <span class="math inline">p</span> for any value of <span class="math inline">\lambda</span>.</p></li>
+<li><p>The current definition of degrees of freedom, i.e.&nbsp;the number of <span class="orange">non-zero coefficients</span>, is <span class="orange">not appropriate</span> for ridge regression, because it would be equal to <span class="math inline">p</span> for any value of <span class="math inline">\lambda</span>.</p></li>
 </ul>
 </div>
 </section>
-<section id="equivalent-degrees-of-freedom-i" class="slide level2 center">
-<h2>Equivalent degrees of freedom I</h2>
+<section id="effective-degrees-of-freedom-i" class="slide level2 center">
+<h2>Effective degrees of freedom I</h2>
+<ul>
+<li>Let us recall that the <span class="orange">optimism</span> for a generic estimator <span class="math inline">\hat{f}(\bm{x})</span> is defined as the following average of covariances <span class="math display">
+\text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) \quad  \Longrightarrow \quad \text{Opt}_\text{ols} = \frac{2\sigma^2p}{n}.
+</span></li>
+</ul>
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Effective degrees of freedom</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\hat{f}(\bm{x})</span> be an estimate for the regression function <span class="math inline">f(\bm{x})</span> based on the data <span class="math inline">Y_1,\dots,Y_n</span>. The <span class="orange">effective degrees of freedom</span> are defined as <span class="math display">
+\text{df} = \frac{1}{\sigma^2}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)).
+</span></p>
+</div>
+</div>
+</div>
 </section>
-<section id="equivalent-degrees-of-freedom-ii" class="slide level2 center">
-<h2>Equivalent degrees of freedom II</h2>
+<section id="effective-degrees-of-freedom-ii" class="slide level2 center">
+<h2>Effective degrees of freedom II</h2>
+<div>
+<ul>
+<li class="fragment"><p>The effective degrees of freedom of <span class="blue">ordinary least squares</span> and <span class="blue">principal component regression</span> are <span class="math display">
+\text{df}_\text{ols} = p, \qquad \text{df}_\text{pcr} = k.
+</span></p></li>
+<li class="fragment"><p>After some algebra, one finds that the effective degrees of freedom of <span class="orange">ridge regression</span> are <span class="math display">
+\text{df}_\text{ridge} = \text{tr}(\bm{H}_\text{ridge}) = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda},
+</span> where <span class="math inline">\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T</span> is the <span class="orange">hat matrix</span> of ridge regression.</p></li>
+<li class="fragment"><p>Hence, we can <span class="orange">plug-in</span> <span class="math inline">\text{df}_\text{ridge}</span> e.g.&nbsp;into the formula of the <span class="blue"><span class="math inline">C_p</span> of Mallows</span>, obtaining <span class="math display">
+  C_p = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
+  </span> where the residual variance is estimated as <span class="math inline">\hat{\sigma}^2 = (n - \text{df}_\text{ridge})^{-1} \sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2</span>.</p></li>
+</ul>
+</div>
 </section>
-<section id="equivalent-degrees-of-freedom-iii" class="slide level2 center">
-<h2>Equivalent degrees of freedom III</h2>
-</section>
-<section id="equivalent-degrees-of-freedom-iv" class="slide level2 center">
-<h2>Equivalent degrees of freedom IV</h2>
+<section id="effective-degrees-of-freedom-iii" class="slide level2 center">
+<h2>Effective degrees of freedom III</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-21-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
-<section id="equivalent-degrees-of-freedom-of-best-subset" class="slide level2 center">
-<h2>☠️ - Equivalent degrees of freedom of best subset</h2>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-21-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
+<section id="effective-degrees-of-freedom-iv" class="slide level2 center">
+<h2>Effective degrees of freedom IV</h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-22-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
+<section id="effective-degrees-of-freedom-of-best-subset" class="slide level2 center">
+<h2>☠️ - Effective degrees of freedom of best subset</h2>
 </section>
 <section id="cross-validation-for-ridge-regression-i" class="slide level2 center">
 <h2>Cross-validation for ridge regression I</h2>
@@ -1229,7 +1270,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="cross-validation-for-ridge-regression-ii" class="slide level2 center">
 <h2>Cross-validation for ridge regression II</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-23-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-24-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
 <section id="leave-one-out-cross-validation-for-ridge-i" class="slide level2 center">
 <h2>Leave-one-out cross-validation for ridge I</h2>
 </section>
