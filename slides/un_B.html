@@ -210,8 +210,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Optimism</li>
 </ul></li>
 <li><p>You may have seen these notions before…</p></li>
-<li><p>…but it is worth discussing the <span class="orange">details</span> of these ideas once again, with the maturity you now have in an M.Sc.</p></li>
-<li><p>They are the <span class="blue">foundations</span> of <span class="orange">statistical learning</span>.</p></li>
+<li><p>…but it is worth discussing the <span class="orange">details</span> of these ideas once again.</p></li>
+<li><p>They are indeed the <span class="blue">foundations</span> of <span class="orange">statistical learning</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -382,7 +382,7 @@ x3                0  0  0  1</code></pre>
 </div>
 </div>
 <ul>
-<li>Polynomial regression becomes numerically unstable when <span class="math inline">p \ge 13</span> (<code>raw = TRUE</code>, i.e., using the original polynomials) and <span class="math inline">p \ge 25</span> (<code>raw = FALSE</code>, i.e., using orthogonal polynomials).</li>
+<li>Polynomial regression becomes numerically unstable when <span class="math inline">p \ge 13</span> (<code>raw = TRUE</code>, original polynomials) and <span class="math inline">p \ge 25</span> (<code>raw = FALSE</code>, orthogonal polynomials).</li>
 </ul>
 </section>
 <section id="lagrange-interpolating-polynomials" class="level2">
@@ -538,14 +538,14 @@ Bias-variance decomposition
 <ul class="incremental">
 <li><p>In <span class="blue">regression problems</span> the <span class="orange">in-sample prediction error</span> under <span class="blue">squared loss</span> is <span class="math display">
 \begin{aligned}
-\text{ErrF} = \sigma^2 + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
+\text{ErrF} = \sigma^2 + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\hat{f}(\bm{x}_i) - f(\bm{x}_i)\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
 \end{aligned}
 </span></p></li>
 <li><p>In <span class="blue">ordinary least squares</span> the above quantity can be computed in closed form, since each element of the <span class="orange">bias</span> term equals <span class="math display">
-\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}\right] = \bm{x}_i^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_i).
-</span> where <span class="math inline">\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T</span>. Note that if <span class="math inline">f(\bm{x}) = \bm{x}^T\beta</span>, then the bias is zero.</p></li>
+\mathbb{E}\left[f(\bm{x}_i; \hat{\beta}) - f(\bm{x}_i)\right] = \bm{x}_i^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_i).
+</span> where <span class="math inline">\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T</span>. Note that <span class="orange">if</span> <span class="math inline">f(\bm{x}) = \bm{x}^T\beta</span>, then the bias is zero.</p></li>
 <li><p>Moreover, in <span class="blue">ordinary least squares</span> the <span class="orange">variance</span> term equals <span class="math display">
-\frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\} = \frac{\sigma^2}{n}\sum_{i=1}^n  \bm{x}_i^T (\bm{X}^T\bm{X})^{-1}\bm{x}_i = \frac{\sigma^2}{n}\text{tr}\{(\bm{X}^T\bm{X})(\bm{X}^T\bm{X})^{-1}\} = \sigma^2 \frac{p}{n}.
+\frac{1}{n}\sum_{i=1}^n\text{var}\{f(\bm{x}_i; \hat{\beta})\} = \frac{\sigma^2}{n}\sum_{i=1}^n  \bm{x}_i^T (\bm{X}^T\bm{X})^{-1}\bm{x}_i = \frac{\sigma^2}{n}\text{tr}\{(\bm{X}^T\bm{X})(\bm{X}^T\bm{X})^{-1}\} = \sigma^2 \frac{p}{n}.
 </span></p></li>
 </ul>
 </div>
@@ -622,13 +622,13 @@ Bias-variance decomposition
 <div class="incremental">
 <ul class="incremental">
 <li><p>It can be proved (see Exercises) that the <span class="orange">optimism</span> has a very simple form: <span class="math display">
-\text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \hat{\bm{f}})\}.
+\text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i))
 </span></p></li>
-<li><p>If the predicted values are obtained using <span class="blue">ordinary least squares</span>, then <span class="math inline">\hat{\bm{f}} = \bm{H}\bm{Y}</span>, therefore <span class="math display">
-\text{Opt}_\text{ols} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{H}\bm{Y})\} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{Y}) \bm{H}^T\} = \frac{2 \sigma^2}{n}\text{tr} \{\bm{H}\} = \frac{2 \sigma^2 p}{n}.
+<li><p>If <span class="blue">ordinary least squares</span> are employed, then the predictions are <span class="math inline">\bm{H}\bm{Y}</span>, therefore <span class="math display">
+\text{Opt}_\text{ols} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{H}\bm{Y})\} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{Y}) \bm{H}^T\} = \frac{2 \sigma^2}{n}\text{tr} (\bm{H}) = \frac{2 \sigma^2 p}{n}.
 </span></p></li>
 <li><p>This leads to an estimate for the in-sample prediction error, known as <span class="blue"><span class="math inline">C_p</span> of Mallows</span>: <span class="math display">
-\widehat{\mathrm{ErrF}} = \text{MSE}_\text{train} + \text{Opt}_\text{ols} = \frac{1}{n}\sum_{i=1}^n\{y_i - \hat{f}(\bm{x}_i)\}^2 + \frac{2 \sigma^2 p}{n}.
+\widehat{\mathrm{ErrF}} = \text{MSE}_\text{train} + \text{Opt}_\text{ols} = \frac{1}{n}\sum_{i=1}^n\{y_i - f(\bm{x}_i; \hat{\beta})\}^2 + \frac{2 \sigma^2 p}{n}.
 </span></p></li>
 <li><p>If <span class="math inline">\sigma^2</span> is unknown, then it must be <span class="orange">estimated</span> using for instance <span class="math inline">s^2</span>.</p></li>
 </ul>
@@ -797,7 +797,7 @@ r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
 <ul>
 <li><p>The maximum possible value for <span class="math inline">K</span> is <span class="math inline">n</span>, the <span class="orange">leave-one-out</span> cross-validation (LOO-CV).</p></li>
 <li><p>The LOO-CV is hard to implement because it requires the estimation of <span class="math inline">n</span> different models.</p></li>
-<li><p>However, in <span class="blue">linear models</span> there is a brilliant <span class="orange">computational shortcut</span> that we can exploit.</p></li>
+<li><p>However, in <span class="blue">ordinary least squares</span> there is a brilliant <span class="orange">computational shortcut</span>.</p></li>
 </ul>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -805,7 +805,7 @@ r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-LOO-CV (Linear models)
+LOO-CV (Ordinary least squares)
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -819,14 +819,14 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <h2 class="anchored" data-anchor-id="generalized-cross-validation">Generalized cross-validation</h2>
 <div class="incremental">
 <ul class="incremental">
-<li>An alternative to LOO-CV, sometimes used in more complex scenarios, is the so-called <span class="orange">generalized cross validation</span> (GCV), defined as <span class="math display">
+<li>An alternative to LOO-CV is the so-called <span class="orange">generalized cross validation</span> (GCV), defined as <span class="math display">
 \text{GCV} = \widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - p/n}\right)^2.
 </span></li>
-<li>The GCV is an approximate LOO-CV, in which the leverages <span class="math inline">h_i</span> are replaced by their mean: <span class="math display">
+<li>The GCV is an approximate LOO-CV for <span class="blue">ordinary least squares</span>, in which the leverages <span class="math inline">h_i</span> are replaced by their mean: <span class="math display">
 \frac{1}{n}\sum_{i=1}^n h_i = \frac{p}{n}.
 </span></li>
 <li>For small <span class="math inline">x &gt;0</span> it holds that <span class="math inline">(1 - x)^{-2} \approx 1 + 2x</span>. Then, we will write <span class="math display">
-\text{GCV} \approx \frac{1}{n}\sum_{i=1}^n(y_i - \hat{f}(\bm{x}_i))^2 + 2 \hat{\sigma}^2 p, \qquad \hat{\sigma}^2 =\frac{1}{n}\sum_{i=1}^n(y_i - \hat{f}(\bm{x}_i))^2,
+\text{GCV} \approx \frac{1}{n}\sum_{i=1}^n\{y_i - f(\bm{x}_i; \hat{\beta})\}^2 +  \frac{2\hat{\sigma}^2 p}{n}, \qquad \hat{\sigma}^2 =\frac{1}{n}\sum_{i=1}^n\{y_i - f(\bm{x}_i; \hat{\beta})\}^2,
 </span> revealing a sharp connection with the <span class="math inline">C_p</span> of Mallows.</li>
 </ul>
 </div>
