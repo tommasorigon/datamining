@@ -1153,18 +1153,16 @@ $$\widehat{\mathrm{Err}} = \frac{1}{n} \sum_{i=1}^{n} \widehat{\text{Err}}_{V_i}
 ## Generalized cross-validation
 
 ::: incremental
--   An alternative to LOO-CV, sometimes used in more complex scenarios,
-    is the so-called [generalized cross validation]{.orange} (GCV),
-    defined as $$
+-   An alternative to LOO-CV is the so-called [generalized cross validation]{.orange} (GCV), defined as $$
     \text{GCV} = \widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - p/n}\right)^2.
     $$
--   The GCV is an approximate LOO-CV, in which the leverages $h_i$ are
+-   The GCV is an approximate LOO-CV for [ordinary least squares]{.blue}, in which the leverages $h_i$ are
     replaced by their mean: $$
     \frac{1}{n}\sum_{i=1}^n h_i = \frac{p}{n}. 
     $$
 -   For small $x >0$ it holds that $(1 - x)^{-2} \approx 1 + 2x$. Then,
     we will write $$
-    \text{GCV} \approx \frac{1}{n}\sum_{i=1}^n(y_i - \hat{f}(\bm{x}_i))^2 + 2 \hat{\sigma}^2 p, \qquad \hat{\sigma}^2 =\frac{1}{n}\sum_{i=1}^n(y_i - \hat{f}(\bm{x}_i))^2,
+    \text{GCV} \approx \frac{1}{n}\sum_{i=1}^n\{y_i - f(\bm{x}_i; \hat{\beta})\}^2 +  \frac{2\hat{\sigma}^2 p}{n}, \qquad \hat{\sigma}^2 =\frac{1}{n}\sum_{i=1}^n\{y_i - f(\bm{x}_i; \hat{\beta})\}^2,
     $$ revealing a sharp connection with the $C_p$ of Mallows.
 :::
 

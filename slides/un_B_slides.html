@@ -987,14 +987,14 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <h2>Generalized cross-validation</h2>
 <div>
 <ul>
-<li class="fragment">An alternative to LOO-CV, sometimes used in more complex scenarios, is the so-called <span class="orange">generalized cross validation</span> (GCV), defined as <span class="math display">
+<li class="fragment">An alternative to LOO-CV is the so-called <span class="orange">generalized cross validation</span> (GCV), defined as <span class="math display">
 \text{GCV} = \widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - p/n}\right)^2.
 </span></li>
-<li class="fragment">The GCV is an approximate LOO-CV, in which the leverages <span class="math inline">h_i</span> are replaced by their mean: <span class="math display">
+<li class="fragment">The GCV is an approximate LOO-CV for <span class="blue">ordinary least squares</span>, in which the leverages <span class="math inline">h_i</span> are replaced by their mean: <span class="math display">
 \frac{1}{n}\sum_{i=1}^n h_i = \frac{p}{n}.
 </span></li>
 <li class="fragment">For small <span class="math inline">x &gt;0</span> it holds that <span class="math inline">(1 - x)^{-2} \approx 1 + 2x</span>. Then, we will write <span class="math display">
-\text{GCV} \approx \frac{1}{n}\sum_{i=1}^n(y_i - \hat{f}(\bm{x}_i))^2 + 2 \hat{\sigma}^2 p, \qquad \hat{\sigma}^2 =\frac{1}{n}\sum_{i=1}^n(y_i - \hat{f}(\bm{x}_i))^2,
+\text{GCV} \approx \frac{1}{n}\sum_{i=1}^n\{y_i - f(\bm{x}_i; \hat{\beta})\}^2 +  \frac{2\hat{\sigma}^2 p}{n}, \qquad \hat{\sigma}^2 =\frac{1}{n}\sum_{i=1}^n\{y_i - f(\bm{x}_i; \hat{\beta})\}^2,
 </span> revealing a sharp connection with the <span class="math inline">C_p</span> of Mallows.</li>
 </ul>
 </div>
