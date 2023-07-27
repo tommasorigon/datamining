@@ -460,7 +460,7 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <section id="correlation-matrix-of-prostate" class="slide level2 center">
 <h2>Correlation matrix of <code>prostate</code></h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-4-1.png" width="2250" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-4-1.png" width="3000" class="r-stretch quarto-figure-center"></section>
 <section id="the-regression-framework" class="slide level2 center">
 <h2>The regression framework</h2>
 <div>
@@ -652,7 +652,7 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <section id="step-1.-and-2.-of-best-subset-selection" class="slide level2 center">
 <h2>Step 1. and 2. of best subset selection</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-8-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-8-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
 <section id="the-best-models-mathcalm_1dots-mathcalm_p" class="slide level2 center">
 <h2>The “best” models <span class="math inline">\mathcal{M}_1,\dots, \mathcal{M}_p</span></h2>
 <ul>
@@ -703,7 +703,7 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <section id="step-3.-of-best-subset-selection-via-cross-validation" class="slide level2 center">
 <h2>Step 3. of best subset selection via cross-validation</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-11-1.png" width="1500" class="r-stretch quarto-figure-center"><ul>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-11-1.png" width="2000" class="r-stretch quarto-figure-center"><ul>
 <li>By applying the “1 standard error rule”, we select <span class="math inline">k = 2</span>, i.e.&nbsp;<code>lcavol</code> and <code>lweight</code>.</li>
 </ul>
 </section>
@@ -784,7 +784,7 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <section id="forward-backward-and-best-subset" class="slide level2 center">
 <h2>Forward, backward and best subset</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-13-1.png" width="1500" class="r-stretch quarto-figure-center"><ul>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-13-1.png" width="2000" class="r-stretch quarto-figure-center"><ul>
 <li>In the <code>prostate</code> dataset, forward, backward and best subset selection all gave exactly the <span class="orange">same path of solutions</span> on the full training set.</li>
 </ul>
 </section></section>
@@ -897,7 +897,7 @@ z_{ij} = x_{i1}v_{i1} + \cdots + x_{ip} v_{ip} = \bm{x}_i^T\tilde{\bm{v}}_j.
 <section id="principal-component-analysis-prostate-data" class="slide level2 center">
 <h2>Principal component analysis: <code>prostate</code> data</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-14-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-14-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
 <section id="principal-components-regression-pcr" class="slide level2 center">
 <h2>Principal components regression (PCR)</h2>
 <div>
@@ -917,7 +917,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="selection-of-k-cross-validation" class="slide level2 center">
 <h2>Selection of <span class="math inline">k</span>: cross-validation</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-16-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-16-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
 <section id="shrinkage-effect-of-principal-components-i" class="slide level2 center">
 <h2>Shrinkage effect of principal components I</h2>
 <div>
@@ -957,7 +957,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="shrinkage-effect-of-principal-components-iii" class="slide level2 center">
 <h2>Shrinkage effect of principal components III</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-17-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-17-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="summary-and-next-steps" class="slide level2 center">
 <h2>Summary and next steps</h2>
 <ul>
@@ -1004,8 +1004,8 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h1>Ridge regression</h1>
 
 </section>
-<section id="a-regularization-method" class="slide level2 center">
-<h2>A regularization method</h2>
+<section id="the-ridge-regularization-method" class="slide level2 center">
+<h2>The ridge regularization method</h2>
 <ul>
 <li>The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the most common <span class="blue">shrinkage method</span> and is the <span class="orange">minimizer</span> of <span class="math display">
 \sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
@@ -1089,7 +1089,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="the-ridge-path" class="slide level2 center">
 <h2>The ridge path</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-20-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-20-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="comments-and-criticism" class="slide level2 center">
 <h2>Comments and criticism</h2>
 <ul>
@@ -1220,6 +1220,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) \quad  \Longrightarrow \quad \text{Opt}_\text{ols} = \frac{2\sigma^2p}{n}.
 </span></li>
 </ul>
+<div class="fragment">
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -1229,6 +1230,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <p>Let <span class="math inline">\hat{f}(\bm{x})</span> be an estimate for the regression function <span class="math inline">f(\bm{x})</span> based on the data <span class="math inline">Y_1,\dots,Y_n</span>. The <span class="orange">effective degrees of freedom</span> are defined as <span class="math display">
 \text{df} = \frac{1}{\sigma^2}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)).
 </span></p>
+</div>
 </div>
 </div>
 </div>
@@ -1243,20 +1245,30 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li class="fragment"><p>After some algebra, one finds that the effective degrees of freedom of <span class="orange">ridge regression</span> are <span class="math display">
 \text{df}_\text{ridge} = \text{tr}(\bm{H}_\text{ridge}) = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda},
 </span> where <span class="math inline">\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T</span> is the <span class="orange">hat matrix</span> of ridge regression.</p></li>
-<li class="fragment"><p>Hence, we can <span class="orange">plug-in</span> <span class="math inline">\text{df}_\text{ridge}</span> e.g.&nbsp;into the formula of the <span class="blue"><span class="math inline">C_p</span> of Mallows</span>, obtaining <span class="math display">
-  C_p = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
+<li class="fragment"><p>Hence, we can <span class="orange">plug-in</span> <span class="math inline">\text{df}_\text{ridge}</span> into the formula of the <span class="blue"><span class="math inline">C_p</span> of Mallows</span>, obtaining <span class="math display">
+  \widehat{\mathrm{ErrF}} = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
   </span> where the residual variance is estimated as <span class="math inline">\hat{\sigma}^2 = (n - \text{df}_\text{ridge})^{-1} \sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2</span>.</p></li>
 </ul>
 </div>
 </section>
 <section id="effective-degrees-of-freedom-iii" class="slide level2 center">
 <h2>Effective degrees of freedom III</h2>
-
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-21-1.png" width="1200" class="r-stretch quarto-figure-center"></section>
-<section id="effective-degrees-of-freedom-iv" class="slide level2 center">
-<h2>Effective degrees of freedom IV</h2>
-
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-22-1.png" width="1350" class="r-stretch quarto-figure-center"></section>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-21-1.png" width="1000"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-22-1.png" width="1000"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
 <section id="effective-degrees-of-freedom-of-best-subset" class="slide level2 center">
 <h2>☠️ - Effective degrees of freedom of best subset</h2>
 </section>
@@ -1270,24 +1282,34 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="cross-validation-for-ridge-regression-ii" class="slide level2 center">
 <h2>Cross-validation for ridge regression II</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-24-1.png" width="1500" class="r-stretch quarto-figure-center"></section>
-<section id="leave-one-out-cross-validation-for-ridge-i" class="slide level2 center">
-<h2>Leave-one-out cross-validation for ridge I</h2>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-24-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
+<section id="leave-one-out-cross-validation" class="slide level2 center">
+<h2>Leave-one-out cross-validation</h2>
+<ul>
+<li></li>
+</ul>
 </section>
-<section id="leave-one-out-cross-validation-for-ridge-ii" class="slide level2 center">
-<h2>Leave-one-out cross-validation for ridge II</h2>
-</section>
+<section id="the-ridge-estimate" class="slide level2 center">
+<h2>The ridge estimate</h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-25-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="the-p-n-case-i" class="slide level2 center">
 <h2>The <span class="math inline">p &gt; n</span> case I</h2>
 </section>
 <section id="the-p-n-case-ii" class="slide level2 center">
 <h2>The <span class="math inline">p &gt; n</span> case II</h2>
+</section>
+<section id="summary-of-ridge-regression" class="slide level2 center">
+<h2>Summary of ridge regression</h2>
 </section></section>
+<section>
 <section id="the-lasso" class="title-slide slide level1 center">
 <h1>The lasso</h1>
 
 </section>
-
+<section id="the-lasso-regularization-method" class="slide level2 center">
+<h2>The lasso regularization method</h2>
+</section></section>
 <section>
 <section id="elastic-net" class="title-slide slide level1 center">
 <h1>Elastic net</h1>

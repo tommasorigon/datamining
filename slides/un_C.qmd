@@ -21,7 +21,7 @@ format:
     theme: [default, ../template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: false
-    fig-dpi: 150
+    fig-dpi: 200
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
@@ -38,7 +38,7 @@ format:
     smooth-scroll: true
     code-fold: false
     code-summary: "Show the code"
-    fig-dpi: 150
+    fig-dpi: 200
     highlight-style: github
 editor: 
   markdown: 
@@ -869,7 +869,7 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 # Ridge regression
 
-## A regularization method
+## The ridge regularization method
 
 
 - The ridge estimator $\hat{\beta}_\text{ridge}$ is the most common [shrinkage method]{.blue} and is the [minimizer]{.orange} of $$
@@ -1010,10 +1010,10 @@ df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda")
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
-lambda_seq <- exp(seq(from = 0, to = 8, length = 50))
+lambda_seq <- c(seq(0.1, 0.9, length = 10), exp(seq(from = 0, to = 9, length = 50)))
 data_ridge <- cbind(lambda_seq, matrix(0, length(lambda_seq), p))
 
-mse_ridge  <- data.frame(lambda_seq, Cp = NA, mse = NA, df = 1 + df_ridge(lambda_seq, X, standardize = FALSE), sigma2 = NA) 
+mse_ridge  <- data.frame(lambda_seq, Cp = NA, mse = NA, df = df_ridge(lambda_seq, X, standardize = FALSE), sigma2 = NA) 
 
 for(i in 1:length(lambda_seq)){
   data_ridge[i, -1] <- my_ridge(X, y, lambda = lambda_seq[i], standardize = FALSE)[-1]
@@ -1166,6 +1166,8 @@ $$
 \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) \quad  \Longrightarrow \quad \text{Opt}_\text{ols} = \frac{2\sigma^2p}{n}.
 $$
 
+. . .
+
 ::: callout-note
 #### Effective degrees of freedom
 
@@ -1192,8 +1194,8 @@ $$
 $$
 where $\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T$ is the [hat matrix]{.orange} of ridge regression.
 
-- Hence, we can [plug-in]{.orange} $\text{df}_\text{ridge}$ e.g. into the formula of the [$C_p$ of Mallows]{.blue}, obtaining $$
-    C_p = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
+- Hence, we can [plug-in]{.orange} $\text{df}_\text{ridge}$ into the formula of the [$C_p$ of Mallows]{.blue}, obtaining $$
+    \widehat{\mathrm{ErrF}} = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
     $$
 where the residual variance is estimated as $\hat{\sigma}^2 = (n - \text{df}_\text{ridge})^{-1} \sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2$.
 
@@ -1201,42 +1203,40 @@ where the residual variance is estimated as $\hat{\sigma}^2 = (n - \text{df}_\te
 
 ## Effective degrees of freedom III
 
+::: columns
+::: {.column width="50%"}
 ```{r}
-#| fig-width: 8
-#| fig-height: 4.5
-#| fig-align: center
-df_min <- mse_ridge$df[which.min(mse_ridge$Cp)]
+#| fig-width: 5
+#| fig-height: 4
+df_min_cp <- mse_ridge$df[which.min(mse_ridge$Cp)]
 lambda_min <- mse_ridge$lambda_seq[which.min(mse_ridge$Cp)]
 
 ggplot(data = mse_ridge, aes(x = df, y = Cp)) +
   geom_line() +
   geom_point() +
-  geom_vline(xintercept = df_min, linetype = "dotted") +
+  geom_vline(xintercept = df_min_cp, linetype = "dotted") +
   theme_light() +
-  scale_x_continuous(breaks = 1:9) +
-  theme(legend.position = "top") +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("Effective degrees of freedom") +
-  ylab(expression(C[p])) #+ ylim(c(9e-05, 6e-4))
+  scale_x_continuous(breaks = 0:8) +
+  xlab("Effective degrees of freedom (df)") +
+  ylab(expression(C[p]))
 ```
+:::
 
-## Effective degrees of freedom IV
-
+::: {.column width="50%"}
 ```{r}
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
-ggplot(data = data_ridge, aes(x = 1 + df_ridge(lambda, X), y = value, col = Covariate)) +
-  geom_point() +
+#| fig-width: 5
+#| fig-height: 4
+ggplot(data = mse_ridge, aes(x = lambda_seq, y = Cp)) +
   geom_line() +
+  geom_point() +
+  geom_vline(xintercept = lambda_min, linetype = "dotted") +
   theme_light() +
-  geom_vline(xintercept = df_min, linetype = "dotted") +
-  scale_x_continuous(breaks = 1:9) +
-  theme(legend.position = "top") +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("Effective degrees of freedom") +
-  ylab("Regression coefficients")
+  scale_x_log10() +
+  xlab(expression(lambda)) +
+  ylab(expression(C[p]))
 ```
+:::
+:::
 
 ## ☠️ - Effective degrees of freedom of best subset
 
@@ -1280,39 +1280,60 @@ for (k in 1:10) {
 
 data_cv <- data.frame(
   lambda = lambda_seq,
-  df = 1 + df_ridge(lambda_seq, X, standardize = FALSE),
+  df = df_ridge(lambda_seq, X, standardize = FALSE),
   MSE = apply(resid_ridge^2, 2, mean),
   SE = apply(resid_ridge^2, 2, function(x) sd(x) / sqrt(n))
 )
 
 se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)]
-lambda_optimal <- lambda_seq[tail(which(data_cv$MSE < se_rule), 1)]
-df_optimal <- data_cv$df[tail(which(data_cv$MSE < se_rule), 1)]
-
+lambda_min_cv <- lambda_seq[tail(which(data_cv$MSE < se_rule), 1)]
+df_min_cv <- data_cv$df[tail(which(data_cv$MSE < se_rule), 1)]
 
 ggplot(data = data_cv, aes(x = df, y = MSE)) +
   geom_point() +
   geom_line() +
   geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) +
-  scale_x_continuous(breaks = 1:9) +
+  scale_x_continuous(breaks = 0:8) +
   geom_hline(yintercept = se_rule, linetype = "dotted") +
-  geom_vline(xintercept = df_optimal, linetype = "dotted") +
+  geom_vline(xintercept = df_min_cv, linetype = "dotted") +
   theme_light() +
-  theme(legend.position = "top") +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab(expression(lambda)) +
+  xlab("Effective degrees of freedom (df)") +
   ylab("Mean squared error (10-fold cv)")
 ```
 
-## Leave-one-out cross-validation for ridge I
+## Leave-one-out cross-validation
 
-## Leave-one-out cross-validation for ridge II
+-
+
+## The ridge estimate
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+ggplot(data = data_ridge, aes(x = df_ridge(lambda, X), y = value, col = Covariate)) +
+  geom_point() +
+  geom_line() +
+  theme_light() +
+  geom_vline(xintercept = df_min_cv, linetype = "dashed") +
+  geom_vline(xintercept = df_min_cp, linetype = "dotted") +
+  scale_x_continuous(breaks = 0:8) +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Effective degrees of freedom (df)") +
+  ylab("Regression coefficients")
+```
+
 
 ## The $p > n$ case I
 
 ## The $p > n$ case II
 
+## Summary of ridge regression
+
 # The lasso
+
+## The lasso regularization method
 
 # Elastic net
 

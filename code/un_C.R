@@ -299,10 +299,10 @@ df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda")
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
-lambda_seq <- exp(seq(from = 0, to = 8, length = 50))
+lambda_seq <- c(seq(0.1, 0.9, length = 10), exp(seq(from = 0, to = 9, length = 50)))
 data_ridge <- cbind(lambda_seq, matrix(0, length(lambda_seq), p))
 
-mse_ridge <- data.frame(lambda_seq, Cp = NA, mse = NA, df = 1 + df_ridge(lambda_seq, X, standardize = FALSE), sigma2 = NA)
+mse_ridge <- data.frame(lambda_seq, Cp = NA, mse = NA, df = df_ridge(lambda_seq, X, standardize = FALSE), sigma2 = NA)
 
 for (i in 1:length(lambda_seq)) {
   data_ridge[i, -1] <- my_ridge(X, y, lambda = lambda_seq[i], standardize = FALSE)[-1]
@@ -326,37 +326,31 @@ ggplot(data = data_ridge, aes(x = lambda, y = value, col = Covariate)) +
   ylab("Regression coefficients")
 
 
-#| fig-width: 8
-#| fig-height: 4.5
-#| fig-align: center
-df_min <- mse_ridge$df[which.min(mse_ridge$Cp)]
+#| fig-width: 5
+#| fig-height: 4
+df_min_cp <- mse_ridge$df[which.min(mse_ridge$Cp)]
 lambda_min <- mse_ridge$lambda_seq[which.min(mse_ridge$Cp)]
 
 ggplot(data = mse_ridge, aes(x = df, y = Cp)) +
   geom_line() +
   geom_point() +
-  geom_vline(xintercept = df_min, linetype = "dotted") +
+  geom_vline(xintercept = df_min_cp, linetype = "dotted") +
   theme_light() +
-  scale_x_continuous(breaks = 1:9) +
-  theme(legend.position = "top") +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("Effective degrees of freedom") +
-  ylab(expression(C[p])) #+ ylim(c(9e-05, 6e-4))
+  scale_x_continuous(breaks = 0:8) +
+  xlab("Effective degrees of freedom (df)") +
+  ylab(expression(C[p]))
 
 
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
-ggplot(data = data_ridge, aes(x = 1 + df_ridge(lambda, X), y = value, col = Covariate)) +
-  geom_point() +
+#| fig-width: 5
+#| fig-height: 4
+ggplot(data = mse_ridge, aes(x = lambda_seq, y = Cp)) +
   geom_line() +
+  geom_point() +
+  geom_vline(xintercept = lambda_min, linetype = "dotted") +
   theme_light() +
-  geom_vline(xintercept = df_min, linetype = "dotted") +
-  scale_x_continuous(breaks = 1:9) +
-  theme(legend.position = "top") +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("Effective degrees of freedom") +
-  ylab("Regression coefficients")
+  scale_x_log10() +
+  xlab(expression(lambda)) +
+  ylab(expression(C[p]))
 
 
 #| message: false
@@ -387,28 +381,41 @@ for (k in 1:10) {
 
 data_cv <- data.frame(
   lambda = lambda_seq,
-  df = 1 + df_ridge(lambda_seq, X, standardize = FALSE),
+  df = df_ridge(lambda_seq, X, standardize = FALSE),
   MSE = apply(resid_ridge^2, 2, mean),
   SE = apply(resid_ridge^2, 2, function(x) sd(x) / sqrt(n))
 )
 
 se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)]
-lambda_optimal <- lambda_seq[tail(which(data_cv$MSE < se_rule), 1)]
-df_optimal <- data_cv$df[tail(which(data_cv$MSE < se_rule), 1)]
-
+lambda_min_cv <- lambda_seq[tail(which(data_cv$MSE < se_rule), 1)]
+df_min_cv <- data_cv$df[tail(which(data_cv$MSE < se_rule), 1)]
 
 ggplot(data = data_cv, aes(x = df, y = MSE)) +
   geom_point() +
   geom_line() +
   geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) +
-  scale_x_continuous(breaks = 1:9) +
+  scale_x_continuous(breaks = 0:8) +
   geom_hline(yintercept = se_rule, linetype = "dotted") +
-  geom_vline(xintercept = df_optimal, linetype = "dotted") +
+  geom_vline(xintercept = df_min_cv, linetype = "dotted") +
   theme_light() +
+  xlab("Effective degrees of freedom (df)") +
+  ylab("Mean squared error (10-fold cv)")
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+ggplot(data = data_ridge, aes(x = df_ridge(lambda, X), y = value, col = Covariate)) +
+  geom_point() +
+  geom_line() +
+  theme_light() +
+  geom_vline(xintercept = df_min_cv, linetype = "dashed") +
+  geom_vline(xintercept = df_min_cp, linetype = "dotted") +
+  scale_x_continuous(breaks = 0:8) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
-  xlab(expression(lambda)) +
-  ylab("Mean squared error (10-fold cv)")
+  xlab("Effective degrees of freedom (df)") +
+  ylab("Regression coefficients")
 
 
 
