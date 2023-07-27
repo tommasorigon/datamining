@@ -240,6 +240,7 @@ data_pcr <- reshape2::melt(coef(fit_pcr, 1:8))
 colnames(data_pcr) <- c("Covariate", "lpsa", "Components", "value")
 data_pcr$Components <- as.numeric(data_pcr$Components)
 data_pcr <- rbind(data_pcr, data.frame(Covariate = data_pcr$Covariate[data_pcr$Components == 1], lpsa = NA, Components = 0, value = 0))
+data_pcr$Covariate <- as.factor(as.character(data_pcr$Covariate))
 ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
   geom_point() +
   geom_line() +

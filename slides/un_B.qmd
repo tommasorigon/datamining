@@ -76,9 +76,9 @@ William of Ockham
 -   You may have seen these notions before...
 
 -   ...but it is worth discussing the [details]{.orange} of these ideas
-    once again, with the maturity you now have in an M.Sc.
+    once again.
 
--   They are the [foundations]{.blue} of [statistical
+-   They are indeed the [foundations]{.blue} of [statistical
     learning]{.orange}.
 :::
 :::
@@ -396,8 +396,8 @@ round(t(X) %*% X, 8)
 ```
 
 -   Polynomial regression becomes numerically unstable when $p \ge 13$
-    (`raw = TRUE`, i.e., using the original polynomials) and $p \ge 25$
-    (`raw = FALSE`, i.e., using orthogonal polynomials).
+    (`raw = TRUE`, original polynomials) and $p \ge 25$
+    (`raw = FALSE`, orthogonal polynomials).
 
 ## ☠️ - Lagrange interpolating polynomials
 
@@ -600,20 +600,20 @@ $$
 -   In [regression problems]{.blue} the [in-sample prediction error]{.orange} under
     [squared loss]{.blue} is $$
     \begin{aligned}
-    \text{ErrF} = \sigma^2 + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
+    \text{ErrF} = \sigma^2 + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\hat{f}(\bm{x}_i) - f(\bm{x}_i)\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
     \end{aligned}
     $$
 
 -   In [ordinary least squares]{.blue} the above quantity can be
     computed in closed form, since each element of the [bias]{.orange}
     term equals $$
-    \mathbb{E}\left[\{\hat{f}(\bm{x}_i) - f(\bm{x}_i)\}\right] = \bm{x}_i^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_i).
-    $$ where $\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T$. Note that if
+    \mathbb{E}\left[f(\bm{x}_i; \hat{\beta}) - f(\bm{x}_i)\right] = \bm{x}_i^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_i).
+    $$ where $\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T$. Note that [if]{.orange}
     $f(\bm{x}) = \bm{x}^T\beta$, then the bias is zero.
 
 -   Moreover, in [ordinary least squares]{.blue} the [variance]{.orange}
     term equals $$
-    \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\} = \frac{\sigma^2}{n}\sum_{i=1}^n  \bm{x}_i^T (\bm{X}^T\bm{X})^{-1}\bm{x}_i = \frac{\sigma^2}{n}\text{tr}\{(\bm{X}^T\bm{X})(\bm{X}^T\bm{X})^{-1}\} = \sigma^2 \frac{p}{n}.
+    \frac{1}{n}\sum_{i=1}^n\text{var}\{f(\bm{x}_i; \hat{\beta})\} = \frac{\sigma^2}{n}\sum_{i=1}^n  \bm{x}_i^T (\bm{X}^T\bm{X})^{-1}\bm{x}_i = \frac{\sigma^2}{n}\text{tr}\{(\bm{X}^T\bm{X})(\bm{X}^T\bm{X})^{-1}\} = \sigma^2 \frac{p}{n}.
     $$
 :::
 
@@ -787,17 +787,16 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 ::: incremental
 -   It can be proved (see Exercises) that the [optimism]{.orange} has a
     very simple form: $$
-    \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \hat{\bm{f}})\}.
+    \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i))
     $$
 
--   If the predicted values are obtained using [ordinary least
-    squares]{.blue}, then $\hat{\bm{f}} = \bm{H}\bm{Y}$, therefore $$
-    \text{Opt}_\text{ols} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{H}\bm{Y})\} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{Y}) \bm{H}^T\} = \frac{2 \sigma^2}{n}\text{tr} \{\bm{H}\} = \frac{2 \sigma^2 p}{n}.
+-   If [ordinary least squares]{.blue} are employed, then the predictions are $\bm{H}\bm{Y}$, therefore $$
+    \text{Opt}_\text{ols} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{H}\bm{Y})\} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{Y}) \bm{H}^T\} = \frac{2 \sigma^2}{n}\text{tr} (\bm{H}) = \frac{2 \sigma^2 p}{n}.
     $$
 
 -   This leads to an estimate for the in-sample prediction error, known
     as [$C_p$ of Mallows]{.blue}: $$
-    \widehat{\mathrm{ErrF}} = \text{MSE}_\text{train} + \text{Opt}_\text{ols} = \frac{1}{n}\sum_{i=1}^n\{y_i - \hat{f}(\bm{x}_i)\}^2 + \frac{2 \sigma^2 p}{n}.
+    \widehat{\mathrm{ErrF}} = \text{MSE}_\text{train} + \text{Opt}_\text{ols} = \frac{1}{n}\sum_{i=1}^n\{y_i - f(\bm{x}_i; \hat{\beta})\}^2 + \frac{2 \sigma^2 p}{n}.
     $$
 
 -   If $\sigma^2$ is unknown, then it must be [estimated]{.orange} using
@@ -1134,13 +1133,13 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   The LOO-CV is hard to implement because it requires the estimation
     of $n$ different models.
 
--   However, in [linear models]{.blue} there is a brilliant
-    [computational shortcut]{.orange} that we can exploit.
+-   However, in [ordinary least squares]{.blue} there is a brilliant
+    [computational shortcut]{.orange}.
 
 . . .
 
 ::: callout-note
-#### LOO-CV (Linear models)
+#### LOO-CV (Ordinary least squares)
 
 Let $\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}$ be the leave-one-out
 predictions of a [linear model]{.blue} and let $h_i = [\bm{H}]_{ii}$ and

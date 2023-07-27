@@ -174,15 +174,20 @@ ggcorrplot(corr,
 
 ::: incremental
 
-- Recall here some basic quantities
+- In this unit we will assume that the response variables $Y_i$ (`lpsa`) are obtained as
+$$
+Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
+$$
+where $\epsilon_i$ are [iid]{.orange} random variables with $\mathbb{E}(\epsilon_i) = 0$ and $\text{var}(\epsilon_i) = \sigma^2$.
 
+- Unless specifically stated, we will [not]{.orange} assume the [Gaussianity]{.orange} of the errors $\epsilon_i$ nor make any specific assumption about $f(\bm{x})$, which could be [non-linear]{.blue}.
 
--   We consider a [linear model]{.orange} in which the relationship between the response variable
-    $Y_i$ (`lpsa`) and the covariates is modelled through the function$$
-      f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
+- In practice, we [approximate]{.orange} the true $f(\bm{x})$ using a [linear model]{.blue}, e.g. by considering the following function$$
+      f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta,
       $$ 
+      in which the regression coefficients must be estimated.
       
-- In this unit the [intercept]{.blue} $\beta_0$ will play a special role, therefore we use this slightly different notation compared to [Unit A](unit_A.html).
+- In this unit the [intercept]{.blue} $\beta_0$ will play a special role, therefore we use a slightly different notation compared to [Unit A](unit_A.html).
 
 :::
 
@@ -207,6 +212,10 @@ ggcorrplot(corr,
 
 -   We are looking for a [simpler model]{.orange} having,
     hopefully, a lower mean squared error.
+    
+. . .
+
+- These considerations are particularly relevant in cases in which $p > n$!
 
 ## A naïve approach: (ab)using p-values
 
@@ -219,30 +228,34 @@ knitr::kable(tab, digits = 2)
 ```
 :::
 
-::: incremental
--   It is common practice to use the [p-values]{.orange}, e.g. those
-    obtained through the `summary` function, to perform [model
-    selection]{.blue} in a stepwise fashion.
-<!-- -   A typical procedure is to omit "non significant" coefficients, refit -->
-<!--     the model, and repeat this scheme until we obtain only "significant" -->
-<!--     coefficients. -->
--   This is [not a good idea]{.orange}, at least when done without appropriate [multiplicity corrections]{.blue}.
+. . .
 
--   The above p-values are meant to be
-    used in the context of a single hypothesis testing problem, [not]{.orange} to
-    make [iterative choices]{.orange}.
+- It is common practice to use the [p-values]{.orange} to perform [model selection]{.blue} in a stepwise fashion.
+    
+- However, what if the true $f(\bm{x})$ were not linear? 
 
-<!-- -   Such an iterative usage of "univariate" p-values is formally [incorrect]{.orange} -->
-<!--     because it leads to the well-known [multiple testing -->
-<!--     problem]{.blue}. -->
-:::
-
-## To explain or to predict?
-
--   "*All models are approximations. Essentially, all models are wrong,
-    but some are useful*." George E. P. Box
+- In many data mining problems, a [linear model]{.blue} is simply an approximation of the
+    unknown $f(\bm{x})$ and hypothesis testing procedures are ill-posed.
 
 . . .
+
+- Even if the true function were linear, using p-values would [not be a good idea]{.orange}, at least if done without appropriate [multiplicity corrections]{.blue}.
+
+-   The above p-values are meant to be used in the context of a single hypothesis testing problem, [not]{.orange} to make [iterative choices]{.orange}.
+
+## The predictive culture
+
+::: columns
+::: {.column width="25%"}
+![George E. P. Box](img/box.jpg){fig-align="left"}
+:::
+
+::: {.column width="75%"}
+-   "*All models are approximations. Essentially, all models are wrong,
+    but some are useful*." 
+    
+    [George E. P. Box]{.grey}
+
 
 -   If the
     [focus]{.blue} is on [prediction]{.blue}, we do not necessarily
@@ -251,20 +264,15 @@ knitr::kable(tab, digits = 2)
 -   In many data mining problems, the focus is on
     [minimizing]{.orange} the [prediction errors]{.orange}.
 
-. . .
-
 -   Hence, often times we may [accept some bias]{.blue} (i.e. we use a
     "wrong" but useful model), if this leads to a [reduction in
     variance]{.orange}.
 
-. . .
+:::
+:::
 
-- Besides, in certain cases it does not make much sense to speak about the "true parameters".
 
-- For example, what if the true $f(\bm{x})$ were not linear? 
 
-- In this context, a [linear model]{.blue} is simply an approximation of the
-    unknown $f(\bm{x})$ and hypothesis testing procedures are ill-posed.
 
 # Best subset selection
 
@@ -789,9 +797,9 @@ $$
 \tilde{\bm{z}}_j = \bm{X}\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
 $$
 
-- The [predicted values]{.orange} $\hat{\bm{y}} = (\hat{y}_1,\dots,\hat{y}_n)$ of the PCR with $k$ components are:
+- The [predicted values]{.orange} of the PCR with $k$ components are:
 $$
-\hat{\bm{y}} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j = \bm{X}\hat{\beta}_\text{pcr}, \quad \text{ where } \quad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
+\bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j, \qquad \text{ where } \qquad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
 $$
 
 - This representation highlights two important aspects:
@@ -835,6 +843,7 @@ data_pcr <- reshape2::melt(coef(fit_pcr, 1:8))
 colnames(data_pcr) <- c("Covariate", "lpsa", "Components", "value")
 data_pcr$Components <- as.numeric(data_pcr$Components)
 data_pcr <- rbind(data_pcr, data.frame(Covariate = data_pcr$Covariate[data_pcr$Components == 1], lpsa = NA, Components = 0, value = 0))
+data_pcr$Covariate <- as.factor(as.character(data_pcr$Covariate))
 ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
   geom_point() +
   geom_line() +
@@ -881,7 +890,7 @@ $$
 - When [complexity parameter]{.blue} $s$ is small, the coefficients of $\hat{\beta}_\text{ridge}$ are explicitly [shrinked]{.orange}, i.e. biased, [towards zero]{.orange}. 
 
 - On the other hand, if $s$ is large enough, then $\hat{\beta}_\text{ridge}$ is equivalent to 
- $\hat{\beta}$. 
+ $\hat{\beta}_\text{ols}$. 
 
 . . .
 
@@ -922,7 +931,7 @@ where $\lambda > 0$ is a [complexity parameter]{.blue} controlling the [penalty]
 
 . . .
 
-- When $\lambda = 0$ then $\hat{\beta}_\text{ridge} = \hat{\beta}$ whereas when $\lambda \rightarrow \infty$ we get $\hat{\beta}_\text{ridge} = 0$.
+- When $\lambda = 0$ then $\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}$ whereas when $\lambda \rightarrow \infty$ we get $\hat{\beta}_\text{ridge} = 0$.
 
 . . .
 
@@ -933,7 +942,7 @@ For any $n\times p$ design matrix $\bm{X}$, not necessarily of full-rank, the ri
 $$
 \hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y}.
 $$
-Such an estimator [always exists]{.blue} and is [unique]{.orange}.
+Such an estimator [always exists]{.blue} and is [unique]{.orange} (even when $p > n$).
 :::
 
 <!-- ## Mathematical details -->
@@ -1038,9 +1047,21 @@ ggplot(data = data_ridge, aes(x = lambda, y = value, col = Covariate)) +
 ```
 
 
-## Comments and criticism
+## Comments on the ridge path
 
-- Which parameters are shrinked to zero? At which speed?
+- The values of $\lambda$ are in somewhat [arbitrary scale]{.orange}. The ridge penalty has a concrete effect starting from $\lambda > 10$ or so.
+
+- The variable `lcavol` is arguably the most important, followed by `lweight` and `svi`, being the one that receive less shrinkage compared to the others.
+
+. . .
+
+- The coefficient of `age`, `gleason` and `lcp`, is negative at the beginning and then become positive for large values of $\lambda$.
+
+- This indicate that their negative value in $\hat{\beta}_\text{ols}$ was probably a consequence of their [correlation]{.orange} with other variables. 
+
+. . .
+
+- There is an interesting similarity between this plot and the one of principal component regression... is it a coincidence? 
 
 ## Shrinkage effect of ridge regression I
 
@@ -1083,79 +1104,40 @@ $$
 
 ## Bias-variance trade-off
 
-- The ridge regression [add some bias]{.orange} in the estimates, but it has the advantage of [reducing]{.blue} their [variance]{.blue}. 
+- The ridge regression [add some bias]{.orange} to the estimates, but it [reduces]{.blue} their [variance]{.blue}. 
 
 . . .
 
 - The [variance]{.orange} of $\hat{\beta}_\text{ridge}$, assuming iid errors $\epsilon_i$ with variance $\sigma^2$, results: $$
 \text{var}(\hat{\beta}_\text{ridge}) = \sigma^2\sum_{j=1}^p \frac{d_j^2}{(d_j^2 + \lambda)^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T,
 $$
-whose diagonal elements are always smaller than those of $\text{var}(\hat{\beta})$.
+whose diagonal elements are always smaller than those of $\text{var}(\hat{\beta}_\text{ols})$.
 
 . . .
 
 ::: callout-note
 #### Theorem (Theobald, 1974)
-Let us assume that $y_i = \bm{x}_i^T\beta + \epsilon_i$, where $\epsilon_i$ are iid errors with variance $\sigma^2$. Then, there exist a $\lambda > 0$ such that $$
-\mathbb{E}\left(||\hat{\beta}_\text{ridge} - \beta)||^2\right) < \mathbb{E}\left(||\hat{\beta} - \beta||^2\right) = \text{var}(\hat{\beta}).
+Let us [additionally]{.blue} assume that $y_i = \bm{x}_i^T\beta + \epsilon_i$, where $\epsilon_i$ are iid errors with variance $\sigma^2$. Then, there exist a $\lambda > 0$ such that $$
+\mathbb{E}\left(||\hat{\beta}_\text{ridge} - \beta)||^2\right) < \mathbb{E}\left(||\hat{\beta}_\text{ols} - \beta||^2\right) = \text{var}(\hat{\beta}_\text{ols}).
 $$
-:::
-
-## ☠️ - A historical perspective I
-
-::: incremental
-
-- The ridge regression estimator was originally proposed by Hoerl and Kennard (1970) with a quite different motivation in mind.
-
-- In linear models, the estimate of $\beta$ is obtained by solving the [normal equations]{.blue} $$
-(\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
-$$
-which could be [ill-conditioned]{.orange}.
-
-- In other words, the [condition number]{.blue}
-$$
-\kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
-$$
-might be very large, leading to [numerical inaccuracies]{.orange}, since the matrix $\bm{X}^T\bm{X}$ is [numerically singular]{.blue} and therefore not invertible in practice.
-
-:::
-
-## ☠️ - A historical perspective II
-
-::: incremental
-- Ridge provides a [remedy]{.blue} for [ill-conditioning]{.orange}, by adding a "ridge" to the diagonal of $\bm{X}^T\bm{X}$, obtaining the modified normal equations
-$$
-(\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
-$$
-
-- The [condition number]{.orange} of the modified $(\bm{X}^T\bm{X} + \lambda I_p)$ matrix becomes
-$$
-\kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
-$$
-- Notice that even if $d_p = 0$, i.e. the matrix $\bm{X}$ is [singular]{.blue}, then condition number will be finite as long as $\lambda > 0$. 
-
-- This technique is known as [Tikhonov regularization]{.orange}, after the Russian mathematician Andrey Tikhonov.
-
 :::
 
 ## On the choice of $\lambda$
 
-- The [penalty parameter]{.orange} $\lambda$ determines the amount of bias and variance of  $\hat{\beta}_\text{ridge}$.
-
-- How do we [estimate]{.blue} $\lambda$? What about selecting $\lambda$ so that $||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2$ is [minimal]{.blue}?
+- The [penalty parameter]{.orange} $\lambda$ determines the amount of bias and variance of  $\hat{\beta}_\text{ridge}$ and therefore it must be carefully [estimated]{.blue}.
 
 . . .
 
-- Minimizing $||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2$ over $\lambda$, as suggested in the above bullet point, is a [very bad idea]{.orange}. It would always choose $\lambda =0$!
+- [Minimizing]{.blue} $||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2$ over $\lambda$ is a [very bad idea]{.orange} and it would always choose $\lambda =0$, corresponding to $\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}$.
 
-- $\lambda$ is a [complexity]{.blue} parameter and, like the number of covariates, should be selected using [information criteria]{.orange} or training/test and [cross-validation]{.orange}.
+- Indeed, $\lambda$ is a [complexity]{.blue} parameter and, like the number of covariates, should be selected using [information criteria]{.orange} or training/test and [cross-validation]{.orange}.
 
 . . .
 
 - Suppose we wish to use an [information criteria]{.blue} such as the AIC or BIC, of the form $$
     \text{IC}(p) = -2 \ell(\hat{\beta}_\text{ridge}) + \text{penalty}(\text{``degrees of freedom"}).
     $$
-However, what do we mean with the [degrees of freedom]{.blue} in this context?
+We need a careful definition of [degrees of freedom]{.blue} that is appropriate in this context.
 
 - The current definition of degrees of freedom, i.e. the number of [non-zero coefficients]{.orange}, is [not appropriate]{.orange} for ridge regression, because it would be equal to $p$ for any value of $\lambda$. 
 
@@ -1163,8 +1145,9 @@ However, what do we mean with the [degrees of freedom]{.blue} in this context?
 
 - Let us recall that the [optimism]{.orange} for a generic estimator $\hat{f}(\bm{x})$ is defined as the following average of covariances
 $$
-\text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) \quad  \Longrightarrow \quad \text{Opt}_\text{ols} = \frac{2\sigma^2p}{n}.
+\text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)),
 $$
+which is equal to $\text{Opt}_\text{ols} = (2\sigma^2p)/ n$ in [ordinary least squares]{.blue}.
 
 . . .
 
@@ -1194,7 +1177,7 @@ $$
 $$
 where $\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T$ is the [hat matrix]{.orange} of ridge regression.
 
-- Hence, we can [plug-in]{.orange} $\text{df}_\text{ridge}$ into the formula of the [$C_p$ of Mallows]{.blue}, obtaining $$
+- Using the above result, we can then [plug-in]{.orange} $\text{df}_\text{ridge}$ into the formula of the [$C_p$ of Mallows]{.blue}: $$
     \widehat{\mathrm{ErrF}} = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
     $$
 where the residual variance is estimated as $\hat{\sigma}^2 = (n - \text{df}_\text{ridge})^{-1} \sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2$.
@@ -1238,14 +1221,21 @@ ggplot(data = mse_ridge, aes(x = lambda_seq, y = Cp)) +
 :::
 :::
 
-## ☠️ - Effective degrees of freedom of best subset
 
 ## Cross-validation for ridge regression I
 
-- The 1/n penalty
+- Training/test strategies and [cross-validation]{.blue} are also valid tools for selecting $\lambda$. 
 
-- glmnet and rescaling of the input
+- Most statistical software use a slightly [different parametrization]{.orange} for $\lambda$, as they  minimize $$
+\textcolor{red}{\frac{1}{n}}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \tilde{\lambda} \sum_{j=1}^p\beta_j^2,
+$$
+where $\tilde{\lambda} = \lambda / n$.
 
+- This parametrization is more amenable for cross-validation as the new penalty $\tilde{\lambda}$ does not depend on the sample size. The R package `glmnet` uses this convention.
+
+- This is mostly a cosmetic variant, but it might have [practical consequences]{.orange} if the selected $\lambda$ were identified using a fraction of the data and then the same $\lambda$ were used on larger dataset.
+
+- Conversely, the parameter $\tilde{\lambda}$ is not affected by this behavior.
 
 ## Cross-validation for ridge regression II
 
@@ -1324,12 +1314,44 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda, X), y = value, col = Covariat
   ylab("Regression coefficients")
 ```
 
-
-## The $p > n$ case I
-
-## The $p > n$ case II
-
 ## Summary of ridge regression
+
+## ☠️ - A historical perspective I
+
+::: incremental
+
+- The ridge regression estimator was originally proposed by Hoerl and Kennard (1970) with a quite different motivation in mind.
+
+- In linear models, the estimate of $\beta$ is obtained by solving the [normal equations]{.blue} $$
+(\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
+$$
+which could be [ill-conditioned]{.orange}.
+
+- In other words, the [condition number]{.blue}
+$$
+\kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
+$$
+might be very large, leading to [numerical inaccuracies]{.orange}, since the matrix $\bm{X}^T\bm{X}$ is [numerically singular]{.blue} and therefore not invertible in practice.
+
+:::
+
+## ☠️ - A historical perspective II
+
+::: incremental
+- Ridge provides a [remedy]{.blue} for [ill-conditioning]{.orange}, by adding a "ridge" to the diagonal of $\bm{X}^T\bm{X}$, obtaining the modified normal equations
+$$
+(\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
+$$
+
+- The [condition number]{.orange} of the modified $(\bm{X}^T\bm{X} + \lambda I_p)$ matrix becomes
+$$
+\kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
+$$
+- Notice that even if $d_p = 0$, i.e. the matrix $\bm{X}$ is [singular]{.blue}, then condition number will be finite as long as $\lambda > 0$. 
+
+- This technique is known as [Tikhonov regularization]{.orange}, after the Russian mathematician Andrey Tikhonov.
+
+:::
 
 # The lasso
 
@@ -1337,11 +1359,11 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda, X), y = value, col = Covariat
 
 # Elastic net
 
-## Definition
+## A comparison between ridge, lasso and elastic net
+
+## ☠️ - Effective degrees of freedom of best subset
 
 ## Pathwise coordinate optimization
-
-
 
 ```{r}
 # l = 10

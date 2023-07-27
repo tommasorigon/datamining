@@ -285,11 +285,14 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <h2 class="anchored" data-anchor-id="the-regression-framework">The regression framework</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Recall here some basic quantities</p></li>
-<li><p>We consider a <span class="orange">linear model</span> in which the relationship between the response variable <span class="math inline">Y_i</span> (<code>lpsa</code>) and the covariates is modelled through the function<span class="math display">
-  f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta.
-  </span></p></li>
-<li><p>In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use this slightly different notation compared to <a href="unit_A.html">Unit A</a>.</p></li>
+<li><p>In this unit we will assume that the response variables <span class="math inline">Y_i</span> (<code>lpsa</code>) are obtained as <span class="math display">
+Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
+</span> where <span class="math inline">\epsilon_i</span> are <span class="orange">iid</span> random variables with <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span> and <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>.</p></li>
+<li><p>Unless specifically stated, we will <span class="orange">not</span> assume the <span class="orange">Gaussianity</span> of the errors <span class="math inline">\epsilon_i</span> nor make any specific assumption about <span class="math inline">f(\bm{x})</span>, which could be <span class="blue">non-linear</span>.</p></li>
+<li><p>For practical convenience, we <span class="orange">approximate</span> the true <span class="math inline">f(\bm{x})</span> using a <span class="blue">linear model</span>, e.g.&nbsp;by considering the following function<span class="math display">
+    f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta,
+    </span> in which the regression coefficients must be estimated.</p></li>
+<li><p>In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use a slightly different notation compared to <a href="unit_A.html">Unit A</a>.</p></li>
 </ul>
 </div>
 </section>
@@ -767,8 +770,8 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li><p>A closer look to the PCR solution reveals some interesting aspects. Recall that: <span class="math display">
 \tilde{\bm{z}}_j = \bm{X}\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
 </span></p></li>
-<li><p>The <span class="orange">predicted values</span> <span class="math inline">\hat{\bm{y}} = (\hat{y}_1,\dots,\hat{y}_n)</span> of the PCR with <span class="math inline">k</span> components are: <span class="math display">
-\hat{\bm{y}} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j = \bm{X}\hat{\beta}_\text{pcr}, \quad \text{ where } \quad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
+<li><p>The <span class="orange">predicted values</span> of the PCR with <span class="math inline">k</span> components are: <span class="math display">
+\bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j, \qquad \text{ where } \qquad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
 </span></p></li>
 <li><p>This representation highlights two important aspects:</p>
 <ul class="incremental">
