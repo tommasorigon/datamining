@@ -1,4 +1,3 @@
-
 rm(list = ls()) # Clean the environment
 auto <- read.table("../data/auto.txt", header = TRUE)
 str(auto)
