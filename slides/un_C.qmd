@@ -1162,6 +1162,12 @@ $$
 
 :::
 
+## ☠️ - A historical perspective III
+
+![](img/ridge_paper.png){fig-align="center" width=40%}
+
+- Figure 1 of the [original paper]{.orange} by Hoerl and Kennard (1970), displaying the bias-variance [trade-off]{.blue}.
+
 ## On the choice of $\lambda$
 
 - The [penalty parameter]{.orange} $\lambda$ determines the amount of bias and variance of  $\hat{\beta}_\text{ridge}$ and therefore it must be carefully [estimated]{.blue}.
@@ -1347,27 +1353,28 @@ my_ridge(X, y_std, standardize = FALSE, lambda_tilde = lambda_tilde_min_cv)
 ```
 
 
-## Leave-one-out cross-validation
+<!-- ## Leave-one-out cross-validation -->
 
 
--   Ridge regression is, like ordinary least squares, a [linear smoother]{.blue}, namely:
-$$
-\bm{X}\hat{\beta}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} = \bm{H}_\text{ridge}\bm{y},
-$$
-meaning that a [computational shortcut]{.orange} for LOO-CV can be exploited.
+<!-- -   Ridge regression is, like ordinary least squares, a [linear smoother]{.blue}, namely: -->
+<!-- $$ -->
+<!-- \bm{X}\hat{\beta}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} = \bm{H}_\text{ridge}\bm{y}, -->
+<!-- $$ -->
+<!-- meaning that a [computational shortcut]{.orange} for LOO-CV can be exploited. -->
 
-. . .
+<!-- . . . -->
 
-::: callout-note
-#### LOO-CV (Ridge regression)
+<!-- ::: callout-note -->
+<!-- #### LOO-CV (Ridge regression) -->
 
-Let $\hat{y}_{-i, \text{ridge}} = \bm{x}_i^T\hat{\beta}_{-i, \text{ridge}}$ be the leave-one-out
-predictions of a [linear model]{.blue} with a [ridge penalty]{.orange} and let $h_{i, \text{ridge}} = [\bm{H}_\text{ridge}]_{ii}$ and
-$\hat{y}_i$ be the leverages and the predictions. Then: $$
-y_i - \hat{y}_{-i, \text{ridge}} = \frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}, \qquad i=1,\dots,n.
-$$ Therefore, the leave-one-out mean squared error is
-$$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}\right)^2.$$
-:::
+<!-- Let $\hat{y}_{-i, \text{ridge}} = \bm{x}_i^T\hat{\beta}_{-i, \text{ridge}}$ be the leave-one-out -->
+<!-- predictions of a [linear model]{.blue} with a [ridge penalty]{.orange} and let $h_{i, \text{ridge}} = [\bm{H}_\text{ridge}]_{ii}$ and -->
+<!-- $\hat{y}_i$ be the leverages and the predictions. Then: $$ -->
+<!-- y_i - \hat{y}_{-i, \text{ridge}} = \frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}, \qquad i=1,\dots,n, -->
+<!-- $$ -->
+<!-- recalling that $\bar{y} = 0$. Therefore, the leave-one-out mean squared error is -->
+<!-- $$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}\right)^2.$$ -->
+<!-- ::: -->
 
 ## The ridge estimate
 
@@ -1390,85 +1397,97 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 ## Summary of ridge regression
 
+- Trade-off bias variance, variables more correlated are shrinked
 
+- All variables are used
+
+- Solution always exists, even when $p > n$ or in presence of perfect collinearity.
+
+- Mention to efficient computations
 
 # The lasso
 
+## Looking for sparsity
+
 ## The lasso regularization method
 
-# Elastic net
+## Lagrange multipliers and lasso solution
 
-## A comparison between ridge, lasso and elastic net
+## The geometry of the lasso solution
+
+## Single predictor I
+
+## Single predictor II
+
+## The lasso path
+
+## Least angle regression I
+
+## Least angle regression II
+
+## Least angle regression: lasso modification
+
+## The maximum $\lambda$
+
+## Uniqueness of the lasso solution
+
+## The degrees of freedom of the lasso
 
 ## ☠️ - Effective degrees of freedom of best subset
 
-## Pathwise coordinate optimization
 
-```{r}
-# l = 10
-#
-# my_ridge(X, y, lambda = l)
-# coef(glmnet(X, y, alpha = 0, lambda = l/n, thresh = 1e-20))
-#
-# y_std <-  scale(y, center=TRUE, scale=sd(y)*sqrt((n-1)/n) )[,]
-# my_ridge(X, y_std, lambda = l, standardize = TRUE)
-# as.numeric(coef(glmnet(X, y_std, alpha=0, lambda = l/(n), thresh = 1e-20)))
-```
+## A comparison between pcr, ridge, and lasso
 
+## The estimated coefficients
 
-```{r}
+## Summary of LARS and lasso
 
-#
+# Elastic net
 
-#
+# Computations
 
-# lambda <- 100
+## Computations for ridge, lasso and elastic net
 
-# XX <- X[,-1] #scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x)  sqrt(mean(x^2) - mean(x)^2)))
+## Convex optimization
 
-# yy <- y #(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2)
+## Coordinate descent
 
-#
+## Pathwise coordinate optimization I
 
-# cv_ridge_fit <- cv.glmnet(XX, yy, family = "gaussian", standardize = FALSE, lambda = exp(seq(-10, 12, length = 500)),
+## Pathwise coordinate optimization II
 
-#                     alpha = 0, thresh = 1e-16)
+## Pathwise coordinate optimization III
 
-# plot(cv_ridge_fit)
+# Generalized linear models
 
-#
+## Best subset for GLMs
 
-# c(solve((crossprod(XX) + lambda * diag(p-1)), crossprod(XX, yy)))
+## Principal components regression for GLMs
 
-# c(coef(fit_ridge)[-1, ])
-```
+## Shrinkage methods for GLMs
 
-```{r}
+## Quadratic approximations
 
-# plot(log(cv_ridge_fit$lambda), cv_ridge_fit$cvm, type = "l")
+## Main references
 
-# plot(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),
+-   [Main references]{.blue}
+    -   **Chapter 3** of Azzalini, A. and Scarpa, B. (2011), [*Data
+        Analysis and Data
+        Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
+        University Press.
+    -   **Chapter 7** of Hastie, T., Tibshirani, R. and Friedman, J.
+        (2009), [*The Elements of Statistical
+        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
+        Edition, Springer.
+        
+## Ridge references
 
-#      cv_ridge_fit$cvm, type = "b", xlab = "Model complexity", ylab = "MSE")
+-   [Specialized references]{.orange}
+    - Hastie, T. (2020). Ridge regularization: an essential concept in data science. *Technometrics*, 62(4), 426-433.
 
-# lines(1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda, X[, -1]),
+## Lasso and LARS references
 
-#       cv_ridge_fit$cvup, type = "b", xlab = "Model complexity", ylab = "MSE", lty = "dashed", col = "red")
-
-#
-
-# 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.min, X[, -1])
-
-# 1 + df_ridge(nrow(X[, -1]) * cv_ridge_fit$lambda.1se, X[, -1])
-
-#
-
-# ridge_fit <- cv_ridge_fit$glmnet.fit
-
-# coef(ridge_fit)
-
-# plot(ridge_fit, , label = TRUE)
-```
+## Other references
 
 
 
@@ -1586,18 +1605,3 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 <!-- ::: -->
 
-# Generalized linear models
-
-## References
-
--   [Main references]{.blue}
-    -   **Chapter 3** of Azzalini, A. and Scarpa, B. (2011), [*Data
-        Analysis and Data
-        Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
-        University Press.
-    -   **Chapter 7** of Hastie, T., Tibshirani, R. and Friedman, J.
-        (2009), [*The Elements of Statistical
-        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
-        Edition, Springer.
--   [Specialized references]{.orange}
-    - Hastie, T. (2020). Ridge regularization: an essential concept in data science. *Technometrics*, 62(4), 426-433.

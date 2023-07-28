@@ -112,29 +112,56 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
   <li><a href="#a-historical-perspective-i" id="toc-a-historical-perspective-i" class="nav-link" data-scroll-target="#a-historical-perspective-i">☠️ - A historical perspective I</a></li>
   <li><a href="#a-historical-perspective-ii" id="toc-a-historical-perspective-ii" class="nav-link" data-scroll-target="#a-historical-perspective-ii">☠️ - A historical perspective II</a></li>
+  <li><a href="#a-historical-perspective-iii" id="toc-a-historical-perspective-iii" class="nav-link" data-scroll-target="#a-historical-perspective-iii">☠️ - A historical perspective III</a></li>
   <li><a href="#on-the-choice-of-lambda" id="toc-on-the-choice-of-lambda" class="nav-link" data-scroll-target="#on-the-choice-of-lambda">On the choice of <span class="math inline">\lambda</span></a></li>
   <li><a href="#effective-degrees-of-freedom-i" id="toc-effective-degrees-of-freedom-i" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-i">Effective degrees of freedom I</a></li>
   <li><a href="#effective-degrees-of-freedom-ii" id="toc-effective-degrees-of-freedom-ii" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-ii">Effective degrees of freedom II</a></li>
   <li><a href="#effective-degrees-of-freedom-iii" id="toc-effective-degrees-of-freedom-iii" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-iii">Effective degrees of freedom III</a></li>
   <li><a href="#cross-validation-for-ridge-regression-i" id="toc-cross-validation-for-ridge-regression-i" class="nav-link" data-scroll-target="#cross-validation-for-ridge-regression-i">Cross-validation for ridge regression I</a></li>
   <li><a href="#cross-validation-for-ridge-regression-ii" id="toc-cross-validation-for-ridge-regression-ii" class="nav-link" data-scroll-target="#cross-validation-for-ridge-regression-ii">Cross-validation for ridge regression II</a></li>
-  <li><a href="#leave-one-out-cross-validation" id="toc-leave-one-out-cross-validation" class="nav-link" data-scroll-target="#leave-one-out-cross-validation">Leave-one-out cross-validation</a></li>
   <li><a href="#the-ridge-estimate" id="toc-the-ridge-estimate" class="nav-link" data-scroll-target="#the-ridge-estimate">The ridge estimate</a></li>
   <li><a href="#summary-of-ridge-regression" id="toc-summary-of-ridge-regression" class="nav-link" data-scroll-target="#summary-of-ridge-regression">Summary of ridge regression</a></li>
   </ul></li>
   <li><a href="#the-lasso" id="toc-the-lasso" class="nav-link" data-scroll-target="#the-lasso">The lasso</a>
   <ul class="collapse">
+  <li><a href="#looking-for-sparsity" id="toc-looking-for-sparsity" class="nav-link" data-scroll-target="#looking-for-sparsity">Looking for sparsity</a></li>
   <li><a href="#the-lasso-regularization-method" id="toc-the-lasso-regularization-method" class="nav-link" data-scroll-target="#the-lasso-regularization-method">The lasso regularization method</a></li>
-  </ul></li>
-  <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic net</a>
-  <ul class="collapse">
-  <li><a href="#a-comparison-between-ridge-lasso-and-elastic-net" id="toc-a-comparison-between-ridge-lasso-and-elastic-net" class="nav-link" data-scroll-target="#a-comparison-between-ridge-lasso-and-elastic-net">A comparison between ridge, lasso and elastic net</a></li>
+  <li><a href="#lagrange-multipliers-and-lasso-solution" id="toc-lagrange-multipliers-and-lasso-solution" class="nav-link" data-scroll-target="#lagrange-multipliers-and-lasso-solution">Lagrange multipliers and lasso solution</a></li>
+  <li><a href="#the-geometry-of-the-lasso-solution" id="toc-the-geometry-of-the-lasso-solution" class="nav-link" data-scroll-target="#the-geometry-of-the-lasso-solution">The geometry of the lasso solution</a></li>
+  <li><a href="#single-predictor-i" id="toc-single-predictor-i" class="nav-link" data-scroll-target="#single-predictor-i">Single predictor I</a></li>
+  <li><a href="#single-predictor-ii" id="toc-single-predictor-ii" class="nav-link" data-scroll-target="#single-predictor-ii">Single predictor II</a></li>
+  <li><a href="#the-lasso-path" id="toc-the-lasso-path" class="nav-link" data-scroll-target="#the-lasso-path">The lasso path</a></li>
+  <li><a href="#least-angle-regression-i" id="toc-least-angle-regression-i" class="nav-link" data-scroll-target="#least-angle-regression-i">Least angle regression I</a></li>
+  <li><a href="#least-angle-regression-ii" id="toc-least-angle-regression-ii" class="nav-link" data-scroll-target="#least-angle-regression-ii">Least angle regression II</a></li>
+  <li><a href="#least-angle-regression-lasso-modification" id="toc-least-angle-regression-lasso-modification" class="nav-link" data-scroll-target="#least-angle-regression-lasso-modification">Least angle regression: lasso modification</a></li>
+  <li><a href="#the-maximum-lambda" id="toc-the-maximum-lambda" class="nav-link" data-scroll-target="#the-maximum-lambda">The maximum <span class="math inline">\lambda</span></a></li>
+  <li><a href="#uniqueness-of-the-lasso-solution" id="toc-uniqueness-of-the-lasso-solution" class="nav-link" data-scroll-target="#uniqueness-of-the-lasso-solution">Uniqueness of the lasso solution</a></li>
+  <li><a href="#the-degrees-of-freedom-of-the-lasso" id="toc-the-degrees-of-freedom-of-the-lasso" class="nav-link" data-scroll-target="#the-degrees-of-freedom-of-the-lasso">The degrees of freedom of the lasso</a></li>
   <li><a href="#effective-degrees-of-freedom-of-best-subset" id="toc-effective-degrees-of-freedom-of-best-subset" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-of-best-subset">☠️ - Effective degrees of freedom of best subset</a></li>
-  <li><a href="#pathwise-coordinate-optimization" id="toc-pathwise-coordinate-optimization" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization">Pathwise coordinate optimization</a></li>
+  <li><a href="#a-comparison-between-pcr-ridge-and-lasso" id="toc-a-comparison-between-pcr-ridge-and-lasso" class="nav-link" data-scroll-target="#a-comparison-between-pcr-ridge-and-lasso">A comparison between pcr, ridge, and lasso</a></li>
+  <li><a href="#the-estimated-coefficients" id="toc-the-estimated-coefficients" class="nav-link" data-scroll-target="#the-estimated-coefficients">The estimated coefficients</a></li>
+  <li><a href="#summary-of-lars-and-lasso" id="toc-summary-of-lars-and-lasso" class="nav-link" data-scroll-target="#summary-of-lars-and-lasso">Summary of LARS and lasso</a></li>
+  </ul></li>
+  <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic net</a></li>
+  <li><a href="#computations" id="toc-computations" class="nav-link" data-scroll-target="#computations">Computations</a>
+  <ul class="collapse">
+  <li><a href="#computations-for-ridge-lasso-and-elastic-net" id="toc-computations-for-ridge-lasso-and-elastic-net" class="nav-link" data-scroll-target="#computations-for-ridge-lasso-and-elastic-net">Computations for ridge, lasso and elastic net</a></li>
+  <li><a href="#convex-optimization" id="toc-convex-optimization" class="nav-link" data-scroll-target="#convex-optimization">Convex optimization</a></li>
+  <li><a href="#coordinate-descent" id="toc-coordinate-descent" class="nav-link" data-scroll-target="#coordinate-descent">Coordinate descent</a></li>
+  <li><a href="#pathwise-coordinate-optimization-i" id="toc-pathwise-coordinate-optimization-i" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization-i">Pathwise coordinate optimization I</a></li>
+  <li><a href="#pathwise-coordinate-optimization-ii" id="toc-pathwise-coordinate-optimization-ii" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization-ii">Pathwise coordinate optimization II</a></li>
+  <li><a href="#pathwise-coordinate-optimization-iii" id="toc-pathwise-coordinate-optimization-iii" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization-iii">Pathwise coordinate optimization III</a></li>
   </ul></li>
   <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a>
   <ul class="collapse">
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  <li><a href="#best-subset-for-glms" id="toc-best-subset-for-glms" class="nav-link" data-scroll-target="#best-subset-for-glms">Best subset for GLMs</a></li>
+  <li><a href="#principal-components-regression-for-glms" id="toc-principal-components-regression-for-glms" class="nav-link" data-scroll-target="#principal-components-regression-for-glms">Principal components regression for GLMs</a></li>
+  <li><a href="#shrinkage-methods-for-glms" id="toc-shrinkage-methods-for-glms" class="nav-link" data-scroll-target="#shrinkage-methods-for-glms">Shrinkage methods for GLMs</a></li>
+  <li><a href="#quadratic-approximations" id="toc-quadratic-approximations" class="nav-link" data-scroll-target="#quadratic-approximations">Quadratic approximations</a></li>
+  <li><a href="#main-references" id="toc-main-references" class="nav-link" data-scroll-target="#main-references">Main references</a></li>
+  <li><a href="#ridge-references" id="toc-ridge-references" class="nav-link" data-scroll-target="#ridge-references">Ridge references</a></li>
+  <li><a href="#lasso-and-lars-references" id="toc-lasso-and-lars-references" class="nav-link" data-scroll-target="#lasso-and-lars-references">Lasso and LARS references</a></li>
+  <li><a href="#other-references" id="toc-other-references" class="nav-link" data-scroll-target="#other-references">Other references</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_C_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
@@ -1048,6 +1075,17 @@ Theorem (Theobald, 1974)
 </ul>
 </div>
 </section>
+<section id="a-historical-perspective-iii" class="level2">
+<h2 class="anchored" data-anchor-id="a-historical-perspective-iii">☠️ - A historical perspective III</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/ridge_paper.png" class="img-fluid figure-img" style="width:40.0%"></p>
+</figure>
+</div>
+<ul>
+<li>Figure 1 of the <span class="orange">original paper</span> by Hoerl and Kennard (1970), displaying the bias-variance <span class="blue">trade-off</span>.</li>
+</ul>
+</section>
 <section id="on-the-choice-of-lambda" class="level2">
 <h2 class="anchored" data-anchor-id="on-the-choice-of-lambda">On the choice of <span class="math inline">\lambda</span></h2>
 <ul>
@@ -1145,29 +1183,23 @@ Effective degrees of freedom
 </div>
 </div>
 </div>
-</section>
-<section id="leave-one-out-cross-validation" class="level2">
-<h2 class="anchored" data-anchor-id="leave-one-out-cross-validation">Leave-one-out cross-validation</h2>
-<ul>
-<li>Ridge regression is, like ordinary least squares, a <span class="blue">linear smoother</span>, namely: <span class="math display">
-\bm{X}\hat{\beta}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} = \bm{H}_\text{ridge}\bm{y},
-</span> meaning that a <span class="orange">computational shortcut</span> for LOO-CV can be exploited.</li>
-</ul>
-<div class="callout callout-style-simple callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-LOO-CV (Ridge regression)
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>Let <span class="math inline">\hat{y}_{-i, \text{ridge}} = \bm{x}_i^T\hat{\beta}_{-i, \text{ridge}}</span> be the leave-one-out predictions of a <span class="blue">linear model</span> with a <span class="orange">ridge penalty</span> and let <span class="math inline">h_{i, \text{ridge}} = [\bm{H}_\text{ridge}]_{ii}</span> and <span class="math inline">\hat{y}_i</span> be the leverages and the predictions. Then: <span class="math display">
-y_i - \hat{y}_{-i, \text{ridge}} = \frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}, \qquad i=1,\dots,n.
-</span> Therefore, the leave-one-out mean squared error is <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}\right)^2.</span></p>
-</div>
-</div>
+<!-- ## Leave-one-out cross-validation -->
+<!-- -   Ridge regression is, like ordinary least squares, a [linear smoother]{.blue}, namely: -->
+<!-- $$ -->
+<!-- \bm{X}\hat{\beta}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} = \bm{H}_\text{ridge}\bm{y}, -->
+<!-- $$ -->
+<!-- meaning that a [computational shortcut]{.orange} for LOO-CV can be exploited. -->
+<!-- . . . -->
+<!-- ::: callout-note -->
+<!-- #### LOO-CV (Ridge regression) -->
+<!-- Let $\hat{y}_{-i, \text{ridge}} = \bm{x}_i^T\hat{\beta}_{-i, \text{ridge}}$ be the leave-one-out -->
+<!-- predictions of a [linear model]{.blue} with a [ridge penalty]{.orange} and let $h_{i, \text{ridge}} = [\bm{H}_\text{ridge}]_{ii}$ and -->
+<!-- $\hat{y}_i$ be the leverages and the predictions. Then: $$ -->
+<!-- y_i - \hat{y}_{-i, \text{ridge}} = \frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}, \qquad i=1,\dots,n, -->
+<!-- $$ -->
+<!-- recalling that $\bar{y} = 0$. Therefore, the leave-one-out mean squared error is -->
+<!-- $$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}\right)^2.$$ -->
+<!-- ::: -->
 </section>
 <section id="the-ridge-estimate" class="level2">
 <h2 class="anchored" data-anchor-id="the-ridge-estimate">The ridge estimate</h2>
@@ -1183,24 +1215,130 @@ y_i - \hat{y}_{-i, \text{ridge}} = \frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_
 </section>
 <section id="summary-of-ridge-regression" class="level2">
 <h2 class="anchored" data-anchor-id="summary-of-ridge-regression">Summary of ridge regression</h2>
+<ul>
+<li><p>Trade-off bias variance, variables more correlated are shrinked</p></li>
+<li><p>All variables are used</p></li>
+<li><p>Solution always exists, even when <span class="math inline">p &gt; n</span> or in presence of perfect collinearity.</p></li>
+<li><p>Mention to efficient computations</p></li>
+</ul>
 </section>
 </section>
 <section id="the-lasso" class="level1">
 <h1>The lasso</h1>
+<section id="looking-for-sparsity" class="level2">
+<h2 class="anchored" data-anchor-id="looking-for-sparsity">Looking for sparsity</h2>
+</section>
 <section id="the-lasso-regularization-method" class="level2">
 <h2 class="anchored" data-anchor-id="the-lasso-regularization-method">The lasso regularization method</h2>
 </section>
+<section id="lagrange-multipliers-and-lasso-solution" class="level2">
+<h2 class="anchored" data-anchor-id="lagrange-multipliers-and-lasso-solution">Lagrange multipliers and lasso solution</h2>
 </section>
-<section id="elastic-net" class="level1">
-<h1>Elastic net</h1>
-<section id="a-comparison-between-ridge-lasso-and-elastic-net" class="level2">
-<h2 class="anchored" data-anchor-id="a-comparison-between-ridge-lasso-and-elastic-net">A comparison between ridge, lasso and elastic net</h2>
+<section id="the-geometry-of-the-lasso-solution" class="level2">
+<h2 class="anchored" data-anchor-id="the-geometry-of-the-lasso-solution">The geometry of the lasso solution</h2>
+</section>
+<section id="single-predictor-i" class="level2">
+<h2 class="anchored" data-anchor-id="single-predictor-i">Single predictor I</h2>
+</section>
+<section id="single-predictor-ii" class="level2">
+<h2 class="anchored" data-anchor-id="single-predictor-ii">Single predictor II</h2>
+</section>
+<section id="the-lasso-path" class="level2">
+<h2 class="anchored" data-anchor-id="the-lasso-path">The lasso path</h2>
+</section>
+<section id="least-angle-regression-i" class="level2">
+<h2 class="anchored" data-anchor-id="least-angle-regression-i">Least angle regression I</h2>
+</section>
+<section id="least-angle-regression-ii" class="level2">
+<h2 class="anchored" data-anchor-id="least-angle-regression-ii">Least angle regression II</h2>
+</section>
+<section id="least-angle-regression-lasso-modification" class="level2">
+<h2 class="anchored" data-anchor-id="least-angle-regression-lasso-modification">Least angle regression: lasso modification</h2>
+</section>
+<section id="the-maximum-lambda" class="level2">
+<h2 class="anchored" data-anchor-id="the-maximum-lambda">The maximum <span class="math inline">\lambda</span></h2>
+</section>
+<section id="uniqueness-of-the-lasso-solution" class="level2">
+<h2 class="anchored" data-anchor-id="uniqueness-of-the-lasso-solution">Uniqueness of the lasso solution</h2>
+</section>
+<section id="the-degrees-of-freedom-of-the-lasso" class="level2">
+<h2 class="anchored" data-anchor-id="the-degrees-of-freedom-of-the-lasso">The degrees of freedom of the lasso</h2>
 </section>
 <section id="effective-degrees-of-freedom-of-best-subset" class="level2">
 <h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-of-best-subset">☠️ - Effective degrees of freedom of best subset</h2>
 </section>
-<section id="pathwise-coordinate-optimization" class="level2">
-<h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization">Pathwise coordinate optimization</h2>
+<section id="a-comparison-between-pcr-ridge-and-lasso" class="level2">
+<h2 class="anchored" data-anchor-id="a-comparison-between-pcr-ridge-and-lasso">A comparison between pcr, ridge, and lasso</h2>
+</section>
+<section id="the-estimated-coefficients" class="level2">
+<h2 class="anchored" data-anchor-id="the-estimated-coefficients">The estimated coefficients</h2>
+</section>
+<section id="summary-of-lars-and-lasso" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-lars-and-lasso">Summary of LARS and lasso</h2>
+</section>
+</section>
+<section id="elastic-net" class="level1">
+<h1>Elastic net</h1>
+</section>
+<section id="computations" class="level1">
+<h1>Computations</h1>
+<section id="computations-for-ridge-lasso-and-elastic-net" class="level2">
+<h2 class="anchored" data-anchor-id="computations-for-ridge-lasso-and-elastic-net">Computations for ridge, lasso and elastic net</h2>
+</section>
+<section id="convex-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="convex-optimization">Convex optimization</h2>
+</section>
+<section id="coordinate-descent" class="level2">
+<h2 class="anchored" data-anchor-id="coordinate-descent">Coordinate descent</h2>
+</section>
+<section id="pathwise-coordinate-optimization-i" class="level2">
+<h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization-i">Pathwise coordinate optimization I</h2>
+</section>
+<section id="pathwise-coordinate-optimization-ii" class="level2">
+<h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization-ii">Pathwise coordinate optimization II</h2>
+</section>
+<section id="pathwise-coordinate-optimization-iii" class="level2">
+<h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization-iii">Pathwise coordinate optimization III</h2>
+</section>
+</section>
+<section id="generalized-linear-models" class="level1">
+<h1>Generalized linear models</h1>
+<section id="best-subset-for-glms" class="level2">
+<h2 class="anchored" data-anchor-id="best-subset-for-glms">Best subset for GLMs</h2>
+</section>
+<section id="principal-components-regression-for-glms" class="level2">
+<h2 class="anchored" data-anchor-id="principal-components-regression-for-glms">Principal components regression for GLMs</h2>
+</section>
+<section id="shrinkage-methods-for-glms" class="level2">
+<h2 class="anchored" data-anchor-id="shrinkage-methods-for-glms">Shrinkage methods for GLMs</h2>
+</section>
+<section id="quadratic-approximations" class="level2">
+<h2 class="anchored" data-anchor-id="quadratic-approximations">Quadratic approximations</h2>
+</section>
+<section id="main-references" class="level2">
+<h2 class="anchored" data-anchor-id="main-references">Main references</h2>
+<ul>
+<li><span class="blue">Main references</span>
+<ul>
+<li><strong>Chapter 3</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
+<li><strong>Chapter 7</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+</ul></li>
+</ul>
+</section>
+<section id="ridge-references" class="level2">
+<h2 class="anchored" data-anchor-id="ridge-references">Ridge references</h2>
+<ul>
+<li><span class="orange">Specialized references</span>
+<ul>
+<li>Hastie, T. (2020). Ridge regularization: an essential concept in data science. <em>Technometrics</em>, 62(4), 426-433.</li>
+</ul></li>
+</ul>
+</section>
+<section id="lasso-and-lars-references" class="level2">
+<h2 class="anchored" data-anchor-id="lasso-and-lars-references">Lasso and LARS references</h2>
+</section>
+<section id="other-references" class="level2">
+<h2 class="anchored" data-anchor-id="other-references">Other references</h2>
 <!-- # Lasso, LARS, and elastic-net -->
 <!-- ## Lasso -->
 <!-- ::: columns -->
@@ -1259,23 +1397,6 @@ y_i - \hat{y}_{-i, \text{ridge}} = \frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_
 <!--   ) -->
 <!-- ``` -->
 <!-- ::: -->
-</section>
-</section>
-<section id="generalized-linear-models" class="level1">
-<h1>Generalized linear models</h1>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<ul>
-<li><span class="blue">Main references</span>
-<ul>
-<li><strong>Chapter 3</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
-<li><strong>Chapter 7</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
-</ul></li>
-<li><span class="orange">Specialized references</span>
-<ul>
-<li>Hastie, T. (2020). Ridge regularization: an essential concept in data science. <em>Technometrics</em>, 62(4), 426-433.</li>
-</ul></li>
-</ul>
 </section>
 </section>
 
