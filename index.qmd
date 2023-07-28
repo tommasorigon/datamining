@@ -50,32 +50,30 @@ Università degli Studi di Milano-Bicocca.
 
 ### Slides and lecture notes
 
-If you would like to convert the html slides into pdf files, please
-[follow the instruction of the quarto
-documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf).
+The slides are meant to be used in HTML. However, if you *really* want
+to convert the HTML slides into pdf files, you can [follow the instruction of the quarto documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf).
 
-| Topic                                  | Notes                             | Slides                                   | Code                  |
+| Topic                                  | Notes                                | Slides                                             | Code                  |
 |------------------|------------------|-------------------|------------------|
-| **Introduction**                       | [Introduction](slides/un_intro.html)                         | [Slides introduction](slides/un_intro_slides.html)                         |                       |
-| **A-B-C**                              | [Unit A](slides/un_A.html)        | [Slides Unit A](slides/un_A_slides.html) | [Code A](code/un_A.R) |
-| Lab 1                                  | \[Code Lab 1\]                    |                                          |                       |
-| *Exercises*                            | [Exercises A](exe/exe_A.html)     |                                          |                       |
-| **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)        | [Slides Unit B](slides/un_B_slides.html) | [Code B](code/un_B.R) |
-| *Exercises*                            | [Exercises B](exe/exe_B.qmd.html) |                                          |                       |
-| Lab 2                                  | \[Code Lab 2\]                    |                                          |                       |
-| **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)        | [Slides Unit C](slides/un_C_slides.html) | [Code C](code/un_C.R) |
-| *Exercises*                            | [Exercises C](exe/exe_C.html)     |                                          |                       |
-| Lab 3                                  | \[Code Lab 3\]                    |                                          |                       |
-| **Nonparametric estimation**           | \[Unit D\]                        | \[Slides Unit D\]                        |                       |
-| *Exercises*                            | \[Exercises 4\]                   |                                          |                       |
-| Lab 4                                  | \[Code Lab 4\]                    |                                          |                       |
-| **The curse of dimensionality**        | \[Unit E\]                        | \[Slides Unit E\]                        |                       |
-| **Additive models**                    | \[Unit F\]                        | \[Slides Unit F\]                        |                       |
-| *Exercises*                            | \[Exercises 5\]                   |                                          |                       |
-| Lab 5                                  | \[Code Lab 5\]                    |                                          |                       |
-| Lab 6                                  | \[Code Lab 6\]                    |                                          |                       |
-| **The scientific culture**                    | \[Unit G\]                        | \[Slides Unit G\]                        |                       |
-
+| **Introduction**                       | [Introduction](slides/un_intro.html) | [Slides introduction](slides/un_intro_slides.html) |                       |
+| **A-B-C**                              | [Unit A](slides/un_A.html)           | [Slides Unit A](slides/un_A_slides.html)           | [Code A](code/un_A.R) |
+| Lab 1                                  | \[Lab 1\]                            |                                                    | \[Code Lab 1\]        |
+| *Exercises*                            | [Exercises A](exe/exe_A.html)        |                                                    |                       |
+| **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)           | [Slides Unit B](slides/un_B_slides.html)           | [Code B](code/un_B.R) |
+| *Exercises*                            | [Exercises B](exe/exe_B.qmd.html)    |                                                    |                       |
+| Lab 2                                  | \[Lab 2\]                            |                                                    | \[Code Lab 2\]        |
+| **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html)           | [Code C](code/un_C.R) |
+| *Exercises*                            | [Exercises C](exe/exe_C.html)        |                                                    |                       |
+| Lab 3                                  | \[Lab 3\]                            |                                                    | \[Code Lab 3\]        |
+| **Nonparametric estimation**           | \[Unit D\]                           | \[Slides Unit D\]                                  |                       |
+| *Exercises*                            | \[Exercises 4\]                      |                                                    |                       |
+| Lab 4                                  | \[Lab 4\]                            |                                                    | \[Code Lab 4\]        |
+| **The curse of dimensionality**        | \[Unit E\]                           | \[Slides Unit E\]                                  |                       |
+| **Additive models**                    | \[Unit F\]                           | \[Slides Unit F\]                                  |                       |
+| *Exercises*                            | \[Exercises 5\]                      |                                                    |                       |
+| Lab 5                                  | \[Lab 5\]                            |                                                    | \[Code Lab 5\]        |
+| Lab 6                                  | \[Lab 6\]                            |                                                    | \[Code Lab 6\]        |
+| **The scientific culture**             | \[Unit G\]                           | \[Slides Unit G\]                                  |                       |
 
 ## Prerequisites
 
