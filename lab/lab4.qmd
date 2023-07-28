@@ -256,6 +256,4 @@ p1 <- predict(s1, x = newx$x)
 lines(p1, col = 4)
 
 # ESERCIZIO: provare tutto con i "dati di ieri e di domani" (vd. libro) selezionando il parametro di lisciamento sia tramite convalida incrociata sia tramite insieme di stima e verifica
-
 ```
-
