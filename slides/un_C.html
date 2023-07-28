@@ -70,7 +70,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-regression-framework" id="toc-the-regression-framework" class="nav-link" data-scroll-target="#the-regression-framework">The regression framework</a></li>
   <li><a href="#the-variable-selection-problem" id="toc-the-variable-selection-problem" class="nav-link" data-scroll-target="#the-variable-selection-problem">The variable selection problem</a></li>
   <li><a href="#a-naïve-approach-abusing-p-values" id="toc-a-naïve-approach-abusing-p-values" class="nav-link" data-scroll-target="#a-naïve-approach-abusing-p-values">A naïve approach: (ab)using p-values</a></li>
-  <li><a href="#to-explain-or-to-predict" id="toc-to-explain-or-to-predict" class="nav-link" data-scroll-target="#to-explain-or-to-predict">To explain or to predict?</a></li>
+  <li><a href="#the-predictive-culture" id="toc-the-predictive-culture" class="nav-link" data-scroll-target="#the-predictive-culture">The predictive culture</a></li>
   <li><a href="#best-subset-selection" id="toc-best-subset-selection" class="nav-link" data-scroll-target="#best-subset-selection">Best subset selection</a>
   <ul class="collapse">
   <li><a href="#best-subset-selection-1" id="toc-best-subset-selection-1" class="nav-link" data-scroll-target="#best-subset-selection-1">Best subset selection</a></li>
@@ -106,7 +106,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#lagrange-multipliers-and-ridge-solution" id="toc-lagrange-multipliers-and-ridge-solution" class="nav-link" data-scroll-target="#lagrange-multipliers-and-ridge-solution">Lagrange multipliers and ridge solution</a></li>
   <li><a href="#the-geometry-of-the-ridge-solution" id="toc-the-geometry-of-the-ridge-solution" class="nav-link" data-scroll-target="#the-geometry-of-the-ridge-solution">The geometry of the ridge solution</a></li>
   <li><a href="#the-ridge-path" id="toc-the-ridge-path" class="nav-link" data-scroll-target="#the-ridge-path">The ridge path</a></li>
-  <li><a href="#comments-and-criticism" id="toc-comments-and-criticism" class="nav-link" data-scroll-target="#comments-and-criticism">Comments and criticism</a></li>
+  <li><a href="#comments-on-the-ridge-path" id="toc-comments-on-the-ridge-path" class="nav-link" data-scroll-target="#comments-on-the-ridge-path">Comments on the ridge path</a></li>
   <li><a href="#shrinkage-effect-of-ridge-regression-i" id="toc-shrinkage-effect-of-ridge-regression-i" class="nav-link" data-scroll-target="#shrinkage-effect-of-ridge-regression-i">Shrinkage effect of ridge regression I</a></li>
   <li><a href="#shrinkage-effect-of-ridge-regression-ii" id="toc-shrinkage-effect-of-ridge-regression-ii" class="nav-link" data-scroll-target="#shrinkage-effect-of-ridge-regression-ii">Shrinkage effect of ridge regression II</a></li>
   <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
@@ -116,13 +116,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#effective-degrees-of-freedom-i" id="toc-effective-degrees-of-freedom-i" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-i">Effective degrees of freedom I</a></li>
   <li><a href="#effective-degrees-of-freedom-ii" id="toc-effective-degrees-of-freedom-ii" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-ii">Effective degrees of freedom II</a></li>
   <li><a href="#effective-degrees-of-freedom-iii" id="toc-effective-degrees-of-freedom-iii" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-iii">Effective degrees of freedom III</a></li>
-  <li><a href="#effective-degrees-of-freedom-of-best-subset" id="toc-effective-degrees-of-freedom-of-best-subset" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-of-best-subset">☠️ - Effective degrees of freedom of best subset</a></li>
   <li><a href="#cross-validation-for-ridge-regression-i" id="toc-cross-validation-for-ridge-regression-i" class="nav-link" data-scroll-target="#cross-validation-for-ridge-regression-i">Cross-validation for ridge regression I</a></li>
   <li><a href="#cross-validation-for-ridge-regression-ii" id="toc-cross-validation-for-ridge-regression-ii" class="nav-link" data-scroll-target="#cross-validation-for-ridge-regression-ii">Cross-validation for ridge regression II</a></li>
   <li><a href="#leave-one-out-cross-validation" id="toc-leave-one-out-cross-validation" class="nav-link" data-scroll-target="#leave-one-out-cross-validation">Leave-one-out cross-validation</a></li>
   <li><a href="#the-ridge-estimate" id="toc-the-ridge-estimate" class="nav-link" data-scroll-target="#the-ridge-estimate">The ridge estimate</a></li>
-  <li><a href="#the-p-n-case-i" id="toc-the-p-n-case-i" class="nav-link" data-scroll-target="#the-p-n-case-i">The <span class="math inline">p &gt; n</span> case I</a></li>
-  <li><a href="#the-p-n-case-ii" id="toc-the-p-n-case-ii" class="nav-link" data-scroll-target="#the-p-n-case-ii">The <span class="math inline">p &gt; n</span> case II</a></li>
   <li><a href="#summary-of-ridge-regression" id="toc-summary-of-ridge-regression" class="nav-link" data-scroll-target="#summary-of-ridge-regression">Summary of ridge regression</a></li>
   </ul></li>
   <li><a href="#the-lasso" id="toc-the-lasso" class="nav-link" data-scroll-target="#the-lasso">The lasso</a>
@@ -131,7 +128,8 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic net</a>
   <ul class="collapse">
-  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#a-comparison-between-ridge-lasso-and-elastic-net" id="toc-a-comparison-between-ridge-lasso-and-elastic-net" class="nav-link" data-scroll-target="#a-comparison-between-ridge-lasso-and-elastic-net">A comparison between ridge, lasso and elastic net</a></li>
+  <li><a href="#effective-degrees-of-freedom-of-best-subset" id="toc-effective-degrees-of-freedom-of-best-subset" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-of-best-subset">☠️ - Effective degrees of freedom of best subset</a></li>
   <li><a href="#pathwise-coordinate-optimization" id="toc-pathwise-coordinate-optimization" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization">Pathwise coordinate optimization</a></li>
   </ul></li>
   <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a>
@@ -289,7 +287,7 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </span> where <span class="math inline">\epsilon_i</span> are <span class="orange">iid</span> random variables with <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span> and <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>.</p></li>
 <li><p>Unless specifically stated, we will <span class="orange">not</span> assume the <span class="orange">Gaussianity</span> of the errors <span class="math inline">\epsilon_i</span> nor make any specific assumption about <span class="math inline">f(\bm{x})</span>, which could be <span class="blue">non-linear</span>.</p></li>
-<li><p>For practical convenience, we <span class="orange">approximate</span> the true <span class="math inline">f(\bm{x})</span> using a <span class="blue">linear model</span>, e.g.&nbsp;by considering the following function<span class="math display">
+<li><p>In practice, we <span class="orange">approximate</span> the true <span class="math inline">f(\bm{x})</span> using a <span class="blue">linear model</span>, e.g.&nbsp;by considering the following function<span class="math display">
     f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta,
     </span> in which the regression coefficients must be estimated.</p></li>
 <li><p>In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use a slightly different notation compared to <a href="unit_A.html">Unit A</a>.</p></li>
@@ -311,6 +309,9 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <ul>
 <li><p>If we use all the <span class="math inline">p = 8</span> available covariates, the estimated <span class="math inline">f(\bm{x}; \hat{\beta_0}, \hat{\beta})</span> might have a <span class="orange">high variance</span>, without important gain in term of bias, i.e.&nbsp;a <span class="blue">large mean squared error</span>.</p></li>
 <li><p>We are looking for a <span class="orange">simpler model</span> having, hopefully, a lower mean squared error.</p></li>
+</ul>
+<ul>
+<li>These considerations are particularly relevant in cases in which <span class="math inline">p &gt; n</span>!</li>
 </ul>
 </section>
 <section id="a-naïve-approach-abusing-p-values" class="level2">
@@ -399,34 +400,36 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </div>
 </div>
 </div>
-<div class="incremental">
-<ul class="incremental">
-<li><p>It is common practice to use the <span class="orange">p-values</span>, e.g.&nbsp;those obtained through the <code>summary</code> function, to perform <span class="blue">model selection</span> in a stepwise fashion. <!-- -   A typical procedure is to omit "non significant" coefficients, refit --> <!--     the model, and repeat this scheme until we obtain only "significant" --> <!--     coefficients. --></p></li>
-<li><p>This is <span class="orange">not a good idea</span>, at least when done without appropriate <span class="blue">multiplicity corrections</span>.</p></li>
+<ul>
+<li><p>It is common practice to use the <span class="orange">p-values</span> to perform <span class="blue">model selection</span> in a stepwise fashion.</p></li>
+<li><p>However, what if the true <span class="math inline">f(\bm{x})</span> were not linear?</p></li>
+<li><p>In many data mining problems, a <span class="blue">linear model</span> is simply an approximation of the unknown <span class="math inline">f(\bm{x})</span> and hypothesis testing procedures are ill-posed.</p></li>
+</ul>
+<ul>
+<li><p>Even if the true function were linear, using p-values would <span class="orange">not be a good idea</span>, at least if done without appropriate <span class="blue">multiplicity corrections</span>.</p></li>
 <li><p>The above p-values are meant to be used in the context of a single hypothesis testing problem, <span class="orange">not</span> to make <span class="orange">iterative choices</span>.</p></li>
 </ul>
-<!-- -   Such an iterative usage of "univariate" p-values is formally [incorrect]{.orange} -->
-<!--     because it leads to the well-known [multiple testing -->
-<!--     problem]{.blue}. -->
-</div>
 </section>
-<section id="to-explain-or-to-predict" class="level2">
-<h2 class="anchored" data-anchor-id="to-explain-or-to-predict">To explain or to predict?</h2>
+<section id="the-predictive-culture" class="level2">
+<h2 class="anchored" data-anchor-id="the-predictive-culture">The predictive culture</h2>
+<div class="columns">
+<div class="column" style="width:25%;">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><img src="img/box.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">George E. P. Box</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:75%;">
 <ul>
-<li>“<em>All models are approximations. Essentially, all models are wrong, but some are useful</em>.” George E. P. Box</li>
-</ul>
-<ul>
+<li><p>“<em>All models are approximations. Essentially, all models are wrong, but some are useful</em>.”</p>
+<p><span class="grey">George E. P. Box</span></p></li>
 <li><p>If the <span class="blue">focus</span> is on <span class="blue">prediction</span>, we do not necessarily care about selecting the “true” set of parameters.</p></li>
 <li><p>In many data mining problems, the focus is on <span class="orange">minimizing</span> the <span class="orange">prediction errors</span>.</p></li>
+<li><p>Hence, often times we may <span class="blue">accept some bias</span> (i.e.&nbsp;we use a “wrong” but useful model), if this leads to a <span class="orange">reduction in variance</span>.</p></li>
 </ul>
-<ul>
-<li>Hence, often times we may <span class="blue">accept some bias</span> (i.e.&nbsp;we use a “wrong” but useful model), if this leads to a <span class="orange">reduction in variance</span>.</li>
-</ul>
-<ul>
-<li><p>Besides, in certain cases it does not make much sense to speak about the “true parameters”.</p></li>
-<li><p>For example, what if the true <span class="math inline">f(\bm{x})</span> were not linear?</p></li>
-<li><p>In this context, a <span class="blue">linear model</span> is simply an approximation of the unknown <span class="math inline">f(\bm{x})</span> and hypothesis testing procedures are ill-posed.</p></li>
-</ul>
+</div>
+</div>
 </section>
 <section id="best-subset-selection" class="level1">
 <h1>Best subset selection</h1>
@@ -860,7 +863,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </ul>
 <ul>
 <li><p>When <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{ridge}</span> are explicitly <span class="orange">shrinked</span>, i.e.&nbsp;biased, <span class="orange">towards zero</span>.</p></li>
-<li><p>On the other hand, if <span class="math inline">s</span> is large enough, then <span class="math inline">\hat{\beta}_\text{ridge}</span> is equivalent to <span class="math inline">\hat{\beta}</span>.</p></li>
+<li><p>On the other hand, if <span class="math inline">s</span> is large enough, then <span class="math inline">\hat{\beta}_\text{ridge}</span> is equivalent to <span class="math inline">\hat{\beta}_\text{ols}</span>.</p></li>
 </ul>
 <ul>
 <li>In ridge regression, the <span class="orange">variability</span> of the estimator is explicitly <span class="orange">bounded</span>, although this comes with some <span class="blue">bias</span>. The parameter <span class="math inline">s</span> controls the bias-variance trade-off.</li>
@@ -892,7 +895,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>. It holds that <span class="math inline">s = ||\hat{\beta}_\text{ridge} ||^2</span>.</li>
 </ul>
 <ul>
-<li>When <span class="math inline">\lambda = 0</span> then <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}</span> whereas when <span class="math inline">\lambda \rightarrow \infty</span> we get <span class="math inline">\hat{\beta}_\text{ridge} = 0</span>.</li>
+<li>When <span class="math inline">\lambda = 0</span> then <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}</span> whereas when <span class="math inline">\lambda \rightarrow \infty</span> we get <span class="math inline">\hat{\beta}_\text{ridge} = 0</span>.</li>
 </ul>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -906,7 +909,7 @@ Ridge regression estimator
 <div class="callout-body-container callout-body">
 <p>For any <span class="math inline">n\times p</span> design matrix <span class="math inline">\bm{X}</span>, not necessarily of full-rank, the ridge estimator is <span class="math display">
 \hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y}.
-</span> Such an estimator <span class="blue">always exists</span> and is <span class="orange">unique</span>.</p>
+</span> Such an estimator <span class="blue">always exists</span> and is <span class="orange">unique</span> (even when <span class="math inline">p &gt; n</span>).</p>
 </div>
 </div>
 <!-- ## Mathematical details -->
@@ -942,10 +945,18 @@ Ridge regression estimator
 </div>
 </div>
 </section>
-<section id="comments-and-criticism" class="level2">
-<h2 class="anchored" data-anchor-id="comments-and-criticism">Comments and criticism</h2>
+<section id="comments-on-the-ridge-path" class="level2">
+<h2 class="anchored" data-anchor-id="comments-on-the-ridge-path">Comments on the ridge path</h2>
 <ul>
-<li>Which parameters are shrinked to zero? At which speed?</li>
+<li><p>The values of <span class="math inline">\lambda</span> are in somewhat <span class="orange">arbitrary scale</span>. The ridge penalty has a concrete effect starting from <span class="math inline">\lambda / n &gt; 0.1</span> or so.</p></li>
+<li><p>The variable <code>lcavol</code> is arguably the most important, followed by <code>lweight</code> and <code>svi</code>, being the one that receive less shrinkage compared to the others.</p></li>
+</ul>
+<ul>
+<li><p>The coefficient of <code>age</code>, <code>gleason</code> and <code>lcp</code>, is negative at the beginning and then become positive for large values of <span class="math inline">\lambda</span>.</p></li>
+<li><p>This indicate that their negative value in <span class="math inline">\hat{\beta}_\text{ols}</span> was probably a consequence of their <span class="orange">correlation</span> with other variables.</p></li>
+</ul>
+<ul>
+<li>There is an interesting similarity between this plot and the one of principal component regression… is it a coincidence?</li>
 </ul>
 </section>
 <section id="shrinkage-effect-of-ridge-regression-i" class="level2">
@@ -985,12 +996,12 @@ Ridge regression estimator
 <section id="bias-variance-trade-off" class="level2">
 <h2 class="anchored" data-anchor-id="bias-variance-trade-off">Bias-variance trade-off</h2>
 <ul>
-<li>The ridge regression <span class="orange">add some bias</span> in the estimates, but it has the advantage of <span class="blue">reducing</span> their <span class="blue">variance</span>.</li>
+<li>The ridge regression <span class="orange">add some bias</span> to the estimates, but it <span class="blue">reduces</span> their <span class="blue">variance</span>.</li>
 </ul>
 <ul>
 <li>The <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{ridge}</span>, assuming iid errors <span class="math inline">\epsilon_i</span> with variance <span class="math inline">\sigma^2</span>, results: <span class="math display">
 \text{var}(\hat{\beta}_\text{ridge}) = \sigma^2\sum_{j=1}^p \frac{d_j^2}{(d_j^2 + \lambda)^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T,
-</span> whose diagonal elements are always smaller than those of <span class="math inline">\text{var}(\hat{\beta})</span>.</li>
+</span> whose diagonal elements are always smaller than those of <span class="math inline">\text{var}(\hat{\beta}_\text{ols})</span>.</li>
 </ul>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1002,8 +1013,8 @@ Theorem (Theobald, 1974)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Let us assume that <span class="math inline">y_i = \bm{x}_i^T\beta + \epsilon_i</span>, where <span class="math inline">\epsilon_i</span> are iid errors with variance <span class="math inline">\sigma^2</span>. Then, there exist a <span class="math inline">\lambda &gt; 0</span> such that <span class="math display">
-\mathbb{E}\left(||\hat{\beta}_\text{ridge} - \beta)||^2\right) &lt; \mathbb{E}\left(||\hat{\beta} - \beta||^2\right) = \text{var}(\hat{\beta}).
+<p>Let us <span class="blue">additionally</span> assume that <span class="math inline">y_i = \bm{x}_i^T\beta + \epsilon_i</span>, where <span class="math inline">\epsilon_i</span> are iid errors with variance <span class="math inline">\sigma^2</span>. Then, there exist a <span class="math inline">\lambda &gt; 0</span> such that <span class="math display">
+\mathbb{E}\left(||\hat{\beta}_\text{ridge} - \beta)||^2\right) &lt; \mathbb{E}\left(||\hat{\beta}_\text{ols} - \beta||^2\right) = \text{var}(\hat{\beta}_\text{ols}).
 </span></p>
 </div>
 </div>
@@ -1040,17 +1051,16 @@ Theorem (Theobald, 1974)
 <section id="on-the-choice-of-lambda" class="level2">
 <h2 class="anchored" data-anchor-id="on-the-choice-of-lambda">On the choice of <span class="math inline">\lambda</span></h2>
 <ul>
-<li><p>The <span class="orange">penalty parameter</span> <span class="math inline">\lambda</span> determines the amount of bias and variance of <span class="math inline">\hat{\beta}_\text{ridge}</span>.</p></li>
-<li><p>How do we <span class="blue">estimate</span> <span class="math inline">\lambda</span>? What about selecting <span class="math inline">\lambda</span> so that <span class="math inline">||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2</span> is <span class="blue">minimal</span>?</p></li>
+<li>The <span class="orange">penalty parameter</span> <span class="math inline">\lambda</span> determines the amount of bias and variance of <span class="math inline">\hat{\beta}_\text{ridge}</span> and therefore it must be carefully <span class="blue">estimated</span>.</li>
 </ul>
 <ul>
-<li><p>Minimizing <span class="math inline">||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2</span> over <span class="math inline">\lambda</span>, as suggested in the above bullet point, is a <span class="orange">very bad idea</span>. It would always choose <span class="math inline">\lambda =0</span>!</p></li>
-<li><p><span class="math inline">\lambda</span> is a <span class="blue">complexity</span> parameter and, like the number of covariates, should be selected using <span class="orange">information criteria</span> or training/test and <span class="orange">cross-validation</span>.</p></li>
+<li><p><span class="blue">Minimizing</span> <span class="math inline">||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2</span> over <span class="math inline">\lambda</span> is a <span class="orange">very bad idea</span> and it would always choose <span class="math inline">\lambda =0</span>, corresponding to <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}</span>.</p></li>
+<li><p>Indeed, <span class="math inline">\lambda</span> is a <span class="blue">complexity</span> parameter and, like the number of covariates, should be selected using <span class="orange">information criteria</span> or training/test and <span class="orange">cross-validation</span>.</p></li>
 </ul>
 <ul>
 <li><p>Suppose we wish to use an <span class="blue">information criteria</span> such as the AIC or BIC, of the form <span class="math display">
   \text{IC}(p) = -2 \ell(\hat{\beta}_\text{ridge}) + \text{penalty}(\text{``degrees of freedom"}).
-  </span> However, what do we mean with the <span class="blue">degrees of freedom</span> in this context?</p></li>
+  </span> We need a careful definition of <span class="blue">degrees of freedom</span> that is appropriate in this context.</p></li>
 <li><p>The current definition of degrees of freedom, i.e.&nbsp;the number of <span class="orange">non-zero coefficients</span>, is <span class="orange">not appropriate</span> for ridge regression, because it would be equal to <span class="math inline">p</span> for any value of <span class="math inline">\lambda</span>.</p></li>
 </ul>
 </section>
@@ -1058,8 +1068,8 @@ Theorem (Theobald, 1974)
 <h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-i">Effective degrees of freedom I</h2>
 <ul>
 <li>Let us recall that the <span class="orange">optimism</span> for a generic estimator <span class="math inline">\hat{f}(\bm{x})</span> is defined as the following average of covariances <span class="math display">
-\text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)) \quad  \Longrightarrow \quad \text{Opt}_\text{ols} = \frac{2\sigma^2p}{n}.
-</span></li>
+\text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)),
+</span> which is equal to <span class="math inline">\text{Opt}_\text{ols} = (2\sigma^2p)/ n</span> in <span class="blue">ordinary least squares</span>.</li>
 </ul>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1087,7 +1097,7 @@ Effective degrees of freedom
 <li><p>After some algebra, one finds that the effective degrees of freedom of <span class="orange">ridge regression</span> are <span class="math display">
 \text{df}_\text{ridge} = \text{tr}(\bm{H}_\text{ridge}) = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda},
 </span> where <span class="math inline">\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T</span> is the <span class="orange">hat matrix</span> of ridge regression.</p></li>
-<li><p>Hence, we can <span class="orange">plug-in</span> <span class="math inline">\text{df}_\text{ridge}</span> into the formula of the <span class="blue"><span class="math inline">C_p</span> of Mallows</span>, obtaining <span class="math display">
+<li><p>Using the above result, we can then <span class="orange">plug-in</span> <span class="math inline">\text{df}_\text{ridge}</span> into the formula of the <span class="blue"><span class="math inline">C_p</span> of Mallows</span>: <span class="math display">
   \widehat{\mathrm{ErrF}} = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
   </span> where the residual variance is estimated as <span class="math inline">\hat{\sigma}^2 = (n - \text{df}_\text{ridge})^{-1} \sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2</span>.</p></li>
 </ul>
@@ -1111,14 +1121,17 @@ Effective degrees of freedom
 </div>
 </div>
 </section>
-<section id="effective-degrees-of-freedom-of-best-subset" class="level2">
-<h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-of-best-subset">☠️ - Effective degrees of freedom of best subset</h2>
-</section>
 <section id="cross-validation-for-ridge-regression-i" class="level2">
 <h2 class="anchored" data-anchor-id="cross-validation-for-ridge-regression-i">Cross-validation for ridge regression I</h2>
 <ul>
-<li><p>The 1/n penalty</p></li>
-<li><p>glmnet and rescaling of the input</p></li>
+<li><p>Training / test strategies and <span class="blue">cross-validation</span> are also valid tools for selecting <span class="math inline">\lambda</span>.</p></li>
+<li><p>Most statistical software packages use a slightly <span class="orange">different parametrization</span> for <span class="math inline">\lambda</span>, as they minimize <span class="math display">
+\textcolor{red}{\frac{1}{n}}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \tilde{\lambda} \sum_{j=1}^p\beta_j^2,
+</span> where the penalty parameter <span class="math inline">\tilde{\lambda} = \lambda / n</span>.</p></li>
+</ul>
+<ul>
+<li><p>This parametrization does not alter the estimate of <span class="math inline">\hat{\beta}_\text{ridge}</span> but is more amenable for <span class="blue">cross-validation</span> as the values of <span class="math inline">\tilde{\lambda}</span> can be compared across dataset with <span class="orange">different sample sizes</span>.</p></li>
+<li><p>The R package <code>glmnet</code> uses this convention.</p></li>
 </ul>
 </section>
 <section id="cross-validation-for-ridge-regression-ii" class="level2">
@@ -1136,8 +1149,25 @@ Effective degrees of freedom
 <section id="leave-one-out-cross-validation" class="level2">
 <h2 class="anchored" data-anchor-id="leave-one-out-cross-validation">Leave-one-out cross-validation</h2>
 <ul>
-<li></li>
+<li>Ridge regression is, like ordinary least squares, a <span class="blue">linear smoother</span>, namely: <span class="math display">
+\bm{X}\hat{\beta}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} = \bm{H}_\text{ridge}\bm{y},
+</span> meaning that a <span class="orange">computational shortcut</span> for LOO-CV can be exploited.</li>
 </ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+LOO-CV (Ridge regression)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">\hat{y}_{-i, \text{ridge}} = \bm{x}_i^T\hat{\beta}_{-i, \text{ridge}}</span> be the leave-one-out predictions of a <span class="blue">linear model</span> with a <span class="orange">ridge penalty</span> and let <span class="math inline">h_{i, \text{ridge}} = [\bm{H}_\text{ridge}]_{ii}</span> and <span class="math inline">\hat{y}_i</span> be the leverages and the predictions. Then: <span class="math display">
+y_i - \hat{y}_{-i, \text{ridge}} = \frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}, \qquad i=1,\dots,n.
+</span> Therefore, the leave-one-out mean squared error is <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}\right)^2.</span></p>
+</div>
+</div>
 </section>
 <section id="the-ridge-estimate" class="level2">
 <h2 class="anchored" data-anchor-id="the-ridge-estimate">The ridge estimate</h2>
@@ -1145,17 +1175,11 @@ Effective degrees of freedom
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_C_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="1800"></p>
+<p><img src="un_C_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="1800"></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="the-p-n-case-i" class="level2">
-<h2 class="anchored" data-anchor-id="the-p-n-case-i">The <span class="math inline">p &gt; n</span> case I</h2>
-</section>
-<section id="the-p-n-case-ii" class="level2">
-<h2 class="anchored" data-anchor-id="the-p-n-case-ii">The <span class="math inline">p &gt; n</span> case II</h2>
 </section>
 <section id="summary-of-ridge-regression" class="level2">
 <h2 class="anchored" data-anchor-id="summary-of-ridge-regression">Summary of ridge regression</h2>
@@ -1169,8 +1193,11 @@ Effective degrees of freedom
 </section>
 <section id="elastic-net" class="level1">
 <h1>Elastic net</h1>
-<section id="definition" class="level2">
-<h2 class="anchored" data-anchor-id="definition">Definition</h2>
+<section id="a-comparison-between-ridge-lasso-and-elastic-net" class="level2">
+<h2 class="anchored" data-anchor-id="a-comparison-between-ridge-lasso-and-elastic-net">A comparison between ridge, lasso and elastic net</h2>
+</section>
+<section id="effective-degrees-of-freedom-of-best-subset" class="level2">
+<h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-of-best-subset">☠️ - Effective degrees of freedom of best subset</h2>
 </section>
 <section id="pathwise-coordinate-optimization" class="level2">
 <h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization">Pathwise coordinate optimization</h2>

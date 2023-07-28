@@ -1101,7 +1101,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="comments-on-the-ridge-path" class="slide level2 center">
 <h2>Comments on the ridge path</h2>
 <ul>
-<li><p>The values of <span class="math inline">\lambda</span> are in somewhat <span class="orange">arbitrary scale</span>. The ridge penalty has a concrete effect starting from <span class="math inline">\lambda &gt; 10</span> or so.</p></li>
+<li><p>The values of <span class="math inline">\lambda</span> are in somewhat <span class="orange">arbitrary scale</span>. The ridge penalty has a concrete effect starting from <span class="math inline">\lambda / n &gt; 0.1</span> or so.</p></li>
 <li><p>The variable <code>lcavol</code> is arguably the most important, followed by <code>lweight</code> and <code>svi</code>, being the one that receive less shrinkage compared to the others.</p></li>
 </ul>
 <div class="fragment">
@@ -1183,6 +1183,35 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 </div>
 </section>
+<section id="a-historical-perspective-i" class="slide level2 center">
+<h2>☠️ - A historical perspective I</h2>
+<div>
+<ul>
+<li class="fragment"><p>The ridge regression estimator was originally proposed by Hoerl and Kennard (1970) with a quite different motivation in mind.</p></li>
+<li class="fragment"><p>In linear models, the estimate of <span class="math inline">\beta</span> is obtained by solving the <span class="blue">normal equations</span> <span class="math display">
+(\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
+</span> which could be <span class="orange">ill-conditioned</span>.</p></li>
+<li class="fragment"><p>In other words, the <span class="blue">condition number</span> <span class="math display">
+\kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
+</span> might be very large, leading to <span class="orange">numerical inaccuracies</span>, since the matrix <span class="math inline">\bm{X}^T\bm{X}</span> is <span class="blue">numerically singular</span> and therefore not invertible in practice.</p></li>
+</ul>
+</div>
+</section>
+<section id="a-historical-perspective-ii" class="slide level2 center">
+<h2>☠️ - A historical perspective II</h2>
+<div>
+<ul>
+<li class="fragment"><p>Ridge provides a <span class="blue">remedy</span> for <span class="orange">ill-conditioning</span>, by adding a “ridge” to the diagonal of <span class="math inline">\bm{X}^T\bm{X}</span>, obtaining the modified normal equations <span class="math display">
+(\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
+</span></p></li>
+<li class="fragment"><p>The <span class="orange">condition number</span> of the modified <span class="math inline">(\bm{X}^T\bm{X} + \lambda I_p)</span> matrix becomes <span class="math display">
+\kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
+</span></p></li>
+<li class="fragment"><p>Notice that even if <span class="math inline">d_p = 0</span>, i.e.&nbsp;the matrix <span class="math inline">\bm{X}</span> is <span class="blue">singular</span>, then condition number will be finite as long as <span class="math inline">\lambda &gt; 0</span>.</p></li>
+<li class="fragment"><p>This technique is known as <span class="orange">Tikhonov regularization</span>, after the Russian mathematician Andrey Tikhonov.</p></li>
+</ul>
+</div>
+</section>
 <section id="on-the-choice-of-lambda" class="slide level2 center">
 <h2>On the choice of <span class="math inline">\lambda</span></h2>
 <ul>
@@ -1262,14 +1291,17 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="cross-validation-for-ridge-regression-i" class="slide level2 center">
 <h2>Cross-validation for ridge regression I</h2>
 <ul>
-<li><p>Training/test strategies and <span class="blue">cross-validation</span> are also valid tools for selecting <span class="math inline">\lambda</span>.</p></li>
-<li><p>Most statistical software use a slightly <span class="orange">different parametrization</span> for <span class="math inline">\lambda</span>, as they minimize <span class="math display">
+<li><p>Training / test strategies and <span class="blue">cross-validation</span> are also valid tools for selecting <span class="math inline">\lambda</span>.</p></li>
+<li><p>Most statistical software packages use a slightly <span class="orange">different parametrization</span> for <span class="math inline">\lambda</span>, as they minimize <span class="math display">
 \textcolor{red}{\frac{1}{n}}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \tilde{\lambda} \sum_{j=1}^p\beta_j^2,
-</span> where <span class="math inline">\tilde{\lambda} = \lambda / n</span>.</p></li>
-<li><p>This parametrization is more amenable for cross-validation as the new penalty <span class="math inline">\tilde{\lambda}</span> does not depend on the sample size. The R package <code>glmnet</code> uses this convention.</p></li>
-<li><p>This is mostly a cosmetic variant, but it might have <span class="orange">practical consequences</span> if the selected <span class="math inline">\lambda</span> were identified using a fraction of the data and then the same <span class="math inline">\lambda</span> were used on larger dataset.</p></li>
-<li><p>Conversely, the parameter <span class="math inline">\tilde{\lambda}</span> is not affected by this behavior.</p></li>
+</span> where the penalty parameter <span class="math inline">\tilde{\lambda} = \lambda / n</span>.</p></li>
 </ul>
+<div class="fragment">
+<ul>
+<li><p>This parametrization does not alter the estimate of <span class="math inline">\hat{\beta}_\text{ridge}</span> but is more amenable for <span class="blue">cross-validation</span> as the values of <span class="math inline">\tilde{\lambda}</span> can be compared across dataset with <span class="orange">different sample sizes</span>.</p></li>
+<li><p>The R package <code>glmnet</code> uses this convention.</p></li>
+</ul>
+</div>
 </section>
 <section id="cross-validation-for-ridge-regression-ii" class="slide level2 center">
 <h2>Cross-validation for ridge regression II</h2>
@@ -1278,44 +1310,31 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="leave-one-out-cross-validation" class="slide level2 center">
 <h2>Leave-one-out cross-validation</h2>
 <ul>
-<li></li>
+<li>Ridge regression is, like ordinary least squares, a <span class="blue">linear smoother</span>, namely: <span class="math display">
+\bm{X}\hat{\beta}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} = \bm{H}_\text{ridge}\bm{y},
+</span> meaning that a <span class="orange">computational shortcut</span> for LOO-CV can be exploited.</li>
 </ul>
+<div class="fragment">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>LOO-CV (Ridge regression)</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\hat{y}_{-i, \text{ridge}} = \bm{x}_i^T\hat{\beta}_{-i, \text{ridge}}</span> be the leave-one-out predictions of a <span class="blue">linear model</span> with a <span class="orange">ridge penalty</span> and let <span class="math inline">h_{i, \text{ridge}} = [\bm{H}_\text{ridge}]_{ii}</span> and <span class="math inline">\hat{y}_i</span> be the leverages and the predictions. Then: <span class="math display">
+y_i - \hat{y}_{-i, \text{ridge}} = \frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}, \qquad i=1,\dots,n.
+</span> Therefore, the leave-one-out mean squared error is <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}\right)^2.</span></p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="the-ridge-estimate" class="slide level2 center">
 <h2>The ridge estimate</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-25-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-26-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="summary-of-ridge-regression" class="slide level2 center">
 <h2>Summary of ridge regression</h2>
-</section>
-<section id="a-historical-perspective-i" class="slide level2 center">
-<h2>☠️ - A historical perspective I</h2>
-<div>
-<ul>
-<li class="fragment"><p>The ridge regression estimator was originally proposed by Hoerl and Kennard (1970) with a quite different motivation in mind.</p></li>
-<li class="fragment"><p>In linear models, the estimate of <span class="math inline">\beta</span> is obtained by solving the <span class="blue">normal equations</span> <span class="math display">
-(\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
-</span> which could be <span class="orange">ill-conditioned</span>.</p></li>
-<li class="fragment"><p>In other words, the <span class="blue">condition number</span> <span class="math display">
-\kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
-</span> might be very large, leading to <span class="orange">numerical inaccuracies</span>, since the matrix <span class="math inline">\bm{X}^T\bm{X}</span> is <span class="blue">numerically singular</span> and therefore not invertible in practice.</p></li>
-</ul>
-</div>
-</section>
-<section id="a-historical-perspective-ii" class="slide level2 center">
-<h2>☠️ - A historical perspective II</h2>
-<div>
-<ul>
-<li class="fragment"><p>Ridge provides a <span class="blue">remedy</span> for <span class="orange">ill-conditioning</span>, by adding a “ridge” to the diagonal of <span class="math inline">\bm{X}^T\bm{X}</span>, obtaining the modified normal equations <span class="math display">
-(\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
-</span></p></li>
-<li class="fragment"><p>The <span class="orange">condition number</span> of the modified <span class="math inline">(\bm{X}^T\bm{X} + \lambda I_p)</span> matrix becomes <span class="math display">
-\kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
-</span></p></li>
-<li class="fragment"><p>Notice that even if <span class="math inline">d_p = 0</span>, i.e.&nbsp;the matrix <span class="math inline">\bm{X}</span> is <span class="blue">singular</span>, then condition number will be finite as long as <span class="math inline">\lambda &gt; 0</span>.</p></li>
-<li class="fragment"><p>This technique is known as <span class="orange">Tikhonov regularization</span>, after the Russian mathematician Andrey Tikhonov.</p></li>
-</ul>
-</div>
 </section></section>
 <section>
 <section id="the-lasso" class="title-slide slide level1 center">

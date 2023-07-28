@@ -971,38 +971,41 @@ Such an estimator [always exists]{.blue} and is [unique]{.orange} (even when $p 
 ## The ridge path
 
 ```{r}
-my_ridge <- function(X, y, lambda, standardize = FALSE) {
+my_ridge <- function(X, y, lambda_tilde, standardize = FALSE) {
   n <- nrow(X)
   p <- ncol(X)
+  lambda <- lambda_tilde * n
   y_mean <- mean(y) # Center the response
   y <- y - y_mean
-  
+
   # Centering the covariates
   X_mean <- colMeans(X)
-  if(standardize){
+  if (standardize) {
     X_scale <- apply(X, 2, function(x) sqrt(mean(x^2) - mean(x)^2))
   } else {
     X_scale <- rep(1, p)
   }
 
   X <- scale(X, center = X_mean, scale = X_scale)
-  
+
   # Ridge solution (scaled data)
   beta_scaled <- solve(crossprod(X) + lambda * diag(rep(1, p)), crossprod(X, y))
-  
+
   # Transform back to the original scale
   beta <- beta_scaled / X_scale
-  # Compute the intercept  
+  # Compute the intercept
   beta0 <- y_mean - X_mean %*% beta
   return(c(beta0, beta))
 }
 ```
 
 ```{r}
-df_ridge <- function(lambda, X, standardize = FALSE) {
+df_ridge <- function(lambda_tilde, X, standardize = FALSE) {
+  n <- nrow(X)
+  lambda <- lambda_tilde * n
   # Rescale the predictors
   X_mean <- colMeans(X)
-  if(standardize){
+  if (standardize) {
     X_scale <- apply(X, 2, function(x) sqrt(mean(x^2) - mean(x)^2))
   } else {
     X_scale <- rep(1, p)
@@ -1012,44 +1015,44 @@ df_ridge <- function(lambda, X, standardize = FALSE) {
   sum(d2 / (d2 + lambda))
 }
 
-df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda")
+df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda_tilde")
 ```
 
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
-lambda_seq <- c(seq(0.1, 0.9, length = 10), exp(seq(from = 0, to = 9, length = 50)))
-data_ridge <- cbind(lambda_seq, matrix(0, length(lambda_seq), p))
+lambda_tilde_seq <- exp(seq(from = -4, to = 5, length = 50))
+data_ridge <- cbind(lambda_tilde_seq, matrix(0, length(lambda_tilde_seq), p))
 
-mse_ridge  <- data.frame(lambda_seq, Cp = NA, mse = NA, df = df_ridge(lambda_seq, X, standardize = FALSE), sigma2 = NA) 
+mse_ridge <- data.frame(lambda_tilde_seq, Cp = NA, mse = NA, df = df_ridge(lambda_tilde_seq, X, standardize = FALSE), sigma2 = NA)
 
-for(i in 1:length(lambda_seq)){
-  data_ridge[i, -1] <- my_ridge(X, y, lambda = lambda_seq[i], standardize = FALSE)[-1]
-  mse_ridge$mse[i] <-  mean((y - mean(y) -  X %*% data_ridge[i, -1])^2)
+for (i in 1:length(lambda_tilde_seq)) {
+  data_ridge[i, -1] <- my_ridge(X, y, lambda_tilde = lambda_tilde_seq[i], standardize = FALSE)[-1]
+  mse_ridge$mse[i] <- mean((y - mean(y) - X %*% data_ridge[i, -1])^2)
   mse_ridge$sigma2[i] <- mse_ridge$mse[i] * n / (n - mse_ridge$df[i])
   mse_ridge$Cp[i] <- mse_ridge$mse[i] + 2 * mse_ridge$sigma2[i] / n * mse_ridge$df[i]
 }
 
 colnames(data_ridge)[-1] <- colnames(X)
 data_ridge <- tidyr::gather(data.frame(data_ridge), lambda, value, lcavol:pgg45)
-colnames(data_ridge) <- c("lambda",  "Covariate", "value")
+colnames(data_ridge) <- c("lambda_tilde", "Covariate", "value")
 
-ggplot(data = data_ridge, aes(x = lambda, y = value, col = Covariate)) +
+ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
   geom_point() +
   geom_line() +
   theme_light() +
   theme(legend.position = "top") +
   scale_x_log10() +
   scale_color_tableau(palette = "Color Blind") +
-  xlab(expression(lambda)) +
+  xlab(expression(lambda / n)) +
   ylab("Regression coefficients")
 ```
 
 
 ## Comments on the ridge path
 
-- The values of $\lambda$ are in somewhat [arbitrary scale]{.orange}. The ridge penalty has a concrete effect starting from $\lambda > 10$ or so.
+- The values of $\lambda$ are in somewhat [arbitrary scale]{.orange}. The ridge penalty has a concrete effect starting from $\lambda / n > 0.1$ or so.
 
 - The variable `lcavol` is arguably the most important, followed by `lweight` and `svi`, being the one that receive less shrinkage compared to the others.
 
@@ -1122,6 +1125,43 @@ Let us [additionally]{.blue} assume that $y_i = \bm{x}_i^T\beta + \epsilon_i$, w
 $$
 :::
 
+## ☠️ - A historical perspective I
+
+::: incremental
+
+- The ridge regression estimator was originally proposed by Hoerl and Kennard (1970) with a quite different motivation in mind.
+
+- In linear models, the estimate of $\beta$ is obtained by solving the [normal equations]{.blue} $$
+(\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
+$$
+which could be [ill-conditioned]{.orange}.
+
+- In other words, the [condition number]{.blue}
+$$
+\kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
+$$
+might be very large, leading to [numerical inaccuracies]{.orange}, since the matrix $\bm{X}^T\bm{X}$ is [numerically singular]{.blue} and therefore not invertible in practice.
+
+:::
+
+## ☠️ - A historical perspective II
+
+::: incremental
+- Ridge provides a [remedy]{.blue} for [ill-conditioning]{.orange}, by adding a "ridge" to the diagonal of $\bm{X}^T\bm{X}$, obtaining the modified normal equations
+$$
+(\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
+$$
+
+- The [condition number]{.orange} of the modified $(\bm{X}^T\bm{X} + \lambda I_p)$ matrix becomes
+$$
+\kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
+$$
+- Notice that even if $d_p = 0$, i.e. the matrix $\bm{X}$ is [singular]{.blue}, then condition number will be finite as long as $\lambda > 0$. 
+
+- This technique is known as [Tikhonov regularization]{.orange}, after the Russian mathematician Andrey Tikhonov.
+
+:::
+
 ## On the choice of $\lambda$
 
 - The [penalty parameter]{.orange} $\lambda$ determines the amount of bias and variance of  $\hat{\beta}_\text{ridge}$ and therefore it must be carefully [estimated]{.blue}.
@@ -1192,7 +1232,7 @@ where the residual variance is estimated as $\hat{\sigma}^2 = (n - \text{df}_\te
 #| fig-width: 5
 #| fig-height: 4
 df_min_cp <- mse_ridge$df[which.min(mse_ridge$Cp)]
-lambda_min <- mse_ridge$lambda_seq[which.min(mse_ridge$Cp)]
+lambda_tilde_min_cp <- mse_ridge$lambda_tilde_seq[which.min(mse_ridge$Cp)]
 
 ggplot(data = mse_ridge, aes(x = df, y = Cp)) +
   geom_line() +
@@ -1209,13 +1249,13 @@ ggplot(data = mse_ridge, aes(x = df, y = Cp)) +
 ```{r}
 #| fig-width: 5
 #| fig-height: 4
-ggplot(data = mse_ridge, aes(x = lambda_seq, y = Cp)) +
+ggplot(data = mse_ridge, aes(x = lambda_tilde_seq, y = Cp)) +
   geom_line() +
   geom_point() +
-  geom_vline(xintercept = lambda_min, linetype = "dotted") +
+  geom_vline(xintercept = lambda_tilde_min_cp, linetype = "dotted") +
   theme_light() +
   scale_x_log10() +
-  xlab(expression(lambda)) +
+  xlab(expression(lambda / n)) +
   ylab(expression(C[p]))
 ```
 :::
@@ -1224,37 +1264,40 @@ ggplot(data = mse_ridge, aes(x = lambda_seq, y = Cp)) +
 
 ## Cross-validation for ridge regression I
 
-- Training/test strategies and [cross-validation]{.blue} are also valid tools for selecting $\lambda$. 
+- Training / test strategies and [cross-validation]{.blue} are also valid tools for selecting $\lambda$. 
 
-- Most statistical software use a slightly [different parametrization]{.orange} for $\lambda$, as they  minimize $$
+- Most statistical software packages use a slightly [different parametrization]{.orange} for $\lambda$, as they minimize $$
 \textcolor{red}{\frac{1}{n}}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \tilde{\lambda} \sum_{j=1}^p\beta_j^2,
 $$
-where $\tilde{\lambda} = \lambda / n$.
+where the penalty parameter $\tilde{\lambda} = \lambda / n$.
 
-- This parametrization is more amenable for cross-validation as the new penalty $\tilde{\lambda}$ does not depend on the sample size. The R package `glmnet` uses this convention.
 
-- This is mostly a cosmetic variant, but it might have [practical consequences]{.orange} if the selected $\lambda$ were identified using a fraction of the data and then the same $\lambda$ were used on larger dataset.
 
-- Conversely, the parameter $\tilde{\lambda}$ is not affected by this behavior.
+. . .
+
+
+- This parametrization does not alter the estimate of $\hat{\beta}_\text{ridge}$ but is more amenable for [cross-validation]{.blue} as the values of $\tilde{\lambda}$ can be compared across dataset with [different sample sizes]{.orange}.
+
+- The R package `glmnet` uses this convention.
+
 
 ## Cross-validation for ridge regression II
 
-
 ```{r}
 #| message: false
-resid_ridge <- matrix(0, n, length(lambda_seq))
+resid_ridge <- matrix(0, n, length(lambda_tilde_seq))
 
 for (k in 1:10) {
   # Hold-out dataset
   X_test_k <- as.matrix(subset(assessment(cv_fold$splits[[k]]), select = -c(lpsa)))
   y_test_k <- assessment(cv_fold$splits[[k]])$lpsa
-  
-  X_train_k <- as.matrix(subset(analysis(cv_fold$splits[[k]]), select = -c(lpsa)))
-  y_train_k <-  analysis(cv_fold$splits[[k]])$lpsa
 
-  for (j in 1:length(lambda_seq)) {
+  X_train_k <- as.matrix(subset(analysis(cv_fold$splits[[k]]), select = -c(lpsa)))
+  y_train_k <- analysis(cv_fold$splits[[k]])$lpsa
+
+  for (j in 1:length(lambda_tilde_seq)) {
     # Estimates
-    beta_hat <- my_ridge(X_train_k, y_train_k, lambda = lambda_seq[j], standardize = FALSE)
+    beta_hat <- my_ridge(X_train_k, y_train_k, lambda_tilde = lambda_tilde_seq[j], standardize = FALSE)
     # Predictions
     y_hat <- cbind(1, X_test_k) %*% beta_hat
     # MSE of the best models for different values of lambda
@@ -1269,31 +1312,62 @@ for (k in 1:10) {
 #| fig-align: center
 
 data_cv <- data.frame(
-  lambda = lambda_seq,
-  df = df_ridge(lambda_seq, X, standardize = FALSE),
+  lambda_tilde = lambda_tilde_seq,
+  df = df_ridge(lambda_tilde_seq, X, standardize = FALSE),
   MSE = apply(resid_ridge^2, 2, mean),
   SE = apply(resid_ridge^2, 2, function(x) sd(x) / sqrt(n))
 )
 
 se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)]
-lambda_min_cv <- lambda_seq[tail(which(data_cv$MSE < se_rule), 1)]
+lambda_tilde_min_cv <- lambda_tilde_seq[tail(which(data_cv$MSE < se_rule), 1)]
 df_min_cv <- data_cv$df[tail(which(data_cv$MSE < se_rule), 1)]
 
-ggplot(data = data_cv, aes(x = df, y = MSE)) +
+ggplot(data = data_cv, aes(x = lambda_tilde, y = MSE)) +
   geom_point() +
   geom_line() +
   geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) +
-  scale_x_continuous(breaks = 0:8) +
+  scale_x_log10() +
   geom_hline(yintercept = se_rule, linetype = "dotted") +
-  geom_vline(xintercept = df_min_cv, linetype = "dotted") +
+  geom_vline(xintercept = lambda_tilde_min_cv, linetype = "dotted") +
   theme_light() +
-  xlab("Effective degrees of freedom (df)") +
+  xlab(expression(tilde(lambda))) +
   ylab("Mean squared error (10-fold cv)")
 ```
 
+```{r}
+#| include: false
+#| execute: false
+# Double checks
+library(glmnet)
+y_std <- prostate_train$lpsa / sqrt(mean(prostate_train$lpsa^2) - mean(prostate_train$lpsa)^2)
+
+as.numeric(coef(glmnet(X, y_std, family = "gaussian", standardize = FALSE, alpha = 0, thresh = 1e-16, lambda = lambda_tilde_min_cv)))
+
+my_ridge(X, y_std, standardize = FALSE, lambda_tilde = lambda_tilde_min_cv)
+```
+
+
 ## Leave-one-out cross-validation
 
--
+
+-   Ridge regression is, like ordinary least squares, a [linear smoother]{.blue}, namely:
+$$
+\bm{X}\hat{\beta}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} = \bm{H}_\text{ridge}\bm{y},
+$$
+meaning that a [computational shortcut]{.orange} for LOO-CV can be exploited.
+
+. . .
+
+::: callout-note
+#### LOO-CV (Ridge regression)
+
+Let $\hat{y}_{-i, \text{ridge}} = \bm{x}_i^T\hat{\beta}_{-i, \text{ridge}}$ be the leave-one-out
+predictions of a [linear model]{.blue} with a [ridge penalty]{.orange} and let $h_{i, \text{ridge}} = [\bm{H}_\text{ridge}]_{ii}$ and
+$\hat{y}_i$ be the leverages and the predictions. Then: $$
+y_i - \hat{y}_{-i, \text{ridge}} = \frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}, \qquad i=1,\dots,n.
+$$ Therefore, the leave-one-out mean squared error is
+$$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}\right)^2.$$
+:::
 
 ## The ridge estimate
 
@@ -1301,7 +1375,7 @@ ggplot(data = data_cv, aes(x = df, y = MSE)) +
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
-ggplot(data = data_ridge, aes(x = df_ridge(lambda, X), y = value, col = Covariate)) +
+ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Covariate)) +
   geom_point() +
   geom_line() +
   theme_light() +
@@ -1316,42 +1390,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda, X), y = value, col = Covariat
 
 ## Summary of ridge regression
 
-## ☠️ - A historical perspective I
 
-::: incremental
-
-- The ridge regression estimator was originally proposed by Hoerl and Kennard (1970) with a quite different motivation in mind.
-
-- In linear models, the estimate of $\beta$ is obtained by solving the [normal equations]{.blue} $$
-(\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
-$$
-which could be [ill-conditioned]{.orange}.
-
-- In other words, the [condition number]{.blue}
-$$
-\kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
-$$
-might be very large, leading to [numerical inaccuracies]{.orange}, since the matrix $\bm{X}^T\bm{X}$ is [numerically singular]{.blue} and therefore not invertible in practice.
-
-:::
-
-## ☠️ - A historical perspective II
-
-::: incremental
-- Ridge provides a [remedy]{.blue} for [ill-conditioning]{.orange}, by adding a "ridge" to the diagonal of $\bm{X}^T\bm{X}$, obtaining the modified normal equations
-$$
-(\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
-$$
-
-- The [condition number]{.orange} of the modified $(\bm{X}^T\bm{X} + \lambda I_p)$ matrix becomes
-$$
-\kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
-$$
-- Notice that even if $d_p = 0$, i.e. the matrix $\bm{X}$ is [singular]{.blue}, then condition number will be finite as long as $\lambda > 0$. 
-
-- This technique is known as [Tikhonov regularization]{.orange}, after the Russian mathematician Andrey Tikhonov.
-
-:::
 
 # The lasso
 
@@ -1367,10 +1406,10 @@ $$
 
 ```{r}
 # l = 10
-# 
+#
 # my_ridge(X, y, lambda = l)
 # coef(glmnet(X, y, alpha = 0, lambda = l/n, thresh = 1e-20))
-# 
+#
 # y_std <-  scale(y, center=TRUE, scale=sd(y)*sqrt((n-1)/n) )[,]
 # my_ridge(X, y_std, lambda = l, standardize = TRUE)
 # as.numeric(coef(glmnet(X, y_std, alpha=0, lambda = l/(n), thresh = 1e-20)))
