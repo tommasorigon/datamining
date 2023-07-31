@@ -73,15 +73,17 @@ styler:::style_file("../code/un_C.R")
     -   Ridge regression
     -   Lasso, LARS, elastic-net
 
--   The common themes are called [variable
-    selection]{.blue} and [shrinkage estimation]{.orange}.
+-   The common themes are called [variable selection]{.blue} and
+    [shrinkage estimation]{.orange}.
 
--   The issue we face is the presence of a high number $p$ of covariates that are [potentially
-    irrelevant]{.blue}.
-    
-- This problem is quite challenging when the [ratio]{.blue} $p / n$ is [large]{.blue}. 
+-   The issue we face is the presence of a high number $p$ of covariates
+    that are [potentially irrelevant]{.blue}.
 
-- In the [extreme case]{.orange} $p > n$, is there any hope to fit a meaningful model?
+-   This problem is quite challenging when the [ratio]{.blue} $p / n$ is
+    [large]{.blue}.
+
+-   In the [extreme case]{.orange} $p > n$, is there any hope to fit a
+    meaningful model?
 :::
 :::
 
@@ -90,11 +92,14 @@ styler:::style_file("../code/un_C.R")
 -   The `prostate` cancer data investigates the relationship between the
     prostate-specific [antigen]{.orange} and a number of clinical
     measures, in men about to receive a prostatectomy.
-    
-. . .
-    
-- This [dataset](https://hastie.su.domains/ElemStatLearn/datasets/prostate.data) has been used in the [original paper]{.orange} by Tibshirani (1996) to present the lasso. A description is given in [Section 3.2.1]{.blue} of HTF (2009).
 
+. . .
+
+-   This
+    [dataset](https://hastie.su.domains/ElemStatLearn/datasets/prostate.data)
+    has been used in the [original paper]{.orange} by Tibshirani (1996)
+    to present the lasso. A description is given in [Section
+    3.2.1]{.blue} of HTF (2009).
 
 . . .
 
@@ -110,20 +115,20 @@ styler:::style_file("../code/un_C.R")
     -   Gleason score (`gleason`), an ordered categorical variable;
     -   Percentage of Gleason scores $4$ and $5$ (`pgg45`).
 
-
-
 ## A `glimpse` of the `prostate` dataset
 
--   Summarizing, there are in total $8$ [variables]{.orange} that can be used to predict the antigen `lpsa`. 
+-   Summarizing, there are in total $8$ [variables]{.orange} that can be
+    used to predict the antigen `lpsa`.
 
-- We [centered]{.orange} and [standardized]{.blue} all the covariates before the training/test split.
+-   We [centered]{.orange} and [standardized]{.blue} all the covariates
+    before the training/test split.
 
 -   There are $n = 67$ observations in the [training]{.orange} set and
     $30$ in the [test]{.blue} set.
 
 . . .
 
-::: {.panel-tabset}
+::: panel-tabset
 ## Original dataset
 
 ```{r}
@@ -150,9 +155,8 @@ glimpse(prostate)
 :::
 
 <!-- -   The variable `train` splits the data into a training and test set, -->
+
 <!--     as in the textbook. -->
-
-
 
 ## Correlation matrix of `prostate`
 
@@ -173,49 +177,55 @@ ggcorrplot(corr,
 ## The regression framework
 
 ::: incremental
+-   In this unit we will assume that the response variables $Y_i$
+    (`lpsa`) are obtained as $$
+    Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
+    $$ where $\epsilon_i$ are [iid]{.orange} random variables with
+    $\mathbb{E}(\epsilon_i) = 0$ and
+    $\text{var}(\epsilon_i) = \sigma^2$.
 
-- In this unit we will assume that the response variables $Y_i$ (`lpsa`) are obtained as
-$$
-Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
-$$
-where $\epsilon_i$ are [iid]{.orange} random variables with $\mathbb{E}(\epsilon_i) = 0$ and $\text{var}(\epsilon_i) = \sigma^2$.
+-   Unless specifically stated, we will [not]{.orange} assume the
+    [Gaussianity]{.orange} of the errors $\epsilon_i$ nor make any
+    specific assumption about $f(\bm{x})$, which could be
+    [non-linear]{.blue}.
 
-- Unless specifically stated, we will [not]{.orange} assume the [Gaussianity]{.orange} of the errors $\epsilon_i$ nor make any specific assumption about $f(\bm{x})$, which could be [non-linear]{.blue}.
+-   In practice, we [approximate]{.orange} the true $f(\bm{x})$ using a
+    [linear model]{.blue}, e.g. by considering the following function$$
+        f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta,
+        $$ in which the regression coefficients must be estimated.
 
-- In practice, we [approximate]{.orange} the true $f(\bm{x})$ using a [linear model]{.blue}, e.g. by considering the following function$$
-      f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta,
-      $$ 
-      in which the regression coefficients must be estimated.
-      
-- In this unit the [intercept]{.blue} $\beta_0$ will play a special role, therefore we use a slightly different notation compared to [Unit A](unit_A.html).
-
+-   In this unit the [intercept]{.blue} $\beta_0$ will play a special
+    role, therefore we use a slightly different notation compared to
+    [Unit A](unit_A.html).
 :::
 
 ## The variable selection problem
 
-- Including a lot of covariates into the model is not necessarily a good thing!
+-   Including a lot of covariates into the model is not necessarily a
+    good thing!
 
 . . .
 
-- Indeed, some variables are likely to be [irrelevant]{.blue}:
+-   Indeed, some variables are likely to be [irrelevant]{.blue}:
 
     -   they might be [correlated]{.orange} with other covariates and
         therefore [redundant]{.orange};
     -   they could be uncorrelated with the response `lpsa`.
 
 . . .
-    
+
 -   If we use all the $p = 8$ available covariates, the estimated
     $f(\bm{x}; \hat{\beta_0}, \hat{\beta})$ might have a [high
     variance]{.orange}, without important gain in term of bias, i.e. a
     [large mean squared error]{.blue}.
 
--   We are looking for a [simpler model]{.orange} having,
-    hopefully, a lower mean squared error.
-    
+-   We are looking for a [simpler model]{.orange} having, hopefully, a
+    lower mean squared error.
+
 . . .
 
-- These considerations are particularly relevant in cases in which $p > n$!
+-   These considerations are particularly relevant in cases in which
+    $p > n$!
 
 ## A naïve approach: (ab)using p-values
 
@@ -230,18 +240,24 @@ knitr::kable(tab, digits = 2)
 
 . . .
 
-- It is common practice to use the [p-values]{.orange} to perform [model selection]{.blue} in a stepwise fashion.
-    
-- However, what if the true $f(\bm{x})$ were not linear? 
+-   It is common practice to use the [p-values]{.orange} to perform
+    [model selection]{.blue} in a stepwise fashion.
 
-- In many data mining problems, a [linear model]{.blue} is simply an approximation of the
-    unknown $f(\bm{x})$ and hypothesis testing procedures are ill-posed.
+-   However, what if the true $f(\bm{x})$ were not linear?
+
+-   In many data mining problems, a [linear model]{.blue} is simply an
+    approximation of the unknown $f(\bm{x})$ and hypothesis testing
+    procedures are ill-posed.
 
 . . .
 
-- Even if the true function were linear, using p-values would [not be a good idea]{.orange}, at least if done without appropriate [multiplicity corrections]{.blue}.
+-   Even if the true function were linear, using p-values would [not be
+    a good idea]{.orange}, at least if done without appropriate
+    [multiplicity corrections]{.blue}.
 
--   The above p-values are meant to be used in the context of a single hypothesis testing problem, [not]{.orange} to make [iterative choices]{.orange}.
+-   The above p-values are meant to be used in the context of a single
+    hypothesis testing problem, [not]{.orange} to make [iterative
+    choices]{.orange}.
 
 ## The predictive culture
 
@@ -252,27 +268,21 @@ knitr::kable(tab, digits = 2)
 
 ::: {.column width="75%"}
 -   "*All models are approximations. Essentially, all models are wrong,
-    but some are useful*." 
-    
+    but some are useful*."
+
     [George E. P. Box]{.grey}
 
+-   If the [focus]{.blue} is on [prediction]{.blue}, we do not
+    necessarily care about selecting the "true" set of parameters.
 
--   If the
-    [focus]{.blue} is on [prediction]{.blue}, we do not necessarily
-    care about selecting the "true" set of parameters.
-
--   In many data mining problems, the focus is on
-    [minimizing]{.orange} the [prediction errors]{.orange}.
+-   In many data mining problems, the focus is on [minimizing]{.orange}
+    the [prediction errors]{.orange}.
 
 -   Hence, often times we may [accept some bias]{.blue} (i.e. we use a
     "wrong" but useful model), if this leads to a [reduction in
     variance]{.orange}.
-
 :::
 :::
-
-
-
 
 # Best subset selection
 
@@ -297,12 +307,16 @@ knitr::kable(tab, digits = 2)
     i.  Estimate [all]{.orange} the $\binom{p}{k}$ models that contain
         exactly $k$ covariates;
 
-    ii. Identify the "best" model with $k$ covariates
-        having the smallest $\text{MSE}_{k, \text{train}}$; call it $\mathcal{M}_k$.
+    ii. Identify the "best" model with $k$ covariates having the
+        smallest $\text{MSE}_{k, \text{train}}$; call it
+        $\mathcal{M}_k$.
 :::
 
--   A model with more variables has lower [training]{.orange} error, namely $\text{MSE}_{k + 1, \text{train}} \le \text{MSE}_{k, \text{train}}$ by construction. Hence, the optimal subset size
-    $k$ must be chosen e.g. via [cross-validation]{.blue}.
+-   A model with more variables has lower [training]{.orange} error,
+    namely
+    $\text{MSE}_{k + 1, \text{train}} \le \text{MSE}_{k, \text{train}}$
+    by construction. Hence, the optimal subset size $k$ must be chosen
+    e.g. via [cross-validation]{.blue}.
 
 ## Step 1. and 2. of best subset selection
 
@@ -347,46 +361,56 @@ ggplot(data = data_best_subset, aes(x = p, y = value)) +
 
 ## The "best" models $\mathcal{M}_1,\dots, \mathcal{M}_p$
 
-- The output of the [best subset selection]{.orange}, on the training set is:
+-   The output of the [best subset selection]{.orange}, on the training
+    set is:
 
 ```{r}
 summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest = 1, nvmax = p))$outmat
 ```
 
 ::: incremental
+-   The above table means that the best model with $k = 1$ uses the
+    variable `lcavol`, whereas when $k = 2$ the selected variables are
+    `lcavol` and `lweight`, and so on and so forth.
 
-- The above table means that the best model with $k = 1$ uses the variable `lcavol`, whereas when $k = 2$ the selected variables are `lcavol` and `lweight`, and so on and so forth. 
-
-- Note that, in general, these models are [not]{.orange} necessarily [nested]{.orange}, i.e. a variable selected at step $k$ is not necessarily included at step $k +1$.  Here they are, but it is a coincidence.
+-   Note that, in general, these models are [not]{.orange} necessarily
+    [nested]{.orange}, i.e. a variable selected at step $k$ is not
+    necessarily included at step $k +1$. Here they are, but it is a
+    coincidence.
 :::
 
 . . .
 
-- What is the [optimal subset size]{.orange} $k$ in terms on out-of-sample mean squared error?
-
+-   What is the [optimal subset size]{.orange} $k$ in terms on
+    out-of-sample mean squared error?
 
 ## The wrong way of doing cross-validation
 
 ::: incremental
-
--   Consider a regression problem with a [large number of predictors]{.orange} (relative to $n$) such as the `prostate` dataset.
+-   Consider a regression problem with a [large number of
+    predictors]{.orange} (relative to $n$) such as the `prostate`
+    dataset.
 
 -   A typical strategy for analysis might be as follows:
 
-    1.  Screen the predictors: find a subset of "good" predictors that show fairly strong correlation with the response;
+    1.  Screen the predictors: find a subset of "good" predictors that
+        show fairly strong correlation with the response;
 
-    2.  Using this subset of predictors (e.g. `lcavol`, `lweight` and `svi`), build a regression model;
+    2.  Using this subset of predictors (e.g. `lcavol`, `lweight` and
+        `svi`), build a regression model;
 
-    3.  Use cross-validation to estimate the prediction error of the model of the step 2.
+    3.  Use cross-validation to estimate the prediction error of the
+        model of the step 2.
 
 -   Is this a correct application of cross-validation?
 
--   If your reaction was "[this is absolutely wrong!]{.orange}", it means you correctly understood the principles of cross-validation.
+-   If your reaction was "[this is absolutely wrong!]{.orange}", it
+    means you correctly understood the principles of cross-validation.
 
--   If you though this was an ok-ish idea, you may want to read [Section 7.10.2]{.blue} of HTF (2009), called "the wrong way of doing cross-validation". 
-
+-   If you though this was an ok-ish idea, you may want to read [Section
+    7.10.2]{.blue} of HTF (2009), called "the wrong way of doing
+    cross-validation".
 :::
-
 
 ## Step 3. of best subset selection via cross-validation
 
@@ -447,32 +471,41 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   ylab("Mean squared error (10-fold cv)")
 ```
 
-- By applying the "1 standard error rule", we select $k = 2$, i.e. `lcavol` and `lweight`. 
-
+-   By applying the "1 standard error rule", we select $k = 2$, i.e.
+    `lcavol` and `lweight`.
 
 ## Comments and computations
 
 ::: incremental
+-   The correct way of doing cross-validation requires that the [best
+    subset selection]{.blue} is performed on [every fold]{.orange},
+    possibly obtaining different "best" models with the same size.
 
--   The correct way of doing cross-validation requires that the [best subset selection]{.blue} is performed on [every fold]{.orange}, possibly obtaining different "best" models with the same size. 
+-   Best subset selection is conceptually appealing, but it has a [major
+    limitation]{.orange}. There are $$
+    \sum_{k=1}^p \binom{n}{k} = 2^p
+    $$ models to consider, which is [computationally
+    prohibitive]{.orange}!
 
-- Best subset selection is conceptually appealing, but it has a [major limitation]{.orange}. There are $$
-\sum_{k=1}^p \binom{n}{k} = 2^p
-$$
-models to consider, which is [computationally prohibitive]{.orange}!
+-   There exists algorithms (i.e. [leaps and bounds]{.blue}) that makes
+    this feasible for $p \approx 30$.
 
-- There exists algorithms (i.e. [leaps and bounds]{.blue}) that makes this feasible for $p \approx 30$.  
+-   Recently, [Bertsimas et al.,
+    2016](https://projecteuclid.org/journals/annals-of-statistics/volume-44/issue-2/Best-subset-selection-via-a-modern-optimization-lens/10.1214/15-AOS1388.full)
+    proposed the usage of a mixed integer optimization formulation,
+    allowing $p$ to be in the order of hundreds.
 
-- Recently, [Bertsimas et al., 2016](https://projecteuclid.org/journals/annals-of-statistics/volume-44/issue-2/Best-subset-selection-via-a-modern-optimization-lens/10.1214/15-AOS1388.full) proposed the usage of a mixed integer optimization formulation, allowing $p$ to be in the order of hundreds. 
-
-- Despite these advances, this problem remains [computationally very expensive]{.orange}. See also the recent paper [Hastie et al. (2020)](https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full) for additional considerations and comparisons.
-
+-   Despite these advances, this problem remains [computationally very
+    expensive]{.orange}. See also the recent paper [Hastie et al.
+    (2020)](https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full)
+    for additional considerations and comparisons.
 :::
 
 ## Forward regression
 
-
-- Forward regression is [greedy approximation]{.orange} of best subset selection, that produces a sequence of [nested]{.blue} models. It is computationally feasible and can be applied when $p > n$. 
+-   Forward regression is [greedy approximation]{.orange} of best subset
+    selection, that produces a sequence of [nested]{.blue} models. It is
+    computationally feasible and can be applied when $p > n$.
 
 . . .
 
@@ -484,40 +517,49 @@ models to consider, which is [computationally prohibitive]{.orange}!
 
 2.  For $k = 0,\dots, \min(n - 1, p - 1)$, do:
 
-    i.  Consider the $p − k$ models that augment the predictors in $\mathcal{M}_k$ with [one additional covariate]{.orange}.
+    i.  Consider the $p − k$ models that augment the predictors in
+        $\mathcal{M}_k$ with [one additional covariate]{.orange}.
 
     ii. Identify the "best" model among the above $p - k$ competitors
-        having the smallest $\text{MSE}_{k, \text{train}}$ and call it $\mathcal{M}_k$. 
+        having the smallest $\text{MSE}_{k, \text{train}}$ and call it
+        $\mathcal{M}_k$.
 :::
 
 . . .
 
-
-- It can be shown that the identification of the [optimal new predictor]{.blue} can be efficiently computed using the [QR decomposition]{.orange} (see Exercises).
+-   It can be shown that the identification of the [optimal new
+    predictor]{.blue} can be efficiently computed using the [QR
+    decomposition]{.orange} (see Exercises).
 
 ## Backward regression
 
-- When $p < n$, an alternative greedy approach is [backward regression]{.orange}, which also produces a sequence of [nested]{.blue} models. 
+-   When $p < n$, an alternative greedy approach is [backward
+    regression]{.orange}, which also produces a sequence of
+    [nested]{.blue} models.
 
 . . .
 
 ::: callout-note
 #### Backward regression
 
-1.  Let $\mathcal{M}_p$ be the [full model]{.blue}, which contains all the
-    predictors.
+1.  Let $\mathcal{M}_p$ be the [full model]{.blue}, which contains all
+    the predictors.
 
 2.  For $k = p, p - 1,\dots, 1$, do:
 
-    i.  Consider the $k$ models that contain [all but one]{.orange} of the predictors in $\mathcal{M}_k$, for a total of $k − 1$ predictors.
+    i.  Consider the $k$ models that contain [all but one]{.orange} of
+        the predictors in $\mathcal{M}_k$, for a total of $k − 1$
+        predictors.
 
     ii. Identify the "best" model $\mathcal{M}_k$ among these $k$ models
-        having the smallest $\text{MSE}_{k, \text{train}}$. 
+        having the smallest $\text{MSE}_{k, \text{train}}$.
 :::
 
 . . .
 
-- It can be shown that the [dropped predictor]{.blue} is the one with the lowest absolute $Z$-score or, equivalently, the [highest p-value]{.orange} (see Exercises).
+-   It can be shown that the [dropped predictor]{.blue} is the one with
+    the lowest absolute $Z$-score or, equivalently, the [highest
+    p-value]{.orange} (see Exercises).
 
 ## Forward, backward and best subset
 
@@ -557,7 +599,9 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
   ylab("MSE (training)")
 ```
 
-- In the `prostate` dataset, forward, backward and best subset selection all gave exactly the [same path of solutions]{.orange} on the full training set.
+-   In the `prostate` dataset, forward, backward and best subset
+    selection all gave exactly the [same path of solutions]{.orange} on
+    the full training set.
 
 # Principal components regression
 
@@ -569,129 +613,151 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 :::
 
 ::: {.column width="70%"}
+-   At this point we established that [many covariates = many
+    problems]{.orange}.
 
-- At this point we established that [many covariates = many problems]{.orange}.
+-   Instead of selecting the "best" variables, let us consider a
+    different perspective.
 
-- Instead of selecting the "best" variables, let us consider a different perspective.
+-   We consider a [compressed]{.blue} version of the covariates that has
+    smaller dimension $k$ but retains most information.
 
-- We consider a [compressed]{.blue} version of the covariates that has smaller dimension $k$ but retains most information.
+-   Intuitively, we want to [reduce the variance]{.orange} by finding a
+    good compression, without sacrificing too much bias.
 
-- Intuitively, we want to [reduce the variance]{.orange} by finding a good compression, without sacrificing too much bias. 
+-   The main statistical tool, unsurprisingly, will be the celebrated
+    [principal components analysis]{.blue} (PCA).
 
-- The main statistical tool, unsurprisingly, will be the celebrated [principal components analysis]{.blue} (PCA).
-
-- You should already know PCA as a tool for explorative analysis... We will focus on its usage for regression purposes. 
+-   You should already know PCA as a tool for explorative analysis... We
+    will focus on its usage for regression purposes.
 :::
 :::
 
 ## Centering the predictors I
 
 ::: incremental
+-   Let us consider a [reparametrization]{.blue} of the linear model
+    using [centered predictors]{.orange} $$
+    \begin{aligned}
+    f(\bm{x}_i; \alpha, \beta) & = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdots + \beta_p (x_{ip} - \bar{x}_{ip}) = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta \\
+    & = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta = \beta_0 + \bm{x}_i^T\beta, \quad \text{where} \quad \beta_0 = \alpha - \bar{\bm{x}}^T\beta.
+    \end{aligned}
+    $$
 
-- Let us consider a [reparametrization]{.blue} of the linear model using  [centered predictors]{.orange}
-$$
-\begin{aligned}
-f(\bm{x}_i; \alpha, \beta) & = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdots + \beta_p (x_{ip} - \bar{x}_{ip}) = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta \\
-& = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta = \beta_0 + \bm{x}_i^T\beta, \quad \text{where} \quad \beta_0 = \alpha - \bar{\bm{x}}^T\beta.
-\end{aligned}
-$$
+-   In this reparametrization the centered predictors are
+    [orthogonal]{.blue} to the [intercept]{.blue}. Thus, the estimates
+    for $(\alpha, \beta)$ can be computed [in two steps]{.orange}.
 
-- In this reparametrization the centered predictors are [orthogonal]{.blue} to the [intercept]{.blue}. Thus, the estimates for $(\alpha, \beta)$ can be computed [in two steps]{.orange}.
+-   The [estimate]{.orange} of the [intercept]{.orange} with centered
+    predictors is $\hat{\alpha} = \bar{y}$. In fact: $$
+    \hat{\alpha} = \arg\min_{\alpha \in \mathbb{R}}\sum_{i=1}^n\{y_i - \alpha - (\bm{x}_i -\bar{\bm{x}})^T\beta\}^2 = \frac{1}{n}\sum_{i=1}^n\{y_i - (\bm{x}_i -\bar{\bm{x}})^T\beta\} = \frac{1}{n}\sum_{i=1}^ny_i.
+    $$
 
-- The [estimate]{.orange} of the [intercept]{.orange} with centered predictors is $\hat{\alpha} = \bar{y}$. In fact: $$
-\hat{\alpha} = \arg\min_{\alpha \in \mathbb{R}}\sum_{i=1}^n\{y_i - \alpha - (\bm{x}_i -\bar{\bm{x}})^T\beta\}^2 = \frac{1}{n}\sum_{i=1}^n\{y_i - (\bm{x}_i -\bar{\bm{x}})^T\beta\} = \frac{1}{n}\sum_{i=1}^ny_i.
-$$
-
-- Then, the [estimate of $\beta$]{.blue} can be obtained considering a linear model [without intercept]{.blue}:
-$$
-      f(\bm{x}_i; \beta) = (\bm{x}_i -\bar{\bm{x}})^T\beta,
-$$
-used to predict the [centered responses]{.blue} $y_i - \bar{y}$. 
+-   Then, the [estimate of $\beta$]{.blue} can be obtained considering a
+    linear model [without intercept]{.blue}: $$
+        f(\bm{x}_i; \beta) = (\bm{x}_i -\bar{\bm{x}})^T\beta,
+    $$ used to predict the [centered responses]{.blue} $y_i - \bar{y}$.
 :::
 
 ## Centering the predictors II
 
 ::: incremental
+-   From here on, and without loss of generality, we assume that
+    everything is [centered]{.orange}: $$
+    \sum_{i=1}^ny_i = 0, \qquad \sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
+    $$
 
-- From here on, and without loss of generality, we assume that everything is [centered]{.orange}:
-$$
-\sum_{i=1}^ny_i = 0, \qquad \sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
-$$
+-   Hence, because of the previous results, we can focus on linear
+    models [without intercept]{.blue}: $$
+    f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta.
+    $$
 
-- Hence, because of the previous results, we can focus on linear models [without intercept]{.blue}:
-$$
-f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta.
-$$
-- Under such an assumption the [covariance matrix]{.orange} of the data is simply
-$$
-S = \frac{1}{n} \bm{X}^T\bm{X}.
-$$
-- If in addition each variable has been [scaled]{.blue} by their standard deviations, then $n^{-1} \bm{X}^T\bm{X}$ corresponds to the [correlation]{.blue} matrix.
+-   Under such an assumption the [covariance matrix]{.orange} of the
+    data is simply $$
+    S = \frac{1}{n} \bm{X}^T\bm{X}.
+    $$
 
+-   If in addition each variable has been [scaled]{.blue} by their
+    standard deviations, then $n^{-1} \bm{X}^T\bm{X}$ corresponds to the
+    [correlation]{.blue} matrix.
 :::
 
 ## Singular value decomposition (SVD)
 
-- Let $\bm{X}$ be a $n \times p$ matrix. Then, its full form [singular value decomposition]{.orange} is: $$
-\bm{X} = \bm{U} \bm{D} \bm{V}^T = \sum_{j=1}^m d_j \tilde{\bm{u}}_j \tilde{\bm{v}}_j^T,
-$$
-with $m =\min\{n, p\}$ and where:
-  - the $n \times n$ matrix $\bm{U} = (\tilde{\bm{u}}_1, \dots, \tilde{\bm{u}}_n)$ is [orthogonal]{.orange}, namely: $\bm{U}^T \bm{U} = \bm{U}\bm{U}^T= I_n$; 
-  - the $p \times p$ matrix $\bm{V} = (\tilde{\bm{v}}_1,\dots,\tilde{\bm{v}}_p)$ is [orthogonal]{.orange}, namely: $\bm{V}^T \bm{V} = \bm{V}\bm{V}^T= I_p$;
-  - the $n \times p$ matrix $\bm{D}$ has [diagonal]{.blue} entries $[\bm{D}]_{jj} = d_j$, for $j=1,\dots,m$, and zero entries elsewhere;
+-   Let $\bm{X}$ be a $n \times p$ matrix. Then, its full form [singular
+    value decomposition]{.orange} is: $$
+    \bm{X} = \bm{U} \bm{D} \bm{V}^T = \sum_{j=1}^m d_j \tilde{\bm{u}}_j \tilde{\bm{v}}_j^T,
+    $$ with $m =\min\{n, p\}$ and where:
 
-- The real numbers $d_1 \ge d_2 \ge \cdots \ge d_m \ge 0$ are called [singular values]{.blue}.
+    -   the $n \times n$ matrix
+        $\bm{U} = (\tilde{\bm{u}}_1, \dots, \tilde{\bm{u}}_n)$ is
+        [orthogonal]{.orange}, namely:
+        $\bm{U}^T \bm{U} = \bm{U}\bm{U}^T= I_n$;
+    -   the $p \times p$ matrix
+        $\bm{V} = (\tilde{\bm{v}}_1,\dots,\tilde{\bm{v}}_p)$ is
+        [orthogonal]{.orange}, namely:
+        $\bm{V}^T \bm{V} = \bm{V}\bm{V}^T= I_p$;
+    -   the $n \times p$ matrix $\bm{D}$ has [diagonal]{.blue} entries
+        $[\bm{D}]_{jj} = d_j$, for $j=1,\dots,m$, and zero entries
+        elsewhere;
 
-- If one or more $d_j = 0$, then the matrix $\bm{X}$ is singular.
+-   The real numbers $d_1 \ge d_2 \ge \cdots \ge d_m \ge 0$ are called
+    [singular values]{.blue}.
+
+-   If one or more $d_j = 0$, then the matrix $\bm{X}$ is singular.
 
 ## Principal component analysis I
 
 ::: incremental
+-   Le us assume that $p < n$ and that $\text{rk}(\bm{X}) = p$,
+    recalling that $\bm{X}$ is a [centered]{.orange} matrix.
 
-- Le us assume that $p < n$ and that $\text{rk}(\bm{X}) = p$, recalling that $\bm{X}$ is a [centered]{.orange} matrix.  
+-   Using SVD, the matrix $\bm{X}^T\bm{X}$ can be expressed as $$
+    \bm{X}^T\bm{X} = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V}^T,
+    $$ where $\bm{\Delta}^2 = \bm{D}^T\bm{D}$ is a $p \times p$
+    [diagonal]{.blue} matrix with entries $d_1^2,\dots,d_p^2$.
 
-- Using SVD, the matrix $\bm{X}^T\bm{X}$ can be expressed as
-$$
-\bm{X}^T\bm{X} = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V}^T,
-$$
-where $\bm{\Delta}^2 = \bm{D}^T\bm{D}$ is a $p \times p$ [diagonal]{.blue} matrix with entries $d_1^2,\dots,d_p^2$.
+-   This equation is at the heart of [principal component
+    analysis]{.blue} (PCA). Define the matrix $$
+    \bm{Z} = \bm{X}\bm{V} = \bm{U}\bm{D},
+    $$ whose columns $\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p$ are
+    called [principal components]{.orange}.
 
-- This equation is at the heart of [principal component analysis]{.blue} (PCA). Define the matrix
-$$
-\bm{Z} = \bm{X}\bm{V} = \bm{U}\bm{D},
-$$
-whose columns $\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p$ are called [principal components]{.orange}.
+-   The matrix $\bm{Z}$ is orthogonal, because
+    $\bm{Z}^T\bm{Z} = \bm{D}^T\textcolor{red}{\bm{U}^T \bm{U}} \bm{D} = \bm{\Delta}^2$,
+    which is diagonal.
 
-- The matrix $\bm{Z}$ is orthogonal, because $\bm{Z}^T\bm{Z} = \bm{D}^T\textcolor{red}{\bm{U}^T \bm{U}} \bm{D} = \bm{\Delta}^2$, which is diagonal. 
-
-- Moreover, by definition the entries of $\bm{Z}$ are linear combination of the original variables:
-$$
-z_{ij} = x_{i1}v_{i1} + \cdots + x_{ip} v_{ip} = \bm{x}_i^T\tilde{\bm{v}}_j.
-$$
-The columns $\tilde{\bm{v}}_1,\dots,\tilde{\bm{v}}_p$ of $\bm{V}$ are sometimes called [loadings]{.blue}.
-
-
-
-
+-   Moreover, by definition the entries of $\bm{Z}$ are linear
+    combination of the original variables: $$
+    z_{ij} = x_{i1}v_{i1} + \cdots + x_{ip} v_{ip} = \bm{x}_i^T\tilde{\bm{v}}_j.
+    $$ The columns $\tilde{\bm{v}}_1,\dots,\tilde{\bm{v}}_p$ of $\bm{V}$
+    are sometimes called [loadings]{.blue}.
 :::
 
 ## Principal component analysis II
 
 ::: incremental
+-   Principal components form an orthogonal basis of $\bm{X}$, but they
+    are not a "random" choice and they do [not]{.orange} coincide with
+    them [Gram-Schmidt]{.orange} basis of [Unit
+    A](un_A.html#the-qr-decomposition-i).
 
-- Principal components form an orthogonal basis of $\bm{X}$, but they are not a "random" choice and they do [not]{.orange} coincide with them [Gram-Schmidt]{.orange} basis of [Unit A](un_A.html#the-qr-decomposition-i). 
+-   Indeed, the [first principal component]{.blue} is the linear
+    combination having [maximal variance]{.orange}: $$
+    \tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}^T\bm{X} \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1.
+    $$
 
-- Indeed, the [first principal component]{.blue} is the linear combination having [maximal variance]{.orange}:
-$$
-\tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}^T\bm{X} \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1.
-$$
+-   The [second principal component]{.blue} maximizes the variance under
+    the additional constraint of being [orthogonal]{.orange} to the
+    former. And so on and so forth.
 
-- The [second principal component]{.blue} maximizes the variance under the additional constraint of being [orthogonal]{.orange} to the former. And so on and so forth. 
+-   The values $d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 > 0$ are the
+    [eigenvalues]{.orange} of $\bm{X}^T\bm{X}$ and correspond to the
+    rescaled [variances]{.blue} of each principal component, that is
+    $\text{var}(\tilde{\bm{z}}_j) = \tilde{\bm{z}}_j^T \tilde{\bm{z}}_j/n = d^2_j / n$.
 
-- The values $d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 > 0$ are the [eigenvalues]{.orange} of $\bm{X}^T\bm{X}$ and correspond to the rescaled [variances]{.blue} of each principal component, that is $\text{var}(\tilde{\bm{z}}_j) = \tilde{\bm{z}}_j^T \tilde{\bm{z}}_j/n = d^2_j / n$.
-
-- Hence, the quantity $d_j^2 / \sum_{j'=1}^p d_{j'}^2$ measures the amount of total variance captured by principal components.  
-
+-   Hence, the quantity $d_j^2 / \sum_{j'=1}^p d_{j'}^2$ measures the
+    amount of total variance captured by principal components.
 :::
 
 ## Principal component analysis: `prostate` data
@@ -710,28 +776,29 @@ ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p,
   ylab("Fraction of explained variance")
 ```
 
-
 ## Principal components regression (PCR)
 
-
 ::: incremental
+-   We use the first $k \le p$ [principal components]{.blue} to predict
+    the responses $Y_i$ via $$
+    f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dots,n,
+    $$
 
-- We use the first $k \le p$ [principal components]{.blue} to predict the responses $Y_i$ via 
-$$
-f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dots,n,
-$$
+-   Because of orthogonality, the least squares solution is
+    straightforward to compute: $$
+    \hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \frac{1}{d_j^2}\tilde{\bm{z}}_j^T\bm{y}, \qquad j=1,\dots,k.
+    $$
 
-- Because of orthogonality, the least squares solution is straightforward to compute:
-$$
-\hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \frac{1}{d_j^2}\tilde{\bm{z}}_j^T\bm{y}, \qquad j=1,\dots,k.
-$$
+-   The principal components are in [order of importance]{.blue} and
+    effectively [compressing the information]{.blue} contained in
+    $\bm{X}$ using only $k \le p$ variables.
 
-- The principal components are in [order of importance]{.blue} and effectively [compressing the information]{.blue} contained in $\bm{X}$ using only $k \le p$ variables.
+-   When $k = p$ we are simply rotating the original matrix
+    $\bm{X} = \bm{Z}\bm{V}$, i.e. performing [no compression]{.orange}.
+    The predicted values coincide with OLS.
 
-- When $k = p$ we are simply rotating the original matrix $\bm{X} = \bm{Z}\bm{V}$, i.e. performing [no compression]{.orange}. The predicted values coincide with OLS. 
-
-- The number $k$ is a [complexity parameter]{.blue} which should be chosen via information criteria or cross-validation.
-
+-   The number $k$ is a [complexity parameter]{.blue} which should be
+    chosen via information criteria or cross-validation.
 :::
 
 ## Selection of $k$: cross-validation
@@ -786,49 +853,59 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   ylab("Mean squared error (10-fold cv)")
 ```
 
-
-
 ## Shrinkage effect of principal components I
 
 ::: incremental
+-   A closer look to the PCR solution reveals some interesting aspects.
+    Recall that: $$
+    \tilde{\bm{z}}_j = \bm{X}\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
+    $$
 
-- A closer look to the PCR solution reveals some interesting aspects. Recall that:
-$$
-\tilde{\bm{z}}_j = \bm{X}\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
-$$
+-   The [predicted values]{.orange} of the PCR with $k$ components are:
+    $$
+    \bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j, \qquad \text{ where } \qquad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
+    $$
 
-- The [predicted values]{.orange} of the PCR with $k$ components are:
-$$
-\bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j, \qquad \text{ where } \qquad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
-$$
+-   This representation highlights two important aspects:
 
-- This representation highlights two important aspects:
-  - It is possible to express the PCR solution in the original scale, for better [interpretability]{.orange};
-  - The vector $\hat{\beta}_\text{pcr}$ is a [constrained solution]{.blue}, being a combination of $k \le p$ coefficients, therefore [reducing]{.orange} the [complexity]{.orange} of the model and [shrinking]{.blue} the coefficients. 
-  
-  
-- When $k = 1$, then the $\hat{\beta}_\text{pcr}$ estimate coincide with the scaled loading vector $\hat{\beta}_\text{pcr} = \hat{\gamma}_1 \tilde{\bm{v}}_1$;
-- When $k = p$ then the $\hat{\beta}_\text{pcr}$ coincides with [ordinary least squares]{.blue} (see Exercises). 
+    -   It is possible to express the PCR solution in the original
+        scale, for better [interpretability]{.orange};
+    -   The vector $\hat{\beta}_\text{pcr}$ is a [constrained
+        solution]{.blue}, being a combination of $k \le p$ coefficients,
+        therefore [reducing]{.orange} the [complexity]{.orange} of the
+        model and [shrinking]{.blue} the coefficients.
 
+-   When $k = 1$, then the $\hat{\beta}_\text{pcr}$ estimate coincide
+    with the scaled loading vector
+    $\hat{\beta}_\text{pcr} = \hat{\gamma}_1 \tilde{\bm{v}}_1$;
+
+-   When $k = p$ then the $\hat{\beta}_\text{pcr}$ coincides with
+    [ordinary least squares]{.blue} (see Exercises).
 :::
- 
-## Shrinkage effect of principal components II
+
+## Shrinkage effect of principal components II {#shrinkage-effect-of-principal-components-ii}
 
 ::: incremental
+-   The [variance]{.orange} of $\hat{\beta}_\text{pcr}$, assuming iid
+    errors $\epsilon_i$ and after some algebraic manipulation, results:
+    $$
+    \text{var}(\hat{\beta}_\text{pcr}) = \sigma^2\sum_{j=1}^k \frac{1}{d_j^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T.
+    $$
 
-- The [variance]{.orange} of $\hat{\beta}_\text{pcr}$, assuming iid errors $\epsilon_i$ and after some algebraic manipulation, results: $$
-\text{var}(\hat{\beta}_\text{pcr}) = \sigma^2\sum_{j=1}^k \frac{1}{d_j^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T.
-$$
-- Thus, if a [multicollinearity]{.blue} exists, then it appears as a principal component with very small variance, i.e. a small $d_j^2$. Its removal therefore drastically [reduces]{.orange} the [variance]{.orange} of $\hat{\beta}_\text{pcr}$. 
+-   Thus, if a [multicollinearity]{.blue} exists, then it appears as a
+    principal component with very small variance, i.e. a small $d_j^2$.
+    Its removal therefore drastically [reduces]{.orange} the
+    [variance]{.orange} of $\hat{\beta}_\text{pcr}$.
 
-- Furthermore, the predicted values can be expressed as
-$$
-\bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
-$$
-- The columns of $\bm{U}$, namely the vectors $\tilde{\bm{u}}_j$ are the [normalized principal components]{.blue}.
+-   Furthermore, the predicted values can be expressed as $$
+    \bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
+    $$
 
-- Hence, we are shrinking the predictions towards the main [principal directions]{.orange}.
+-   The columns of $\bm{U}$, namely the vectors $\tilde{\bm{u}}_j$ are
+    the [normalized principal components]{.blue}.
 
+-   Hence, we are shrinking the predictions towards the main [principal
+    directions]{.orange}.
 :::
 
 ## Shrinkage effect of principal components III
@@ -855,94 +932,117 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
   ylab("Regression coefficients")
 ```
 
-
-
 ## Summary and next steps
 
-- We have see so far two "discrete" methods: best subset selection and principal components regression.
+-   We have see so far two "discrete" methods: best subset selection and
+    principal components regression.
 
-- Best subset selection perform [variable selection]{.orange}, whereas principal components regression [reduces the variance]{.orange} of the coefficients.
+-   Best subset selection perform [variable selection]{.orange}, whereas
+    principal components regression [reduces the variance]{.orange} of
+    the coefficients.
 
-- These "discrete" methods can be seen as the naïve counterpart of more advanced and [continuous]{.blue} ideas, that are presented in the second part of the Unit. 
+-   These "discrete" methods can be seen as the naïve counterpart of
+    more advanced and [continuous]{.blue} ideas, that are presented in
+    the second part of the Unit.
 
 . . .
 
-|            | [Shrinkage]{.orange}                      | [Variable selection]{.orange}    |
-|------------|--------------------------------|-----------------------|
+|                     | [Shrinkage]{.orange}           | [Variable selection]{.orange}   |
+|-----------------|--------------------------------|-----------------------|
 | [Discrete]{.blue}   | Principal component regression | Best subset selection, stepwise |
-| [Continuous]{.blue} | Ridge regression               | Relaxed Lasso           |
+| [Continuous]{.blue} | Ridge regression               | Relaxed Lasso                   |
 
 . . .
 
-- Finally, the [lasso]{.blue} and the [elastic net]{.orange} perform both shrinkage and variable selection.
+-   Finally, the [lasso]{.blue} and the [elastic net]{.orange} perform
+    both shrinkage and variable selection.
 
 # Ridge regression
 
 ## The ridge regularization method
 
-
-- The ridge estimator $\hat{\beta}_\text{ridge}$ is the most common [shrinkage method]{.blue} and is the [minimizer]{.orange} of $$
-\sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
-$$
-
-. . .
-
-- When [complexity parameter]{.blue} $s$ is small, the coefficients of $\hat{\beta}_\text{ridge}$ are explicitly [shrinked]{.orange}, i.e. biased, [towards zero]{.orange}. 
-
-- On the other hand, if $s$ is large enough, then $\hat{\beta}_\text{ridge}$ is equivalent to 
- $\hat{\beta}_\text{ols}$. 
+-   The ridge estimator $\hat{\beta}_\text{ridge}$ is the most common
+    [shrinkage method]{.blue} and is the [minimizer]{.orange} of $$
+    \sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
+    $$
 
 . . .
 
-- In ridge regression, the [variability]{.orange} of the estimator is explicitly [bounded]{.orange}, although this comes with some [bias]{.blue}. The parameter $s$ controls the bias-variance trade-off. 
+-   When [complexity parameter]{.blue} $s$ is small, the coefficients of
+    $\hat{\beta}_\text{ridge}$ are explicitly [shrinked]{.orange}, i.e.
+    biased, [towards zero]{.orange}.
+
+-   On the other hand, if $s$ is large enough, then
+    $\hat{\beta}_\text{ridge}$ is equivalent to
+    $\hat{\beta}_\text{ols}$.
 
 . . .
 
-- Note that the intercept term $\beta_0$ is [not penalized]{.orange}.
+-   In ridge regression, the [variability]{.orange} of the estimator is
+    explicitly [bounded]{.orange}, although this comes with some
+    [bias]{.blue}. The parameter $s$ controls the bias-variance
+    trade-off.
+
+. . .
+
+-   Note that the intercept term $\beta_0$ is [not penalized]{.orange}.
 
 ## Centering and scaling the predictors
 
 ::: incremental
+-   We can use the same [mathematical trick]{.blue} that we [exploited
+    before](/#centering-the-predictors-i) to simplify computations.
 
-- We can use the same [mathematical trick]{.blue} that we [exploited before](/#centering-the-predictors-i) to simplify computations.
+-   Under centered predictors, one can show that
+    $\hat{\beta}_0 = \bar{y}$ even in the ridge regression case. The
+    proof is almost identical as before (see Exercises).
 
-- Under centered predictors, one can show that $\hat{\beta}_0 = \bar{y}$ even in the ridge regression case. The proof is almost identical as before (see Exercises).
+-   Hence, we can [omit the intercept]{.orange} term $\beta_0$ after
+    [centering]{.orange} the inputs and the response: $$
+    \bar{y} = 0, \qquad \bar{x}_{j} = 0, \quad j=1,\dots,p.
+    $$
 
-- Hence, we can [omit the intercept]{.orange} term $\beta_0$ after [centering]{.orange} the inputs and the response: $$
-\bar{y} = 0, \qquad \bar{x}_{j} = 0, \quad j=1,\dots,p.
-$$
+-   The ridge solutions are [not equivariant]{.orange} under [scalings
+    of the input]{.orange}, so one normally [standardizes]{.blue} the
+    input to have unit variance, if they are not in the same scale.
 
-- The ridge solutions are [not equivariant]{.orange} under [scalings of the input]{.orange}, so one normally [standardizes]{.blue} the input to have unit variance, if they are not in the same scale.
+-   Standardization is often times performed under the hood in most
+    statistical software.
 
-- Standardization is often times performed under the hood in most statistical software. 
-
-- Different R packages have [different defaults]{.blue}. For instance `glmnet` also [standardizes the response]{.blue} $y$ and then [transforms back]{.orange} the estimated coefficients into the [original scale]{.orange}.
-
-
+-   Different R packages have [different defaults]{.blue}. For instance
+    `glmnet` also [standardizes the response]{.blue} $y$ and then
+    [transforms back]{.orange} the estimated coefficients into the
+    [original scale]{.orange}.
 :::
 
 ## Lagrange multipliers and ridge solution
 
-- The ridge regression problem can be [equivalently expressed]{.orange} in its [Lagrangian form](https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions), which greatly facilitates computations. The ridge estimator $\hat{\beta}_\text{ridge}$ is the [minimizer]{.orange} of
-$$
-\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y} - \bm{X}\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{penalty}}},
-$$
-where $\lambda > 0$ is a [complexity parameter]{.blue} controlling the [penalty]{.orange}. It holds that $s = ||\hat{\beta}_\text{ridge} ||^2$.
+-   The ridge regression problem can be [equivalently
+    expressed]{.orange} in its [Lagrangian
+    form](https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions),
+    which greatly facilitates computations. The ridge estimator
+    $\hat{\beta}_\text{ridge}$ is the [minimizer]{.orange} of $$
+    \sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y} - \bm{X}\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{ridge penalty}}},
+    $$ where $\lambda > 0$ is a [complexity parameter]{.blue}
+    controlling the [penalty]{.orange}. It holds that
+    $s = ||\hat{\beta}_\text{ridge} ||^2$.
 
 . . .
 
-- When $\lambda = 0$ then $\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}$ whereas when $\lambda \rightarrow \infty$ we get $\hat{\beta}_\text{ridge} = 0$.
+-   When $\lambda = 0$ then
+    $\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}$ whereas when
+    $\lambda \rightarrow \infty$ we get $\hat{\beta}_\text{ridge} = 0$.
 
 . . .
 
 ::: callout-note
 #### Ridge regression estimator
 
-For any $n\times p$ design matrix $\bm{X}$, not necessarily of full-rank, the ridge estimator is 
-$$
+For any $n\times p$ design matrix $\bm{X}$, not necessarily of
+full-rank, the ridge estimator is $$
 \hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y}.
-$$
-Such an estimator [always exists]{.blue} and is [unique]{.orange} (even when $p > n$).
+$$ Such an estimator [always exists]{.blue} and is [unique]{.orange}
+(even when $p > n$).
 :::
 
 <!-- ## Mathematical details -->
@@ -951,22 +1051,57 @@ Such an estimator [always exists]{.blue} and is [unique]{.orange} (even when $p 
 
 <!-- - The matrix $\bm{X}^T\bm{X} + \lambda I_p$ is [invertible]{.blue} for any $\lambda > 0$.  -->
 
-
-
 <!-- - For any $\lambda >0$, the ridge solution is always at the [boundary]{.orange}, that is, is never an interior point. Indeed, if $\bm{X}$ is full rank, it can be shown that -->
+
 <!-- $$ -->
+
 <!-- ||\hat{\beta}_\text{ridge}||^2 \le ||\hat{\beta}||^2. -->
+
 <!-- $$ -->
 
 <!-- - The size of the spherical ridge parameter constraint [shrinks monotonously]{.orange} as $\lambda$ increases: -->
+
 <!-- $$ -->
+
 <!-- \frac{\partial}{\partial \lambda} ||\hat{\beta}_\text{ridge}||^2 < 0, -->
+
 <!-- $$ -->
+
 <!-- ::: -->
 
 ## The geometry of the ridge solution
 
-![](img/ridge.png){fig-align="center"}
+```{r}
+#| purl: false
+library(ggforce)
+
+ellipses <- data.frame(
+  x0 = rep(5, 4),
+  y0 = rep(3, 4),
+  a = seq(0.5, 2, length = 4),
+  b = c(1, 2, 2.835, 3.82),
+  angle = rep(2.1, 4)
+)
+
+points <- data.frame(
+  x = c(5),
+  y = c(3)
+)
+
+ggplot() +
+  geom_circle(aes(x0 = 0, y0 = 0, r = 2), color = "#fc7d0b", fill = "#fc7d0b") +
+  geom_ellipse(aes(x0 = x0, y0 = y0, a = a, b = b, angle = angle), color = "#1170aa", data = ellipses) +
+  geom_point(aes(x = x, y = y), data = points, color = "#1170aa") +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dotted") +
+  geom_hline(yintercept = 0, linetype = "dotted") +
+  xlab(expression(beta[1])) +
+  ylab(expression(beta[2])) +
+  coord_fixed() +
+  annotate("text", x = 5.4, y = 3.2, label = expression(hat(beta)[ols]), col = "#1170aa") +
+  annotate("text", x = -1, y = 2.5, label = expression(beta[1]^2 + beta[2]^2 == s), col = "#fc7d0b") +
+  annotate("text", x = 1.7, y = 4.8, label = expression(sum( (y[i] - x[i]^T * beta)^2, i == 1, n) == c), col = "#1170aa")
+```
 
 ## The ridge path
 
@@ -1049,78 +1184,100 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
   ylab("Regression coefficients")
 ```
 
-
 ## Comments on the ridge path
 
-- The values of $\lambda$ are in somewhat [arbitrary scale]{.orange}. The ridge penalty has a concrete effect starting from $\lambda / n > 0.1$ or so.
+-   The values of $\lambda$ are in somewhat [arbitrary scale]{.orange}.
+    The ridge penalty has a concrete effect starting from
+    $\lambda / n > 0.1$ or so.
 
-- The variable `lcavol` is arguably the most important, followed by `lweight` and `svi`, being the one that receive less shrinkage compared to the others.
-
-. . .
-
-- The coefficient of `age`, `gleason` and `lcp`, is negative at the beginning and then become positive for large values of $\lambda$.
-
-- This indicate that their negative value in $\hat{\beta}_\text{ols}$ was probably a consequence of their [correlation]{.orange} with other variables. 
+-   The variable `lcavol` is arguably the most important, followed by
+    `lweight` and `svi`, being the one that receive less shrinkage
+    compared to the others.
 
 . . .
 
-- There is an interesting similarity between this plot and the one of principal component regression... is it a coincidence? 
+-   The coefficient of `age`, `gleason` and `lcp`, is negative at the
+    beginning and then become positive for large values of $\lambda$.
+
+-   This indicate that their negative value in $\hat{\beta}_\text{ols}$
+    was probably a consequence of their [correlation]{.orange} with
+    other variables.
+
+. . .
+
+-   There is an interesting similarity between this plot and the one of
+    principal component regression... is it a coincidence?
 
 ## Shrinkage effect of ridge regression I
 
-- Considering, once again, the [singular value decomposition]{.orange}, we get: $$\begin{aligned}
-\bm{X}\hat{\beta}_\text{ridge} &= \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} \\
-& = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}  \\
-& = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y} \\
-& = \bm{U}\bm{D}(\bm{D}^T\bm{D} + \lambda I_p)^{-1}\bm{D}^T\bm{U}^T\bm{y} \\
-& = \bm{H}_\text{ridge}\bm{y} = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y},
-\end{aligned}
-$$
-where $\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T$ is the so-called [hat matrix]{.blue} of ridge regression.
+-   Considering, once again, the [singular value
+    decomposition]{.orange}, we get: $$\begin{aligned}
+    \bm{X}\hat{\beta}_\text{ridge} &= \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} \\
+    & = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}  \\
+    & = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y} \\
+    & = \bm{U}\bm{D}(\bm{D}^T\bm{D} + \lambda I_p)^{-1}\bm{D}^T\bm{U}^T\bm{y} \\
+    & = \bm{H}_\text{ridge}\bm{y} = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y},
+    \end{aligned}
+    $$ where
+    $\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T$
+    is the so-called [hat matrix]{.blue} of ridge regression.
 
 . . .
 
-- This means that ridge regression [shrinks]{.blue} the [principal directions]{.blue} by an amount that depends on the [eigenvalues]{.orange} $d_j^2$. 
+-   This means that ridge regression [shrinks]{.blue} the [principal
+    directions]{.blue} by an amount that depends on the
+    [eigenvalues]{.orange} $d_j^2$.
 
-- In other words, it [smoothly reduces]{.orange} the impact of the [redundant]{.orange} information. 
-
+-   In other words, it [smoothly reduces]{.orange} the impact of the
+    [redundant]{.orange} information.
 
 ## Shrinkage effect of ridge regression II
 
-- A sharp [connection]{.blue} with [principal components regression]{.blue} is therefore revealed. 
+-   A sharp [connection]{.blue} with [principal components
+    regression]{.blue} is therefore revealed.
 
-- Compare the previous formula for $\bm{X}\hat{\beta}_\text{ridge}$ with [the one we previously obtained](#shrinkage-effect-of-principal-components-ii) for $\bm{X}\hat{\beta}_\text{pcr}$.
-
-. . .
-
-- More explicitly, for [ridge regression]{.orange} we will have that $$
-\hat{\beta}_\text{ridge} = \bm{V}\text{diag}\left(\frac{d_1}{d_1^2 + \lambda}, \dots, \frac{d_p}{d_p^2 + \lambda}\right)\bm{U}^T\bm{y}.
-$$
-whereas for [principal components regression]{.blue} with $k$ components we get
-$$
-\hat{\beta}_\text{pcr} = \bm{V}\text{diag}\left(\frac{1}{d_1}, \dots, \frac{1}{d_k}, 0, \dots, 0\right)\bm{U}^T\bm{y}.
-$$
+-   Compare the previous formula for $\bm{X}\hat{\beta}_\text{ridge}$
+    with [the one we previously
+    obtained](#shrinkage-effect-of-principal-components-ii) for
+    $\bm{X}\hat{\beta}_\text{pcr}$.
 
 . . .
 
-- Both operate on the singular values, but where principal component regression [thresholds]{.blue} the singular values, [ridge regression]{.orange} shrinks them.
+-   More explicitly, for [ridge regression]{.orange} we will have that
+    $$
+    \hat{\beta}_\text{ridge} = \bm{V}\text{diag}\left(\frac{d_1}{d_1^2 + \lambda}, \dots, \frac{d_p}{d_p^2 + \lambda}\right)\bm{U}^T\bm{y}.
+    $$ whereas for [principal components regression]{.blue} with $k$
+    components we get $$
+    \hat{\beta}_\text{pcr} = \bm{V}\text{diag}\left(\frac{1}{d_1}, \dots, \frac{1}{d_k}, 0, \dots, 0\right)\bm{U}^T\bm{y}.
+    $$
+
+. . .
+
+-   Both operate on the singular values, but where principal component
+    regression [thresholds]{.blue} the singular values, [ridge
+    regression]{.orange} shrinks them.
 
 ## Bias-variance trade-off
 
-- The ridge regression [add some bias]{.orange} to the estimates, but it [reduces]{.blue} their [variance]{.blue}. 
+-   The ridge regression [add some bias]{.orange} to the estimates, but
+    it [reduces]{.blue} their [variance]{.blue}.
 
 . . .
 
-- The [variance]{.orange} of $\hat{\beta}_\text{ridge}$, assuming iid errors $\epsilon_i$ with variance $\sigma^2$, results: $$
-\text{var}(\hat{\beta}_\text{ridge}) = \sigma^2\sum_{j=1}^p \frac{d_j^2}{(d_j^2 + \lambda)^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T,
-$$
-whose diagonal elements are always smaller than those of $\text{var}(\hat{\beta}_\text{ols})$.
+-   The [variance]{.orange} of $\hat{\beta}_\text{ridge}$, assuming iid
+    errors $\epsilon_i$ with variance $\sigma^2$, results: $$
+    \text{var}(\hat{\beta}_\text{ridge}) = \sigma^2\sum_{j=1}^p \frac{d_j^2}{(d_j^2 + \lambda)^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T,
+    $$ whose diagonal elements are always smaller than those of
+    $\text{var}(\hat{\beta}_\text{ols})$.
 
 . . .
 
 ::: callout-note
 #### Theorem (Theobald, 1974)
-Let us [additionally]{.blue} assume that $y_i = \bm{x}_i^T\beta + \epsilon_i$, where $\epsilon_i$ are iid errors with variance $\sigma^2$. Then, there exist a $\lambda > 0$ such that $$
+
+Let us [additionally]{.blue} assume that
+$y_i = \bm{x}_i^T\beta + \epsilon_i$, where $\epsilon_i$ are iid errors
+with variance $\sigma^2$. Then, there exist a $\lambda > 0$ such that $$
 \mathbb{E}\left(||\hat{\beta}_\text{ridge} - \beta)||^2\right) < \mathbb{E}\left(||\hat{\beta}_\text{ols} - \beta||^2\right) = \text{var}(\hat{\beta}_\text{ols}).
 $$
 :::
@@ -1128,106 +1285,123 @@ $$
 ## ☠️ - A historical perspective I
 
 ::: incremental
+-   The ridge regression estimator was originally proposed by Hoerl and
+    Kennard (1970) with a quite different motivation in mind.
 
-- The ridge regression estimator was originally proposed by Hoerl and Kennard (1970) with a quite different motivation in mind.
+-   In linear models, the estimate of $\beta$ is obtained by solving the
+    [normal equations]{.blue} $$
+    (\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
+    $$ which could be [ill-conditioned]{.orange}.
 
-- In linear models, the estimate of $\beta$ is obtained by solving the [normal equations]{.blue} $$
-(\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
-$$
-which could be [ill-conditioned]{.orange}.
-
-- In other words, the [condition number]{.blue}
-$$
-\kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
-$$
-might be very large, leading to [numerical inaccuracies]{.orange}, since the matrix $\bm{X}^T\bm{X}$ is [numerically singular]{.blue} and therefore not invertible in practice.
-
+-   In other words, the [condition number]{.blue} $$
+    \kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
+    $$ might be very large, leading to [numerical
+    inaccuracies]{.orange}, since the matrix $\bm{X}^T\bm{X}$ is
+    [numerically singular]{.blue} and therefore not invertible in
+    practice.
 :::
 
 ## ☠️ - A historical perspective II
 
 ::: incremental
-- Ridge provides a [remedy]{.blue} for [ill-conditioning]{.orange}, by adding a "ridge" to the diagonal of $\bm{X}^T\bm{X}$, obtaining the modified normal equations
-$$
-(\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
-$$
+-   Ridge provides a [remedy]{.blue} for [ill-conditioning]{.orange}, by
+    adding a "ridge" to the diagonal of $\bm{X}^T\bm{X}$, obtaining the
+    modified normal equations $$
+    (\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
+    $$
 
-- The [condition number]{.orange} of the modified $(\bm{X}^T\bm{X} + \lambda I_p)$ matrix becomes
-$$
-\kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
-$$
-- Notice that even if $d_p = 0$, i.e. the matrix $\bm{X}$ is [singular]{.blue}, then condition number will be finite as long as $\lambda > 0$. 
+-   The [condition number]{.orange} of the modified
+    $(\bm{X}^T\bm{X} + \lambda I_p)$ matrix becomes $$
+    \kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
+    $$
 
-- This technique is known as [Tikhonov regularization]{.orange}, after the Russian mathematician Andrey Tikhonov.
+-   Notice that even if $d_p = 0$, i.e. the matrix $\bm{X}$ is
+    [singular]{.blue}, then condition number will be finite as long as
+    $\lambda > 0$.
 
+-   This technique is known as [Tikhonov regularization]{.orange}, after
+    the Russian mathematician Andrey Tikhonov.
 :::
 
 ## ☠️ - A historical perspective III
 
-![](img/ridge_paper.png){fig-align="center" width=40%}
+![](img/ridge_paper.png){fig-align="center" width="40%"}
 
-- Figure 1 of the [original paper]{.orange} by Hoerl and Kennard (1970), displaying the bias-variance [trade-off]{.blue}.
+-   Figure 1 of the [original paper]{.orange} by Hoerl and Kennard
+    (1970), displaying the bias-variance [trade-off]{.blue}.
 
 ## On the choice of $\lambda$
 
-- The [penalty parameter]{.orange} $\lambda$ determines the amount of bias and variance of  $\hat{\beta}_\text{ridge}$ and therefore it must be carefully [estimated]{.blue}.
+-   The [penalty parameter]{.orange} $\lambda$ determines the amount of
+    bias and variance of $\hat{\beta}_\text{ridge}$ and therefore it
+    must be carefully [estimated]{.blue}.
 
 . . .
 
-- [Minimizing]{.blue} $||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2$ over $\lambda$ is a [very bad idea]{.orange} and it would always choose $\lambda =0$, corresponding to $\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}$.
+-   [Minimizing]{.blue} $||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2$
+    over $\lambda$ is a [very bad idea]{.orange} and it would always
+    lead to $\lambda =0$, corresponding to
+    $\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}$.
 
-- Indeed, $\lambda$ is a [complexity]{.blue} parameter and, like the number of covariates, should be selected using [information criteria]{.orange} or training/test and [cross-validation]{.orange}.
+-   Indeed, $\lambda$ is a [complexity]{.blue} parameter and, like the
+    number of covariates, should be selected using [information
+    criteria]{.orange} or training/test and [cross-validation]{.orange}.
 
 . . .
 
-- Suppose we wish to use an [information criteria]{.blue} such as the AIC or BIC, of the form $$
-    \text{IC}(p) = -2 \ell(\hat{\beta}_\text{ridge}) + \text{penalty}(\text{``degrees of freedom"}).
-    $$
-We need a careful definition of [degrees of freedom]{.blue} that is appropriate in this context.
+-   Suppose we wish to use an [information criteria]{.blue} such as the
+    AIC or BIC, of the form $$
+      \text{IC}(p) = -2 \ell(\hat{\beta}_\text{ridge}) + \text{penalty}(\text{``degrees of freedom"}).
+      $$ We need a careful definition of [degrees of freedom]{.blue}
+    that is appropriate in this context.
 
-- The current definition of degrees of freedom, i.e. the number of [non-zero coefficients]{.orange}, is [not appropriate]{.orange} for ridge regression, because it would be equal to $p$ for any value of $\lambda$. 
+-   The current definition of degrees of freedom, i.e. the number of
+    [non-zero coefficients]{.orange}, is [not appropriate]{.orange} for
+    ridge regression, because it would be equal to $p$ for any value of
+    $\lambda$.
 
 ## Effective degrees of freedom I
 
-- Let us recall that the [optimism]{.orange} for a generic estimator $\hat{f}(\bm{x})$ is defined as the following average of covariances
-$$
-\text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)),
-$$
-which is equal to $\text{Opt}_\text{ols} = (2\sigma^2p)/ n$ in [ordinary least squares]{.blue}.
+-   Let us recall that the [optimism]{.orange} for a generic estimator
+    $\hat{f}(\bm{x})$ is defined as the following average of covariances
+    $$
+    \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)),
+    $$ which is equal to $\text{Opt}_\text{ols} = (2\sigma^2p)/ n$ in
+    [ordinary least squares]{.blue}.
 
 . . .
 
 ::: callout-note
 #### Effective degrees of freedom
 
-Let $\hat{f}(\bm{x})$ be an estimate for the regression function $f(\bm{x})$ based on the data $Y_1,\dots,Y_n$. The [effective degrees of freedom]{.orange} are defined as $$
+Let $\hat{f}(\bm{x})$ be an estimate for the regression function
+$f(\bm{x})$ based on the data $Y_1,\dots,Y_n$. The [effective degrees of
+freedom]{.orange} are defined as $$
 \text{df} = \frac{1}{\sigma^2}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)).
 $$
-
 :::
-
-
 
 ## Effective degrees of freedom II
 
 ::: incremental
-
-- The effective degrees of freedom of [ordinary least squares]{.blue} and [principal component regression]{.blue} are
-$$
-\text{df}_\text{ols} = p, \qquad \text{df}_\text{pcr} = k.
-$$
-
-- After some algebra, one finds that the effective degrees of freedom of [ridge regression]{.orange} are
-$$
-\text{df}_\text{ridge} = \text{tr}(\bm{H}_\text{ridge}) = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda},
-$$
-where $\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T$ is the [hat matrix]{.orange} of ridge regression.
-
-- Using the above result, we can then [plug-in]{.orange} $\text{df}_\text{ridge}$ into the formula of the [$C_p$ of Mallows]{.blue}: $$
-    \widehat{\mathrm{ErrF}} = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
+-   The effective degrees of freedom of [ordinary least squares]{.blue}
+    and [principal component regression]{.blue} are $$
+    \text{df}_\text{ols} = p, \qquad \text{df}_\text{pcr} = k.
     $$
-where the residual variance is estimated as $\hat{\sigma}^2 = (n - \text{df}_\text{ridge})^{-1} \sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2$.
 
+-   After some algebra, one finds that the effective degrees of freedom
+    of [ridge regression]{.orange} are $$
+    \text{df}_\text{ridge} = \text{tr}(\bm{H}_\text{ridge}) = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda},
+    $$ where
+    $\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T$
+    is the [hat matrix]{.orange} of ridge regression.
+
+-   Using the above result, we can [plug-in]{.orange}
+    $\text{df}_\text{ridge}$ into the formula of the [$C_p$ of
+    Mallows]{.blue}: $$
+      \widehat{\mathrm{ErrF}} = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
+      $$ where the residual variance is estimated as
+    $\hat{\sigma}^2 = (n - \text{df}_\text{ridge})^{-1} \sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2$.
 :::
 
 ## Effective degrees of freedom III
@@ -1267,25 +1441,24 @@ ggplot(data = mse_ridge, aes(x = lambda_tilde_seq, y = Cp)) +
 :::
 :::
 
-
 ## Cross-validation for ridge regression I
 
-- Training / test strategies and [cross-validation]{.blue} are also valid tools for selecting $\lambda$. 
+-   Training / test strategies and [cross-validation]{.blue} are also
+    valid tools for selecting $\lambda$.
 
-- Most statistical software packages use a slightly [different parametrization]{.orange} for $\lambda$, as they minimize $$
-\textcolor{red}{\frac{1}{n}}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \tilde{\lambda} \sum_{j=1}^p\beta_j^2,
-$$
-where the penalty parameter $\tilde{\lambda} = \lambda / n$.
-
-
+-   Most statistical software packages use a slightly [different
+    parametrization]{.orange} for $\lambda$, as they minimize $$
+    \textcolor{red}{\frac{1}{n}}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \tilde{\lambda} \sum_{j=1}^p\beta_j^2,
+    $$ where the penalty parameter $\tilde{\lambda} = \lambda / n$.
 
 . . .
 
+-   This parametrization does not alter the estimate of
+    $\hat{\beta}_\text{ridge}$ but is more amenable for
+    [cross-validation]{.blue} as the values of $\tilde{\lambda}$ can be
+    compared across dataset with [different sample sizes]{.orange}.
 
-- This parametrization does not alter the estimate of $\hat{\beta}_\text{ridge}$ but is more amenable for [cross-validation]{.blue} as the values of $\tilde{\lambda}$ can be compared across dataset with [different sample sizes]{.orange}.
-
-- The R package `glmnet` uses this convention.
-
+-   The R package `glmnet` uses this convention.
 
 ## Cross-validation for ridge regression II
 
@@ -1352,28 +1525,38 @@ as.numeric(coef(glmnet(X, y_std, family = "gaussian", standardize = FALSE, alpha
 my_ridge(X, y_std, standardize = FALSE, lambda_tilde = lambda_tilde_min_cv)
 ```
 
-
 <!-- ## Leave-one-out cross-validation -->
 
-
 <!-- -   Ridge regression is, like ordinary least squares, a [linear smoother]{.blue}, namely: -->
+
 <!-- $$ -->
+
 <!-- \bm{X}\hat{\beta}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} = \bm{H}_\text{ridge}\bm{y}, -->
+
 <!-- $$ -->
+
 <!-- meaning that a [computational shortcut]{.orange} for LOO-CV can be exploited. -->
 
 <!-- . . . -->
 
 <!-- ::: callout-note -->
+
 <!-- #### LOO-CV (Ridge regression) -->
 
 <!-- Let $\hat{y}_{-i, \text{ridge}} = \bm{x}_i^T\hat{\beta}_{-i, \text{ridge}}$ be the leave-one-out -->
+
 <!-- predictions of a [linear model]{.blue} with a [ridge penalty]{.orange} and let $h_{i, \text{ridge}} = [\bm{H}_\text{ridge}]_{ii}$ and -->
+
 <!-- $\hat{y}_i$ be the leverages and the predictions. Then: $$ -->
+
 <!-- y_i - \hat{y}_{-i, \text{ridge}} = \frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}, \qquad i=1,\dots,n, -->
+
 <!-- $$ -->
+
 <!-- recalling that $\bar{y} = 0$. Therefore, the leave-one-out mean squared error is -->
+
 <!-- $$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}\right)^2.$$ -->
+
 <!-- ::: -->
 
 ## The ridge estimate
@@ -1397,25 +1580,153 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 ## Summary of ridge regression
 
-- Trade-off bias variance, variables more correlated are shrinked
+-   Ridge regression trades some [bias]{.orange} in exchange of a [lower
+    variance]{.blue}, often resulting in more accurate predictions.
 
-- All variables are used
+. . .
 
-- Solution always exists, even when $p > n$ or in presence of perfect collinearity.
+-   The ridge solution [always exists]{.orange} and is [unique]{.blue}, even when $p > n$ or in presence of perfect [collinearity]{.orange}.
 
-- Mention to efficient computations
+-   In ridge regression, [all variables]{.blue} are used. This is in contrast with best subset selection.
+
+. . .
+
+-   For fixed values of $\lambda$, [efficient computations]{.orange} are available using QR and Cholesky decomposition.
+
+-   At the end of this unit we will describe a [general optimization strategy]{.blue} that recovers the entire "ridge path", i.e. the estimate $\hat{\beta}_\text{ridge}$ for several values of $\lambda$.
+
+. . .
+
+-   Ridge regression has also a transparent [Bayesian
+    interpretation]{.orange}, since the penalty can be interpreted as a
+    Gaussian prior on $\beta$.
 
 # The lasso
 
 ## Looking for sparsity
 
+::: columns
+::: {.column width="25%"}
+![Robert Tibshirani](img/tibshirani.jpg){fig-align="left"}
+:::
+
+::: {.column width="75%"}
+-   Signal [sparsity]{.orange} is the assumption that only a small
+    number of predictors have an effect, i.e. $$
+    \beta_j = 0, \qquad \text{for most} \qquad j \in \{1,\dots,p\}.$$
+- In this case we would like our estimator $\hat{\beta}$ to be [sparse]{.blue}, meaning that $\hat{\beta}_j = 0$ for many $j \in \{1,\dots,p\}$.
+- Sparse estimators are desirable because:
+  - perform [variable selection]{.blue} and improve the [interpretability]{.orange} of the results;
+  - Speed up the [computations]{.blue} of the predictions, because less variables are needed.
+- Best subset selection is sparse (but computationally unfeasible), the ridge estimator is not. 
+:::
+:::
+
 ## The lasso regularization method
+
+- The [lasso]{.blue} is in the highly influential paper of Tibshirani (1996). It is a method that performs both [shrinkage]{.blue} and [variable selection]{.orange}
+
+. . .
+
+-   The lasso estimator $\hat{\beta}_\text{lasso}$ is the [minimizer]{.orange} of $$
+    \sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p |\beta_j| \le s.
+    $$
+    therefore when the [complexity parameter]{.blue} $s$ is small, the coefficients of
+    $\hat{\beta}_\text{lasso}$ are [shrinked]{.orange} and when $s$ is large enough $\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}$, as in ridge regression. 
+
+. . .
+
+- The lasso is [deceptively similar]{.orange} to ridge. However, the change from a quadratic penalty to the absolute value has crucial [sparsity]{.blue} implications.
+
+. . .
+
+-   The intercept term $\beta_0$ is [not penalized]{.orange}. The considerations and same mathematical tricks discussed for ridge apply here. We assume that $\bm{y}$ and $\tilde{\bm{x}}_{j}$ are [centered]{.blue} and possibly [scaled]{.blue}. 
+
 
 ## Lagrange multipliers and lasso solution
 
+-   The lasso problem can be [equivalently
+    expressed]{.blue} in its Lagrangian
+    form, which is more amenable for computations.
+    
+- Having remove the intercept, the lasso estimator $\hat{\beta}_\text{lasso}$ is the [minimizer]{.orange} of $$
+    \underbrace{\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
+    $$ where $\lambda > 0$ is a [complexity parameter]{.blue}
+    controlling the [penalty]{.orange}. 
+
+. . .
+
+-   When $\lambda = 0$ the penalty term disappears and $\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}$. On the other hand, there exists a finite value of $\lambda_\text{max} < \infty$ such that $\hat{\beta}_\text{lasso} = 0$.
+    
+- For any intermediate value $0 < \lambda < \lambda_\text{max}$ we get a combination of [shrinked]{.orange} but positive coefficients, and a set of coefficients whose value is [exactly zero]{.blue}.
+
+. . .
+
+- Unfortunately, there is [no closed-form expression]{.orange} for the lasso solution.
+
 ## The geometry of the lasso solution
 
+```{r}
+#| purl: false
+
+geom_rhombus <- function(color="black", fill=NA, ...) {
+    x <- seq(-1, 1, length.out=100)
+    ymax <- 1 - abs(x)
+    ymin <- -1 + abs(x)
+    annotate("ribbon", x=x, ymin=ymin, ymax=ymax, color=color, fill=fill, ...)
+}
+
+ellipses <- data.frame(
+  x0 = rep(3, 4),
+  y0 = rep(3, 4),
+  a = seq(0.5, 2, length = 4),
+  b = c(1, 2, 2.835, 3.82),
+  angle = rep(1.92, 4)
+)
+
+points <- data.frame(
+  x = c(3),
+  y = c(3)
+)
+
+ggplot() +
+  geom_rhombus(color = "#fc7d0b", fill = "#fc7d0b") +
+  geom_ellipse(aes(x0 = x0, y0 = y0, a = a, b = b, angle = angle), color = "#1170aa", data = ellipses) +
+  geom_point(aes(x = x, y = y), data = points, color = "#1170aa") +
+  theme_minimal() +
+  geom_vline(xintercept = 0, linetype = "dotted") +
+  geom_hline(yintercept = 0, linetype = "dotted") +
+  xlab(expression(beta[1])) +
+  ylab(expression(beta[2])) +
+  coord_fixed() +
+  annotate("text", x = 2.9, y = 2.9, label = expression(hat(beta)[ols]), col = "#1170aa") +
+  annotate("text", x = 2, y = -0.5, label = expression(paste("|",beta[1],"|") + paste("|",beta[2],"|") == s), col = "#fc7d0b") +
+  annotate("text", x = 5, y = 0.7, label = expression(sum( (y[i] - x[i]^T * beta)^2, i == 1, n) == c), col = "#1170aa")
+```
+
 ## Single predictor I
+
+::: incremental
+
+- Let us consider the [single-predictor]{.blue} scenario, in which$$
+   \hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_i - x_i\beta)^2 + \lambda |\beta|.
+    $$
+    
+- This problem admits an [explicit expression]{.orange} (see Exercises), which is
+$$
+\hat{\beta}_\text{lasso} = \begin{cases}\sum_{i=1}^n x_i y_i - \lambda, \qquad &\text{if} \quad \sum_{i=1}^n x_i y_i > \lambda \\
+0 \qquad &\text{if} \quad \sum_{i=1}^n x_i y_i \le \lambda\\
+\sum_{i=1}^n x_i y_i + \lambda, \qquad &\text{if} \quad \sum_{i=1}^n x_i y_i < -\lambda \\
+\end{cases}
+$$
+
+- The above solution can be written as $\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})$, where $\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)$ is the [soft-thresholding]{.blue} operator.
+
+- Note that for [ridge regression]{.orange} we would get
+$$
+\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\sum_{i=1}^n x_i y_i =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols}.
+$$
+:::
 
 ## Single predictor II
 
@@ -1434,7 +1745,6 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 ## The degrees of freedom of the lasso
 
 ## ☠️ - Effective degrees of freedom of best subset
-
 
 ## A comparison between pcr, ridge, and lasso
 
@@ -1479,17 +1789,16 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
-        
+
 ## Ridge references
 
 -   [Specialized references]{.orange}
-    - Hastie, T. (2020). Ridge regularization: an essential concept in data science. *Technometrics*, 62(4), 426-433.
+    -   Hastie, T. (2020). Ridge regularization: an essential concept in
+        data science. *Technometrics*, 62(4), 426-433.
 
 ## Lasso and LARS references
 
 ## Other references
-
-
 
 <!-- # Lasso, LARS, and elastic-net -->
 
@@ -1604,4 +1913,3 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 <!-- ``` -->
 
 <!-- ::: -->
-

@@ -712,7 +712,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <h2>Step 3. of best subset selection via cross-validation</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-11-1.png" width="2000" class="r-stretch quarto-figure-center"><ul>
-<li>By applying the “1 standard error rule”, we select <span class="math inline">k = 2</span>, i.e.&nbsp;<code>lcavol</code> and <code>lweight</code>.</li>
+<li>By applying the “1 standard error rule”, we select <span class="math inline">k = 2</span>, i.e. <code>lcavol</code> and <code>lweight</code>.</li>
 </ul>
 </section>
 <section id="comments-and-computations" class="slide level2 center">
@@ -725,7 +725,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </span> models to consider, which is <span class="orange">computationally prohibitive</span>!</p></li>
 <li class="fragment"><p>There exists algorithms (i.e.&nbsp;<span class="blue">leaps and bounds</span>) that makes this feasible for <span class="math inline">p \approx 30</span>.</p></li>
 <li class="fragment"><p>Recently, <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-44/issue-2/Best-subset-selection-via-a-modern-optimization-lens/10.1214/15-AOS1388.full">Bertsimas et al., 2016</a> proposed the usage of a mixed integer optimization formulation, allowing <span class="math inline">p</span> to be in the order of hundreds.</p></li>
-<li class="fragment"><p>Despite these advances, this problem remains <span class="orange">computationally very expensive</span>. See also the recent paper <a href="https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full">Hastie et al.&nbsp;(2020)</a> for additional considerations and comparisons.</p></li>
+<li class="fragment"><p>Despite these advances, this problem remains <span class="orange">computationally very expensive</span>. See also the recent paper <a href="https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full">Hastie et al. (2020)</a> for additional considerations and comparisons.</p></li>
 </ul>
 </div>
 </section>
@@ -976,9 +976,9 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <div class="fragment">
 <table>
 <colgroup>
-<col style="width: 17%">
-<col style="width: 47%">
-<col style="width: 34%">
+<col style="width: 23%">
+<col style="width: 44%">
+<col style="width: 31%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1021,7 +1021,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </ul>
 <div class="fragment">
 <ul>
-<li><p>When <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{ridge}</span> are explicitly <span class="orange">shrinked</span>, i.e.&nbsp;biased, <span class="orange">towards zero</span>.</p></li>
+<li><p>When <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{ridge}</span> are explicitly <span class="orange">shrinked</span>, i.e. biased, <span class="orange">towards zero</span>.</p></li>
 <li><p>On the other hand, if <span class="math inline">s</span> is large enough, then <span class="math inline">\hat{\beta}_\text{ridge}</span> is equivalent to <span class="math inline">\hat{\beta}_\text{ols}</span>.</p></li>
 </ul>
 </div>
@@ -1055,7 +1055,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>Lagrange multipliers and ridge solution</h2>
 <ul>
 <li>The ridge regression problem can be <span class="orange">equivalently expressed</span> in its <a href="https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions">Lagrangian form</a>, which greatly facilitates computations. The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the <span class="orange">minimizer</span> of <span class="math display">
-\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y} - \bm{X}\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{penalty}}},
+\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y} - \bm{X}\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{ridge penalty}}},
 </span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>. It holds that <span class="math inline">s = ||\hat{\beta}_\text{ridge} ||^2</span>.</li>
 </ul>
 <div class="fragment">
@@ -1093,11 +1093,11 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="the-geometry-of-the-ridge-solution" class="slide level2 center">
 <h2>The geometry of the ridge solution</h2>
 
-<img data-src="img/ridge.png" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-18-1.png" width="2000" class="r-stretch"></section>
 <section id="the-ridge-path" class="slide level2 center">
 <h2>The ridge path</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-20-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-21-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="comments-on-the-ridge-path" class="slide level2 center">
 <h2>Comments on the ridge path</h2>
 <ul>
@@ -1226,7 +1226,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </ul>
 <div class="fragment">
 <ul>
-<li><p><span class="blue">Minimizing</span> <span class="math inline">||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2</span> over <span class="math inline">\lambda</span> is a <span class="orange">very bad idea</span> and it would always choose <span class="math inline">\lambda =0</span>, corresponding to <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}</span>.</p></li>
+<li><p><span class="blue">Minimizing</span> <span class="math inline">||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2</span> over <span class="math inline">\lambda</span> is a <span class="orange">very bad idea</span> and it would always lead to <span class="math inline">\lambda =0</span>, corresponding to <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}</span>.</p></li>
 <li><p>Indeed, <span class="math inline">\lambda</span> is a <span class="blue">complexity</span> parameter and, like the number of covariates, should be selected using <span class="orange">information criteria</span> or training/test and <span class="orange">cross-validation</span>.</p></li>
 </ul>
 </div>
@@ -1271,7 +1271,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li class="fragment"><p>After some algebra, one finds that the effective degrees of freedom of <span class="orange">ridge regression</span> are <span class="math display">
 \text{df}_\text{ridge} = \text{tr}(\bm{H}_\text{ridge}) = \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda},
 </span> where <span class="math inline">\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T</span> is the <span class="orange">hat matrix</span> of ridge regression.</p></li>
-<li class="fragment"><p>Using the above result, we can then <span class="orange">plug-in</span> <span class="math inline">\text{df}_\text{ridge}</span> into the formula of the <span class="blue"><span class="math inline">C_p</span> of Mallows</span>: <span class="math display">
+<li class="fragment"><p>Using the above result, we can <span class="orange">plug-in</span> <span class="math inline">\text{df}_\text{ridge}</span> into the formula of the <span class="blue"><span class="math inline">C_p</span> of Mallows</span>: <span class="math display">
   \widehat{\mathrm{ErrF}} = \frac{1}{n}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2 + \frac{2 \hat{\sigma}^2}{n} \text{df}_\text{ridge}.
   </span> where the residual variance is estimated as <span class="math inline">\hat{\sigma}^2 = (n - \text{df}_\text{ridge})^{-1} \sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta}_\text{ridge})^2</span>.</p></li>
 </ul>
@@ -1283,13 +1283,13 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-21-1.png" width="1000"></p>
+<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-22-1.png" width="1000"></p>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-22-1.png" width="1000"></p>
+<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-23-1.png" width="1000"></p>
 </div>
 </div>
 </div>
@@ -1330,19 +1330,33 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <!-- recalling that $\bar{y} = 0$. Therefore, the leave-one-out mean squared error is -->
 <!-- $$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}\right)^2.$$ -->
 <!-- ::: -->
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-24-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-25-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
 <section id="the-ridge-estimate" class="slide level2 center">
 <h2>The ridge estimate</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-26-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-27-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="summary-of-ridge-regression" class="slide level2 center">
 <h2>Summary of ridge regression</h2>
 <ul>
-<li><p>Trade-off bias variance, variables more correlated are shrinked</p></li>
-<li><p>All variables are used</p></li>
-<li><p>Solution always exists, even when <span class="math inline">p &gt; n</span> or in presence of perfect collinearity.</p></li>
-<li><p>Mention to efficient computations</p></li>
+<li>Ridge regression trades some <span class="orange">bias</span> in exchange of a <span class="blue">lower variance</span>, often resulting in more accurate predictions.</li>
 </ul>
+<div class="fragment">
+<ul>
+<li><p>The ridge solution <span class="orange">always exists</span> and is <span class="blue">unique</span>, even when <span class="math inline">p &gt; n</span> or in presence of perfect <span class="orange">collinearity</span>.</p></li>
+<li><p>In ridge regression, <span class="blue">all variables</span> are used. This is in contrast with best subset selection.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>For fixed values of <span class="math inline">\lambda</span>, <span class="orange">efficient computations</span> are available using QR and Cholesky decomposition.</p></li>
+<li><p>At the end of this unit we will describe a <span class="blue">general optimization strategy</span> that recovers the entire “ridge path”, i.e.&nbsp;the estimate <span class="math inline">\hat{\beta}_\text{ridge}</span> for several values of <span class="math inline">\lambda</span>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Ridge regression has also a transparent <span class="orange">Bayesian interpretation</span>, since the penalty can be interpreted as a Gaussian prior on <span class="math inline">\beta</span>.</li>
+</ul>
+</div>
 </section></section>
 <section>
 <section id="the-lasso" class="title-slide slide level1 center">
@@ -1351,18 +1365,95 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </section>
 <section id="looking-for-sparsity" class="slide level2 center">
 <h2>Looking for sparsity</h2>
+<div class="columns">
+<div class="column" style="width:25%;">
+<div class="quarto-figure quarto-figure-left">
+<figure>
+<p><img data-src="img/tibshirani.jpg"></p>
+<figcaption>Robert Tibshirani</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:75%;">
+<ul>
+<li>Signal <span class="orange">sparsity</span> is the assumption that only a small number of predictors have an effect, i.e.&nbsp;<span class="math display">
+\beta_j = 0, \qquad \text{for most} \qquad j \in \{1,\dots,p\}.</span></li>
+<li>In this case we would like our estimator <span class="math inline">\hat{\beta}</span> to be <span class="blue">sparse</span>, meaning that <span class="math inline">\hat{\beta}_j = 0</span> for many <span class="math inline">j \in \{1,\dots,p\}</span>.</li>
+<li>Sparse estimators are desirable because:
+<ul>
+<li>perform <span class="blue">variable selection</span> and improve the <span class="orange">interpretability</span> of the results;</li>
+<li>Speed up the <span class="blue">computations</span> of the predictions, because less variables are needed.</li>
+</ul></li>
+<li>Best subset selection is sparse (but computationally unfeasible), the ridge estimator is not.</li>
+</ul>
+</div>
+</div>
 </section>
 <section id="the-lasso-regularization-method" class="slide level2 center">
 <h2>The lasso regularization method</h2>
+<ul>
+<li>The <span class="blue">lasso</span> is in the highly influential paper of Tibshirani (1996). It is a method that performs both <span class="blue">shrinkage</span> and <span class="orange">variable selection</span></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>The lasso estimator <span class="math inline">\hat{\beta}_\text{lasso}</span> is the <span class="orange">minimizer</span> of <span class="math display">
+\sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p |\beta_j| \le s.
+</span> therefore when the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{lasso}</span> are <span class="orange">shrinked</span> and when <span class="math inline">s</span> is large enough <span class="math inline">\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}</span>, as in ridge regression.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>The lasso is <span class="orange">deceptively similar</span> to ridge. However, the change from a quadratic penalty to the absolute value has crucial <span class="blue">sparsity</span> implications.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>. The considerations and same mathematical tricks discussed for ridge apply here. We assume that <span class="math inline">\bm{y}</span> and <span class="math inline">\tilde{\bm{x}}_{j}</span> are <span class="blue">centered</span> and possibly <span class="blue">scaled</span>.</li>
+</ul>
+</div>
 </section>
 <section id="lagrange-multipliers-and-lasso-solution" class="slide level2 center">
 <h2>Lagrange multipliers and lasso solution</h2>
+<ul>
+<li><p>The lasso problem can be <span class="blue">equivalently expressed</span> in its Lagrangian form, which is more amenable for computations.</p></li>
+<li><p>Having remove the intercept, the lasso estimator <span class="math inline">\hat{\beta}_\text{lasso}</span> is the <span class="orange">minimizer</span> of <span class="math display">
+  \underbrace{\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
+  </span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>When <span class="math inline">\lambda = 0</span> the penalty term disappears and <span class="math inline">\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}</span>. On the other hand, there exists a finite value of <span class="math inline">\lambda_\text{max} &lt; \infty</span> such that <span class="math inline">\hat{\beta}_\text{lasso} = 0</span>.</p></li>
+<li><p>For any intermediate value <span class="math inline">0 &lt; \lambda &lt; \lambda_\text{max}</span> we get a combination of <span class="orange">shrinked</span> but positive coefficients, and a set of coefficients whose value is <span class="blue">exactly zero</span>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Unfortunately, there is <span class="orange">no closed-form expression</span> for the lasso solution.</li>
+</ul>
+</div>
 </section>
 <section id="the-geometry-of-the-lasso-solution" class="slide level2 center">
 <h2>The geometry of the lasso solution</h2>
-</section>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-28-1.png" width="2000" class="r-stretch"></section>
 <section id="single-predictor-i" class="slide level2 center">
 <h2>Single predictor I</h2>
+<div>
+<ul>
+<li class="fragment"><p>Let us consider the <span class="blue">single-predictor</span> scenario, in which<span class="math display">
+\hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_i - x_i\beta)^2 + \lambda |\beta|.
+  </span></p></li>
+<li class="fragment"><p>This problem admits an <span class="orange">explicit expression</span> (see Exercises), which is <span class="math display">
+\hat{\beta}_\text{lasso} = \begin{cases}\sum_{i=1}^n x_i y_i - \lambda, \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i &gt; \lambda \\
+0 \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i \le \lambda\\
+\sum_{i=1}^n x_i y_i + \lambda, \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i &lt; -\lambda \\
+\end{cases}
+</span></p></li>
+<li class="fragment"><p>The above solution can be written as <span class="math inline">\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})</span>, where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)</span> is the <span class="blue">soft-thresholding</span> operator.</p></li>
+<li class="fragment"><p>Note that for <span class="orange">ridge regression</span> we would get <span class="math display">
+\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\sum_{i=1}^n x_i y_i =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols}.
+</span></p></li>
+</ul>
+</div>
 </section>
 <section id="single-predictor-ii" class="slide level2 center">
 <h2>Single predictor II</h2>

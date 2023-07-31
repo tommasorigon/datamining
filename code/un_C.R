@@ -253,6 +253,8 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 
 
+
+
 my_ridge <- function(X, y, lambda_tilde, standardize = FALSE) {
   n <- nrow(X)
   p <- ncol(X)
