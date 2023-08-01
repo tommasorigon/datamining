@@ -88,6 +88,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#data-compression" id="toc-data-compression" class="nav-link" data-scroll-target="#data-compression">Data compression</a></li>
   <li><a href="#centering-the-predictors-i" id="toc-centering-the-predictors-i" class="nav-link" data-scroll-target="#centering-the-predictors-i">Centering the predictors I</a></li>
   <li><a href="#centering-the-predictors-ii" id="toc-centering-the-predictors-ii" class="nav-link" data-scroll-target="#centering-the-predictors-ii">Centering the predictors II</a></li>
+  <li><a href="#centering-the-predictors-iii" id="toc-centering-the-predictors-iii" class="nav-link" data-scroll-target="#centering-the-predictors-iii">Centering the predictors III</a></li>
   <li><a href="#singular-value-decomposition-svd" id="toc-singular-value-decomposition-svd" class="nav-link" data-scroll-target="#singular-value-decomposition-svd">Singular value decomposition (SVD)</a></li>
   <li><a href="#principal-component-analysis-i" id="toc-principal-component-analysis-i" class="nav-link" data-scroll-target="#principal-component-analysis-i">Principal component analysis I</a></li>
   <li><a href="#principal-component-analysis-ii" id="toc-principal-component-analysis-ii" class="nav-link" data-scroll-target="#principal-component-analysis-ii">Principal component analysis II</a></li>
@@ -126,6 +127,7 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#looking-for-sparsity" id="toc-looking-for-sparsity" class="nav-link" data-scroll-target="#looking-for-sparsity">Looking for sparsity</a></li>
   <li><a href="#the-lasso-regularization-method" id="toc-the-lasso-regularization-method" class="nav-link" data-scroll-target="#the-lasso-regularization-method">The lasso regularization method</a></li>
+  <li><a href="#centering-and-scaling" id="toc-centering-and-scaling" class="nav-link" data-scroll-target="#centering-and-scaling">Centering and scaling</a></li>
   <li><a href="#lagrange-multipliers-and-lasso-solution" id="toc-lagrange-multipliers-and-lasso-solution" class="nav-link" data-scroll-target="#lagrange-multipliers-and-lasso-solution">Lagrange multipliers and lasso solution</a></li>
   <li><a href="#the-geometry-of-the-lasso-solution" id="toc-the-geometry-of-the-lasso-solution" class="nav-link" data-scroll-target="#the-geometry-of-the-lasso-solution">The geometry of the lasso solution</a></li>
   <li><a href="#single-predictor-i" id="toc-single-predictor-i" class="nav-link" data-scroll-target="#single-predictor-i">Single predictor I</a></li>
@@ -675,17 +677,16 @@ Backward regression
 <h2 class="anchored" data-anchor-id="centering-the-predictors-i">Centering the predictors I</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Let us consider a <span class="blue">reparametrization</span> of the linear model using <span class="orange">centered predictors</span> <span class="math display">
+<li><p>Let us consider a <span class="blue">reparametrization</span> of the linear model, in which <span class="math inline">\alpha = \beta_0 + \bar{\bm{x}}^T\beta</span>. This is equivalent to a linear model with <span class="orange">centered predictors</span>: <span class="math display">
 \begin{aligned}
-f(\bm{x}_i; \alpha, \beta) &amp; = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdots + \beta_p (x_{ip} - \bar{x}_{ip}) = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta \\
-&amp; = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta = \beta_0 + \bm{x}_i^T\beta, \quad \text{where} \quad \beta_0 = \alpha - \bar{\bm{x}}^T\beta.
+f(\bm{x}_i; \alpha, \beta) &amp; = \beta_0 + \bm{x}_i^T\beta = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta  = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta. \\
 \end{aligned}
 </span></p></li>
-<li><p>In this reparametrization the centered predictors are <span class="blue">orthogonal</span> to the <span class="blue">intercept</span>. Thus, the estimates for <span class="math inline">(\alpha, \beta)</span> can be computed <span class="orange">in two steps</span>.</p></li>
+<li><p>There is a computational advantage of this reparametrization: the estimates for <span class="math inline">(\alpha, \beta)</span> can be computed separately and <span class="orange">in two steps</span>.</p></li>
 <li><p>The <span class="orange">estimate</span> of the <span class="orange">intercept</span> with centered predictors is <span class="math inline">\hat{\alpha} = \bar{y}</span>. In fact: <span class="math display">
 \hat{\alpha} = \arg\min_{\alpha \in \mathbb{R}}\sum_{i=1}^n\{y_i - \alpha - (\bm{x}_i -\bar{\bm{x}})^T\beta\}^2 = \frac{1}{n}\sum_{i=1}^n\{y_i - (\bm{x}_i -\bar{\bm{x}})^T\beta\} = \frac{1}{n}\sum_{i=1}^ny_i.
 </span></p></li>
-<li><p>Then, the <span class="blue">estimate of <span class="math inline">\beta</span></span> can be obtained considering a linear model <span class="blue">without intercept</span>: <span class="math display">
+<li><p>Then, the <span class="blue">estimate of <span class="math inline">\beta</span></span> can be obtained considering a linear model <span class="orange">without intercept</span>: <span class="math display">
     f(\bm{x}_i; \beta) = (\bm{x}_i -\bar{\bm{x}})^T\beta,
 </span> used to predict the <span class="blue">centered responses</span> <span class="math inline">y_i - \bar{y}</span>.</p></li>
 </ul>
@@ -693,20 +694,45 @@ f(\bm{x}_i; \alpha, \beta) &amp; = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdot
 </section>
 <section id="centering-the-predictors-ii" class="level2">
 <h2 class="anchored" data-anchor-id="centering-the-predictors-ii">Centering the predictors II</h2>
-<div class="incremental">
-<ul class="incremental">
-<li><p>From here on, and without loss of generality, we assume that everything is <span class="orange">centered</span>: <span class="math display">
-\sum_{i=1}^ny_i = 0, \qquad \sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
-</span></p></li>
-<li><p>Hence, because of the previous results, we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
-f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta.
-</span></p></li>
-<li><p>Under such an assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
+<ul>
+<li>Thus, we let the <span class="blue">original data</span> be <span class="math inline">x_{ij}^*</span> and <span class="math inline">y_i^*</span> and define their <span class="orange">transformation</span>: <span class="math display">
+x_{ij} = x_{ij}^* - \bar{x}_j^*, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dots,n.
+</span> By construction, the predictors <span class="math inline">\tilde{\bm{x}}_{j}</span> and the response <span class="math inline">\bm{y}</span> are <span class="orange">centered</span>.</li>
+</ul>
+<ul>
+<li>Using centered predictor means that we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
+f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta,
+</span> whose usefulness will become clear shortly.</li>
+</ul>
+<ul>
+<li>In practice, we want to make predictions in the <span class="blue">original scale</span>, which requires a simple <span class="orange">final adjustment</span>. One simply compute the intercept term <span class="math display">
+\hat{\beta}_0 = \bar{y}^* - \bar{\bm{x}}^*\hat{\beta},
+</span> and then make predictions via <span class="math inline">\hat{\beta}_0 + (\bm{x}_i^*)^T\hat{\beta} = \bar{y} + \bm{x}_i^T\hat{\beta}</span>.</li>
+</ul>
+</section>
+<section id="centering-the-predictors-iii" class="level2">
+<h2 class="anchored" data-anchor-id="centering-the-predictors-iii">Centering the predictors III</h2>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<ul>
+<li>From now on, we will assume the data have been previously <span class="orange">centered</span>, so that <span class="math display">
+\frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
+</span></li>
+</ul>
+</div>
+</div>
+</div>
+<ul>
+<li><p>Under such the centering assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
 S = \frac{1}{n} \bm{X}^T\bm{X}.
 </span></p></li>
 <li><p>If in addition each variable has been <span class="blue">scaled</span> by their standard deviations, then <span class="math inline">n^{-1} \bm{X}^T\bm{X}</span> corresponds to the <span class="blue">correlation</span> matrix.</p></li>
+<li><p>We stress once again that the centering operation unconsequential, because one can transform back the predictions to the original scale. :::</p></li>
 </ul>
-</div>
 </section>
 <section id="singular-value-decomposition-svd" class="level2">
 <h2 class="anchored" data-anchor-id="singular-value-decomposition-svd">Singular value decomposition (SVD)</h2>
@@ -1274,7 +1300,13 @@ Effective degrees of freedom
 <li>The lasso is <span class="orange">deceptively similar</span> to ridge. However, the change from a quadratic penalty to the absolute value has crucial <span class="blue">sparsity</span> implications.</li>
 </ul>
 <ul>
-<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>. Some considerations we discussed for ridge apply also here: in particular we assume that <span class="math inline">\bm{y}</span> and <span class="math inline">\tilde{\bm{x}}_{j}</span> are <span class="blue">centered</span> and possibly <span class="blue">scaled</span>.</li>
+<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>.</li>
+</ul>
+</section>
+<section id="centering-and-scaling" class="level2">
+<h2 class="anchored" data-anchor-id="centering-and-scaling">Centering and scaling</h2>
+<ul>
+<li>Some considerations we discussed for ridge apply also here: in particular we assume that <span class="math inline">\bm{y}</span> and <span class="math inline">\tilde{\bm{x}}_{j}</span> are <span class="blue">centered</span> and possibly <span class="blue">scaled</span>.</li>
 </ul>
 </section>
 <section id="lagrange-multipliers-and-lasso-solution" class="level2">
@@ -1282,7 +1314,7 @@ Effective degrees of freedom
 <ul>
 <li><p>The lasso problem can be <span class="blue">equivalently expressed</span> in its Lagrangian form, which is more amenable for computations.</p></li>
 <li><p>Having remove the intercept, the lasso estimator <span class="math inline">\hat{\beta}_\text{lasso}</span> is the <span class="orange">minimizer</span> of <span class="math display">
-  \underbrace{\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
+  \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
   </span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>.</p></li>
 </ul>
 <ul>
@@ -1309,14 +1341,14 @@ Effective degrees of freedom
 \hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_i - x_i\beta)^2 + \lambda |\beta|.
   </span></p></li>
 <li><p>This simple problem admits an <span class="orange">explicit expression</span> (see Exercises), which is <span class="math display">
-\hat{\beta}_\text{lasso} = \begin{cases}\sum_{i=1}^n x_i y_i - \lambda, \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i &gt; \lambda \\
-0 \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i \le \lambda\\
-\sum_{i=1}^n x_i y_i + \lambda, \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i &lt; -\lambda \\
+\hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &gt; \lambda \\
+0 \qquad &amp;\text{if} \quad \text{cov}(x,y) \le \lambda\\
+\text{cov}(x,y) + \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &lt; -\lambda \\
 \end{cases}
 </span></p></li>
 <li><p>The above solution can be written as <span class="math inline">\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})</span>, where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+</span> is the <span class="blue">soft-thresholding</span> operator and <span class="math inline">(\cdot)_+</span> is the <span class="orange">positive part</span> of a number (<code>pmax</code>).</p></li>
 <li><p>For <span class="orange">ridge regression</span> with one predictor we obtain, instead: <span class="math display">
-\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\sum_{i=1}^n x_i y_i =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols}.
+\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols}.
 </span></p></li>
 </ul>
 </div>

@@ -636,17 +636,14 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 ## Centering the predictors I
 
 ::: incremental
--   Let us consider a [reparametrization]{.blue} of the linear model
-    using [centered predictors]{.orange} $$
+-   Let us consider a [reparametrization]{.blue} of the linear model, in which $\alpha = \beta_0 + \bar{\bm{x}}^T\beta$. This is equivalent to a linear model with [centered predictors]{.orange}: $$
     \begin{aligned}
-    f(\bm{x}_i; \alpha, \beta) & = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdots + \beta_p (x_{ip} - \bar{x}_{ip}) = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta \\
-    & = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta = \beta_0 + \bm{x}_i^T\beta, \quad \text{where} \quad \beta_0 = \alpha - \bar{\bm{x}}^T\beta.
+    f(\bm{x}_i; \alpha, \beta) & = \beta_0 + \bm{x}_i^T\beta = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta  = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta. \\
     \end{aligned}
     $$
 
--   In this reparametrization the centered predictors are
-    [orthogonal]{.blue} to the [intercept]{.blue}. Thus, the estimates
-    for $(\alpha, \beta)$ can be computed [in two steps]{.orange}.
+-   There is a computational advantage of this reparametrization: the estimates
+    for $(\alpha, \beta)$ can be computed separately and [in two steps]{.orange}.
 
 -   The [estimate]{.orange} of the [intercept]{.orange} with centered
     predictors is $\hat{\alpha} = \bar{y}$. In fact: $$
@@ -654,32 +651,54 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
     $$
 
 -   Then, the [estimate of $\beta$]{.blue} can be obtained considering a
-    linear model [without intercept]{.blue}: $$
+    linear model [without intercept]{.orange}: $$
         f(\bm{x}_i; \beta) = (\bm{x}_i -\bar{\bm{x}})^T\beta,
     $$ used to predict the [centered responses]{.blue} $y_i - \bar{y}$.
 :::
 
 ## Centering the predictors II
 
-::: incremental
--   From here on, and without loss of generality, we assume that
-    everything is [centered]{.orange}: $$
-    \sum_{i=1}^ny_i = 0, \qquad \sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
-    $$
+- Thus, we let the [original data]{.blue} be $x_{ij}^*$ and $y_i^*$ and define their [transformation]{.orange}: $$
+x_{ij} = x_{ij}^* - \bar{x}_j^*, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dots,n.
+$$
+By construction, the predictors $\tilde{\bm{x}}_{j}$ and the response $\bm{y}$ are [centered]{.orange}.
 
--   Hence, because of the previous results, we can focus on linear
+. . .
+
+-   Using centered predictor means that we can focus on linear
     models [without intercept]{.blue}: $$
-    f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta.
+    f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta,
     $$
+whose usefulness will become clear shortly. 
 
--   Under such an assumption the [covariance matrix]{.orange} of the
+. . .
+
+- In practice, we want to make predictions in the [original scale]{.blue}, which requires a simple [final adjustment]{.orange}. One simply compute the intercept term $$
+\hat{\beta}_0 = \bar{y}^* - \bar{\bm{x}}^*\hat{\beta},
+$$ 
+and then make predictions via $\hat{\beta}_0 + (\bm{x}_i^*)^T\hat{\beta} = \bar{y} + \bm{x}_i^T\hat{\beta}$. 
+
+
+## Centering the predictors III
+
+::: callout-note
+-   From now on, we will assume the data have been previously [centered]{.orange}, so that $$
+    \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
+    $$
+:::
+
+. . .
+
+-   Under such the centering assumption the [covariance matrix]{.orange} of the
     data is simply $$
     S = \frac{1}{n} \bm{X}^T\bm{X}.
-    $$
-
+    $$    
+    
 -   If in addition each variable has been [scaled]{.blue} by their
     standard deviations, then $n^{-1} \bm{X}^T\bm{X}$ corresponds to the
     [correlation]{.blue} matrix.
+    
+- We stress once again that the centering operation unconsequential, because one can transform back the predictions to the original scale. 
 :::
 
 ## Singular value decomposition (SVD)

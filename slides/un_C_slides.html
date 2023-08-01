@@ -822,17 +822,16 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <h2>Centering the predictors I</h2>
 <div>
 <ul>
-<li class="fragment"><p>Let us consider a <span class="blue">reparametrization</span> of the linear model using <span class="orange">centered predictors</span> <span class="math display">
+<li class="fragment"><p>Let us consider a <span class="blue">reparametrization</span> of the linear model, in which <span class="math inline">\alpha = \beta_0 + \bar{\bm{x}}^T\beta</span>. This is equivalent to a linear model with <span class="orange">centered predictors</span>: <span class="math display">
 \begin{aligned}
-f(\bm{x}_i; \alpha, \beta) &amp; = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdots + \beta_p (x_{ip} - \bar{x}_{ip}) = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta \\
-&amp; = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta = \beta_0 + \bm{x}_i^T\beta, \quad \text{where} \quad \beta_0 = \alpha - \bar{\bm{x}}^T\beta.
+f(\bm{x}_i; \alpha, \beta) &amp; = \beta_0 + \bm{x}_i^T\beta = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta  = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta. \\
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>In this reparametrization the centered predictors are <span class="blue">orthogonal</span> to the <span class="blue">intercept</span>. Thus, the estimates for <span class="math inline">(\alpha, \beta)</span> can be computed <span class="orange">in two steps</span>.</p></li>
+<li class="fragment"><p>There is a computational advantage of this reparametrization: the estimates for <span class="math inline">(\alpha, \beta)</span> can be computed separately and <span class="orange">in two steps</span>.</p></li>
 <li class="fragment"><p>The <span class="orange">estimate</span> of the <span class="orange">intercept</span> with centered predictors is <span class="math inline">\hat{\alpha} = \bar{y}</span>. In fact: <span class="math display">
 \hat{\alpha} = \arg\min_{\alpha \in \mathbb{R}}\sum_{i=1}^n\{y_i - \alpha - (\bm{x}_i -\bar{\bm{x}})^T\beta\}^2 = \frac{1}{n}\sum_{i=1}^n\{y_i - (\bm{x}_i -\bar{\bm{x}})^T\beta\} = \frac{1}{n}\sum_{i=1}^ny_i.
 </span></p></li>
-<li class="fragment"><p>Then, the <span class="blue">estimate of <span class="math inline">\beta</span></span> can be obtained considering a linear model <span class="blue">without intercept</span>: <span class="math display">
+<li class="fragment"><p>Then, the <span class="blue">estimate of <span class="math inline">\beta</span></span> can be obtained considering a linear model <span class="orange">without intercept</span>: <span class="math display">
     f(\bm{x}_i; \beta) = (\bm{x}_i -\bar{\bm{x}})^T\beta,
 </span> used to predict the <span class="blue">centered responses</span> <span class="math inline">y_i - \bar{y}</span>.</p></li>
 </ul>
@@ -840,18 +839,46 @@ f(\bm{x}_i; \alpha, \beta) &amp; = \alpha + \beta_1 (x_{i1} - \bar{x}_1) + \cdot
 </section>
 <section id="centering-the-predictors-ii" class="slide level2 center">
 <h2>Centering the predictors II</h2>
-<div>
 <ul>
-<li class="fragment"><p>From here on, and without loss of generality, we assume that everything is <span class="orange">centered</span>: <span class="math display">
-\sum_{i=1}^ny_i = 0, \qquad \sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
-</span></p></li>
-<li class="fragment"><p>Hence, because of the previous results, we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
-f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta.
-</span></p></li>
-<li class="fragment"><p>Under such an assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
+<li>Thus, we let the <span class="blue">original data</span> be <span class="math inline">x_{ij}^*</span> and <span class="math inline">y_i^*</span> and define their <span class="orange">transformation</span>: <span class="math display">
+x_{ij} = x_{ij}^* - \bar{x}_j^*, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dots,n.
+</span> By construction, the predictors <span class="math inline">\tilde{\bm{x}}_{j}</span> and the response <span class="math inline">\bm{y}</span> are <span class="orange">centered</span>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Using centered predictor means that we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
+f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta,
+</span> whose usefulness will become clear shortly.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>In practice, we want to make predictions in the <span class="blue">original scale</span>, which requires a simple <span class="orange">final adjustment</span>. One simply compute the intercept term <span class="math display">
+\hat{\beta}_0 = \bar{y}^* - \bar{\bm{x}}^*\hat{\beta},
+</span> and then make predictions via <span class="math inline">\hat{\beta}_0 + (\bm{x}_i^*)^T\hat{\beta} = \bar{y} + \bm{x}_i^T\hat{\beta}</span>.</li>
+</ul>
+</div>
+</section>
+<section id="centering-the-predictors-iii" class="slide level2 center">
+<h2>Centering the predictors III</h2>
+<div class="callout callout-note no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<ul>
+<li>From now on, we will assume the data have been previously <span class="orange">centered</span>, so that <span class="math display">
+\frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
+</span></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Under such the centering assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
 S = \frac{1}{n} \bm{X}^T\bm{X}.
 </span></p></li>
-<li class="fragment"><p>If in addition each variable has been <span class="blue">scaled</span> by their standard deviations, then <span class="math inline">n^{-1} \bm{X}^T\bm{X}</span> corresponds to the <span class="blue">correlation</span> matrix.</p></li>
+<li><p>If in addition each variable has been <span class="blue">scaled</span> by their standard deviations, then <span class="math inline">n^{-1} \bm{X}^T\bm{X}</span> corresponds to the <span class="blue">correlation</span> matrix.</p></li>
+<li><p>We stress once again that the centering operation unconsequential, because one can transform back the predictions to the original scale. :::</p></li>
 </ul>
 </div>
 </section>
