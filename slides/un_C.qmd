@@ -658,8 +658,18 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 
 ## Centering the predictors II
 
-- Thus, we let the [original data]{.blue} be $x_{ij}^*$ and $y_i^*$ and define their [transformation]{.orange}: $$
-x_{ij} = x_{ij}^* - \bar{x}_j^*, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dots,n.
+::: callout-note
+#### Centering assumption
+
+For the rest of this Unit, we will assume the data have been previously [centered]{.orange}, namely $$
+    \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
+    $$
+:::
+
+. . . 
+
+- The above assumption means that the [original data]{.blue} $x_{ij}^*$ and $y_i^*$ have been [transformed]{.orange}: $$
+x_{ij} = x_{ij}^* - \bar{x}_j^*, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
 $$
 By construction, the predictors $\tilde{\bm{x}}_{j}$ and the response $\bm{y}$ are [centered]{.orange}.
 
@@ -671,25 +681,8 @@ By construction, the predictors $\tilde{\bm{x}}_{j}$ and the response $\bm{y}$ a
     $$
 whose usefulness will become clear shortly. 
 
-. . .
-
-- In practice, we want to make predictions in the [original scale]{.blue}, which requires a simple [final adjustment]{.orange}. One simply compute the intercept term $$
-\hat{\beta}_0 = \bar{y}^* - \bar{\bm{x}}^*\hat{\beta},
-$$ 
-and then make predictions via $\hat{\beta}_0 + (\bm{x}_i^*)^T\hat{\beta} = \bar{y} + \bm{x}_i^T\hat{\beta}$. 
-
 
 ## Centering the predictors III
-
-::: callout-note
-#### Centering assumption
-
-From now on, we will assume the data have been previously [centered]{.orange}, namely $$
-    \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
-    $$
-:::
-
-:::incremental
 
 -   Under such the centering assumption the [covariance matrix]{.orange} of the
     data is simply $$
@@ -700,12 +693,23 @@ From now on, we will assume the data have been previously [centered]{.orange}, n
     standard deviations, then $n^{-1} \bm{X}^T\bm{X}$ corresponds to the
     [correlation]{.blue} matrix.
 
+. . .
+
+- In practice, we want to make predictions in the [original scale]{.blue}, which requires a simple [final adjustment]{.orange}. One simply need to compute the intercept term $$
+\hat{\beta}_0 = \bar{y}^* - \bar{\bm{x}}^*\hat{\beta},
+$$ 
+and then compute the predictions via the formula $\hat{\beta}_0 + (\bm{x}_i^*)^T\hat{\beta} = \bar{y} + \bm{x}_i^T\hat{\beta}$. 
+
+. . .
 
 - [Remark]{.orange}. The centering operation is a mathematical trick that will facilitate computations, but is unconsequential from a predictive point of view. 
 
+
+
 - Indeed, it is always possible to transform back the predictions into the original scale. 
 
-:::
+
+
 
 ## Singular value decomposition (SVD)
 
@@ -988,12 +992,12 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 -   The ridge estimator $\hat{\beta}_\text{ridge}$ is the most common
     [shrinkage method]{.blue} and is the [minimizer]{.orange} of $$
-    \sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
+    \sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
     $$
 
 . . .
 
--   When [complexity parameter]{.blue} $s$ is small, the coefficients of
+-   When the [complexity parameter]{.blue} $s$ is small, the coefficients of
     $\hat{\beta}_\text{ridge}$ are explicitly [shrinked]{.orange}, i.e.
     biased, [towards zero]{.orange}.
 
@@ -1010,35 +1014,7 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 . . .
 
--   Note that the intercept term $\beta_0$ is [not penalized]{.orange}.
-
-## Centering and scaling the predictors
-
-::: incremental
--   We can use the same [mathematical trick]{.blue} that we [exploited
-    before](/#centering-the-predictors-i) to simplify computations.
-
--   Under centered predictors, one can show that
-    $\hat{\beta}_0 = \bar{y}$ even in the ridge regression case. The
-    proof is almost identical as before (see Exercises).
-
--   Hence, we can [omit the intercept]{.orange} term $\beta_0$ after
-    [centering]{.orange} the inputs and the response: $$
-    \bar{y} = 0, \qquad \bar{x}_{j} = 0, \quad j=1,\dots,p.
-    $$
-
--   The ridge solutions are [not equivariant]{.orange} under [scalings
-    of the input]{.orange}, so one normally [standardizes]{.blue} the
-    input to have unit variance, if they are not in the same scale.
-
--   Standardization is often times performed under the hood in most
-    statistical software.
-
--   Different R packages have [different defaults]{.blue}. For instance
-    `glmnet` also [standardizes the response]{.blue} $y$ and then
-    [transforms back]{.orange} the estimated coefficients into the
-    [original scale]{.orange}.
-:::
+-   The intercept term $\beta_0$ is [omitted]{.blue} in the above equation and therefore is not penalized, because the predictors and the response have been [centered]{.orange}. 
 
 ## Lagrange multipliers and ridge solution
 
@@ -1069,6 +1045,53 @@ full-rank, the ridge estimator is $$
 $$ Such an estimator [always exists]{.blue} and is [unique]{.orange}
 (even when $p > n$).
 :::
+
+## Centering and scaling the predictors I
+
+- In ridge regression we center the original data, which implicitely means that the [intercept]{.blue} term is [not penalized]{.blue}.
+
+- As for ordinary least squares, the centering operation can be regarded as [two-step estimation procedure]{.orange}. Refer to the Exercises for more insights.
+
+. . .
+
+-   The ridge solutions are [not equivariant]{.orange} under [scalings
+    of the input]{.orange}, so one normally [standardizes]{.blue} the
+    input to have unit variance, if they are not in the same scale.
+
+. . .
+
+
+::: callout-note
+
+For ridge problems we will assume the data have been previously [standardized]{.orange}, namely $$
+    \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_i^2 = 1\qquad j=1,\dots,p.
+    $$
+:::
+
+
+
+
+## Centering and scaling the predictors II
+
+
+- In other words, the [original data]{.blue} $x_{ij}^*$ and $y_i^*$ are typically [standardized]{.orange}, obtaining: $$
+x_{ij} = \frac{x_{ij}^* - \bar{x}_j^*}{s_j}, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
+$$
+where $s_j$ is the [standard deviation]{.blue} or some other [scaling factor]{.blue}.
+
+
+- It is easy to show (see Exercises) that the [predictions]{.orange} in the [original scale]{.blue} are $$
+\underbrace{\hat{\beta}_0 + (\bm{x}_i^*)^T \hat{\beta}_\text{ridge}^*}_{\text{predictions}}, \quad  \underbrace{\hat{\beta}_\text{ridge}^* = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}}_{\text{scaled coefficients}}, \quad \underbrace{\hat{\beta}_0 = \bar{y}^* - \bar{\bm{x}}^*\hat{\beta}_\text{ridge}^*}_{\text{intercept}}.
+$$
+
+. . .
+
+- Different R packages have [different defaults]{.blue}. For instance
+    `glmnet` also [standardizes the response]{.blue} $y$ and then
+    [transforms back]{.orange} the estimated coefficients into the
+    [original scale]{.orange}.
+
+
 
 <!-- ## Mathematical details -->
 
@@ -1133,7 +1156,7 @@ ggplot() +
 ## The ridge path
 
 ```{r}
-my_ridge <- function(X, y, lambda_tilde, standardize = FALSE) {
+my_ridge <- function(X, y, lambda_tilde, standardize = TRUE) {
   n <- nrow(X)
   p <- ncol(X)
   lambda <- lambda_tilde * n
@@ -1162,7 +1185,7 @@ my_ridge <- function(X, y, lambda_tilde, standardize = FALSE) {
 ```
 
 ```{r}
-df_ridge <- function(lambda_tilde, X, standardize = FALSE) {
+df_ridge <- function(lambda_tilde, X, standardize = TRUE) {
   n <- nrow(X)
   lambda <- lambda_tilde * n
   # Rescale the predictors
@@ -1187,10 +1210,10 @@ df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda_tilde")
 lambda_tilde_seq <- exp(seq(from = -4, to = 5, length = 50))
 data_ridge <- cbind(lambda_tilde_seq, matrix(0, length(lambda_tilde_seq), p))
 
-mse_ridge <- data.frame(lambda_tilde_seq, Cp = NA, mse = NA, df = df_ridge(lambda_tilde_seq, X, standardize = FALSE), sigma2 = NA)
+mse_ridge <- data.frame(lambda_tilde_seq, Cp = NA, mse = NA, df = df_ridge(lambda_tilde_seq, X, standardize = TRUE), sigma2 = NA)
 
 for (i in 1:length(lambda_tilde_seq)) {
-  data_ridge[i, -1] <- my_ridge(X, y, lambda_tilde = lambda_tilde_seq[i], standardize = FALSE)[-1]
+  data_ridge[i, -1] <- my_ridge(X, y, lambda_tilde = lambda_tilde_seq[i], standardize = TRUE)[-1]
   mse_ridge$mse[i] <- mean((y - mean(y) - X %*% data_ridge[i, -1])^2)
   mse_ridge$sigma2[i] <- mse_ridge$mse[i] * n / (n - mse_ridge$df[i])
   mse_ridge$Cp[i] <- mse_ridge$mse[i] + 2 * mse_ridge$sigma2[i] / n * mse_ridge$df[i]
@@ -1503,7 +1526,7 @@ for (k in 1:10) {
 
   for (j in 1:length(lambda_tilde_seq)) {
     # Estimates
-    beta_hat <- my_ridge(X_train_k, y_train_k, lambda_tilde = lambda_tilde_seq[j], standardize = FALSE)
+    beta_hat <- my_ridge(X_train_k, y_train_k, lambda_tilde = lambda_tilde_seq[j], standardize = TRUE)
     # Predictions
     y_hat <- cbind(1, X_test_k) %*% beta_hat
     # MSE of the best models for different values of lambda
@@ -1519,7 +1542,7 @@ for (k in 1:10) {
 
 data_cv <- data.frame(
   lambda_tilde = lambda_tilde_seq,
-  df = df_ridge(lambda_tilde_seq, X, standardize = FALSE),
+  df = df_ridge(lambda_tilde_seq, X, standardize = TRUE),
   MSE = apply(resid_ridge^2, 2, mean),
   SE = apply(resid_ridge^2, 2, function(x) sd(x) / sqrt(n))
 )
@@ -1547,9 +1570,9 @@ ggplot(data = data_cv, aes(x = lambda_tilde, y = MSE)) +
 library(glmnet)
 y_std <- prostate_train$lpsa / sqrt(mean(prostate_train$lpsa^2) - mean(prostate_train$lpsa)^2)
 
-as.numeric(coef(glmnet(X, y_std, family = "gaussian", standardize = FALSE, alpha = 0, thresh = 1e-16, lambda = lambda_tilde_min_cv)))
+as.numeric(coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 0, thresh = 1e-20, lambda = lambda_tilde_min_cv)))
 
-my_ridge(X, y_std, standardize = FALSE, lambda_tilde = lambda_tilde_min_cv)
+my_ridge(X, y_std, standardize = TRUE, lambda_tilde = lambda_tilde_min_cv)
 ```
 
 <!-- ## Leave-one-out cross-validation -->
@@ -1656,7 +1679,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 . . .
 
 -   The lasso estimator $\hat{\beta}_\text{lasso}$ is the [minimizer]{.orange} of $$
-    \sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p |\beta_j| \le s.
+    \sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p |\beta_j| \le s.
     $$
     therefore when the [complexity parameter]{.blue} $s$ is small, the coefficients of
     $\hat{\beta}_\text{lasso}$ are [shrinked]{.orange} and when $s$ is large enough $\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}$, as in ridge regression. 
@@ -1667,12 +1690,29 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 . . . 
 
--   The intercept term $\beta_0$ is [not penalized]{.orange}.
+-   The intercept term $\beta_0$ is [omitted]{.blue} in the above equation and therefore is not penalized, because the predictors and response have been [centered]{.orange}. 
 
-## Centering and scaling
 
--  Some considerations we discussed for ridge apply also here: in particular we assume that $\bm{y}$ and $\tilde{\bm{x}}_{j}$ are [centered]{.blue} and possibly [scaled]{.blue}. 
+## Centering and scaling the predictors
 
+::: callout-note
+For lasso problems we will assume the data have been previously [standardized]{.orange}, namely $$
+    \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_i^2 = 1\qquad j=1,\dots,p.
+    $$
+:::
+
+. . .
+
+- The above assumption means that the [original data]{.blue} $x_{ij}^*$ and $y_i^*$ have been [standardized]{.orange}: $$
+x_{ij} = \frac{x_{ij}^* - \bar{x}_j^*}{s_j}, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dots,n; \ \ j=1,\dots,p,
+$$
+where $s_j^2 = n^{-1}\sum_{i=1}^n (x_{ij}^* - \bar{x}^*_j)^2$ is the sample variance.
+
+. . .
+
+- It is easy to show (see Exercises) that the [predictions]{.orange} in the [original scale]{.blue} are $$
+\underbrace{\hat{\beta}_0 + (\bm{x}_i^*)^T \hat{\beta}_\text{lasso}^*}_{\text{predictions}}, \quad  \underbrace{\hat{\beta}_\text{lasso}^* = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{lasso}}_{\text{scaled coefficients}}, \quad \underbrace{\hat{\beta}_0 = \bar{y}^* - \bar{\bm{x}}^*\hat{\beta}_\text{lasso}^*}_{\text{intercept}}.
+$$
 
 ## Lagrange multipliers and lasso solution
 

@@ -255,7 +255,7 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 
 
-my_ridge <- function(X, y, lambda_tilde, standardize = FALSE) {
+my_ridge <- function(X, y, lambda_tilde, standardize = TRUE) {
   n <- nrow(X)
   p <- ncol(X)
   lambda <- lambda_tilde * n
@@ -284,7 +284,7 @@ my_ridge <- function(X, y, lambda_tilde, standardize = FALSE) {
 
 
 
-df_ridge <- function(lambda_tilde, X, standardize = FALSE) {
+df_ridge <- function(lambda_tilde, X, standardize = TRUE) {
   n <- nrow(X)
   lambda <- lambda_tilde * n
   # Rescale the predictors
@@ -308,10 +308,10 @@ df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda_tilde")
 lambda_tilde_seq <- exp(seq(from = -4, to = 5, length = 50))
 data_ridge <- cbind(lambda_tilde_seq, matrix(0, length(lambda_tilde_seq), p))
 
-mse_ridge <- data.frame(lambda_tilde_seq, Cp = NA, mse = NA, df = df_ridge(lambda_tilde_seq, X, standardize = FALSE), sigma2 = NA)
+mse_ridge <- data.frame(lambda_tilde_seq, Cp = NA, mse = NA, df = df_ridge(lambda_tilde_seq, X, standardize = TRUE), sigma2 = NA)
 
 for (i in 1:length(lambda_tilde_seq)) {
-  data_ridge[i, -1] <- my_ridge(X, y, lambda_tilde = lambda_tilde_seq[i], standardize = FALSE)[-1]
+  data_ridge[i, -1] <- my_ridge(X, y, lambda_tilde = lambda_tilde_seq[i], standardize = TRUE)[-1]
   mse_ridge$mse[i] <- mean((y - mean(y) - X %*% data_ridge[i, -1])^2)
   mse_ridge$sigma2[i] <- mse_ridge$mse[i] * n / (n - mse_ridge$df[i])
   mse_ridge$Cp[i] <- mse_ridge$mse[i] + 2 * mse_ridge$sigma2[i] / n * mse_ridge$df[i]
@@ -372,7 +372,7 @@ for (k in 1:10) {
 
   for (j in 1:length(lambda_tilde_seq)) {
     # Estimates
-    beta_hat <- my_ridge(X_train_k, y_train_k, lambda_tilde = lambda_tilde_seq[j], standardize = FALSE)
+    beta_hat <- my_ridge(X_train_k, y_train_k, lambda_tilde = lambda_tilde_seq[j], standardize = TRUE)
     # Predictions
     y_hat <- cbind(1, X_test_k) %*% beta_hat
     # MSE of the best models for different values of lambda
@@ -387,7 +387,7 @@ for (k in 1:10) {
 
 data_cv <- data.frame(
   lambda_tilde = lambda_tilde_seq,
-  df = df_ridge(lambda_tilde_seq, X, standardize = FALSE),
+  df = df_ridge(lambda_tilde_seq, X, standardize = TRUE),
   MSE = apply(resid_ridge^2, 2, mean),
   SE = apply(resid_ridge^2, 2, function(x) sd(x) / sqrt(n))
 )
@@ -414,9 +414,9 @@ ggplot(data = data_cv, aes(x = lambda_tilde, y = MSE)) +
 library(glmnet)
 y_std <- prostate_train$lpsa / sqrt(mean(prostate_train$lpsa^2) - mean(prostate_train$lpsa)^2)
 
-as.numeric(coef(glmnet(X, y_std, family = "gaussian", standardize = FALSE, alpha = 0, thresh = 1e-16, lambda = lambda_tilde_min_cv)))
+as.numeric(coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 0, thresh = 1e-20, lambda = lambda_tilde_min_cv)))
 
-my_ridge(X, y_std, standardize = FALSE, lambda_tilde = lambda_tilde_min_cv)
+my_ridge(X, y_std, standardize = TRUE, lambda_tilde = lambda_tilde_min_cv)
 
 
 #| fig-width: 9
