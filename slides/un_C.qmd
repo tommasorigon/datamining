@@ -682,12 +682,14 @@ and then make predictions via $\hat{\beta}_0 + (\bm{x}_i^*)^T\hat{\beta} = \bar{
 ## Centering the predictors III
 
 ::: callout-note
--   From now on, we will assume the data have been previously [centered]{.orange}, so that $$
+#### Centering assumption
+
+From now on, we will assume the data have been previously [centered]{.orange}, namely $$
     \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
     $$
 :::
 
-. . .
+:::incremental
 
 -   Under such the centering assumption the [covariance matrix]{.orange} of the
     data is simply $$
@@ -697,9 +699,13 @@ and then make predictions via $\hat{\beta}_0 + (\bm{x}_i^*)^T\hat{\beta} = \bar{
 -   If in addition each variable has been [scaled]{.blue} by their
     standard deviations, then $n^{-1} \bm{X}^T\bm{X}$ corresponds to the
     [correlation]{.blue} matrix.
-    
-- We stress that the centering operation unconsequential, because it is possible to transform back the predictions into the original scale. 
 
+
+- [Remark]{.orange}. The centering operation is a mathematical trick that will facilitate computations, but is unconsequential from a predictive point of view. 
+
+- Indeed, it is always possible to transform back the predictions into the original scale. 
+
+:::
 
 ## Singular value decomposition (SVD)
 

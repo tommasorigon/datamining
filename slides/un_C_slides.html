@@ -861,24 +861,26 @@ f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta,
 </section>
 <section id="centering-the-predictors-iii" class="slide level2 center">
 <h2>Centering the predictors III</h2>
-<div class="callout callout-note no-icon callout-style-simple">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
+<div class="callout-title">
+<p><strong>Centering assumption</strong></p>
+</div>
 <div class="callout-content">
+<p>From now on, we will assume the data have been previously <span class="orange">centered</span>, namely <span class="math display">
+    \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
+    </span></p>
+</div>
+</div>
+</div>
+<div>
 <ul>
-<li>From now on, we will assume the data have been previously <span class="orange">centered</span>, so that <span class="math display">
-\frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
-</span></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="fragment">
-<ul>
-<li><p>Under such the centering assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
+<li class="fragment"><p>Under such the centering assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
 S = \frac{1}{n} \bm{X}^T\bm{X}.
 </span></p></li>
-<li><p>If in addition each variable has been <span class="blue">scaled</span> by their standard deviations, then <span class="math inline">n^{-1} \bm{X}^T\bm{X}</span> corresponds to the <span class="blue">correlation</span> matrix.</p></li>
-<li><p>We stress that the centering operation unconsequential, because it is possible to transform back the predictions into the original scale.</p></li>
+<li class="fragment"><p>If in addition each variable has been <span class="blue">scaled</span> by their standard deviations, then <span class="math inline">n^{-1} \bm{X}^T\bm{X}</span> corresponds to the <span class="blue">correlation</span> matrix.</p></li>
+<li class="fragment"><p><span class="orange">Remark</span>. The centering operation is a mathematical trick that will facilitate computations, but is unconsequential from a predictive point of view.</p></li>
+<li class="fragment"><p>Indeed, it is always possible to transform back the predictions into the original scale.</p></li>
 </ul>
 </div>
 </section>
