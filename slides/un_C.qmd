@@ -1073,6 +1073,8 @@ $$ Such an estimator [always exists]{.blue} and is [unique]{.orange}
 
 ```{r}
 #| purl: false
+#| warning: false
+
 library(ggforce)
 
 ellipses <- data.frame(
@@ -1638,9 +1640,13 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 - The lasso is [deceptively similar]{.orange} to ridge. However, the change from a quadratic penalty to the absolute value has crucial [sparsity]{.blue} implications.
 
-. . .
+. . . 
 
--   The intercept term $\beta_0$ is [not penalized]{.orange}. The considerations and same mathematical tricks discussed for ridge apply here. We assume that $\bm{y}$ and $\tilde{\bm{x}}_{j}$ are [centered]{.blue} and possibly [scaled]{.blue}. 
+-   The intercept term $\beta_0$ is [not penalized]{.orange}.
+
+## Centering and scaling
+
+-  Some considerations we discussed for ridge apply also here: in particular we assume that $\bm{y}$ and $\tilde{\bm{x}}_{j}$ are [centered]{.blue} and possibly [scaled]{.blue}. 
 
 
 ## Lagrange multipliers and lasso solution
@@ -1650,7 +1656,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
     form, which is more amenable for computations.
     
 - Having remove the intercept, the lasso estimator $\hat{\beta}_\text{lasso}$ is the [minimizer]{.orange} of $$
-    \underbrace{\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
+    \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
     $$ where $\lambda > 0$ is a [complexity parameter]{.blue}
     controlling the [penalty]{.orange}. 
 
@@ -1668,6 +1674,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 ```{r}
 #| purl: false
+#| warning: false
 
 geom_rhombus <- function(color="black", fill=NA, ...) {
     x <- seq(-1, 1, length.out=100)
@@ -1708,29 +1715,83 @@ ggplot() +
 
 ::: incremental
 
-- Let us consider the [single-predictor]{.blue} scenario, in which$$
+- To gain some understanding, let us consider the [single-predictor]{.blue} scenario, in which$$
    \hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_i - x_i\beta)^2 + \lambda |\beta|.
     $$
     
-- This problem admits an [explicit expression]{.orange} (see Exercises), which is
+- This simple problem admits an [explicit expression]{.orange} (see Exercises), which is
 $$
-\hat{\beta}_\text{lasso} = \begin{cases}\sum_{i=1}^n x_i y_i - \lambda, \qquad &\text{if} \quad \sum_{i=1}^n x_i y_i > \lambda \\
-0 \qquad &\text{if} \quad \sum_{i=1}^n x_i y_i \le \lambda\\
-\sum_{i=1}^n x_i y_i + \lambda, \qquad &\text{if} \quad \sum_{i=1}^n x_i y_i < -\lambda \\
+\hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &\text{if} \quad \text{cov}(x,y) > \lambda \\
+0 \qquad &\text{if} \quad \text{cov}(x,y) \le \lambda\\
+\text{cov}(x,y) + \lambda, \qquad &\text{if} \quad \text{cov}(x,y) < -\lambda \\
 \end{cases}
 $$
 
-- The above solution can be written as $\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})$, where $\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)$ is the [soft-thresholding]{.blue} operator.
+- The above solution can be written as $\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})$, where $\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+$ is the [soft-thresholding]{.blue} operator and $(\cdot)_+$ is the [positive part]{.orange} of a number (`pmax`).
 
-- Note that for [ridge regression]{.orange} we would get
+- For [ridge regression]{.orange} with one predictor we obtain, instead: 
 $$
-\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\sum_{i=1}^n x_i y_i =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols}.
+\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols}.
 $$
 :::
 
+
 ## Single predictor II
 
+```{r}
+x <- seq(-0.5, 0.5, length = 100)
+data_plot <- data.frame(x = x,
+                        OLS = x,
+                        Ridge = x / (1 + sqrt(0.2)),
+                        Lasso = sign(x) * pmax(abs(x) - 0.2, 0))
+data_plot <- pivot_longer(data_plot, cols = c(OLS, Ridge, Lasso), names_to = "Estimate")
+ggplot(data = data_plot, aes(x = x, y = value, col = Estimate)) +
+  geom_line() +
+  theme_light() +
+  coord_fixed() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab(expression(hat(beta)[ols])) +
+  ylab(expression(hat(beta)))
+```
+
+## Soft-thresholding and lasso solution
+
 ## The lasso path
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+
+library(lars)
+lambda_max <- max(t(scale(X, TRUE, FALSE)) %*% (y - mean(y)))
+fit_lasso <- lars(x = X, y = y, type ="lasso", normalize = FALSE, intercept = TRUE)
+
+data_lasso <- cbind(lambda_seq = c(fit_lasso$lambda, 0) / length(y), coef(fit_lasso))
+mse_lasso <- data.frame(lambda = data_lasso[, 1], Cp = NA, df = 0:8, sigma2 = NA)
+
+for (i in 1:nrow(mse_lasso)) {
+  mse_lasso$mse[i] <- mean((y - mean(y) - X %*% data_lasso[i, -1])^2)
+  mse_lasso$sigma2[i] <- mse_lasso$mse[i] * n / (n - mse_lasso$df[i])
+  mse_lasso$Cp[i] <- mse_lasso$mse[i] + 2 * mse_lasso$sigma2[i] / n * mse_lasso$df[i]
+}
+
+colnames(data_lasso)[-1] <- colnames(X)
+data_lasso <- tidyr::gather(data.frame(data_lasso), lambda, value, lcavol:pgg45)
+colnames(data_lasso) <- c("lambda_tilde", "Covariate", "value")
+
+ggplot(data = data_lasso, aes(x = lambda_tilde, y = value, col = Covariate)) +
+  geom_point() +
+  geom_line() +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_x_sqrt() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab(expression(lambda / n)) +
+  ylab("Regression coefficients")
+```
+
 
 ## Least angle regression I
 
@@ -1820,7 +1881,7 @@ $$
 
 <!-- ::: -->
 
-<!-- ## Lasso -->
+## Lasso
 
 <!-- ```{r} -->
 
@@ -1836,7 +1897,7 @@ $$
 
 <!-- fit_lars <- lars(x = XX, y = yy, type ="lasso", normalize = FALSE) -->
 
-<!-- cv_lasso_fit <- cv.glmnet(XX, yy, standardize = FALSE,  -->
+<!-- cv_lasso_fit <- cv.glmnet(XX, yy, standardize = FALSE, -->
 
 <!--                           family = "gaussian", alpha = 1, nfolds = 10, -->
 

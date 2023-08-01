@@ -433,3 +433,56 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
   scale_color_tableau(palette = "Color Blind") +
   xlab("Effective degrees of freedom (df)") +
   ylab("Regression coefficients")
+
+
+
+
+
+x <- seq(-0.5, 0.5, length = 100)
+data_plot <- data.frame(
+  x = x,
+  OLS = x,
+  Ridge = x / (1 + sqrt(0.2)),
+  Lasso = sign(x) * pmax(abs(x) - 0.2, 0)
+)
+data_plot <- pivot_longer(data_plot, cols = c(OLS, Ridge, Lasso), names_to = "Estimate")
+ggplot(data = data_plot, aes(x = x, y = value, col = Estimate)) +
+  geom_line() +
+  theme_light() +
+  coord_fixed() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab(expression(hat(beta)[ols])) +
+  ylab(expression(hat(beta)))
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+
+library(lars)
+lambda_max <- max(t(scale(X, TRUE, FALSE)) %*% (y - mean(y)))
+fit_lasso <- lars(x = X, y = y, type = "lasso", normalize = FALSE, intercept = TRUE)
+
+data_lasso <- cbind(lambda_seq = c(fit_lasso$lambda, 0) / length(y), coef(fit_lasso))
+mse_lasso <- data.frame(lambda = data_lasso[, 1], Cp = NA, df = 0:8, sigma2 = NA)
+
+for (i in 1:nrow(mse_lasso)) {
+  mse_lasso$mse[i] <- mean((y - mean(y) - X %*% data_lasso[i, -1])^2)
+  mse_lasso$sigma2[i] <- mse_lasso$mse[i] * n / (n - mse_lasso$df[i])
+  mse_lasso$Cp[i] <- mse_lasso$mse[i] + 2 * mse_lasso$sigma2[i] / n * mse_lasso$df[i]
+}
+
+colnames(data_lasso)[-1] <- colnames(X)
+data_lasso <- tidyr::gather(data.frame(data_lasso), lambda, value, lcavol:pgg45)
+colnames(data_lasso) <- c("lambda_tilde", "Covariate", "value")
+
+ggplot(data = data_lasso, aes(x = lambda_tilde, y = value, col = Covariate)) +
+  geom_point() +
+  geom_line() +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_x_sqrt() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab(expression(lambda / n)) +
+  ylab("Regression coefficients")

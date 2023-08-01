@@ -130,6 +130,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-geometry-of-the-lasso-solution" id="toc-the-geometry-of-the-lasso-solution" class="nav-link" data-scroll-target="#the-geometry-of-the-lasso-solution">The geometry of the lasso solution</a></li>
   <li><a href="#single-predictor-i" id="toc-single-predictor-i" class="nav-link" data-scroll-target="#single-predictor-i">Single predictor I</a></li>
   <li><a href="#single-predictor-ii" id="toc-single-predictor-ii" class="nav-link" data-scroll-target="#single-predictor-ii">Single predictor II</a></li>
+  <li><a href="#soft-thresholding-and-lasso-solution" id="toc-soft-thresholding-and-lasso-solution" class="nav-link" data-scroll-target="#soft-thresholding-and-lasso-solution">Soft-thresholding and lasso solution</a></li>
   <li><a href="#the-lasso-path" id="toc-the-lasso-path" class="nav-link" data-scroll-target="#the-lasso-path">The lasso path</a></li>
   <li><a href="#least-angle-regression-i" id="toc-least-angle-regression-i" class="nav-link" data-scroll-target="#least-angle-regression-i">Least angle regression I</a></li>
   <li><a href="#least-angle-regression-ii" id="toc-least-angle-regression-ii" class="nav-link" data-scroll-target="#least-angle-regression-ii">Least angle regression II</a></li>
@@ -162,6 +163,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#ridge-references" id="toc-ridge-references" class="nav-link" data-scroll-target="#ridge-references">Ridge references</a></li>
   <li><a href="#lasso-and-lars-references" id="toc-lasso-and-lars-references" class="nav-link" data-scroll-target="#lasso-and-lars-references">Lasso and LARS references</a></li>
   <li><a href="#other-references" id="toc-other-references" class="nav-link" data-scroll-target="#other-references">Other references</a></li>
+  <li><a href="#lasso" id="toc-lasso" class="nav-link" data-scroll-target="#lasso">Lasso</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_C_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
@@ -955,16 +957,6 @@ Ridge regression estimator
 <section id="the-geometry-of-the-ridge-solution" class="level2">
 <h2 class="anchored" data-anchor-id="the-geometry-of-the-ridge-solution">The geometry of the ridge solution</h2>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in is.na(x): is.na() applied to non-(list or vector) of type
-'expression'
-
-Warning in is.na(x): is.na() applied to non-(list or vector) of type
-'expression'
-
-Warning in is.na(x): is.na() applied to non-(list or vector) of type
-'expression'</code></pre>
-</div>
 <div class="cell-output-display">
 <p><img src="un_C_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="1400"></p>
 </div>
@@ -1282,7 +1274,7 @@ Effective degrees of freedom
 <li>The lasso is <span class="orange">deceptively similar</span> to ridge. However, the change from a quadratic penalty to the absolute value has crucial <span class="blue">sparsity</span> implications.</li>
 </ul>
 <ul>
-<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>. The considerations and same mathematical tricks discussed for ridge apply here. We assume that <span class="math inline">\bm{y}</span> and <span class="math inline">\tilde{\bm{x}}_{j}</span> are <span class="blue">centered</span> and possibly <span class="blue">scaled</span>.</li>
+<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>. Some considerations we discussed for ridge apply also here: in particular we assume that <span class="math inline">\bm{y}</span> and <span class="math inline">\tilde{\bm{x}}_{j}</span> are <span class="blue">centered</span> and possibly <span class="blue">scaled</span>.</li>
 </ul>
 </section>
 <section id="lagrange-multipliers-and-lasso-solution" class="level2">
@@ -1304,16 +1296,6 @@ Effective degrees of freedom
 <section id="the-geometry-of-the-lasso-solution" class="level2">
 <h2 class="anchored" data-anchor-id="the-geometry-of-the-lasso-solution">The geometry of the lasso solution</h2>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in is.na(x): is.na() applied to non-(list or vector) of type
-'expression'
-
-Warning in is.na(x): is.na() applied to non-(list or vector) of type
-'expression'
-
-Warning in is.na(x): is.na() applied to non-(list or vector) of type
-'expression'</code></pre>
-</div>
 <div class="cell-output-display">
 <p><img src="un_C_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="1400"></p>
 </div>
@@ -1323,17 +1305,17 @@ Warning in is.na(x): is.na() applied to non-(list or vector) of type
 <h2 class="anchored" data-anchor-id="single-predictor-i">Single predictor I</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Let us consider the <span class="blue">single-predictor</span> scenario, in which<span class="math display">
+<li><p>To gain some understanding, let us consider the <span class="blue">single-predictor</span> scenario, in which<span class="math display">
 \hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_i - x_i\beta)^2 + \lambda |\beta|.
   </span></p></li>
-<li><p>This problem admits an <span class="orange">explicit expression</span> (see Exercises), which is <span class="math display">
+<li><p>This simple problem admits an <span class="orange">explicit expression</span> (see Exercises), which is <span class="math display">
 \hat{\beta}_\text{lasso} = \begin{cases}\sum_{i=1}^n x_i y_i - \lambda, \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i &gt; \lambda \\
 0 \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i \le \lambda\\
 \sum_{i=1}^n x_i y_i + \lambda, \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i &lt; -\lambda \\
 \end{cases}
 </span></p></li>
-<li><p>The above solution can be written as <span class="math inline">\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})</span>, where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)</span> is the <span class="blue">soft-thresholding</span> operator.</p></li>
-<li><p>Note that for <span class="orange">ridge regression</span> we would get <span class="math display">
+<li><p>The above solution can be written as <span class="math inline">\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})</span>, where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+</span> is the <span class="blue">soft-thresholding</span> operator and <span class="math inline">(\cdot)_+</span> is the <span class="orange">positive part</span> of a number (<code>pmax</code>).</p></li>
+<li><p>For <span class="orange">ridge regression</span> with one predictor we obtain, instead: <span class="math display">
 \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\sum_{i=1}^n x_i y_i =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols}.
 </span></p></li>
 </ul>
@@ -1341,9 +1323,29 @@ Warning in is.na(x): is.na() applied to non-(list or vector) of type
 </section>
 <section id="single-predictor-ii" class="level2">
 <h2 class="anchored" data-anchor-id="single-predictor-ii">Single predictor II</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="un_C_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="1400"></p>
+</div>
+</div>
+</section>
+<section id="soft-thresholding-and-lasso-solution" class="level2">
+<h2 class="anchored" data-anchor-id="soft-thresholding-and-lasso-solution">Soft-thresholding and lasso solution</h2>
 </section>
 <section id="the-lasso-path" class="level2">
 <h2 class="anchored" data-anchor-id="the-lasso-path">The lasso path</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stderr">
+<pre><code>Loaded lars 1.3</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_C_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid figure-img" width="1800"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="least-angle-regression-i" class="level2">
 <h2 class="anchored" data-anchor-id="least-angle-regression-i">Least angle regression I</h2>
@@ -1448,7 +1450,9 @@ Warning in is.na(x): is.na() applied to non-(list or vector) of type
 <!-- -   asdasd -->
 <!-- ::: -->
 <!-- ::: -->
-<!-- ## Lasso -->
+</section>
+<section id="lasso" class="level2">
+<h2 class="anchored" data-anchor-id="lasso">Lasso</h2>
 <!-- ```{r} -->
 <!-- library(lars) -->
 <!-- lambda <- 100 -->
@@ -1456,7 +1460,7 @@ Warning in is.na(x): is.na() applied to non-(list or vector) of type
 <!-- yy <- y#(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2) -->
 <!-- cv_lars <- cv.lars(x = XX, y = yy, K = 10, type = "lasso", mode = "step") -->
 <!-- fit_lars <- lars(x = XX, y = yy, type ="lasso", normalize = FALSE) -->
-<!-- cv_lasso_fit <- cv.glmnet(XX, yy, standardize = FALSE,  -->
+<!-- cv_lasso_fit <- cv.glmnet(XX, yy, standardize = FALSE, -->
 <!--                           family = "gaussian", alpha = 1, nfolds = 10, -->
 <!--                           lambda = 1 / n * fit_lars$lambda, thresh = 1e-16) -->
 <!-- plot(cv_lasso_fit) -->

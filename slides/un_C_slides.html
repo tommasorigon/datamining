@@ -1407,16 +1407,22 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 <div class="fragment">
 <ul>
-<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>. The considerations and same mathematical tricks discussed for ridge apply here. We assume that <span class="math inline">\bm{y}</span> and <span class="math inline">\tilde{\bm{x}}_{j}</span> are <span class="blue">centered</span> and possibly <span class="blue">scaled</span>.</li>
+<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>.</li>
 </ul>
 </div>
+</section>
+<section id="centering-and-scaling" class="slide level2 center">
+<h2>Centering and scaling</h2>
+<ul>
+<li>Some considerations we discussed for ridge apply also here: in particular we assume that <span class="math inline">\bm{y}</span> and <span class="math inline">\tilde{\bm{x}}_{j}</span> are <span class="blue">centered</span> and possibly <span class="blue">scaled</span>.</li>
+</ul>
 </section>
 <section id="lagrange-multipliers-and-lasso-solution" class="slide level2 center">
 <h2>Lagrange multipliers and lasso solution</h2>
 <ul>
 <li><p>The lasso problem can be <span class="blue">equivalently expressed</span> in its Lagrangian form, which is more amenable for computations.</p></li>
 <li><p>Having remove the intercept, the lasso estimator <span class="math inline">\hat{\beta}_\text{lasso}</span> is the <span class="orange">minimizer</span> of <span class="math display">
-  \underbrace{\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
+  \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
   </span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>.</p></li>
 </ul>
 <div class="fragment">
@@ -1439,28 +1445,33 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>Single predictor I</h2>
 <div>
 <ul>
-<li class="fragment"><p>Let us consider the <span class="blue">single-predictor</span> scenario, in which<span class="math display">
+<li class="fragment"><p>To gain some understanding, let us consider the <span class="blue">single-predictor</span> scenario, in which<span class="math display">
 \hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_i - x_i\beta)^2 + \lambda |\beta|.
   </span></p></li>
-<li class="fragment"><p>This problem admits an <span class="orange">explicit expression</span> (see Exercises), which is <span class="math display">
-\hat{\beta}_\text{lasso} = \begin{cases}\sum_{i=1}^n x_i y_i - \lambda, \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i &gt; \lambda \\
-0 \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i \le \lambda\\
-\sum_{i=1}^n x_i y_i + \lambda, \qquad &amp;\text{if} \quad \sum_{i=1}^n x_i y_i &lt; -\lambda \\
+<li class="fragment"><p>This simple problem admits an <span class="orange">explicit expression</span> (see Exercises), which is <span class="math display">
+\hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &gt; \lambda \\
+0 \qquad &amp;\text{if} \quad \text{cov}(x,y) \le \lambda\\
+\text{cov}(x,y) + \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &lt; -\lambda \\
 \end{cases}
 </span></p></li>
-<li class="fragment"><p>The above solution can be written as <span class="math inline">\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})</span>, where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)</span> is the <span class="blue">soft-thresholding</span> operator.</p></li>
-<li class="fragment"><p>Note that for <span class="orange">ridge regression</span> we would get <span class="math display">
-\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\sum_{i=1}^n x_i y_i =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols}.
+<li class="fragment"><p>The above solution can be written as <span class="math inline">\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})</span>, where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+</span> is the <span class="blue">soft-thresholding</span> operator and <span class="math inline">(\cdot)_+</span> is the <span class="orange">positive part</span> of a number (<code>pmax</code>).</p></li>
+<li class="fragment"><p>For <span class="orange">ridge regression</span> with one predictor we obtain, instead: <span class="math display">
+\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols}.
 </span></p></li>
 </ul>
 </div>
 </section>
 <section id="single-predictor-ii" class="slide level2 center">
 <h2>Single predictor II</h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-29-1.png" width="2000" class="r-stretch"></section>
+<section id="soft-thresholding-and-lasso-solution" class="slide level2 center">
+<h2>Soft-thresholding and lasso solution</h2>
 </section>
 <section id="the-lasso-path" class="slide level2 center">
 <h2>The lasso path</h2>
-</section>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-30-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="least-angle-regression-i" class="slide level2 center">
 <h2>Least angle regression I</h2>
 </section>
@@ -1570,7 +1581,9 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <!-- -   asdasd -->
 <!-- ::: -->
 <!-- ::: -->
-<!-- ## Lasso -->
+</section>
+<section id="lasso" class="slide level2 center">
+<h2>Lasso</h2>
 <!-- ```{r} -->
 <!-- library(lars) -->
 <!-- lambda <- 100 -->
@@ -1578,7 +1591,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <!-- yy <- y#(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2) -->
 <!-- cv_lars <- cv.lars(x = XX, y = yy, K = 10, type = "lasso", mode = "step") -->
 <!-- fit_lars <- lars(x = XX, y = yy, type ="lasso", normalize = FALSE) -->
-<!-- cv_lasso_fit <- cv.glmnet(XX, yy, standardize = FALSE,  -->
+<!-- cv_lasso_fit <- cv.glmnet(XX, yy, standardize = FALSE, -->
 <!--                           family = "gaussian", alpha = 1, nfolds = 10, -->
 <!--                           lambda = 1 / n * fit_lars$lambda, thresh = 1e-16) -->
 <!-- plot(cv_lasso_fit) -->
