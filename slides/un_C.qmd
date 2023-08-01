@@ -698,8 +698,8 @@ and then make predictions via $\hat{\beta}_0 + (\bm{x}_i^*)^T\hat{\beta} = \bar{
     standard deviations, then $n^{-1} \bm{X}^T\bm{X}$ corresponds to the
     [correlation]{.blue} matrix.
     
-- We stress once again that the centering operation unconsequential, because one can transform back the predictions to the original scale. 
-:::
+- We stress that the centering operation unconsequential, because it is possible to transform back the predictions into the original scale. 
+
 
 ## Singular value decomposition (SVD)
 
