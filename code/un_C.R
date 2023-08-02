@@ -456,33 +456,122 @@ ggplot(data = data_plot, aes(x = x, y = value, col = Estimate)) +
   ylab(expression(hat(beta)))
 
 
+#| warning: false
+#| message: false
+library(lars)
+
+my_lasso <- function(X, y, standardize = TRUE) {
+  n <- nrow(X)
+  p <- ncol(X)
+  y_mean <- mean(y) # Center the response
+  y <- y - y_mean
+
+  # Centering the covariates
+  X_mean <- colMeans(X)
+  if (standardize) {
+    X_scale <- apply(X, 2, function(x) sqrt(mean(x^2) - mean(x)^2))
+  } else {
+    X_scale <- rep(1, p)
+  }
+
+  X <- scale(X, center = X_mean, scale = X_scale)
+
+  fit <- lars(x = X, y = y, type = "lasso", normalize = FALSE, intercept = TRUE)
+  beta_lasso <- coef(fit)
+
+  # Transform back to the original scale
+  beta <- t(t(beta_lasso) / X_scale)
+  # Compute the intercept
+  beta0 <- y_mean - X_mean %*% t(beta)
+
+
+  return(list(beta_scaled = cbind(intercept = t(beta0), beta), lambda = c(fit$lambda, 0) / n))
+}
+
+
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
 
-library(lars)
-lambda_max <- max(t(scale(X, TRUE, FALSE)) %*% (y - mean(y)))
-fit_lasso <- lars(x = X, y = y, type = "lasso", normalize = FALSE, intercept = TRUE)
-
-data_lasso <- cbind(lambda_seq = c(fit_lasso$lambda, 0) / length(y), coef(fit_lasso))
+fit_lasso <- my_lasso(X, y)
+data_lasso <- cbind(lambda_seq = fit_lasso$lambda, coef = fit_lasso$beta_scaled)
 mse_lasso <- data.frame(lambda = data_lasso[, 1], Cp = NA, df = 1:9, sigma2 = NA)
 
 for (i in 1:nrow(mse_lasso)) {
-  mse_lasso$mse[i] <- mean((y - mean(y) - X %*% data_lasso[i, -1])^2)
+  mse_lasso$mse[i] <- mean((y - cbind(1, X) %*% data_lasso[i, -1])^2)
   mse_lasso$sigma2[i] <- mse_lasso$mse[i] * n / (n - mse_lasso$df[i])
   mse_lasso$Cp[i] <- mse_lasso$mse[i] + 2 * mse_lasso$sigma2[i] / n * mse_lasso$df[i]
 }
 
-colnames(data_lasso)[-1] <- colnames(X)
-data_lasso <- tidyr::gather(data.frame(data_lasso), lambda, value, lcavol:pgg45)
-colnames(data_lasso) <- c("lambda_tilde", "Covariate", "value")
+colnames(data_lasso)[-c(1, 2)] <- colnames(X)
+data_lasso <- tidyr::gather(data.frame(data_lasso[, -2]), lambda, value, lcavol:pgg45)
+colnames(data_lasso) <- c("lambda", "Covariate", "value")
 
-ggplot(data = data_lasso, aes(x = lambda_tilde, y = value, col = Covariate)) +
+ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
   geom_point() +
   geom_line() +
   theme_light() +
   theme(legend.position = "top") +
   scale_x_sqrt() +
   scale_color_tableau(palette = "Color Blind") +
-  xlab(expression(lambda / n)) +
+  xlab(expression(lambda)) +
   ylab("Regression coefficients")
+
+
+#| message: false
+resid_lasso <- matrix(0, n, (p + 1))
+
+for (k in 1:10) {
+  # Hold-out dataset
+  X_test_k <- as.matrix(subset(assessment(cv_fold$splits[[k]]), select = -c(lpsa)))
+  y_test_k <- assessment(cv_fold$splits[[k]])$lpsa
+
+  X_train_k <- as.matrix(subset(analysis(cv_fold$splits[[k]]), select = -c(lpsa)))
+  y_train_k <- analysis(cv_fold$splits[[k]])$lpsa
+
+  fit_lasso <- my_lasso(X_train_k, y_train_k, standardize = TRUE)
+
+  for (j in 1:(p + 1)) {
+    # Predictions
+    y_hat <- cbind(1, X_test_k) %*% fit_lasso$beta_scaled[j, ]
+    # MSE of the best models for different values of lambda
+    resid_lasso[complement(cv_fold$splits[[k]]), j] <- y_test_k - y_hat
+  }
+}
+
+
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
+
+data_cv <- data.frame(
+  df = 1:9,
+  MSE = apply(resid_lasso^2, 2, mean),
+  SE = apply(resid_lasso^2, 2, function(x) sd(x) / sqrt(n))
+)
+
+se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)]
+df_min_cv <- data_cv$df[head(which(data_cv$MSE < se_rule), 1)]
+
+ggplot(data = data_cv, aes(x = df, y = MSE)) +
+  geom_point() +
+  geom_line() +
+  geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) +
+  scale_x_continuous(breaks = 1:9) +
+  geom_hline(yintercept = se_rule, linetype = "dotted") +
+  geom_vline(xintercept = df_min_cv, linetype = "dotted") +
+  theme_light() +
+  xlab("Degrees of freedom") +
+  ylab("Mean squared error (10-fold cv)")
+
+
+#| include: false
+#| execute: false
+# Double checks
+y_std <- prostate_train$lpsa / sqrt(mean(prostate_train$lpsa^2) - mean(prostate_train$lpsa)^2)
+
+fit_lasso <- my_lasso(X, y_std, standardize = TRUE)
+
+t(fit_lasso$beta_scaled)
+
+coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 1, thresh = 1e-20, lambda = fit_lasso$lambda))

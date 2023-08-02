@@ -1255,11 +1255,11 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <ul>
 <li class="fragment"><p>The ridge regression estimator was originally proposed by Hoerl and Kennard (1970) with a quite different motivation in mind.</p></li>
 <li class="fragment"><p>In linear models, the estimate of <span class="math inline">\beta</span> is obtained by solving the <span class="blue">normal equations</span> <span class="math display">
-(\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
+(\bm{X}_*^T\bm{X}_*)\beta = \bm{X}_*^T\bm{y}_*,
 </span> which could be <span class="orange">ill-conditioned</span>.</p></li>
 <li class="fragment"><p>In other words, the <span class="blue">condition number</span> <span class="math display">
-\kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
-</span> might be very large, leading to <span class="orange">numerical inaccuracies</span>, since the matrix <span class="math inline">\bm{X}^T\bm{X}</span> is <span class="blue">numerically singular</span> and therefore not invertible in practice.</p></li>
+\kappa(\bm{X}^T_*\bm{X}_*) = \frac{d_1^2}{d_p^2},
+</span> might be very large, leading to <span class="orange">numerical inaccuracies</span>, since the matrix <span class="math inline">\bm{X}^T_*\bm{X}_*</span> is <span class="blue">numerically singular</span> and therefore not invertible in practice.</p></li>
 </ul>
 </div>
 </section>
@@ -1267,11 +1267,11 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <h2>☠️ - A historical perspective II</h2>
 <div>
 <ul>
-<li class="fragment"><p>Ridge provides a <span class="blue">remedy</span> for <span class="orange">ill-conditioning</span>, by adding a “ridge” to the diagonal of <span class="math inline">\bm{X}^T\bm{X}</span>, obtaining the modified normal equations <span class="math display">
-(\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
+<li class="fragment"><p>Ridge provides a <span class="blue">remedy</span> for <span class="orange">ill-conditioning</span>, by adding a “ridge” to the diagonal of <span class="math inline">\bm{X}^T_*\bm{X}_*</span>, obtaining the modified normal equations <span class="math display">
+(\bm{X}^T_*\bm{X}_* + \lambda I_p)\beta = \bm{X}^T_*\bm{y}_*.
 </span></p></li>
-<li class="fragment"><p>The <span class="orange">condition number</span> of the modified <span class="math inline">(\bm{X}^T\bm{X} + \lambda I_p)</span> matrix becomes <span class="math display">
-\kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
+<li class="fragment"><p>The <span class="orange">condition number</span> of the modified <span class="math inline">(\bm{X}^T_*\bm{X}_* + \lambda I_p)</span> matrix becomes <span class="math display">
+\kappa(\bm{X}^T_*\bm{X}_* + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
 </span></p></li>
 <li class="fragment"><p>Notice that even if <span class="math inline">d_p = 0</span>, i.e.&nbsp;the matrix <span class="math inline">\bm{X}</span> is <span class="blue">singular</span>, then condition number will be finite as long as <span class="math inline">\lambda &gt; 0</span>.</p></li>
 <li class="fragment"><p>This technique is known as <span class="orange">Tikhonov regularization</span>, after the Russian mathematician Andrey Tikhonov.</p></li>
@@ -1467,7 +1467,7 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <div class="fragment">
 <ul>
 <li>The lasso estimator is the <span class="orange">minimizer</span> of the following system <span class="math display">
-\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p |\beta_j| \le s.
+\sum_{i=1}^n(y_i - \beta_0- \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p |\beta_j| \le s.
 </span> therefore when the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{lasso}</span> are <span class="orange">shrinked</span> and when <span class="math inline">s</span> is large enough <span class="math inline">\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}</span>, as in ridge regression.</li>
 </ul>
 </div>
@@ -1576,7 +1576,7 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <section id="the-lasso-path" class="slide level2 center">
 <h2>The lasso path</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-30-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-31-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="least-angle-regression-i" class="slide level2 center">
 <h2>Least angle regression I</h2>
 </section>
@@ -1598,11 +1598,21 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <section id="effective-degrees-of-freedom-of-best-subset" class="slide level2 center">
 <h2>☠️ - Effective degrees of freedom of best subset</h2>
 </section>
+<section id="cross-validation-for-lasso" class="slide level2 center">
+<h2>Cross-validation for lasso</h2>
+
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-33-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
+<section id="the-lasso-estimate" class="slide level2 center">
+<h2>The lasso estimate</h2>
+</section>
 <section id="a-comparison-between-pcr-ridge-and-lasso" class="slide level2 center">
 <h2>A comparison between pcr, ridge, and lasso</h2>
 </section>
 <section id="the-estimated-coefficients" class="slide level2 center">
 <h2>The estimated coefficients</h2>
+</section>
+<section id="the-results-on-the-test-set" class="slide level2 center">
+<h2>The results on the test set</h2>
 </section>
 <section id="summary-of-lars-and-lasso" class="slide level2 center">
 <h2>Summary of LARS and lasso</h2>
@@ -1651,9 +1661,14 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 </section>
 <section id="quadratic-approximations" class="slide level2 center">
 <h2>Quadratic approximations</h2>
+</section></section>
+<section>
+<section id="references" class="title-slide slide level1 center">
+<h1>References</h1>
+
 </section>
-<section id="main-references" class="slide level2 center">
-<h2>Main references</h2>
+<section id="references-i" class="slide level2 center">
+<h2>References I</h2>
 <ul>
 <li><span class="blue">Main references</span>
 <ul>
@@ -1662,20 +1677,14 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 </ul></li>
 </ul>
 </section>
-<section id="ridge-references" class="slide level2 center">
-<h2>Ridge references</h2>
+<section id="references-ii" class="slide level2 center">
+<h2>References II</h2>
 <ul>
 <li><span class="orange">Specialized references</span>
 <ul>
 <li>Hastie, T. (2020). Ridge regularization: an essential concept in data science. <em>Technometrics</em>, 62(4), 426-433.</li>
 </ul></li>
 </ul>
-</section>
-<section id="lasso-and-lars-references" class="slide level2 center">
-<h2>Lasso and LARS references</h2>
-</section>
-<section id="other-references" class="slide level2 center">
-<h2>Other references</h2>
 <!-- # Lasso, LARS, and elastic-net -->
 <!-- ## Lasso -->
 <!-- ::: columns -->
@@ -1686,9 +1695,6 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <!-- -   asdasd -->
 <!-- ::: -->
 <!-- ::: -->
-</section>
-<section id="lasso" class="slide level2 center">
-<h2>Lasso</h2>
 <!-- ```{r} -->
 <!-- library(lars) -->
 <!-- lambda <- 100 -->
