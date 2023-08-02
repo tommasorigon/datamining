@@ -103,8 +103,9 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#ridge-regression" id="toc-ridge-regression" class="nav-link" data-scroll-target="#ridge-regression">Ridge regression</a>
   <ul class="collapse">
   <li><a href="#the-ridge-regularization-method" id="toc-the-ridge-regularization-method" class="nav-link" data-scroll-target="#the-ridge-regularization-method">The ridge regularization method</a></li>
-  <li><a href="#centering-and-scaling-the-predictors" id="toc-centering-and-scaling-the-predictors" class="nav-link" data-scroll-target="#centering-and-scaling-the-predictors">Centering and scaling the predictors</a></li>
   <li><a href="#lagrange-multipliers-and-ridge-solution" id="toc-lagrange-multipliers-and-ridge-solution" class="nav-link" data-scroll-target="#lagrange-multipliers-and-ridge-solution">Lagrange multipliers and ridge solution</a></li>
+  <li><a href="#centering-and-scaling-the-predictors-i" id="toc-centering-and-scaling-the-predictors-i" class="nav-link" data-scroll-target="#centering-and-scaling-the-predictors-i">Centering and scaling the predictors I</a></li>
+  <li><a href="#centering-and-scaling-the-predictors-ii" id="toc-centering-and-scaling-the-predictors-ii" class="nav-link" data-scroll-target="#centering-and-scaling-the-predictors-ii">Centering and scaling the predictors II</a></li>
   <li><a href="#the-geometry-of-the-ridge-solution" id="toc-the-geometry-of-the-ridge-solution" class="nav-link" data-scroll-target="#the-geometry-of-the-ridge-solution">The geometry of the ridge solution</a></li>
   <li><a href="#the-ridge-path" id="toc-the-ridge-path" class="nav-link" data-scroll-target="#the-ridge-path">The ridge path</a></li>
   <li><a href="#comments-on-the-ridge-path" id="toc-comments-on-the-ridge-path" class="nav-link" data-scroll-target="#comments-on-the-ridge-path">Comments on the ridge path</a></li>
@@ -127,7 +128,7 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#looking-for-sparsity" id="toc-looking-for-sparsity" class="nav-link" data-scroll-target="#looking-for-sparsity">Looking for sparsity</a></li>
   <li><a href="#the-lasso-regularization-method" id="toc-the-lasso-regularization-method" class="nav-link" data-scroll-target="#the-lasso-regularization-method">The lasso regularization method</a></li>
-  <li><a href="#centering-and-scaling" id="toc-centering-and-scaling" class="nav-link" data-scroll-target="#centering-and-scaling">Centering and scaling</a></li>
+  <li><a href="#centering-and-scaling-the-predictors" id="toc-centering-and-scaling-the-predictors" class="nav-link" data-scroll-target="#centering-and-scaling-the-predictors">Centering and scaling the predictors</a></li>
   <li><a href="#lagrange-multipliers-and-lasso-solution" id="toc-lagrange-multipliers-and-lasso-solution" class="nav-link" data-scroll-target="#lagrange-multipliers-and-lasso-solution">Lagrange multipliers and lasso solution</a></li>
   <li><a href="#the-geometry-of-the-lasso-solution" id="toc-the-geometry-of-the-lasso-solution" class="nav-link" data-scroll-target="#the-geometry-of-the-lasso-solution">The geometry of the lasso solution</a></li>
   <li><a href="#single-predictor-i" id="toc-single-predictor-i" class="nav-link" data-scroll-target="#single-predictor-i">Single predictor I</a></li>
@@ -321,7 +322,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <li><p>In practice, we <span class="orange">approximate</span> the true <span class="math inline">f(\bm{x})</span> using a <span class="blue">linear model</span>, e.g.&nbsp;by considering the following function<span class="math display">
     f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta,
     </span> in which the regression coefficients must be estimated.</p></li>
-<li><p>In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use a slightly different notation compared to <a href="unit_A.html">Unit A</a>.</p></li>
+<li><p>In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will often play a special role, therefore we use a slightly different notation compared to <a href="unit_A.html">Unit A</a>.</p></li>
 </ul>
 </div>
 </section>
@@ -668,7 +669,7 @@ Backward regression
 <li><p>We consider a <span class="blue">compressed</span> version of the covariates that has smaller dimension <span class="math inline">k</span> but retains most information.</p></li>
 <li><p>Intuitively, we want to <span class="orange">reduce the variance</span> by finding a good compression, without sacrificing too much bias.</p></li>
 <li><p>The main statistical tool, unsurprisingly, will be the celebrated <span class="blue">principal components analysis</span> (PCA).</p></li>
-<li><p>You should already know PCA as a tool for explorative analysis… We will focus on its usage for regression purposes.</p></li>
+<li><p>We will compress the covariate information <span class="math inline">\bm{X}</span> using a smaller set of variables <span class="math inline">\bm{Z}</span>, i.e.&nbsp;the principal components.</p></li>
 </ul>
 </div>
 </div>
@@ -694,9 +695,24 @@ f(\bm{x}_i; \alpha, \beta) &amp; = \beta_0 + \bm{x}_i^T\beta = \alpha - \bar{\bm
 </section>
 <section id="centering-the-predictors-ii" class="level2">
 <h2 class="anchored" data-anchor-id="centering-the-predictors-ii">Centering the predictors II</h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Centering assumption
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For the rest of this Unit, we will assume the data have been previously <span class="orange">centered</span>, namely <span class="math display">
+    \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
+    </span></p>
+</div>
+</div>
 <ul>
-<li>Thus, we let the <span class="blue">original data</span> be <span class="math inline">x_{ij}^*</span> and <span class="math inline">y_i^*</span> and define their <span class="orange">transformation</span>: <span class="math display">
-x_{ij} = x_{ij}^* - \bar{x}_j^*, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dots,n.
+<li>The above assumption means that the <span class="blue">original data</span> <span class="math inline">x_{ij}^*</span> and <span class="math inline">y_i^*</span> have been <span class="orange">transformed</span>: <span class="math display">
+x_{ij} = x_{ij}^* - \bar{x}_j^*, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
 </span> By construction, the predictors <span class="math inline">\tilde{\bm{x}}_{j}</span> and the response <span class="math inline">\bm{y}</span> are <span class="orange">centered</span>.</li>
 </ul>
 <ul>
@@ -704,34 +720,23 @@ x_{ij} = x_{ij}^* - \bar{x}_j^*, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dot
 f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta,
 </span> whose usefulness will become clear shortly.</li>
 </ul>
-<ul>
-<li>In practice, we want to make predictions in the <span class="blue">original scale</span>, which requires a simple <span class="orange">final adjustment</span>. One simply compute the intercept term <span class="math display">
-\hat{\beta}_0 = \bar{y}^* - \bar{\bm{x}}^*\hat{\beta},
-</span> and then make predictions via <span class="math inline">\hat{\beta}_0 + (\bm{x}_i^*)^T\hat{\beta} = \bar{y} + \bm{x}_i^T\hat{\beta}</span>.</li>
-</ul>
 </section>
 <section id="centering-the-predictors-iii" class="level2">
 <h2 class="anchored" data-anchor-id="centering-the-predictors-iii">Centering the predictors III</h2>
-<div class="callout callout-style-simple callout-note no-icon">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-body-container">
-<ul>
-<li>From now on, we will assume the data have been previously <span class="orange">centered</span>, so that <span class="math display">
-\frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
-</span></li>
-</ul>
-</div>
-</div>
-</div>
 <ul>
 <li><p>Under such the centering assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
 S = \frac{1}{n} \bm{X}^T\bm{X}.
 </span></p></li>
 <li><p>If in addition each variable has been <span class="blue">scaled</span> by their standard deviations, then <span class="math inline">n^{-1} \bm{X}^T\bm{X}</span> corresponds to the <span class="blue">correlation</span> matrix.</p></li>
-<li><p>We stress that the centering operation unconsequential, because one can transform back the predictions to the original scale.</p></li>
+</ul>
+<ul>
+<li>In practice, we want to make predictions in the <span class="blue">original scale</span>, which requires a simple <span class="orange">final adjustment</span>. One simply need to compute the intercept term <span class="math display">
+\hat{\beta}_0 = \bar{y}^* - \bar{\bm{x}}^*\hat{\beta},
+</span> and then compute the predictions via the formula <span class="math inline">\hat{\beta}_0 + (\bm{x}_i^*)^T\hat{\beta} = \bar{y} + \bm{x}_i^T\hat{\beta}</span>.</li>
+</ul>
+<ul>
+<li><p><span class="orange">Remark</span>. The centering operation is a mathematical trick that will facilitate computations, but is unconsequential from a predictive point of view.</p></li>
+<li><p>Indeed, it is always possible to transform back the predictions into the original scale.</p></li>
 </ul>
 </section>
 <section id="singular-value-decomposition-svd" class="level2">
@@ -913,34 +918,19 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2 class="anchored" data-anchor-id="the-ridge-regularization-method">The ridge regularization method</h2>
 <ul>
 <li>The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the most common <span class="blue">shrinkage method</span> and is the <span class="orange">minimizer</span> of <span class="math display">
-\sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
+\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
 </span></li>
 </ul>
 <ul>
-<li><p>When <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{ridge}</span> are explicitly <span class="orange">shrinked</span>, i.e. biased, <span class="orange">towards zero</span>.</p></li>
+<li><p>When the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{ridge}</span> are explicitly <span class="orange">shrinked</span>, i.e. biased, <span class="orange">towards zero</span>.</p></li>
 <li><p>On the other hand, if <span class="math inline">s</span> is large enough, then <span class="math inline">\hat{\beta}_\text{ridge}</span> is equivalent to <span class="math inline">\hat{\beta}_\text{ols}</span>.</p></li>
 </ul>
 <ul>
 <li>In ridge regression, the <span class="orange">variability</span> of the estimator is explicitly <span class="orange">bounded</span>, although this comes with some <span class="blue">bias</span>. The parameter <span class="math inline">s</span> controls the bias-variance trade-off.</li>
 </ul>
 <ul>
-<li>Note that the intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>.</li>
+<li>The intercept term <span class="math inline">\beta_0</span> is <span class="blue">omitted</span> in the above equation and therefore is not penalized, because the predictors and the response have been <span class="orange">centered</span>.</li>
 </ul>
-</section>
-<section id="centering-and-scaling-the-predictors" class="level2">
-<h2 class="anchored" data-anchor-id="centering-and-scaling-the-predictors">Centering and scaling the predictors</h2>
-<div class="incremental">
-<ul class="incremental">
-<li><p>We can use the same <span class="blue">mathematical trick</span> that we <a href="/#centering-the-predictors-i">exploited before</a> to simplify computations.</p></li>
-<li><p>Under centered predictors, one can show that <span class="math inline">\hat{\beta}_0 = \bar{y}</span> even in the ridge regression case. The proof is almost identical as before (see Exercises).</p></li>
-<li><p>Hence, we can <span class="orange">omit the intercept</span> term <span class="math inline">\beta_0</span> after <span class="orange">centering</span> the inputs and the response: <span class="math display">
-\bar{y} = 0, \qquad \bar{x}_{j} = 0, \quad j=1,\dots,p.
-</span></p></li>
-<li><p>The ridge solutions are <span class="orange">not equivariant</span> under <span class="orange">scalings of the input</span>, so one normally <span class="blue">standardizes</span> the input to have unit variance, if they are not in the same scale.</p></li>
-<li><p>Standardization is often times performed under the hood in most statistical software.</p></li>
-<li><p>Different R packages have <span class="blue">different defaults</span>. For instance <code>glmnet</code> also <span class="blue">standardizes the response</span> <span class="math inline">y</span> and then <span class="orange">transforms back</span> the estimated coefficients into the <span class="orange">original scale</span>.</p></li>
-</ul>
-</div>
 </section>
 <section id="lagrange-multipliers-and-ridge-solution" class="level2">
 <h2 class="anchored" data-anchor-id="lagrange-multipliers-and-ridge-solution">Lagrange multipliers and ridge solution</h2>
@@ -967,6 +957,42 @@ Ridge regression estimator
 </span> Such an estimator <span class="blue">always exists</span> and is <span class="orange">unique</span> (even when <span class="math inline">p &gt; n</span>).</p>
 </div>
 </div>
+</section>
+<section id="centering-and-scaling-the-predictors-i" class="level2">
+<h2 class="anchored" data-anchor-id="centering-and-scaling-the-predictors-i">Centering and scaling the predictors I</h2>
+<ul>
+<li><p>In ridge regression we center the original data, which implicitely means that the <span class="blue">intercept</span> term is <span class="blue">not penalized</span>.</p></li>
+<li><p>As for ordinary least squares, the centering operation can be regarded as <span class="orange">two-step estimation procedure</span>. Refer to the Exercises for more insights.</p></li>
+</ul>
+<ul>
+<li>The ridge solutions are <span class="orange">not equivariant</span> under <span class="orange">scalings of the input</span>, so one normally <span class="blue">standardizes</span> the input to have unit variance, if they are not in the same scale.</li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>For ridge problems we will assume the data have been previously <span class="orange">standardized</span>, namely <span class="math display">
+    \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_i^2 = 1\qquad j=1,\dots,p.
+    </span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="centering-and-scaling-the-predictors-ii" class="level2">
+<h2 class="anchored" data-anchor-id="centering-and-scaling-the-predictors-ii">Centering and scaling the predictors II</h2>
+<ul>
+<li><p>In other words, the <span class="blue">original data</span> <span class="math inline">x_{ij}^*</span> and <span class="math inline">y_i^*</span> are typically <span class="orange">standardized</span>, obtaining: <span class="math display">
+x_{ij} = \frac{x_{ij}^* - \bar{x}_j^*}{s_j}, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
+</span> where <span class="math inline">s_j</span> is the <span class="blue">standard deviation</span> or some other <span class="blue">scaling factor</span>.</p></li>
+<li><p>It is easy to show (see Exercises) that the <span class="orange">predictions</span> in the <span class="blue">original scale</span> are <span class="math display">
+\underbrace{\hat{\beta}_0 + (\bm{x}_i^*)^T \hat{\beta}_\text{ridge}^*}_{\text{predictions}}, \quad  \underbrace{\hat{\beta}_\text{ridge}^* = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}}_{\text{scaled coefficients}}, \quad \underbrace{\hat{\beta}_0 = \bar{y}^* - \bar{\bm{x}}^*\hat{\beta}_\text{ridge}^*}_{\text{intercept}}.
+</span></p></li>
+</ul>
+<ul>
+<li>Different R packages have <span class="blue">different defaults</span>. For instance <code>glmnet</code> also <span class="blue">standardizes the response</span> <span class="math inline">y</span> and then <span class="orange">transforms back</span> the estimated coefficients into the <span class="orange">original scale</span>.</li>
+</ul>
 <!-- ## Mathematical details -->
 <!-- ::: incremental -->
 <!-- - The matrix $\bm{X}^T\bm{X} + \lambda I_p$ is [invertible]{.blue} for any $\lambda > 0$.  -->
@@ -1293,20 +1319,39 @@ Effective degrees of freedom
 </ul>
 <ul>
 <li>The lasso estimator <span class="math inline">\hat{\beta}_\text{lasso}</span> is the <span class="orange">minimizer</span> of <span class="math display">
-\sum_{i=1}^n(y_i - \beta_0 - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p |\beta_j| \le s.
+\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p |\beta_j| \le s.
 </span> therefore when the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{lasso}</span> are <span class="orange">shrinked</span> and when <span class="math inline">s</span> is large enough <span class="math inline">\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}</span>, as in ridge regression.</li>
 </ul>
 <ul>
 <li>The lasso is <span class="orange">deceptively similar</span> to ridge. However, the change from a quadratic penalty to the absolute value has crucial <span class="blue">sparsity</span> implications.</li>
 </ul>
 <ul>
-<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>.</li>
+<li>The intercept term <span class="math inline">\beta_0</span> is <span class="blue">omitted</span> in the above equation and therefore is not penalized, because the predictors and response have been <span class="orange">centered</span>.</li>
 </ul>
 </section>
-<section id="centering-and-scaling" class="level2">
-<h2 class="anchored" data-anchor-id="centering-and-scaling">Centering and scaling</h2>
+<section id="centering-and-scaling-the-predictors" class="level2">
+<h2 class="anchored" data-anchor-id="centering-and-scaling-the-predictors">Centering and scaling the predictors</h2>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>For lasso problems we will assume the data have been previously <span class="orange">standardized</span>, namely <span class="math display">
+    \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_i^2 = 1\qquad j=1,\dots,p.
+    </span></p>
+</div>
+</div>
+</div>
 <ul>
-<li>Some considerations we discussed for ridge apply also here: in particular we assume that <span class="math inline">\bm{y}</span> and <span class="math inline">\tilde{\bm{x}}_{j}</span> are <span class="blue">centered</span> and possibly <span class="blue">scaled</span>.</li>
+<li>The above assumption means that the <span class="blue">original data</span> <span class="math inline">x_{ij}^*</span> and <span class="math inline">y_i^*</span> have been <span class="orange">standardized</span>: <span class="math display">
+x_{ij} = \frac{x_{ij}^* - \bar{x}_j^*}{s_j}, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dots,n; \ \ j=1,\dots,p,
+</span> where <span class="math inline">s_j^2 = n^{-1}\sum_{i=1}^n (x_{ij}^* - \bar{x}^*_j)^2</span> is the sample variance.</li>
+</ul>
+<ul>
+<li>It is easy to show (see Exercises) that the <span class="orange">predictions</span> in the <span class="blue">original scale</span> are <span class="math display">
+\underbrace{\hat{\beta}_0 + (\bm{x}_i^*)^T \hat{\beta}_\text{lasso}^*}_{\text{predictions}}, \quad  \underbrace{\hat{\beta}_\text{lasso}^* = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{lasso}}_{\text{scaled coefficients}}, \quad \underbrace{\hat{\beta}_0 = \bar{y}^* - \bar{\bm{x}}^*\hat{\beta}_\text{lasso}^*}_{\text{intercept}}.
+</span></li>
 </ul>
 </section>
 <section id="lagrange-multipliers-and-lasso-solution" class="level2">

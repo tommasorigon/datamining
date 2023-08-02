@@ -472,7 +472,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <li class="fragment"><p>In practice, we <span class="orange">approximate</span> the true <span class="math inline">f(\bm{x})</span> using a <span class="blue">linear model</span>, e.g.&nbsp;by considering the following function<span class="math display">
     f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta,
     </span> in which the regression coefficients must be estimated.</p></li>
-<li class="fragment"><p>In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will play a special role, therefore we use a slightly different notation compared to <a href="unit_A.html">Unit A</a>.</p></li>
+<li class="fragment"><p>In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will often play a special role, therefore we use a slightly different notation compared to <a href="unit_A.html">Unit A</a>.</p></li>
 </ul>
 </div>
 </section>
@@ -813,39 +813,40 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <li><p>We consider a <span class="blue">compressed</span> version of the covariates that has smaller dimension <span class="math inline">k</span> but retains most information.</p></li>
 <li><p>Intuitively, we want to <span class="orange">reduce the variance</span> by finding a good compression, without sacrificing too much bias.</p></li>
 <li><p>The main statistical tool, unsurprisingly, will be the celebrated <span class="blue">principal components analysis</span> (PCA).</p></li>
-<li><p>You should already know PCA as a tool for explorative analysis… We will focus on its usage for regression purposes.</p></li>
+<li><p>We will compress the covariate information <span class="math inline">\bm{X}</span> using a smaller set of variables <span class="math inline">\bm{Z}</span>, i.e.&nbsp;the principal components.</p></li>
 </ul>
 </div>
 </div>
 </section>
-<section id="centering-the-predictors-i" class="slide level2 center">
-<h2>Centering the predictors I</h2>
+<section id="the-intercept-term" class="slide level2 center">
+<h2>The intercept term</h2>
 <div>
 <ul>
+<li class="fragment"><p>In principal component regression and in other related methods (ridge, lasso and elastic-net), we do <span class="orange">not</span> wish to <span class="orange">compress</span> the <span class="orange">intercept</span> term <span class="math inline">\beta_0</span>. In a sense, we want to “remove it”.</p></li>
 <li class="fragment"><p>Let us consider a <span class="blue">reparametrization</span> of the linear model, in which <span class="math inline">\alpha = \beta_0 + \bar{\bm{x}}^T\beta</span>. This is equivalent to a linear model with <span class="orange">centered predictors</span>: <span class="math display">
 \begin{aligned}
 f(\bm{x}_i; \alpha, \beta) &amp; = \beta_0 + \bm{x}_i^T\beta = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta  = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta. \\
 \end{aligned}
 </span></p></li>
-<li class="fragment"><p>There is a computational advantage of this reparametrization: the estimates for <span class="math inline">(\alpha, \beta)</span> can be computed separately and <span class="orange">in two steps</span>.</p></li>
+<li class="fragment"><p>The estimates for <span class="math inline">(\alpha, \beta)</span> can be now computed separately and <span class="orange">in two steps</span>.</p></li>
 <li class="fragment"><p>The <span class="orange">estimate</span> of the <span class="orange">intercept</span> with centered predictors is <span class="math inline">\hat{\alpha} = \bar{y}</span>. In fact: <span class="math display">
 \hat{\alpha} = \arg\min_{\alpha \in \mathbb{R}}\sum_{i=1}^n\{y_i - \alpha - (\bm{x}_i -\bar{\bm{x}})^T\beta\}^2 = \frac{1}{n}\sum_{i=1}^n\{y_i - (\bm{x}_i -\bar{\bm{x}})^T\beta\} = \frac{1}{n}\sum_{i=1}^ny_i.
 </span></p></li>
 <li class="fragment"><p>Then, the <span class="blue">estimate of <span class="math inline">\beta</span></span> can be obtained considering a linear model <span class="orange">without intercept</span>: <span class="math display">
     f(\bm{x}_i; \beta) = (\bm{x}_i -\bar{\bm{x}})^T\beta,
-</span> used to predict the <span class="blue">centered responses</span> <span class="math inline">y_i - \bar{y}</span>.</p></li>
+</span> employed to predict the <span class="blue">centered responses</span> <span class="math inline">y_i - \bar{y}</span>.</p></li>
 </ul>
 </div>
 </section>
-<section id="centering-the-predictors-ii" class="slide level2 center">
-<h2>Centering the predictors II</h2>
+<section id="centering-the-predictors" class="slide level2 center">
+<h2>Centering the predictors</h2>
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
 <p><strong>Centering assumption</strong></p>
 </div>
 <div class="callout-content">
-<p>For the rest of this Unit, we will assume the data have been previously <span class="orange">centered</span>, namely <span class="math display">
+<p>In principal components regression, we assume the data have been previously <span class="orange">centered</span>: <span class="math display">
     \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
     </span></p>
 </div>
@@ -861,15 +862,15 @@ x_{ij} = x_{ij}^* - \bar{x}_j^*, \qquad y_i = y_i^* - \bar{y}^*, \qquad i=1,\dot
 <div class="fragment">
 <ul>
 <li>Using centered predictor means that we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
-f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta,
-</span> whose usefulness will become clear shortly.</li>
+f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta.
+</span></li>
 </ul>
 </div>
 </section>
-<section id="centering-the-predictors-iii" class="slide level2 center">
-<h2>Centering the predictors III</h2>
+<section id="centering-the-predictors-ii" class="slide level2 center">
+<h2>Centering the predictors II</h2>
 <ul>
-<li><p>Under such the centering assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
+<li><p>Under the centering assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
 S = \frac{1}{n} \bm{X}^T\bm{X}.
 </span></p></li>
 <li><p>If in addition each variable has been <span class="blue">scaled</span> by their standard deviations, then <span class="math inline">n^{-1} \bm{X}^T\bm{X}</span> corresponds to the <span class="blue">correlation</span> matrix.</p></li>
@@ -883,7 +884,7 @@ S = \frac{1}{n} \bm{X}^T\bm{X}.
 </div>
 <div class="fragment">
 <ul>
-<li><p><span class="orange">Remark</span>. The centering operation is a mathematical trick that will facilitate computations, but is unconsequential from a predictive point of view.</p></li>
+<li><p><span class="orange">Remark</span>. The centering operation is a mathematical trick that facilitate the exposition, but is unconsequential from a predictive point of view.</p></li>
 <li><p>Indeed, it is always possible to transform back the predictions into the original scale.</p></li>
 </ul>
 </div>

@@ -194,7 +194,7 @@ ggcorrplot(corr,
         f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta,
         $$ in which the regression coefficients must be estimated.
 
--   In this unit the [intercept]{.blue} $\beta_0$ will play a special
+-   In this unit the [intercept]{.blue} $\beta_0$ will often play a special
     role, therefore we use a slightly different notation compared to
     [Unit A](unit_A.html).
 :::
@@ -628,22 +628,23 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 -   The main statistical tool, unsurprisingly, will be the celebrated
     [principal components analysis]{.blue} (PCA).
 
--   You should already know PCA as a tool for explorative analysis... We
-    will focus on its usage for regression purposes.
+-   We will compress the covariate information $\bm{X}$ using a smaller set of variables $\bm{Z}$, i.e. the principal components. 
 :::
 :::
 
-## Centering the predictors I
+## The intercept term
 
 ::: incremental
+
+- In principal component regression and in other related methods (ridge, lasso and elastic-net), we do [not]{.orange} wish to [compress]{.orange} the [intercept]{.orange} term $\beta_0$. In a sense, we want to "remove it". 
+
 -   Let us consider a [reparametrization]{.blue} of the linear model, in which $\alpha = \beta_0 + \bar{\bm{x}}^T\beta$. This is equivalent to a linear model with [centered predictors]{.orange}: $$
     \begin{aligned}
     f(\bm{x}_i; \alpha, \beta) & = \beta_0 + \bm{x}_i^T\beta = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta  = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta. \\
     \end{aligned}
     $$
 
--   There is a computational advantage of this reparametrization: the estimates
-    for $(\alpha, \beta)$ can be computed separately and [in two steps]{.orange}.
+-  The estimates for $(\alpha, \beta)$ can be now computed separately and [in two steps]{.orange}.
 
 -   The [estimate]{.orange} of the [intercept]{.orange} with centered
     predictors is $\hat{\alpha} = \bar{y}$. In fact: $$
@@ -653,15 +654,15 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 -   Then, the [estimate of $\beta$]{.blue} can be obtained considering a
     linear model [without intercept]{.orange}: $$
         f(\bm{x}_i; \beta) = (\bm{x}_i -\bar{\bm{x}})^T\beta,
-    $$ used to predict the [centered responses]{.blue} $y_i - \bar{y}$.
+    $$ employed to predict the [centered responses]{.blue} $y_i - \bar{y}$.
 :::
 
-## Centering the predictors II
+## Centering the predictors
 
 ::: callout-note
 #### Centering assumption
 
-For the rest of this Unit, we will assume the data have been previously [centered]{.orange}, namely $$
+In principal components regression, we assume the data have been previously [centered]{.orange}: $$
     \frac{1}{n}\sum_{i=1}^ny_i = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
     $$
 :::
@@ -677,14 +678,13 @@ By construction, the predictors $\tilde{\bm{x}}_{j}$ and the response $\bm{y}$ a
 
 -   Using centered predictor means that we can focus on linear
     models [without intercept]{.blue}: $$
-    f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta,
+    f(\bm{x}_i; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_i^T\beta.
     $$
-whose usefulness will become clear shortly. 
 
 
-## Centering the predictors III
+## Centering the predictors II
 
--   Under such the centering assumption the [covariance matrix]{.orange} of the
+-   Under the centering assumption the [covariance matrix]{.orange} of the
     data is simply $$
     S = \frac{1}{n} \bm{X}^T\bm{X}.
     $$    
@@ -702,14 +702,9 @@ and then compute the predictions via the formula $\hat{\beta}_0 + (\bm{x}_i^*)^T
 
 . . .
 
-- [Remark]{.orange}. The centering operation is a mathematical trick that will facilitate computations, but is unconsequential from a predictive point of view. 
-
-
+- [Remark]{.orange}. The centering operation is a mathematical trick that facilitate the exposition, but is unconsequential from a predictive point of view. 
 
 - Indeed, it is always possible to transform back the predictions into the original scale. 
-
-
-
 
 ## Singular value decomposition (SVD)
 
