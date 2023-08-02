@@ -296,7 +296,7 @@ df_ridge <- function(lambda_tilde, X, standardize = TRUE) {
   }
   X <- scale(X, center = X_mean, scale = X_scale)
   d2 <- eigen(crossprod(X))$values
-  sum(d2 / (d2 + lambda))
+  1 + sum(d2 / (d2 + lambda))
 }
 
 df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda_tilde")
@@ -329,7 +329,7 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
   scale_x_log10() +
   scale_color_tableau(palette = "Color Blind") +
   xlab(expression(lambda / n)) +
-  ylab("Regression coefficients")
+  ylab("Coefficients (original scale)")
 
 
 #| fig-width: 5
@@ -342,7 +342,7 @@ ggplot(data = mse_ridge, aes(x = df, y = Cp)) +
   geom_point() +
   geom_vline(xintercept = df_min_cp, linetype = "dotted") +
   theme_light() +
-  scale_x_continuous(breaks = 0:8) +
+  scale_x_continuous(breaks = 1:9) +
   xlab("Effective degrees of freedom (df)") +
   ylab(expression(C[p]))
 
@@ -428,7 +428,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
   theme_light() +
   geom_vline(xintercept = df_min_cv, linetype = "dashed") +
   geom_vline(xintercept = df_min_cp, linetype = "dotted") +
-  scale_x_continuous(breaks = 0:8) +
+  scale_x_continuous(breaks = 1:9) +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Effective degrees of freedom (df)") +
@@ -465,7 +465,7 @@ lambda_max <- max(t(scale(X, TRUE, FALSE)) %*% (y - mean(y)))
 fit_lasso <- lars(x = X, y = y, type = "lasso", normalize = FALSE, intercept = TRUE)
 
 data_lasso <- cbind(lambda_seq = c(fit_lasso$lambda, 0) / length(y), coef(fit_lasso))
-mse_lasso <- data.frame(lambda = data_lasso[, 1], Cp = NA, df = 0:8, sigma2 = NA)
+mse_lasso <- data.frame(lambda = data_lasso[, 1], Cp = NA, df = 1:9, sigma2 = NA)
 
 for (i in 1:nrow(mse_lasso)) {
   mse_lasso$mse[i] <- mean((y - mean(y) - X %*% data_lasso[i, -1])^2)
