@@ -88,6 +88,8 @@ styler:::style_file("../code/un_C.R")
 :::
 :::
 
+# A biostatistical motivation
+
 ## The `prostate` dataset
 
 -   The `prostate` cancer data investigates the relationship between the
@@ -1939,6 +1941,7 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
   ylab("Regression coefficients")
 ```
 
+## Comments on the lasso path
 
 ## Least angle regression I
 
