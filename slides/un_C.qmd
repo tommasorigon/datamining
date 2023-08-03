@@ -285,6 +285,47 @@ knitr::kable(tab, digits = 2)
 :::
 :::
 
+## Overview of this unit
+
+-   In this unit we will discuss two "discrete" methods: 
+    - Best subset selection and its greedy approximations: forward / backward regression;
+    - Principal components regression (PCR).
+
+-   Best subset selection perform [variable selection]{.orange}, whereas
+    principal components regression [reduces the variance]{.orange} of
+    the coefficients.
+
+-   These "discrete" methods can be seen as the naïve counterpart of
+    more advanced and [continuous]{.blue} ideas, that are presented in
+    the second part of the Unit.
+
+. . .
+
+|                     | [Shrinkage]{.orange}           | [Variable selection]{.orange}   |
+|-----------------|--------------------------------|-----------------------|
+| [Discrete]{.blue}   | Principal component regression | Best subset selection, stepwise |
+| [Continuous]{.blue} | Ridge regression               | Relaxed Lasso                   |
+
+. . .
+
+-   Finally, the [lasso]{.blue} and the [elastic net]{.orange} perform
+    both shrinkage and variable selection.
+
+
+## Overview of the final results
+
+|            |    Least squares| Best subset|    PCR |  Ridge| Lasso|
+|:-----------|------:|-----------:|------:|------:|-----:|
+|`(Intercept)` |  2.465|       2.477|  2.455|  2.458| 2.468|
+|`lcavol`      |  0.680|       0.740|  0.287|  0.295| 0.532|
+|`lweight`     |  0.263|       0.316|  0.339|  0.184| 0.169|
+|`age`         | -0.141|       .|  0.056| -0.001| .|
+|`lbph`        |  0.210|       .|  0.102|  0.129| .|
+|`svi`         |  0.305|       .|  0.261|  0.187| 0.092|
+|`lcp`         | -0.288|       .|  0.219|  0.070| .|
+|`gleason`     | -0.021|       .| -0.016|  0.054| .|
+|`pgg45`       |  0.267|       .|  0.062|  0.104| .|
+
 # Best subset selection
 
 ## Best subset selection
@@ -603,6 +644,10 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 -   In the `prostate` dataset, forward, backward and best subset
     selection all gave exactly the [same path of solutions]{.orange} on
     the full training set.
+    
+## Pros and cons of best subset
+
+- asd
 
 # Principal components regression
 
@@ -660,55 +705,57 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 
 ## Centering the predictors
 
-- The [original data]{.orange} $Y_i = f(\bm{x}_i) + \epsilon_i$ have been [transformed]{.blue}, using the "[*]{.blue}" to denote it: $$
-x_{*ij} = x_{ij} - \bar{x}_j, \qquad y_{*i} = y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
+- In principal components regression, we replace [original data]{.orange} $Y_i = f(\bm{x}_i) + \epsilon_i$ with their [centered]{.blue} version: $$
+x_{ij} - \bar{x}_j, \qquad y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
 $$
-By construction, the predictors $\tilde{\bm{x}}_{*j} = \tilde{\bm{x}}_j - \bar{x}_j$ and the response $\bm{y}_* = \bm{y} - \bar{y}$ are [centered]{.blue}.
 
 . . .
 
--   Using centered predictor means that we can focus on linear
-    models [without intercept]{.blue}: $$
-    f(\bm{x}_{*i}; \beta) = x_{*i1}\beta_1 + \cdots + x_{*ip}\beta_p = \bm{x}_{*i}^T\beta.
-    $$
-
-::: callout-note
-#### Centering assumption
-
-In principal components regression, we assume the data have been previously [centered]{.orange}: $$
-    \frac{1}{n}\sum_{i=1}^n y_{*i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{*ij} = 0, \qquad j=1,\dots,p.
-    $$
-:::
-
-## Centering the predictors II
-
--   Under the centering assumption the [covariance matrix]{.orange} of the
-    data is simply $$
-    S = \frac{1}{n} \bm{X}_*^T\bm{X}_*.
-    $$    
-    
--   If in addition each variable has been [scaled]{.blue} by their
-    standard deviations, then $n^{-1} \bm{X}_*^T\bm{X}_*$ corresponds to the
-    [correlation]{.blue} matrix.
-
-. . .
-
-- In practice, we want to make predictions in the [original scale]{.blue}, which requires a simple [final adjustment]{.orange}. One simply need to compute the intercept term $$
+- In the end, we will make predictions in the [original scale]{.blue}, which requires a simple [final adjustment]{.orange}. One simply need to compute the intercept term $$
 \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta},
 $$ 
-and then compute the predictions via the formula $\hat{\beta}_0 + \bm{x}_i^T\hat{\beta} = \hat{\alpha} + \bm{x}_{*i}^T\hat{\beta}$. 
+and then compute the predictions via the formula $\hat{\beta}_0 + \bm{x}_i^T\hat{\beta} = \hat{\alpha} + \bm{x}_{i}^T\hat{\beta}$. 
 
 . . .
 
 - [Remark]{.orange}. The centering operation is a mathematical trick that facilitate the exposition, but is unconsequential from an estimation point of view. 
 
-- Indeed, it is always possible to transform back the predictions into the original scale. 
+## Centering the predictors II
+
+::: callout-note
+#### Centering assumption
+
+In principal components regression, we assume the data have been previously [centered]{.orange}: $$
+    \frac{1}{n}\sum_{i=1}^n y_{i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
+    $$
+:::
+
+. . .
+
+-   Using centered predictor means that we can focus on linear
+    models [without intercept]{.blue}: $$
+    f(\bm{x}_{i}; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_{i}^T\beta.
+    $$
+ 
+. . .
+
+-   Under the centering assumption the [covariance matrix]{.orange} of the
+    data is simply $$
+    S = \frac{1}{n} \bm{X}^T\bm{X}.
+    $$    
+    
+<!-- -   If in addition each variable has been [scaled]{.blue} by their -->
+<!--     standard deviations, then $n^{-1} \bm{X}^T\bm{X}$ corresponds to the -->
+<!--     [correlation]{.blue} matrix. -->
+
+
+
 
 ## Singular value decomposition (SVD)
 
--   Let $\bm{X}_*$ be a $n \times p$ matrix. Then, its full form [singular
+-   Let $\bm{X}$ be a $n \times p$ matrix. Then, its full form [singular
     value decomposition]{.orange} is: $$
-    \bm{X}_* = \bm{U} \bm{D} \bm{V}^T = \sum_{j=1}^m d_j \tilde{\bm{u}}_j \tilde{\bm{v}}_j^T,
+    \bm{X} = \bm{U} \bm{D} \bm{V}^T = \sum_{j=1}^m d_j \tilde{\bm{u}}_j \tilde{\bm{v}}_j^T,
     $$ with $m =\min\{n, p\}$ and where:
 
     -   the $n \times n$ matrix
@@ -726,22 +773,22 @@ and then compute the predictions via the formula $\hat{\beta}_0 + \bm{x}_i^T\hat
 -   The real numbers $d_1 \ge d_2 \ge \cdots \ge d_m \ge 0$ are called
     [singular values]{.blue}.
 
--   If one or more $d_j = 0$, then the matrix $\bm{X}_*$ is singular.
+-   If one or more $d_j = 0$, then the matrix $\bm{X}$ is singular.
 
 ## Principal component analysis I
 
 ::: incremental
--   Le us assume that $p < n$ and that $\text{rk}(\bm{X}_*) = p$,
-    recalling that $\bm{X}_*$ is a [centered]{.orange} matrix.
+-   Le us assume that $p < n$ and that $\text{rk}(\bm{X}) = p$,
+    recalling that $\bm{X}$ is a [centered]{.orange} matrix.
 
--   Using SVD, the matrix $\bm{X}^T_*\bm{X}_*$ can be expressed as $$
-    \bm{X}_*^T\bm{X}_* = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V}^T,
+-   Using SVD, the matrix $\bm{X}^T\bm{X}$ can be expressed as $$
+    \bm{X}^T\bm{X} = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V}^T,
     $$ where $\bm{\Delta}^2 = \bm{D}^T\bm{D}$ is a $p \times p$
     [diagonal]{.blue} matrix with entries $d_1^2,\dots,d_p^2$.
 
 -   This equation is at the heart of [principal component
     analysis]{.blue} (PCA). Define the matrix $$
-    \bm{Z} = \bm{X}_*\bm{V} = \bm{U}\bm{D},
+    \bm{Z} = \bm{X}\bm{V} = \bm{U}\bm{D},
     $$ whose columns $\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p$ are
     called [principal components]{.orange}.
 
@@ -751,7 +798,7 @@ and then compute the predictions via the formula $\hat{\beta}_0 + \bm{x}_i^T\hat
 
 -   Moreover, by definition the entries of $\bm{Z}$ are linear
     combination of the original variables: $$
-    z_{ij} = x_{*i1}v_{i1} + \cdots + x_{*ip} v_{ip} = \bm{x}_{*i}^T\tilde{\bm{v}}_j.
+    z_{ij} = x_{i1}v_{i1} + \cdots + x_{ip} v_{ip} = \bm{x}_{i}^T\tilde{\bm{v}}_j.
     $$ The columns $\tilde{\bm{v}}_1,\dots,\tilde{\bm{v}}_p$ of $\bm{V}$
     are sometimes called [loadings]{.blue}.
 :::
@@ -759,14 +806,14 @@ and then compute the predictions via the formula $\hat{\beta}_0 + \bm{x}_i^T\hat
 ## Principal component analysis II
 
 ::: incremental
--   Principal components form an orthogonal basis of $\bm{X}_*$, but they
+-   Principal components form an orthogonal basis of $\bm{X}$, but they
     are not a "random" choice and they do [not]{.orange} coincide with
     them [Gram-Schmidt]{.orange} basis of [Unit
     A](un_A.html#the-qr-decomposition-i).
 
 -   Indeed, the [first principal component]{.blue} is the linear
     combination having [maximal variance]{.orange}: $$
-    \tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}_*\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}_*^T\bm{X}_* \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1.
+    \tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}^T\bm{X} \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1.
     $$
 
 -   The [second principal component]{.blue} maximizes the variance under
@@ -774,7 +821,7 @@ and then compute the predictions via the formula $\hat{\beta}_0 + \bm{x}_i^T\hat
     former. And so on and so forth.
 
 -   The values $d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 > 0$ are the
-    [eigenvalues]{.orange} of $\bm{X}^T_*\bm{X}_*$ and correspond to the
+    [eigenvalues]{.orange} of $\bm{X}^T\bm{X}$ and correspond to the
     rescaled [variances]{.blue} of each principal component, that is
     $\text{var}(\tilde{\bm{z}}_j) = \tilde{\bm{z}}_j^T \tilde{\bm{z}}_j/n = d^2_j / n$.
 
@@ -802,21 +849,21 @@ ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p,
 
 ::: incremental
 -   We use the first $k \le p$ [principal components]{.blue} to predict
-    the responses $y_{*i}$ via $$
+    the responses $y_{i}$ via $$
     f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dots,n,
     $$
 
 -   Because of orthogonality, the least squares solution is
     straightforward to compute: $$
-    \hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}_*}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \frac{1}{d_j^2}\tilde{\bm{z}}_j^T\bm{y}_*, \qquad j=1,\dots,k.
+    \hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \frac{1}{d_j^2}\tilde{\bm{z}}_j^T\bm{y}, \qquad j=1,\dots,k.
     $$
 
--   The principal components are in [order of importance]{.blue} and
+-   The principal components are in [order of importance]{.orange} and
     effectively [compressing the information]{.blue} contained in
-    $\bm{X}_*$ using only $k \le p$ variables.
+    $\bm{X}$ using only $k \le p$ variables.
 
 -   When $k = p$ we are simply rotating the original matrix
-    $\bm{X}_* = \bm{Z}\bm{V}$, i.e. performing [no compression]{.orange}.
+    $\bm{X} = \bm{Z}\bm{V}$, i.e. performing [no compression]{.orange}.
     The predicted values coincide with OLS.
 
 -   The number $k$ is a [complexity parameter]{.blue} which should be
@@ -880,12 +927,12 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 ::: incremental
 -   A closer look to the PCR solution reveals some interesting aspects.
     Recall that: $$
-    \tilde{\bm{z}}_j = \bm{X}_*\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
+    \tilde{\bm{z}}_j = \bm{X}\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
     $$
 
--   The [predicted values]{.orange} for the [centered responses]{.blue} $\bm{y}_*$ of the PCR with $k$ components are:
+-   The [predicted values]{.orange} for the [centered responses]{.blue} $\bm{y}$ of the PCR with $k$ components are:
     $$
-    \bm{X}_*\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X}_* \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j, \qquad \text{ where } \qquad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
+    \bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j, \qquad \text{ where } \qquad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
     $$
 
 -   This representation highlights two important aspects:
@@ -920,7 +967,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
     [variance]{.orange} of $\hat{\beta}_\text{pcr}$.
 
 -   Furthermore, the predicted values for the [centered data]{.orange} can be expressed as $$
-    \bm{X}_*\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}_*.
+    \bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
     $$
 
 -   The columns of $\bm{U}$, namely the vectors $\tilde{\bm{u}}_j$ are
@@ -929,6 +976,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 -   Hence, we are shrinking the predictions towards the main [principal
     directions]{.orange}.
 :::
+
 
 ## Shrinkage effect of principal components III
 
@@ -954,30 +1002,10 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
   ylab("Regression coefficients")
 ```
 
-## Summary and next steps
+## Pros and cons of PCR
 
--   We have see so far two "discrete" methods: best subset selection and
-    principal components regression.
+- sdf
 
--   Best subset selection perform [variable selection]{.orange}, whereas
-    principal components regression [reduces the variance]{.orange} of
-    the coefficients.
-
--   These "discrete" methods can be seen as the naïve counterpart of
-    more advanced and [continuous]{.blue} ideas, that are presented in
-    the second part of the Unit.
-
-. . .
-
-|                     | [Shrinkage]{.orange}           | [Variable selection]{.orange}   |
-|-----------------|--------------------------------|-----------------------|
-| [Discrete]{.blue}   | Principal component regression | Best subset selection, stepwise |
-| [Continuous]{.blue} | Ridge regression               | Relaxed Lasso                   |
-
-. . .
-
--   Finally, the [lasso]{.blue} and the [elastic net]{.orange} perform
-    both shrinkage and variable selection.
 
 # Ridge regression
 
@@ -1022,8 +1050,8 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
   
 . . .
 
-- Hence, the [original data]{.orange} $Y_i = f(\bm{x}_i) + \epsilon_i$ are [standardized]{.blue}, using the "[*]{.blue}" to denote it: $$ 
-x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
+- Hence, in ridge regression we replace [original data]{.orange} $Y_i = f(\bm{x}_i) + \epsilon_i$ with their [standardized]{.blue} version: $$ 
+\frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
 $$
 where $s_j^2 = n^{-1}\sum_{i=1}^n (x_{ij} - \bar{x}_j)^2$ is the [sample variance]{.blue}.
 
@@ -1031,27 +1059,26 @@ where $s_j^2 = n^{-1}\sum_{i=1}^n (x_{ij} - \bar{x}_j)^2$ is the [sample varianc
 ## Centering and scaling the predictors II
 
 
+- It is easy to show (see Exercises) that the [coefficients]{.orange} expressed in the [original scale]{.blue} are $$
+\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
+$$
+Thus, the [predictions]{.orange} on the [original scale]{.blue} are $\hat{\beta}_0 + \bm{x}_i^T\hat{\beta}_\text{scaled-ridge} = \bar{y} + \bm{x}_{i}^T\hat{\beta}_\text{ridge}$.
+
+
+. . .
+
 ::: callout-note
 
 For ridge problems we will assume the data have been previously [standardized]{.orange}, namely $$
-    \frac{1}{n}\sum_{i=1}^ny_{*i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{*ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{*i}^2 = 1\qquad j=1,\dots,p.
+    \frac{1}{n}\sum_{i=1}^ny_{i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{i}^2 = 1\qquad j=1,\dots,p.
     $$
 :::
 
 . . . 
 
 -   We will say that the [ridge estimator]{.blue} $\hat{\beta}_\text{ridge}$ is the [minimizer]{.orange} of following system $$
-    \sum_{i=1}^n(y_i - \bm{x}_{*i}^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
+    \sum_{i=1}^n(y_i - \bm{x}_{i}^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
     $$
-
-. . .
-
-- It is easy to show (see Exercises) that the [coefficients]{.orange} expressed in the [original scale]{.blue} are $$
-\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
-$$
-Thus, the [predictions]{.orange} on the [original scale]{.blue} are $\hat{\beta}_0 + \bm{x}_i^T\hat{\beta}_\text{scaled-ridge} = \bar{y} + \bm{x}_{*i}^T\hat{\beta}_\text{ridge}$.
-
-
 
 
 
@@ -1062,7 +1089,7 @@ Thus, the [predictions]{.orange} on the [original scale]{.blue} are $\hat{\beta}
     form](https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions),
     which greatly facilitates computations. The ridge estimator
     $\hat{\beta}_\text{ridge}$ is the [minimizer]{.orange} of $$
-    \sum_{i=1}^n(y_{*i} - \bm{x}_{*i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y}_* - \bm{X}_*\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{ridge penalty}}},
+    \sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y} - \bm{X}\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{ridge penalty}}},
     $$ where $\lambda > 0$ is a [complexity parameter]{.blue}
     controlling the [penalty]{.orange}. It holds that
     $s = ||\hat{\beta}_\text{ridge} ||^2$.
@@ -1078,9 +1105,9 @@ Thus, the [predictions]{.orange} on the [original scale]{.blue} are $\hat{\beta}
 ::: callout-note
 #### Ridge regression estimator
 
-For any $n\times p$ design matrix $\bm{X}_*$, not necessarily of
+For any $n\times p$ design matrix $\bm{X}$, not necessarily of
 full-rank, the ridge estimator is $$
-\hat{\beta}_\text{ridge} = (\bm{X}_*^T\bm{X}_* + \lambda I_p)^{-1}\bm{X}_*^T\bm{y}_*.
+\hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y}.
 $$ Such an estimator [always exists]{.blue} and is [unique]{.orange}
 (even when $p > n$).
 :::
@@ -1257,14 +1284,14 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
 
 -   Considering, once again, the [singular value
     decomposition]{.orange}, we get: $$\begin{aligned}
-    \bm{X}_*\hat{\beta}_\text{ridge} &= \bm{X}_*(\bm{X}_*^T\bm{X}_* + \lambda I_p)^{-1}\bm{X}_*^T\bm{y}_* \\
-    & = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}_*  \\
-    & = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y}_* \\
+    \bm{X}\hat{\beta}_\text{ridge} &= \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} \\
+    & = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}  \\
+    & = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y} \\
     & = \bm{U}\bm{D}(\bm{D}^T\bm{D} + \lambda I_p)^{-1}\bm{D}^T\bm{U}^T\bm{y} \\
-    & = \bm{H}_\text{ridge}\bm{y}_* = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y}_*,
+    & = \bm{H}_\text{ridge}\bm{y} = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y},
     \end{aligned}
     $$ where
-    $\bm{H}_\text{ridge} = \bm{X}_*(\bm{X}_*^T\bm{X}_* + \lambda I_p)^{-1}\bm{X}_*^T$
+    $\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T$
     is the so-called [hat matrix]{.blue} of ridge regression.
 
 . . .
@@ -1281,19 +1308,19 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
 -   A sharp [connection]{.blue} with [principal components
     regression]{.blue} is therefore revealed.
 
--   Compare the previous formula for $\bm{X}_*\hat{\beta}_\text{ridge}$
+-   Compare the previous formula for $\bm{X}\hat{\beta}_\text{ridge}$
     with [the one we previously
     obtained](#shrinkage-effect-of-principal-components-ii) for
-    $\bm{X}_*\hat{\beta}_\text{pcr}$.
+    $\bm{X}\hat{\beta}_\text{pcr}$.
 
 . . .
 
 -   More explicitly, for [ridge regression]{.orange} we will have that
     $$
-    \hat{\beta}_\text{ridge} = \bm{V}\text{diag}\left(\frac{d_1}{d_1^2 + \lambda}, \dots, \frac{d_p}{d_p^2 + \lambda}\right)\bm{U}^T\bm{y}_*.
+    \hat{\beta}_\text{ridge} = \bm{V}\text{diag}\left(\frac{d_1}{d_1^2 + \lambda}, \dots, \frac{d_p}{d_p^2 + \lambda}\right)\bm{U}^T\bm{y}.
     $$ whereas for [principal components regression]{.blue} with $k$
     components we get $$
-    \hat{\beta}_\text{pcr} = \bm{V}\text{diag}\left(\frac{1}{d_1}, \dots, \frac{1}{d_k}, 0, \dots, 0\right)\bm{U}^T\bm{y}_*.
+    \hat{\beta}_\text{pcr} = \bm{V}\text{diag}\left(\frac{1}{d_1}, \dots, \frac{1}{d_k}, 0, \dots, 0\right)\bm{U}^T\bm{y}.
     $$
 
 . . .
@@ -1317,13 +1344,10 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
 
 . . .
 
-::: callout-note
-#### Theorem (Theobald, 1974)
+- The above formula highlights that ridge will be very [effective]{.blue} in presence highly [correlated variables]{.blue}, as they will be "shrunk" away by the penalty. 
 
-Let us assume  $Y_i = \bm{x}_{*i}^T\beta + \epsilon_i$. Moreover, let us consider the ridge estimator on the [non-centered]{.orange} data $\hat{\beta}_\text{nc-ridge} = (\bm{X}_*^T\bm{X}_* + \lambda I_p)^{-1}\bm{X}_*^T\bm{y}$. Then, there exist a $\lambda > 0$ such that $$
-\mathbb{E}\left(||\hat{\beta}_\text{nc-ridge} - \beta)||^2\right) < \mathbb{E}\left(||\hat{\beta}_\text{ols}  - \beta||^2\right).
-$$
-:::
+- What typically happens is that such a reduction in variance [compensate]{.orange} the increase in bias, especially when $p$ is large relative to $n$. 
+
 
 ## ☠️ - A historical perspective I
 
@@ -1333,13 +1357,13 @@ $$
 
 -   In linear models, the estimate of $\beta$ is obtained by solving the
     [normal equations]{.blue} $$
-    (\bm{X}_*^T\bm{X}_*)\beta = \bm{X}_*^T\bm{y}_*,
+    (\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
     $$ which could be [ill-conditioned]{.orange}.
 
 -   In other words, the [condition number]{.blue} $$
-    \kappa(\bm{X}^T_*\bm{X}_*) = \frac{d_1^2}{d_p^2},
+    \kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
     $$ might be very large, leading to [numerical
-    inaccuracies]{.orange}, since the matrix $\bm{X}^T_*\bm{X}_*$ is
+    inaccuracies]{.orange}, since the matrix $\bm{X}^T\bm{X}$ is
     [numerically singular]{.blue} and therefore not invertible in
     practice.
 :::
@@ -1348,14 +1372,14 @@ $$
 
 ::: incremental
 -   Ridge provides a [remedy]{.blue} for [ill-conditioning]{.orange}, by
-    adding a "ridge" to the diagonal of $\bm{X}^T_*\bm{X}_*$, obtaining the
+    adding a "ridge" to the diagonal of $\bm{X}^T\bm{X}$, obtaining the
     modified normal equations $$
-    (\bm{X}^T_*\bm{X}_* + \lambda I_p)\beta = \bm{X}^T_*\bm{y}_*.
+    (\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
     $$
 
 -   The [condition number]{.orange} of the modified
-    $(\bm{X}^T_*\bm{X}_* + \lambda I_p)$ matrix becomes $$
-    \kappa(\bm{X}^T_*\bm{X}_* + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
+    $(\bm{X}^T\bm{X} + \lambda I_p)$ matrix becomes $$
+    \kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
     $$
 
 -   Notice that even if $d_p = 0$, i.e. the matrix $\bm{X}$ is
@@ -1381,9 +1405,9 @@ $$
 
 . . .
 
--   [Minimizing]{.blue} $||\bm{y}_* - \bm{X}_*\hat{\beta}_\text{ridge}||^2$
-    over $\lambda$ is a [very bad idea]{.orange} and it would always
-    lead to $\lambda =0$, corresponding to
+-   [Minimizing]{.blue} the loss $||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2$
+    over $\lambda$ is a [bad idea]{.orange}, because it would always
+    lead to $\lambda = 0$, corresponding to
     $\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}$.
 
 -   Indeed, $\lambda$ is a [complexity]{.blue} parameter and, like the
@@ -1405,7 +1429,7 @@ $$
 
 ## Effective degrees of freedom I
 
--   Let us recall that the [optimism]{.orange} for a generic estimator
+-   Let us recall that the original data are $Y_i = f(\bm{x}_i) + \epsilon_i$ and that the [optimism]{.orange} for a generic estimator
     $\hat{f}(\bm{x})$ is defined as the following average of covariances
     $$
     \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)),
@@ -1490,7 +1514,7 @@ ggplot(data = mse_ridge, aes(x = lambda_tilde_seq, y = Cp)) +
 
 -   Most statistical software packages use a slightly [different
     parametrization]{.orange} for $\lambda$, as they minimize $$
-    \textcolor{red}{\frac{1}{n}}\sum_{i=1}^n(y_{*i} - \bm{x}_{*i}^T\beta)^2 + \tilde{\lambda} \sum_{j=1}^p\beta_j^2,
+    \textcolor{red}{\frac{1}{n}}\sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \tilde{\lambda} \sum_{j=1}^p\beta_j^2,
     $$ where the penalty parameter $\tilde{\lambda} = \lambda / n$.
 
 . . .
@@ -1502,9 +1526,9 @@ ggplot(data = mse_ridge, aes(x = lambda_tilde_seq, y = Cp)) +
 
 . . .
 
-- Different R packages have [different defaults]{.blue}. 
+- Different R packages have [different defaults]{.blue} about other aspects too.
 
-- For instance, the R package `glmnet` uses this convention and also [standardizes the response]{.blue} $y$ and then
+- For instance, the R package `glmnet` uses $\tilde{\lambda}$ and also [standardizes the response]{.blue} $\bm{y}$ and then
     [transforms back]{.orange} the estimated coefficients into the
     [original scale]{.orange}.
 
@@ -1627,7 +1651,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
   ylab("Regression coefficients")
 ```
 
-## Summary of ridge regression
+## Pros and cons of ridge regression
 
 -   Ridge regression trades some [bias]{.orange} in exchange of a [lower
     variance]{.blue}, often resulting in more accurate predictions.
@@ -1689,7 +1713,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 . . . 
 
--   The intercept term $\beta_0$ is [not penalized]{.orange}, because there are no strong reasons to believe that the mean of $y_i$ equals zero. However, as before, we would like to "remove the intercept". 
+-   The intercept term $\beta_0$ is [not penalized]{.orange}, as for ridge, as we can remove it by centering the predictors.
 
 <!-- ## Centering and scaling the predictors I -->
 
@@ -1707,33 +1731,36 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 <!-- . . . -->
 
 <!-- - Hence, the [original data]{.orange} $Y_i = f(\bm{x}_i) + \epsilon_i$ are [standardized]{.blue}, using the "[*]{.blue}" to denote it: $$  -->
-<!-- x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p. -->
+<!-- x_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{i} = y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p. -->
 <!-- $$ -->
 <!-- where $s_j^2 = n^{-1}\sum_{i=1}^n (x_{ij} - \bar{x}_j)^2$ is the [sample variance]{.blue}. -->
 
 
 ## Centering and scaling the predictors
 
+- Thus, as for ridge regression, we will center and scale predictors and response.
+
+- It is easy to show that the [coefficients]{.orange} expressed in the [original scale]{.blue} are $$
+\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{lasso}, \qquad \hat{\beta}_\text{scaled-lasso} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{lasso}.
+$$
+Thus, the [predictions]{.orange} on the [original scale]{.blue} are $\hat{\beta}_0 + \bm{x}_i^T\hat{\beta}_\text{scaled-lasso} = \bar{y} + \bm{x}_{i}^T\hat{\beta}_\text{lasso}$.
+
+. . .
 
 ::: callout-note
 
 For lasso problems we will assume the data have been previously [standardized]{.orange}, namely $$
-    \frac{1}{n}\sum_{i=1}^ny_{*i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{*ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{*i}^2 = 1\qquad j=1,\dots,p.
+    \frac{1}{n}\sum_{i=1}^ny_{i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{i}^2 = 1\qquad j=1,\dots,p.
     $$
 :::
 
 . . . 
 
 -   We will say that the [lasso estimator]{.blue} $\hat{\beta}_\text{lasso}$ is the [minimizer]{.orange} of following system $$
-    \sum_{i=1}^n(y_i - \bm{x}_{*i}^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p| \beta_j| \le s.
+    \sum_{i=1}^n(y_i - \bm{x}_{i}^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p| \beta_j| \le s.
     $$
 
-. . .
 
-- It is easy to show that the [coefficients]{.orange} expressed in the [original scale]{.blue} are $$
-\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{lasso}, \qquad \hat{\beta}_\text{scaled-lasso} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{lasso}.
-$$
-Thus, the [predictions]{.orange} on the [original scale]{.blue} are $\hat{\beta}_0 + \bm{x}_i^T\hat{\beta}_\text{scaled-lasso} = \bar{y} + \bm{x}_{*i}^T\hat{\beta}_\text{lasso}$.
 
 
 
@@ -1744,7 +1771,7 @@ Thus, the [predictions]{.orange} on the [original scale]{.blue} are $\hat{\beta}
     form, which is more amenable for computations.
     
 - Having remove the intercept, the lasso estimator $\hat{\beta}_\text{lasso}$ is the [minimizer]{.orange} of $$
-    \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_{*i} - \bm{x}_{i*}^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
+    \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_{i} - \bm{x}_{i*}^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
     $$ where $\lambda > 0$ is a [complexity parameter]{.blue}
     controlling the [penalty]{.orange}. 
 
@@ -1804,22 +1831,22 @@ ggplot() +
 ::: incremental
 
 - To gain some understanding, let us consider the [single-predictor]{.blue} scenario, in which$$
-   \hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_{*i} - x_{*i}\beta)^2 + \lambda |\beta|.
+   \hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
     $$
     
 - This simple problem admits an [explicit expression]{.orange} (see Exercises), which is
 $$
-\hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x_*,y_*) - \lambda, \qquad &\text{if} \quad \text{cov}(x_*,y_*) > \lambda \\
-0 \qquad &\text{if} \quad \text{cov}(x_*,y_*) \le \lambda\\
-\text{cov}(x_*,y_*) + \lambda, \qquad &\text{if} \quad \text{cov}(x_*,y_*) < -\lambda \\
+\hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &\text{if} \quad \text{cov}(x,y) > \lambda \\
+0 \qquad &\text{if} \quad \text{cov}(x,y) \le \lambda\\
+\text{cov}(x,y) + \lambda, \qquad &\text{if} \quad \text{cov}(x,y) < -\lambda \\
 \end{cases}
 $$
 
-- The above solution can be written as $\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})$, where $\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+$ is the [soft-thresholding]{.blue} operator and $(\cdot)_+$ is the [positive part]{.orange} of a number (`pmax`).
+- The above solution can be written as $\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})$, where $\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+$ is the [soft-thresholding]{.blue} operator and $(\cdot)_+$ is the [positive part]{.orange} of a number (`pmax(0, x)`).
 
 - For [ridge regression]{.orange} with one predictor we obtain, instead: 
 $$
-\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x_*,y_*) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{*i}y_{*i}.
+\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
 $$
 :::
 
@@ -1996,7 +2023,54 @@ coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 1, thresh
 
 ## A comparison between pcr, ridge, and lasso
 
-## The estimated coefficients
+
+## Summary of the estimated coefficients
+
+::: {style="font-size: 70%;"}
+
+```{r}
+library(DT)
+
+tab <- data.frame(OLS = rep(0, p+1), best_subset = rep(0, p+1), PCR = rep(0, p+1), Ridge = rep(0, p+1), Lasso = rep(0, p+1))
+
+rownames(tab) <- colnames(sum_best$which)
+
+# OLS 
+tab$OLS <- coef(lm(lpsa ~ ., data = prostate_train))
+
+# Best subset
+tab$best_subset <- c(coef(lm(lpsa ~ lcavol + lweight, data = prostate_train)), rep(0, 6))
+
+# Principal components regression (PCR)
+fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE)
+beta_pcr <- c(coef(fit_pcr, 3))
+beta_pcr <- c(mean(prostate_train$lpsa) - colMeans(X) %*% beta_pcr, beta_pcr)
+tab$PCR <- beta_pcr
+
+# Ridge
+
+tab$Ridge <- my_ridge(X, y, standardize = TRUE, lambda_tilde = lambda_tilde_min_cv)
+
+# Lasso
+tab$Lasso <- c(my_lasso(X, y)$beta_scale[4, ])
+
+
+# Output
+datatable(tab, colnames = c("OLS", "Best subset", "PCR", "Ridge", "Lasso"), options = list( pageLength = 9, dom = "t")) %>% 
+  formatRound(columns = 1:5, digits = 3) %>%
+  formatStyle(
+    columns = 0, fontWeight = "bold"
+  ) %>% formatStyle(
+    columns = 1:5,
+    backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA"))
+  ) %>% formatStyle(
+    columns = 1:5,
+    backgroundColor = styleEqual(0, c("white"))
+  )
+```
+
+:::
+
 
 ## The results on the test set
 
@@ -2100,63 +2174,3 @@ coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 1, thresh
 <!-- round(coef(lasso_fit, mode = "lambda")[-1, lambda_sel], 5) -->
 
 <!-- ``` -->
-
-<!-- ## Summary of the estimated coefficients -->
-
-<!-- ::: {style="font-size: 70%;"} -->
-
-<!-- ```{r} -->
-
-<!-- library(DT) -->
-
-<!-- tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p), PCR = rep(0, p)) -->
-
-<!-- rownames(tab) <- colnames(sum_best$which) -->
-
-<!-- tab$OLS <- coef(lm(lpsa ~ ., data = prostate_train)) -->
-
-<!-- tab$best_subset <- c(coef(lm(lpsa ~ lcavol + lweight, data = prostate_train)), rep(0, 6)) -->
-
-<!-- # Principal components regression (PCR) -->
-
-<!-- fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE) -->
-
-<!-- beta <- c(coef(fit_pcr, 3)) -->
-
-<!-- beta <- c(mean(prostate_train$lpsa) - colMeans(X[, -1]) %*% beta, beta) -->
-
-<!-- tab$PCR <- beta -->
-
-<!-- datatable(tab, colnames = c("OLS", "Best subset", "PCR"), options = list( -->
-
-<!--   pageLength = 9, -->
-
-<!--   dom = "t")) %>% -->
-
-<!--   formatRound(columns = 1:3, digits = 3) %>% -->
-
-<!--   formatStyle( -->
-
-<!--     columns = 0, fontWeight = "bold" -->
-
-<!--   ) %>% -->
-
-<!--   formatStyle( -->
-
-<!--     columns = 1:3, -->
-
-<!--     backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA")) -->
-
-<!--   ) %>% -->
-
-<!--   formatStyle( -->
-
-<!--     columns = 1:3, -->
-
-<!--     backgroundColor = styleEqual(0, c("white")) -->
-
-<!--   ) -->
-
-<!-- ``` -->
-
-<!-- ::: -->

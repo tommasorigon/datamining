@@ -575,3 +575,46 @@ fit_lasso <- my_lasso(X, y_std, standardize = TRUE)
 t(fit_lasso$beta_scaled)
 
 coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 1, thresh = 1e-20, lambda = fit_lasso$lambda))
+
+
+
+library(DT)
+
+tab <- data.frame(OLS = rep(0, p + 1), best_subset = rep(0, p + 1), PCR = rep(0, p + 1), Ridge = rep(0, p + 1), Lasso = rep(0, p + 1))
+
+rownames(tab) <- colnames(sum_best$which)
+
+# OLS
+tab$OLS <- coef(lm(lpsa ~ ., data = prostate_train))
+
+# Best subset
+tab$best_subset <- c(coef(lm(lpsa ~ lcavol + lweight, data = prostate_train)), rep(0, 6))
+
+# Principal components regression (PCR)
+fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE)
+beta_pcr <- c(coef(fit_pcr, 3))
+beta_pcr <- c(mean(prostate_train$lpsa) - colMeans(X) %*% beta_pcr, beta_pcr)
+tab$PCR <- beta_pcr
+
+# Ridge
+
+tab$Ridge <- my_ridge(X, y, standardize = TRUE, lambda_tilde = lambda_tilde_min_cv)
+
+# Lasso
+tab$Lasso <- c(my_lasso(X, y)$beta_scale[4, ])
+
+
+# Output
+datatable(tab, colnames = c("OLS", "Best subset", "PCR", "Ridge", "Lasso"), options = list(pageLength = 9, dom = "t")) %>%
+  formatRound(columns = 1:5, digits = 3) %>%
+  formatStyle(
+    columns = 0, fontWeight = "bold"
+  ) %>%
+  formatStyle(
+    columns = 1:5,
+    backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA"))
+  ) %>%
+  formatStyle(
+    columns = 1:5,
+    backgroundColor = styleEqual(0, c("white"))
+  )

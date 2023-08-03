@@ -335,6 +335,16 @@
       margin-right: 0; 
     }
   </style>
+  
+  <script src="un_C_files/libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+  <link href="un_C_files/libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+  <script src="un_C_files/libs/datatables-binding-0.28/datatables.js"></script>
+  <script src="un_C_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <link href="un_C_files/libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link href="un_C_files/libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet">
+  <script src="un_C_files/libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+  <link href="un_C_files/libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+  <script src="un_C_files/libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -623,6 +633,140 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </div>
 </div>
 </section>
+<section id="overview-of-this-unit" class="slide level2 center">
+<h2>Overview of this unit</h2>
+<ul>
+<li><p>In this unit we will discuss two “discrete” methods:</p>
+<ul>
+<li>Best subset selection and its greedy approximations: forward / backward regression;</li>
+<li>Principal components regression (PCR).</li>
+</ul></li>
+<li><p>Best subset selection perform <span class="orange">variable selection</span>, whereas principal components regression <span class="orange">reduces the variance</span> of the coefficients.</p></li>
+<li><p>These “discrete” methods can be seen as the naïve counterpart of more advanced and <span class="blue">continuous</span> ideas, that are presented in the second part of the Unit.</p></li>
+</ul>
+<div class="fragment">
+<table>
+<colgroup>
+<col style="width: 23%">
+<col style="width: 44%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="orange">Shrinkage</span></th>
+<th><span class="orange">Variable selection</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="blue">Discrete</span></td>
+<td>Principal component regression</td>
+<td>Best subset selection, stepwise</td>
+</tr>
+<tr class="even">
+<td><span class="blue">Continuous</span></td>
+<td>Ridge regression</td>
+<td>Relaxed Lasso</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<ul>
+<li>Finally, the <span class="blue">lasso</span> and the <span class="orange">elastic net</span> perform both shrinkage and variable selection.</li>
+</ul>
+</div>
+</section>
+<section id="overview-of-the-final-results" class="slide level2 center">
+<h2>Overview of the final results</h2>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Least squares</th>
+<th style="text-align: right;">Best subset</th>
+<th style="text-align: right;">PCR</th>
+<th style="text-align: right;">Ridge</th>
+<th style="text-align: right;">Lasso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>(Intercept)</code></td>
+<td style="text-align: right;">2.465</td>
+<td style="text-align: right;">2.477</td>
+<td style="text-align: right;">2.455</td>
+<td style="text-align: right;">2.458</td>
+<td style="text-align: right;">2.468</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>lcavol</code></td>
+<td style="text-align: right;">0.680</td>
+<td style="text-align: right;">0.740</td>
+<td style="text-align: right;">0.287</td>
+<td style="text-align: right;">0.295</td>
+<td style="text-align: right;">0.532</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>lweight</code></td>
+<td style="text-align: right;">0.263</td>
+<td style="text-align: right;">0.316</td>
+<td style="text-align: right;">0.339</td>
+<td style="text-align: right;">0.184</td>
+<td style="text-align: right;">0.169</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>age</code></td>
+<td style="text-align: right;">-0.141</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">0.056</td>
+<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>lbph</code></td>
+<td style="text-align: right;">0.210</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">0.102</td>
+<td style="text-align: right;">0.129</td>
+<td style="text-align: right;">.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>svi</code></td>
+<td style="text-align: right;">0.305</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">0.261</td>
+<td style="text-align: right;">0.187</td>
+<td style="text-align: right;">0.092</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>lcp</code></td>
+<td style="text-align: right;">-0.288</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">0.219</td>
+<td style="text-align: right;">0.070</td>
+<td style="text-align: right;">.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>gleason</code></td>
+<td style="text-align: right;">-0.021</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">-0.016</td>
+<td style="text-align: right;">0.054</td>
+<td style="text-align: right;">.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>pgg45</code></td>
+<td style="text-align: right;">0.267</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">0.062</td>
+<td style="text-align: right;">0.104</td>
+<td style="text-align: right;">.</td>
+</tr>
+</tbody>
+</table>
+</section>
 <section>
 <section id="best-subset-selection" class="title-slide slide level1 center">
 <h1>Best subset selection</h1>
@@ -795,6 +939,12 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-13-1.png" width="2000" class="r-stretch quarto-figure-center"><ul>
 <li>In the <code>prostate</code> dataset, forward, backward and best subset selection all gave exactly the <span class="orange">same path of solutions</span> on the full training set.</li>
 </ul>
+</section>
+<section id="pros-and-cons-of-best-subset" class="slide level2 center">
+<h2>Pros and cons of best subset</h2>
+<ul>
+<li>asd</li>
+</ul>
 </section></section>
 <section>
 <section id="principal-components-regression" class="title-slide slide level1 center">
@@ -841,16 +991,25 @@ f(\bm{x}_i; \alpha, \beta) &amp; = \beta_0 + \bm{x}_i^T\beta = \alpha - \bar{\bm
 <section id="centering-the-predictors" class="slide level2 center">
 <h2>Centering the predictors</h2>
 <ul>
-<li>The <span class="orange">original data</span> <span class="math inline">Y_i = f(\bm{x}_i) + \epsilon_i</span> have been <span class="blue">transformed</span>, using the “<span class="blue">*</span>” to denote it: <span class="math display">
-x_{*ij} = x_{ij} - \bar{x}_j, \qquad y_{*i} = y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
-</span> By construction, the predictors <span class="math inline">\tilde{\bm{x}}_{*j} = \tilde{\bm{x}}_j - \bar{x}_j</span> and the response <span class="math inline">\bm{y}_* = \bm{y} - \bar{y}</span> are <span class="blue">centered</span>.</li>
+<li>In principal components regression, we replace <span class="orange">original data</span> <span class="math inline">Y_i = f(\bm{x}_i) + \epsilon_i</span> with their <span class="blue">centered</span> version: <span class="math display">
+x_{ij} - \bar{x}_j, \qquad y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
+</span></li>
 </ul>
 <div class="fragment">
 <ul>
-<li>Using centered predictor means that we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
-f(\bm{x}_{*i}; \beta) = x_{*i1}\beta_1 + \cdots + x_{*ip}\beta_p = \bm{x}_{*i}^T\beta.
-</span></li>
+<li>In the end, we will make predictions in the <span class="blue">original scale</span>, which requires a simple <span class="orange">final adjustment</span>. One simply need to compute the intercept term <span class="math display">
+\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta},
+</span> and then compute the predictions via the formula <span class="math inline">\hat{\beta}_0 + \bm{x}_i^T\hat{\beta} = \hat{\alpha} + \bm{x}_{i}^T\hat{\beta}</span>.</li>
 </ul>
+</div>
+<div class="fragment">
+<ul>
+<li><span class="orange">Remark</span>. The centering operation is a mathematical trick that facilitate the exposition, but is unconsequential from an estimation point of view.</li>
+</ul>
+</div>
+</section>
+<section id="centering-the-predictors-ii" class="slide level2 center">
+<h2>Centering the predictors II</h2>
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -858,40 +1017,34 @@ f(\bm{x}_{*i}; \beta) = x_{*i1}\beta_1 + \cdots + x_{*ip}\beta_p = \bm{x}_{*i}^T
 </div>
 <div class="callout-content">
 <p>In principal components regression, we assume the data have been previously <span class="orange">centered</span>: <span class="math display">
-    \frac{1}{n}\sum_{i=1}^n y_{*i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{*ij} = 0, \qquad j=1,\dots,p.
+    \frac{1}{n}\sum_{i=1}^n y_{i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad j=1,\dots,p.
     </span></p>
 </div>
 </div>
 </div>
-</div>
-</section>
-<section id="centering-the-predictors-ii" class="slide level2 center">
-<h2>Centering the predictors II</h2>
-<ul>
-<li><p>Under the centering assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
-S = \frac{1}{n} \bm{X}_*^T\bm{X}_*.
-</span></p></li>
-<li><p>If in addition each variable has been <span class="blue">scaled</span> by their standard deviations, then <span class="math inline">n^{-1} \bm{X}_*^T\bm{X}_*</span> corresponds to the <span class="blue">correlation</span> matrix.</p></li>
-</ul>
 <div class="fragment">
 <ul>
-<li>In practice, we want to make predictions in the <span class="blue">original scale</span>, which requires a simple <span class="orange">final adjustment</span>. One simply need to compute the intercept term <span class="math display">
-\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta},
-</span> and then compute the predictions via the formula <span class="math inline">\hat{\beta}_0 + \bm{x}_i^T\hat{\beta} = \hat{\alpha} + \bm{x}_{*i}^T\hat{\beta}</span>.</li>
+<li>Using centered predictor means that we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
+f(\bm{x}_{i}; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_{i}^T\beta.
+</span></li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li><p><span class="orange">Remark</span>. The centering operation is a mathematical trick that facilitate the exposition, but is unconsequential from an estimation point of view.</p></li>
-<li><p>Indeed, it is always possible to transform back the predictions into the original scale.</p></li>
+<li>Under the centering assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
+S = \frac{1}{n} \bm{X}^T\bm{X}.
+</span></li>
 </ul>
+<!-- -   If in addition each variable has been [scaled]{.blue} by their -->
+<!--     standard deviations, then $n^{-1} \bm{X}^T\bm{X}$ corresponds to the -->
+<!--     [correlation]{.blue} matrix. -->
 </div>
 </section>
 <section id="singular-value-decomposition-svd" class="slide level2 center">
 <h2>Singular value decomposition (SVD)</h2>
 <ul>
-<li><p>Let <span class="math inline">\bm{X}_*</span> be a <span class="math inline">n \times p</span> matrix. Then, its full form <span class="orange">singular value decomposition</span> is: <span class="math display">
-\bm{X}_* = \bm{U} \bm{D} \bm{V}^T = \sum_{j=1}^m d_j \tilde{\bm{u}}_j \tilde{\bm{v}}_j^T,
+<li><p>Let <span class="math inline">\bm{X}</span> be a <span class="math inline">n \times p</span> matrix. Then, its full form <span class="orange">singular value decomposition</span> is: <span class="math display">
+\bm{X} = \bm{U} \bm{D} \bm{V}^T = \sum_{j=1}^m d_j \tilde{\bm{u}}_j \tilde{\bm{v}}_j^T,
 </span> with <span class="math inline">m =\min\{n, p\}</span> and where:</p>
 <ul>
 <li>the <span class="math inline">n \times n</span> matrix <span class="math inline">\bm{U} = (\tilde{\bm{u}}_1, \dots, \tilde{\bm{u}}_n)</span> is <span class="orange">orthogonal</span>, namely: <span class="math inline">\bm{U}^T \bm{U} = \bm{U}\bm{U}^T= I_n</span>;</li>
@@ -899,23 +1052,23 @@ S = \frac{1}{n} \bm{X}_*^T\bm{X}_*.
 <li>the <span class="math inline">n \times p</span> matrix <span class="math inline">\bm{D}</span> has <span class="blue">diagonal</span> entries <span class="math inline">[\bm{D}]_{jj} = d_j</span>, for <span class="math inline">j=1,\dots,m</span>, and zero entries elsewhere;</li>
 </ul></li>
 <li><p>The real numbers <span class="math inline">d_1 \ge d_2 \ge \cdots \ge d_m \ge 0</span> are called <span class="blue">singular values</span>.</p></li>
-<li><p>If one or more <span class="math inline">d_j = 0</span>, then the matrix <span class="math inline">\bm{X}_*</span> is singular.</p></li>
+<li><p>If one or more <span class="math inline">d_j = 0</span>, then the matrix <span class="math inline">\bm{X}</span> is singular.</p></li>
 </ul>
 </section>
 <section id="principal-component-analysis-i" class="slide level2 center">
 <h2>Principal component analysis I</h2>
 <div>
 <ul>
-<li class="fragment"><p>Le us assume that <span class="math inline">p &lt; n</span> and that <span class="math inline">\text{rk}(\bm{X}_*) = p</span>, recalling that <span class="math inline">\bm{X}_*</span> is a <span class="orange">centered</span> matrix.</p></li>
-<li class="fragment"><p>Using SVD, the matrix <span class="math inline">\bm{X}^T_*\bm{X}_*</span> can be expressed as <span class="math display">
-\bm{X}_*^T\bm{X}_* = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V}^T,
+<li class="fragment"><p>Le us assume that <span class="math inline">p &lt; n</span> and that <span class="math inline">\text{rk}(\bm{X}) = p</span>, recalling that <span class="math inline">\bm{X}</span> is a <span class="orange">centered</span> matrix.</p></li>
+<li class="fragment"><p>Using SVD, the matrix <span class="math inline">\bm{X}^T\bm{X}</span> can be expressed as <span class="math display">
+\bm{X}^T\bm{X} = (\bm{U} \bm{D} \bm{V}^T)^T \bm{U} \bm{D} \bm{V}^T = \bm{V} \bm{D}^T \textcolor{red}{\bm{U}^T \bm{U}} \bm{D} \bm{V}^T = \bm{V} \bm{\Delta}^2 \bm{V}^T,
 </span> where <span class="math inline">\bm{\Delta}^2 = \bm{D}^T\bm{D}</span> is a <span class="math inline">p \times p</span> <span class="blue">diagonal</span> matrix with entries <span class="math inline">d_1^2,\dots,d_p^2</span>.</p></li>
 <li class="fragment"><p>This equation is at the heart of <span class="blue">principal component analysis</span> (PCA). Define the matrix <span class="math display">
-\bm{Z} = \bm{X}_*\bm{V} = \bm{U}\bm{D},
+\bm{Z} = \bm{X}\bm{V} = \bm{U}\bm{D},
 </span> whose columns <span class="math inline">\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p</span> are called <span class="orange">principal components</span>.</p></li>
 <li class="fragment"><p>The matrix <span class="math inline">\bm{Z}</span> is orthogonal, because <span class="math inline">\bm{Z}^T\bm{Z} = \bm{D}^T\textcolor{red}{\bm{U}^T \bm{U}} \bm{D} = \bm{\Delta}^2</span>, which is diagonal.</p></li>
 <li class="fragment"><p>Moreover, by definition the entries of <span class="math inline">\bm{Z}</span> are linear combination of the original variables: <span class="math display">
-z_{ij} = x_{*i1}v_{i1} + \cdots + x_{*ip} v_{ip} = \bm{x}_{*i}^T\tilde{\bm{v}}_j.
+z_{ij} = x_{i1}v_{i1} + \cdots + x_{ip} v_{ip} = \bm{x}_{i}^T\tilde{\bm{v}}_j.
 </span> The columns <span class="math inline">\tilde{\bm{v}}_1,\dots,\tilde{\bm{v}}_p</span> of <span class="math inline">\bm{V}</span> are sometimes called <span class="blue">loadings</span>.</p></li>
 </ul>
 </div>
@@ -924,12 +1077,12 @@ z_{ij} = x_{*i1}v_{i1} + \cdots + x_{*ip} v_{ip} = \bm{x}_{*i}^T\tilde{\bm{v}}_j
 <h2>Principal component analysis II</h2>
 <div>
 <ul>
-<li class="fragment"><p>Principal components form an orthogonal basis of <span class="math inline">\bm{X}_*</span>, but they are not a “random” choice and they do <span class="orange">not</span> coincide with them <span class="orange">Gram-Schmidt</span> basis of <a href="un_A.html#the-qr-decomposition-i">Unit A</a>.</p></li>
+<li class="fragment"><p>Principal components form an orthogonal basis of <span class="math inline">\bm{X}</span>, but they are not a “random” choice and they do <span class="orange">not</span> coincide with them <span class="orange">Gram-Schmidt</span> basis of <a href="un_A.html#the-qr-decomposition-i">Unit A</a>.</p></li>
 <li class="fragment"><p>Indeed, the <span class="blue">first principal component</span> is the linear combination having <span class="orange">maximal variance</span>: <span class="math display">
-\tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}_*\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}_*^T\bm{X}_* \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1.
+\tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}^T\bm{X} \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1.
 </span></p></li>
 <li class="fragment"><p>The <span class="blue">second principal component</span> maximizes the variance under the additional constraint of being <span class="orange">orthogonal</span> to the former. And so on and so forth.</p></li>
-<li class="fragment"><p>The values <span class="math inline">d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 &gt; 0</span> are the <span class="orange">eigenvalues</span> of <span class="math inline">\bm{X}^T_*\bm{X}_*</span> and correspond to the rescaled <span class="blue">variances</span> of each principal component, that is <span class="math inline">\text{var}(\tilde{\bm{z}}_j) = \tilde{\bm{z}}_j^T \tilde{\bm{z}}_j/n = d^2_j / n</span>.</p></li>
+<li class="fragment"><p>The values <span class="math inline">d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 &gt; 0</span> are the <span class="orange">eigenvalues</span> of <span class="math inline">\bm{X}^T\bm{X}</span> and correspond to the rescaled <span class="blue">variances</span> of each principal component, that is <span class="math inline">\text{var}(\tilde{\bm{z}}_j) = \tilde{\bm{z}}_j^T \tilde{\bm{z}}_j/n = d^2_j / n</span>.</p></li>
 <li class="fragment"><p>Hence, the quantity <span class="math inline">d_j^2 / \sum_{j'=1}^p d_{j'}^2</span> measures the amount of total variance captured by principal components.</p></li>
 </ul>
 </div>
@@ -942,14 +1095,14 @@ z_{ij} = x_{*i1}v_{i1} + \cdots + x_{*ip} v_{ip} = \bm{x}_{*i}^T\tilde{\bm{v}}_j
 <h2>Principal components regression (PCR)</h2>
 <div>
 <ul>
-<li class="fragment"><p>We use the first <span class="math inline">k \le p</span> <span class="blue">principal components</span> to predict the responses <span class="math inline">y_{*i}</span> via <span class="math display">
+<li class="fragment"><p>We use the first <span class="math inline">k \le p</span> <span class="blue">principal components</span> to predict the responses <span class="math inline">y_{i}</span> via <span class="math display">
 f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dots,n,
 </span></p></li>
 <li class="fragment"><p>Because of orthogonality, the least squares solution is straightforward to compute: <span class="math display">
-\hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}_*}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \frac{1}{d_j^2}\tilde{\bm{z}}_j^T\bm{y}_*, \qquad j=1,\dots,k.
+\hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \frac{1}{d_j^2}\tilde{\bm{z}}_j^T\bm{y}, \qquad j=1,\dots,k.
 </span></p></li>
-<li class="fragment"><p>The principal components are in <span class="blue">order of importance</span> and effectively <span class="blue">compressing the information</span> contained in <span class="math inline">\bm{X}_*</span> using only <span class="math inline">k \le p</span> variables.</p></li>
-<li class="fragment"><p>When <span class="math inline">k = p</span> we are simply rotating the original matrix <span class="math inline">\bm{X}_* = \bm{Z}\bm{V}</span>, i.e.&nbsp;performing <span class="orange">no compression</span>. The predicted values coincide with OLS.</p></li>
+<li class="fragment"><p>The principal components are in <span class="orange">order of importance</span> and effectively <span class="blue">compressing the information</span> contained in <span class="math inline">\bm{X}</span> using only <span class="math inline">k \le p</span> variables.</p></li>
+<li class="fragment"><p>When <span class="math inline">k = p</span> we are simply rotating the original matrix <span class="math inline">\bm{X} = \bm{Z}\bm{V}</span>, i.e.&nbsp;performing <span class="orange">no compression</span>. The predicted values coincide with OLS.</p></li>
 <li class="fragment"><p>The number <span class="math inline">k</span> is a <span class="blue">complexity parameter</span> which should be chosen via information criteria or cross-validation.</p></li>
 </ul>
 </div>
@@ -963,10 +1116,10 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <div>
 <ul>
 <li class="fragment"><p>A closer look to the PCR solution reveals some interesting aspects. Recall that: <span class="math display">
-\tilde{\bm{z}}_j = \bm{X}_*\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
+\tilde{\bm{z}}_j = \bm{X}\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
 </span></p></li>
-<li class="fragment"><p>The <span class="orange">predicted values</span> for the <span class="blue">centered responses</span> <span class="math inline">\bm{y}_*</span> of the PCR with <span class="math inline">k</span> components are: <span class="math display">
-\bm{X}_*\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X}_* \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j, \qquad \text{ where } \qquad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
+<li class="fragment"><p>The <span class="orange">predicted values</span> for the <span class="blue">centered responses</span> <span class="math inline">\bm{y}</span> of the PCR with <span class="math inline">k</span> components are: <span class="math display">
+\bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j, \qquad \text{ where } \qquad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
 </span></p></li>
 <li class="fragment"><p>This representation highlights two important aspects:</p>
 <ul>
@@ -987,7 +1140,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </span></p></li>
 <li class="fragment"><p>Thus, if a <span class="blue">multicollinearity</span> exists, then it appears as a principal component with very small variance, i.e.&nbsp;a small <span class="math inline">d_j^2</span>. Its removal therefore drastically <span class="orange">reduces</span> the <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{pcr}</span>.</p></li>
 <li class="fragment"><p>Furthermore, the predicted values for the <span class="orange">centered data</span> can be expressed as <span class="math display">
-\bm{X}_*\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}_*.
+\bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
 </span></p></li>
 <li class="fragment"><p>The columns of <span class="math inline">\bm{U}</span>, namely the vectors <span class="math inline">\tilde{\bm{u}}_j</span> are the <span class="blue">normalized principal components</span>.</p></li>
 <li class="fragment"><p>Hence, we are shrinking the predictions towards the main <span class="orange">principal directions</span>.</p></li>
@@ -998,46 +1151,11 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>Shrinkage effect of principal components III</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-17-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
-<section id="summary-and-next-steps" class="slide level2 center">
-<h2>Summary and next steps</h2>
+<section id="pros-and-cons-of-pcr" class="slide level2 center">
+<h2>Pros and cons of PCR</h2>
 <ul>
-<li><p>We have see so far two “discrete” methods: best subset selection and principal components regression.</p></li>
-<li><p>Best subset selection perform <span class="orange">variable selection</span>, whereas principal components regression <span class="orange">reduces the variance</span> of the coefficients.</p></li>
-<li><p>These “discrete” methods can be seen as the naïve counterpart of more advanced and <span class="blue">continuous</span> ideas, that are presented in the second part of the Unit.</p></li>
+<li>sdf</li>
 </ul>
-<div class="fragment">
-<table>
-<colgroup>
-<col style="width: 23%">
-<col style="width: 44%">
-<col style="width: 31%">
-</colgroup>
-<thead>
-<tr class="header">
-<th></th>
-<th><span class="orange">Shrinkage</span></th>
-<th><span class="orange">Variable selection</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="blue">Discrete</span></td>
-<td>Principal component regression</td>
-<td>Best subset selection, stepwise</td>
-</tr>
-<tr class="even">
-<td><span class="blue">Continuous</span></td>
-<td>Ridge regression</td>
-<td>Relaxed Lasso</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="fragment">
-<ul>
-<li>Finally, the <span class="blue">lasso</span> and the <span class="orange">elastic net</span> perform both shrinkage and variable selection.</li>
-</ul>
-</div>
 </section></section>
 <section>
 <section id="ridge-regression" class="title-slide slide level1 center">
@@ -1085,35 +1203,35 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 <div class="fragment">
 <ul>
-<li>Hence, the <span class="orange">original data</span> <span class="math inline">Y_i = f(\bm{x}_i) + \epsilon_i</span> are <span class="blue">standardized</span>, using the “<span class="blue">*</span>” to denote it: <span class="math display">
-x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
+<li>Hence, in ridge regression we replace <span class="orange">original data</span> <span class="math inline">Y_i = f(\bm{x}_i) + \epsilon_i</span> with their <span class="blue">standardized</span> version: <span class="math display">
+\frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
 </span> where <span class="math inline">s_j^2 = n^{-1}\sum_{i=1}^n (x_{ij} - \bar{x}_j)^2</span> is the <span class="blue">sample variance</span>.</li>
 </ul>
 </div>
 </section>
 <section id="centering-and-scaling-the-predictors-ii" class="slide level2 center">
 <h2>Centering and scaling the predictors II</h2>
+<ul>
+<li>It is easy to show (see Exercises) that the <span class="orange">coefficients</span> expressed in the <span class="blue">original scale</span> are <span class="math display">
+\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
+</span> Thus, the <span class="orange">predictions</span> on the <span class="blue">original scale</span> are <span class="math inline">\hat{\beta}_0 + \bm{x}_i^T\hat{\beta}_\text{scaled-ridge} = \bar{y} + \bm{x}_{i}^T\hat{\beta}_\text{ridge}</span>.</li>
+</ul>
+<div class="fragment">
 <div class="callout callout-note no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
 <p>For ridge problems we will assume the data have been previously <span class="orange">standardized</span>, namely <span class="math display">
-    \frac{1}{n}\sum_{i=1}^ny_{*i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{*ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{*i}^2 = 1\qquad j=1,\dots,p.
+    \frac{1}{n}\sum_{i=1}^ny_{i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{i}^2 = 1\qquad j=1,\dots,p.
     </span></p>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <ul>
 <li>We will say that the <span class="blue">ridge estimator</span> <span class="math inline">\hat{\beta}_\text{ridge}</span> is the <span class="orange">minimizer</span> of following system <span class="math display">
-\sum_{i=1}^n(y_i - \bm{x}_{*i}^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
+\sum_{i=1}^n(y_i - \bm{x}_{i}^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
 </span></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>It is easy to show (see Exercises) that the <span class="orange">coefficients</span> expressed in the <span class="blue">original scale</span> are <span class="math display">
-\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
-</span> Thus, the <span class="orange">predictions</span> on the <span class="blue">original scale</span> are <span class="math inline">\hat{\beta}_0 + \bm{x}_i^T\hat{\beta}_\text{scaled-ridge} = \bar{y} + \bm{x}_{*i}^T\hat{\beta}_\text{ridge}</span>.</li>
 </ul>
 </div>
 </section>
@@ -1121,7 +1239,7 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <h2>Lagrange multipliers and ridge solution</h2>
 <ul>
 <li>The ridge regression problem can be <span class="orange">equivalently expressed</span> in its <a href="https://en.wikipedia.org/wiki/Karush–Kuhn–Tucker_conditions">Lagrangian form</a>, which greatly facilitates computations. The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the <span class="orange">minimizer</span> of <span class="math display">
-\sum_{i=1}^n(y_{*i} - \bm{x}_{*i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y}_* - \bm{X}_*\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{ridge penalty}}},
+\sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = \underbrace{||\bm{y} - \bm{X}\beta||^2}_{\text{least squares}} + \underbrace{\lambda ||\beta||^2}_{\text{\textcolor{red}{ridge penalty}}},
 </span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>. It holds that <span class="math inline">s = ||\hat{\beta}_\text{ridge} ||^2</span>.</li>
 </ul>
 <div class="fragment">
@@ -1136,8 +1254,8 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <p><strong>Ridge regression estimator</strong></p>
 </div>
 <div class="callout-content">
-<p>For any <span class="math inline">n\times p</span> design matrix <span class="math inline">\bm{X}_*</span>, not necessarily of full-rank, the ridge estimator is <span class="math display">
-\hat{\beta}_\text{ridge} = (\bm{X}_*^T\bm{X}_* + \lambda I_p)^{-1}\bm{X}_*^T\bm{y}_*.
+<p>For any <span class="math inline">n\times p</span> design matrix <span class="math inline">\bm{X}</span>, not necessarily of full-rank, the ridge estimator is <span class="math display">
+\hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y}.
 </span> Such an estimator <span class="blue">always exists</span> and is <span class="orange">unique</span> (even when <span class="math inline">p &gt; n</span>).</p>
 </div>
 </div>
@@ -1186,13 +1304,13 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <h2>Shrinkage effect of ridge regression I</h2>
 <ul>
 <li>Considering, once again, the <span class="orange">singular value decomposition</span>, we get: <span class="math display">\begin{aligned}
-\bm{X}_*\hat{\beta}_\text{ridge} &amp;= \bm{X}_*(\bm{X}_*^T\bm{X}_* + \lambda I_p)^{-1}\bm{X}_*^T\bm{y}_* \\
-&amp; = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}_*  \\
-&amp; = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y}_* \\
+\bm{X}\hat{\beta}_\text{ridge} &amp;= \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y} \\
+&amp; = \bm{U}\bm{D} \bm{V}^T[\bm{V}(\bm{D}^T\bm{D} + \lambda I_p)\bm{V}^T]^{-1}(\bm{U}\bm{D}\bm{V})^T\bm{y}  \\
+&amp; = \bm{U}\bm{D} \textcolor{red}{\bm{V}^T\bm{V}}(\bm{D}^T\bm{D} + \lambda I_p)^{-1} \textcolor{red}{\bm{V}^T \bm{V}} \bm{D}^T \bm{U} ^T\bm{y} \\
 &amp; = \bm{U}\bm{D}(\bm{D}^T\bm{D} + \lambda I_p)^{-1}\bm{D}^T\bm{U}^T\bm{y} \\
-&amp; = \bm{H}_\text{ridge}\bm{y}_* = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y}_*,
+&amp; = \bm{H}_\text{ridge}\bm{y} = \sum_{j=1}^p \tilde{\bm{u}}_j \frac{d_j^2}{d_j^2 + \lambda}\tilde{\bm{u}}_j^T \bm{y},
 \end{aligned}
-</span> where <span class="math inline">\bm{H}_\text{ridge} = \bm{X}_*(\bm{X}_*^T\bm{X}_* + \lambda I_p)^{-1}\bm{X}_*^T</span> is the so-called <span class="blue">hat matrix</span> of ridge regression.</li>
+</span> where <span class="math inline">\bm{H}_\text{ridge} = \bm{X}(\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T</span> is the so-called <span class="blue">hat matrix</span> of ridge regression.</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -1205,14 +1323,14 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <h2>Shrinkage effect of ridge regression II</h2>
 <ul>
 <li><p>A sharp <span class="blue">connection</span> with <span class="blue">principal components regression</span> is therefore revealed.</p></li>
-<li><p>Compare the previous formula for <span class="math inline">\bm{X}_*\hat{\beta}_\text{ridge}</span> with <a href="#/shrinkage-effect-of-principal-components-ii">the one we previously obtained</a> for <span class="math inline">\bm{X}_*\hat{\beta}_\text{pcr}</span>.</p></li>
+<li><p>Compare the previous formula for <span class="math inline">\bm{X}\hat{\beta}_\text{ridge}</span> with <a href="#/shrinkage-effect-of-principal-components-ii">the one we previously obtained</a> for <span class="math inline">\bm{X}\hat{\beta}_\text{pcr}</span>.</p></li>
 </ul>
 <div class="fragment">
 <ul>
 <li>More explicitly, for <span class="orange">ridge regression</span> we will have that <span class="math display">
-\hat{\beta}_\text{ridge} = \bm{V}\text{diag}\left(\frac{d_1}{d_1^2 + \lambda}, \dots, \frac{d_p}{d_p^2 + \lambda}\right)\bm{U}^T\bm{y}_*.
+\hat{\beta}_\text{ridge} = \bm{V}\text{diag}\left(\frac{d_1}{d_1^2 + \lambda}, \dots, \frac{d_p}{d_p^2 + \lambda}\right)\bm{U}^T\bm{y}.
 </span> whereas for <span class="blue">principal components regression</span> with <span class="math inline">k</span> components we get <span class="math display">
-\hat{\beta}_\text{pcr} = \bm{V}\text{diag}\left(\frac{1}{d_1}, \dots, \frac{1}{d_k}, 0, \dots, 0\right)\bm{U}^T\bm{y}_*.
+\hat{\beta}_\text{pcr} = \bm{V}\text{diag}\left(\frac{1}{d_1}, \dots, \frac{1}{d_k}, 0, \dots, 0\right)\bm{U}^T\bm{y}.
 </span></li>
 </ul>
 </div>
@@ -1235,18 +1353,10 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 </ul>
 </div>
 <div class="fragment">
-<div class="callout callout-note no-icon callout-titled callout-style-simple">
-<div class="callout-body">
-<div class="callout-title">
-<p><strong>Theorem (Theobald, 1974)</strong></p>
-</div>
-<div class="callout-content">
-<p>Let us assume <span class="math inline">Y_i = \bm{x}_{*i}^T\beta + \epsilon_i</span>. Moreover, let us consider the ridge estimator on the <span class="orange">non-centered</span> data <span class="math inline">\hat{\beta}_\text{nc-ridge} = (\bm{X}_*^T\bm{X}_* + \lambda I_p)^{-1}\bm{X}_*^T\bm{y}</span>. Then, there exist a <span class="math inline">\lambda &gt; 0</span> such that <span class="math display">
-\mathbb{E}\left(||\hat{\beta}_\text{nc-ridge} - \beta)||^2\right) &lt; \mathbb{E}\left(||\hat{\beta}_\text{ols}  - \beta||^2\right).
-</span></p>
-</div>
-</div>
-</div>
+<ul>
+<li><p>The above formula highlights that ridge will be very <span class="blue">effective</span> in presence highly <span class="blue">correlated variables</span>, as they will be “shrunk” away by the penalty.</p></li>
+<li><p>What typically happens is that such a reduction in variance <span class="orange">compensate</span> the increase in bias, especially when <span class="math inline">p</span> is large relative to <span class="math inline">n</span>.</p></li>
+</ul>
 </div>
 </section>
 <section id="a-historical-perspective-i" class="slide level2 center">
@@ -1255,11 +1365,11 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <ul>
 <li class="fragment"><p>The ridge regression estimator was originally proposed by Hoerl and Kennard (1970) with a quite different motivation in mind.</p></li>
 <li class="fragment"><p>In linear models, the estimate of <span class="math inline">\beta</span> is obtained by solving the <span class="blue">normal equations</span> <span class="math display">
-(\bm{X}_*^T\bm{X}_*)\beta = \bm{X}_*^T\bm{y}_*,
+(\bm{X}^T\bm{X})\beta = \bm{X}^T\bm{y},
 </span> which could be <span class="orange">ill-conditioned</span>.</p></li>
 <li class="fragment"><p>In other words, the <span class="blue">condition number</span> <span class="math display">
-\kappa(\bm{X}^T_*\bm{X}_*) = \frac{d_1^2}{d_p^2},
-</span> might be very large, leading to <span class="orange">numerical inaccuracies</span>, since the matrix <span class="math inline">\bm{X}^T_*\bm{X}_*</span> is <span class="blue">numerically singular</span> and therefore not invertible in practice.</p></li>
+\kappa(\bm{X}^T\bm{X}) = \frac{d_1^2}{d_p^2},
+</span> might be very large, leading to <span class="orange">numerical inaccuracies</span>, since the matrix <span class="math inline">\bm{X}^T\bm{X}</span> is <span class="blue">numerically singular</span> and therefore not invertible in practice.</p></li>
 </ul>
 </div>
 </section>
@@ -1267,11 +1377,11 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <h2>☠️ - A historical perspective II</h2>
 <div>
 <ul>
-<li class="fragment"><p>Ridge provides a <span class="blue">remedy</span> for <span class="orange">ill-conditioning</span>, by adding a “ridge” to the diagonal of <span class="math inline">\bm{X}^T_*\bm{X}_*</span>, obtaining the modified normal equations <span class="math display">
-(\bm{X}^T_*\bm{X}_* + \lambda I_p)\beta = \bm{X}^T_*\bm{y}_*.
+<li class="fragment"><p>Ridge provides a <span class="blue">remedy</span> for <span class="orange">ill-conditioning</span>, by adding a “ridge” to the diagonal of <span class="math inline">\bm{X}^T\bm{X}</span>, obtaining the modified normal equations <span class="math display">
+(\bm{X}^T\bm{X} + \lambda I_p)\beta = \bm{X}^T\bm{y}.
 </span></p></li>
-<li class="fragment"><p>The <span class="orange">condition number</span> of the modified <span class="math inline">(\bm{X}^T_*\bm{X}_* + \lambda I_p)</span> matrix becomes <span class="math display">
-\kappa(\bm{X}^T_*\bm{X}_* + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
+<li class="fragment"><p>The <span class="orange">condition number</span> of the modified <span class="math inline">(\bm{X}^T\bm{X} + \lambda I_p)</span> matrix becomes <span class="math display">
+\kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
 </span></p></li>
 <li class="fragment"><p>Notice that even if <span class="math inline">d_p = 0</span>, i.e.&nbsp;the matrix <span class="math inline">\bm{X}</span> is <span class="blue">singular</span>, then condition number will be finite as long as <span class="math inline">\lambda &gt; 0</span>.</p></li>
 <li class="fragment"><p>This technique is known as <span class="orange">Tikhonov regularization</span>, after the Russian mathematician Andrey Tikhonov.</p></li>
@@ -1292,7 +1402,7 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 </ul>
 <div class="fragment">
 <ul>
-<li><p><span class="blue">Minimizing</span> <span class="math inline">||\bm{y}_* - \bm{X}_*\hat{\beta}_\text{ridge}||^2</span> over <span class="math inline">\lambda</span> is a <span class="orange">very bad idea</span> and it would always lead to <span class="math inline">\lambda =0</span>, corresponding to <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}</span>.</p></li>
+<li><p><span class="blue">Minimizing</span> the loss <span class="math inline">||\bm{y} - \bm{X}\hat{\beta}_\text{ridge}||^2</span> over <span class="math inline">\lambda</span> is a <span class="orange">bad idea</span>, because it would always lead to <span class="math inline">\lambda = 0</span>, corresponding to <span class="math inline">\hat{\beta}_\text{ridge} = \hat{\beta}_\text{ols}</span>.</p></li>
 <li><p>Indeed, <span class="math inline">\lambda</span> is a <span class="blue">complexity</span> parameter and, like the number of covariates, should be selected using <span class="orange">information criteria</span> or training/test and <span class="orange">cross-validation</span>.</p></li>
 </ul>
 </div>
@@ -1308,7 +1418,7 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <section id="effective-degrees-of-freedom-i" class="slide level2 center">
 <h2>Effective degrees of freedom I</h2>
 <ul>
-<li>Let us recall that the <span class="orange">optimism</span> for a generic estimator <span class="math inline">\hat{f}(\bm{x})</span> is defined as the following average of covariances <span class="math display">
+<li>Let us recall that the original data are <span class="math inline">Y_i = f(\bm{x}_i) + \epsilon_i</span> and that the <span class="orange">optimism</span> for a generic estimator <span class="math inline">\hat{f}(\bm{x})</span> is defined as the following average of covariances <span class="math display">
 \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)),
 </span> which is equal to <span class="math inline">\text{Opt}_\text{ols} = (2\sigma^2p)/ n</span> in <span class="blue">ordinary least squares</span>.</li>
 </ul>
@@ -1366,7 +1476,7 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <ul>
 <li><p>Training / test strategies and <span class="blue">cross-validation</span> are also valid tools for selecting <span class="math inline">\lambda</span>.</p></li>
 <li><p>Most statistical software packages use a slightly <span class="orange">different parametrization</span> for <span class="math inline">\lambda</span>, as they minimize <span class="math display">
-\textcolor{red}{\frac{1}{n}}\sum_{i=1}^n(y_{*i} - \bm{x}_{*i}^T\beta)^2 + \tilde{\lambda} \sum_{j=1}^p\beta_j^2,
+\textcolor{red}{\frac{1}{n}}\sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \tilde{\lambda} \sum_{j=1}^p\beta_j^2,
 </span> where the penalty parameter <span class="math inline">\tilde{\lambda} = \lambda / n</span>.</p></li>
 </ul>
 <div class="fragment">
@@ -1376,8 +1486,8 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 </div>
 <div class="fragment">
 <ul>
-<li><p>Different R packages have <span class="blue">different defaults</span>.</p></li>
-<li><p>For instance, the R package <code>glmnet</code> uses this convention and also <span class="blue">standardizes the response</span> <span class="math inline">y</span> and then <span class="orange">transforms back</span> the estimated coefficients into the <span class="orange">original scale</span>.</p></li>
+<li><p>Different R packages have <span class="blue">different defaults</span> about other aspects too.</p></li>
+<li><p>For instance, the R package <code>glmnet</code> uses <span class="math inline">\tilde{\lambda}</span> and also <span class="blue">standardizes the response</span> <span class="math inline">\bm{y}</span> and then <span class="orange">transforms back</span> the estimated coefficients into the <span class="orange">original scale</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -1406,8 +1516,8 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <h2>The ridge estimate</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-27-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
-<section id="summary-of-ridge-regression" class="slide level2 center">
-<h2>Summary of ridge regression</h2>
+<section id="pros-and-cons-of-ridge-regression" class="slide level2 center">
+<h2>Pros and cons of ridge regression</h2>
 <ul>
 <li>Ridge regression trades some <span class="orange">bias</span> in exchange of a <span class="blue">lower variance</span>, often resulting in more accurate predictions.</li>
 </ul>
@@ -1478,7 +1588,7 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 </div>
 <div class="fragment">
 <ul>
-<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>, because there are no strong reasons to believe that the mean of <span class="math inline">y_i</span> equals zero. However, as before, we would like to “remove the intercept”.</li>
+<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>, as for ridge, as we can remove it by centering the predictors.</li>
 </ul>
 <!-- ## Centering and scaling the predictors I -->
 <!-- -   The lasso solutions are [not equivariant]{.orange} under [scalings -->
@@ -1491,34 +1601,35 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <!--   - The ridge estimate can be obtained considering a model without intercept, using centered responses and predictors.  -->
 <!-- . . . -->
 <!-- - Hence, the [original data]{.orange} $Y_i = f(\bm{x}_i) + \epsilon_i$ are [standardized]{.blue}, using the "[*]{.blue}" to denote it: $$  -->
-<!-- x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p. -->
+<!-- x_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{i} = y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p. -->
 <!-- $$ -->
 <!-- where $s_j^2 = n^{-1}\sum_{i=1}^n (x_{ij} - \bar{x}_j)^2$ is the [sample variance]{.blue}. -->
 </div>
 </section>
 <section id="centering-and-scaling-the-predictors" class="slide level2 center">
 <h2>Centering and scaling the predictors</h2>
+<ul>
+<li><p>Thus, as for ridge regression, we will center and scale predictors and response.</p></li>
+<li><p>It is easy to show that the <span class="orange">coefficients</span> expressed in the <span class="blue">original scale</span> are <span class="math display">
+\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{lasso}, \qquad \hat{\beta}_\text{scaled-lasso} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{lasso}.
+</span> Thus, the <span class="orange">predictions</span> on the <span class="blue">original scale</span> are <span class="math inline">\hat{\beta}_0 + \bm{x}_i^T\hat{\beta}_\text{scaled-lasso} = \bar{y} + \bm{x}_{i}^T\hat{\beta}_\text{lasso}</span>.</p></li>
+</ul>
+<div class="fragment">
 <div class="callout callout-note no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
 <p>For lasso problems we will assume the data have been previously <span class="orange">standardized</span>, namely <span class="math display">
-    \frac{1}{n}\sum_{i=1}^ny_{*i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{*ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{*i}^2 = 1\qquad j=1,\dots,p.
+    \frac{1}{n}\sum_{i=1}^ny_{i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{i}^2 = 1\qquad j=1,\dots,p.
     </span></p>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <ul>
 <li>We will say that the <span class="blue">lasso estimator</span> <span class="math inline">\hat{\beta}_\text{lasso}</span> is the <span class="orange">minimizer</span> of following system <span class="math display">
-\sum_{i=1}^n(y_i - \bm{x}_{*i}^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p| \beta_j| \le s.
+\sum_{i=1}^n(y_i - \bm{x}_{i}^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p| \beta_j| \le s.
 </span></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>It is easy to show that the <span class="orange">coefficients</span> expressed in the <span class="blue">original scale</span> are <span class="math display">
-\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{lasso}, \qquad \hat{\beta}_\text{scaled-lasso} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{lasso}.
-</span> Thus, the <span class="orange">predictions</span> on the <span class="blue">original scale</span> are <span class="math inline">\hat{\beta}_0 + \bm{x}_i^T\hat{\beta}_\text{scaled-lasso} = \bar{y} + \bm{x}_{*i}^T\hat{\beta}_\text{lasso}</span>.</li>
 </ul>
 </div>
 </section>
@@ -1527,7 +1638,7 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <ul>
 <li><p>The lasso problem can be <span class="blue">equivalently expressed</span> in its Lagrangian form, which is more amenable for computations.</p></li>
 <li><p>Having remove the intercept, the lasso estimator <span class="math inline">\hat{\beta}_\text{lasso}</span> is the <span class="orange">minimizer</span> of <span class="math display">
-  \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_{*i} - \bm{x}_{i*}^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
+  \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_{i} - \bm{x}_{i*}^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
   </span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>.</p></li>
 </ul>
 <div class="fragment">
@@ -1551,17 +1662,17 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <div>
 <ul>
 <li class="fragment"><p>To gain some understanding, let us consider the <span class="blue">single-predictor</span> scenario, in which<span class="math display">
-\hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_{*i} - x_{*i}\beta)^2 + \lambda |\beta|.
+\hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
   </span></p></li>
 <li class="fragment"><p>This simple problem admits an <span class="orange">explicit expression</span> (see Exercises), which is <span class="math display">
-\hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x_*,y_*) - \lambda, \qquad &amp;\text{if} \quad \text{cov}(x_*,y_*) &gt; \lambda \\
-0 \qquad &amp;\text{if} \quad \text{cov}(x_*,y_*) \le \lambda\\
-\text{cov}(x_*,y_*) + \lambda, \qquad &amp;\text{if} \quad \text{cov}(x_*,y_*) &lt; -\lambda \\
+\hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &gt; \lambda \\
+0 \qquad &amp;\text{if} \quad \text{cov}(x,y) \le \lambda\\
+\text{cov}(x,y) + \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &lt; -\lambda \\
 \end{cases}
 </span></p></li>
-<li class="fragment"><p>The above solution can be written as <span class="math inline">\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})</span>, where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+</span> is the <span class="blue">soft-thresholding</span> operator and <span class="math inline">(\cdot)_+</span> is the <span class="orange">positive part</span> of a number (<code>pmax</code>).</p></li>
+<li class="fragment"><p>The above solution can be written as <span class="math inline">\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})</span>, where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+</span> is the <span class="blue">soft-thresholding</span> operator and <span class="math inline">(\cdot)_+</span> is the <span class="orange">positive part</span> of a number (<code>pmax(0, x)</code>).</p></li>
 <li class="fragment"><p>For <span class="orange">ridge regression</span> with one predictor we obtain, instead: <span class="math display">
-\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x_*,y_*) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{*i}y_{*i}.
+\hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
 </span></p></li>
 </ul>
 </div>
@@ -1608,8 +1719,17 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <section id="a-comparison-between-pcr-ridge-and-lasso" class="slide level2 center">
 <h2>A comparison between pcr, ridge, and lasso</h2>
 </section>
-<section id="the-estimated-coefficients" class="slide level2 center">
-<h2>The estimated coefficients</h2>
+<section id="summary-of-the-estimated-coefficients" class="slide level2 center">
+<h2>Summary of the estimated coefficients</h2>
+<div style="font-size: 70%;">
+<div class="cell">
+<div class="cell-output-display">
+
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-030c44f57ef298331558" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-030c44f57ef298331558">{"x":{"filter":"none","vertical":false,"data":[["(Intercept)","lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45"],[2.464932922123746,0.6795281412379753,0.2630530657325436,-0.1414648335361718,0.2101465572218274,0.3052005971250976,-0.2884927724535462,-0.02130503880294818,0.2669557621199238],[2.477357342449561,0.7397136698758431,0.3163281888271424,0,0,0,0,0,0],[2.455021592228732,0.28666128271838,0.3391036880563065,0.05628528949356446,0.1015283806908212,0.2614850538133577,0.2186806183758075,-0.01605594153820394,0.06170971163528362],[2.458412811986567,0.2948356370931464,0.1837002153773017,-0.001065139246989107,0.1290725174241039,0.1869342201757897,0.07014187391316176,0.05382774266578681,0.1042674615017758],[2.468314602273341,0.5321289780171816,0.1687891416769021,0,0,0.09162985645647606,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>OLS<\/th>\n      <th>Best subset<\/th>\n      <th>PCR<\/th>\n      <th>Ridge<\/th>\n      <th>Lasso<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":9,"dom":"t","columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[9,10,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'font-weight':'bold'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':value == 0 ? \"white\" : null});\n}"}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.rowCallback"],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
 </section>
 <section id="the-results-on-the-test-set" class="slide level2 center">
 <h2>The results on the test set</h2>
@@ -1711,37 +1831,6 @@ x_{*ij} = \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_{*i} = y_i - \bar{y}, \qquad 
 <!-- round(coef(fit_lars)[lambda_sel, ], 5) -->
 <!-- round(coef(lasso_fit, mode = "lambda")[-1, lambda_sel], 5) -->
 <!-- ``` -->
-<!-- ## Summary of the estimated coefficients -->
-<!-- ::: {style="font-size: 70%;"} -->
-<!-- ```{r} -->
-<!-- library(DT) -->
-<!-- tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p), PCR = rep(0, p)) -->
-<!-- rownames(tab) <- colnames(sum_best$which) -->
-<!-- tab$OLS <- coef(lm(lpsa ~ ., data = prostate_train)) -->
-<!-- tab$best_subset <- c(coef(lm(lpsa ~ lcavol + lweight, data = prostate_train)), rep(0, 6)) -->
-<!-- # Principal components regression (PCR) -->
-<!-- fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE) -->
-<!-- beta <- c(coef(fit_pcr, 3)) -->
-<!-- beta <- c(mean(prostate_train$lpsa) - colMeans(X[, -1]) %*% beta, beta) -->
-<!-- tab$PCR <- beta -->
-
-<!-- datatable(tab, colnames = c("OLS", "Best subset", "PCR"), options = list( -->
-<!--   pageLength = 9, -->
-<!--   dom = "t")) %>% -->
-<!--   formatRound(columns = 1:3, digits = 3) %>% -->
-<!--   formatStyle( -->
-<!--     columns = 0, fontWeight = "bold" -->
-<!--   ) %>% -->
-<!--   formatStyle( -->
-<!--     columns = 1:3, -->
-<!--     backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA")) -->
-<!--   ) %>% -->
-<!--   formatStyle( -->
-<!--     columns = 1:3, -->
-<!--     backgroundColor = styleEqual(0, c("white")) -->
-<!--   ) -->
-<!-- ``` -->
-<!-- ::: -->
 
 <img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
