@@ -425,7 +425,7 @@ summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest
 
 . . .
 
--   What is the [optimal subset size]{.orange} $k$ in terms on
+-   What is the [optimal subset size]{.orange} $k$ in terms of
     out-of-sample mean squared error?
 
 ## The wrong way of doing cross-validation
