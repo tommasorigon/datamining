@@ -97,7 +97,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#forward-regression" id="toc-forward-regression" class="nav-link" data-scroll-target="#forward-regression">Forward regression</a></li>
   <li><a href="#backward-regression" id="toc-backward-regression" class="nav-link" data-scroll-target="#backward-regression">Backward regression</a></li>
   <li><a href="#forward-backward-and-best-subset" id="toc-forward-backward-and-best-subset" class="nav-link" data-scroll-target="#forward-backward-and-best-subset">Forward, backward and best subset</a></li>
-  <li><a href="#pros-and-cons-of-best-subset" id="toc-pros-and-cons-of-best-subset" class="nav-link" data-scroll-target="#pros-and-cons-of-best-subset">Pros and cons of best subset</a></li>
+  <li><a href="#pros-and-cons-of-subset-selection-strategies" id="toc-pros-and-cons-of-subset-selection-strategies" class="nav-link" data-scroll-target="#pros-and-cons-of-subset-selection-strategies">Pros and cons of subset selection strategies</a></li>
   </ul></li>
   <li><a href="#principal-components-regression" id="toc-principal-components-regression" class="nav-link" data-scroll-target="#principal-components-regression">Principal components regression</a>
   <ul class="collapse">
@@ -155,13 +155,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#least-angle-regression-i" id="toc-least-angle-regression-i" class="nav-link" data-scroll-target="#least-angle-regression-i">Least angle regression I</a></li>
   <li><a href="#least-angle-regression-ii" id="toc-least-angle-regression-ii" class="nav-link" data-scroll-target="#least-angle-regression-ii">Least angle regression II</a></li>
   <li><a href="#least-angle-regression-lasso-modification" id="toc-least-angle-regression-lasso-modification" class="nav-link" data-scroll-target="#least-angle-regression-lasso-modification">Least angle regression: lasso modification</a></li>
-  <li><a href="#the-maximum-lambda" id="toc-the-maximum-lambda" class="nav-link" data-scroll-target="#the-maximum-lambda">The maximum <span class="math inline">\lambda</span></a></li>
   <li><a href="#uniqueness-of-the-lasso-solution" id="toc-uniqueness-of-the-lasso-solution" class="nav-link" data-scroll-target="#uniqueness-of-the-lasso-solution">Uniqueness of the lasso solution</a></li>
   <li><a href="#the-degrees-of-freedom-of-the-lasso" id="toc-the-degrees-of-freedom-of-the-lasso" class="nav-link" data-scroll-target="#the-degrees-of-freedom-of-the-lasso">The degrees of freedom of the lasso</a></li>
   <li><a href="#effective-degrees-of-freedom-of-best-subset" id="toc-effective-degrees-of-freedom-of-best-subset" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-of-best-subset">☠️ - Effective degrees of freedom of best subset</a></li>
   <li><a href="#cross-validation-for-lasso" id="toc-cross-validation-for-lasso" class="nav-link" data-scroll-target="#cross-validation-for-lasso">Cross-validation for lasso</a></li>
   <li><a href="#the-lasso-estimate" id="toc-the-lasso-estimate" class="nav-link" data-scroll-target="#the-lasso-estimate">The lasso estimate</a></li>
-  <li><a href="#a-comparison-between-pcr-ridge-and-lasso" id="toc-a-comparison-between-pcr-ridge-and-lasso" class="nav-link" data-scroll-target="#a-comparison-between-pcr-ridge-and-lasso">A comparison between pcr, ridge, and lasso</a></li>
+  <li><a href="#a-comparison-between-pcr-ridge-and-lasso" id="toc-a-comparison-between-pcr-ridge-and-lasso" class="nav-link" data-scroll-target="#a-comparison-between-pcr-ridge-and-lasso">A comparison between PCR, ridge, and lasso</a></li>
   <li><a href="#summary-of-the-estimated-coefficients" id="toc-summary-of-the-estimated-coefficients" class="nav-link" data-scroll-target="#summary-of-the-estimated-coefficients">Summary of the estimated coefficients</a></li>
   <li><a href="#the-results-on-the-test-set" id="toc-the-results-on-the-test-set" class="nav-link" data-scroll-target="#the-results-on-the-test-set">The results on the test set</a></li>
   <li><a href="#summary-of-lars-and-lasso" id="toc-summary-of-lars-and-lasso" class="nav-link" data-scroll-target="#summary-of-lars-and-lasso">Summary of LARS and lasso</a></li>
@@ -685,7 +684,7 @@ Best subset procedure
 </ul>
 </div>
 <ul>
-<li>What is the <span class="orange">optimal subset size</span> <span class="math inline">k</span> in terms on out-of-sample mean squared error?</li>
+<li>What is the <span class="orange">optimal subset size</span> <span class="math inline">k</span> in terms of out-of-sample mean squared error?</li>
 </ul>
 </section>
 <section id="the-wrong-way-of-doing-cross-validation" class="level2">
@@ -807,11 +806,42 @@ Backward regression
 <li>In the <code>prostate</code> dataset, forward, backward and best subset selection all gave exactly the <span class="orange">same path of solutions</span> on the full training set.</li>
 </ul>
 </section>
-<section id="pros-and-cons-of-best-subset" class="level2">
-<h2 class="anchored" data-anchor-id="pros-and-cons-of-best-subset">Pros and cons of best subset</h2>
+<section id="pros-and-cons-of-subset-selection-strategies" class="level2">
+<h2 class="anchored" data-anchor-id="pros-and-cons-of-subset-selection-strategies">Pros and cons of subset selection strategies</h2>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pros
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li>asd</li>
+<li><p>Best subset selection is appealing because of its <span class="blue">conceptual simplicity</span>.</p></li>
+<li><p>Best subset and forward regression can be used, at least in principle, even when <span class="math inline">p &gt; n</span>.</p></li>
 </ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cons
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Subset strategies tend to select models that are “<span class="orange">too simple</span>”, especially in presence of correlated variables.</p></li>
+<li><p>Despite the recent advances, when <span class="math inline">p</span> is large best subset selection is <span class="orange">computationally unfeasible</span>.</p></li>
+<li><p>Leaps and bounds computational strategies can not be easily generalized to GLMs.</p></li>
+<li><p>Backward regression can not be applied when <span class="math inline">p &gt; n</span>.</p></li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="principal-components-regression" class="level1">
@@ -1037,9 +1067,40 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </section>
 <section id="pros-and-cons-of-pcr" class="level2">
 <h2 class="anchored" data-anchor-id="pros-and-cons-of-pcr">Pros and cons of PCR</h2>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pros
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li>sdf</li>
+<li><p>If you transform back the coefficients, there is a <span class="blue">clean interpretation</span> of the impact of the covariates on the response.</p></li>
+<li><p>Principal component regression can be easily generalized to the GLM case.</p></li>
+<li><p>Principal components might be interesting in their own right, as they describe the <span class="blue">dependence structure</span> among covariates.</p></li>
 </ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cons
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p><span class="orange">All the variables</span> are used for predictions, which could be computationally demanding.</p></li>
+<li><p>The shrinkage effect on the regression coefficients is somewhat indirect and not smooth.</p></li>
+<li><p>Principal component regression can not be applied when <span class="math inline">p &gt; n</span>.</p></li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="ridge-regression" class="level1">
@@ -1399,20 +1460,40 @@ Effective degrees of freedom
 </section>
 <section id="pros-and-cons-of-ridge-regression" class="level2">
 <h2 class="anchored" data-anchor-id="pros-and-cons-of-ridge-regression">Pros and cons of ridge regression</h2>
-<ul>
-<li>Ridge regression trades some <span class="orange">bias</span> in exchange of a <span class="blue">lower variance</span>, often resulting in more accurate predictions.</li>
-</ul>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pros
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<!-- -   Ridge regression trades some [bias]{.orange} in exchange of a [lower variance]{.blue}, often resulting in more accurate predictions. -->
 <ul>
 <li><p>The ridge solution <span class="orange">always exists</span> and is <span class="blue">unique</span>, even when <span class="math inline">p &gt; n</span> or in presence of perfect <span class="orange">collinearity</span>.</p></li>
-<li><p>In ridge regression, <span class="blue">all variables</span> are used. This is in contrast with best subset selection.</p></li>
-</ul>
-<ul>
 <li><p>For fixed values of <span class="math inline">\lambda</span>, <span class="orange">efficient computations</span> are available using QR and Cholesky decomposition.</p></li>
 <li><p>At the end of this unit we will describe a <span class="blue">general optimization strategy</span> that recovers the entire “ridge path”, i.e.&nbsp;the estimate <span class="math inline">\hat{\beta}_\text{ridge}</span> for several values of <span class="math inline">\lambda</span>.</p></li>
+<li><p>Ridge regression has also a transparent <span class="orange">Bayesian interpretation</span>, since the penalty can be interpreted as a Gaussian prior on <span class="math inline">\beta</span>.</p></li>
 </ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cons
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li>Ridge regression has also a transparent <span class="orange">Bayesian interpretation</span>, since the penalty can be interpreted as a Gaussian prior on <span class="math inline">\beta</span>.</li>
+<li>In ridge regression, <span class="orange">all variables</span> are used. This is in contrast with best subset selection.</li>
 </ul>
+</div>
+</div>
 </section>
 </section>
 <section id="the-lasso" class="level1">
@@ -1456,7 +1537,7 @@ Effective degrees of freedom
 <li>The lasso is <span class="orange">deceptively similar</span> to ridge. However, the change from a quadratic penalty to the absolute value has crucial <span class="blue">sparsity</span> implications.</li>
 </ul>
 <ul>
-<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>, as for ridge, as we can remove it by centering the predictors.</li>
+<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>, as for ridge, because we can remove it by centering the predictors.</li>
 </ul>
 <!-- ## Centering and scaling the predictors I -->
 <!-- -   The lasso solutions are [not equivariant]{.orange} under [scalings -->
@@ -1504,7 +1585,7 @@ Effective degrees of freedom
 <ul>
 <li><p>The lasso problem can be <span class="blue">equivalently expressed</span> in its Lagrangian form, which is more amenable for computations.</p></li>
 <li><p>Having remove the intercept, the lasso estimator <span class="math inline">\hat{\beta}_\text{lasso}</span> is the <span class="orange">minimizer</span> of <span class="math display">
-  \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_{i} - \bm{x}_{i*}^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
+  \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_{i} - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
   </span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>.</p></li>
 </ul>
 <ul>
@@ -1553,6 +1634,16 @@ Effective degrees of freedom
 </section>
 <section id="soft-thresholding-and-lasso-solution" class="level2">
 <h2 class="anchored" data-anchor-id="soft-thresholding-and-lasso-solution">Soft-thresholding and lasso solution</h2>
+<ul>
+<li>The single predictor special cases provides further intuition of why the lasso perform <span class="blue">variable selection</span> and <span class="orange">shrinkage</span>.</li>
+</ul>
+<ul>
+<li><p>Ridge regression induce shrinkage in a <span class="orange">multiplicative</span> fashion and the regression coefficients reach zero as <span class="math inline">\lambda \rightarrow \infty</span>.</p></li>
+<li><p>Conversely, lasso shrink the ordinary least squares in an <span class="blue">additive</span> manner, <span class="orange">truncating</span> them at <span class="orange">zero</span> after a certain threshold.</p></li>
+</ul>
+<ul>
+<li>Even though we do not have a closed-form expression for the lasso solution <span class="math inline">\hat{\beta}_\text{lasso}</span> when the covariates <span class="math inline">p &gt; 1</span>, the main intuition is preserved: lasso induces <span class="orange">sparsity</span>!</li>
+</ul>
 </section>
 <section id="the-lasso-path" class="level2">
 <h2 class="anchored" data-anchor-id="the-lasso-path">The lasso path</h2>
@@ -1568,6 +1659,18 @@ Effective degrees of freedom
 </section>
 <section id="comments-on-the-lasso-path" class="level2">
 <h2 class="anchored" data-anchor-id="comments-on-the-lasso-path">Comments on the lasso path</h2>
+<ul>
+<li><p>As for ridge regression, the values of <span class="math inline">\lambda</span> are expressed in somewhat <span class="orange">arbitrary scale</span>.</p></li>
+<li><p>There exist a <span class="blue">maximum value</span> <span class="math inline">\lambda_\text{max}</span>, after which all the coefficients are zero: <span class="math display">
+\lambda_\text{max} = \max_{j}\left| \text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \max_{j}\left| \frac{1}{n}\sum_{i=1}^n x_{ij} y_i\right|.
+</span></p></li>
+</ul>
+<ul>
+<li>It is confirmed that the variable <code>lcavol</code> is arguably the most important, followed by <code>lweight</code> and <code>svi</code>, being the last variables to be set equal to zero.</li>
+</ul>
+<ul>
+<li>The coefficient of <code>age</code>, <code>gleason</code> and <code>lcp</code> are negative and then are set equal to zero for higher values of <span class="math inline">\lambda</span>. Compare this with the <span class="orange">ridge path</span>.</li>
+</ul>
 </section>
 <section id="least-angle-regression-i" class="level2">
 <h2 class="anchored" data-anchor-id="least-angle-regression-i">Least angle regression I</h2>
@@ -1577,9 +1680,6 @@ Effective degrees of freedom
 </section>
 <section id="least-angle-regression-lasso-modification" class="level2">
 <h2 class="anchored" data-anchor-id="least-angle-regression-lasso-modification">Least angle regression: lasso modification</h2>
-</section>
-<section id="the-maximum-lambda" class="level2">
-<h2 class="anchored" data-anchor-id="the-maximum-lambda">The maximum <span class="math inline">\lambda</span></h2>
 </section>
 <section id="uniqueness-of-the-lasso-solution" class="level2">
 <h2 class="anchored" data-anchor-id="uniqueness-of-the-lasso-solution">Uniqueness of the lasso solution</h2>
@@ -1606,7 +1706,7 @@ Effective degrees of freedom
 <h2 class="anchored" data-anchor-id="the-lasso-estimate">The lasso estimate</h2>
 </section>
 <section id="a-comparison-between-pcr-ridge-and-lasso" class="level2">
-<h2 class="anchored" data-anchor-id="a-comparison-between-pcr-ridge-and-lasso">A comparison between pcr, ridge, and lasso</h2>
+<h2 class="anchored" data-anchor-id="a-comparison-between-pcr-ridge-and-lasso">A comparison between PCR, ridge, and lasso</h2>
 </section>
 <section id="summary-of-the-estimated-coefficients" class="level2">
 <h2 class="anchored" data-anchor-id="summary-of-the-estimated-coefficients">Summary of the estimated coefficients</h2>

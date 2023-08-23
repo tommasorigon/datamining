@@ -647,9 +647,29 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
     selection all gave exactly the [same path of solutions]{.orange} on
     the full training set.
     
-## Pros and cons of best subset
+## Pros and cons of subset selection strategies
 
-- asd
+::: callout-tip
+#### Pros
+
+- Best subset selection is appealing because of its [conceptual simplicity]{.blue}.
+
+- Best subset and forward regression can be used, at least in principle, even when $p > n$.
+:::
+
+. . .
+
+::: callout-warning
+#### Cons
+
+- Subset strategies tend to select models that are "[too simple]{.orange}", especially in presence of correlated variables. 
+
+- Despite the recent advances, when $p$ is large best subset selection is [computationally unfeasible]{.orange}.
+
+- Leaps and bounds computational strategies can not be easily generalized to GLMs.
+
+- Backward regression can not be applied when $p > n$.
+:::
 
 # Principal components regression
 
@@ -1006,7 +1026,28 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 ## Pros and cons of PCR
 
-- sdf
+::: callout-tip
+#### Pros
+
+- If you transform back the coefficients, there is a [clean interpretation]{.blue} of the impact of the covariates on the response.
+
+- Principal component regression can be easily generalized to the GLM case.
+
+- Principal components might be interesting in their own right, as they describe the [dependence structure]{.blue} among covariates.
+
+:::
+
+. . .
+
+::: callout-warning
+#### Cons
+
+- [All the variables]{.orange} are used for predictions, which could be computationally demanding.
+
+- The shrinkage effect on the regression coefficients is somewhat indirect and not smooth.
+
+- Principal component regression can not be applied when $p > n$.
+:::
 
 
 # Ridge regression
@@ -1655,26 +1696,31 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 ## Pros and cons of ridge regression
 
--   Ridge regression trades some [bias]{.orange} in exchange of a [lower
-    variance]{.blue}, often resulting in more accurate predictions.
+::: callout-tip
+#### Pros
 
-. . .
+<!-- -   Ridge regression trades some [bias]{.orange} in exchange of a [lower variance]{.blue}, often resulting in more accurate predictions. -->
 
 -   The ridge solution [always exists]{.orange} and is [unique]{.blue}, even when $p > n$ or in presence of perfect [collinearity]{.orange}.
-
--   In ridge regression, [all variables]{.blue} are used. This is in contrast with best subset selection.
-
-. . .
 
 -   For fixed values of $\lambda$, [efficient computations]{.orange} are available using QR and Cholesky decomposition.
 
 -   At the end of this unit we will describe a [general optimization strategy]{.blue} that recovers the entire "ridge path", i.e. the estimate $\hat{\beta}_\text{ridge}$ for several values of $\lambda$.
 
-. . .
-
 -   Ridge regression has also a transparent [Bayesian
     interpretation]{.orange}, since the penalty can be interpreted as a
     Gaussian prior on $\beta$.
+:::
+
+. . .
+
+::: callout-warning
+#### Cons
+
+- In ridge regression, [all variables]{.orange} are used. This is in contrast with best subset selection.
+:::
+
+
 
 # The lasso
 
@@ -1715,7 +1761,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 . . . 
 
--   The intercept term $\beta_0$ is [not penalized]{.orange}, as for ridge, as we can remove it by centering the predictors.
+-   The intercept term $\beta_0$ is [not penalized]{.orange}, as for ridge, because we can remove it by centering the predictors.
 
 <!-- ## Centering and scaling the predictors I -->
 
@@ -1773,7 +1819,7 @@ For lasso problems we will assume the data have been previously [standardized]{.
     form, which is more amenable for computations.
     
 - Having remove the intercept, the lasso estimator $\hat{\beta}_\text{lasso}$ is the [minimizer]{.orange} of $$
-    \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_{i} - \bm{x}_{i*}^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
+    \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_{i} - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
     $$ where $\lambda > 0$ is a [complexity parameter]{.blue}
     controlling the [penalty]{.orange}. 
 
@@ -1874,6 +1920,20 @@ ggplot(data = data_plot, aes(x = x, y = value, col = Estimate)) +
 
 ## Soft-thresholding and lasso solution
 
+
+- The single predictor special cases provides further intuition of why the lasso perform [variable selection]{.blue} and [shrinkage]{.orange}.
+
+
+. . .
+
+- Ridge regression induce shrinkage in a [multiplicative]{.orange} fashion and the regression coefficients reach zero as $\lambda \rightarrow \infty$.
+
+- Conversely, lasso shrink the ordinary least squares in an [additive]{.blue} manner, [truncating]{.orange} them at [zero]{.orange} after a certain threshold. 
+
+. . .
+
+- Even though we do not have a closed-form expression for the lasso solution $\hat{\beta}_\text{lasso}$ when the covariates $p > 1$, the main intuition is preserved: lasso induces [sparsity]{.orange}!
+
 ## The lasso path
 
 ```{r}
@@ -1943,13 +2003,48 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
 
 ## Comments on the lasso path
 
+-   As for ridge regression, the values of $\lambda$ are expressed in somewhat [arbitrary scale]{.orange}. 
+
+- There exist a [maximum value]{.blue} $\lambda_\text{max}$, after which all the coefficients are zero:
+$$
+\lambda_\text{max} = \max_{j}\left| \text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \max_{j}\left| \frac{1}{n}\sum_{i=1}^n x_{ij} y_i\right|.
+$$
+
+. . .
+
+-   It is confirmed that the variable `lcavol` is arguably the most important, followed by `lweight` and `svi`, being the last variables to be set equal to zero.
+
+. . .
+
+-   The coefficient of `age`, `gleason` and `lcp` are negative and then are set equal to zero for higher values of $\lambda$. Compare this with the [ridge path]{.orange}.
+
 ## Least angle regression I
+
+-   Least angle regression (LAR) is a "[democratic]{.orange}" version of [forward stepwise regression]{.blue}.
+
+. . .
+
+- Forward stepwise builds a model [sequentially]{.blue}, adding one variable at a time. At each step, the best variable is included in the [active set]{.orange} and then the least square fit is updated.
+
+- LAR uses a similar strategy, but any new variable contributes to the predictions only "as much" as it deserves. 
+
+. . .
+
+- The origin of the idea is due to a tight connection between with [boosting]{.orange}...
+
+. . .
+
+::: callout-note
+#### Main result of LAR
+
+- The LAR algorithm provides a way to [compute]{.blue} the entire [lasso path]{.orange} efficiently at the cost of a full least-squares fit.
+
+- LAR sheds light on important [statistical aspects]{.orange} of the lasso. A nice [LAR - lasso - boosting]{.blue} connection is established, which is computationally and conceptually useful. 
+:::
 
 ## Least angle regression II
 
 ## Least angle regression: lasso modification
-
-## The maximum $\lambda$
 
 ## Uniqueness of the lasso solution
 
@@ -2024,8 +2119,7 @@ coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 1, thresh
 
 ## The lasso estimate
 
-## A comparison between pcr, ridge, and lasso
-
+## A comparison between PCR, ridge, and lasso
 
 ## Summary of the estimated coefficients
 
