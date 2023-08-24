@@ -2230,7 +2230,7 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 
 ## Uniqueness of the lasso solution
 
-- The lasso can be computed even when $p > n$. In those cases, will it be [unique]{.orange}?
+- The lasso can be computed even when $p > n$. In these cases, will it be [unique]{.orange}?
 
 . . .
 
