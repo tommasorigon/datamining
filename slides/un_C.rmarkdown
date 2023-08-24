@@ -47,7 +47,9 @@ editor_options:
   chunk_output_type: console
 ---
 
+
 ## [Homepage](../index.html)
+
 
 ```{r}
 #| warning: false
@@ -59,6 +61,7 @@ editor_options:
 knitr::purl("un_C.qmd", output = "../code/un_C.R")
 styler:::style_file("../code/un_C.R")
 ```
+
 
 ::: columns
 ::: {.column width="30%"}
@@ -133,6 +136,7 @@ styler:::style_file("../code/un_C.R")
 ::: panel-tabset
 ## Original dataset
 
+
 ```{r}
 #| message: false
 rm(list = ls())
@@ -141,7 +145,9 @@ prostate <- read.table("../data/prostate_data.txt")
 glimpse(prostate)
 ```
 
+
 ## Standardized dataset
+
 
 ```{r}
 # Standardize the predictors, as in Tibshirani (1996)
@@ -154,6 +160,7 @@ prostate_test <- filter(prostate, train == FALSE) %>% select(-train)
 
 glimpse(prostate)
 ```
+
 :::
 
 <!-- -   The variable `train` splits the data into a training and test set, -->
@@ -161,6 +168,7 @@ glimpse(prostate)
 <!--     as in the textbook. -->
 
 ## Correlation matrix of `prostate`
+
 
 ```{r}
 #| fig-width: 15
@@ -175,6 +183,7 @@ ggcorrplot(corr,
   colors = c("#fc7d0b", "white", "#1170aa")
 )
 ```
+
 
 ## The regression framework
 
@@ -232,12 +241,14 @@ ggcorrplot(corr,
 ## A naïve approach: (ab)using p-values
 
 ::: {style="font-size: 75%;"}
+
 ```{r}
 tab <- data.frame(broom::tidy(lm(lpsa ~ ., data = prostate_train), conf.int = FALSE))
 rownames(tab) <- tab[, 1]
 tab <- t(as.matrix(tab[, -1]))
 knitr::kable(tab, digits = 2)
 ```
+
 :::
 
 . . .
@@ -364,6 +375,7 @@ knitr::kable(tab, digits = 2)
 
 ## Step 1. and 2. of best subset selection
 
+
 ```{r}
 # Here I compute some basic quantities
 X <- model.matrix(lpsa ~ ., data = prostate_train)[, -1]
@@ -403,14 +415,17 @@ ggplot(data = data_best_subset, aes(x = p, y = value)) +
   ylab("Mean squared error (training)")
 ```
 
+
 ## The "best" models $\mathcal{M}_1,\dots, \mathcal{M}_p$
 
 -   The output of the [best subset selection]{.orange}, on the training
     set is:
 
+
 ```{r}
 summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest = 1, nvmax = p))$outmat
 ```
+
 
 ::: incremental
 -   The above table means that the best model with $k = 1$ uses the
@@ -457,6 +472,7 @@ summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest
 :::
 
 ## Step 3. of best subset selection via cross-validation
+
 
 ```{r}
 library(rsample)
@@ -514,6 +530,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   xlab("Number of covariates") +
   ylab("Mean squared error (10-fold cv)")
 ```
+
 
 -   By applying the "1 standard error rule", we select $k = 2$, i.e.
     `lcavol` and `lweight`.
@@ -607,6 +624,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 
 ## Forward, backward and best subset
 
+
 ```{r}
 fit_forward <- regsubsets(lpsa ~ ., data = prostate_train, method = "forward", nbest = 1, nvmax = p)
 sum_forward <- summary(fit_forward)
@@ -642,6 +660,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
   xlab("Number of covariates") +
   ylab("MSE (training)")
 ```
+
 
 -   In the `prostate` dataset, forward, backward and best subset
     selection all gave exactly the [same path of solutions]{.orange} on
@@ -871,6 +890,7 @@ previously [centered]{.orange}: $$
 
 ## Principal component analysis: `prostate` data
 
+
 ```{r}
 #| fig-width: 10
 #| fig-height: 5
@@ -884,6 +904,7 @@ ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p,
   xlab("Number of principal components") +
   ylab("Fraction of explained variance")
 ```
+
 
 ## Principal components regression (PCR)
 
@@ -911,6 +932,7 @@ ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p,
 :::
 
 ## Selection of $k$: cross-validation
+
 
 ```{r}
 #| message: false
@@ -961,6 +983,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   xlab("Number of principal components") +
   ylab("Mean squared error (10-fold cv)")
 ```
+
 
 ## Shrinkage effect of principal components I
 
@@ -1019,6 +1042,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 
 ## Shrinkage effect of principal components III
 
+
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
@@ -1040,6 +1064,7 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
   xlab("Number of principal components") +
   ylab("Regression coefficients")
 ```
+
 
 ## Pros and cons of PCR
 
@@ -1210,6 +1235,7 @@ $$ Such an estimator [always exists]{.blue} and is [unique]{.orange}
 
 ## The geometry of the ridge solution
 
+
 ```{r}
 #| purl: false
 #| warning: false
@@ -1244,7 +1270,9 @@ ggplot() +
   annotate("text", x = 1.7, y = 4.8, label = expression(sum((y[i] - x[i]^T * beta)^2, i == 1, n) == c), col = "#1170aa")
 ```
 
+
 ## The ridge path
+
 
 ```{r}
 my_ridge <- function(X, y, lambda_tilde, standardize = TRUE) {
@@ -1324,6 +1352,7 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
   xlab(expression(lambda / n)) +
   ylab("Coefficients (original scale)")
 ```
+
 
 ## Comments on the ridge path
 
@@ -1548,6 +1577,7 @@ $$
 
 ::: columns
 ::: {.column width="50%"}
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4
@@ -1563,9 +1593,11 @@ ggplot(data = mse_ridge, aes(x = df, y = Cp)) +
   xlab("Effective degrees of freedom (df)") +
   ylab(expression(C[p]))
 ```
+
 :::
 
 ::: {.column width="50%"}
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4
@@ -1578,6 +1610,7 @@ ggplot(data = mse_ridge, aes(x = lambda_tilde_seq, y = Cp)) +
   xlab(expression(lambda / n)) +
   ylab(expression(C[p]))
 ```
+
 :::
 :::
 
@@ -1609,6 +1642,7 @@ ggplot(data = mse_ridge, aes(x = lambda_tilde_seq, y = Cp)) +
     scale]{.orange}.
 
 ## Cross-validation for ridge regression II
+
 
 ```{r}
 #| message: false
@@ -1673,6 +1707,7 @@ as.numeric(coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha 
 my_ridge(X, y_std, standardize = TRUE, lambda_tilde = lambda_tilde_min_cv)
 ```
 
+
 <!-- ## Leave-one-out cross-validation -->
 
 <!-- -   Ridge regression is, like ordinary least squares, a [linear smoother]{.blue}, namely: -->
@@ -1709,6 +1744,7 @@ my_ridge(X, y_std, standardize = TRUE, lambda_tilde = lambda_tilde_min_cv)
 
 ## The ridge estimate
 
+
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
@@ -1725,6 +1761,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
   xlab("Effective degrees of freedom (df)") +
   ylab("Regression coefficients")
 ```
+
 
 ## Pros and cons of ridge regression
 
@@ -1897,6 +1934,7 @@ For lasso problems we will assume the data have been previously
 
 ## The geometry of the lasso solution
 
+
 ```{r}
 #| purl: false
 #| warning: false
@@ -1936,6 +1974,7 @@ ggplot() +
   annotate("text", x = 5, y = 0.7, label = expression(sum((y[i] - x[i]^T * beta)^2, i == 1, n) == c), col = "#1170aa")
 ```
 
+
 ## Single predictor I
 
 ::: incremental
@@ -1966,6 +2005,7 @@ ggplot() +
 
 ## Single predictor II
 
+
 ```{r}
 x <- seq(-0.5, 0.5, length = 100)
 data_plot <- data.frame(
@@ -1984,6 +2024,7 @@ ggplot(data = data_plot, aes(x = x, y = value, col = Estimate)) +
   xlab(expression(hat(beta)[ols])) +
   ylab(expression(hat(beta)))
 ```
+
 
 ## Soft-thresholding and lasso solution
 
@@ -2008,6 +2049,7 @@ ggplot(data = data_plot, aes(x = x, y = value, col = Estimate)) +
     main intuition is preserved: lasso induces [sparsity]{.orange}!
 
 ## The lasso path
+
 
 ```{r}
 #| warning: false
@@ -2072,6 +2114,7 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
   xlab(expression(lambda)) +
   ylab("Regression coefficients")
 ```
+
 
 <!-- ## Comments on the lasso path -->
 
@@ -2234,6 +2277,7 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 
 ## Effective degrees of freedom of lasso and best subset
 
+
 ```{r}
 #| cache: true
 n_sim <- 100
@@ -2294,7 +2338,9 @@ ggplot(data = data_df, aes(x = active_set, y = df, col = Method)) + geom_point()
 ```
 
 
+
 ## Cross-validation for lasso
+
 
 ```{r}
 #| message: false
@@ -2358,7 +2404,9 @@ t(fit_lasso$beta_scaled)
 coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 1, thresh = 1e-20, lambda = fit_lasso$lambda))
 ```
 
+
 ## The LAR (lasso) estimate
+
 
 ```{r}
 #| fig-width: 9
@@ -2378,6 +2426,7 @@ ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
 ```
 
 
+
 ## Summary of LARS and lasso
 
 ## A comparison between PCR, ridge, and lasso
@@ -2385,6 +2434,7 @@ ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
 ## Summary of the estimated coefficients
 
 ::: {style="font-size: 70%;"}
+
 ```{r}
 library(DT)
 
@@ -2427,9 +2477,11 @@ datatable(tab, colnames = c("OLS", "Best subset", "PCR", "Ridge", "Lasso"), opti
     backgroundColor = styleEqual(0, c("white"))
   )
 ```
+
 :::
 
 ## The results on the test set
+
 
 ```{r}
 X_test <- cbind(1, as.matrix(prostate_test)[, -9])
@@ -2450,6 +2502,7 @@ colnames(tab_results) <-   c("OLS", "Best subset", "PCR", "Ridge", "Lasso")
 rownames(tab_results) <- "Test error"
 knitr::kable(tab_results, digits = 3)
 ```
+
 
 
 # Elastic net
@@ -2549,3 +2602,4 @@ knitr::kable(tab_results, digits = 3)
 <!-- round(coef(lasso_fit, mode = "lambda")[-1, lambda_sel], 5) -->
 
 <!-- ``` -->
+

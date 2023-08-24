@@ -518,6 +518,65 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
   ylab("Regression coefficients")
 
 
+#| cache: true
+n_sim <- 100
+p_sim <- 25
+R <- 1000
+sigma_sim <- 0.5
+
+set.seed(220)
+X_sim <- matrix(runif(n_sim * p_sim), n_sim, p_sim)
+# Here data are not related with any of the covariates
+Y_sim <- matrix(rnorm(n_sim * R, mean = 4, sigma_sim), R, n_sim)
+
+pred_best_sim <- array(0, c(R, n_sim, p_sim + 1))
+pred_lasso_sim <- array(0, c(R, n_sim, p_sim + 1))
+
+for (r in 1:R) {
+  y_sim <- Y_sim[r, ]
+  # Lasso fit
+  lasso_sim <- my_lasso(X_sim, y_sim, standardize = TRUE)
+  # Best subset
+  best_sim <- regsubsets(y_sim ~ X_sim, data = NULL, method = "exhaustive", nbest = 1, nvmax = p_sim)
+  sum_best_sim <- summary(best_sim)
+
+  for (j in 1:(p_sim + 1)) {
+    pred_lasso_sim[r, , j] <- cbind(1, X_sim) %*% lasso_sim$beta_scaled[j, ]
+    if (j == 1) {
+      pred_best_sim[r, , 1] <- pred_lasso_sim[r, , 1]
+    } else {
+      pred_best_sim[r, , j] <- cbind(1, X_sim)[, sum_best_sim$which[j - 1, ]] %*% coef(best_sim, j - 1)
+    }
+  }
+}
+
+df_lasso <- matrix(0, n_sim, p_sim + 1)
+df_best <- matrix(0, n_sim, p_sim + 1)
+
+for (j in 1:(p_sim + 1)) {
+  for (i in 1:n_sim) {
+    df_lasso[i, j] <- cov(pred_lasso_sim[, i, j], Y_sim[, i])
+    df_best[i, j] <- cov(pred_best_sim[, i, j], Y_sim[, i])
+  }
+}
+df_lasso <- colSums(df_lasso) / sigma_sim^2
+df_best <- colSums(df_best) / sigma_sim^2
+
+data_df <- data.frame(active_set = 1:(p_sim + 1), df = c(df_lasso, df_best), Method = rep(c("Lasso", "Best subset"), each = p_sim + 1))
+
+
+
+ggplot(data = data_df, aes(x = active_set, y = df, col = Method)) +
+  geom_point() +
+  geom_line() +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  geom_abline(intercept = 0, slope = 1, linetype = "dotted") +
+  xlab("Number of non-zero coefficients") +
+  ylab("Effective degrees of freedom")
+
+
 #| message: false
 resid_lasso <- matrix(0, n, (p + 1))
 
@@ -577,6 +636,22 @@ t(fit_lasso$beta_scaled)
 coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 1, thresh = 1e-20, lambda = fit_lasso$lambda))
 
 
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+data_lasso$df <- 1:9
+ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
+  geom_point() +
+  geom_line() +
+  theme_light() +
+  geom_vline(xintercept = 4, linetype = "dashed") +
+  scale_x_continuous(breaks = 1:9) +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Degrees of freedom") +
+  ylab("Regression coefficients")
+
+
 
 library(DT)
 
@@ -598,7 +673,7 @@ tab$PCR <- beta_pcr
 
 # Ridge
 
-tab$Ridge <- my_ridge(X, y, standardize = TRUE, lambda_tilde = lambda_tilde_min_cv)
+tab$Ridge <- my_ridge(X, y, standardize = TRUE, lambda_tilde = lambda_tilde_min_cp)
 
 # Lasso
 tab$Lasso <- c(my_lasso(X, y)$beta_scale[4, ])
@@ -618,3 +693,25 @@ datatable(tab, colnames = c("OLS", "Best subset", "PCR", "Ridge", "Lasso"), opti
     columns = 1:5,
     backgroundColor = styleEqual(0, c("white"))
   )
+
+
+
+X_test <- cbind(1, as.matrix(prostate_test)[, -9])
+y_test <- prostate_test[, 9]
+
+pred_ols <- X_test %*% tab$OLS
+pred_best <- X_test %*% tab$best_subset
+pred_pcr <- X_test %*% tab$PCR
+pred_ridge <- X_test %*% tab$Ridge
+pred_lasso <- X_test %*% tab$Lasso
+
+tab_results <- matrix(c(
+  mean((y_test - pred_ols)^2),
+  mean((y_test - pred_best)^2),
+  mean((y_test - pred_pcr)^2),
+  mean((y_test - pred_ridge)^2),
+  mean((y_test - pred_lasso)^2)
+), nrow = 1)
+colnames(tab_results) <- c("OLS", "Best subset", "PCR", "Ridge", "Lasso")
+rownames(tab_results) <- "Test error"
+knitr::kable(tab_results, digits = 3)

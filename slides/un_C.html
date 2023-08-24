@@ -151,19 +151,20 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#single-predictor-ii" id="toc-single-predictor-ii" class="nav-link" data-scroll-target="#single-predictor-ii">Single predictor II</a></li>
   <li><a href="#soft-thresholding-and-lasso-solution" id="toc-soft-thresholding-and-lasso-solution" class="nav-link" data-scroll-target="#soft-thresholding-and-lasso-solution">Soft-thresholding and lasso solution</a></li>
   <li><a href="#the-lasso-path" id="toc-the-lasso-path" class="nav-link" data-scroll-target="#the-lasso-path">The lasso path</a></li>
-  <li><a href="#comments-on-the-lasso-path" id="toc-comments-on-the-lasso-path" class="nav-link" data-scroll-target="#comments-on-the-lasso-path">Comments on the lasso path</a></li>
   <li><a href="#least-angle-regression-i" id="toc-least-angle-regression-i" class="nav-link" data-scroll-target="#least-angle-regression-i">Least angle regression I</a></li>
-  <li><a href="#least-angle-regression-ii" id="toc-least-angle-regression-ii" class="nav-link" data-scroll-target="#least-angle-regression-ii">Least angle regression II</a></li>
-  <li><a href="#least-angle-regression-lasso-modification" id="toc-least-angle-regression-lasso-modification" class="nav-link" data-scroll-target="#least-angle-regression-lasso-modification">Least angle regression: lasso modification</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
+  <li><a href="#least-angle-regression-comments" id="toc-least-angle-regression-comments" class="nav-link" data-scroll-target="#least-angle-regression-comments">Least angle regression: comments</a></li>
+  <li><a href="#lasso-and-lar-relationship" id="toc-lasso-and-lar-relationship" class="nav-link" data-scroll-target="#lasso-and-lar-relationship">☠️ - Lasso and LAR relationship</a></li>
   <li><a href="#uniqueness-of-the-lasso-solution" id="toc-uniqueness-of-the-lasso-solution" class="nav-link" data-scroll-target="#uniqueness-of-the-lasso-solution">Uniqueness of the lasso solution</a></li>
   <li><a href="#the-degrees-of-freedom-of-the-lasso" id="toc-the-degrees-of-freedom-of-the-lasso" class="nav-link" data-scroll-target="#the-degrees-of-freedom-of-the-lasso">The degrees of freedom of the lasso</a></li>
-  <li><a href="#effective-degrees-of-freedom-of-best-subset" id="toc-effective-degrees-of-freedom-of-best-subset" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-of-best-subset">☠️ - Effective degrees of freedom of best subset</a></li>
+  <li><a href="#effective-degrees-of-freedom-of-lasso-and-best-subset" id="toc-effective-degrees-of-freedom-of-lasso-and-best-subset" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-of-lasso-and-best-subset">Effective degrees of freedom of lasso and best subset</a></li>
   <li><a href="#cross-validation-for-lasso" id="toc-cross-validation-for-lasso" class="nav-link" data-scroll-target="#cross-validation-for-lasso">Cross-validation for lasso</a></li>
-  <li><a href="#the-lasso-estimate" id="toc-the-lasso-estimate" class="nav-link" data-scroll-target="#the-lasso-estimate">The lasso estimate</a></li>
+  <li><a href="#the-lar-lasso-estimate" id="toc-the-lar-lasso-estimate" class="nav-link" data-scroll-target="#the-lar-lasso-estimate">The LAR (lasso) estimate</a></li>
+  <li><a href="#summary-of-lars-and-lasso" id="toc-summary-of-lars-and-lasso" class="nav-link" data-scroll-target="#summary-of-lars-and-lasso">Summary of LARS and lasso</a></li>
   <li><a href="#a-comparison-between-pcr-ridge-and-lasso" id="toc-a-comparison-between-pcr-ridge-and-lasso" class="nav-link" data-scroll-target="#a-comparison-between-pcr-ridge-and-lasso">A comparison between PCR, ridge, and lasso</a></li>
   <li><a href="#summary-of-the-estimated-coefficients" id="toc-summary-of-the-estimated-coefficients" class="nav-link" data-scroll-target="#summary-of-the-estimated-coefficients">Summary of the estimated coefficients</a></li>
   <li><a href="#the-results-on-the-test-set" id="toc-the-results-on-the-test-set" class="nav-link" data-scroll-target="#the-results-on-the-test-set">The results on the test set</a></li>
-  <li><a href="#summary-of-lars-and-lasso" id="toc-summary-of-lars-and-lasso" class="nav-link" data-scroll-target="#summary-of-lars-and-lasso">Summary of LARS and lasso</a></li>
   </ul></li>
   <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic net</a></li>
   <li><a href="#computations" id="toc-computations" class="nav-link" data-scroll-target="#computations">Computations</a>
@@ -497,8 +498,8 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </ul>
 <table class="table">
 <colgroup>
-<col style="width: 23%">
-<col style="width: 44%">
+<col style="width: 25%">
+<col style="width: 43%">
 <col style="width: 31%">
 </colgroup>
 <thead>
@@ -528,6 +529,14 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <section id="overview-of-the-final-results" class="level2">
 <h2 class="anchored" data-anchor-id="overview-of-the-final-results">Overview of the final results</h2>
 <table class="table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 19%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 10%">
+</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
@@ -1113,7 +1122,7 @@ Cons
 </span></li>
 </ul>
 <ul>
-<li><p>When the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients are explicitly <span class="orange">shrinked</span>, i.e. biased, <span class="orange">towards zero</span>.</p></li>
+<li><p>When the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients are explicitly <span class="orange">shrinked</span>, i.e.&nbsp;biased, <span class="orange">towards zero</span>.</p></li>
 <li><p>On the other hand, if <span class="math inline">s</span> is large enough, then the ridge estimator coincides with ordinary least squares.</p></li>
 </ul>
 <ul>
@@ -1656,30 +1665,155 @@ Cons
 </div>
 </div>
 </div>
-</section>
-<section id="comments-on-the-lasso-path" class="level2">
-<h2 class="anchored" data-anchor-id="comments-on-the-lasso-path">Comments on the lasso path</h2>
-<ul>
-<li><p>As for ridge regression, the values of <span class="math inline">\lambda</span> are expressed in somewhat <span class="orange">arbitrary scale</span>.</p></li>
-<li><p>There exist a <span class="blue">maximum value</span> <span class="math inline">\lambda_\text{max}</span>, after which all the coefficients are zero: <span class="math display">
-\lambda_\text{max} = \max_{j}\left| \text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \max_{j}\left| \frac{1}{n}\sum_{i=1}^n x_{ij} y_i\right|.
-</span></p></li>
-</ul>
-<ul>
-<li>It is confirmed that the variable <code>lcavol</code> is arguably the most important, followed by <code>lweight</code> and <code>svi</code>, being the last variables to be set equal to zero.</li>
-</ul>
-<ul>
-<li>The coefficient of <code>age</code>, <code>gleason</code> and <code>lcp</code> are negative and then are set equal to zero for higher values of <span class="math inline">\lambda</span>. Compare this with the <span class="orange">ridge path</span>.</li>
-</ul>
+<!-- ## Comments on the lasso path -->
+<!-- -   As for ridge regression, the values of $\lambda$ are expressed in -->
+<!--     somewhat [arbitrary scale]{.orange}. -->
+<!-- -   There exist a [maximum value]{.blue} $\lambda_\text{max}$, after -->
+<!--     which all the coefficients are zero: $$ -->
+<!--     \lambda_\text{max} = \max_{j}\left| \text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \max_{j}\left| \frac{1}{n}\sum_{i=1}^n x_{ij} y_i\right|. -->
+<!--     $$ -->
+<!-- . . . -->
+<!-- -   It is confirmed that the variable `lcavol` is arguably the most -->
+<!--     important, followed by `lweight` and `svi`, being the last variables -->
+<!--     to be set equal to zero. -->
+<!-- . . . -->
+<!-- -   The coefficient of `age`, `gleason` and `lcp` are negative and then -->
+<!--     are set equal to zero for higher values of $\lambda$. Compare this -->
+<!--     with the [ridge path]{.orange}. -->
 </section>
 <section id="least-angle-regression-i" class="level2">
 <h2 class="anchored" data-anchor-id="least-angle-regression-i">Least angle regression I</h2>
+<ul>
+<li>Least angle regression (LAR) is a “<span class="orange">democratic</span>” version of <span class="blue">forward stepwise regression</span>.</li>
+</ul>
+<ul>
+<li><p>Forward stepwise builds a model <span class="blue">sequentially</span>, adding one variable at a time. At each step, the best variable is included in the <span class="orange">active set</span> and then the least square fit is updated.</p></li>
+<li><p>LAR uses a similar strategy, but any new variable contributes to the predictions only “as much” as it deserves.</p></li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Main result of LAR
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>The LAR algorithm provides a way to <span class="blue">compute</span> the entire <span class="orange">lasso path</span> efficiently at the cost of a full least-squares fit.</p></li>
+<li><p>LAR sheds light on important <span class="orange">statistical aspects</span> of the lasso. A nice <span class="blue">LAR - lasso - boosting</span> relationship is established, which is computationally and conceptually useful.</p></li>
+</ul>
+</div>
+</div>
 </section>
-<section id="least-angle-regression-ii" class="level2">
-<h2 class="anchored" data-anchor-id="least-angle-regression-ii">Least angle regression II</h2>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Least angle regression algorithm (LAR)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="incremental">
+<ol class="incremental" type="1">
+<li><p>After centering and standardization, define the residuals <span class="math inline">\bm{r}_0 = \bm{y}</span> and let <span class="math inline">\hat{\beta}^{(0)} = 0</span>.</p></li>
+<li><p>Find the predictor <span class="math inline">\tilde{\bm{x}}_j</span> <span class="blue">most correlated</span> with the residuals <span class="math inline">\bm{r}_0</span>, i.e.&nbsp;having the largest value for <span class="math inline">\text{cov}(\tilde{\bm{x}}_j, \bm{r}_0) = \text{cov}(\tilde{\bm{x}}_j, \bm{y})</span>. Call this value <span class="math inline">\lambda_0</span> and let <span class="math inline">\mathcal{A} = \{j\}</span> be the <span class="orange">active set</span>.</p>
+<ol class="incremental" type="i">
+<li><p><span class="blue">Move</span> <span class="math inline">\beta_j(\lambda)</span> from <span class="math inline">\hat{\beta}_j^{(0)} = 0</span> <span class="blue">towards</span> its <span class="orange">least squares solution</span> by decreasing <span class="math inline">\lambda</span>, i.e.&nbsp;<span class="math display">
+  \beta_j(\lambda) = \frac{\lambda_0 - \lambda}{\lambda_0} \text{cov}(\tilde{\bm{x}}_j, \bm{y}), \qquad 0 &lt; \lambda \le \lambda_0,
+  </span> keeping track of the residuals <span class="math inline">\bm{r}(\lambda) = \bm{y} - \tilde{\bm{x}}_j\beta_j(\lambda)</span>. It can be shown that <span class="math display">
+  |\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\lambda))| = \lambda.
+  </span></p></li>
+<li><p>Identify the value <span class="math inline">\lambda &gt; 0</span> such that <span class="blue">another variable</span> <span class="math inline">\bm{x}_{\ell}</span> has <span class="orange">as much correlation</span> with the residuals as <span class="math inline">\bm{x}_{j}</span>. Call this value <span class="math inline">\lambda_1</span>, obtaining: <span class="math inline">|\text{cov}(\tilde{\bm{x}}_{\ell}, \bm{r}(\lambda_1))| = \lambda_1</span>.</p></li>
+<li><p>Obtain the <span class="blue">estimate</span> <span class="math inline">\hat{\beta}^{(1)} = (0,\dots,\beta_j(\lambda_1), \dots, 0)</span> and set <span class="math inline">\bm{r}_1 = \bm{r}(\lambda_1)</span>. Define the new <span class="orange">active set</span> <span class="math inline">\mathcal{A} = \{j, \ell\}</span> and let <span class="math inline">\bm{X}_\mathcal{A}</span> be the corresponding matrix.</p></li>
+</ol></li>
+</ol>
+</div>
+</div>
+</div>
 </section>
-<section id="least-angle-regression-lasso-modification" class="level2">
-<h2 class="anchored" data-anchor-id="least-angle-regression-lasso-modification">Least angle regression: lasso modification</h2>
+<section id="section-1" class="level2">
+<h2 class="anchored" data-anchor-id="section-1"></h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Least angle regression algorithm (LAR)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<div class="incremental">
+<ol class="incremental" start="3" type="1">
+<li><p>For <span class="math inline">k =2,\dots,K = \min(n-1,p)</span>, do:</p>
+<ol class="incremental" type="i">
+<li><p><span class="blue">Move</span> the coefficients <span class="math inline">\beta_\mathcal{A}(\lambda)</span> from <span class="math inline">\hat{\beta}_\mathcal{A}^{(k-1)}</span> <span class="blue">towards</span> their <span class="orange">least squares solution</span>: <span class="math display">
+\beta_\mathcal{A}(\lambda) = \hat{\beta}_\mathcal{A}^{(k-1)} + \frac{\lambda_{k-1} - \lambda}{\lambda_{k-1}}(\bm{X}_\mathcal{A}^T\bm{X}_\mathcal{A})^{-1}\bm{X}_\mathcal{A}^T\bm{r}_{k-1}, \qquad 0 &lt; \lambda \le \lambda_{k-1},
+</span> keeping track of <span class="math inline">\bm{r}(\lambda) = \bm{y} - \bm{X}_\mathcal{A}\beta_\mathcal{A}(\lambda)</span>. The covariances with the residuals are <span class="orange">tied</span>: <span class="math display">
+|\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\lambda))| = \lambda, \qquad j \in \mathcal{A}.
+</span></p></li>
+<li><p>Identify the largest value <span class="math inline">\lambda &gt; 0</span> such that <span class="blue">another variable</span> <span class="math inline">\bm{x}_{\ell}</span> has <span class="orange">as much correlation</span> with the residuals. Call this value <span class="math inline">\lambda_k</span>, so that <span class="math inline">|\text{cov}(\tilde{\bm{x}}_{\ell}, \bm{r}(\lambda_k))| = \lambda_k</span>.</p></li>
+<li><p>Set the <span class="blue">estimate</span> <span class="math inline">\hat{\beta}^{(k)}</span> with entries <span class="math inline">\hat{\beta}_\mathcal{A}^{(k)} = \beta_\mathcal{A}(\lambda_k)</span> and zero otherwise. Let <span class="math inline">\bm{r}_k = \bm{r}(\lambda_k)</span>. Define the new <span class="orange">active set</span> <span class="math inline">\mathcal{A} \leftarrow \mathcal{A} \cup \{\ell \}</span> and design matrix <span class="math inline">\bm{X}_\mathcal{A}</span>.</p></li>
+</ol></li>
+<li><p>Return the pairs <span class="math inline">\{\lambda_k, \hat{\beta}^{(k)}\}_0^K</span>.</p></li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="least-angle-regression-comments" class="level2">
+<h2 class="anchored" data-anchor-id="least-angle-regression-comments">Least angle regression: comments</h2>
+<ul>
+<li>By construction, the coefficients in LAR change in a <span class="orange">piecewise</span> fashion, with knots in <span class="math inline">\lambda_k</span>. The LAR path coincides <span class="blue">almost always</span> with the lasso. If not, a simple modification is needed:</li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+LAR: lasso modification
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>3.ii+. If a nonzero coefficient crosses zero before the next variable enters, drop it from <span class="math inline">\mathcal{A}</span> and recompute the joint least-squares direction using the reduced set.</p>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Practical details
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>In <span class="blue">Step 3.ii</span>, we do <span class="orange">not</span> take small steps and then recheck the covariances. Instead, the new variable <span class="math inline">\bm{x}_\ell</span> “catching up” and the value <span class="math inline">\lambda_k</span> can be identified with some algebra.</p></li>
+<li><p>The LAR algorithm is <span class="orange">extremely efficient</span>, requiring the same order of computation of least squares. The main bottleneck is <span class="blue">Step 3.i</span>, but <span class="blue">QR decomposition</span> can be exploited.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="lasso-and-lar-relationship" class="level2">
+<h2 class="anchored" data-anchor-id="lasso-and-lar-relationship">☠️ - Lasso and LAR relationship</h2>
+<ul>
+<li>What follows is <span class="orange">heuristic intuition</span> for why LAR and lasso are so similar. By construction, at any stage of the LAR algorithm, we have that: <span class="math display">
+\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\lambda)) = \frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - \bm{x}_i^T\beta(\lambda)\} = \lambda s_j, \qquad j \in \mathcal{A},
+</span> where <span class="math inline">s_j \in \{-1, 1\}</span> indicates the <span class="blue">sign of the covariance</span>.</li>
+</ul>
+<ul>
+<li>On the other hand, let <span class="math inline">\mathcal{A}_\text{lasso}</span> be the active set of the lasso. For these variables, the penalized lasso loss is differentiable, obtaining: <span class="math display">
+\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\lambda)) = \frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - \bm{x}_i^T\beta(\lambda)\} = \lambda \text{sign}(\beta_j), \qquad j \in \mathcal{A}_\text{lasso},
+</span> which <span class="orange">coincide</span> with the LAR solution if <span class="math inline">s_j = \text{sign}(\beta_j)</span>, which is <span class="blue">almost always the case</span>.</li>
+</ul>
 </section>
 <section id="uniqueness-of-the-lasso-solution" class="level2">
 <h2 class="anchored" data-anchor-id="uniqueness-of-the-lasso-solution">Uniqueness of the lasso solution</h2>
@@ -1687,8 +1821,13 @@ Cons
 <section id="the-degrees-of-freedom-of-the-lasso" class="level2">
 <h2 class="anchored" data-anchor-id="the-degrees-of-freedom-of-the-lasso">The degrees of freedom of the lasso</h2>
 </section>
-<section id="effective-degrees-of-freedom-of-best-subset" class="level2">
-<h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-of-best-subset">☠️ - Effective degrees of freedom of best subset</h2>
+<section id="effective-degrees-of-freedom-of-lasso-and-best-subset" class="level2">
+<h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-of-lasso-and-best-subset">Effective degrees of freedom of lasso and best subset</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="un_C_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="1400"></p>
+</div>
+</div>
 </section>
 <section id="cross-validation-for-lasso" class="level2">
 <h2 class="anchored" data-anchor-id="cross-validation-for-lasso">Cross-validation for lasso</h2>
@@ -1696,14 +1835,26 @@ Cons
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_C_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="2000"></p>
+<p><img src="un_C_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid figure-img" width="2000"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="the-lasso-estimate" class="level2">
-<h2 class="anchored" data-anchor-id="the-lasso-estimate">The lasso estimate</h2>
+<section id="the-lar-lasso-estimate" class="level2">
+<h2 class="anchored" data-anchor-id="the-lar-lasso-estimate">The LAR (lasso) estimate</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_C_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid figure-img" width="1800"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="summary-of-lars-and-lasso" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-lars-and-lasso">Summary of LARS and lasso</h2>
 </section>
 <section id="a-comparison-between-pcr-ridge-and-lasso" class="level2">
 <h2 class="anchored" data-anchor-id="a-comparison-between-pcr-ridge-and-lasso">A comparison between PCR, ridge, and lasso</h2>
@@ -1714,17 +1865,40 @@ Cons
 <div class="cell">
 <div class="cell-output-display">
 
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-030c44f57ef298331558" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-030c44f57ef298331558">{"x":{"filter":"none","vertical":false,"data":[["(Intercept)","lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45"],[2.464932922123746,0.6795281412379753,0.2630530657325436,-0.1414648335361718,0.2101465572218274,0.3052005971250976,-0.2884927724535462,-0.02130503880294818,0.2669557621199238],[2.477357342449561,0.7397136698758431,0.3163281888271424,0,0,0,0,0,0],[2.455021592228732,0.28666128271838,0.3391036880563065,0.05628528949356446,0.1015283806908212,0.2614850538133577,0.2186806183758075,-0.01605594153820394,0.06170971163528362],[2.458412811986567,0.2948356370931464,0.1837002153773017,-0.001065139246989107,0.1290725174241039,0.1869342201757897,0.07014187391316176,0.05382774266578681,0.1042674615017758],[2.468314602273341,0.5321289780171816,0.1687891416769021,0,0,0.09162985645647606,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>OLS<\/th>\n      <th>Best subset<\/th>\n      <th>PCR<\/th>\n      <th>Ridge<\/th>\n      <th>Lasso<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":9,"dom":"t","columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[9,10,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'font-weight':'bold'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':value == 0 ? \"white\" : null});\n}"}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.rowCallback"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ba1298be91b9c2bfa977" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ba1298be91b9c2bfa977">{"x":{"filter":"none","vertical":false,"data":[["(Intercept)","lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45"],[2.464932922123746,0.6795281412379753,0.2630530657325436,-0.1414648335361718,0.2101465572218274,0.3052005971250976,-0.2884927724535462,-0.02130503880294818,0.2669557621199238],[2.477357342449561,0.7397136698758431,0.3163281888271424,0,0,0,0,0,0],[2.455021592228732,0.28666128271838,0.3391036880563065,0.05628528949356446,0.1015283806908212,0.2614850538133577,0.2186806183758075,-0.01605594153820394,0.06170971163528362],[2.466944796713691,0.5882288487041073,0.2581760179326362,-0.1128882084901707,0.2011682585074611,0.2832605085528286,-0.1721357517114823,0.01032273985298109,0.2040346251751619],[2.468314602273341,0.5321289780171816,0.1687891416769021,0,0,0.09162985645647606,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>OLS<\/th>\n      <th>Best subset<\/th>\n      <th>PCR<\/th>\n      <th>Ridge<\/th>\n      <th>Lasso<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":9,"dom":"t","columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[9,10,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'font-weight':'bold'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':value == 0 ? \"white\" : null});\n}"}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.rowCallback"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
 </section>
 <section id="the-results-on-the-test-set" class="level2">
 <h2 class="anchored" data-anchor-id="the-results-on-the-test-set">The results on the test set</h2>
-</section>
-<section id="summary-of-lars-and-lasso" class="level2">
-<h2 class="anchored" data-anchor-id="summary-of-lars-and-lasso">Summary of LARS and lasso</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">OLS</th>
+<th style="text-align: right;">Best subset</th>
+<th style="text-align: right;">PCR</th>
+<th style="text-align: right;">Ridge</th>
+<th style="text-align: right;">Lasso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">MSE</td>
+<td style="text-align: right;">0.521274</td>
+<td style="text-align: right;">0.4924823</td>
+<td style="text-align: right;">0.4956846</td>
+<td style="text-align: right;">0.4956885</td>
+<td style="text-align: right;">0.4798852</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </section>
 </section>
 <section id="elastic-net" class="level1">
