@@ -158,15 +158,15 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#lasso-and-lar-relationship" id="toc-lasso-and-lar-relationship" class="nav-link" data-scroll-target="#lasso-and-lar-relationship">☠️ - Lasso and LAR relationship</a></li>
   <li><a href="#uniqueness-of-the-lasso-solution" id="toc-uniqueness-of-the-lasso-solution" class="nav-link" data-scroll-target="#uniqueness-of-the-lasso-solution">Uniqueness of the lasso solution</a></li>
   <li><a href="#the-degrees-of-freedom-of-the-lasso" id="toc-the-degrees-of-freedom-of-the-lasso" class="nav-link" data-scroll-target="#the-degrees-of-freedom-of-the-lasso">The degrees of freedom of the lasso</a></li>
-  <li><a href="#effective-degrees-of-freedom-of-lasso-and-best-subset" id="toc-effective-degrees-of-freedom-of-lasso-and-best-subset" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-of-lasso-and-best-subset">Effective degrees of freedom of lasso and best subset</a></li>
+  <li><a href="#effective-degrees-of-freedom-of-lar-and-best-subset" id="toc-effective-degrees-of-freedom-of-lar-and-best-subset" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-of-lar-and-best-subset">☠️ - Effective degrees of freedom of LAR and best subset</a></li>
   <li><a href="#cross-validation-for-lasso" id="toc-cross-validation-for-lasso" class="nav-link" data-scroll-target="#cross-validation-for-lasso">Cross-validation for lasso</a></li>
   <li><a href="#the-lar-lasso-estimate" id="toc-the-lar-lasso-estimate" class="nav-link" data-scroll-target="#the-lar-lasso-estimate">The LAR (lasso) estimate</a></li>
   <li><a href="#summary-of-lars-and-lasso" id="toc-summary-of-lars-and-lasso" class="nav-link" data-scroll-target="#summary-of-lars-and-lasso">Summary of LARS and lasso</a></li>
   <li><a href="#a-comparison-between-pcr-ridge-and-lasso" id="toc-a-comparison-between-pcr-ridge-and-lasso" class="nav-link" data-scroll-target="#a-comparison-between-pcr-ridge-and-lasso">A comparison between PCR, ridge, and lasso</a></li>
   <li><a href="#summary-of-the-estimated-coefficients" id="toc-summary-of-the-estimated-coefficients" class="nav-link" data-scroll-target="#summary-of-the-estimated-coefficients">Summary of the estimated coefficients</a></li>
   <li><a href="#the-results-on-the-test-set" id="toc-the-results-on-the-test-set" class="nav-link" data-scroll-target="#the-results-on-the-test-set">The results on the test set</a></li>
-  </ul></li>
   <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic net</a></li>
+  </ul></li>
   <li><a href="#computations" id="toc-computations" class="nav-link" data-scroll-target="#computations">Computations</a>
   <ul class="collapse">
   <li><a href="#computations-for-ridge-lasso-and-elastic-net" id="toc-computations-for-ridge-lasso-and-elastic-net" class="nav-link" data-scroll-target="#computations-for-ridge-lasso-and-elastic-net">Computations for ridge, lasso and elastic net</a></li>
@@ -1817,15 +1817,62 @@ Practical details
 </section>
 <section id="uniqueness-of-the-lasso-solution" class="level2">
 <h2 class="anchored" data-anchor-id="uniqueness-of-the-lasso-solution">Uniqueness of the lasso solution</h2>
+<ul>
+<li>The lasso can be computed even when <span class="math inline">p &gt; n</span>. In those cases, will it be <span class="orange">unique</span>?</li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Three uniqueness results
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>If <span class="math inline">\bm{X}</span> has <span class="blue">full rank</span> <span class="math inline">\text{rk}(\bm{X}) = p</span>, which implies <span class="math inline">p \le n</span>, then <span class="math inline">\hat{\beta}_\text{lasso}</span> is uniquely determined.</p></li>
+<li><p>If <span class="orange">all</span> the values of <span class="math inline">\bm{X}</span> are <span class="orange">different</span>, then <span class="math inline">\hat{\beta}_\text{lasso}</span> is uniquely determined, even when <span class="math inline">p &gt; n</span>.</p></li>
+<li><p>The <span class="blue">predictions</span> <span class="math inline">\bm{X}\hat{\beta}_\text{lasso}</span> are always uniquely determined.</p></li>
+</ul>
+</div>
+</div>
+<ul>
+<li><p>Non-uniqueness occurs in presence of <span class="orange">discrete-valued</span> data. It is of practical concern only whenever <span class="math inline">p &gt; n</span> and if we are interested in interpreting the coefficients.</p></li>
+<li><p>Much more <span class="blue">general</span> sufficient conditions for the uniqueness of <span class="math inline">\hat{\beta}_\text{lasso}</span> are known, but they are quite technical and hard to check in practice.</p></li>
+</ul>
 </section>
 <section id="the-degrees-of-freedom-of-the-lasso" class="level2">
 <h2 class="anchored" data-anchor-id="the-degrees-of-freedom-of-the-lasso">The degrees of freedom of the lasso</h2>
+<ul>
+<li>In ridge regression, the <span class="blue">effective degrees of freedom</span> have a simple formula.</li>
+</ul>
+<ul>
+<li><span class="orange">Miraculously</span>, one can show that for the lasso, with a fixed penalty parameter <span class="math inline">\lambda</span>, the number of nonzero coefficients <span class="math inline">|\mathcal{A}_\text{lasso}(\lambda)|</span> is an <span class="blue">unbiased estimate</span> of the degrees of freedom.</li>
+</ul>
+<ul>
+<li>More formally, suppose <span class="math inline">\bm{X}</span> has <span class="orange">full rank</span> <span class="math inline">\text{rk}(\bm{X}) = p</span> and <span class="math inline">\bm{y}</span> follows a Gaussian law. Then: <span class="math display">
+\text{df}_\text{lasso} = 1 + \mathbb{E}|\mathcal{A}_\text{lasso}(\lambda)|.
+</span></li>
+</ul>
+<ul>
+<li>The above relationship is <span class="blue">exact</span> if we consider the <span class="orange">LAR active set</span> and under further conditions, implicitly using a different set of <span class="math inline">\lambda</span> values for any fit: <span class="math display">
+\text{df}_\text{lar} = 1 + |\mathcal{A}|.
+</span></li>
+</ul>
+<ul>
+<li>Generalizations of these results to the <span class="math inline">p &gt; n</span> case are possible.</li>
+</ul>
 </section>
-<section id="effective-degrees-of-freedom-of-lasso-and-best-subset" class="level2">
-<h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-of-lasso-and-best-subset">Effective degrees of freedom of lasso and best subset</h2>
-<div class="cell" data-hash="un_C_cache/html/unnamed-chunk-33_9b0b0a2ac153444506ff405ac264c4ea">
+<section id="effective-degrees-of-freedom-of-lar-and-best-subset" class="level2">
+<h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-of-lar-and-best-subset">☠️ - Effective degrees of freedom of LAR and best subset</h2>
+<div class="cell" data-layout-align="center" data-hash="un_C_cache/html/unnamed-chunk-33_0fd4fbf48694afc4287ec2f17139542d">
 <div class="cell-output-display">
-<p><img src="un_C_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="1400"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_C_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid figure-img" width="1800"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -1843,7 +1890,7 @@ Practical details
 </section>
 <section id="the-lar-lasso-estimate" class="level2">
 <h2 class="anchored" data-anchor-id="the-lar-lasso-estimate">The LAR (lasso) estimate</h2>
-<div class="cell" data-layout-align="center" data-hash="un_C_cache/html/unnamed-chunk-37_bda5950ec665f281e956670bc1e96c34">
+<div class="cell" data-layout-align="center" data-hash="un_C_cache/html/unnamed-chunk-37_01571b78dba2495ca6d56929ffb072d1">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1900,9 +1947,9 @@ Practical details
 </div>
 </div>
 </section>
+<section id="elastic-net" class="level2">
+<h2 class="anchored" data-anchor-id="elastic-net">Elastic net</h2>
 </section>
-<section id="elastic-net" class="level1">
-<h1>Elastic net</h1>
 </section>
 <section id="computations" class="level1">
 <h1>Computations</h1>

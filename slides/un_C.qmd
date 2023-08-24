@@ -2277,7 +2277,7 @@ $$
 
 . . .
 
-- Generalizations of these results to the $p > n$ are possible. 
+- Generalizations of these results to the $p > n$ case are possible. 
 
 ## ☠️ - Effective degrees of freedom of LAR and best subset
 
@@ -2330,6 +2330,9 @@ data_df <- data.frame(active_set = 1:(p_sim +1), df = c(df_lasso, df_best), Meth
 ```
 
 ```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
 ggplot(data = data_df, aes(x = active_set, y = df, col = Method)) + geom_point() +
   geom_line() +
   theme_light() +
@@ -2411,6 +2414,7 @@ coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 1, thresh
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
+
 data_lasso$df <- 1:9
 ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
   geom_point() +
@@ -2499,7 +2503,7 @@ knitr::kable(tab_results, digits = 3)
 ```
 
 
-# Elastic net
+## Elastic net
 
 # Computations
 
