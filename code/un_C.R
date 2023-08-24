@@ -521,7 +521,7 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
 #| cache: true
 n_sim <- 100
 p_sim <- 25
-R <- 1000
+R <- 5000
 sigma_sim <- 0.5
 
 set.seed(220)

@@ -3,3 +3,9 @@
 .RData
 .Ruserdata
 data/drivers.csv
+*.rdb
+*.rdx
+*.RData
+slides/un_C_cache/html/__packages
+slides/un_C_cache/revealjs/__packages
+slides/un_C_cache/.DS_Store

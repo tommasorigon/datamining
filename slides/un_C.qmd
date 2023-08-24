@@ -4,7 +4,7 @@ subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
 execute:
-  cache: false
+  cache: true
 filters: 
   - remove-pause.lua
 format:
@@ -318,15 +318,15 @@ knitr::kable(tab, digits = 2)
 
 |               | Least squares | Best subset |    PCR |  Ridge | Lasso |
 |:--------------|--------------:|------------:|-------:|-------:|------:|
-| `(Intercept)` |         2.465 |       2.477 |  2.455 |  2.458 | 2.468 |
-| `lcavol`      |         0.680 |       0.740 |  0.287 |  0.295 | 0.532 |
-| `lweight`     |         0.263 |       0.316 |  0.339 |  0.184 | 0.169 |
-| `age`         |        -0.141 |           . |  0.056 | -0.001 |     . |
-| `lbph`        |         0.210 |           . |  0.102 |  0.129 |     . |
-| `svi`         |         0.305 |           . |  0.261 |  0.187 | 0.092 |
-| `lcp`         |        -0.288 |           . |  0.219 |  0.070 |     . |
-| `gleason`     |        -0.021 |           . | -0.016 |  0.054 |     . |
-| `pgg45`       |         0.267 |           . |  0.062 |  0.104 |     . |
+| `(Intercept)` |         2.465 |       2.477 |  2.455 |  2.467 | 2.468 |
+| `lcavol`      |         0.680 |       0.740 |  0.287 |  0.588 | 0.532 |
+| `lweight`     |         0.263 |       0.316 |  0.339 |  0.258 | 0.169 |
+| `age`         |        -0.141 |           . |  0.056 | -0.113 |     . |
+| `lbph`        |         0.210 |           . |  0.102 |  0.201 |     . |
+| `svi`         |         0.305 |           . |  0.261 |  0.283 | 0.092 |
+| `lcp`         |        -0.288 |           . |  0.219 |  -0.172|     . |
+| `gleason`     |        -0.021 |           . | -0.016 |  0.010 |     . |
+| `pgg45`       |         0.267 |           . |  0.062 |  0.204 |     . |
 
 # Best subset selection
 
@@ -2230,6 +2230,28 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 
 ## Uniqueness of the lasso solution
 
+- The lasso can be computed even when $p > n$. In those cases, will it be [unique]{.orange}?
+
+. . .
+
+::: callout-note
+#### Three uniqueness results
+
+- If $\bm{X}$ has [full rank]{.blue} $\text{rk}(\bm{X}) = p$, which implies $p \le n$, then $\hat{\beta}_\text{lasso}$ is uniquely determined.
+
+- If [all]{.orange} the values of $\bm{X}$ are [different]{.orange}, then $\hat{\beta}_\text{lasso}$ is uniquely determined, even when $p > n$.
+
+- The [predictions]{.blue} $\bm{X}\hat{\beta}_\text{lasso}$ are always uniquely determined.
+
+:::
+
+. . .
+
+- Non-uniqueness occurs in presence of [discrete-valued]{.orange} data. It is of practical concern only whenever $p > n$ and if we are interested in interpreting the coefficients. 
+
+- Much more [general]{.blue} sufficient conditions for the uniqueness of $\hat{\beta}_\text{lasso}$ are known, but they are quite technical and hard to check in practice.  
+
+
 ## The degrees of freedom of the lasso
 
 ## Effective degrees of freedom of lasso and best subset
@@ -2238,7 +2260,7 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 #| cache: true
 n_sim <- 100
 p_sim <- 25
-R <- 1000
+R <- 5000
 sigma_sim <- 0.5
 
 set.seed(220)
