@@ -2239,7 +2239,7 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 
 - If $\bm{X}$ has [full rank]{.blue} $\text{rk}(\bm{X}) = p$, which implies $p \le n$, then $\hat{\beta}_\text{lasso}$ is uniquely determined.
 
-- If [all]{.orange} the values of $\bm{X}$ are [different]{.orange}, then $\hat{\beta}_\text{lasso}$ is uniquely determined, even when $p > n$.
+- If [all]{.orange} the values of $\bm{X}$ are [different]{.orange}, then $\hat{\beta}_\text{lasso}$ is uniquely determined, even when $p > n$. 
 
 - The [predictions]{.blue} $\bm{X}\hat{\beta}_\text{lasso}$ are always uniquely determined.
 
@@ -2254,7 +2254,32 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 
 ## The degrees of freedom of the lasso
 
-## Effective degrees of freedom of lasso and best subset
+- In ridge regression, the [effective degrees of freedom]{.blue} have a simple formula.
+
+. . .
+
+- [Miraculously]{.orange}, one can show that for the lasso, with a fixed penalty parameter $\lambda$, the number of nonzero coefficients $|\mathcal{A}_\text{lasso}(\lambda)|$ is an [unbiased estimate]{.blue} of the degrees of freedom.
+
+. . .
+
+- More formally, suppose $\bm{X}$ has [full rank]{.orange} $\text{rk}(\bm{X}) = p$ and $\bm{y}$ follows a Gaussian law. Then:
+$$
+\text{df}_\text{lasso} = 1 + \mathbb{E}|\mathcal{A}_\text{lasso}(\lambda)|.
+$$
+
+. . .
+
+
+- The above relationship is [exact]{.blue} if we consider the [LAR active set]{.orange} and under further conditions, implicitly using a different set of $\lambda$ values for any fit:
+$$
+\text{df}_\text{lar} = 1 + |\mathcal{A}|.
+$$
+
+. . .
+
+- Generalizations of these results to the $p > n$ are possible. 
+
+## ☠️ - Effective degrees of freedom of LAR and best subset
 
 ```{r}
 #| cache: true
@@ -2301,7 +2326,7 @@ for (j in 1:(p_sim + 1)) {
 df_lasso <- colSums(df_lasso) / sigma_sim^2
 df_best <- colSums(df_best) / sigma_sim^2
 
-data_df <- data.frame(active_set = 1:(p_sim +1), df = c(df_lasso, df_best), Method = rep(c("Lasso", "Best subset"), each = p_sim + 1))
+data_df <- data.frame(active_set = 1:(p_sim +1), df = c(df_lasso, df_best), Method = rep(c("LAR", "Best subset"), each = p_sim + 1))
 ```
 
 ```{r}

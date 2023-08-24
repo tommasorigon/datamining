@@ -1953,9 +1953,36 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </section>
 <section id="the-degrees-of-freedom-of-the-lasso" class="slide level2 center">
 <h2>The degrees of freedom of the lasso</h2>
+<ul>
+<li>In ridge regression, the <span class="blue">effective degrees of freedom</span> have a simple formula.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><span class="orange">Miraculously</span>, one can show that for the lasso, with a fixed penalty parameter <span class="math inline">\lambda</span>, the number of nonzero coefficients <span class="math inline">|\mathcal{A}_\text{lasso}(\lambda)|</span> is an <span class="blue">unbiased estimate</span> of the degrees of freedom.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>More formally, suppose <span class="math inline">\bm{X}</span> has <span class="orange">full rank</span> <span class="math inline">\text{rk}(\bm{X}) = p</span> and <span class="math inline">\bm{y}</span> follows a Gaussian law. Then: <span class="math display">
+\text{df}_\text{lasso} = 1 + \mathbb{E}|\mathcal{A}_\text{lasso}(\lambda)|.
+</span></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>The above relationship is <span class="blue">exact</span> if we consider the <span class="orange">LAR active set</span> and under further conditions, implicitly using a different set of <span class="math inline">\lambda</span> values for any fit: <span class="math display">
+\text{df}_\text{lar} = 1 + |\mathcal{A}|.
+</span></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Generalizations of these results to the <span class="math inline">p &gt; n</span> are possible.</li>
+</ul>
+</div>
 </section>
-<section id="effective-degrees-of-freedom-of-lasso-and-best-subset" class="slide level2 center">
-<h2>Effective degrees of freedom of lasso and best subset</h2>
+<section id="effective-degrees-of-freedom-of-lar-and-best-subset" class="slide level2 center">
+<h2>☠️ - Effective degrees of freedom of LAR and best subset</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-33-1.png" width="2000" class="r-stretch"></section>
 <section id="cross-validation-for-lasso" class="slide level2 center">
