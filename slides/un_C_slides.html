@@ -1594,8 +1594,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <!-- -   Ridge regression trades some [bias]{.orange} in exchange of a [lower variance]{.blue}, often resulting in more accurate predictions. -->
 <ul>
 <li><p>The ridge solution <span class="orange">always exists</span> and is <span class="blue">unique</span>, even when <span class="math inline">p &gt; n</span> or in presence of perfect <span class="orange">collinearity</span>.</p></li>
-<li><p>For fixed values of <span class="math inline">\lambda</span>, <span class="orange">efficient computations</span> are available using QR and Cholesky decomposition.</p></li>
-<li><p>At the end of this unit we will describe a <span class="blue">general optimization strategy</span> that recovers the entire “ridge path”, i.e.&nbsp;the estimate <span class="math inline">\hat{\beta}_\text{ridge}</span> for several values of <span class="math inline">\lambda</span>.</p></li>
+<li><p>For fixed values of <span class="math inline">\lambda</span>, <span class="blue">efficient computations</span> are available using QR and Cholesky decompositions. <!-- -   At the end of this unit we will describe a [general optimization --> <!--     strategy]{.blue} that recovers the entire "ridge path", i.e. the --> <!--     estimate $\hat{\beta}_\text{ridge}$ for several values of $\lambda$. --></p></li>
 <li><p>Ridge regression has also a transparent <span class="orange">Bayesian interpretation</span>, since the penalty can be interpreted as a Gaussian prior on <span class="math inline">\beta</span>.</p></li>
 </ul>
 </div>
@@ -1875,8 +1874,8 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 </div>
 </section>
-<section id="least-angle-regression-comments" class="slide level2 center">
-<h2>Least angle regression: comments</h2>
+<section id="least-angle-regression-remarks" class="slide level2 center">
+<h2>Least angle regression: remarks</h2>
 <ul>
 <li>By construction, the coefficients in LAR change in a <span class="orange">piecewise</span> fashion, with knots in <span class="math inline">\lambda_k</span>. The LAR path coincides <span class="blue">almost always</span> with the lasso. If not, a simple modification is needed:</li>
 </ul>
@@ -1946,7 +1945,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 <div class="fragment">
 <ul>
-<li><p>Non-uniqueness occurs in presence of <span class="orange">discrete-valued</span> data. It is of practical concern only whenever <span class="math inline">p &gt; n</span> and if we are interested in interpreting the coefficients.</p></li>
+<li><p>Non-uniqueness may occur in presence of <span class="orange">discrete-valued</span> data. It is of practical concern only whenever <span class="math inline">p &gt; n</span> and if we are interested in interpreting the coefficients.</p></li>
 <li><p>Much more <span class="blue">general</span> sufficient conditions for the uniqueness of <span class="math inline">\hat{\beta}_\text{lasso}</span> are known, but they are quite technical and hard to check in practice.</p></li>
 </ul>
 </div>
@@ -1958,7 +1957,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </ul>
 <div class="fragment">
 <ul>
-<li><span class="orange">Miraculously</span>, one can show that for the lasso, with a fixed penalty parameter <span class="math inline">\lambda</span>, the number of nonzero coefficients <span class="math inline">|\mathcal{A}_\text{lasso}(\lambda)|</span> is an <span class="blue">unbiased estimate</span> of the degrees of freedom.</li>
+<li><span class="orange">Miraculously</span>, for the lasso with a fixed penalty parameter <span class="math inline">\lambda</span>, the number of nonzero coefficients <span class="math inline">|\mathcal{A}_\text{lasso}(\lambda)|</span> is an <span class="blue">unbiased estimate</span> of the degrees of freedom.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -1970,7 +1969,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 <div class="fragment">
 <ul>
-<li>The above relationship is <span class="blue">exact</span> if we consider the <span class="orange">LAR active set</span> and under further conditions, implicitly using a different set of <span class="math inline">\lambda</span> values for any fit: <span class="math display">
+<li>Under further regularity conditions, the above relationship is <span class="blue">exact</span> if we consider the <span class="orange">LAR active set</span>, therefore implicitly using a different set of <span class="math inline">\lambda</span> values for any fit: <span class="math display">
 \text{df}_\text{lar} = 1 + |\mathcal{A}|.
 </span></li>
 </ul>
@@ -1995,9 +1994,35 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-37-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="summary-of-lars-and-lasso" class="slide level2 center">
 <h2>Summary of LARS and lasso</h2>
-</section>
-<section id="a-comparison-between-pcr-ridge-and-lasso" class="slide level2 center">
-<h2>A comparison between PCR, ridge, and lasso</h2>
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Pros</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>LAR and Lasso are extremely efficient approaches that perform both <span class="blue">variable selection</span> and <span class="orange">shrinkage</span> at the same time. It produces a <span class="blue">parsimonious</span> model.</p></li>
+<li><p><span class="blue">Bayesian interpretation</span>: the penalty can be interpreted as a Laplace prior on <span class="math inline">\beta</span>.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-warning no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Cons</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>Lasso can be applied when <span class="math inline">p &gt; n</span>, but there might be <span class="orange">uniqueness</span> issues. Moreover, the lasso selects at most <span class="math inline">n</span> variables.</p></li>
+<li><p>If there is a group of variables with high pairwise correlations, the lasso tends to “randomly” select only one variable from the group.</p></li>
+<li><p>When <span class="math inline">p &lt; n</span>, if there are <span class="orange">high correlations</span> between predictors, it has been empirically observed that the prediction performance of the lasso is dominated by ridge regression.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="summary-of-the-estimated-coefficients" class="slide level2 center">
 <h2>Summary of the estimated coefficients</h2>
@@ -2039,14 +2064,14 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </table>
 </div>
 </div>
+</section></section>
+<section>
+<section id="elastic-net-and-pathwise-algorithms" class="title-slide slide level1 center">
+<h1>Elastic net and pathwise algorithms</h1>
+
 </section>
 <section id="elastic-net" class="slide level2 center">
 <h2>Elastic net</h2>
-</section></section>
-<section>
-<section id="computations" class="title-slide slide level1 center">
-<h1>Computations</h1>
-
 </section>
 <section id="computations-for-ridge-lasso-and-elastic-net" class="slide level2 center">
 <h2>Computations for ridge, lasso and elastic net</h2>

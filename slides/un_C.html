@@ -154,7 +154,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#least-angle-regression-i" id="toc-least-angle-regression-i" class="nav-link" data-scroll-target="#least-angle-regression-i">Least angle regression I</a></li>
   <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
   <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
-  <li><a href="#least-angle-regression-comments" id="toc-least-angle-regression-comments" class="nav-link" data-scroll-target="#least-angle-regression-comments">Least angle regression: comments</a></li>
+  <li><a href="#least-angle-regression-remarks" id="toc-least-angle-regression-remarks" class="nav-link" data-scroll-target="#least-angle-regression-remarks">Least angle regression: remarks</a></li>
   <li><a href="#lasso-and-lar-relationship" id="toc-lasso-and-lar-relationship" class="nav-link" data-scroll-target="#lasso-and-lar-relationship">☠️ - Lasso and LAR relationship</a></li>
   <li><a href="#uniqueness-of-the-lasso-solution" id="toc-uniqueness-of-the-lasso-solution" class="nav-link" data-scroll-target="#uniqueness-of-the-lasso-solution">Uniqueness of the lasso solution</a></li>
   <li><a href="#the-degrees-of-freedom-of-the-lasso" id="toc-the-degrees-of-freedom-of-the-lasso" class="nav-link" data-scroll-target="#the-degrees-of-freedom-of-the-lasso">The degrees of freedom of the lasso</a></li>
@@ -162,13 +162,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#cross-validation-for-lasso" id="toc-cross-validation-for-lasso" class="nav-link" data-scroll-target="#cross-validation-for-lasso">Cross-validation for lasso</a></li>
   <li><a href="#the-lar-lasso-estimate" id="toc-the-lar-lasso-estimate" class="nav-link" data-scroll-target="#the-lar-lasso-estimate">The LAR (lasso) estimate</a></li>
   <li><a href="#summary-of-lars-and-lasso" id="toc-summary-of-lars-and-lasso" class="nav-link" data-scroll-target="#summary-of-lars-and-lasso">Summary of LARS and lasso</a></li>
-  <li><a href="#a-comparison-between-pcr-ridge-and-lasso" id="toc-a-comparison-between-pcr-ridge-and-lasso" class="nav-link" data-scroll-target="#a-comparison-between-pcr-ridge-and-lasso">A comparison between PCR, ridge, and lasso</a></li>
   <li><a href="#summary-of-the-estimated-coefficients" id="toc-summary-of-the-estimated-coefficients" class="nav-link" data-scroll-target="#summary-of-the-estimated-coefficients">Summary of the estimated coefficients</a></li>
   <li><a href="#the-results-on-the-test-set" id="toc-the-results-on-the-test-set" class="nav-link" data-scroll-target="#the-results-on-the-test-set">The results on the test set</a></li>
-  <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic net</a></li>
   </ul></li>
-  <li><a href="#computations" id="toc-computations" class="nav-link" data-scroll-target="#computations">Computations</a>
+  <li><a href="#elastic-net-and-pathwise-algorithms" id="toc-elastic-net-and-pathwise-algorithms" class="nav-link" data-scroll-target="#elastic-net-and-pathwise-algorithms">Elastic net and pathwise algorithms</a>
   <ul class="collapse">
+  <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic net</a></li>
   <li><a href="#computations-for-ridge-lasso-and-elastic-net" id="toc-computations-for-ridge-lasso-and-elastic-net" class="nav-link" data-scroll-target="#computations-for-ridge-lasso-and-elastic-net">Computations for ridge, lasso and elastic net</a></li>
   <li><a href="#convex-optimization" id="toc-convex-optimization" class="nav-link" data-scroll-target="#convex-optimization">Convex optimization</a></li>
   <li><a href="#coordinate-descent" id="toc-coordinate-descent" class="nav-link" data-scroll-target="#coordinate-descent">Coordinate descent</a></li>
@@ -1482,8 +1481,7 @@ Pros
 <!-- -   Ridge regression trades some [bias]{.orange} in exchange of a [lower variance]{.blue}, often resulting in more accurate predictions. -->
 <ul>
 <li><p>The ridge solution <span class="orange">always exists</span> and is <span class="blue">unique</span>, even when <span class="math inline">p &gt; n</span> or in presence of perfect <span class="orange">collinearity</span>.</p></li>
-<li><p>For fixed values of <span class="math inline">\lambda</span>, <span class="orange">efficient computations</span> are available using QR and Cholesky decomposition.</p></li>
-<li><p>At the end of this unit we will describe a <span class="blue">general optimization strategy</span> that recovers the entire “ridge path”, i.e.&nbsp;the estimate <span class="math inline">\hat{\beta}_\text{ridge}</span> for several values of <span class="math inline">\lambda</span>.</p></li>
+<li><p>For fixed values of <span class="math inline">\lambda</span>, <span class="blue">efficient computations</span> are available using QR and Cholesky decompositions. <!-- -   At the end of this unit we will describe a [general optimization --> <!--     strategy]{.blue} that recovers the entire "ridge path", i.e. the --> <!--     estimate $\hat{\beta}_\text{ridge}$ for several values of $\lambda$. --></p></li>
 <li><p>Ridge regression has also a transparent <span class="orange">Bayesian interpretation</span>, since the penalty can be interpreted as a Gaussian prior on <span class="math inline">\beta</span>.</p></li>
 </ul>
 </div>
@@ -1767,8 +1765,8 @@ Least angle regression algorithm (LAR)
 </div>
 </div>
 </section>
-<section id="least-angle-regression-comments" class="level2">
-<h2 class="anchored" data-anchor-id="least-angle-regression-comments">Least angle regression: comments</h2>
+<section id="least-angle-regression-remarks" class="level2">
+<h2 class="anchored" data-anchor-id="least-angle-regression-remarks">Least angle regression: remarks</h2>
 <ul>
 <li>By construction, the coefficients in LAR change in a <span class="orange">piecewise</span> fashion, with knots in <span class="math inline">\lambda_k</span>. The LAR path coincides <span class="blue">almost always</span> with the lasso. If not, a simple modification is needed:</li>
 </ul>
@@ -1838,7 +1836,7 @@ Three uniqueness results
 </div>
 </div>
 <ul>
-<li><p>Non-uniqueness occurs in presence of <span class="orange">discrete-valued</span> data. It is of practical concern only whenever <span class="math inline">p &gt; n</span> and if we are interested in interpreting the coefficients.</p></li>
+<li><p>Non-uniqueness may occur in presence of <span class="orange">discrete-valued</span> data. It is of practical concern only whenever <span class="math inline">p &gt; n</span> and if we are interested in interpreting the coefficients.</p></li>
 <li><p>Much more <span class="blue">general</span> sufficient conditions for the uniqueness of <span class="math inline">\hat{\beta}_\text{lasso}</span> are known, but they are quite technical and hard to check in practice.</p></li>
 </ul>
 </section>
@@ -1848,7 +1846,7 @@ Three uniqueness results
 <li>In ridge regression, the <span class="blue">effective degrees of freedom</span> have a simple formula.</li>
 </ul>
 <ul>
-<li><span class="orange">Miraculously</span>, one can show that for the lasso, with a fixed penalty parameter <span class="math inline">\lambda</span>, the number of nonzero coefficients <span class="math inline">|\mathcal{A}_\text{lasso}(\lambda)|</span> is an <span class="blue">unbiased estimate</span> of the degrees of freedom.</li>
+<li><span class="orange">Miraculously</span>, for the lasso with a fixed penalty parameter <span class="math inline">\lambda</span>, the number of nonzero coefficients <span class="math inline">|\mathcal{A}_\text{lasso}(\lambda)|</span> is an <span class="blue">unbiased estimate</span> of the degrees of freedom.</li>
 </ul>
 <ul>
 <li>More formally, suppose <span class="math inline">\bm{X}</span> has <span class="orange">full rank</span> <span class="math inline">\text{rk}(\bm{X}) = p</span> and <span class="math inline">\bm{y}</span> follows a Gaussian law. Then: <span class="math display">
@@ -1856,7 +1854,7 @@ Three uniqueness results
 </span></li>
 </ul>
 <ul>
-<li>The above relationship is <span class="blue">exact</span> if we consider the <span class="orange">LAR active set</span> and under further conditions, implicitly using a different set of <span class="math inline">\lambda</span> values for any fit: <span class="math display">
+<li>Under further regularity conditions, the above relationship is <span class="blue">exact</span> if we consider the <span class="orange">LAR active set</span>, therefore implicitly using a different set of <span class="math inline">\lambda</span> values for any fit: <span class="math display">
 \text{df}_\text{lar} = 1 + |\mathcal{A}|.
 </span></li>
 </ul>
@@ -1902,9 +1900,39 @@ Three uniqueness results
 </section>
 <section id="summary-of-lars-and-lasso" class="level2">
 <h2 class="anchored" data-anchor-id="summary-of-lars-and-lasso">Summary of LARS and lasso</h2>
-</section>
-<section id="a-comparison-between-pcr-ridge-and-lasso" class="level2">
-<h2 class="anchored" data-anchor-id="a-comparison-between-pcr-ridge-and-lasso">A comparison between PCR, ridge, and lasso</h2>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pros
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>LAR and Lasso are extremely efficient approaches that perform both <span class="blue">variable selection</span> and <span class="orange">shrinkage</span> at the same time. It produces a <span class="blue">parsimonious</span> model.</p></li>
+<li><p><span class="blue">Bayesian interpretation</span>: the penalty can be interpreted as a Laplace prior on <span class="math inline">\beta</span>.</p></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cons
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Lasso can be applied when <span class="math inline">p &gt; n</span>, but there might be <span class="orange">uniqueness</span> issues. Moreover, the lasso selects at most <span class="math inline">n</span> variables.</p></li>
+<li><p>If there is a group of variables with high pairwise correlations, the lasso tends to “randomly” select only one variable from the group.</p></li>
+<li><p>When <span class="math inline">p &lt; n</span>, if there are <span class="orange">high correlations</span> between predictors, it has been empirically observed that the prediction performance of the lasso is dominated by ridge regression.</p></li>
+</ul>
+</div>
+</div>
 </section>
 <section id="summary-of-the-estimated-coefficients" class="level2">
 <h2 class="anchored" data-anchor-id="summary-of-the-estimated-coefficients">Summary of the estimated coefficients</h2>
@@ -1947,12 +1975,12 @@ Three uniqueness results
 </div>
 </div>
 </section>
+</section>
+<section id="elastic-net-and-pathwise-algorithms" class="level1">
+<h1>Elastic net and pathwise algorithms</h1>
 <section id="elastic-net" class="level2">
 <h2 class="anchored" data-anchor-id="elastic-net">Elastic net</h2>
 </section>
-</section>
-<section id="computations" class="level1">
-<h1>Computations</h1>
 <section id="computations-for-ridge-lasso-and-elastic-net" class="level2">
 <h2 class="anchored" data-anchor-id="computations-for-ridge-lasso-and-elastic-net">Computations for ridge, lasso and elastic net</h2>
 </section>

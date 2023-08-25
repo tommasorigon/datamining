@@ -1736,12 +1736,11 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 -   The ridge solution [always exists]{.orange} and is [unique]{.blue},
     even when $p > n$ or in presence of perfect [collinearity]{.orange}.
 
--   For fixed values of $\lambda$, [efficient computations]{.orange} are
-    available using QR and Cholesky decomposition.
-
--   At the end of this unit we will describe a [general optimization
-    strategy]{.blue} that recovers the entire "ridge path", i.e. the
-    estimate $\hat{\beta}_\text{ridge}$ for several values of $\lambda$.
+-   For fixed values of $\lambda$, [efficient computations]{.blue} are
+    available using QR and Cholesky decompositions.
+<!-- -   At the end of this unit we will describe a [general optimization -->
+<!--     strategy]{.blue} that recovers the entire "ridge path", i.e. the -->
+<!--     estimate $\hat{\beta}_\text{ridge}$ for several values of $\lambda$. -->
 
 -   Ridge regression has also a transparent [Bayesian
     interpretation]{.orange}, since the penalty can be interpreted as a
@@ -2191,7 +2190,7 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
 :::
 :::
 
-## Least angle regression: comments
+## Least angle regression: remarks
 
 - By construction, the coefficients in LAR change in a [piecewise]{.orange} fashion, with knots in $\lambda_k$. The LAR path coincides [almost always]{.blue} with the lasso. If not, a simple modification is needed:
 
@@ -2247,7 +2246,7 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 
 . . .
 
-- Non-uniqueness occurs in presence of [discrete-valued]{.orange} data. It is of practical concern only whenever $p > n$ and if we are interested in interpreting the coefficients. 
+- Non-uniqueness may occur in presence of [discrete-valued]{.orange} data. It is of practical concern only whenever $p > n$ and if we are interested in interpreting the coefficients. 
 
 - Much more [general]{.blue} sufficient conditions for the uniqueness of $\hat{\beta}_\text{lasso}$ are known, but they are quite technical and hard to check in practice.  
 
@@ -2258,7 +2257,7 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 
 . . .
 
-- [Miraculously]{.orange}, one can show that for the lasso, with a fixed penalty parameter $\lambda$, the number of nonzero coefficients $|\mathcal{A}_\text{lasso}(\lambda)|$ is an [unbiased estimate]{.blue} of the degrees of freedom.
+- [Miraculously]{.orange}, for the lasso with a fixed penalty parameter $\lambda$, the number of nonzero coefficients $|\mathcal{A}_\text{lasso}(\lambda)|$ is an [unbiased estimate]{.blue} of the degrees of freedom.
 
 . . .
 
@@ -2270,7 +2269,7 @@ $$
 . . .
 
 
-- The above relationship is [exact]{.blue} if we consider the [LAR active set]{.orange} and under further conditions, implicitly using a different set of $\lambda$ values for any fit:
+- Under further regularity conditions, the above relationship is [exact]{.blue} if we consider the [LAR active set]{.orange}, therefore implicitly using a different set of $\lambda$ values for any fit:
 $$
 \text{df}_\text{lar} = 1 + |\mathcal{A}|.
 $$
@@ -2431,7 +2430,26 @@ ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
 
 ## Summary of LARS and lasso
 
-## A comparison between PCR, ridge, and lasso
+::: callout-tip
+#### Pros
+
+-   LAR and Lasso are extremely efficient approaches that perform both [variable selection]{.blue} and [shrinkage]{.orange} at the same time. It produces a [parsimonious]{.blue} model.
+
+- [Bayesian interpretation]{.blue}: the penalty can be interpreted as a Laplace prior on $\beta$.
+:::
+
+. . .
+
+::: callout-warning
+#### Cons
+
+- Lasso can be applied when $p > n$, but there might be [uniqueness]{.orange} issues. Moreover, the lasso selects at most $n$ variables.
+
+- If there is a group of variables with high pairwise correlations, the lasso tends to "randomly" select only one variable from the group. 
+
+- When $p < n$, if there are [high correlations]{.orange} between predictors, it has been empirically observed that the prediction performance of the lasso is dominated by ridge regression.
+:::
+
 
 ## Summary of the estimated coefficients
 
@@ -2502,10 +2520,9 @@ rownames(tab_results) <- "Test error"
 knitr::kable(tab_results, digits = 3)
 ```
 
+# Elastic net and pathwise algorithms
 
 ## Elastic net
-
-# Computations
 
 ## Computations for ridge, lasso and elastic net
 
