@@ -168,24 +168,22 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#elastic-net-and-pathwise-algorithms" id="toc-elastic-net-and-pathwise-algorithms" class="nav-link" data-scroll-target="#elastic-net-and-pathwise-algorithms">Elastic-net and pathwise algorithms</a>
   <ul class="collapse">
   <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic-net</a></li>
-  <li><a href="#elastic-net-with-a-single-predictor" id="toc-elastic-net-with-a-single-predictor" class="nav-link" data-scroll-target="#elastic-net-with-a-single-predictor">Elastic-net with a single predictor</a></li>
   <li><a href="#convex-optimization" id="toc-convex-optimization" class="nav-link" data-scroll-target="#convex-optimization">Convex optimization</a></li>
+  <li><a href="#elastic-net-with-a-single-predictor" id="toc-elastic-net-with-a-single-predictor" class="nav-link" data-scroll-target="#elastic-net-with-a-single-predictor">Elastic-net with a single predictor</a></li>
   <li><a href="#coordinate-descent" id="toc-coordinate-descent" class="nav-link" data-scroll-target="#coordinate-descent">Coordinate descent</a></li>
-  <li><a href="#pathwise-coordinate-optimization-i" id="toc-pathwise-coordinate-optimization-i" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization-i">Pathwise coordinate optimization I</a></li>
-  <li><a href="#pathwise-coordinate-optimization-ii" id="toc-pathwise-coordinate-optimization-ii" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization-ii">Pathwise coordinate optimization II</a></li>
-  <li><a href="#pathwise-coordinate-optimization-iii" id="toc-pathwise-coordinate-optimization-iii" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization-iii">Pathwise coordinate optimization III</a></li>
+  <li><a href="#coordinate-descent---example" id="toc-coordinate-descent---example" class="nav-link" data-scroll-target="#coordinate-descent---example">Coordinate descent - Example</a></li>
+  <li><a href="#pathwise-coordinate-optimization" id="toc-pathwise-coordinate-optimization" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization">Pathwise coordinate optimization</a></li>
   </ul></li>
   <li><a href="#generalized-linear-models" id="toc-generalized-linear-models" class="nav-link" data-scroll-target="#generalized-linear-models">Generalized linear models</a>
   <ul class="collapse">
-  <li><a href="#best-subset-for-glms" id="toc-best-subset-for-glms" class="nav-link" data-scroll-target="#best-subset-for-glms">Best subset for GLMs</a></li>
-  <li><a href="#principal-components-regression-for-glms" id="toc-principal-components-regression-for-glms" class="nav-link" data-scroll-target="#principal-components-regression-for-glms">Principal components regression for GLMs</a></li>
+  <li><a href="#generalized-linear-models-1" id="toc-generalized-linear-models-1" class="nav-link" data-scroll-target="#generalized-linear-models-1">Generalized linear models</a></li>
   <li><a href="#shrinkage-methods-for-glms" id="toc-shrinkage-methods-for-glms" class="nav-link" data-scroll-target="#shrinkage-methods-for-glms">Shrinkage methods for GLMs</a></li>
-  <li><a href="#quadratic-approximations" id="toc-quadratic-approximations" class="nav-link" data-scroll-target="#quadratic-approximations">Quadratic approximations</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a>
   <ul class="collapse">
   <li><a href="#references-i" id="toc-references-i" class="nav-link" data-scroll-target="#references-i">References I</a></li>
   <li><a href="#references-ii" id="toc-references-ii" class="nav-link" data-scroll-target="#references-ii">References II</a></li>
+  <li><a href="#references-iii" id="toc-references-iii" class="nav-link" data-scroll-target="#references-iii">References III</a></li>
   </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_C_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
@@ -1616,7 +1614,7 @@ Cons
 <div class="incremental">
 <ul class="incremental">
 <li><p>To gain some understanding, let us consider the <span class="blue">single-predictor</span> scenario, in which<span class="math display">
-\hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
+\hat{\beta}_\text{lasso} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
   </span></p></li>
 <li><p>This simple problem admits an <span class="orange">explicit expression</span> (see Exercises), which is <span class="math display">
 \hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &gt; \lambda \\
@@ -1864,7 +1862,7 @@ Three uniqueness results
 </section>
 <section id="effective-degrees-of-freedom-of-lar-and-best-subset" class="level2">
 <h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-of-lar-and-best-subset">☠️ - Effective degrees of freedom of LAR and best subset</h2>
-<div class="cell" data-layout-align="center" data-hash="un_C_cache/html/unnamed-chunk-33_0fd4fbf48694afc4287ec2f17139542d">
+<div class="cell" data-layout-align="center" data-hash="un_C_cache/html/unnamed-chunk-33_9e7613c6c680ba6d509d96ab275278c2">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -1952,7 +1950,7 @@ Cons
 <li><p>At the beginning of this unit, we split the data into <span class="blue">training</span> set and <span class="orange">test</span> set. Using the training, we selected <span class="math inline">\lambda</span> via cross-validation or the <span class="math inline">C_p</span> index.</p></li>
 <li><p>Using final test set with <span class="math inline">30</span> observations, we will assess which model is <span class="orange">preferable</span>.</p></li>
 </ul>
-<div class="cell" data-hash="un_C_cache/html/unnamed-chunk-39_5ef90ee11ef60388ae1601d1eb41c2f6">
+<div class="cell" data-hash="un_C_cache/html/unnamed-chunk-39_2effd04705e71d1bf61ce12b5ea1a1e3">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -1994,60 +1992,156 @@ Cons
 </ul>
 <ul>
 <li>Having removed the intercept, the elastic-net estimator <span class="math inline">\hat{\beta}_\text{en}</span> is the <span class="orange">minimizer</span> of: <span class="math display">
-\frac{1}{2n}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda\left(\alpha \sum_{j=1}^p |\beta_j| + (1 - \alpha)\sum_{j=1}^p\beta_j^2\right),
-</span> where <span class="math inline">0 \le \alpha \le 1</span> and the <span class="orange">complexity parameter</span> <span class="math inline">\lambda &gt; 0</span>.</li>
+\frac{1}{2n}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda\sum_{j=1}^p\left(\alpha  |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\right),
+</span> where <span class="math inline">0 &lt; \alpha &lt; 1</span> and the <span class="orange">complexity parameter</span> <span class="math inline">\lambda &gt; 0</span>.</li>
 </ul>
 <ul>
-<li><p><span class="orange">Ridge regression</span> is a special case, when <span class="math inline">\alpha = 0</span>. <span class="blue">Lasso</span> is also a special case, when <span class="math inline">\alpha = 1</span>.</p></li>
-<li><p>It is often not worthwhile to estimate <span class="math inline">\alpha</span> using cross-validation. A typical choice is <span class="math inline">\alpha = 0.5</span>.</p></li>
+<li><p><span class="blue">Ridge regression</span> is a special case, when <span class="math inline">\alpha = 0</span>. <span class="blue">Lasso</span> is also a special case, when <span class="math inline">\alpha = 1</span>.</p></li>
+<li><p>It is often <span class="orange">not worthwhile</span> to estimate <span class="math inline">\alpha</span> using cross-validation. A typical choice is <span class="math inline">\alpha = 0.5</span>.</p></li>
 </ul>
 <ul>
-<li>An advantage of the elastic-net is that it has a <span class="orange">unique solution</span>, even when <span class="math inline">p &gt; n</span>.</li>
-</ul>
-</section>
-<section id="elastic-net-with-a-single-predictor" class="level2">
-<h2 class="anchored" data-anchor-id="elastic-net-with-a-single-predictor">Elastic-net with a single predictor</h2>
-<ul>
-<li>In the <span class="blue">single-predictor</span> scenario the elastic-net minimization problem simplifies to <span class="math display">
-\hat{\beta}_\text{en} = \arg\min_{\beta}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda \left( \alpha |\beta| + (1-\alpha) \beta^2\right).
-  </span></li>
-</ul>
-<ul>
-<li>It can be shown that an <span class="orange">explicit expression</span> for <span class="math inline">\hat{\beta}_\text{en}</span> is available, which is <span class="math display">\hat{\beta}_\text{en} = \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}(\hat{\beta}_\text{ols}),</span> where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+</span> is the <span class="blue">soft-thresholding</span> operator.</li>
-</ul>
-<ul>
-<li>This clarifies that elastic-net is a compromise between lasso and ridge. However, the most important consequence of this finding is on <span class="orange">computations</span>.</li>
+<li><p>An advantage of the elastic-net is that it has a <span class="orange">unique solution</span>, even when <span class="math inline">p &gt; n</span>.</p></li>
+<li><p>Another nice property, shared by ridge, is that whenever <span class="math inline">\tilde{\bm{x}}_j = \tilde{\bm{x}}_\ell</span>, then <span class="math inline">\hat{\beta}_{j,\text{en}} = \hat{\beta}_{\ell,\text{en}}</span>. On the other hand, the lasso estimator would be undefined.</p></li>
 </ul>
 </section>
 <section id="convex-optimization" class="level2">
 <h2 class="anchored" data-anchor-id="convex-optimization">Convex optimization</h2>
+<ul>
+<li>The estimators OLS, ridge, lasso and elastic-net have a huge <span class="orange">computational advantage</span> compared, e.g., to best subset: they are all <span class="blue">convex optimization problems</span>.</li>
+</ul>
+<ul>
+<li>A function <span class="math inline">f: \mathbb{R}^p \rightarrow \mathbb{R}</span> is <span class="blue">convex</span> if for any values <span class="math inline">\bm{b}_1, \bm{b}_2 \in \mathbb{R}^p</span> and <span class="math inline">t \in [0, 1]</span> it holds that <span class="math display">
+f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
+</span> Replacing <span class="math inline">\le</span> with <span class="math inline">&lt;</span> for <span class="math inline">t \in(0,1)</span> gives the definition of <span class="orange">strict convexity</span>.</li>
+</ul>
+<ul>
+<li><span class="blue">OLS</span> and the <span class="blue">lasso</span> are, for a general design matrix <span class="math inline">\bm{X}</span>, convex problems. On the other hand, <span class="orange">ridge</span> and <span class="orange">elastic net</span> are strictly convex, as well as OLS and lasso when <span class="math inline">\text{rk}(\bm{X}) = p</span>.</li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Properties of convex optimization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>In a <span class="blue">convex</span> optimization problem every local minimum is a <span class="blue">global minimum</span>;</li>
+<li>In a <span class="orange">strictly convex</span> optimization problem there exists a <span class="orange">unique</span> global minimum.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="elastic-net-with-a-single-predictor" class="level2">
+<h2 class="anchored" data-anchor-id="elastic-net-with-a-single-predictor">Elastic-net with a single predictor</h2>
+<ul>
+<li>The elastic-net estimate <span class="math inline">\hat{\beta}_\text{en}</span> is typically obtained through the <span class="blue">coordinate descent</span> algorithm, which works well here due <span class="blue">convexity</span> and the following <span class="orange">property</span>.</li>
+</ul>
+<ul>
+<li>In the <span class="blue">single-predictor</span> scenario the elastic-net minimization problem simplifies to <span class="math display">
+   \hat{\beta}_\text{en} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda \left( \alpha |\beta| + \frac{(1-\alpha)}{2} \beta^2\right).
+    </span></li>
+</ul>
+<ul>
+<li>It can be shown that an <span class="orange">explicit expression</span> for <span class="math inline">\hat{\beta}_\text{en}</span> is available, which is <span class="math display">\hat{\beta}_\text{en} = \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}(\hat{\beta}_\text{ols}),</span> where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+</span> is the <span class="blue">soft-thresholding</span> operator and the <span class="orange">least square estimate</span> is <span class="math inline">\hat{\beta}_\text{ols} = n^{-1}\sum_{i=1}^n x_i y_i</span>.</li>
+</ul>
 </section>
 <section id="coordinate-descent" class="level2">
 <h2 class="anchored" data-anchor-id="coordinate-descent">Coordinate descent</h2>
+<ul>
+<li><p>The <span class="blue">coordinate descent</span> algorithm is based on a simple principle: optimize one coefficient (coordinate) at a time, keeping the others fixed.</p></li>
+<li><p>We can <span class="orange">re-write</span> the objective function of the elastic-net in a more convenient form: <span class="math display">
+\frac{1}{2n}\sum_{i=1}^n \left(\textcolor{red}{y_i - \sum_{j \neq k} x_{ij}\beta_j} - x_{ik} \beta_k\right)^2 + \lambda\left(\alpha  |\beta_k| + \frac{(1 - \alpha)}{2} \beta_k^2\right) + \underbrace{\lambda  \sum_{j\neq k}^p \{\alpha |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\}}_{\text{does not depend on } \beta_k},
+</span></p></li>
+</ul>
+<ul>
+<li>Let us define the <span class="blue">partial residuals</span> <span class="math inline">r_i^{(j)} = y_i - \sum_{j \neq k} x_{ij}\beta_j</span>. Then the updated <span class="math inline">\beta_k</span> is <span class="math display">
+\beta_k \leftarrow \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}\left(\frac{1}{n}\sum_{i=1}^n x_{ik} r_i^{(j)}\right).
+</span> We <span class="orange">cycle</span> this update for <span class="math inline">k=1,\dots,p</span>, again and again, until convergence.</li>
+</ul>
 </section>
-<section id="pathwise-coordinate-optimization-i" class="level2">
-<h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization-i">Pathwise coordinate optimization I</h2>
+<section id="coordinate-descent---example" class="level2">
+<h2 class="anchored" data-anchor-id="coordinate-descent---example">Coordinate descent - Example</h2>
+<div class="cell" data-hash="un_C_cache/html/unnamed-chunk-40_82774fba735af11ba8815bd065e5ab33">
+<div class="cell-output-display">
+<p><img src="un_C_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="1400"></p>
+</div>
+</div>
+<ul>
+<li><span class="orange">Objective function</span>: <span class="math inline">(1 - \beta_1 - 2 \beta_2)^2 + (3 - \beta_1 - 2 \beta_2)^2 + 5 (|\beta_1| + |\beta_2|)</span></li>
+</ul>
 </section>
-<section id="pathwise-coordinate-optimization-ii" class="level2">
-<h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization-ii">Pathwise coordinate optimization II</h2>
-</section>
-<section id="pathwise-coordinate-optimization-iii" class="level2">
-<h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization-iii">Pathwise coordinate optimization III</h2>
+<section id="pathwise-coordinate-optimization" class="level2">
+<h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization">Pathwise coordinate optimization</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The coordinate descent, in a regression model with elastic-net penalty, is <span class="orange">theoretically guaranteed</span> to reach global minimum.</p></li>
+<li><p>The coordinate descent algorithm is implemented in the <code>glmnet</code> package. It is, de facto, the main algorithm for penalized linear models.</p></li>
+<li><p>The <code>glmnet</code> implementation is very efficient due to several additional tricks:</p>
+<ul class="incremental">
+<li>The <span class="blue">warm start</span>. The algorithm for <span class="math inline">\lambda_k</span> is initialized in the previously obtained solution using <span class="math inline">\lambda_{k-1}</span>.</li>
+<li>Partial residuals can be efficiently obtained <span class="orange">without re-computing</span> the whole linear predictor.</li>
+<li>The code is written in <span class="blue">Fortran</span>.</li>
+<li>Active set convergence… + many other additional tricks.</li>
+</ul></li>
+<li><p>The same algorithm can be used to fit ridge regression and lasso as well, which is often convenient even though alternatives would be available.</p></li>
+</ul>
+</div>
 </section>
 </section>
 <section id="generalized-linear-models" class="level1">
 <h1>Generalized linear models</h1>
-<section id="best-subset-for-glms" class="level2">
-<h2 class="anchored" data-anchor-id="best-subset-for-glms">Best subset for GLMs</h2>
-</section>
-<section id="principal-components-regression-for-glms" class="level2">
-<h2 class="anchored" data-anchor-id="principal-components-regression-for-glms">Principal components regression for GLMs</h2>
+<section id="generalized-linear-models-1" class="level2">
+<h2 class="anchored" data-anchor-id="generalized-linear-models-1">Generalized linear models</h2>
+<ul>
+<li>Although the whole unit was devoted to <span class="orange">regression</span> problems, essentially all these ideas can be <span class="blue">extended to GLMs</span>.</li>
+</ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Best subset selection for GLMs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Best subset selection, together with its forward and backward greedy approximations, are conceptually straightforward to extend to GLMs (using log-likelihood and ML).</p></li>
+<li><p>The only difficulty is about computations, because leaps-and-bound approaches can not be applied here.</p></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Principal components for GLMs
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Principal components can be applied to GLMs in a straightforward manner.</p></li>
+<li><p>The shrinkage effect and their ability to control the variance remain unaltered, but the theory holds only in an approximate sense.</p></li>
+</ul>
+</div>
+</div>
 </section>
 <section id="shrinkage-methods-for-glms" class="level2">
 <h2 class="anchored" data-anchor-id="shrinkage-methods-for-glms">Shrinkage methods for GLMs</h2>
-</section>
-<section id="quadratic-approximations" class="level2">
-<h2 class="anchored" data-anchor-id="quadratic-approximations">Quadratic approximations</h2>
+<ul>
+<li><p>Shrinkage methods such as ridge and lasso can be also generalized to GLMs.</p></li>
+<li><p>The elastic-net approach, which covers ridge and lasso as special cases, becomes: <span class="math display">
+(\hat{\beta}_0,\hat{\beta})= \arg\min_{(\beta_0, \beta)}\left\{ -\frac{1}{n}\ell(y_i; \beta_0 + \bm{x}_i^T\beta) + \lambda\sum_{j=1}^p\left(\alpha  |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\right)\right\},
+</span> which is an instance of <span class="orange">penalized log-likelihood</span>.</p></li>
+<li><p><span class="blue">Most of the properties</span> (e.g.&nbsp;ridge = variance reduction and shrinkage, lasso = variable selection) and other high-level considerations we made so far are <span class="blue">still valid</span>.</p></li>
+<li><p>Computations are somewhat more cumbersome. The <code>glmnet</code> package provides the numerical routines for fitting this kind of model, using variants of <span class="blue">coordinate descent</span>.</p></li>
+<li><p>The core idea is to obtain a <span class="blue">quadratic approximation</span> of the log-likelihood, as for IWLS. Then, the approximated loss becomes a (<span class="orange">weighted</span>) penalized regression problem.</p></li>
+</ul>
 </section>
 </section>
 <section id="references" class="level1">
@@ -2058,44 +2152,46 @@ Cons
 <li><span class="blue">Main references</span>
 <ul>
 <li><strong>Chapter 3</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
-<li><strong>Chapter 7</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+<li><strong>Chapter 3 and 4</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+<li><strong>Chapter 16</strong> of Efron, B. and Hastie, T. (2016), <a href="https://hastie.su.domains/CASI/"><em>Computer Age Statistical Inference</em></a>, Cambridge University Press.</li>
+<li><strong>Chapter 2,3 and 5</strong> of Hastie, T., Tibshirani, R. and Wainwright, M. (2015). <a href="https://hastie.su.domains/StatLearnSparsity_files/SLS_corrected_1.4.16.pdf"><em>Statistical Learning with Sparsity: The Lasso and Generalizations</em></a>. CRC Press.</li>
+</ul></li>
+<li><span class="orange">Best subset selection</span>
+<ul>
+<li>Hastie, T., Tibshirani, R., and Tibshirani, R.J. (2020). Best subset, forward stepwise or lasso? Analysis and recommendations based on extensive comparisons. <em>Statistical Science</em> <strong>35</strong>(4): 579–592.</li>
 </ul></li>
 </ul>
 </section>
 <section id="references-ii" class="level2">
 <h2 class="anchored" data-anchor-id="references-ii">References II</h2>
 <ul>
-<li><span class="orange">Specialized references</span>
+<li><span class="blue">Ridge regression</span>
 <ul>
-<li>Hastie, T. (2020). Ridge regularization: an essential concept in data science. <em>Technometrics</em>, 62(4), 426-433.</li>
+<li>Hoerl, A. E., and Kennard, R. W. (1970). Ridge regression: biased estimation for nonorthogonal problems. <em>Technometrics</em> <strong>12</strong>(1), 55–67.</li>
+<li>Hastie, T. (2020). Ridge regularization: an essential concept in data science. <em>Technometrics</em>, <strong>62</strong>(4), 426-433.</li>
+</ul></li>
+<li><span class="orange">Lasso</span>
+<ul>
+<li>Tibshirani, R. (1996). Regression selection and shrinkage via the lasso. <em>Journal of the Royal Statistical Society. Series B: Statistical Methodology</em>, <strong>58</strong>(1), 267-288.</li>
+<li>Efron, B., Hastie, T., Johnstone, I., and Tibshirani, R. (2004). Least Angle Regression. <em>Annals of Statistics</em> <strong>32</strong>(2), 407-499.</li>
+<li>Zou, H., Hastie, T., and Tibshirani, R. (2007). On the ‘degrees of freedom’ of the lasso. <em>Annals of Statistics</em> <strong>35</strong>(5), 2173-2192.</li>
+<li>Tibshirani, R. J. (2013). The lasso problem and uniqueness. <em>Electronic Journal of Statistics</em> <strong>7</strong>(1), 1456-1490.</li>
 </ul></li>
 </ul>
-<!-- # Lasso, LARS, and elastic-net -->
-<!-- ## Lasso -->
-<!-- ::: columns -->
-<!-- ::: {.column width="25%"} -->
-<!-- ![](img/lasso.png) -->
-<!-- ::: -->
-<!-- ::: {.column width="75%"} -->
-<!-- -   asdasd -->
-<!-- ::: -->
-<!-- ::: -->
-<!-- ```{r} -->
-<!-- library(lars) -->
-<!-- lambda <- 100 -->
-<!-- XX <- scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x)  sqrt(mean(x^2) - mean(x)^2))) -->
-<!-- yy <- y#(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2) -->
-<!-- cv_lars <- cv.lars(x = XX, y = yy, K = 10, type = "lasso", mode = "step") -->
-<!-- fit_lars <- lars(x = XX, y = yy, type ="lasso", normalize = FALSE) -->
-<!-- cv_lasso_fit <- cv.glmnet(XX, yy, standardize = FALSE, -->
-<!--                           family = "gaussian", alpha = 1, nfolds = 10, -->
-<!--                           lambda = 1 / n * fit_lars$lambda, thresh = 1e-16) -->
-<!-- plot(cv_lasso_fit) -->
-<!-- lasso_fit <- cv_lasso_fit$glmnet.fit -->
-<!-- lambda_sel <- 4 -->
-<!-- round(coef(fit_lars)[lambda_sel, ], 5) -->
-<!-- round(coef(lasso_fit, mode = "lambda")[-1, lambda_sel], 5) -->
-<!-- ``` -->
+</section>
+<section id="references-iii" class="level2">
+<h2 class="anchored" data-anchor-id="references-iii">References III</h2>
+<ul>
+<li><span class="blue">Elastic-net</span>
+<ul>
+<li>Zou, H. and Hastie, T. (2005). Regularization and variable selection via the elastic net. <em>Journal of the Royal Statistical Society. Series B: Statistical Methodology</em> <strong>67</strong>(2), 301-320.</li>
+</ul></li>
+<li><span class="orange">Computations for penalized methods</span>
+<ul>
+<li>Friedman, J., Hastie, T., Höfling, H. and Tibshirani, R. (2007). Pathwise coordinate optimization. <em>The Annals of Applied Statistics</em> <strong>1</strong>(2), 302-32.</li>
+<li>Tay, J. K., Narasimhan, B. and Hastie, T. (2023). Elastic net regularization paths for all generalized linear models. <em>Journal of Statistical Software</em> <strong>106</strong> (1).</li>
+</ul></li>
+</ul>
 </section>
 </section>
 

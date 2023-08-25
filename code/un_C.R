@@ -562,10 +562,12 @@ for (j in 1:(p_sim + 1)) {
 df_lasso <- colSums(df_lasso) / sigma_sim^2
 df_best <- colSums(df_best) / sigma_sim^2
 
-data_df <- data.frame(active_set = 1:(p_sim + 1), df = c(df_lasso, df_best), Method = rep(c("Lasso", "Best subset"), each = p_sim + 1))
+data_df <- data.frame(active_set = 1:(p_sim + 1), df = c(df_lasso, df_best), Method = rep(c("LAR", "Best subset"), each = p_sim + 1))
 
 
-
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
 ggplot(data = data_df, aes(x = active_set, y = df, col = Method)) +
   geom_point() +
   geom_line() +
@@ -639,6 +641,7 @@ coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 1, thresh
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
+
 data_lasso$df <- 1:9
 ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
   geom_point() +
@@ -713,5 +716,45 @@ tab_results <- matrix(c(
   mean((y_test - pred_lasso)^2)
 ), nrow = 1)
 colnames(tab_results) <- c("OLS", "Best subset", "PCR", "Ridge", "Lasso")
-rownames(tab_results) <- "Test error"
+rownames(tab_results) <- "Test error (MSE)"
 knitr::kable(tab_results, digits = 3)
+
+
+
+# Objective function
+f <- function(x) {
+  return((1 - x[1] - 2 * x[2])^2 + (3 - x[1] - 2 * x[2])^2 + 5 * (abs(x[1]) + abs(x[2])))
+}
+
+# Finds the minimum
+m <- optim(c(0, 0), f, method = "Nelder-Mead")
+
+# Create a data frame for contour plotting
+delta <- 0.05
+x <- seq(-2.5, 2.5, delta)
+y <- seq(-2.5, 3, delta)
+df <- expand.grid(X = x, Y = y)
+df$Z <- apply(df, 1, function(row) f(row))
+
+ggplot(data = df, aes(x = X, y = Y)) +
+  theme_light() +
+  geom_contour(aes(z = Z), colour = "#1170aa", bins = 25) +
+  geom_point(
+    data = data.frame(
+      X = c(m$par[1], -1.53),
+      Y = c(m$par[2], -2)
+    ),
+    aes(x = X, y = Y), color = "black"
+  ) +
+  geom_segment(aes(x = -1.53, y = -2, xend = -1.53, yend = 1.5),
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
+  ) +
+  geom_segment(aes(x = -1.53, y = 1.5, xend = m$par[1], yend = 1.5),
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
+  ) +
+  geom_segment(aes(x = m$par[1], y = 1.5, xend = m$par[1], yend = m$par[2]),
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
+  ) +
+  labs(x = expression(beta[1]), y = expression(beta[2])) +
+  theme_minimal() +
+  coord_fixed()

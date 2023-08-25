@@ -1937,7 +1937,7 @@ ggplot() +
 ::: incremental
 -   To gain some understanding, let us consider the
     [single-predictor]{.blue} scenario, in which$$
-     \hat{\beta}_\text{lasso} = \arg\min_{\beta}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
+     \hat{\beta}_\text{lasso} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
       $$
 
 -   This simple problem admits an [explicit expression]{.orange} (see
@@ -2322,19 +2322,20 @@ for (j in 1:(p_sim + 1)) {
 df_lasso <- colSums(df_lasso) / sigma_sim^2
 df_best <- colSums(df_best) / sigma_sim^2
 
-data_df <- data.frame(active_set = 1:(p_sim +1), df = c(df_lasso, df_best), Method = rep(c("LAR", "Best subset"), each = p_sim + 1))
+data_df <- data.frame(active_set = 1:(p_sim + 1), df = c(df_lasso, df_best), Method = rep(c("LAR", "Best subset"), each = p_sim + 1))
 ```
 
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
-ggplot(data = data_df, aes(x = active_set, y = df, col = Method)) + geom_point() +
+ggplot(data = data_df, aes(x = active_set, y = df, col = Method)) +
+  geom_point() +
   geom_line() +
   theme_light() +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
-  geom_abline(intercept = 0, slope = 1, linetype = "dotted") + 
+  geom_abline(intercept = 0, slope = 1, linetype = "dotted") +
   xlab("Number of non-zero coefficients") +
   ylab("Effective degrees of freedom")
 ```
@@ -2513,12 +2514,14 @@ pred_pcr <- X_test %*% tab$PCR
 pred_ridge <- X_test %*% tab$Ridge
 pred_lasso <- X_test %*% tab$Lasso
 
-tab_results <- matrix(c(mean((y_test - pred_ols)^2),
-            mean((y_test - pred_best)^2),
-            mean((y_test - pred_pcr)^2),
-            mean((y_test - pred_ridge)^2),
-            mean((y_test - pred_lasso)^2)), nrow = 1)
-colnames(tab_results) <-   c("OLS", "Best subset", "PCR", "Ridge", "Lasso")
+tab_results <- matrix(c(
+  mean((y_test - pred_ols)^2),
+  mean((y_test - pred_best)^2),
+  mean((y_test - pred_pcr)^2),
+  mean((y_test - pred_ridge)^2),
+  mean((y_test - pred_lasso)^2)
+), nrow = 1)
+colnames(tab_results) <- c("OLS", "Best subset", "PCR", "Ridge", "Lasso")
 rownames(tab_results) <- "Test error (MSE)"
 knitr::kable(tab_results, digits = 3)
 ```
@@ -2541,125 +2544,226 @@ knitr::kable(tab_results, digits = 3)
 
 -   Having removed the intercept, the elastic-net estimator $\hat{\beta}_\text{en}$ is the [minimizer]{.orange} of:
 $$
-    \frac{1}{2n}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda\left(\alpha \sum_{j=1}^p |\beta_j| + (1 - \alpha)\sum_{j=1}^p\beta_j^2\right),
+    \frac{1}{2n}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda\sum_{j=1}^p\left(\alpha  |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\right),
 $$ 
-where $0 \le \alpha \le 1$ and the [complexity parameter]{.orange} $\lambda > 0$.
+where $0 < \alpha < 1$ and the [complexity parameter]{.orange} $\lambda > 0$.
 
 . . .
 
-- [Ridge regression]{.orange} is a special case, when $\alpha = 0$. [Lasso]{.blue} is also a special case, when $\alpha = 1$.
+- [Ridge regression]{.blue} is a special case, when $\alpha = 0$. [Lasso]{.blue} is also a special case, when $\alpha = 1$.
 
-- It is often not worthwhile to estimate $\alpha$ using cross-validation. A typical choice is $\alpha = 0.5$. 
+- It is often [not worthwhile]{.orange} to estimate $\alpha$ using cross-validation. A typical choice is $\alpha = 0.5$. 
 
 . . .
 
 - An advantage of the elastic-net is that it has a [unique solution]{.orange}, even when $p > n$.
 
+- Another nice property, shared by ridge, is that whenever $\tilde{\bm{x}}_j = \tilde{\bm{x}}_\ell$, then $\hat{\beta}_{j,\text{en}} = \hat{\beta}_{\ell,\text{en}}$. On the other hand, the lasso estimator would be undefined.
+
+## Convex optimization
+
+- The estimators OLS, ridge, lasso and elastic-net have a huge [computational advantage]{.orange} compared, e.g., to best subset: they are all [convex optimization problems]{.blue}.
+
+. . .
+
+- A function $f: \mathbb{R}^p \rightarrow \mathbb{R}$ is [convex]{.blue} if for any values $\bm{b}_1, \bm{b}_2 \in \mathbb{R}^p$ and $t \in [0, 1]$ it holds that
+$$
+f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
+$$
+Replacing $\le$ with $<$ for $t \in(0,1)$ gives the definition of [strict convexity]{.orange}.
+
+. . .
+
+- [OLS]{.blue} and the [lasso]{.blue} are, for a general design matrix $\bm{X}$, convex problems. On the other hand,  [ridge]{.orange} and [elastic net]{.orange} are strictly convex, as well as OLS and lasso when $\text{rk}(\bm{X}) = p$.
+
+. . .
+
+::: callout-note
+#### Properties of convex optimization
+- In a [convex]{.blue} optimization problem every local minimum is a [global minimum]{.blue};
+- In a [strictly convex]{.orange} optimization problem there exists a [unique]{.orange} global minimum.
+:::
+
 ## Elastic-net with a single predictor
 
--   In the [single-predictor]{.blue} scenario the elastic-net minimization problem simplifies to $$
-     \hat{\beta}_\text{en} = \arg\min_{\beta}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda \left( \alpha |\beta| + (1-\alpha) \beta^2\right).
+- The elastic-net estimate $\hat{\beta}_\text{en}$ is typically obtained through the [coordinate descent]{.blue} algorithm, which works well here due [convexity]{.blue} and the following [property]{.orange}.
+
+. . .
+
+
+- In the [single-predictor]{.blue} scenario the elastic-net minimization problem simplifies to $$
+     \hat{\beta}_\text{en} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda \left( \alpha |\beta| + \frac{(1-\alpha)}{2} \beta^2\right).
       $$
       
 . . .
 
 -   It can be shown that an [explicit expression]{.orange} for $\hat{\beta}_\text{en}$ is available, which is 
     $$\hat{\beta}_\text{en} = \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}(\hat{\beta}_\text{ols}),$$
-    where $\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+$ is the [soft-thresholding]{.blue} operator.
+    where $\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+$ is the [soft-thresholding]{.blue} operator and the [least square estimate]{.orange} is $\hat{\beta}_\text{ols} = n^{-1}\sum_{i=1}^n x_i y_i$.
 
-. . .
-
--   This clarifies that elastic-net is a compromise between lasso and ridge. However, the most important consequence of this finding is on [computations]{.orange}.
-
-
-## Convex optimization
 
 ## Coordinate descent
 
-## Pathwise coordinate optimization I
+- The [coordinate descent]{.blue} algorithm is based on a simple principle: optimize one coefficient (coordinate) at a time, keeping the others fixed.
 
-## Pathwise coordinate optimization II
+- We can [re-write]{.orange} the objective function of the elastic-net in a more convenient form:
+$$
+\frac{1}{2n}\sum_{i=1}^n \left(\textcolor{red}{y_i - \sum_{j \neq k} x_{ij}\beta_j} - x_{ik} \beta_k\right)^2 + \lambda\left(\alpha  |\beta_k| + \frac{(1 - \alpha)}{2} \beta_k^2\right) + \underbrace{\lambda  \sum_{j\neq k}^p \{\alpha |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\}}_{\text{does not depend on } \beta_k},
+$$ 
 
-## Pathwise coordinate optimization III
+. . .
+
+- Let us define the [partial residuals]{.blue} $r_i^{(j)} = y_i - \sum_{j \neq k} x_{ij}\beta_j$. Then the updated $\beta_k$ is
+$$
+\beta_k \leftarrow \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}\left(\frac{1}{n}\sum_{i=1}^n x_{ik} r_i^{(j)}\right).
+$$
+We [cycle]{.orange} this update for $k=1,\dots,p$, again and again, until convergence.
+
+## Coordinate descent - Example
+
+```{r}
+# Objective function
+f <- function(x) {
+  return((1 - x[1] - 2 * x[2])^2 + (3 - x[1] - 2 * x[2])^2 + 5 * (abs(x[1]) + abs(x[2])))
+}
+
+# Finds the minimum
+m <- optim(c(0, 0), f, method = "Nelder-Mead")
+
+# Create a data frame for contour plotting
+delta <- 0.05
+x <- seq(-2.5, 2.5, delta)
+y <- seq(-2.5, 3, delta)
+df <- expand.grid(X = x, Y = y)
+df$Z <- apply(df, 1, function(row) f(row))
+
+ggplot(data = df, aes(x = X, y = Y)) +
+  theme_light() +
+  geom_contour(aes(z = Z), colour = "#1170aa", bins = 25) +
+  geom_point(
+    data = data.frame(
+      X = c(m$par[1], -1.53),
+      Y = c(m$par[2], -2)
+    ),
+    aes(x = X, y = Y), color = "black"
+  ) +
+  geom_segment(aes(x = -1.53, y = -2, xend = -1.53, yend = 1.5),
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
+  ) +
+  geom_segment(aes(x = -1.53, y = 1.5, xend = m$par[1], yend = 1.5),
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
+  ) +
+  geom_segment(aes(x = m$par[1], y = 1.5, xend = m$par[1], yend = m$par[2]),
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
+  ) +
+  labs(x = expression(beta[1]), y = expression(beta[2])) +
+  theme_minimal() +
+  coord_fixed()
+```
+
+- [Objective function]{.orange}: $(1 - \beta_1 - 2 \beta_2)^2 + (3 - \beta_1 - 2 \beta_2)^2 + 5 (|\beta_1| + |\beta_2|)$
+
+## Pathwise coordinate optimization
+
+::: incremental
+
+- The coordinate descent, in a regression model with elastic-net penalty, is [theoretically guaranteed]{.orange} to reach global minimum.
+
+- The coordinate descent algorithm is implemented in the `glmnet` package. It is, de facto, the main algorithm for penalized linear models. 
+
+- The `glmnet` implementation is very efficient due to several additional tricks:
+  - The [warm start]{.blue}. The algorithm for $\lambda_k$ is initialized in the previously obtained solution using $\lambda_{k-1}$.
+  - Partial residuals can be efficiently obtained [without re-computing]{.orange} the whole linear predictor.
+  - The code is written in [Fortran]{.blue}.
+  - Active set convergence... + many other additional tricks. 
+
+- The same algorithm can be used to fit ridge regression and lasso as well, which is often convenient even though alternatives would be available. 
+:::
 
 # Generalized linear models
 
-## Best subset for GLMs
+## Generalized linear models
 
-## Principal components regression for GLMs
+- Although the whole unit was devoted to [regression]{.orange} problems, essentially all these ideas can be [extended to GLMs]{.blue}. 
+
+. . .
+
+::: callout-note
+#### Best subset selection for GLMs
+
+- Best subset selection, together with its forward and backward greedy approximations, are conceptually straightforward to extend to GLMs (using log-likelihood and ML).
+
+- The only difficulty is about computations, because leaps-and-bound approaches can not be applied here.
+:::
+
+. . .
+
+::: callout-tip
+#### Principal components for GLMs
+
+- Principal components can be applied to GLMs in a straightforward manner. 
+
+- The shrinkage effect and their ability to control the variance remain unaltered, but the theory holds only in an approximate sense. 
+:::
+
 
 ## Shrinkage methods for GLMs
 
-## Quadratic approximations
+- Shrinkage methods such as ridge and lasso can be also generalized to GLMs.
+
+- The elastic-net approach, which covers ridge and lasso as special cases, becomes:
+$$
+(\hat{\beta}_0,\hat{\beta})= \arg\min_{(\beta_0, \beta)}\left\{ -\frac{1}{n}\ell(y_i; \beta_0 + \bm{x}_i^T\beta) + \lambda\sum_{j=1}^p\left(\alpha  |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\right)\right\},
+$$ 
+which is an instance of [penalized log-likelihood]{.orange}.
+
+- [Most of the properties]{.blue} (e.g. ridge = variance reduction and shrinkage, lasso = variable selection) and other high-level considerations we made so far are [still valid]{.blue}.
+
+- Computations are somewhat more cumbersome. The `glmnet` package provides the numerical routines for fitting this kind of model, using variants of [coordinate descent]{.blue}. 
+
+- The core idea is to obtain a [quadratic approximation]{.blue} of the log-likelihood, as for IWLS. Then, the approximated loss becomes a ([weighted]{.orange}) penalized regression problem. 
 
 # References
 
 ## References I
 
 -   [Main references]{.blue}
-    -   **Chapter 3** of Azzalini, A. and Scarpa, B. (2011), [*Data
+    - **Chapter 3** of Azzalini, A. and Scarpa, B. (2011), [*Data
         Analysis and Data
         Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
         University Press.
-    -   **Chapter 7** of Hastie, T., Tibshirani, R. and Friedman, J.
+    - **Chapter 3 and 4** of Hastie, T., Tibshirani, R. and Friedman, J.
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
+    - **Chapter 16** of Efron, B. and Hastie, T. (2016), [*Computer Age Statistical
+    Inference*](https://hastie.su.domains/CASI/), Cambridge University
+    Press.
+    - **Chapter 2,3 and 5** of Hastie, T., Tibshirani, R. and Wainwright, M. (2015). [*Statistical Learning with Sparsity: The Lasso and Generalizations*](https://hastie.su.domains/StatLearnSparsity_files/SLS_corrected_1.4.16.pdf). CRC Press.
+    
+- [Best subset selection]{.orange}
+    - Hastie, T., Tibshirani, R., and Tibshirani, R.J. (2020). Best subset, forward stepwise or lasso? Analysis and recommendations based on extensive comparisons. *Statistical Science* **35**(4): 579--592.
+
+
 
 ## References II
 
--   [Specialized references]{.orange}
-    -   Hastie, T. (2020). Ridge regularization: an essential concept in
-        data science. *Technometrics*, 62(4), 426-433.
 
-<!-- # Lasso, LARS, and elastic-net -->
+-   [Ridge regression]{.blue}
+    - Hoerl, A. E., and Kennard, R. W. (1970). Ridge regression: biased estimation for nonorthogonal problems. *Technometrics* **12**(1), 55–67. 
+    - Hastie, T. (2020). Ridge regularization: an essential concept in
+        data science. *Technometrics*, **62**(4), 426-433.
 
-<!-- ## Lasso -->
-
-<!-- ::: columns -->
-
-<!-- ::: {.column width="25%"} -->
-
-<!-- ![](img/lasso.png) -->
-
-<!-- ::: -->
-
-<!-- ::: {.column width="75%"} -->
-
-<!-- -   asdasd -->
-
-<!-- ::: -->
-
-<!-- ::: -->
-
-<!-- ```{r} -->
-
-<!-- library(lars) -->
-
-<!-- lambda <- 100 -->
-
-<!-- XX <- scale(X[, -1], TRUE, scale = apply(X[, -1], 2, function(x)  sqrt(mean(x^2) - mean(x)^2))) -->
-
-<!-- yy <- y#(y - mean(y)) / sqrt(mean(y^2) - mean(y)^2) -->
-
-<!-- cv_lars <- cv.lars(x = XX, y = yy, K = 10, type = "lasso", mode = "step") -->
-
-<!-- fit_lars <- lars(x = XX, y = yy, type ="lasso", normalize = FALSE) -->
-
-<!-- cv_lasso_fit <- cv.glmnet(XX, yy, standardize = FALSE, -->
-
-<!--                           family = "gaussian", alpha = 1, nfolds = 10, -->
-
-<!--                           lambda = 1 / n * fit_lars$lambda, thresh = 1e-16) -->
-
-<!-- plot(cv_lasso_fit) -->
-
-<!-- lasso_fit <- cv_lasso_fit$glmnet.fit -->
-
-<!-- lambda_sel <- 4 -->
-
-<!-- round(coef(fit_lars)[lambda_sel, ], 5) -->
-
-<!-- round(coef(lasso_fit, mode = "lambda")[-1, lambda_sel], 5) -->
-
-<!-- ``` -->
+-   [Lasso]{.orange}
+    - Tibshirani, R. (1996). Regression selection and shrinkage via the lasso. *Journal of the Royal Statistical Society. Series B: Statistical Methodology*, **58**(1), 267-288.
+    - Efron, B., Hastie, T., Johnstone, I.,  and Tibshirani, R. (2004). Least Angle Regression. *Annals of Statistics* **32**(2), 407-499.
+    -  Zou, H., Hastie, T., and Tibshirani, R. (2007). On the ‘degrees of freedom’ of the lasso. *Annals of Statistics* **35**(5), 2173-2192.
+    - Tibshirani, R. J. (2013). The lasso problem and uniqueness. *Electronic Journal of Statistics* **7**(1), 1456-1490. 
+    
+## References III
+-   [Elastic-net]{.blue}
+    - Zou, H. and Hastie, T. (2005). Regularization and variable selection via the elastic net. *Journal of the Royal Statistical Society. Series B: Statistical Methodology* **67**(2), 301-320.
+    
+- [Computations for penalized methods]{.orange}
+    - Friedman, J., Hastie, T., Höfling, H. and Tibshirani, R. (2007). Pathwise coordinate optimization. *The Annals of Applied Statistics* **1**(2), 302-32. 
+    - Tay, J. K., Narasimhan, B. and Hastie, T. (2023). Elastic net regularization paths for all generalized linear models. *Journal of Statistical Software* **106** (1).
