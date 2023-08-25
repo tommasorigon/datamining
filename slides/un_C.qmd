@@ -311,7 +311,7 @@ knitr::kable(tab, digits = 2)
 
 . . .
 
--   Finally, the [lasso]{.blue} and the [elastic net]{.orange} perform
+-   Finally, the [lasso]{.blue} and the [elastic-net]{.orange} perform
     both shrinkage and variable selection.
 
 ## Overview of the final results
@@ -711,8 +711,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 ::: incremental
 -   In principal component regression and in other related methods
     (ridge, lasso and elastic-net), we do [not]{.orange} wish to
-    [compress]{.orange} the [intercept]{.orange} term $\beta_0$. In a
-    sense, we want to "remove it".
+    [compress]{.orange} the [intercept]{.orange} term $\beta_0$. We would like to "remove it".
 
 -   Let us consider a [reparametrization]{.blue} of the linear model, in
     which $\alpha = \beta_0 + \bar{\bm{x}}^T\beta$. This is equivalent
@@ -1782,11 +1781,9 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 :::
 :::
 
-## The lasso regularization method
+## The [l]{.orange}east [a]{.orange}bsolute [s]{.orange}election and [s]{.orange}hrinkage [o]{.orange}perator
 
--   The [lasso]{.blue} is in the highly influential paper of Tibshirani
-    (1996). It is a method that performs both [shrinkage]{.blue} and
-    [variable selection]{.orange}
+-   The [lasso]{.blue} appeared in the highly influential paper of Tibshirani (1996). It is a method that performs both [shrinkage]{.blue} and [variable selection]{.orange}
 
 . . .
 
@@ -1935,7 +1932,7 @@ ggplot() +
   annotate("text", x = 5, y = 0.7, label = expression(sum((y[i] - x[i]^T * beta)^2, i == 1, n) == c), col = "#1170aa")
 ```
 
-## Single predictor I
+## Lasso with a single predictor I
 
 ::: incremental
 -   To gain some understanding, let us consider the
@@ -1963,7 +1960,7 @@ ggplot() +
     $$
 :::
 
-## Single predictor II
+## Lasso with a single predictor II
 
 ```{r}
 x <- seq(-0.5, 0.5, length = 100)
@@ -2192,7 +2189,7 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
 
 ## Least angle regression: remarks
 
-- By construction, the coefficients in LAR change in a [piecewise]{.orange} fashion, with knots in $\lambda_k$. The LAR path coincides [almost always]{.blue} with the lasso. If not, a simple modification is needed:
+- By construction, the coefficients in LAR change in a [piecewise]{.orange} fashion, with knots in $\lambda_k$. The LAR path coincides [almost always]{.blue} with the lasso. If not, a simple modification is:
 
 . . .
 
@@ -2500,6 +2497,12 @@ datatable(tab, colnames = c("OLS", "Best subset", "PCR", "Ridge", "Lasso"), opti
 
 ## The results on the test set
 
+- At the beginning of this unit, we split the data into [training]{.blue} set and [test]{.orange} set. Using the training, we selected $\lambda$ via cross-validation or the $C_p$ index.
+
+- Using final test set with $30$ observations, we will assess which model is [preferable]{.orange}.
+
+. . .
+
 ```{r}
 X_test <- cbind(1, as.matrix(prostate_test)[, -9])
 y_test <- prostate_test[, 9]
@@ -2516,15 +2519,58 @@ tab_results <- matrix(c(mean((y_test - pred_ols)^2),
             mean((y_test - pred_ridge)^2),
             mean((y_test - pred_lasso)^2)), nrow = 1)
 colnames(tab_results) <-   c("OLS", "Best subset", "PCR", "Ridge", "Lasso")
-rownames(tab_results) <- "Test error"
+rownames(tab_results) <- "Test error (MSE)"
 knitr::kable(tab_results, digits = 3)
 ```
 
-# Elastic net and pathwise algorithms
+. . .
 
-## Elastic net
+- All the approaches presented in this unit have better performance than ordinary least squares. 
 
-## Computations for ridge, lasso and elastic net
+- The [lasso]{.blue} is the approach with [lowest mean squared error]{.orange}. At the same time, it is also a [parsimonious]{.blue} choice. 
+
+- Best subset is the second best, doing a good job in this example... but here $p = 8$, so there were no computational difficulties!
+
+# Elastic-net and pathwise algorithms
+
+## Elastic-net
+
+- The [elastic-net]{.blue} is a compromise between ridge and lasso. It selects variables like the lasso, and shrinks together the coefficients of correlated predictors like ridge.
+
+. . .
+
+-   Having removed the intercept, the elastic-net estimator $\hat{\beta}_\text{en}$ is the [minimizer]{.orange} of:
+$$
+    \frac{1}{2n}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda\left(\alpha \sum_{j=1}^p |\beta_j| + (1 - \alpha)\sum_{j=1}^p\beta_j^2\right),
+$$ 
+where $0 \le \alpha \le 1$ and the [complexity parameter]{.orange} $\lambda > 0$.
+
+. . .
+
+- [Ridge regression]{.orange} is a special case, when $\alpha = 0$. [Lasso]{.blue} is also a special case, when $\alpha = 1$.
+
+- It is often not worthwhile to estimate $\alpha$ using cross-validation. A typical choice is $\alpha = 0.5$. 
+
+. . .
+
+- An advantage of the elastic-net is that it has a [unique solution]{.orange}, even when $p > n$.
+
+## Elastic-net with a single predictor
+
+-   In the [single-predictor]{.blue} scenario the elastic-net minimization problem simplifies to $$
+     \hat{\beta}_\text{en} = \arg\min_{\beta}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda \left( \alpha |\beta| + (1-\alpha) \beta^2\right).
+      $$
+      
+. . .
+
+-   It can be shown that an [explicit expression]{.orange} for $\hat{\beta}_\text{en}$ is available, which is 
+    $$\hat{\beta}_\text{en} = \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}(\hat{\beta}_\text{ols}),$$
+    where $\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+$ is the [soft-thresholding]{.blue} operator.
+
+. . .
+
+-   This clarifies that elastic-net is a compromise between lasso and ridge. However, the most important consequence of this finding is on [computations]{.orange}.
+
 
 ## Convex optimization
 

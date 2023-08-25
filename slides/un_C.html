@@ -143,12 +143,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-lasso" id="toc-the-lasso" class="nav-link" data-scroll-target="#the-lasso">The lasso</a>
   <ul class="collapse">
   <li><a href="#looking-for-sparsity" id="toc-looking-for-sparsity" class="nav-link" data-scroll-target="#looking-for-sparsity">Looking for sparsity</a></li>
-  <li><a href="#the-lasso-regularization-method" id="toc-the-lasso-regularization-method" class="nav-link" data-scroll-target="#the-lasso-regularization-method">The lasso regularization method</a></li>
+  <li><a href="#the-least-absolute-selection-and-shrinkage-operator" id="toc-the-least-absolute-selection-and-shrinkage-operator" class="nav-link" data-scroll-target="#the-least-absolute-selection-and-shrinkage-operator">The <span class="orange">l</span>east <span class="orange">a</span>bsolute <span class="orange">s</span>election and <span class="orange">s</span>hrinkage <span class="orange">o</span>perator</a></li>
   <li><a href="#centering-and-scaling-the-predictors" id="toc-centering-and-scaling-the-predictors" class="nav-link" data-scroll-target="#centering-and-scaling-the-predictors">Centering and scaling the predictors</a></li>
   <li><a href="#lagrange-multipliers-and-lasso-solution" id="toc-lagrange-multipliers-and-lasso-solution" class="nav-link" data-scroll-target="#lagrange-multipliers-and-lasso-solution">Lagrange multipliers and lasso solution</a></li>
   <li><a href="#the-geometry-of-the-lasso-solution" id="toc-the-geometry-of-the-lasso-solution" class="nav-link" data-scroll-target="#the-geometry-of-the-lasso-solution">The geometry of the lasso solution</a></li>
-  <li><a href="#single-predictor-i" id="toc-single-predictor-i" class="nav-link" data-scroll-target="#single-predictor-i">Single predictor I</a></li>
-  <li><a href="#single-predictor-ii" id="toc-single-predictor-ii" class="nav-link" data-scroll-target="#single-predictor-ii">Single predictor II</a></li>
+  <li><a href="#lasso-with-a-single-predictor-i" id="toc-lasso-with-a-single-predictor-i" class="nav-link" data-scroll-target="#lasso-with-a-single-predictor-i">Lasso with a single predictor I</a></li>
+  <li><a href="#lasso-with-a-single-predictor-ii" id="toc-lasso-with-a-single-predictor-ii" class="nav-link" data-scroll-target="#lasso-with-a-single-predictor-ii">Lasso with a single predictor II</a></li>
   <li><a href="#soft-thresholding-and-lasso-solution" id="toc-soft-thresholding-and-lasso-solution" class="nav-link" data-scroll-target="#soft-thresholding-and-lasso-solution">Soft-thresholding and lasso solution</a></li>
   <li><a href="#the-lasso-path" id="toc-the-lasso-path" class="nav-link" data-scroll-target="#the-lasso-path">The lasso path</a></li>
   <li><a href="#least-angle-regression-i" id="toc-least-angle-regression-i" class="nav-link" data-scroll-target="#least-angle-regression-i">Least angle regression I</a></li>
@@ -165,10 +165,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#summary-of-the-estimated-coefficients" id="toc-summary-of-the-estimated-coefficients" class="nav-link" data-scroll-target="#summary-of-the-estimated-coefficients">Summary of the estimated coefficients</a></li>
   <li><a href="#the-results-on-the-test-set" id="toc-the-results-on-the-test-set" class="nav-link" data-scroll-target="#the-results-on-the-test-set">The results on the test set</a></li>
   </ul></li>
-  <li><a href="#elastic-net-and-pathwise-algorithms" id="toc-elastic-net-and-pathwise-algorithms" class="nav-link" data-scroll-target="#elastic-net-and-pathwise-algorithms">Elastic net and pathwise algorithms</a>
+  <li><a href="#elastic-net-and-pathwise-algorithms" id="toc-elastic-net-and-pathwise-algorithms" class="nav-link" data-scroll-target="#elastic-net-and-pathwise-algorithms">Elastic-net and pathwise algorithms</a>
   <ul class="collapse">
-  <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic net</a></li>
-  <li><a href="#computations-for-ridge-lasso-and-elastic-net" id="toc-computations-for-ridge-lasso-and-elastic-net" class="nav-link" data-scroll-target="#computations-for-ridge-lasso-and-elastic-net">Computations for ridge, lasso and elastic net</a></li>
+  <li><a href="#elastic-net" id="toc-elastic-net" class="nav-link" data-scroll-target="#elastic-net">Elastic-net</a></li>
+  <li><a href="#elastic-net-with-a-single-predictor" id="toc-elastic-net-with-a-single-predictor" class="nav-link" data-scroll-target="#elastic-net-with-a-single-predictor">Elastic-net with a single predictor</a></li>
   <li><a href="#convex-optimization" id="toc-convex-optimization" class="nav-link" data-scroll-target="#convex-optimization">Convex optimization</a></li>
   <li><a href="#coordinate-descent" id="toc-coordinate-descent" class="nav-link" data-scroll-target="#coordinate-descent">Coordinate descent</a></li>
   <li><a href="#pathwise-coordinate-optimization-i" id="toc-pathwise-coordinate-optimization-i" class="nav-link" data-scroll-target="#pathwise-coordinate-optimization-i">Pathwise coordinate optimization I</a></li>
@@ -522,7 +522,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </tbody>
 </table>
 <ul>
-<li>Finally, the <span class="blue">lasso</span> and the <span class="orange">elastic net</span> perform both shrinkage and variable selection.</li>
+<li>Finally, the <span class="blue">lasso</span> and the <span class="orange">elastic-net</span> perform both shrinkage and variable selection.</li>
 </ul>
 </section>
 <section id="overview-of-the-final-results" class="level2">
@@ -875,7 +875,7 @@ Cons
 <h2 class="anchored" data-anchor-id="the-intercept-term">The intercept term</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>In principal component regression and in other related methods (ridge, lasso and elastic-net), we do <span class="orange">not</span> wish to <span class="orange">compress</span> the <span class="orange">intercept</span> term <span class="math inline">\beta_0</span>. In a sense, we want to “remove it”.</p></li>
+<li><p>In principal component regression and in other related methods (ridge, lasso and elastic-net), we do <span class="orange">not</span> wish to <span class="orange">compress</span> the <span class="orange">intercept</span> term <span class="math inline">\beta_0</span>. We would like to “remove it”.</p></li>
 <li><p>Let us consider a <span class="blue">reparametrization</span> of the linear model, in which <span class="math inline">\alpha = \beta_0 + \bar{\bm{x}}^T\beta</span>. This is equivalent to a linear model with <span class="orange">centered predictors</span>: <span class="math display">
 \begin{aligned}
 f(\bm{x}_i; \alpha, \beta) &amp; = \beta_0 + \bm{x}_i^T\beta = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta  = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta. \\
@@ -1530,10 +1530,10 @@ Cons
 </div>
 </div>
 </section>
-<section id="the-lasso-regularization-method" class="level2">
-<h2 class="anchored" data-anchor-id="the-lasso-regularization-method">The lasso regularization method</h2>
+<section id="the-least-absolute-selection-and-shrinkage-operator" class="level2">
+<h2 class="anchored" data-anchor-id="the-least-absolute-selection-and-shrinkage-operator">The <span class="orange">l</span>east <span class="orange">a</span>bsolute <span class="orange">s</span>election and <span class="orange">s</span>hrinkage <span class="orange">o</span>perator</h2>
 <ul>
-<li>The <span class="blue">lasso</span> is in the highly influential paper of Tibshirani (1996). It is a method that performs both <span class="blue">shrinkage</span> and <span class="orange">variable selection</span></li>
+<li>The <span class="blue">lasso</span> appeared in the highly influential paper of Tibshirani (1996). It is a method that performs both <span class="blue">shrinkage</span> and <span class="orange">variable selection</span></li>
 </ul>
 <ul>
 <li>The lasso estimator is the <span class="orange">minimizer</span> of the following system <span class="math display">
@@ -1611,8 +1611,8 @@ Cons
 </div>
 </div>
 </section>
-<section id="single-predictor-i" class="level2">
-<h2 class="anchored" data-anchor-id="single-predictor-i">Single predictor I</h2>
+<section id="lasso-with-a-single-predictor-i" class="level2">
+<h2 class="anchored" data-anchor-id="lasso-with-a-single-predictor-i">Lasso with a single predictor I</h2>
 <div class="incremental">
 <ul class="incremental">
 <li><p>To gain some understanding, let us consider the <span class="blue">single-predictor</span> scenario, in which<span class="math display">
@@ -1631,8 +1631,8 @@ Cons
 </ul>
 </div>
 </section>
-<section id="single-predictor-ii" class="level2">
-<h2 class="anchored" data-anchor-id="single-predictor-ii">Single predictor II</h2>
+<section id="lasso-with-a-single-predictor-ii" class="level2">
+<h2 class="anchored" data-anchor-id="lasso-with-a-single-predictor-ii">Lasso with a single predictor II</h2>
 <div class="cell" data-hash="un_C_cache/html/unnamed-chunk-29_10d8f081755eefc71a0d8361c15c0150">
 <div class="cell-output-display">
 <p><img src="un_C_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="1400"></p>
@@ -1768,7 +1768,7 @@ Least angle regression algorithm (LAR)
 <section id="least-angle-regression-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="least-angle-regression-remarks">Least angle regression: remarks</h2>
 <ul>
-<li>By construction, the coefficients in LAR change in a <span class="orange">piecewise</span> fashion, with knots in <span class="math inline">\lambda_k</span>. The LAR path coincides <span class="blue">almost always</span> with the lasso. If not, a simple modification is needed:</li>
+<li>By construction, the coefficients in LAR change in a <span class="orange">piecewise</span> fashion, with knots in <span class="math inline">\lambda_k</span>. The LAR path coincides <span class="blue">almost always</span> with the lasso. If not, a simple modification is:</li>
 </ul>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1948,7 +1948,11 @@ Cons
 </section>
 <section id="the-results-on-the-test-set" class="level2">
 <h2 class="anchored" data-anchor-id="the-results-on-the-test-set">The results on the test set</h2>
-<div class="cell" data-hash="un_C_cache/html/unnamed-chunk-39_ec5f2dbf1344b782602f43ad0a22cb68">
+<ul>
+<li><p>At the beginning of this unit, we split the data into <span class="blue">training</span> set and <span class="orange">test</span> set. Using the training, we selected <span class="math inline">\lambda</span> via cross-validation or the <span class="math inline">C_p</span> index.</p></li>
+<li><p>Using final test set with <span class="math inline">30</span> observations, we will assess which model is <span class="orange">preferable</span>.</p></li>
+</ul>
+<div class="cell" data-hash="un_C_cache/html/unnamed-chunk-39_5ef90ee11ef60388ae1601d1eb41c2f6">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
@@ -1963,7 +1967,7 @@ Cons
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Test error</td>
+<td style="text-align: left;">Test error (MSE)</td>
 <td style="text-align: right;">0.521</td>
 <td style="text-align: right;">0.492</td>
 <td style="text-align: right;">0.496</td>
@@ -1974,15 +1978,46 @@ Cons
 </table>
 </div>
 </div>
+<ul>
+<li><p>All the approaches presented in this unit have better performance than ordinary least squares.</p></li>
+<li><p>The <span class="blue">lasso</span> is the approach with <span class="orange">lowest mean squared error</span>. At the same time, it is also a <span class="blue">parsimonious</span> choice.</p></li>
+<li><p>Best subset is the second best, doing a good job in this example… but here <span class="math inline">p = 8</span>, so there were no computational difficulties!</p></li>
+</ul>
 </section>
 </section>
 <section id="elastic-net-and-pathwise-algorithms" class="level1">
-<h1>Elastic net and pathwise algorithms</h1>
+<h1>Elastic-net and pathwise algorithms</h1>
 <section id="elastic-net" class="level2">
-<h2 class="anchored" data-anchor-id="elastic-net">Elastic net</h2>
+<h2 class="anchored" data-anchor-id="elastic-net">Elastic-net</h2>
+<ul>
+<li>The <span class="blue">elastic-net</span> is a compromise between ridge and lasso. It selects variables like the lasso, and shrinks together the coefficients of correlated predictors like ridge.</li>
+</ul>
+<ul>
+<li>Having removed the intercept, the elastic-net estimator <span class="math inline">\hat{\beta}_\text{en}</span> is the <span class="orange">minimizer</span> of: <span class="math display">
+\frac{1}{2n}\sum_{i=1}^n(y_i - \bm{x}_i^T\beta)^2 + \lambda\left(\alpha \sum_{j=1}^p |\beta_j| + (1 - \alpha)\sum_{j=1}^p\beta_j^2\right),
+</span> where <span class="math inline">0 \le \alpha \le 1</span> and the <span class="orange">complexity parameter</span> <span class="math inline">\lambda &gt; 0</span>.</li>
+</ul>
+<ul>
+<li><p><span class="orange">Ridge regression</span> is a special case, when <span class="math inline">\alpha = 0</span>. <span class="blue">Lasso</span> is also a special case, when <span class="math inline">\alpha = 1</span>.</p></li>
+<li><p>It is often not worthwhile to estimate <span class="math inline">\alpha</span> using cross-validation. A typical choice is <span class="math inline">\alpha = 0.5</span>.</p></li>
+</ul>
+<ul>
+<li>An advantage of the elastic-net is that it has a <span class="orange">unique solution</span>, even when <span class="math inline">p &gt; n</span>.</li>
+</ul>
 </section>
-<section id="computations-for-ridge-lasso-and-elastic-net" class="level2">
-<h2 class="anchored" data-anchor-id="computations-for-ridge-lasso-and-elastic-net">Computations for ridge, lasso and elastic net</h2>
+<section id="elastic-net-with-a-single-predictor" class="level2">
+<h2 class="anchored" data-anchor-id="elastic-net-with-a-single-predictor">Elastic-net with a single predictor</h2>
+<ul>
+<li>In the <span class="blue">single-predictor</span> scenario the elastic-net minimization problem simplifies to <span class="math display">
+\hat{\beta}_\text{en} = \arg\min_{\beta}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda \left( \alpha |\beta| + (1-\alpha) \beta^2\right).
+  </span></li>
+</ul>
+<ul>
+<li>It can be shown that an <span class="orange">explicit expression</span> for <span class="math inline">\hat{\beta}_\text{en}</span> is available, which is <span class="math display">\hat{\beta}_\text{en} = \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}(\hat{\beta}_\text{ols}),</span> where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+</span> is the <span class="blue">soft-thresholding</span> operator.</li>
+</ul>
+<ul>
+<li>This clarifies that elastic-net is a compromise between lasso and ridge. However, the most important consequence of this finding is on <span class="orange">computations</span>.</li>
+</ul>
 </section>
 <section id="convex-optimization" class="level2">
 <h2 class="anchored" data-anchor-id="convex-optimization">Convex optimization</h2>
