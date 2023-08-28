@@ -655,8 +655,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 -   Best subset selection is appealing because of its [conceptual
     simplicity]{.blue}.
 
--   Best subset and forward regression can be used, at least in
-    principle, even when $p > n$.
+-   Best subset and forward regression can be used, when computations are not problematic, even when $p > n$.
 :::
 
 . . .
@@ -672,8 +671,6 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 
 -   Leaps and bounds computational strategies can not be easily
     generalized to GLMs.
-
--   Backward regression can not be applied when $p > n$.
 :::
 
 # Principal components regression
@@ -1045,12 +1042,11 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 ::: callout-tip
 #### Pros
 
--   If you transform back the coefficients, there is a [clean
+- Principal components are a natural tool to [reduce the complexity]{.blue} of the data, especially in presence of [highly correlated]{.orange} variables.
+
+- If you transform back the coefficients, there is a [clean
     interpretation]{.blue} of the impact of the covariates on the
     response.
-
--   Principal component regression can be easily generalized to the GLM
-    case.
 
 -   Principal components might be interesting in their own right, as
     they describe the [dependence structure]{.blue} among covariates.
@@ -1071,6 +1067,30 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 :::
 
 # Ridge regression
+
+## Shrinkage methods
+
+::: columns
+::: {.column width="30%"}
+![](img/ridge.jpg){fig-align="left"}
+:::
+
+::: {.column width="70%"}
+
+
+- Shrinkage methods are popular tools for handling the issue of multiple variables.
+
+- Shrinkage [regularizes]{.blue} the estimates, [constraining]{.blue} the [size]{.blue} of the regression coefficients.
+
+- This lead to [biased estimator]{.orange} with, hopefully, lower variance.
+
+- As a byproduct, the induced regularization procedure enables estimation even when $p > n$.
+
+- The first method that has been proposed is called [ridge regression]{.orange}. The lasso and the elastic-net are other examples. 
+
+:::
+:::
+
 
 ## The ridge regularization method
 
@@ -1725,12 +1745,30 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
   ylab("Regression coefficients")
 ```
 
+## Further properties of ridge regression
+
+::: incremental
+
+-   Ridge regression has a transparent [Bayesian
+    interpretation]{.orange}, since the penalty can be interpreted as a
+    Gaussian prior on $\beta$.
+    
+- If two variables are identical copies $\tilde{\bm{x}}_j = \tilde{\bm{x}}_\ell$, so are the corresponding ridge coefficients $\hat{\beta}_{j,\text{ridge}} = \hat{\beta}_{\ell,\text{ridge}}$. 
+
+- Adding $p$ [fake observations]{.orange} all equal to $0$ to the response and then fitting ordinary least squares leads to the ridge estimator. This procedure is called [data augmentation]{.blue}.
+
+- A computationally convenient formula for [LOO cross-validation]{.blue} is available, which requires the model to be estimated only once, as in least squares.
+
+- In the [$p > n$ case]{.orange} there are specific [computational strategies]{.orange} that can be employed; see Section 18.3.5 of Hastie, Tibshirani and Friedman (2011).
+
+:::
+
 ## Pros and cons of ridge regression
 
 ::: callout-tip
 #### Pros
 
-<!-- -   Ridge regression trades some [bias]{.orange} in exchange of a [lower variance]{.blue}, often resulting in more accurate predictions. -->
+-   Ridge regression trades some [bias]{.orange} in exchange of a [lower variance]{.blue}, often resulting in more accurate predictions.
 
 -   The ridge solution [always exists]{.orange} and is [unique]{.blue},
     even when $p > n$ or in presence of perfect [collinearity]{.orange}.
@@ -1740,10 +1778,6 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 <!-- -   At the end of this unit we will describe a [general optimization -->
 <!--     strategy]{.blue} that recovers the entire "ridge path", i.e. the -->
 <!--     estimate $\hat{\beta}_\text{ridge}$ for several values of $\lambda$. -->
-
--   Ridge regression has also a transparent [Bayesian
-    interpretation]{.orange}, since the penalty can be interpreted as a
-    Gaussian prior on $\beta$.
 :::
 
 . . .
@@ -1879,10 +1913,10 @@ For lasso problems we will assume the data have been previously
 
 -   When $\lambda = 0$ the penalty term disappears and
     $\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}$. On the other
-    hand, there exists a finite value of $\lambda_\text{max} < \infty$
+    hand, there exists a finite value of $\lambda_0 < \infty$
     such that $\hat{\beta}_\text{lasso} = 0$.
 
--   For any intermediate value $0 < \lambda < \lambda_\text{max}$ we get
+-   For any intermediate value $0 < \lambda < \lambda_0$ we get
     a combination of [shrinked]{.orange} but positive coefficients, and
     a set of coefficients whose value is [exactly zero]{.blue}.
 
@@ -2074,9 +2108,9 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
 <!-- -   As for ridge regression, the values of $\lambda$ are expressed in -->
 <!--     somewhat [arbitrary scale]{.orange}. -->
 
-<!-- -   There exist a [maximum value]{.blue} $\lambda_\text{max}$, after -->
+<!-- -   There exist a [maximum value]{.blue} $\lambda_0$, after -->
 <!--     which all the coefficients are zero: $$ -->
-<!--     \lambda_\text{max} = \max_{j}\left| \text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \max_{j}\left| \frac{1}{n}\sum_{i=1}^n x_{ij} y_i\right|. -->
+<!--     \lambda_0 = \max_{j}\left| \text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \max_{j}\left| \frac{1}{n}\sum_{i=1}^n x_{ij} y_i\right|. -->
 <!--     $$ -->
 
 <!-- . . . -->
@@ -2189,7 +2223,7 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
 
 ## Least angle regression: remarks
 
-- By construction, the coefficients in LAR change in a [piecewise]{.orange} fashion, with knots in $\lambda_k$. The LAR path coincides [almost always]{.blue} with the lasso. If not, a simple modification is:
+- The coefficients in LAR change in a [piecewise]{.orange} fashion, with knots in $\lambda_k$. The LAR path coincides [almost always]{.blue} with the lasso. Otherwise, a simple modification is required:
 
 . . .
 
@@ -2231,7 +2265,7 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 . . .
 
 ::: callout-note
-#### Three uniqueness results
+#### Three uniqueness results (Tibshirani, 2013)
 
 - If $\bm{X}$ has [full rank]{.blue} $\text{rk}(\bm{X}) = p$, which implies $p \le n$, then $\hat{\beta}_\text{lasso}$ is uniquely determined.
 
@@ -2258,22 +2292,19 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 
 . . .
 
-- More formally, suppose $\bm{X}$ has [full rank]{.orange} $\text{rk}(\bm{X}) = p$ and $\bm{y}$ follows a Gaussian law. Then:
+:::callout-note
+#### Degrees of freedom (Zhou, Hastie and Tibshirani, 2007, Tibshirani and Taylor, 2012)
+
+- Suppose $\bm{X}$ has [full rank]{.orange} $\text{rk}(\bm{X}) = p$ and $\bm{y}$ follows a Gaussian law. Then:
 $$
 \text{df}_\text{lasso} = 1 + \mathbb{E}|\mathcal{A}_\text{lasso}(\lambda)|.
 $$
-
-. . .
-
 
 - Under further regularity conditions, the above relationship is [exact]{.blue} if we consider the [LAR active set]{.orange}, therefore implicitly using a different set of $\lambda$ values for any fit:
 $$
 \text{df}_\text{lar} = 1 + |\mathcal{A}|.
 $$
-
-. . .
-
-- Generalizations of these results to the $p > n$ case are possible. 
+:::
 
 ## ☠️ - Effective degrees of freedom of LAR and best subset
 
@@ -2405,6 +2436,8 @@ t(fit_lasso$beta_scaled)
 coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 1, thresh = 1e-20, lambda = fit_lasso$lambda))
 ```
 
+
+
 ## The LAR (lasso) estimate
 
 ```{r}
@@ -2425,15 +2458,33 @@ ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
   ylab("Regression coefficients")
 ```
 
+## Other properties of LAR and lasso
+
+::: incremental
+
+- [Bayesian interpretation]{.orange}: the penalty can be interpreted as a Laplace prior on $\beta$.
+
+- As mentioned, under certain conditions the LAR algorithm can be seen as the limiting case of [boosting procedure]{.blue}, in which small corrections to predictions are iteratively performed. 
+
+- The [nonnegative garrote]{.orange} (Breiman, 1995) is a two-stage procedure, with a close relationship to the lasso. Breiman’s paper was the inspiration for Tibshirani (1996).
+
+- There is a large body of theoretical work on the behavior of the lasso, focused on:
+  - the mean-squared-error consistency of the lasso;
+  - the recovery of the nonzero support set of the true regression parameters, sometimes called [sparsistency]{.orange}.
+
+- The interested reader work may have a look at the (very technical) Chapter 11 of Hastie, Tibshirani and Wainwright (2015)
+
+:::
 
 ## Summary of LARS and lasso
 
 ::: callout-tip
 #### Pros
 
--   LAR and Lasso are extremely efficient approaches that perform both [variable selection]{.blue} and [shrinkage]{.orange} at the same time. It produces a [parsimonious]{.blue} model.
+-   LAR and Lasso are extremely efficient approaches that perform both [variable selection]{.blue} and [shrinkage]{.orange} at the same time. 
 
-- [Bayesian interpretation]{.blue}: the penalty can be interpreted as a Laplace prior on $\beta$.
+- Lasso produces a [parsimonious]{.blue} model.
+
 :::
 
 . . .
@@ -2449,7 +2500,7 @@ ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
 :::
 
 
-## Summary of the estimated coefficients
+## The `prostate` dataset. A summary of the estimates
 
 ::: {style="font-size: 70%;"}
 ```{r}
@@ -2558,7 +2609,7 @@ where $0 < \alpha < 1$ and the [complexity parameter]{.orange} $\lambda > 0$.
 
 - An advantage of the elastic-net is that it has a [unique solution]{.orange}, even when $p > n$.
 
-- Another nice property, shared by ridge, is that whenever $\tilde{\bm{x}}_j = \tilde{\bm{x}}_\ell$, then $\hat{\beta}_{j,\text{en}} = \hat{\beta}_{\ell,\text{en}}$. On the other hand, the lasso estimator would be undefined.
+- Another nice property, shared by ridge, is that whenever $\tilde{\bm{x}}_j = \tilde{\bm{x}}_\ell$, then $\hat{\beta}_{j,\text{en}} = \hat{\beta}_{\ell,\text{en}}$. On the other hand, the [lasso]{.orange} estimator would be [undefined]{.orange}.
 
 ## Convex optimization
 
@@ -2617,9 +2668,11 @@ $$
 $$
 \beta_k \leftarrow \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}\left(\frac{1}{n}\sum_{i=1}^n x_{ik} r_i^{(j)}\right).
 $$
-We [cycle]{.orange} this update for $k=1,\dots,p$, again and again, until convergence.
+We [cycle]{.orange} this update for $k=1,\dots,p$, over and over until convergence.
 
 ## Coordinate descent - Example
+
+[Objective function]{.orange}: $(1 - \beta_1 - 2 \beta_2)^2 + (3 - \beta_1 - 2 \beta_2)^2 + 5 (|\beta_1| + |\beta_2|)$.
 
 ```{r}
 # Objective function
@@ -2661,7 +2714,7 @@ ggplot(data = df, aes(x = X, y = Y)) +
   coord_fixed()
 ```
 
-- [Objective function]{.orange}: $(1 - \beta_1 - 2 \beta_2)^2 + (3 - \beta_1 - 2 \beta_2)^2 + 5 (|\beta_1| + |\beta_2|)$
+
 
 ## Pathwise coordinate optimization
 
@@ -2669,13 +2722,13 @@ ggplot(data = df, aes(x = X, y = Y)) +
 
 - The coordinate descent, in a regression model with elastic-net penalty, is [theoretically guaranteed]{.orange} to reach global minimum.
 
-- The coordinate descent algorithm is implemented in the `glmnet` package. It is, de facto, the main algorithm for penalized linear models. 
+- The coordinate descent algorithm is implemented in the `glmnet` package. It is, de facto, the default algorithm for penalized generalized linear models. 
 
 - The `glmnet` implementation is very efficient due to several additional tricks:
   - The [warm start]{.blue}. The algorithm for $\lambda_k$ is initialized in the previously obtained solution using $\lambda_{k-1}$.
   - Partial residuals can be efficiently obtained [without re-computing]{.orange} the whole linear predictor.
   - The code is written in [Fortran]{.blue}.
-  - Active set convergence... + many other additional tricks. 
+  - Many other additional tricks are employed: active set convergence, tools for sparse $\bm{X}$ matrices, etc. 
 
 - The same algorithm can be used to fit ridge regression and lasso as well, which is often convenient even though alternatives would be available. 
 :::
@@ -2684,7 +2737,7 @@ ggplot(data = df, aes(x = X, y = Y)) +
 
 ## Generalized linear models
 
-- Although the whole unit was devoted to [regression]{.orange} problems, essentially all these ideas can be [extended to GLMs]{.blue}. 
+- Almost everything we discussed in this unit for [regression]{.orange} problems can be [extended to GLMs]{.blue} and, in particular, to classification problems. 
 
 . . .
 
@@ -2703,7 +2756,7 @@ ggplot(data = df, aes(x = X, y = Y)) +
 
 - Principal components can be applied to GLMs in a straightforward manner. 
 
-- The shrinkage effect and their ability to control the variance remain unaltered, but the theory holds only in an approximate sense. 
+- The shrinkage effect and their ability to control the variance remain unaltered, but the theory (e.g. variance of the estimator) holds only in an approximate sense. 
 :::
 
 

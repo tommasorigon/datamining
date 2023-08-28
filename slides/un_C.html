@@ -118,6 +118,7 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#ridge-regression" id="toc-ridge-regression" class="nav-link" data-scroll-target="#ridge-regression">Ridge regression</a>
   <ul class="collapse">
+  <li><a href="#shrinkage-methods" id="toc-shrinkage-methods" class="nav-link" data-scroll-target="#shrinkage-methods">Shrinkage methods</a></li>
   <li><a href="#the-ridge-regularization-method" id="toc-the-ridge-regularization-method" class="nav-link" data-scroll-target="#the-ridge-regularization-method">The ridge regularization method</a></li>
   <li><a href="#centering-and-scaling-the-predictors-i" id="toc-centering-and-scaling-the-predictors-i" class="nav-link" data-scroll-target="#centering-and-scaling-the-predictors-i">Centering and scaling the predictors I</a></li>
   <li><a href="#centering-and-scaling-the-predictors-ii" id="toc-centering-and-scaling-the-predictors-ii" class="nav-link" data-scroll-target="#centering-and-scaling-the-predictors-ii">Centering and scaling the predictors II</a></li>
@@ -138,6 +139,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#cross-validation-for-ridge-regression-i" id="toc-cross-validation-for-ridge-regression-i" class="nav-link" data-scroll-target="#cross-validation-for-ridge-regression-i">Cross-validation for ridge regression I</a></li>
   <li><a href="#cross-validation-for-ridge-regression-ii" id="toc-cross-validation-for-ridge-regression-ii" class="nav-link" data-scroll-target="#cross-validation-for-ridge-regression-ii">Cross-validation for ridge regression II</a></li>
   <li><a href="#the-ridge-estimate" id="toc-the-ridge-estimate" class="nav-link" data-scroll-target="#the-ridge-estimate">The ridge estimate</a></li>
+  <li><a href="#further-properties-of-ridge-regression" id="toc-further-properties-of-ridge-regression" class="nav-link" data-scroll-target="#further-properties-of-ridge-regression">Further properties of ridge regression</a></li>
   <li><a href="#pros-and-cons-of-ridge-regression" id="toc-pros-and-cons-of-ridge-regression" class="nav-link" data-scroll-target="#pros-and-cons-of-ridge-regression">Pros and cons of ridge regression</a></li>
   </ul></li>
   <li><a href="#the-lasso" id="toc-the-lasso" class="nav-link" data-scroll-target="#the-lasso">The lasso</a>
@@ -161,8 +163,9 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#effective-degrees-of-freedom-of-lar-and-best-subset" id="toc-effective-degrees-of-freedom-of-lar-and-best-subset" class="nav-link" data-scroll-target="#effective-degrees-of-freedom-of-lar-and-best-subset">☠️ - Effective degrees of freedom of LAR and best subset</a></li>
   <li><a href="#cross-validation-for-lasso" id="toc-cross-validation-for-lasso" class="nav-link" data-scroll-target="#cross-validation-for-lasso">Cross-validation for lasso</a></li>
   <li><a href="#the-lar-lasso-estimate" id="toc-the-lar-lasso-estimate" class="nav-link" data-scroll-target="#the-lar-lasso-estimate">The LAR (lasso) estimate</a></li>
+  <li><a href="#other-properties-of-lar-and-lasso" id="toc-other-properties-of-lar-and-lasso" class="nav-link" data-scroll-target="#other-properties-of-lar-and-lasso">Other properties of LAR and lasso</a></li>
   <li><a href="#summary-of-lars-and-lasso" id="toc-summary-of-lars-and-lasso" class="nav-link" data-scroll-target="#summary-of-lars-and-lasso">Summary of LARS and lasso</a></li>
-  <li><a href="#summary-of-the-estimated-coefficients" id="toc-summary-of-the-estimated-coefficients" class="nav-link" data-scroll-target="#summary-of-the-estimated-coefficients">Summary of the estimated coefficients</a></li>
+  <li><a href="#the-prostate-dataset.-a-summary-of-the-estimates" id="toc-the-prostate-dataset.-a-summary-of-the-estimates" class="nav-link" data-scroll-target="#the-prostate-dataset.-a-summary-of-the-estimates">The <code>prostate</code> dataset. A summary of the estimates</a></li>
   <li><a href="#the-results-on-the-test-set" id="toc-the-results-on-the-test-set" class="nav-link" data-scroll-target="#the-results-on-the-test-set">The results on the test set</a></li>
   </ul></li>
   <li><a href="#elastic-net-and-pathwise-algorithms" id="toc-elastic-net-and-pathwise-algorithms" class="nav-link" data-scroll-target="#elastic-net-and-pathwise-algorithms">Elastic-net and pathwise algorithms</a>
@@ -826,7 +829,7 @@ Pros
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Best subset selection is appealing because of its <span class="blue">conceptual simplicity</span>.</p></li>
-<li><p>Best subset and forward regression can be used, at least in principle, even when <span class="math inline">p &gt; n</span>.</p></li>
+<li><p>Best subset and forward regression can be used, when computations are not problematic, even when <span class="math inline">p &gt; n</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -844,7 +847,6 @@ Cons
 <li><p>Subset strategies tend to select models that are “<span class="orange">too simple</span>”, especially in presence of correlated variables.</p></li>
 <li><p>Despite the recent advances, when <span class="math inline">p</span> is large best subset selection is <span class="orange">computationally unfeasible</span>.</p></li>
 <li><p>Leaps and bounds computational strategies can not be easily generalized to GLMs.</p></li>
-<li><p>Backward regression can not be applied when <span class="math inline">p &gt; n</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -1084,8 +1086,8 @@ Pros
 </div>
 <div class="callout-body-container callout-body">
 <ul>
+<li><p>Principal components are a natural tool to <span class="blue">reduce the complexity</span> of the data, especially in presence of <span class="orange">highly correlated</span> variables.</p></li>
 <li><p>If you transform back the coefficients, there is a <span class="blue">clean interpretation</span> of the impact of the covariates on the response.</p></li>
-<li><p>Principal component regression can be easily generalized to the GLM case.</p></li>
 <li><p>Principal components might be interesting in their own right, as they describe the <span class="blue">dependence structure</span> among covariates.</p></li>
 </ul>
 </div>
@@ -1111,6 +1113,26 @@ Cons
 </section>
 <section id="ridge-regression" class="level1">
 <h1>Ridge regression</h1>
+<section id="shrinkage-methods" class="level2">
+<h2 class="anchored" data-anchor-id="shrinkage-methods">Shrinkage methods</h2>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="quarto-figure quarto-figure-left">
+<figure class="figure">
+<p><img src="img/ridge.jpg" class="img-fluid figure-img"></p>
+</figure>
+</div>
+</div><div class="column" style="width:70%;">
+<ul>
+<li><p>Shrinkage methods are popular tools for handling the issue of multiple variables.</p></li>
+<li><p>Shrinkage <span class="blue">regularizes</span> the estimates, <span class="blue">constraining</span> the <span class="blue">size</span> of the regression coefficients.</p></li>
+<li><p>This lead to <span class="orange">biased estimator</span> with, hopefully, lower variance.</p></li>
+<li><p>As a byproduct, the induced regularization procedure enables estimation even when <span class="math inline">p &gt; n</span>.</p></li>
+<li><p>The first method that has been proposed is called <span class="orange">ridge regression</span>. The lasso and the elastic-net are other examples.</p></li>
+</ul>
+</div>
+</div>
+</section>
 <section id="the-ridge-regularization-method" class="level2">
 <h2 class="anchored" data-anchor-id="the-ridge-regularization-method">The ridge regularization method</h2>
 <ul>
@@ -1464,6 +1486,18 @@ Effective degrees of freedom
 </div>
 </div>
 </section>
+<section id="further-properties-of-ridge-regression" class="level2">
+<h2 class="anchored" data-anchor-id="further-properties-of-ridge-regression">Further properties of ridge regression</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Ridge regression has a transparent <span class="orange">Bayesian interpretation</span>, since the penalty can be interpreted as a Gaussian prior on <span class="math inline">\beta</span>.</p></li>
+<li><p>If two variables are identical copies <span class="math inline">\tilde{\bm{x}}_j = \tilde{\bm{x}}_\ell</span>, so are the corresponding ridge coefficients <span class="math inline">\hat{\beta}_{j,\text{ridge}} = \hat{\beta}_{\ell,\text{ridge}}</span>.</p></li>
+<li><p>Adding <span class="math inline">p</span> <span class="orange">fake observations</span> all equal to <span class="math inline">0</span> to the response and then fitting ordinary least squares leads to the ridge estimator. This procedure is called <span class="blue">data augmentation</span>.</p></li>
+<li><p>A computationally convenient formula for <span class="blue">LOO cross-validation</span> is available, which requires the model to be estimated only once, as in least squares.</p></li>
+<li><p>In the <span class="orange"><span class="math inline">p &gt; n</span> case</span> there are specific <span class="orange">computational strategies</span> that can be employed; see Section 18.3.5 of Hastie, Tibshirani and Friedman (2011).</p></li>
+</ul>
+</div>
+</section>
 <section id="pros-and-cons-of-ridge-regression" class="level2">
 <h2 class="anchored" data-anchor-id="pros-and-cons-of-ridge-regression">Pros and cons of ridge regression</h2>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
@@ -1476,11 +1510,10 @@ Pros
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<!-- -   Ridge regression trades some [bias]{.orange} in exchange of a [lower variance]{.blue}, often resulting in more accurate predictions. -->
 <ul>
+<li><p>Ridge regression trades some <span class="orange">bias</span> in exchange of a <span class="blue">lower variance</span>, often resulting in more accurate predictions.</p></li>
 <li><p>The ridge solution <span class="orange">always exists</span> and is <span class="blue">unique</span>, even when <span class="math inline">p &gt; n</span> or in presence of perfect <span class="orange">collinearity</span>.</p></li>
 <li><p>For fixed values of <span class="math inline">\lambda</span>, <span class="blue">efficient computations</span> are available using QR and Cholesky decompositions. <!-- -   At the end of this unit we will describe a [general optimization --> <!--     strategy]{.blue} that recovers the entire "ridge path", i.e. the --> <!--     estimate $\hat{\beta}_\text{ridge}$ for several values of $\lambda$. --></p></li>
-<li><p>Ridge regression has also a transparent <span class="orange">Bayesian interpretation</span>, since the penalty can be interpreted as a Gaussian prior on <span class="math inline">\beta</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -1594,8 +1627,8 @@ Cons
   </span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>.</p></li>
 </ul>
 <ul>
-<li><p>When <span class="math inline">\lambda = 0</span> the penalty term disappears and <span class="math inline">\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}</span>. On the other hand, there exists a finite value of <span class="math inline">\lambda_\text{max} &lt; \infty</span> such that <span class="math inline">\hat{\beta}_\text{lasso} = 0</span>.</p></li>
-<li><p>For any intermediate value <span class="math inline">0 &lt; \lambda &lt; \lambda_\text{max}</span> we get a combination of <span class="orange">shrinked</span> but positive coefficients, and a set of coefficients whose value is <span class="blue">exactly zero</span>.</p></li>
+<li><p>When <span class="math inline">\lambda = 0</span> the penalty term disappears and <span class="math inline">\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}</span>. On the other hand, there exists a finite value of <span class="math inline">\lambda_0 &lt; \infty</span> such that <span class="math inline">\hat{\beta}_\text{lasso} = 0</span>.</p></li>
+<li><p>For any intermediate value <span class="math inline">0 &lt; \lambda &lt; \lambda_0</span> we get a combination of <span class="orange">shrinked</span> but positive coefficients, and a set of coefficients whose value is <span class="blue">exactly zero</span>.</p></li>
 </ul>
 <ul>
 <li>Unfortunately, there is <span class="orange">no closed-form expression</span> for the lasso solution.</li>
@@ -1664,9 +1697,9 @@ Cons
 <!-- ## Comments on the lasso path -->
 <!-- -   As for ridge regression, the values of $\lambda$ are expressed in -->
 <!--     somewhat [arbitrary scale]{.orange}. -->
-<!-- -   There exist a [maximum value]{.blue} $\lambda_\text{max}$, after -->
+<!-- -   There exist a [maximum value]{.blue} $\lambda_0$, after -->
 <!--     which all the coefficients are zero: $$ -->
-<!--     \lambda_\text{max} = \max_{j}\left| \text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \max_{j}\left| \frac{1}{n}\sum_{i=1}^n x_{ij} y_i\right|. -->
+<!--     \lambda_0 = \max_{j}\left| \text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \max_{j}\left| \frac{1}{n}\sum_{i=1}^n x_{ij} y_i\right|. -->
 <!--     $$ -->
 <!-- . . . -->
 <!-- -   It is confirmed that the variable `lcavol` is arguably the most -->
@@ -1766,7 +1799,7 @@ Least angle regression algorithm (LAR)
 <section id="least-angle-regression-remarks" class="level2">
 <h2 class="anchored" data-anchor-id="least-angle-regression-remarks">Least angle regression: remarks</h2>
 <ul>
-<li>By construction, the coefficients in LAR change in a <span class="orange">piecewise</span> fashion, with knots in <span class="math inline">\lambda_k</span>. The LAR path coincides <span class="blue">almost always</span> with the lasso. If not, a simple modification is:</li>
+<li>The coefficients in LAR change in a <span class="orange">piecewise</span> fashion, with knots in <span class="math inline">\lambda_k</span>. The LAR path coincides <span class="blue">almost always</span> with the lasso. Otherwise, a simple modification is required:</li>
 </ul>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1822,7 +1855,7 @@ Practical details
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Three uniqueness results
+Three uniqueness results (Tibshirani, 2013)
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1846,19 +1879,26 @@ Three uniqueness results
 <ul>
 <li><span class="orange">Miraculously</span>, for the lasso with a fixed penalty parameter <span class="math inline">\lambda</span>, the number of nonzero coefficients <span class="math inline">|\mathcal{A}_\text{lasso}(\lambda)|</span> is an <span class="blue">unbiased estimate</span> of the degrees of freedom.</li>
 </ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Degrees of freedom (Zhou, Hastie and Tibshirani, 2007, Tibshirani and Taylor, 2012)
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li>More formally, suppose <span class="math inline">\bm{X}</span> has <span class="orange">full rank</span> <span class="math inline">\text{rk}(\bm{X}) = p</span> and <span class="math inline">\bm{y}</span> follows a Gaussian law. Then: <span class="math display">
+<li><p>Suppose <span class="math inline">\bm{X}</span> has <span class="orange">full rank</span> <span class="math inline">\text{rk}(\bm{X}) = p</span> and <span class="math inline">\bm{y}</span> follows a Gaussian law. Then: <span class="math display">
 \text{df}_\text{lasso} = 1 + \mathbb{E}|\mathcal{A}_\text{lasso}(\lambda)|.
-</span></li>
-</ul>
-<ul>
-<li>Under further regularity conditions, the above relationship is <span class="blue">exact</span> if we consider the <span class="orange">LAR active set</span>, therefore implicitly using a different set of <span class="math inline">\lambda</span> values for any fit: <span class="math display">
+</span></p></li>
+<li><p>Under further regularity conditions, the above relationship is <span class="blue">exact</span> if we consider the <span class="orange">LAR active set</span>, therefore implicitly using a different set of <span class="math inline">\lambda</span> values for any fit: <span class="math display">
 \text{df}_\text{lar} = 1 + |\mathcal{A}|.
-</span></li>
+</span></p></li>
 </ul>
-<ul>
-<li>Generalizations of these results to the <span class="math inline">p &gt; n</span> case are possible.</li>
-</ul>
+</div>
+</div>
 </section>
 <section id="effective-degrees-of-freedom-of-lar-and-best-subset" class="level2">
 <h2 class="anchored" data-anchor-id="effective-degrees-of-freedom-of-lar-and-best-subset">☠️ - Effective degrees of freedom of LAR and best subset</h2>
@@ -1896,6 +1936,22 @@ Three uniqueness results
 </div>
 </div>
 </section>
+<section id="other-properties-of-lar-and-lasso" class="level2">
+<h2 class="anchored" data-anchor-id="other-properties-of-lar-and-lasso">Other properties of LAR and lasso</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p><span class="orange">Bayesian interpretation</span>: the penalty can be interpreted as a Laplace prior on <span class="math inline">\beta</span>.</p></li>
+<li><p>As mentioned, under certain conditions the LAR algorithm can be seen as the limiting case of <span class="blue">boosting procedure</span>, in which small corrections to predictions are iteratively performed.</p></li>
+<li><p>The <span class="orange">nonnegative garrote</span> (Breiman, 1995) is a two-stage procedure, with a close relationship to the lasso. Breiman’s paper was the inspiration for Tibshirani (1996).</p></li>
+<li><p>There is a large body of theoretical work on the behavior of the lasso, focused on:</p>
+<ul class="incremental">
+<li>the mean-squared-error consistency of the lasso;</li>
+<li>the recovery of the nonzero support set of the true regression parameters, sometimes called <span class="orange">sparsistency</span>.</li>
+</ul></li>
+<li><p>The interested reader work may have a look at the (very technical) Chapter 11 of Hastie, Tibshirani and Wainwright (2015)</p></li>
+</ul>
+</div>
+</section>
 <section id="summary-of-lars-and-lasso" class="level2">
 <h2 class="anchored" data-anchor-id="summary-of-lars-and-lasso">Summary of LARS and lasso</h2>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
@@ -1909,8 +1965,8 @@ Pros
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><p>LAR and Lasso are extremely efficient approaches that perform both <span class="blue">variable selection</span> and <span class="orange">shrinkage</span> at the same time. It produces a <span class="blue">parsimonious</span> model.</p></li>
-<li><p><span class="blue">Bayesian interpretation</span>: the penalty can be interpreted as a Laplace prior on <span class="math inline">\beta</span>.</p></li>
+<li><p>LAR and Lasso are extremely efficient approaches that perform both <span class="blue">variable selection</span> and <span class="orange">shrinkage</span> at the same time.</p></li>
+<li><p>Lasso produces a <span class="blue">parsimonious</span> model.</p></li>
 </ul>
 </div>
 </div>
@@ -1932,14 +1988,14 @@ Cons
 </div>
 </div>
 </section>
-<section id="summary-of-the-estimated-coefficients" class="level2">
-<h2 class="anchored" data-anchor-id="summary-of-the-estimated-coefficients">Summary of the estimated coefficients</h2>
+<section id="the-prostate-dataset.-a-summary-of-the-estimates" class="level2">
+<h2 class="anchored" data-anchor-id="the-prostate-dataset.-a-summary-of-the-estimates">The <code>prostate</code> dataset. A summary of the estimates</h2>
 <div style="font-size: 70%;">
 <div class="cell" data-hash="un_C_cache/html/unnamed-chunk-38_6932a7a0e7fb3c9071d4c300d88738f0">
 <div class="cell-output-display">
 
 <div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-244140500d26ffd552d8" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-244140500d26ffd552d8">{"x":{"filter":"none","vertical":false,"data":[["(Intercept)","lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45"],[2.464932922123746,0.6795281412379753,0.2630530657325436,-0.1414648335361718,0.2101465572218274,0.3052005971250976,-0.2884927724535462,-0.02130503880294818,0.2669557621199238],[2.477357342449561,0.7397136698758431,0.3163281888271424,0,0,0,0,0,0],[2.455021592228732,0.28666128271838,0.3391036880563065,0.05628528949356446,0.1015283806908212,0.2614850538133577,0.2186806183758075,-0.01605594153820394,0.06170971163528362],[2.466944796713691,0.5882288487041073,0.2581760179326362,-0.1128882084901707,0.2011682585074611,0.2832605085528286,-0.1721357517114823,0.01032273985298109,0.2040346251751619],[2.468314602273341,0.5321289780171816,0.1687891416769021,0,0,0.09162985645647606,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>OLS<\/th>\n      <th>Best subset<\/th>\n      <th>PCR<\/th>\n      <th>Ridge<\/th>\n      <th>Lasso<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":9,"dom":"t","columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[9,10,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'font-weight':'bold'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':value == 0 ? \"white\" : null});\n}"}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.rowCallback"],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-244140500d26ffd552d8">{"x":{"filter":"none","vertical":false,"data":[["(Intercept)","lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45"],[2.464932922123746,0.6795281412379752,0.2630530657325436,-0.141464833536172,0.2101465572218274,0.3052005971250976,-0.2884927724535462,-0.02130503880294779,0.2669557621199234],[2.477357342449561,0.7397136698758429,0.3163281888271424,0,0,0,0,0,0],[2.455021592228733,0.2866612827183799,0.3391036880563064,0.05628528949356439,0.1015283806908212,0.2614850538133575,0.2186806183758072,-0.01605594153820449,0.06170971163528302],[2.466944796713691,0.5882288487041071,0.2581760179326364,-0.1128882084901707,0.2011682585074609,0.2832605085528289,-0.1721357517114825,0.01032273985298153,0.2040346251751614],[2.468314602273341,0.5321289780171822,0.1687891416769021,0,0,0.09162985645647548,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>OLS<\/th>\n      <th>Best subset<\/th>\n      <th>PCR<\/th>\n      <th>Ridge<\/th>\n      <th>Lasso<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":9,"dom":"t","columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[9,10,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'font-weight':'bold'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':value == 0 ? \"white\" : null});\n}"}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.rowCallback"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>
@@ -2001,7 +2057,7 @@ Cons
 </ul>
 <ul>
 <li><p>An advantage of the elastic-net is that it has a <span class="orange">unique solution</span>, even when <span class="math inline">p &gt; n</span>.</p></li>
-<li><p>Another nice property, shared by ridge, is that whenever <span class="math inline">\tilde{\bm{x}}_j = \tilde{\bm{x}}_\ell</span>, then <span class="math inline">\hat{\beta}_{j,\text{en}} = \hat{\beta}_{\ell,\text{en}}</span>. On the other hand, the lasso estimator would be undefined.</p></li>
+<li><p>Another nice property, shared by ridge, is that whenever <span class="math inline">\tilde{\bm{x}}_j = \tilde{\bm{x}}_\ell</span>, then <span class="math inline">\hat{\beta}_{j,\text{en}} = \hat{\beta}_{\ell,\text{en}}</span>. On the other hand, the <span class="orange">lasso</span> estimator would be <span class="orange">undefined</span>.</p></li>
 </ul>
 </section>
 <section id="convex-optimization" class="level2">
@@ -2059,32 +2115,30 @@ Properties of convex optimization
 <ul>
 <li>Let us define the <span class="blue">partial residuals</span> <span class="math inline">r_i^{(j)} = y_i - \sum_{j \neq k} x_{ij}\beta_j</span>. Then the updated <span class="math inline">\beta_k</span> is <span class="math display">
 \beta_k \leftarrow \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}\left(\frac{1}{n}\sum_{i=1}^n x_{ik} r_i^{(j)}\right).
-</span> We <span class="orange">cycle</span> this update for <span class="math inline">k=1,\dots,p</span>, again and again, until convergence.</li>
+</span> We <span class="orange">cycle</span> this update for <span class="math inline">k=1,\dots,p</span>, over and over until convergence.</li>
 </ul>
 </section>
 <section id="coordinate-descent---example" class="level2">
 <h2 class="anchored" data-anchor-id="coordinate-descent---example">Coordinate descent - Example</h2>
+<p><span class="orange">Objective function</span>: <span class="math inline">(1 - \beta_1 - 2 \beta_2)^2 + (3 - \beta_1 - 2 \beta_2)^2 + 5 (|\beta_1| + |\beta_2|)</span>.</p>
 <div class="cell" data-hash="un_C_cache/html/unnamed-chunk-40_82774fba735af11ba8815bd065e5ab33">
 <div class="cell-output-display">
 <p><img src="un_C_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="1400"></p>
 </div>
 </div>
-<ul>
-<li><span class="orange">Objective function</span>: <span class="math inline">(1 - \beta_1 - 2 \beta_2)^2 + (3 - \beta_1 - 2 \beta_2)^2 + 5 (|\beta_1| + |\beta_2|)</span></li>
-</ul>
 </section>
 <section id="pathwise-coordinate-optimization" class="level2">
 <h2 class="anchored" data-anchor-id="pathwise-coordinate-optimization">Pathwise coordinate optimization</h2>
 <div class="incremental">
 <ul class="incremental">
 <li><p>The coordinate descent, in a regression model with elastic-net penalty, is <span class="orange">theoretically guaranteed</span> to reach global minimum.</p></li>
-<li><p>The coordinate descent algorithm is implemented in the <code>glmnet</code> package. It is, de facto, the main algorithm for penalized linear models.</p></li>
+<li><p>The coordinate descent algorithm is implemented in the <code>glmnet</code> package. It is, de facto, the default algorithm for penalized generalized linear models.</p></li>
 <li><p>The <code>glmnet</code> implementation is very efficient due to several additional tricks:</p>
 <ul class="incremental">
 <li>The <span class="blue">warm start</span>. The algorithm for <span class="math inline">\lambda_k</span> is initialized in the previously obtained solution using <span class="math inline">\lambda_{k-1}</span>.</li>
 <li>Partial residuals can be efficiently obtained <span class="orange">without re-computing</span> the whole linear predictor.</li>
 <li>The code is written in <span class="blue">Fortran</span>.</li>
-<li>Active set convergence… + many other additional tricks.</li>
+<li>Many other additional tricks are employed: active set convergence, tools for sparse <span class="math inline">\bm{X}</span> matrices, etc.</li>
 </ul></li>
 <li><p>The same algorithm can be used to fit ridge regression and lasso as well, which is often convenient even though alternatives would be available.</p></li>
 </ul>
@@ -2096,7 +2150,7 @@ Properties of convex optimization
 <section id="generalized-linear-models-1" class="level2">
 <h2 class="anchored" data-anchor-id="generalized-linear-models-1">Generalized linear models</h2>
 <ul>
-<li>Although the whole unit was devoted to <span class="orange">regression</span> problems, essentially all these ideas can be <span class="blue">extended to GLMs</span>.</li>
+<li>Almost everything we discussed in this unit for <span class="orange">regression</span> problems can be <span class="blue">extended to GLMs</span> and, in particular, to classification problems.</li>
 </ul>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -2126,7 +2180,7 @@ Principal components for GLMs
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Principal components can be applied to GLMs in a straightforward manner.</p></li>
-<li><p>The shrinkage effect and their ability to control the variance remain unaltered, but the theory holds only in an approximate sense.</p></li>
+<li><p>The shrinkage effect and their ability to control the variance remain unaltered, but the theory (e.g.&nbsp;variance of the estimator) holds only in an approximate sense.</p></li>
 </ul>
 </div>
 </div>
