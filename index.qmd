@@ -65,7 +65,7 @@ to convert the HTML slides into pdf files, you can [follow the instruction of th
 | **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html)           | [Code C](code/un_C.R) |
 | *Exercises*                            | [Exercises C]        |                                                    |                       |
 | Lab 3                                  | \[Lab 3\]                            |                                                    | \[Code Lab 3\]        |
-| **Nonparametric estimation**           | \[Unit D\]                           | \[Slides Unit D\]                                  |                       |
+| **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)           | [Code D](code/un_D.R) |
 | *Exercises*                            | \[Exercises 4\]                      |                                                    |                       |
 | Lab 4                                  | \[Lab 4\]                            |                                                    | \[Code Lab 4\]        |
 | **The curse of dimensionality**        | \[Unit E\]                           | \[Slides Unit E\]                                  |                       |
