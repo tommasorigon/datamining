@@ -75,7 +75,7 @@ styler:::style_file("../code/un_D.R")
 ::: {.column width="70%"}
 -   In this unit we will cover the following [topics]{.orange}:
   
-    - Kernel methods and local linear regression;
+    - Kernel methods and local regression;
     - Regression splines;
     - Smoothing splines.
     
@@ -92,7 +92,46 @@ styler:::style_file("../code/un_D.R")
 :::
 :::
 
-# 
+# A xxx motivation
 
-# Local linear regression
+## The `das` dataset
 
+## Polynomials
+
+# Local regression
+
+## K-neareast neighbour
+
+## Nadaraya-Watson estimator
+
+## Local linear regression I
+
+## Local linear regression II
+
+## Local linear regression III
+
+## Local linear regression IV
+
+## Choice of the kernel
+
+## Choice of the bandwidth I
+
+## Choice of the bandwidth II
+
+## Choice of the bandwidth III
+
+## Loess I
+
+## Loess II
+
+## Local likelihoods I
+
+## Local likelihoods II
+
+## The bivariate case I
+
+## The bivariate case II
+
+# Regression splines
+
+# Smoothing splines

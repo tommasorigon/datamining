@@ -64,8 +64,32 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
-  <li><a href="#local-linear-regression" id="toc-local-linear-regression" class="nav-link" data-scroll-target="#local-linear-regression">Local linear regression</a></li>
+  <li><a href="#a-xxx-motivation" id="toc-a-xxx-motivation" class="nav-link" data-scroll-target="#a-xxx-motivation">A xxx motivation</a>
+  <ul class="collapse">
+  <li><a href="#the-das-dataset" id="toc-the-das-dataset" class="nav-link" data-scroll-target="#the-das-dataset">The <code>das</code> dataset</a></li>
+  <li><a href="#polynomials" id="toc-polynomials" class="nav-link" data-scroll-target="#polynomials">Polynomials</a></li>
+  </ul></li>
+  <li><a href="#local-regression" id="toc-local-regression" class="nav-link" data-scroll-target="#local-regression">Local regression</a>
+  <ul class="collapse">
+  <li><a href="#k-neareast-neighbour" id="toc-k-neareast-neighbour" class="nav-link" data-scroll-target="#k-neareast-neighbour">K-neareast neighbour</a></li>
+  <li><a href="#nadaraya-watson-estimator" id="toc-nadaraya-watson-estimator" class="nav-link" data-scroll-target="#nadaraya-watson-estimator">Nadaraya-Watson estimator</a></li>
+  <li><a href="#local-linear-regression-i" id="toc-local-linear-regression-i" class="nav-link" data-scroll-target="#local-linear-regression-i">Local linear regression I</a></li>
+  <li><a href="#local-linear-regression-ii" id="toc-local-linear-regression-ii" class="nav-link" data-scroll-target="#local-linear-regression-ii">Local linear regression II</a></li>
+  <li><a href="#local-linear-regression-iii" id="toc-local-linear-regression-iii" class="nav-link" data-scroll-target="#local-linear-regression-iii">Local linear regression III</a></li>
+  <li><a href="#local-linear-regression-iv" id="toc-local-linear-regression-iv" class="nav-link" data-scroll-target="#local-linear-regression-iv">Local linear regression IV</a></li>
+  <li><a href="#choice-of-the-kernel" id="toc-choice-of-the-kernel" class="nav-link" data-scroll-target="#choice-of-the-kernel">Choice of the kernel</a></li>
+  <li><a href="#choice-of-the-bandwidth-i" id="toc-choice-of-the-bandwidth-i" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-i">Choice of the bandwidth I</a></li>
+  <li><a href="#choice-of-the-bandwidth-ii" id="toc-choice-of-the-bandwidth-ii" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-ii">Choice of the bandwidth II</a></li>
+  <li><a href="#choice-of-the-bandwidth-iii" id="toc-choice-of-the-bandwidth-iii" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-iii">Choice of the bandwidth III</a></li>
+  <li><a href="#loess-i" id="toc-loess-i" class="nav-link" data-scroll-target="#loess-i">Loess I</a></li>
+  <li><a href="#loess-ii" id="toc-loess-ii" class="nav-link" data-scroll-target="#loess-ii">Loess II</a></li>
+  <li><a href="#local-likelihoods-i" id="toc-local-likelihoods-i" class="nav-link" data-scroll-target="#local-likelihoods-i">Local likelihoods I</a></li>
+  <li><a href="#local-likelihoods-ii" id="toc-local-likelihoods-ii" class="nav-link" data-scroll-target="#local-likelihoods-ii">Local likelihoods II</a></li>
+  <li><a href="#the-bivariate-case-i" id="toc-the-bivariate-case-i" class="nav-link" data-scroll-target="#the-bivariate-case-i">The bivariate case I</a></li>
+  <li><a href="#the-bivariate-case-ii" id="toc-the-bivariate-case-ii" class="nav-link" data-scroll-target="#the-bivariate-case-ii">The bivariate case II</a></li>
+  </ul></li>
+  <li><a href="#regression-splines" id="toc-regression-splines" class="nav-link" data-scroll-target="#regression-splines">Regression splines</a></li>
+  <li><a href="#smoothing-splines" id="toc-smoothing-splines" class="nav-link" data-scroll-target="#smoothing-splines">Smoothing splines</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_D_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
@@ -115,7 +139,7 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
 <ul>
-<li>Kernel methods and local linear regression;</li>
+<li>Kernel methods and local regression;</li>
 <li>Regression splines;</li>
 <li>Smoothing splines.</li>
 </ul></li>
@@ -128,11 +152,71 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
-<section id="section" class="level1">
-<h1></h1>
+<section id="a-xxx-motivation" class="level1">
+<h1>A xxx motivation</h1>
+<section id="the-das-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="the-das-dataset">The <code>das</code> dataset</h2>
 </section>
-<section id="local-linear-regression" class="level1">
-<h1>Local linear regression</h1>
+<section id="polynomials" class="level2">
+<h2 class="anchored" data-anchor-id="polynomials">Polynomials</h2>
+</section>
+</section>
+<section id="local-regression" class="level1">
+<h1>Local regression</h1>
+<section id="k-neareast-neighbour" class="level2">
+<h2 class="anchored" data-anchor-id="k-neareast-neighbour">K-neareast neighbour</h2>
+</section>
+<section id="nadaraya-watson-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="nadaraya-watson-estimator">Nadaraya-Watson estimator</h2>
+</section>
+<section id="local-linear-regression-i" class="level2">
+<h2 class="anchored" data-anchor-id="local-linear-regression-i">Local linear regression I</h2>
+</section>
+<section id="local-linear-regression-ii" class="level2">
+<h2 class="anchored" data-anchor-id="local-linear-regression-ii">Local linear regression II</h2>
+</section>
+<section id="local-linear-regression-iii" class="level2">
+<h2 class="anchored" data-anchor-id="local-linear-regression-iii">Local linear regression III</h2>
+</section>
+<section id="local-linear-regression-iv" class="level2">
+<h2 class="anchored" data-anchor-id="local-linear-regression-iv">Local linear regression IV</h2>
+</section>
+<section id="choice-of-the-kernel" class="level2">
+<h2 class="anchored" data-anchor-id="choice-of-the-kernel">Choice of the kernel</h2>
+</section>
+<section id="choice-of-the-bandwidth-i" class="level2">
+<h2 class="anchored" data-anchor-id="choice-of-the-bandwidth-i">Choice of the bandwidth I</h2>
+</section>
+<section id="choice-of-the-bandwidth-ii" class="level2">
+<h2 class="anchored" data-anchor-id="choice-of-the-bandwidth-ii">Choice of the bandwidth II</h2>
+</section>
+<section id="choice-of-the-bandwidth-iii" class="level2">
+<h2 class="anchored" data-anchor-id="choice-of-the-bandwidth-iii">Choice of the bandwidth III</h2>
+</section>
+<section id="loess-i" class="level2">
+<h2 class="anchored" data-anchor-id="loess-i">Loess I</h2>
+</section>
+<section id="loess-ii" class="level2">
+<h2 class="anchored" data-anchor-id="loess-ii">Loess II</h2>
+</section>
+<section id="local-likelihoods-i" class="level2">
+<h2 class="anchored" data-anchor-id="local-likelihoods-i">Local likelihoods I</h2>
+</section>
+<section id="local-likelihoods-ii" class="level2">
+<h2 class="anchored" data-anchor-id="local-likelihoods-ii">Local likelihoods II</h2>
+</section>
+<section id="the-bivariate-case-i" class="level2">
+<h2 class="anchored" data-anchor-id="the-bivariate-case-i">The bivariate case I</h2>
+</section>
+<section id="the-bivariate-case-ii" class="level2">
+<h2 class="anchored" data-anchor-id="the-bivariate-case-ii">The bivariate case II</h2>
+</section>
+</section>
+<section id="regression-splines" class="level1">
+<h1>Regression splines</h1>
+</section>
+<section id="smoothing-splines" class="level1">
+<h1>Smoothing splines</h1>
 </section>
 
 </main>
