@@ -74,8 +74,13 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#local-regression" id="toc-local-regression" class="nav-link" data-scroll-target="#local-regression">Local regression</a>
   <ul class="collapse">
+  <li><a href="#the-regression-function" id="toc-the-regression-function" class="nav-link" data-scroll-target="#the-regression-function">The regression function</a></li>
+  <li><a href="#local-estimates-of-the-prediction" id="toc-local-estimates-of-the-prediction" class="nav-link" data-scroll-target="#local-estimates-of-the-prediction">Local estimates of the prediction</a></li>
+  <li><a href="#k-nearest-neighbours" id="toc-k-nearest-neighbours" class="nav-link" data-scroll-target="#k-nearest-neighbours">K-nearest neighbours</a></li>
   <li><a href="#k-nearest-neighbours-k-6" id="toc-k-nearest-neighbours-k-6" class="nav-link" data-scroll-target="#k-nearest-neighbours-k-6">K-nearest neighbours (<span class="math inline">k = 6</span>)</a></li>
+  <li><a href="#limitations-of-the-k-nearest-neighbor-method" id="toc-limitations-of-the-k-nearest-neighbor-method" class="nav-link" data-scroll-target="#limitations-of-the-k-nearest-neighbor-method">Limitations of the <span class="math inline">k</span>-nearest neighbor method</a></li>
   <li><a href="#nadaraya-watson-estimator" id="toc-nadaraya-watson-estimator" class="nav-link" data-scroll-target="#nadaraya-watson-estimator">Nadaraya-Watson estimator</a></li>
+  <li><a href="#nadaraya-watson-estimator-ii" id="toc-nadaraya-watson-estimator-ii" class="nav-link" data-scroll-target="#nadaraya-watson-estimator-ii">Nadaraya-Watson estimator II</a></li>
   <li><a href="#local-linear-regression-i" id="toc-local-linear-regression-i" class="nav-link" data-scroll-target="#local-linear-regression-i">Local linear regression I</a></li>
   <li><a href="#local-linear-regression-ii" id="toc-local-linear-regression-ii" class="nav-link" data-scroll-target="#local-linear-regression-ii">Local linear regression II</a></li>
   <li><a href="#local-linear-regression-iii" id="toc-local-linear-regression-iii" class="nav-link" data-scroll-target="#local-linear-regression-iii">Local linear regression III</a></li>
@@ -94,6 +99,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#regression-splines" id="toc-regression-splines" class="nav-link" data-scroll-target="#regression-splines">Regression splines</a></li>
   <li><a href="#smoothing-splines" id="toc-smoothing-splines" class="nav-link" data-scroll-target="#smoothing-splines">Smoothing splines</a></li>
   <li><a href="#penalized-splines" id="toc-penalized-splines" class="nav-link" data-scroll-target="#penalized-splines">Penalized splines</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_D_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
@@ -151,7 +157,7 @@ ul.task-list li input[type="checkbox"] {
   Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
   </span> where <span class="math inline">\epsilon_i</span> are <span class="orange">iid</span> with <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span> and <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>.</p></li>
 <li><p>We do not believe <span class="math inline">f(\bm{x})</span> is a polynomial or any other parametric function.</p></li>
-<li><p>Can we fit a <span class="blue">nonparametric</span> relationship that does <span class="orange">not</span> make strong <span class="orange">assumptions</span> on <span class="math inline">f(\bm{x})</span>?</p></li>
+<li><p>Can we fit a <span class="blue">nonparametric</span> relationship that does <span class="orange">not</span> make strong <span class="orange">assumptions</span> on <span class="math inline">f(\bm{x})</span>? Let us review some old dataset…</p></li>
 </ul>
 </div>
 </div>
@@ -176,7 +182,7 @@ ul.task-list li input[type="checkbox"] {
 <li><p>We assume, as before, that the data are generated according to <span class="math display">
     Y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n.
     </span></p></li>
-<li><p>The original data can be <a href="https://hastie.su.domains/CASI_files/DATA/cholesterol.txt">found here</a>.</p></li>
+<li><p>In <a href="un_B.html#another-example-cholesterol-data">Unit B</a> we fit a <span class="orange">polynomial</span> with degree <span class="math inline">3</span>, although there was some <span class="blue">uncertainty</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -192,12 +198,13 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div><div class="column" style="width:60%;">
 <ul>
-<li><p>Let us consider the variables <code>city.distance</code> (<span class="math inline">y</span>) and <code>engine.size</code> (<span class="math inline">x</span>).</p></li>
-<li><p>A <span class="blue">simple linear regression</span> <span class="math display">
-Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
-</span> could be easily fit by least squares…</p></li>
-<li><p>… but the plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
-<li><p>… and also that <code>fuel</code> has an non-negligible effect on the response.</p></li>
+<li><p>In <a href="un_A.html">Unit A</a> we considered the <code>auto</code> dataset.</p></li>
+<li><p>We wanted to model the relationship between <code>city.distance</code> (<span class="math inline">y</span>) and <code>engine.size</code> (<span class="math inline">x</span>).</p></li>
+<li><p>The chosen model involved a <span class="blue">non-linear</span> function <span class="math display">
+Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
+</span> where <span class="math inline">f(x)</span> was “manually” selected.</p></li>
+<li><p>There are <span class="orange">no</span> specific reasons to believe that <span class="math inline">f(x) = \alpha + \beta\log{x}</span> or any other <span class="orange">parametric function</span>.</p></li>
+<li><p>We would like the data to “speak for themselves”.</p></li>
 </ul>
 </div>
 </div>
@@ -228,6 +235,21 @@ Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 </section>
 <section id="old-friends-polynomials" class="level2">
 <h2 class="anchored" data-anchor-id="old-friends-polynomials">Old friends: polynomials</h2>
+<ul>
+<li>In the <code>mcycle</code> dataset it is <span class="orange">not</span> obvious which <span class="orange">parametric</span> function we should consider, therefore this route is not an option.</li>
+</ul>
+<ul>
+<li><p>The <span class="orange">theory</span> says that <span class="blue">polynomials</span> can <span class="blue">approximate</span> a large class of functions, as a consequence of Taylor’s expansion theorem.</p></li>
+<li><p>In the statistical <span class="orange">practice</span>, however, polynomial regression is not very well suited for modelling complex relationships.</p></li>
+</ul>
+<ul>
+<li><p>When performing flexible regression we would expect the prediction at <span class="math inline">x_i</span> to depend on observations close to <span class="math inline">x_i</span>. However, polynomials are <span class="orange">not local</span>.</p></li>
+<li><p>Instead, in polynomial regression points that are far away from <span class="math inline">x_i</span> have a big impact on <span class="math inline">\hat{f}(x_i)</span>. This produces <span class="blue">spurious oscillations</span> at the boundaries and <span class="orange">unstable</span> estimates.</p></li>
+<li><p>This is known as <a href="https://en.wikipedia.org/wiki/Runge%27s_phenomenon">Runge’s phenomenon</a> in numerical analysis.</p></li>
+</ul>
+</section>
+<section id="old-friends-polynomials-1" class="level2">
+<h2 class="anchored" data-anchor-id="old-friends-polynomials-1">Old friends: polynomials</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -238,15 +260,55 @@ Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 </div>
 </div>
 </section>
-<section id="old-friends-polynomials-1" class="level2">
-<h2 class="anchored" data-anchor-id="old-friends-polynomials-1">Old friends: polynomials</h2>
-<ul>
-<li>asd</li>
-</ul>
-</section>
 </section>
 <section id="local-regression" class="level1">
 <h1>Local regression</h1>
+<section id="the-regression-function" class="level2">
+<h2 class="anchored" data-anchor-id="the-regression-function">The regression function</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Let us recall again that the only assumption we are making is that <span class="math display">
+  Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
+</span> where <span class="math inline">\epsilon_i</span> are <span class="orange">iid</span> with <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span> and <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>.</p></li>
+<li><p>In <a href="un_B.html#regression-under-quadratic-loss-ii">Unit B</a> we showed that under the following <span class="orange">quadratic loss</span><span class="math display">
+\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(x_i)\}^2\right],
+</span> the best prediction <span class="math inline">\hat{f}(x_i)</span>, i.e.&nbsp;the one minimizing the loss, coincides with <span class="math display">
+\hat{f}(x_i) = \mathbb{E}(\tilde{Y}_i) = f(x_i),
+</span> which is the <span class="blue">conditional expectation</span> of <span class="math inline">Y_i</span> given the value <span class="math inline">x_i</span>, called <span class="blue">regression function</span>.</p></li>
+<li><p>The regression function <span class="math inline">f(x_i) = \mathbb{E}(\tilde{Y}_i)</span> is the <span class="blue">optimal prediction</span> even in presence of heroschedastic data or when the above <span class="orange">additive</span> decomposition does <span class="orange">not hold</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="local-estimates-of-the-prediction" class="level2">
+<h2 class="anchored" data-anchor-id="local-estimates-of-the-prediction">Local estimates of the prediction</h2>
+<ul>
+<li><p>We do not know <span class="math inline">f(x)</span>, but the previous formulas suggest that we could consider an <span class="blue">arithmetic average</span> of the data points.</p></li>
+<li><p>Hence, a <span class="orange">prediction</span> for a generic value <span class="math inline">x</span> could be obtained as follows: <span class="math display">
+\hat{f}(x) = \frac{1}{n_x}\sum_{i : x_i = x} y_i, \qquad n_x = \sum_{i=1}^n I(x_i = x).
+</span></p></li>
+</ul>
+<ul>
+<li><p>This idea, unfortunately, <span class="orange">does not work</span> in most practical cases.</p></li>
+<li><p>Indeed, in a typical datasetit is very unlikely that there exist observations exactly equal to <span class="math inline">x</span> among the points <span class="math inline">(x_i, y_i)</span>.</p></li>
+<li><p>Even if there were values such that <span class="math inline">x_i = x</span>, the <span class="blue">sample size</span> <span class="math inline">n_x</span> would often be so <span class="orange">small</span> (e.g.&nbsp;<span class="math inline">n_x = 1</span>) that the variance of <span class="math inline">\hat{f}(x)</span> would be too high, making this estimator useless.</p></li>
+</ul>
+<ul>
+<li>On the other hand, this idea seems <span class="orange">intuitively appealing</span>. Is there a way to “fix” it?</li>
+</ul>
+</section>
+<section id="k-nearest-neighbours" class="level2">
+<h2 class="anchored" data-anchor-id="k-nearest-neighbours">K-nearest neighbours</h2>
+<ul>
+<li><p>Instead of considering the values exactly equal to <span class="math inline">x</span>, what we could do is select the pairs <span class="math inline">(x_i, y_i)</span> that are <span class="blue">close</span> to (in a <span class="orange">neighbour</span> of) <span class="math inline">x</span>.</p></li>
+<li><p>A natural measure of proximity between <span class="math inline">x</span> and the data points <span class="math inline">x_i</span> is the <span class="orange">Euclidean distance</span> <span class="math inline">|x_i - x|</span>, but in principle any other metric could be considered.</p></li>
+</ul>
+<ul>
+<li><p>We consider an average of the <span class="math inline">k</span> values <span class="math inline">y_i</span> whose <span class="math inline">x_i</span> are closest to <span class="math inline">x</span>, that is: <span class="math display">
+\hat{f}(x) = \frac{1}{|\mathcal{N}_x|}\sum_{i \in \mathcal{N}_x} y_i,
+</span> where <span class="math inline">\mathcal{N}_x</span> is the set of <span class="math inline">k</span> points nearest to <span class="math inline">x</span> in Euclidean distance.</p></li>
+<li><p>This method is called <span class="blue"><span class="math inline">k</span>-nearest neighbours</span> (KNN).</p></li>
+</ul>
+</section>
 <section id="k-nearest-neighbours-k-6" class="level2">
 <h2 class="anchored" data-anchor-id="k-nearest-neighbours-k-6">K-nearest neighbours (<span class="math inline">k = 6</span>)</h2>
 <div class="cell" data-layout-align="center">
@@ -259,8 +321,25 @@ Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 </div>
 </div>
 </section>
+<section id="limitations-of-the-k-nearest-neighbor-method" class="level2">
+<h2 class="anchored" data-anchor-id="limitations-of-the-k-nearest-neighbor-method">Limitations of the <span class="math inline">k</span>-nearest neighbor method</h2>
+<ul>
+<li><p>The number of neighbours <span class="math inline">k</span> influences how “local” is the estimate.</p></li>
+<li><p>The case <span class="math inline">k = 1</span> is unsatisfactory, because the average is based on a single data point. On the other hand, the case <span class="math inline">k = n</span> produces a constant.</p></li>
+<li><p>Hence, there is a clear <span class="orange">bias-variance trade-off</span>in the choice of <span class="math inline">k</span>, which should be selected e.g.&nbsp;via <span class="blue">cross-validation</span>.</p></li>
+</ul>
+<ul>
+<li><p>The <span class="math inline">k</span>-nearest neighbours produces a <span class="blue">sensible result</span>, but the method <span class="orange">can be improved</span>.</p></li>
+<li><p>The <span class="blue">blue curve</span> is bumpy, because <span class="math inline">\hat{f}(x)</span> is <span class="orange">discontinuous</span> in <span class="math inline">x</span>.</p></li>
+<li><p>Indeed, as we move <span class="math inline">x</span> from left to right, the <span class="math inline">k</span>-nearest neighborhood remains constant, until a point <span class="math inline">x_i</span> to the right of <span class="math inline">x</span>.</p></li>
+<li><p>This discontinuity is <span class="orange">ugly</span> and <span class="orange">unnecessary</span>. We are looking instead for a <span class="blue">smooth</span> prediction.</p></li>
+</ul>
+</section>
 <section id="nadaraya-watson-estimator" class="level2">
 <h2 class="anchored" data-anchor-id="nadaraya-watson-estimator">Nadaraya-Watson estimator</h2>
+</section>
+<section id="nadaraya-watson-estimator-ii" class="level2">
+<h2 class="anchored" data-anchor-id="nadaraya-watson-estimator-ii">Nadaraya-Watson estimator II</h2>
 </section>
 <section id="local-linear-regression-i" class="level2">
 <h2 class="anchored" data-anchor-id="local-linear-regression-i">Local linear regression I</h2>
@@ -313,6 +392,9 @@ Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 </section>
 <section id="penalized-splines" class="level1">
 <h1>Penalized splines</h1>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
 </section>
 
 </main>

@@ -69,7 +69,6 @@ for (degree in degree_list) {
 
 # Graphical adjustment to get the plots in the right order
 data_pred$degree <- factor(data_pred$degree)
-# data_pred$degree <- factor(data_pred$degree, levels = levels(data_pred$degree)[c(3, 5, 6, 1, 2, 4)])
 
 # Final plot
 ggplot(data = data_pred) +
@@ -87,14 +86,13 @@ ggplot(data = data_pred) +
 #| fig-height: 4.55
 #| fig-align: center
 library(kknn)
-fit_knn <- fitted(kknn(accel ~ times, train = dataset, test = dataset, kernel = "rectangular", k = 6))
+fit_knn <- fitted(kknn(accel ~ times, train = dataset, test = data.frame(times = times_seq), kernel = "rectangular", k = 6))
 
-dataset$fit_knn <- fit_knn
 ggplot(data = dataset, aes(x = times, y = accel)) +
   geom_ribbon(aes(xmin = 51.7, xmax = 57.7), fill = "#fc7d0b", alpha = 0.6) +
   geom_ribbon(aes(xmin = 19, xmax = 21), fill = "#fc7d0b", alpha = 0.6) +
   geom_point(size = 0.7) +
-  geom_line(aes(x = times, y = fit_knn), col = "#1170aa") +
+  geom_line(data = data.frame(x = times_seq, y = fit_knn), aes(x = x, y = y), col = "#1170aa") +
   geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
   geom_vline(xintercept = 54.7, lty = "dashed", linewidth = 0.4) +
   theme_minimal() +

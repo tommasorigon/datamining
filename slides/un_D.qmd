@@ -87,7 +87,7 @@ styler:::style_file("../code/un_D.R")
     
 - We do not believe $f(\bm{x})$ is a polynomial or any other parametric function.
 
-- Can we fit a [nonparametric]{.blue} relationship that does [not]{.orange} make strong [assumptions]{.orange} on $f(\bm{x})$?
+- Can we fit a [nonparametric]{.blue} relationship that does [not]{.orange} make strong [assumptions]{.orange} on $f(\bm{x})$? Let us review some old dataset...
 
 :::
 :::
@@ -131,9 +131,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 -   We assume, as before, that the data are generated according to $$
         Y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n.
         $$
-
--   The original data can be [found
-    here](https://hastie.su.domains/CASI_files/DATA/cholesterol.txt).
+- In [Unit B](un_B.html#another-example-cholesterol-data) we fit a [polynomial]{.orange} with degree $3$, although there was some [uncertainty]{.blue}.
 :::
 :::
 
@@ -159,19 +157,17 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
 :::
 
 ::: {.column width="60%"}
--   Let us consider the variables `city.distance` ($y$) and `engine.size`
-    ($x$).
+-   In [Unit A](un_A.html) we considered the `auto` dataset. 
 
--   A [simple linear regression]{.blue} $$
-    Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
-    $$ could be easily fit by least squares...
+- We wanted to model the relationship between `city.distance` ($y$) and `engine.size` ($x$). 
 
--   ... but the plot clearly suggests that the relationship between
-    `city.distance` and `engine.size` is [not]{.orange} well
-    approximated by a [linear]{.orange} function.
+-   The chosen model involved a [non-linear]{.blue} function $$
+    Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
+    $$ where $f(x)$ was "manually" selected.
 
--   ... and also that `fuel` has an non-negligible effect on the
-    response.
+-   There are [no]{.orange} specific reasons to believe that $f(x) = \alpha + \beta\log{x}$ or any other [parametric function]{.orange}.
+
+- We would like the data to "speak for themselves".
 :::
 :::
 
@@ -212,6 +208,23 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 :::
 :::
 
+## Old friends: polynomials
+
+- In the `mcycle` dataset it is [not]{.orange} obvious which [parametric]{.orange} function we should consider, therefore this route is not an option. 
+
+. . .
+
+- The [theory]{.orange} says that [polynomials]{.blue} can [approximate]{.blue} a large class of functions, as a consequence of Taylor's expansion theorem. 
+
+- In the statistical [practice]{.orange}, however, polynomial regression is not very well suited for modelling complex relationships.
+
+. . .
+
+- When performing flexible regression we would expect the prediction at $x_i$ to depend on observations close to $x_i$. However, polynomials are [not local]{.orange}. 
+
+- Instead, in polynomial regression points that are far away from $x_i$ have a big impact on $\hat{f}(x_i)$. This produces [spurious oscillations]{.blue} at the boundaries and [unstable]{.orange} estimates.
+
+- This is known as [Runge's phenomenon](https://en.wikipedia.org/wiki/Runge%27s_phenomenon) in numerical analysis.
 
 ## Old friends: polynomials
 
@@ -238,7 +251,6 @@ for (degree in degree_list) {
 
 # Graphical adjustment to get the plots in the right order
 data_pred$degree <- factor(data_pred$degree)
-#data_pred$degree <- factor(data_pred$degree, levels = levels(data_pred$degree)[c(3, 5, 6, 1, 2, 4)])
 
 # Final plot
 ggplot(data = data_pred) +
@@ -252,11 +264,70 @@ ggplot(data = data_pred) +
   ylab("y") # Manual identification of an "interesting" region
 ```
 
-## Old friends: polynomials
 
-- asd
 
 # Local regression
+
+## The regression function
+
+::: incremental
+
+- Let us recall again that the only assumption we are making is that
+$$
+    Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
+$$
+where $\epsilon_i$ are [iid]{.orange} with $\mathbb{E}(\epsilon_i) = 0$ and $\text{var}(\epsilon_i) = \sigma^2$.
+
+- In [Unit B](un_B.html#regression-under-quadratic-loss-ii) we showed that under the following [quadratic loss]{.orange}$$
+\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(x_i)\}^2\right],
+$$
+the best prediction $\hat{f}(x_i)$, i.e. the one minimizing the loss, coincides with
+$$
+\hat{f}(x_i) = \mathbb{E}(\tilde{Y}_i) = f(x_i),
+$$
+which is the [conditional expectation]{.blue} of $Y_i$ given the value $x_i$, called [regression function]{.blue}.
+
+
+- The regression function $f(x_i) = \mathbb{E}(\tilde{Y}_i)$ is the [optimal prediction]{.blue} even in presence of heroschedastic data or when the above [additive]{.orange} decomposition does [not hold]{.orange}.
+
+:::
+
+## Local estimates of the prediction
+
+- We do not know $f(x)$, but the previous formulas suggest that we could consider an [arithmetic average]{.blue} of the data points.
+
+- Hence, a [prediction]{.orange} for a generic value $x$ could be obtained as follows: 
+$$
+\hat{f}(x) = \frac{1}{n_x}\sum_{i : x_i = x} y_i, \qquad n_x = \sum_{i=1}^n I(x_i = x).
+$$
+
+. . .
+
+- This idea, unfortunately, [does not work]{.orange} in most practical cases. 
+
+- Indeed, in a typical datasetit is very unlikely that there exist observations exactly equal to $x$ among the points $(x_i, y_i)$.
+
+- Even if there were values such that $x_i = x$, the [sample size]{.blue} $n_x$ would often be so [small]{.orange} (e.g. $n_x = 1$) that the variance of $\hat{f}(x)$ would be too high, making this estimator useless.
+
+. . .
+
+- On the other hand, this idea seems [intuitively appealing]{.orange}. Is there a way to "fix" it?
+
+## K-nearest neighbours 
+
+- Instead of considering the values exactly equal to $x$, what we could do is select the pairs $(x_i, y_i)$ that are [close]{.blue} to (in a [neighbour]{.orange} of) $x$.
+
+- A natural measure of proximity between $x$ and the data points $x_i$ is the [Euclidean distance]{.orange} $|x_i - x|$, but in principle any other metric could be considered. 
+
+. . .
+
+- We consider an average of the $k$ values $y_i$ whose $x_i$ are closest to $x$, that is:
+$$
+\hat{f}(x) = \frac{1}{|\mathcal{N}_x|}\sum_{i \in \mathcal{N}_x} y_i,
+$$
+where $\mathcal{N}_x$ is the set of $k$ points nearest to $x$ in Euclidean distance.
+
+- This method is called [$k$-nearest neighbours]{.blue} (KNN).
 
 ## K-nearest neighbours ($k = 6$)
 
@@ -265,14 +336,13 @@ ggplot(data = data_pred) +
 #| fig-height: 4.55
 #| fig-align: center
 library(kknn)
-fit_knn <- fitted(kknn(accel ~ times, train = dataset, test = dataset, kernel = "rectangular", k = 6))
+fit_knn <- fitted(kknn(accel ~ times, train = dataset, test = data.frame(times = times_seq), kernel = "rectangular", k = 6))
 
-dataset$fit_knn <- fit_knn
 ggplot(data = dataset, aes(x = times, y = accel)) +
   geom_ribbon(aes(xmin = 51.7, xmax = 57.7), fill = "#fc7d0b", alpha = 0.6) +
   geom_ribbon(aes(xmin = 19, xmax = 21), fill = "#fc7d0b", alpha = 0.6) +
   geom_point(size = 0.7) +
-  geom_line(aes(x = times, y = fit_knn), col = "#1170aa") +
+  geom_line(data = data.frame(x = times_seq, y = fit_knn), aes(x = x, y = y), col = "#1170aa") +
   geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
   geom_vline(xintercept = 54.7, lty = "dashed", linewidth = 0.4) +
   theme_minimal() +
@@ -281,8 +351,27 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   ylab("Head acceleration (g)")
 ```
 
+## Limitations of the $k$-nearest neighbor method
+
+- The number of neighbours $k$ influences how "local" is the estimate. 
+
+- The case $k = 1$ is unsatisfactory, because the average is based on a single data point. On the other hand, the case $k = n$ produces a constant. 
+
+- Hence, there is a clear [bias-variance trade-off]{.orange}in the choice of $k$, which should be selected e.g. via [cross-validation]{.blue}.
+
+. . .
+
+- The $k$-nearest neighbours produces a [sensible result]{.blue}, but the method [can be improved]{.orange}. 
+
+- The [blue curve]{.blue} is bumpy, because $\hat{f}(x)$ is [discontinuous]{.orange} in $x$. 
+
+- Indeed, as we move $x$ from left to right, the $k$-nearest neighborhood remains constant, until a point $x_i$ to the right of $x$.
+
+- This discontinuity is [ugly]{.orange} and [unnecessary]{.orange}. We are looking instead for a [smooth]{.blue} prediction. 
 
 ## Nadaraya-Watson estimator
+
+## Nadaraya-Watson estimator II
 
 ## Local linear regression I
 
@@ -317,3 +406,5 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 # Smoothing splines
 
 # Penalized splines
+
+# References
