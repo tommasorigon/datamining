@@ -647,16 +647,40 @@ w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
 </section>
 <section id="local-linear-regression-i" class="slide level2 center">
 <h2>Local linear regression I</h2>
+<ul>
+<li><span class="blue">Local linear regression</span> is a refinement of the Nadaraya-Watson estimator that has typically <span class="orange">lower bias</span>, especially at the <span class="orange">boundaries</span>, without noticeable increases in variance.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>If <span class="math inline">f(x)</span> is differentiable in <span class="math inline">x_0</span>, then it can be locally approximated with a linear function tangent in <span class="math inline">x_0</span>, that is <span class="math display">
+f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) + \text{rest}.
+</span></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Hence, instead of computing a <span class="orange">local average</span> as before, we consider a <span class="blue">local linear model</span>. In other words, for every <span class="math inline">x</span> we seek the coefficients solving: <span class="math display">
+(\hat{\beta}_1, \hat{\beta}_2) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n w_i(x)\left\{y_i - \beta_1 - \beta_2(x_i - x)\right\}^2.
+</span> Then, the local <span class="blue">linear regression estimator</span> for the point <span class="math inline">x</span> is equal to <span class="math display">
+\hat{f}(x) = \hat{\beta}_1 + \hat{\beta}_2 (x - x) = \hat{\beta}_1.
+</span></li>
+</ul>
+</div>
 </section>
 <section id="local-linear-regression-ii" class="slide level2 center">
 <h2>Local linear regression II</h2>
+<ul>
+<li>The local linear regression optimization problem, as we have seen in <a href="un_A.html">Unit A</a>, has an <span class="orange">explicit solution</span>: <span class="math display">
+\hat{\beta} = (\bm{X}^T\bm{W}_x\bm{X})^{-1}\bm{X}^T\bm{W}_x\bm{y},
+</span> where the rows of <span class="math inline">\bm{X}</span> are <span class="math inline">\bm{x}_i = (1, x_i - x)</span> and <span class="math inline">\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}</span>.</li>
+</ul>
 </section>
 <section id="local-linear-regression-iii" class="slide level2 center">
 <h2>Local linear regression III</h2>
 
 <img data-src="un_D_files/figure-revealjs/unnamed-chunk-11-1.png" width="2000" class="r-stretch"></section>
-<section id="local-linear-regression-iv" class="slide level2 center">
-<h2>Local linear regression IV</h2>
+<section id="bias-reduction-of-local-linear-regression" class="slide level2 center">
+<h2>☠️ - Bias reduction of local linear regression</h2>
 </section>
 <section id="choice-of-the-kernel" class="slide level2 center">
 <h2>Choice of the kernel</h2>

@@ -507,11 +507,36 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 :::
 
-
-
 ## Local linear regression I
 
+- [Local linear regression]{.blue} is a refinement of the Nadaraya-Watson estimator that has typically [lower bias]{.orange}, especially at the [boundaries]{.orange}, without noticeable increases in variance. 
+
+. . .
+
+- If $f(x)$ is differentiable in $x_0$, then it can be locally approximated with a linear function tangent in $x_0$, that is
+$$
+f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) + \text{rest}.
+$$
+
+. . .
+
+- Hence, instead of computing a [local average]{.orange} as before, we consider a [local linear model]{.blue}. In other words, for every $x$ we seek the coefficients solving:
+$$
+(\hat{\beta}_1, \hat{\beta}_2) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n w_i(x)\left\{y_i - \beta_1 - \beta_2(x_i - x)\right\}^2.
+$$
+Then, the local [linear regression estimator]{.blue} for the point $x$ is  equal to 
+$$
+\hat{f}(x) = \hat{\beta}_1 + \hat{\beta}_2 (x - x) = \hat{\beta}_1.
+$$
+
 ## Local linear regression II
+
+- The local linear regression optimization problem, as we have seen in [Unit A](un_A.html), has an [explicit solution]{.orange}:
+$$
+\hat{\beta} = (\bm{X}^T\bm{W}_x\bm{X})^{-1}\bm{X}^T\bm{W}_x\bm{y},
+$$
+where the rows of $\bm{X}$ are $\bm{x}_i = (1, x_i - x)$ and $\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}$.
+
 
 ## Local linear regression III
 
@@ -530,8 +555,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   ylab("Head acceleration (g)")
 ```
 
-
-## Local linear regression IV
+## ☠️ - Bias reduction of local linear regression
 
 ## Choice of the kernel
 
