@@ -357,7 +357,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 - The case $k = 1$ is unsatisfactory, because the average is based on a single data point. On the other hand, the case $k = n$ produces a constant. 
 
-- Hence, there is a clear [bias-variance trade-off]{.orange}in the choice of $k$, which should be selected e.g. via [cross-validation]{.blue}.
+- Hence, there is a clear [bias-variance trade-off]{.orange} in the choice of $k$, which should be selected e.g. via [cross-validation]{.blue}.
 
 . . .
 
@@ -371,11 +371,47 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 ## Nadaraya-Watson estimator
 
-## Nadaraya-Watson estimator II
+- The [Nadaraya-Watson]{.blue} estimator addresses these issues. It is a [weighted average]{.orange}
+$$
+\hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(x)}\sum_{i=1}^n w_i(x) y_i = \sum_{i=1}^n \tilde{w}_i(x) y_i,
+$$
+where $\tilde{w}_i(x) = w_i(x) / \sum_{i'=1}^n w_{i'}(x)$ are the [normalized weights]{.blue}.
+
+. . .
+
+- The values $w_i(x) \ge 0$ are chosen so that the points $x_i$ [close]{.orange} to $x$ are [weighted more]{.orange}.
+
+. . .
+
+- A convenient way of selecting these weights is through [kernel functions]{.blue}:
+$$
+w_i(x) = \frac{1}{h}w\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
+$$
+where $w(\cdot)$ is a [symmetric density]{.orange} function around the origin, called kernel in this context.
+
+- The value $h > 0$ is a [scale factor]{.blue}, sometimes called [bandwidth]{.orange} or [smoothing parameter]{.orange}.
+
+## Nadaraya-Watson estimator: comments
+
+- The fitted function $\hat{f}(x)$ is [continuous]{.blue} and is obtained by computing several weighted averages, one for each value of $x$.
+
+- A popular kernel is the [Gaussian kernel]{.orange}, that is:
+$$
+w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
+$$
+so that $h^2$ represents the [variance]{.blue}. We will discuss alternative choices later on.
+
+. . .
+
+- The most important factor, however, is not the functional form of $w(\cdot)$, but rather the [smoothing parameter]{.orange} $h$, which is a complexity parameter. 
+
+- Indeed, $h$ defines the "[smoothing window]{.blue}" on the $x$-axis, i.e. the relevant data points that are considered for $\hat{f}(x)$.
+
+- As any complexity parameter, $h$ should be chosen via cross-validation or related ideas. 
+
+## Nadaraya-Watson (Gaussian kernel)
 
 ::: panel-tabset
-
-
 
 ## Smoothing $h = 1$
 
@@ -471,6 +507,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 :::
 
+
+
 ## Local linear regression I
 
 ## Local linear regression II
@@ -486,6 +524,10 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 ## Choice of the bandwidth II
 
 ## Choice of the bandwidth III
+
+## Linear smoothers I
+
+## Linear smoothers II
 
 ## Loess I
 

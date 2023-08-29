@@ -545,7 +545,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <ul>
 <li><p>The number of neighbours <span class="math inline">k</span> influences how “local” is the estimate.</p></li>
 <li><p>The case <span class="math inline">k = 1</span> is unsatisfactory, because the average is based on a single data point. On the other hand, the case <span class="math inline">k = n</span> produces a constant.</p></li>
-<li><p>Hence, there is a clear <span class="orange">bias-variance trade-off</span>in the choice of <span class="math inline">k</span>, which should be selected e.g.&nbsp;via <span class="blue">cross-validation</span>.</p></li>
+<li><p>Hence, there is a clear <span class="orange">bias-variance trade-off</span> in the choice of <span class="math inline">k</span>, which should be selected e.g.&nbsp;via <span class="blue">cross-validation</span>.</p></li>
 </ul>
 <div class="fragment">
 <ul>
@@ -558,9 +558,43 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 </section>
 <section id="nadaraya-watson-estimator" class="slide level2 center">
 <h2>Nadaraya-Watson estimator</h2>
+<ul>
+<li>The <span class="blue">Nadaraya-Watson</span> estimator addresses these issues. It is a <span class="orange">weighted average</span> <span class="math display">
+\hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(x)}\sum_{i=1}^n w_i(x) y_i = \sum_{i=1}^n \tilde{w}_i(x) y_i,
+</span> where <span class="math inline">\tilde{w}_i(x) = w_i(x) / \sum_{i'=1}^n w_{i'}(x)</span> are the <span class="blue">normalized weights</span>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>The values <span class="math inline">w_i(x) \ge 0</span> are chosen so that the points <span class="math inline">x_i</span> <span class="orange">close</span> to <span class="math inline">x</span> are <span class="orange">weighted more</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>A convenient way of selecting these weights is through <span class="blue">kernel functions</span>: <span class="math display">
+w_i(x) = \frac{1}{h}w\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
+</span> where <span class="math inline">w(\cdot)</span> is a <span class="orange">symmetric density</span> function around the origin, called kernel in this context.</p></li>
+<li><p>The value <span class="math inline">h &gt; 0</span> is a <span class="blue">scale factor</span>, sometimes called <span class="orange">bandwidth</span> or <span class="orange">smoothing parameter</span>.</p></li>
+</ul>
+</div>
 </section>
-<section id="nadaraya-watson-estimator-ii" class="slide level2 center">
-<h2>Nadaraya-Watson estimator II</h2>
+<section id="nadaraya-watson-estimator-comments" class="slide level2 center">
+<h2>Nadaraya-Watson estimator: comments</h2>
+<ul>
+<li><p>The fitted function <span class="math inline">\hat{f}(x)</span> is <span class="blue">continuous</span> and is obtained by computing several weighted averages, one for each value of <span class="math inline">x</span>.</p></li>
+<li><p>A popular kernel is the <span class="orange">Gaussian kernel</span>, that is: <span class="math display">
+w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
+</span> so that <span class="math inline">h^2</span> represents the <span class="blue">variance</span>. We will discuss alternative choices later on.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>The most important factor, however, is not the functional form of <span class="math inline">w(\cdot)</span>, but rather the <span class="orange">smoothing parameter</span> <span class="math inline">h</span>, which is a complexity parameter.</p></li>
+<li><p>Indeed, <span class="math inline">h</span> defines the “<span class="blue">smoothing window</span>” on the <span class="math inline">x</span>-axis, i.e.&nbsp;the relevant data points that are considered for <span class="math inline">\hat{f}(x)</span>.</p></li>
+<li><p>As any complexity parameter, <span class="math inline">h</span> should be chosen via cross-validation or related ideas.</p></li>
+</ul>
+</div>
+</section>
+<section id="nadaraya-watson-gaussian-kernel" class="slide level2 center">
+<h2>Nadaraya-Watson (Gaussian kernel)</h2>
 <div class="panel-tabset">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Smoothing <span class="math inline">h = 1</span></a></li><li><a href="#tabset-1-2">Smoothing <span class="math inline">h = 0.3</span></a></li><li><a href="#tabset-1-3">Smoothing <span class="math inline">h = 2</span></a></li><li><a href="#tabset-1-4">Smoothing <span class="math inline">h = 4</span></a></li></ul>
 <div class="tab-content">
@@ -634,6 +668,12 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 </section>
 <section id="choice-of-the-bandwidth-iii" class="slide level2 center">
 <h2>Choice of the bandwidth III</h2>
+</section>
+<section id="linear-smoothers-i" class="slide level2 center">
+<h2>Linear smoothers I</h2>
+</section>
+<section id="linear-smoothers-ii" class="slide level2 center">
+<h2>Linear smoothers II</h2>
 </section>
 <section id="loess-i" class="slide level2 center">
 <h2>Loess I</h2>
