@@ -226,7 +226,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 - This is known as [Runge's phenomenon](https://en.wikipedia.org/wiki/Runge%27s_phenomenon) in numerical analysis.
 
-## Old friends: polynomials
+## Old friends: polynomials (`mcycle` data)
 
 ```{r}
 #| fig-width: 7.8
@@ -288,7 +288,7 @@ $$
 which is the [conditional expectation]{.blue} of $Y_i$ given the value $x_i$, called [regression function]{.blue}.
 
 
-- The regression function $f(x_i) = \mathbb{E}(\tilde{Y}_i)$ is the [optimal prediction]{.blue} even in presence of heroschedastic data or when the above [additive]{.orange} decomposition does [not hold]{.orange}.
+- The regression function $f(x_i) = \mathbb{E}(\tilde{Y}_i)$ is the [optimal prediction]{.blue} even in presence of [heteroschedastic]{.orange} data or when the above [additive]{.orange} decomposition does [not hold]{.orange}.
 
 :::
 
@@ -514,6 +514,22 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 ## Local linear regression II
 
 ## Local linear regression III
+
+```{r}
+library(KernSmooth)
+
+h_param <- dpill(x, y)
+fit_locpoly <- locpoly(x, y, bandwidth = h_param, gridsize = 2000)
+
+ggplot(data = dataset, aes(x = times, y = accel)) +
+  geom_point(size = 0.7) +
+  geom_line(data = data.frame(x = fit_locpoly$x, y = fit_locpoly$y), aes(x = x, y = y), col = "#1170aa") +
+  theme_minimal() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
+```
+
 
 ## Local linear regression IV
 

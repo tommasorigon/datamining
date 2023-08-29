@@ -179,3 +179,18 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
+
+
+
+library(KernSmooth)
+
+h_param <- dpill(x, y)
+fit_locpoly <- locpoly(x, y, bandwidth = h_param, gridsize = 2000)
+
+ggplot(data = dataset, aes(x = times, y = accel)) +
+  geom_point(size = 0.7) +
+  geom_line(data = data.frame(x = fit_locpoly$x, y = fit_locpoly$y), aes(x = x, y = y), col = "#1170aa") +
+  theme_minimal() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")

@@ -70,7 +70,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-auto-dataset" id="toc-the-auto-dataset" class="nav-link" data-scroll-target="#the-auto-dataset">The <code>auto</code> dataset</a></li>
   <li><a href="#the-mcycle-dataset" id="toc-the-mcycle-dataset" class="nav-link" data-scroll-target="#the-mcycle-dataset">The <code>mcycle</code> dataset</a></li>
   <li><a href="#old-friends-polynomials" id="toc-old-friends-polynomials" class="nav-link" data-scroll-target="#old-friends-polynomials">Old friends: polynomials</a></li>
-  <li><a href="#old-friends-polynomials-1" id="toc-old-friends-polynomials-1" class="nav-link" data-scroll-target="#old-friends-polynomials-1">Old friends: polynomials</a></li>
+  <li><a href="#old-friends-polynomials-mcycle-data" id="toc-old-friends-polynomials-mcycle-data" class="nav-link" data-scroll-target="#old-friends-polynomials-mcycle-data">Old friends: polynomials (<code>mcycle</code> data)</a></li>
   </ul></li>
   <li><a href="#local-regression" id="toc-local-regression" class="nav-link" data-scroll-target="#local-regression">Local regression</a>
   <ul class="collapse">
@@ -251,8 +251,8 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <li><p>This is known as <a href="https://en.wikipedia.org/wiki/Runge%27s_phenomenon">Runge’s phenomenon</a> in numerical analysis.</p></li>
 </ul>
 </section>
-<section id="old-friends-polynomials-1" class="level2">
-<h2 class="anchored" data-anchor-id="old-friends-polynomials-1">Old friends: polynomials</h2>
+<section id="old-friends-polynomials-mcycle-data" class="level2">
+<h2 class="anchored" data-anchor-id="old-friends-polynomials-mcycle-data">Old friends: polynomials (<code>mcycle</code> data)</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -278,7 +278,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 </span> the best prediction <span class="math inline">\hat{f}(x_i)</span>, i.e.&nbsp;the one minimizing the loss, coincides with <span class="math display">
 \hat{f}(x_i) = \mathbb{E}(\tilde{Y}_i) = f(x_i),
 </span> which is the <span class="blue">conditional expectation</span> of <span class="math inline">Y_i</span> given the value <span class="math inline">x_i</span>, called <span class="blue">regression function</span>.</p></li>
-<li><p>The regression function <span class="math inline">f(x_i) = \mathbb{E}(\tilde{Y}_i)</span> is the <span class="blue">optimal prediction</span> even in presence of heroschedastic data or when the above <span class="orange">additive</span> decomposition does <span class="orange">not hold</span>.</p></li>
+<li><p>The regression function <span class="math inline">f(x_i) = \mathbb{E}(\tilde{Y}_i)</span> is the <span class="blue">optimal prediction</span> even in presence of <span class="orange">heteroschedastic</span> data or when the above <span class="orange">additive</span> decomposition does <span class="orange">not hold</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -429,6 +429,11 @@ w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
 </section>
 <section id="local-linear-regression-iii" class="level2">
 <h2 class="anchored" data-anchor-id="local-linear-regression-iii">Local linear regression III</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="un_D_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="1400"></p>
+</div>
+</div>
 </section>
 <section id="local-linear-regression-iv" class="level2">
 <h2 class="anchored" data-anchor-id="local-linear-regression-iv">Local linear regression IV</h2>
