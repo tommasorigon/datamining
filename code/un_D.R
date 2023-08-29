@@ -137,7 +137,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#1170aa") +
   geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
   theme_minimal() +
-  geom_function(fun = function(x) 25 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
+  geom_function(fun = function(x) 50 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
@@ -156,7 +156,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#1170aa") +
   geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
   theme_minimal() +
-  geom_function(fun = function(x) 200 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
+  geom_function(fun = function(x) 180 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
