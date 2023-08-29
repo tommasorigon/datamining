@@ -99,3 +99,83 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
+
+
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+#| message: false
+library(KernSmooth)
+
+h_param <- 1
+band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
+fit_nw <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = times_seq)
+
+ggplot(data = dataset, aes(x = times, y = accel)) +
+  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#fc7d0b", alpha = 0.6) +
+  geom_point(size = 0.7) +
+  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#1170aa") +
+  geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
+  theme_minimal() +
+  geom_function(fun = function(x) 150 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
+
+
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+
+h_param <- 0.3
+band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
+fit_nw <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = times_seq)
+
+ggplot(data = dataset, aes(x = times, y = accel)) +
+  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#fc7d0b", alpha = 0.6) +
+  geom_point(size = 0.7) +
+  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#1170aa") +
+  geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
+  theme_minimal() +
+  geom_function(fun = function(x) 25 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
+
+
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+h_param <- 2
+band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
+fit_nw <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = times_seq)
+
+ggplot(data = dataset, aes(x = times, y = accel)) +
+  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#fc7d0b", alpha = 0.6) +
+  geom_point(size = 0.7) +
+  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#1170aa") +
+  geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
+  theme_minimal() +
+  geom_function(fun = function(x) 200 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
+
+
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+h_param <- 4
+band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
+fit_nw <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = times_seq)
+
+ggplot(data = dataset, aes(x = times, y = accel)) +
+  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#fc7d0b", alpha = 0.6) +
+  geom_point(size = 0.7) +
+  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#1170aa") +
+  geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
+  theme_minimal() +
+  geom_function(fun = function(x) 600 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
