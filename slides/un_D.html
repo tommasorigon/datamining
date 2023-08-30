@@ -87,11 +87,11 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#local-linear-regression-h-1.45-gaussian-kernel" id="toc-local-linear-regression-h-1.45-gaussian-kernel" class="nav-link" data-scroll-target="#local-linear-regression-h-1.45-gaussian-kernel">Local linear regression (<span class="math inline">h = 1.45</span>, Gaussian kernel)</a></li>
   <li><a href="#linear-smoothers-i" id="toc-linear-smoothers-i" class="nav-link" data-scroll-target="#linear-smoothers-i">Linear smoothers I</a></li>
   <li><a href="#linear-smoothers-ii" id="toc-linear-smoothers-ii" class="nav-link" data-scroll-target="#linear-smoothers-ii">Linear smoothers II</a></li>
-  <li><a href="#choice-of-the-kernel-i" id="toc-choice-of-the-kernel-i" class="nav-link" data-scroll-target="#choice-of-the-kernel-i">Choice of the kernel I</a></li>
-  <li><a href="#choice-of-the-kernel-ii" id="toc-choice-of-the-kernel-ii" class="nav-link" data-scroll-target="#choice-of-the-kernel-ii">Choice of the kernel II</a></li>
+  <li><a href="#on-the-choice-of-the-kernel" id="toc-on-the-choice-of-the-kernel" class="nav-link" data-scroll-target="#on-the-choice-of-the-kernel">On the choice of the kernel</a></li>
+  <li><a href="#bias-variance-tradeoff" id="toc-bias-variance-tradeoff" class="nav-link" data-scroll-target="#bias-variance-tradeoff">Bias-variance tradeoff</a></li>
+  <li><a href="#bias-variance-tradeoff-ii" id="toc-bias-variance-tradeoff-ii" class="nav-link" data-scroll-target="#bias-variance-tradeoff-ii">Bias-variance tradeoff II</a></li>
   <li><a href="#choice-of-the-bandwidth-i" id="toc-choice-of-the-bandwidth-i" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-i">Choice of the bandwidth I</a></li>
   <li><a href="#choice-of-the-bandwidth-ii" id="toc-choice-of-the-bandwidth-ii" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-ii">Choice of the bandwidth II</a></li>
-  <li><a href="#choice-of-the-bandwidth-iii" id="toc-choice-of-the-bandwidth-iii" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-iii">Choice of the bandwidth III</a></li>
   <li><a href="#bias-reduction-of-local-linear-regression" id="toc-bias-reduction-of-local-linear-regression" class="nav-link" data-scroll-target="#bias-reduction-of-local-linear-regression">☠️ - Bias reduction of local linear regression</a></li>
   <li><a href="#loess-i" id="toc-loess-i" class="nav-link" data-scroll-target="#loess-i">Loess I</a></li>
   <li><a href="#loess-ii" id="toc-loess-ii" class="nav-link" data-scroll-target="#loess-ii">Loess II</a></li>
@@ -294,7 +294,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <ul>
 <li><p>This idea, unfortunately, <span class="orange">does not work</span> in most practical cases.</p></li>
 <li><p>Indeed, in a typical datasetit is very unlikely that there exist observations exactly equal to <span class="math inline">x</span> among the points <span class="math inline">(x_i, y_i)</span>.</p></li>
-<li><p>Even if there were values such that <span class="math inline">x_i = x</span>, the <span class="blue">sample size</span> <span class="math inline">n_x</span> would often be so <span class="orange">small</span> (e.g.&nbsp;<span class="math inline">n_x = 1</span>) that the variance of <span class="math inline">\hat{f}(x)</span> would be too high, making this estimator useless.</p></li>
+<li><p>Even if there were values such that <span class="math inline">x_i = x</span>, the <span class="blue">sample size</span> <span class="math inline">n_x</span> would often be so <span class="orange">small</span> (e.g. <span class="math inline">n_x = 1</span>) that the variance of <span class="math inline">\hat{f}(x)</span> would be too high, making this estimator useless.</p></li>
 </ul>
 <ul>
 <li>On the other hand, this idea seems <span class="orange">intuitively appealing</span>. Is there a way to “fix” it?</li>
@@ -499,24 +499,111 @@ Theorem (Local linear smoothing)
 <li>Each row of the smoothing matrix <span class="math inline">\bm{s}_i</span> is called <span class="orange">equivalent kernel</span> for estimating <span class="math inline">\hat{f}(x_i)</span>; in the Nadaraya Watson estimator <span class="math inline">\bm{s}_i</span> is indeed a normalized kernel.</li>
 </ul>
 <ul>
-<li><p>The weights of all the smoothers we will use have the property <span class="math inline">\sum_{i=1}^ns_i(x) = 1</span> for all <span class="math inline">x</span>.</p></li>
+<li><p>The weights of all the smoothers we will use have are such that <span class="math inline">\sum_{i=1}^ns_i(x) = 1</span> for all <span class="math inline">x</span>.</p></li>
 <li><p>Hence, the smoother <span class="blue">preserves constant curves</span>, namely if all <span class="math inline">y_i = c</span>, then <span class="math inline">\hat{f}(x) = c</span>.</p></li>
 </ul>
 </section>
-<section id="choice-of-the-kernel-i" class="level2">
-<h2 class="anchored" data-anchor-id="choice-of-the-kernel-i">Choice of the kernel I</h2>
+<section id="on-the-choice-of-the-kernel" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-choice-of-the-kernel">On the choice of the kernel</h2>
+<ul>
+<li>As mentioned before, the choice of the kernel is <span class="orange">not crucial</span>. Some alternatives are:</li>
+</ul>
+<table class="table">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 39%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kernel</th>
+<th><span class="math inline">w(x)</span></th>
+<th>Support</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Gaussian</td>
+<td><span class="math inline">\frac{1}{\sqrt{2 \pi}}\exp{\left(-\frac{x^2}{2}\right)}</span></td>
+<td><span class="math inline">\mathbb{R}</span></td>
+</tr>
+<tr class="even">
+<td>Rectangular</td>
+<td><span class="math inline">\frac{1}{2}</span></td>
+<td><span class="math inline">(-1, 1)</span></td>
+</tr>
+<tr class="odd">
+<td>Epanechnikov</td>
+<td><span class="math inline">\frac{3}{4}(1 - x^2)</span></td>
+<td><span class="math inline">(-1, 1)</span></td>
+</tr>
+<tr class="even">
+<td>Bi-quadratic</td>
+<td><span class="math inline">\frac{15}{16}(1 - x^2)^2</span></td>
+<td><span class="math inline">(-1, 1)</span></td>
+</tr>
+<tr class="odd">
+<td>Tri-cubic</td>
+<td><span class="math inline">\frac{70}{81}(1 - |x|^3)^3</span></td>
+<td><span class="math inline">(-1, 1)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Some <span class="blue">asymptotic</span> considerations lead to the choice of the “<span class="orange">optimal</span>” Epanechnikov kernel.</li>
+</ul>
+<ul>
+<li><span class="blue">Bounded</span> kernels have <span class="blue">computational</span> advantages, because one need to compute averages of a limited number of data points.</li>
+</ul>
+<ul>
+<li>On the other hand, bounded kernels may lead to <span class="orange">discontinuous derivatives</span> of <span class="math inline">\hat{f}(x)</span> that could be unappealing in certain contexts.</li>
+</ul>
 </section>
-<section id="choice-of-the-kernel-ii" class="level2">
-<h2 class="anchored" data-anchor-id="choice-of-the-kernel-ii">Choice of the kernel II</h2>
+<section id="bias-variance-tradeoff" class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-tradeoff">Bias-variance tradeoff</h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Theorem (Fan and Gijbels, 1996, Theorem 3.1)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Let <span class="math inline">(X_i, Y_i)</span> be iid random vectors with <span class="math inline">g(x)</span> denoting the <span class="orange">marginal density</span> of <span class="math inline">X_i</span>. The conditional law is such that <span class="math inline">Y_i = f(X_i) + \epsilon_i</span>, with <span class="math inline">\epsilon_i</span> iid and <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span>, <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>.</p>
+<p>Moreover, suppose <span class="math inline">g(x) &gt; 0</span> and that <span class="math inline">g(\cdot)</span> and <span class="math inline">f''(\cdot)</span> are continuous in a neighborhood of <span class="math inline">x</span>. Then, as <span class="math inline">h \rightarrow 0</span> and <span class="math inline">n h \rightarrow \infty</span> we have that for the <span class="blue">local linear regression</span> <span class="math inline">\hat{f}(x)</span> the <span class="orange">bias</span> is <span class="math display">
+\mathbb{E}\{\hat{f}(x) - f(x) \} \approx  \frac{\textcolor{red}{h^2}}{2}\sigma^2_w f''(x),
+</span> where <span class="math inline">\sigma^2_w = \int z^2 w(z)\mathrm{d}z</span>. In addition, the <span class="blue">variance</span> is <span class="math display">
+\text{var}\{\hat{f}(x)\} \approx \frac{\sigma^2}{\textcolor{darkblue}{n h}} \frac{\alpha_w}{g(x)},
+</span> where <span class="math inline">\alpha_w = \int w^2(z)\mathrm{d}z</span>.</p>
+</div>
+</div>
+</section>
+<section id="bias-variance-tradeoff-ii" class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-tradeoff-ii">Bias-variance tradeoff II</h2>
+<ul>
+<li><p>The previous theorem shows that <span class="orange">bias</span> is of <span class="orange">order <span class="math inline">h^2</span></span> and the <span class="blue">variance</span> is of <span class="blue">order <span class="math inline">(1 / nh)</span></span>.</p></li>
+<li><p>Once again, there is a trade-off because we would like <span class="math inline">h \rightarrow 0</span> but, at the same time, we need to keep the variance under control.</p></li>
+</ul>
+<ul>
+<li>Intriguing idea: what about selecting <span class="math inline">h</span> so that the <span class="blue">asymptotic mean squared error</span> is <span class="orange">minimal</span>? This leads to the following optimal choice for the bandwidth: <span class="math display">
+h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2 g(x)}\right)^{1/5}.
+</span></li>
+</ul>
+<ul>
+<li>Unfortunately, <span class="math inline">h_\text{opt}(x)</span> is of <span class="orange">little practical utility</span>, as it involves the <span class="orange">unknown</span> terms <span class="math inline">f''(x)</span>, <span class="math inline">g(x)</span> and <span class="math inline">\sigma^2</span>. However, it highlights two important facts:
+<ul>
+<li>The bandwidth <span class="math inline">h</span> should decrease at the rate <span class="math inline">n^{-1/5}</span>, i.e.&nbsp;<span class="blue">quite slowly</span>.</li>
+<li>If we plug-in <span class="math inline">h_\text{opt}(x)</span> into the bias/variance formulas, we get that the mean squared error <span class="math inline">\rightarrow 0</span> at the rate <span class="math inline">n^{-4/5}</span>, which is much <span class="orange">slower</span> than the <span class="orange">parametric</span> case <span class="math inline">n^{-1}</span>.</li>
+</ul></li>
+</ul>
 </section>
 <section id="choice-of-the-bandwidth-i" class="level2">
 <h2 class="anchored" data-anchor-id="choice-of-the-bandwidth-i">Choice of the bandwidth I</h2>
 </section>
 <section id="choice-of-the-bandwidth-ii" class="level2">
 <h2 class="anchored" data-anchor-id="choice-of-the-bandwidth-ii">Choice of the bandwidth II</h2>
-</section>
-<section id="choice-of-the-bandwidth-iii" class="level2">
-<h2 class="anchored" data-anchor-id="choice-of-the-bandwidth-iii">Choice of the bandwidth III</h2>
 </section>
 <section id="bias-reduction-of-local-linear-regression" class="level2">
 <h2 class="anchored" data-anchor-id="bias-reduction-of-local-linear-regression">☠️ - Bias reduction of local linear regression</h2>
