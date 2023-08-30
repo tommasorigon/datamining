@@ -373,9 +373,9 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 - The [Nadaraya-Watson]{.blue} estimator addresses these issues. It is a [weighted average]{.orange}
 $$
-\hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(x)}\sum_{i=1}^n w_i(x) y_i = \sum_{i=1}^n \tilde{w}_i(x) y_i,
+\hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(x)}\sum_{i=1}^n w_i(x) y_i = \sum_{i=1}^n s_i(x) y_i,
 $$
-where $\tilde{w}_i(x) = w_i(x) / \sum_{i'=1}^n w_{i'}(x)$ are the [normalized weights]{.blue}.
+where $s_i(x) = w_i(x) / \sum_{i'=1}^n w_{i'}(x)$ are the [normalized weights]{.blue}.
 
 . . .
 
@@ -509,36 +509,51 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 ## Local linear regression I
 
+::: incremental
+
 - [Local linear regression]{.blue} is a refinement of the Nadaraya-Watson estimator that has typically [lower bias]{.orange}, especially at the [boundaries]{.orange}, without noticeable increases in variance. 
 
-. . .
-
-- If $f(x)$ is differentiable in $x_0$, then it can be locally approximated with a linear function tangent in $x_0$, that is
+- If $f(x)$ is differentiable, then it can be [approximated]{.orange} with a linear function tangent in $x_0$:
 $$
 f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) + \text{rest}.
 $$
 
-. . .
+- Hence, instead of computing a [local average]{.orange} ($\beta_2 = 0$), we consider a [local linear model]{.blue}. In other words, for every $x$ we seek the coefficients solving:
+$$
+(\hat{\beta}_1, \hat{\beta}_2) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n \textcolor{darkblue}{w_i(x)}\left\{y_i - \beta_1 - \textcolor{red}{\beta_2(x_i - x)}\right\}^2.
+$$
 
-- Hence, instead of computing a [local average]{.orange} as before, we consider a [local linear model]{.blue}. In other words, for every $x$ we seek the coefficients solving:
-$$
-(\hat{\beta}_1, \hat{\beta}_2) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n w_i(x)\left\{y_i - \beta_1 - \beta_2(x_i - x)\right\}^2.
-$$
-Then, the local [linear regression estimator]{.blue} for the point $x$ is  equal to 
+- Once the parameter $\hat{\beta}_1$ and $\beta_2$ are obtained, the local [linear regression estimator]{.blue} is 
 $$
 \hat{f}(x) = \hat{\beta}_1 + \hat{\beta}_2 (x - x) = \hat{\beta}_1.
 $$
 
+:::
+
 ## Local linear regression II
 
-- The local linear regression optimization problem, as we have seen in [Unit A](un_A.html), has an [explicit solution]{.orange}:
+- The local linear regression, as we have seen in [Unit A](un_A.html), has an [explicit solution]{.orange}:
 $$
 \hat{\beta} = (\bm{X}^T\bm{W}_x\bm{X})^{-1}\bm{X}^T\bm{W}_x\bm{y},
 $$
 where the rows of $\bm{X}$ are $\bm{x}_i = (1, x_i - x)$ and $\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}$.
 
+- In practice, we do [not]{.orange} need to solve this [linear algebra]{.orange} problem. An even more explicit and [non-iterative]{.orange} solution can be found (see Exercises). 
 
-## Local linear regression III
+. . .
+
+::: callout-note
+#### Theorem (Local linear smoothing)
+
+The local linear regression smoother, evaluated in $x$, admits an [explicit expression]{.blue}:
+$$
+\hat{f}(x) = \frac{1}{n}\sum_{i=1}^n  \frac{w_i(x) \{a_2(x) - (x_i - x) a_1(x)\}}{a_2(x)a_0(x) - a_1(x)^2 } y_i = \sum_{i=1}^n s_i(x) y_i,
+$$
+where $a_j(x) = n^{-1}\sum_{i=1}^n w_i(x) (x_i - x)^j$, for $j=0,1,2$.  
+
+:::
+
+## Local linear regression ($h = 1.45$, Gaussian kernel)
 
 ```{r}
 library(KernSmooth)
@@ -555,9 +570,48 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   ylab("Head acceleration (g)")
 ```
 
-## ☠️ - Bias reduction of local linear regression
+## Linear smoothers I
 
-## Choice of the kernel
+- The Nadaraya-Watson estimator and local linear regression are special instances of  [linear smoothers]{.blue}, which are estimators admitting the following form:
+$$
+\hat{f}(x) = \sum_{i=1}^ns_i(x) y_i.
+$$
+
+. . .
+
+- We will study other members of this class, such as regression and smoothing splines. 
+
+- Polynomial regression, ridge regression, [Gaussian processes]{.blue} and [moving averages]{.orange} are also linear smoothers. 
+
+. . .
+
+- The [mean]{.blue} (and hence the bias), and the [variance]{.orange} of a linear smoother can be easily obtained:
+$$
+\mathbb{E}\{\hat{f}(x)\} = \sum_{i=1}^n s_i(x)f(x_i), \qquad \text{var}\{\hat{f}(x)\} = \sigma^2\sum_{i=1}^ns_i(x)^2.
+$$
+
+
+## Linear smoothers II
+
+- In linear smoothers, we can express the predicted values $\hat{\bm{y}}$ using [matrix notation]{.orange}
+$$
+\hat{\bm{y}} = \sum_{i=1}^n\bm{s}_i \bm{y} = \bm{S}\bm{y}, \qquad \bm{s}_i = (s_1(x_i), \dots, s_n(x_i))^T,
+$$
+where $\bm{S} = (\bm{s}_1,\dots,\bm{s}_n)^T$ is the so-called $n \times n$ [smoothing]{.blue} matrix.
+
+. . .
+
+- Each row of the smoothing matrix $\bm{s}_i$ is called [equivalent kernel]{.orange} for estimating $\hat{f}(x_i)$; in the Nadaraya Watson estimator $\bm{s}_i$ is indeed a normalized kernel. 
+
+. . .
+
+- The weights of all the smoothers we will use have the property $\sum_{i=1}^ns_i(x) = 1$ for all $x$. 
+
+- Hence, the smoother [preserves constant curves]{.blue}, namely if all $y_i = c$, then $\hat{f}(x) = c$. 
+
+## Choice of the kernel I
+
+## Choice of the kernel II
 
 ## Choice of the bandwidth I
 
@@ -565,9 +619,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 ## Choice of the bandwidth III
 
-## Linear smoothers I
-
-## Linear smoothers II
+## ☠️ - Bias reduction of local linear regression
 
 ## Loess I
 

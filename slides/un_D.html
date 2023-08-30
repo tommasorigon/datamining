@@ -84,14 +84,15 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#nadaraya-watson-gaussian-kernel" id="toc-nadaraya-watson-gaussian-kernel" class="nav-link" data-scroll-target="#nadaraya-watson-gaussian-kernel">Nadaraya-Watson (Gaussian kernel)</a></li>
   <li><a href="#local-linear-regression-i" id="toc-local-linear-regression-i" class="nav-link" data-scroll-target="#local-linear-regression-i">Local linear regression I</a></li>
   <li><a href="#local-linear-regression-ii" id="toc-local-linear-regression-ii" class="nav-link" data-scroll-target="#local-linear-regression-ii">Local linear regression II</a></li>
-  <li><a href="#local-linear-regression-iii" id="toc-local-linear-regression-iii" class="nav-link" data-scroll-target="#local-linear-regression-iii">Local linear regression III</a></li>
-  <li><a href="#bias-reduction-of-local-linear-regression" id="toc-bias-reduction-of-local-linear-regression" class="nav-link" data-scroll-target="#bias-reduction-of-local-linear-regression">☠️ - Bias reduction of local linear regression</a></li>
-  <li><a href="#choice-of-the-kernel" id="toc-choice-of-the-kernel" class="nav-link" data-scroll-target="#choice-of-the-kernel">Choice of the kernel</a></li>
+  <li><a href="#local-linear-regression-h-1.45-gaussian-kernel" id="toc-local-linear-regression-h-1.45-gaussian-kernel" class="nav-link" data-scroll-target="#local-linear-regression-h-1.45-gaussian-kernel">Local linear regression (<span class="math inline">h = 1.45</span>, Gaussian kernel)</a></li>
+  <li><a href="#linear-smoothers-i" id="toc-linear-smoothers-i" class="nav-link" data-scroll-target="#linear-smoothers-i">Linear smoothers I</a></li>
+  <li><a href="#linear-smoothers-ii" id="toc-linear-smoothers-ii" class="nav-link" data-scroll-target="#linear-smoothers-ii">Linear smoothers II</a></li>
+  <li><a href="#choice-of-the-kernel-i" id="toc-choice-of-the-kernel-i" class="nav-link" data-scroll-target="#choice-of-the-kernel-i">Choice of the kernel I</a></li>
+  <li><a href="#choice-of-the-kernel-ii" id="toc-choice-of-the-kernel-ii" class="nav-link" data-scroll-target="#choice-of-the-kernel-ii">Choice of the kernel II</a></li>
   <li><a href="#choice-of-the-bandwidth-i" id="toc-choice-of-the-bandwidth-i" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-i">Choice of the bandwidth I</a></li>
   <li><a href="#choice-of-the-bandwidth-ii" id="toc-choice-of-the-bandwidth-ii" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-ii">Choice of the bandwidth II</a></li>
   <li><a href="#choice-of-the-bandwidth-iii" id="toc-choice-of-the-bandwidth-iii" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-iii">Choice of the bandwidth III</a></li>
-  <li><a href="#linear-smoothers-i" id="toc-linear-smoothers-i" class="nav-link" data-scroll-target="#linear-smoothers-i">Linear smoothers I</a></li>
-  <li><a href="#linear-smoothers-ii" id="toc-linear-smoothers-ii" class="nav-link" data-scroll-target="#linear-smoothers-ii">Linear smoothers II</a></li>
+  <li><a href="#bias-reduction-of-local-linear-regression" id="toc-bias-reduction-of-local-linear-regression" class="nav-link" data-scroll-target="#bias-reduction-of-local-linear-regression">☠️ - Bias reduction of local linear regression</a></li>
   <li><a href="#loess-i" id="toc-loess-i" class="nav-link" data-scroll-target="#loess-i">Loess I</a></li>
   <li><a href="#loess-ii" id="toc-loess-ii" class="nav-link" data-scroll-target="#loess-ii">Loess II</a></li>
   <li><a href="#local-likelihoods-i" id="toc-local-likelihoods-i" class="nav-link" data-scroll-target="#local-likelihoods-i">Local likelihoods I</a></li>
@@ -342,8 +343,8 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <h2 class="anchored" data-anchor-id="nadaraya-watson-estimator">Nadaraya-Watson estimator</h2>
 <ul>
 <li>The <span class="blue">Nadaraya-Watson</span> estimator addresses these issues. It is a <span class="orange">weighted average</span> <span class="math display">
-\hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(x)}\sum_{i=1}^n w_i(x) y_i = \sum_{i=1}^n \tilde{w}_i(x) y_i,
-</span> where <span class="math inline">\tilde{w}_i(x) = w_i(x) / \sum_{i'=1}^n w_{i'}(x)</span> are the <span class="blue">normalized weights</span>.</li>
+\hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(x)}\sum_{i=1}^n w_i(x) y_i = \sum_{i=1}^n s_i(x) y_i,
+</span> where <span class="math inline">s_i(x) = w_i(x) / \sum_{i'=1}^n w_{i'}(x)</span> are the <span class="blue">normalized weights</span>.</li>
 </ul>
 <ul>
 <li>The values <span class="math inline">w_i(x) \ge 0</span> are chosen so that the points <span class="math inline">x_i</span> <span class="orange">close</span> to <span class="math inline">x</span> are <span class="orange">weighted more</span>.</li>
@@ -423,43 +424,90 @@ w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
 </section>
 <section id="local-linear-regression-i" class="level2">
 <h2 class="anchored" data-anchor-id="local-linear-regression-i">Local linear regression I</h2>
-<ul>
-<li><span class="blue">Local linear regression</span> is a refinement of the Nadaraya-Watson estimator that has typically <span class="orange">lower bias</span>, especially at the <span class="orange">boundaries</span>, without noticeable increases in variance.</li>
-</ul>
-<ul>
-<li>If <span class="math inline">f(x)</span> is differentiable in <span class="math inline">x_0</span>, then it can be locally approximated with a linear function tangent in <span class="math inline">x_0</span>, that is <span class="math display">
+<div class="incremental">
+<ul class="incremental">
+<li><p><span class="blue">Local linear regression</span> is a refinement of the Nadaraya-Watson estimator that has typically <span class="orange">lower bias</span>, especially at the <span class="orange">boundaries</span>, without noticeable increases in variance.</p></li>
+<li><p>If <span class="math inline">f(x)</span> is differentiable, then it can be <span class="orange">approximated</span> with a linear function tangent in <span class="math inline">x_0</span>: <span class="math display">
 f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) + \text{rest}.
-</span></li>
-</ul>
-<ul>
-<li>Hence, instead of computing a <span class="orange">local average</span> as before, we consider a <span class="blue">local linear model</span>. In other words, for every <span class="math inline">x</span> we seek the coefficients solving: <span class="math display">
-(\hat{\beta}_1, \hat{\beta}_2) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n w_i(x)\left\{y_i - \beta_1 - \beta_2(x_i - x)\right\}^2.
-</span> Then, the local <span class="blue">linear regression estimator</span> for the point <span class="math inline">x</span> is equal to <span class="math display">
+</span></p></li>
+<li><p>Hence, instead of computing a <span class="orange">local average</span> (<span class="math inline">\beta_2 = 0</span>), we consider a <span class="blue">local linear model</span>. In other words, for every <span class="math inline">x</span> we seek the coefficients solving: <span class="math display">
+(\hat{\beta}_1, \hat{\beta}_2) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n \textcolor{darkblue}{w_i(x)}\left\{y_i - \beta_1 - \textcolor{red}{\beta_2(x_i - x)}\right\}^2.
+</span></p></li>
+<li><p>Once the parameter <span class="math inline">\hat{\beta}_1</span> and <span class="math inline">\beta_2</span> are obtained, the local <span class="blue">linear regression estimator</span> is <span class="math display">
 \hat{f}(x) = \hat{\beta}_1 + \hat{\beta}_2 (x - x) = \hat{\beta}_1.
-</span></li>
+</span></p></li>
 </ul>
+</div>
 </section>
 <section id="local-linear-regression-ii" class="level2">
 <h2 class="anchored" data-anchor-id="local-linear-regression-ii">Local linear regression II</h2>
 <ul>
-<li>The local linear regression optimization problem, as we have seen in <a href="un_A.html">Unit A</a>, has an <span class="orange">explicit solution</span>: <span class="math display">
+<li><p>The local linear regression, as we have seen in <a href="un_A.html">Unit A</a>, has an <span class="orange">explicit solution</span>: <span class="math display">
 \hat{\beta} = (\bm{X}^T\bm{W}_x\bm{X})^{-1}\bm{X}^T\bm{W}_x\bm{y},
-</span> where the rows of <span class="math inline">\bm{X}</span> are <span class="math inline">\bm{x}_i = (1, x_i - x)</span> and <span class="math inline">\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}</span>.</li>
+</span> where the rows of <span class="math inline">\bm{X}</span> are <span class="math inline">\bm{x}_i = (1, x_i - x)</span> and <span class="math inline">\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}</span>.</p></li>
+<li><p>In practice, we do <span class="orange">not</span> need to solve this <span class="orange">linear algebra</span> problem. An even more explicit and <span class="orange">non-iterative</span> solution can be found (see Exercises).</p></li>
 </ul>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Theorem (Local linear smoothing)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The local linear regression smoother, evaluated in <span class="math inline">x</span>, admits an <span class="blue">explicit expression</span>: <span class="math display">
+\hat{f}(x) = \frac{1}{n}\sum_{i=1}^n  \frac{w_i(x) \{a_2(x) - (x_i - x) a_1(x)\}}{a_2(x)a_0(x) - a_1(x)^2 } y_i = \sum_{i=1}^n s_i(x) y_i,
+</span> where <span class="math inline">a_j(x) = n^{-1}\sum_{i=1}^n w_i(x) (x_i - x)^j</span>, for <span class="math inline">j=0,1,2</span>.</p>
+</div>
+</div>
 </section>
-<section id="local-linear-regression-iii" class="level2">
-<h2 class="anchored" data-anchor-id="local-linear-regression-iii">Local linear regression III</h2>
+<section id="local-linear-regression-h-1.45-gaussian-kernel" class="level2">
+<h2 class="anchored" data-anchor-id="local-linear-regression-h-1.45-gaussian-kernel">Local linear regression (<span class="math inline">h = 1.45</span>, Gaussian kernel)</h2>
 <div class="cell">
 <div class="cell-output-display">
 <p><img src="un_D_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="1400"></p>
 </div>
 </div>
 </section>
-<section id="bias-reduction-of-local-linear-regression" class="level2">
-<h2 class="anchored" data-anchor-id="bias-reduction-of-local-linear-regression">☠️ - Bias reduction of local linear regression</h2>
+<section id="linear-smoothers-i" class="level2">
+<h2 class="anchored" data-anchor-id="linear-smoothers-i">Linear smoothers I</h2>
+<ul>
+<li>The Nadaraya-Watson estimator and local linear regression are special instances of <span class="blue">linear smoothers</span>, which are estimators admitting the following form: <span class="math display">
+\hat{f}(x) = \sum_{i=1}^ns_i(x) y_i.
+</span></li>
+</ul>
+<ul>
+<li><p>We will study other members of this class, such as regression and smoothing splines.</p></li>
+<li><p>Polynomial regression, ridge regression, <span class="blue">Gaussian processes</span> and <span class="orange">moving averages</span> are also linear smoothers.</p></li>
+</ul>
+<ul>
+<li>The <span class="blue">mean</span> (and hence the bias), and the <span class="orange">variance</span> of a linear smoother can be easily obtained: <span class="math display">
+\mathbb{E}\{\hat{f}(x)\} = \sum_{i=1}^n s_i(x)f(x_i), \qquad \text{var}\{\hat{f}(x)\} = \sigma^2\sum_{i=1}^ns_i(x)^2.
+</span></li>
+</ul>
 </section>
-<section id="choice-of-the-kernel" class="level2">
-<h2 class="anchored" data-anchor-id="choice-of-the-kernel">Choice of the kernel</h2>
+<section id="linear-smoothers-ii" class="level2">
+<h2 class="anchored" data-anchor-id="linear-smoothers-ii">Linear smoothers II</h2>
+<ul>
+<li>In linear smoothers, we can express the predicted values <span class="math inline">\hat{\bm{y}}</span> using <span class="orange">matrix notation</span> <span class="math display">
+\hat{\bm{y}} = \sum_{i=1}^n\bm{s}_i \bm{y} = \bm{S}\bm{y}, \qquad \bm{s}_i = (s_1(x_i), \dots, s_n(x_i))^T,
+</span> where <span class="math inline">\bm{S} = (\bm{s}_1,\dots,\bm{s}_n)^T</span> is the so-called <span class="math inline">n \times n</span> <span class="blue">smoothing</span> matrix.</li>
+</ul>
+<ul>
+<li>Each row of the smoothing matrix <span class="math inline">\bm{s}_i</span> is called <span class="orange">equivalent kernel</span> for estimating <span class="math inline">\hat{f}(x_i)</span>; in the Nadaraya Watson estimator <span class="math inline">\bm{s}_i</span> is indeed a normalized kernel.</li>
+</ul>
+<ul>
+<li><p>The weights of all the smoothers we will use have the property <span class="math inline">\sum_{i=1}^ns_i(x) = 1</span> for all <span class="math inline">x</span>.</p></li>
+<li><p>Hence, the smoother <span class="blue">preserves constant curves</span>, namely if all <span class="math inline">y_i = c</span>, then <span class="math inline">\hat{f}(x) = c</span>.</p></li>
+</ul>
+</section>
+<section id="choice-of-the-kernel-i" class="level2">
+<h2 class="anchored" data-anchor-id="choice-of-the-kernel-i">Choice of the kernel I</h2>
+</section>
+<section id="choice-of-the-kernel-ii" class="level2">
+<h2 class="anchored" data-anchor-id="choice-of-the-kernel-ii">Choice of the kernel II</h2>
 </section>
 <section id="choice-of-the-bandwidth-i" class="level2">
 <h2 class="anchored" data-anchor-id="choice-of-the-bandwidth-i">Choice of the bandwidth I</h2>
@@ -470,11 +518,8 @@ f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) +
 <section id="choice-of-the-bandwidth-iii" class="level2">
 <h2 class="anchored" data-anchor-id="choice-of-the-bandwidth-iii">Choice of the bandwidth III</h2>
 </section>
-<section id="linear-smoothers-i" class="level2">
-<h2 class="anchored" data-anchor-id="linear-smoothers-i">Linear smoothers I</h2>
-</section>
-<section id="linear-smoothers-ii" class="level2">
-<h2 class="anchored" data-anchor-id="linear-smoothers-ii">Linear smoothers II</h2>
+<section id="bias-reduction-of-local-linear-regression" class="level2">
+<h2 class="anchored" data-anchor-id="bias-reduction-of-local-linear-regression">☠️ - Bias reduction of local linear regression</h2>
 </section>
 <section id="loess-i" class="level2">
 <h2 class="anchored" data-anchor-id="loess-i">Loess I</h2>
