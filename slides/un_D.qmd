@@ -753,7 +753,7 @@ $$
 \end{aligned}
 $$
 
-- It can be shown, with some algebra, that the first order term simplifies ($=0$) in the local linear regression case but it doesn't for the Nadaraya-Watson, therefore [reducing the bias]{.orange}.  
+- It can be shown with some algebra that the first order term simplifies ($=0$) in the local linear regression case but it doesn't for the Nadaraya-Watson, therefore [reducing the bias]{.orange}.  
 
 
 ## Choice of the bandwidth I
@@ -795,10 +795,26 @@ $$ Therefore, the leave-one-out mean squared error is
 $$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}\right)^2.$$
 :::
 
+## Lowess
 
-## Loess I
+- Sometimes it is convenient to choose $h$ [adaptively]{.orange}, i.e. specifying a variable bandwidth $h(x)$ that depends on the local density of the data.
 
-## Loess II
+- Indeed, recall that the asymptotic variance depends on the sampling design of the $x_i$s 
+$$
+\text{var}\{\hat{f}(x)\} \approx \frac{\sigma^2}{n h} \frac{\alpha_w}{\textcolor{darkblue}{g(x)}}.
+$$
+
+. . .
+
+- The `lowess` (Cleveland, 1979) consider a [fixed percentage]{.blue} of data points (assuming a bounded kernel is used), which automatically induces a [variable bandwidth]{.orange}, as in KNN.
+
+. . .
+
+- Moreover, the `lowess` algorithm combines the [variable bandwidth]{.blue} with some [robust estimation]{.orange} ideas, so that the resulting estimate is less influenced by outliers. 
+
+. . .
+
+- `lowess` is a short-hand for "[l]{.orange}ocally [w]{.orange}eighted [e]{.orange}stimated [s]{.orange}catterplot [s]{.orange}moothing".
 
 ## Local likelihoods I
 

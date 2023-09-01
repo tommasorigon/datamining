@@ -845,7 +845,7 @@ h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2
 &amp; = f(x_0)\underbrace{\sum_{i=1}^ns_i(x_0)}_{=1} + f'(x_0) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x_0)}_{=0} + \frac{f''(x_0)}{2}(x_i - x_0)^2s_i(x_0) + \text{rest}.
 \end{aligned}
 </span></p></li>
-<li><p>It can be shown, with some algebra, that the first order term simplifies (<span class="math inline">=0</span>) in the local linear regression case but it doesn’t for the Nadaraya-Watson, therefore <span class="orange">reducing the bias</span>.</p></li>
+<li><p>It can be shown with some algebra that the first order term simplifies (<span class="math inline">=0</span>) in the local linear regression case but it doesn’t for the Nadaraya-Watson, therefore <span class="orange">reducing the bias</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -895,11 +895,29 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 </div>
 </div>
 </section>
-<section id="loess-i" class="slide level2 center">
-<h2>Loess I</h2>
-</section>
-<section id="loess-ii" class="slide level2 center">
-<h2>Loess II</h2>
+<section id="lowess" class="slide level2 center">
+<h2>Lowess</h2>
+<ul>
+<li><p>Sometimes it is convenient to choose <span class="math inline">h</span> <span class="orange">adaptively</span>, i.e.&nbsp;specifying a variable bandwidth <span class="math inline">h(x)</span> that depends on the local density of the data.</p></li>
+<li><p>Indeed, recall that the asymptotic variance depends on the sampling design of the <span class="math inline">x_i</span>s <span class="math display">
+\text{var}\{\hat{f}(x)\} \approx \frac{\sigma^2}{n h} \frac{\alpha_w}{\textcolor{darkblue}{g(x)}}.
+</span></p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>The <code>lowess</code> (Cleveland, 1979) consider a <span class="blue">fixed percentage</span> of data points (assuming a bounded kernel is used), which automatically induces a <span class="orange">variable bandwidth</span>, as in KNN.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Moreover, the <code>lowess</code> algorithm combines the <span class="blue">variable bandwidth</span> with some <span class="orange">robust estimation</span> ideas, so that the resulting estimate is less influenced by outliers.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><code>lowess</code> is a short-hand for “<span class="orange">l</span>ocally <span class="orange">w</span>eighted <span class="orange">e</span>stimated <span class="orange">s</span>catterplot <span class="orange">s</span>moothing”.</li>
+</ul>
+</div>
 </section>
 <section id="local-likelihoods-i" class="slide level2 center">
 <h2>Local likelihoods I</h2>
