@@ -1076,7 +1076,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 
 . . .
 
-::: callout-note
+::: callout-warning
 #### Sherman-Morrison formula
 
 Let $\bm{A} \in \mathbb{R}^{p\times p}$ be an invertible matrix and let

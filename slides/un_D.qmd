@@ -162,6 +162,7 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
 :::
 
 ::: {.column width="60%"}
+
 -   In [Unit A](un_A.html) we considered the `auto` dataset.
 
 -   We wanted to model the relationship between `city.distance` ($y$)
@@ -171,11 +172,13 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
     Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
     $$ where $f(x)$ was "manually" selected.
 
--   There are [no]{.orange} specific reasons to believe that
-    $f(x) = \alpha + \beta\log{x}$ or any other [parametric
+-   There are [no]{.orange} reasons to believe that
+    $f(x) = \alpha + \beta\log{x}$ or $f(x)$ has any other [parametric
     function]{.orange}.
 
 -   We would like the data to "speak for themselves".
+
+
 :::
 :::
 
@@ -334,7 +337,7 @@ ggplot(data = data_pred) +
 -   This idea, unfortunately, [does not work]{.orange} in most practical
     cases.
 
--   Indeed, in a typical datasetit is very unlikely that there exist
+-   Indeed, in a typical dataset it is very unlikely that there exist
     observations exactly equal to $x$ among the points $(x_i, y_i)$.
 
 -   Even if there were values such that $x_i = x$, the [sample
@@ -349,20 +352,19 @@ ggplot(data = data_pred) +
 
 ## K-nearest neighbours
 
--   Instead of considering the values exactly equal to $x$, what we
-    could do is select the pairs $(x_i, y_i)$ that are [close]{.blue} to
-    (in a [neighbour]{.orange} of) $x$.
+-   Instead of considering the values exactly equal to $x$, we could identify the pairs $(x_i, y_i)$ that are [close]{.blue} to
+    (i.e. in a [neighbour]{.orange} of) $x$.
 
 -   A natural measure of proximity between $x$ and the data points $x_i$
     is the [Euclidean distance]{.orange} $|x_i - x|$, but in principle
-    any other metric could be considered.
+    any other metric could be used.
 
 . . .
 
--   We consider an average of the $k$ values $y_i$ whose $x_i$ are
-    closest to $x$, that is: $$
+-   We consider an average of the [$k$ values]{.orange} $y_i$ whose $x_i$ are
+    [nearest]{.orange} to $x$, that is: $$
     \hat{f}(x) = \frac{1}{|\mathcal{N}_x|}\sum_{i \in \mathcal{N}_x} y_i,
-    $$ where $\mathcal{N}_x$ is the set of $k$ points nearest to $x$ in
+    $$ where $\mathcal{N}_x$ is indeed the set of $k$ points nearest to $x$ in
     Euclidean distance.
 
 -   This method is called [$k$-nearest neighbours]{.blue} (KNN).
@@ -395,7 +397,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 -   The case $k = 1$ is unsatisfactory, because the average is based on
     a single data point. On the other hand, the case $k = n$ produces a
-    constant.
+    constant (average of all the observations).
 
 -   Hence, there is a clear [bias-variance trade-off]{.orange} in the
     choice of $k$, which should be selected e.g. via
@@ -410,8 +412,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
     [discontinuous]{.orange} in $x$.
 
 -   Indeed, as we move $x$ from left to right, the $k$-nearest
-    neighborhood remains constant, until a point $x_i$ to the right of
-    $x$.
+    neighborhood remains constant, until a new point $x_i$ to the right of
+    $x$ is included and one to the left is excluded.
 
 -   This discontinuity is [ugly]{.orange} and [unnecessary]{.orange}. We
     are looking instead for a [smooth]{.blue} prediction.
@@ -689,9 +691,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 . . .
 
-- [Bounded]{.blue} kernels have [computational]{.blue} advantages, because one need to compute averages of a limited number of data points. 
-
-. . .
+- [Bounded]{.blue} kernels have [computational]{.blue} advantages, because one needs to compute averages of a limited number of data points. 
 
 - On the other hand, bounded kernels may lead to [discontinuous derivatives]{.orange} of $\hat{f}(x)$ that could be unappealing in certain contexts. 
 

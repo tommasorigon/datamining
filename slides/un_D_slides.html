@@ -426,7 +426,7 @@
 <li><p>The chosen model involved a <span class="blue">non-linear</span> function <span class="math display">
 Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 </span> where <span class="math inline">f(x)</span> was “manually” selected.</p></li>
-<li><p>There are <span class="orange">no</span> specific reasons to believe that <span class="math inline">f(x) = \alpha + \beta\log{x}</span> or any other <span class="orange">parametric function</span>.</p></li>
+<li><p>There are <span class="orange">no</span> reasons to believe that <span class="math inline">f(x) = \alpha + \beta\log{x}</span> or <span class="math inline">f(x)</span> has any other <span class="orange">parametric function</span>.</p></li>
 <li><p>We would like the data to “speak for themselves”.</p></li>
 </ul>
 </div>
@@ -511,7 +511,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <div class="fragment">
 <ul>
 <li><p>This idea, unfortunately, <span class="orange">does not work</span> in most practical cases.</p></li>
-<li><p>Indeed, in a typical datasetit is very unlikely that there exist observations exactly equal to <span class="math inline">x</span> among the points <span class="math inline">(x_i, y_i)</span>.</p></li>
+<li><p>Indeed, in a typical dataset it is very unlikely that there exist observations exactly equal to <span class="math inline">x</span> among the points <span class="math inline">(x_i, y_i)</span>.</p></li>
 <li><p>Even if there were values such that <span class="math inline">x_i = x</span>, the <span class="blue">sample size</span> <span class="math inline">n_x</span> would often be so <span class="orange">small</span> (e.g. <span class="math inline">n_x = 1</span>) that the variance of <span class="math inline">\hat{f}(x)</span> would be too high, making this estimator useless.</p></li>
 </ul>
 </div>
@@ -524,14 +524,14 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <section id="k-nearest-neighbours" class="slide level2 center">
 <h2>K-nearest neighbours</h2>
 <ul>
-<li><p>Instead of considering the values exactly equal to <span class="math inline">x</span>, what we could do is select the pairs <span class="math inline">(x_i, y_i)</span> that are <span class="blue">close</span> to (in a <span class="orange">neighbour</span> of) <span class="math inline">x</span>.</p></li>
-<li><p>A natural measure of proximity between <span class="math inline">x</span> and the data points <span class="math inline">x_i</span> is the <span class="orange">Euclidean distance</span> <span class="math inline">|x_i - x|</span>, but in principle any other metric could be considered.</p></li>
+<li><p>Instead of considering the values exactly equal to <span class="math inline">x</span>, we could identify the pairs <span class="math inline">(x_i, y_i)</span> that are <span class="blue">close</span> to (i.e.&nbsp;in a <span class="orange">neighbour</span> of) <span class="math inline">x</span>.</p></li>
+<li><p>A natural measure of proximity between <span class="math inline">x</span> and the data points <span class="math inline">x_i</span> is the <span class="orange">Euclidean distance</span> <span class="math inline">|x_i - x|</span>, but in principle any other metric could be used.</p></li>
 </ul>
 <div class="fragment">
 <ul>
-<li><p>We consider an average of the <span class="math inline">k</span> values <span class="math inline">y_i</span> whose <span class="math inline">x_i</span> are closest to <span class="math inline">x</span>, that is: <span class="math display">
+<li><p>We consider an average of the <span class="orange"><span class="math inline">k</span> values</span> <span class="math inline">y_i</span> whose <span class="math inline">x_i</span> are <span class="orange">nearest</span> to <span class="math inline">x</span>, that is: <span class="math display">
 \hat{f}(x) = \frac{1}{|\mathcal{N}_x|}\sum_{i \in \mathcal{N}_x} y_i,
-</span> where <span class="math inline">\mathcal{N}_x</span> is the set of <span class="math inline">k</span> points nearest to <span class="math inline">x</span> in Euclidean distance.</p></li>
+</span> where <span class="math inline">\mathcal{N}_x</span> is indeed the set of <span class="math inline">k</span> points nearest to <span class="math inline">x</span> in Euclidean distance.</p></li>
 <li><p>This method is called <span class="blue"><span class="math inline">k</span>-nearest neighbours</span> (KNN).</p></li>
 </ul>
 </div>
@@ -544,14 +544,14 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <h2>Limitations of the <span class="math inline">k</span>-nearest neighbor method</h2>
 <ul>
 <li><p>The number of neighbours <span class="math inline">k</span> influences how “local” is the estimate.</p></li>
-<li><p>The case <span class="math inline">k = 1</span> is unsatisfactory, because the average is based on a single data point. On the other hand, the case <span class="math inline">k = n</span> produces a constant.</p></li>
+<li><p>The case <span class="math inline">k = 1</span> is unsatisfactory, because the average is based on a single data point. On the other hand, the case <span class="math inline">k = n</span> produces a constant (average of all the observations).</p></li>
 <li><p>Hence, there is a clear <span class="orange">bias-variance trade-off</span> in the choice of <span class="math inline">k</span>, which should be selected e.g.&nbsp;via <span class="blue">cross-validation</span>.</p></li>
 </ul>
 <div class="fragment">
 <ul>
 <li><p>The <span class="math inline">k</span>-nearest neighbours produces a <span class="blue">sensible result</span>, but the method <span class="orange">can be improved</span>.</p></li>
 <li><p>The <span class="blue">blue curve</span> is bumpy, because <span class="math inline">\hat{f}(x)</span> is <span class="orange">discontinuous</span> in <span class="math inline">x</span>.</p></li>
-<li><p>Indeed, as we move <span class="math inline">x</span> from left to right, the <span class="math inline">k</span>-nearest neighborhood remains constant, until a point <span class="math inline">x_i</span> to the right of <span class="math inline">x</span>.</p></li>
+<li><p>Indeed, as we move <span class="math inline">x</span> from left to right, the <span class="math inline">k</span>-nearest neighborhood remains constant, until a new point <span class="math inline">x_i</span> to the right of <span class="math inline">x</span> is included and one to the left is excluded.</p></li>
 <li><p>This discontinuity is <span class="orange">ugly</span> and <span class="orange">unnecessary</span>. We are looking instead for a <span class="blue">smooth</span> prediction.</p></li>
 </ul>
 </div>
@@ -782,12 +782,8 @@ f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) +
 </div>
 <div class="fragment">
 <ul>
-<li><span class="blue">Bounded</span> kernels have <span class="blue">computational</span> advantages, because one need to compute averages of a limited number of data points.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>On the other hand, bounded kernels may lead to <span class="orange">discontinuous derivatives</span> of <span class="math inline">\hat{f}(x)</span> that could be unappealing in certain contexts.</li>
+<li><p><span class="blue">Bounded</span> kernels have <span class="blue">computational</span> advantages, because one needs to compute averages of a limited number of data points.</p></li>
+<li><p>On the other hand, bounded kernels may lead to <span class="orange">discontinuous derivatives</span> of <span class="math inline">\hat{f}(x)</span> that could be unappealing in certain contexts.</p></li>
 </ul>
 </div>
 </section>
