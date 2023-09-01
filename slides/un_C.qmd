@@ -2264,7 +2264,7 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 
 . . .
 
-::: callout-note
+::: callout-warning
 #### Three uniqueness results (Tibshirani, 2013)
 
 - If $\bm{X}$ has [full rank]{.blue} $\text{rk}(\bm{X}) = p$, which implies $p \le n$, then $\hat{\beta}_\text{lasso}$ is uniquely determined.
@@ -2292,7 +2292,7 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 
 . . .
 
-:::callout-note
+:::callout-warning
 #### Degrees of freedom (Zhou, Hastie and Tibshirani, 2007, Tibshirani and Taylor, 2012)
 
 - Suppose $\bm{X}$ has [full rank]{.orange} $\text{rk}(\bm{X}) = p$ and $\bm{y}$ follows a Gaussian law. Then:
@@ -2629,7 +2629,7 @@ Replacing $\le$ with $<$ for $t \in(0,1)$ gives the definition of [strict convex
 
 . . .
 
-::: callout-note
+::: callout-warning
 #### Properties of convex optimization
 - In a [convex]{.blue} optimization problem every local minimum is a [global minimum]{.blue};
 - In a [strictly convex]{.orange} optimization problem there exists a [unique]{.orange} global minimum.

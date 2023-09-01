@@ -697,7 +697,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 ## Bias-variance tradeoff
 
-::: callout-note
+::: callout-warning
 #### Theorem (Fan and Gijbels, 1996, Theorem 3.1)
 Let $(X_i, Y_i)$ be iid random vectors with $g(x)$ denoting the [marginal density]{.orange} of $X_i$. The conditional law is such that $Y_i = f(X_i) + \epsilon_i$, with $\epsilon_i$ iid and $\mathbb{E}(\epsilon_i) = 0$,  $\text{var}(\epsilon_i) = \sigma^2$. 
 
@@ -720,15 +720,17 @@ where $\alpha_w = \int w^2(z)\mathrm{d}z$.
 
 . . .
 
-- Intriguing idea: what about selecting $h$ so that the [asymptotic mean squared error]{.blue} is [minimal]{.orange}? This leads to the following optimal choice for the bandwidth: $$
+- We can select $h$ so that the [asymptotic mean squared error]{.blue} is [minimal]{.orange}. This leads to the following optimal choice for the bandwidth: $$
 h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2 g(x)}\right)^{1/5}.
 $$
 
 . . .
 
 - Unfortunately, $h_\text{opt}(x)$ is of [little practical utility]{.orange}, as it involves the [unknown]{.orange} terms $f''(x)$, $g(x)$ and $\sigma^2$. However, it highlights two important facts:
-  - The bandwidth $h$ should decrease at the rate $n^{-1/5}$, i.e. [quite slowly]{.blue}.
-  - If we plug-in $h_\text{opt}(x)$ into the bias/variance formulas, we get that the mean squared error $\rightarrow 0$ at the rate $n^{-4/5}$, which is much [slower]{.orange} than the [parametric]{.orange} case $n^{-1}$.
+
+-  The bandwidth $h$ should decrease at the rate $n^{-1/5}$, i.e. [quite slowly]{.blue}.
+
+-  If we plug-in $h_\text{opt}(x)$ into the bias/variance formulas, we get that the mean squared error $\rightarrow 0$ at the rate $n^{-4/5}$, which is much [slower]{.orange} than the [parametric]{.orange} case $n^{-1}$.
 
 ## Choice of the bandwidth I
 

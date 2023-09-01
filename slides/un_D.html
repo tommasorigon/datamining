@@ -561,7 +561,7 @@ Theorem (Local linear smoothing)
 </section>
 <section id="bias-variance-tradeoff" class="level2">
 <h2 class="anchored" data-anchor-id="bias-variance-tradeoff">Bias-variance tradeoff</h2>
-<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
@@ -587,7 +587,7 @@ Theorem (Fan and Gijbels, 1996, Theorem 3.1)
 <li><p>Once again, there is a trade-off because we would like <span class="math inline">h \rightarrow 0</span> but, at the same time, we need to keep the variance under control.</p></li>
 </ul>
 <ul>
-<li>Intriguing idea: what about selecting <span class="math inline">h</span> so that the <span class="blue">asymptotic mean squared error</span> is <span class="orange">minimal</span>? This leads to the following optimal choice for the bandwidth: <span class="math display">
+<li>We can select <span class="math inline">h</span> so that the <span class="blue">asymptotic mean squared error</span> is <span class="orange">minimal</span>/ This leads to the following optimal choice for the bandwidth: <span class="math display">
 h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2 g(x)}\right)^{1/5}.
 </span></li>
 </ul>
