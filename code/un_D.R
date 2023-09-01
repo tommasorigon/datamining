@@ -184,7 +184,11 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 library(KernSmooth)
 
+# Optimal parameter is selected using a plug-in method that is not described in the slides.
+# Congratulations for spotting this, I expect ~3% of the students will actually read this code.
+# Anyway, if you want to understand how this method works, you can read the paper described in the documentation (? dpill)
 h_param <- dpill(x, y)
+
 fit_locpoly <- locpoly(x, y, bandwidth = h_param, gridsize = 2000)
 
 ggplot(data = dataset, aes(x = times, y = accel)) +

@@ -644,7 +644,7 @@ $$ is [symmetric]{.blue} and [positive definite]{.orange}.
 
 . . .
 
-::: callout-note
+::: callout-warning
 #### Theorem (Cholesky factorization)
 
 Let $\bm{A} \in \mathbb{R}^{p \times p}$ be a symmetric and positive
@@ -883,7 +883,7 @@ $$
 
 ## The QR decomposition II
 
-::: callout-note
+::: callout-warning
 #### Theorem (QR factorization)
 
 Suppose $\bm{X} \in \mathbb{R}^{n \times p}$ with $n \ge p$ has full

@@ -138,8 +138,7 @@ ggplot(data = dataset, aes(x = x, y = y.yesterday)) +
 -   The function $f(x)$ is unknown, therefore, it should be estimated.
 
 -   A simple approach is using the tools of [Unit
-    A](unit_A_slides.html), such as [polynomial regression]{.orange}:
-    $$
+    A](unit_A_slides.html), such as [polynomial regression]{.orange}: $$
     f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
     $$ namely $f(x)$ is [approximated]{.orange} with a polynomial of
     degree $p-1$ (i.e., Taylor expansions).
@@ -277,8 +276,9 @@ curve(f(x), n = 300, add = TRUE)
 
 ::: incremental
 -   The [MSE]{.blue} decreases as the number of parameter increases;
-    similarly, the [$R^2$]{.blue} increases as a function of $p$.
-    It can be [proved]{.orange} that this [always happens]{.orange} using ordinary least squares.
+    similarly, the [$R^2$]{.blue} increases as a function of $p$. It can
+    be [proved]{.orange} that this [always happens]{.orange} using
+    ordinary least squares.
 
 -   One might be tempted to let $p$ as large as possible to make the
     model more flexible...
@@ -373,8 +373,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
     $\text{MSE}_{\text{train}}$ is low but the test
     $\text{MSE}_{\text{test}}$ is high.
 
-- Yesterday's dataset is available from the textbook (A&S)
-    website:
+-   Yesterday's dataset is available from the textbook (A&S) website:
 
     -   Dataset <http://azzalini.stat.unipd.it/Book-DM/yesterday.dat>
     -   True $f(\bm{x})$
@@ -396,8 +395,8 @@ round(t(X) %*% X, 8)
 ```
 
 -   Polynomial regression becomes numerically unstable when $p \ge 13$
-    (`raw = TRUE`, original polynomials) and $p \ge 25$
-    (`raw = FALSE`, orthogonal polynomials).
+    (`raw = TRUE`, original polynomials) and $p \ge 25$ (`raw = FALSE`,
+    orthogonal polynomials).
 
 ## ☠️ - Lagrange interpolating polynomials
 
@@ -422,12 +421,11 @@ $$
 ## Summary and notation (fixed-$X$)
 
 ::: incremental
-
 -   In the previous example, we consider two sets of [random
     variables]{.blue}:
 
-    -   The [training set]{.orange} (yesterday) $Y_1,\dots, Y_n$,
-        whose realization is $y_1,\dots,y_n$.
+    -   The [training set]{.orange} (yesterday) $Y_1,\dots, Y_n$, whose
+        realization is $y_1,\dots,y_n$.
     -   The [test set]{.blue} (tomorrow)
         $\tilde{Y}_1,\dots,\tilde{Y}_n$, whose realization is
         $\tilde{y}_1, \dots, \tilde{y}_n$.
@@ -437,30 +435,29 @@ $$
     [fixed-$X$]{.blue} design, which is a common assumption in
     regression models.
 
--   We also assume that the random variables $Y_i$ and $\tilde{Y}_i$
-    are [independent]{.blue}. 
-    
-- In [regression]{.orange} problems we customarily assume that $$
-      Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
-    $$ where $\epsilon_i$ and $\tilde{\epsilon}_i$ are iid
+-   We also assume that the random variables $Y_i$ and $\tilde{Y}_i$ are
+    [independent]{.blue}.
+
+-   In [regression]{.orange} problems we customarily assume that $$
+        Y_i = f(\bm{x}_i) + \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + \tilde{\epsilon}_i, \quad i=1,\dots,n,
+      $$ where $\epsilon_i$ and $\tilde{\epsilon}_i$ are iid
     "[error]{.orange}" terms, with $\mathbb{E}(\epsilon_i)=0$ and
     $\text{var}(\epsilon_i)=\sigma^2$.
-    
-- In [classification]{.blue} problems the relationship between $\bm{x}_i$ and the [Bernoulli]{.orange} r.v. $Y_i \in \{0, 1\}$ is 
-$$
-\mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
-$$
-where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone transformation, such as the inverse logit.    
 
+-   In [classification]{.blue} problems the relationship between
+    $\bm{x}_i$ and the [Bernoulli]{.orange} r.v. $Y_i \in \{0, 1\}$ is
+    $$
+    \mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
+    $$ where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone
+    transformation, such as the inverse logit.
 :::
 
 ## The in-sample prediction error
 
 ::: incremental
-
 -   The [training data]{.orange} is used to estimate a function of the
-    covariates $\hat{f}(\bm{x}_i)$. We hope our predictions work well on the [test set]{.blue}.
-
+    covariates $\hat{f}(\bm{x}_i)$. We hope our predictions work well on
+    the [test set]{.blue}.
 
 -   A measure of quality for the predictions is the [in-sample
     prediction error]{.blue}: $$
@@ -476,13 +473,11 @@ where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone transformation, such as t
 -   The in-sample prediction error is measuring the [average]{.blue}
     "discrepancy" between the [new data points]{.orange} and the
     corresponding predictions based on the training.
-
 :::
 
 ## Loss functions
 
 ::: incremental
-
 -   Examples of loss functions for [regression problems]{.blue}
     $Y \in \mathbb{R}$ are:
 
@@ -492,19 +487,18 @@ where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone transformation, such as t
     -   The [absolute loss]{.orange}
         $\mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = |\tilde{Y}_i - \hat{f}(\bm{x}_i)|$,
         leading to the MAE.
-        
--   Examples of loss functions for [binary classification problems]{.blue}
-    $Y \in \{0, 1\}$ are:
-    -   The [misclassification loss]{.orange}, which is defined as
-        $$
+
+-   Examples of loss functions for [binary classification
+    problems]{.blue} $Y \in \{0, 1\}$ are:
+
+    -   The [misclassification loss]{.orange}, which is defined as $$
         \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i  \neq \hat{y}_i).
-        $$
-        The predictions are obtained dichotomizing the probabilities $\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) > 1/2)$.
-    -   The [deviance]{.orange} or [cross-entropy]{.orange} loss functions are defined as
-        $$
+        $$ The predictions are obtained dichotomizing the probabilities
+        $\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) > 1/2)$.
+    -   The [deviance]{.orange} or [cross-entropy]{.orange} loss
+        functions are defined as $$
         \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
         $$
-
 :::
 
 ## Regression under quadratic loss I
@@ -512,8 +506,9 @@ where $g(x) :\mathbb{R} \rightarrow (0,1)$ is monotone transformation, such as t
 ::: callout-note
 #### Error decomposition (reducible and irreducible)
 
-In a regression problem, under a quadratic loss, [each element]{.orange} of the [in-sample
-prediction error]{.blue} admits the following decomposition $$
+In a regression problem, under a quadratic loss, [each element]{.orange}
+of the [in-sample prediction error]{.blue} admits the following
+decomposition $$
 \begin{aligned}
 \mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right] &= \mathbb{E}\left[\{f(\bm{x}_i) + \tilde{\epsilon}_i - \hat{f}(\bm{x}_i)\}^2\right] \\
 & = \mathbb{E}\left[\{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}^2\right] + \mathbb{E}(\tilde{\epsilon}_i^2) + 2 \: \mathbb{E}\left[\tilde{\epsilon}_i \: \{f(\bm{x}_i) - \hat{f}(\bm{x}_i)\}\right]\\
@@ -548,27 +543,27 @@ and for any $i = 1,\dots,n$.
     minimizing the [reducible error]{.blue}.
 :::
 
-##  Classification under misclassification loss
+## Classification under misclassification loss
 
 ::: incremental
+-   In [classification problems]{.orange}, under a [misclassification
+    loss]{.blue}, the in sample prediction error is $$
+    \text{ErrF} = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n  \mathbb{E}\{\mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)\}= \frac{1}{n}\sum_{i=1}^n\mathbb{P}(\tilde{Y}_i \neq \hat{y}_i).
+    $$
 
-- In [classification problems]{.orange}, under a [misclassification loss]{.blue}, the in sample prediction error is
-$$
-\text{ErrF} = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n  \mathbb{E}\{\mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)\}= \frac{1}{n}\sum_{i=1}^n\mathbb{P}(\tilde{Y}_i \neq \hat{y}_i).
-$$
-- The above error is [minimized]{.orange} whenever $\hat{y}_i$ corresponds to [Bayes classifier]{.orange}
-$$
-\hat{y}_{i, \text{bayes}} = \arg\max_{y \in \{0, 1\}} \mathbb{P}(\tilde{Y}_i = y) = \mathbb{I}(p(\bm{x}_i) > 0.5),
-$$
-which depends on the unknown probabilities $p(\bm{x}_i)$.
+-   The above error is [minimized]{.orange} whenever $\hat{y}_i$
+    corresponds to [Bayes classifier]{.orange} $$
+    \hat{y}_{i, \text{bayes}} = \arg\max_{y \in \{0, 1\}} \mathbb{P}(\tilde{Y}_i = y) = \mathbb{I}(p(\bm{x}_i) > 0.5),
+    $$ which depends on the unknown probabilities $p(\bm{x}_i)$.
 
-- We call the [Bayes rate]{.blue} the optimal in-sample prediction error:
-$$
-\mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; p(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n\min\{p(\bm{x}_i), 1 - p(\bm{x}_i)\}.
-$$
+-   We call the [Bayes rate]{.blue} the optimal in-sample prediction
+    error: $$
+    \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; p(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n\min\{p(\bm{x}_i), 1 - p(\bm{x}_i)\}.
+    $$
 
-- The [Bayes rate]{.blue} is the error rate we would get if we knew the true $p(\bm{x})$ and can be regarded as the [irreducible error]{.orange} for classification problems.  
-
+-   The [Bayes rate]{.blue} is the error rate we would get if we knew
+    the true $p(\bm{x})$ and can be regarded as the [irreducible
+    error]{.orange} for classification problems.
 :::
 
 ## Bias-variance trade-off
@@ -581,7 +576,8 @@ $$
     unknown function $f(\bm{x})$ and its estimate $\hat{f}(\bm{x})$ and
     therefore it is a [natural measure]{.orange} of the goodness of fit.
 
--   What follows  holds both for [regression]{.blue} and [classification]{.orange} problems.
+-   What follows holds both for [regression]{.blue} and
+    [classification]{.orange} problems.
 
 . . .
 
@@ -597,8 +593,8 @@ $$
 ## Example: bias-variance in linear regression models
 
 ::: incremental
--   In [regression problems]{.blue} the [in-sample prediction error]{.orange} under
-    [squared loss]{.blue} is $$
+-   In [regression problems]{.blue} the [in-sample prediction
+    error]{.orange} under [squared loss]{.blue} is $$
     \begin{aligned}
     \text{ErrF} = \sigma^2 + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\hat{f}(\bm{x}_i) - f(\bm{x}_i)\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
     \end{aligned}
@@ -608,8 +604,8 @@ $$
     computed in closed form, since each element of the [bias]{.orange}
     term equals $$
     \mathbb{E}\left[f(\bm{x}_i; \hat{\beta}) - f(\bm{x}_i)\right] = \bm{x}_i^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_i).
-    $$ where $\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T$. Note that [if]{.orange}
-    $f(\bm{x}) = \bm{x}^T\beta$, then the bias is zero.
+    $$ where $\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T$. Note that
+    [if]{.orange} $f(\bm{x}) = \bm{x}^T\beta$, then the bias is zero.
 
 -   Moreover, in [ordinary least squares]{.blue} the [variance]{.orange}
     term equals $$
@@ -728,8 +724,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     \widehat{\mathrm{ErrF}} =  \frac{1}{n}\sum_{i=1}^n\mathscr{L}\{\tilde{y}_i; \hat{f}(\bm{x}_i)\}.
     $$
 
--   This is precisely what we already did with yesterday's and tomorrow's
-    data!
+-   This is precisely what we already did with yesterday's and
+    tomorrow's data!
 :::
 
 ## MSE on training and test set (recap)
@@ -759,11 +755,11 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 ## Optimism I
 
 ::: incremental
+-   Let us investigate this discrepancy between training and test more
+    in-depth.
 
-- Let us investigate this discrepancy between training and test more in-depth.
-
--   In [regression problems]{.blue}, under a [squared loss function]{.blue}, the [in-sample prediction
-    error]{.orange} is $$
+-   In [regression problems]{.blue}, under a [squared loss
+    function]{.blue}, the [in-sample prediction error]{.orange} is $$
     \text{ErrF} = \mathbb{E}(\text{MSE}_\text{test}) = \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(\bm{x}_i)\}^2\right]
     $$
 
@@ -790,7 +786,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i))
     $$
 
--   If [ordinary least squares]{.blue} are employed, then the predictions are $\bm{H}\bm{Y}$, therefore $$
+-   If [ordinary least squares]{.blue} are employed, then the
+    predictions are $\bm{H}\bm{Y}$, therefore $$
     \text{Opt}_\text{ols} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{H}\bm{Y})\} = \frac{2}{n} \text{tr}\{\text{cov}(\bm{Y}, \bm{Y}) \bm{H}^T\} = \frac{2 \sigma^2}{n}\text{tr} (\bm{H}) = \frac{2 \sigma^2 p}{n}.
     $$
 
@@ -983,14 +980,15 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 ## Training, validation, and test I
 
 ::: incremental
-- On many occasions, we may need to select several complexity
+-   On many occasions, we may need to select several complexity
     parameters and compare hundreds of models.
 
--   If the same test set is used for such a task, the
-    final assessment of the error is somewhat biased and [too
-    optimistic]{.orange}, because we are "learning" from the test set.
+-   If the same test set is used for such a task, the final assessment
+    of the error is somewhat biased and [too optimistic]{.orange},
+    because we are "learning" from the test set.
 
--   If we are in a data-rich situation, the best approach is to divide the dataset into three parts randomly:
+-   If we are in a data-rich situation, the best approach is to divide
+    the dataset into three parts randomly:
 
     -   a [training set]{.orange}, used for [fitting]{.orange} the
         models;
@@ -999,14 +997,14 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     -   a [test set]{.grey}, for [assessment of the error]{.grey} of the
         final chosen model.
 
--   Ideally, the test set should be kept in a "vault" and be brought
-    out only at the end of the data analysis.
+-   Ideally, the test set should be kept in a "vault" and be brought out
+    only at the end of the data analysis.
 :::
 
 ## Training, validation, and test II
 
--   There is no precise rule on how to select the size of these sets;
-    a rule of thumb is given in the picture below.
+-   There is no precise rule on how to select the size of these sets; a
+    rule of thumb is given in the picture below.
 
 ::: {.flourish-embed .flourish-chart data-src="visualisation/14246499"}
 ```{=html}
@@ -1015,9 +1013,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 :::
 
 -   The training, validation, and test setup [reduces]{.orange} the
-    [number of observations]{.orange} we can use to fit the
-    models. It could be problematic if the sample size is relatively
-    small.
+    [number of observations]{.orange} we can use to fit the models. It
+    could be problematic if the sample size is relatively small.
 
 ## Cross-validation I
 
@@ -1052,8 +1049,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     $$ where $|V_k|$ is the cardinality of $V_k$, i.e.
     $V_k \approx n / K$.
 
--   We summarize the above errors using the mean, obtaining
-    the following [estimate]{.orange} for the [expected prediction
+-   We summarize the above errors using the mean, obtaining the
+    following [estimate]{.orange} for the [expected prediction
     error]{.orange}:
     $$\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].$$
 :::
@@ -1061,24 +1058,25 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 ## Cross-validation III
 
 ::: incremental
+-   An advantage of CV is that [variance]{.blue} of the Monte Carlo
+    estimate $\widehat{\mathrm{Err}}$ can be quantified.
 
-- An advantage of CV is that [variance]{.blue} of the Monte Carlo estimate $\widehat{\mathrm{Err}}$ can be quantified.
+-   Let us define cross-validated "[residuals]{.orange}" of our
+    procedure as follows $$
+    r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
+    $$ so that $\widehat{\text{Err}} = \bar{r}$.
 
-- Let us define cross-validated "[residuals]{.orange}" of our procedure as follows
-$$
-r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
-$$
-so that $\widehat{\text{Err}} = \bar{r}$. 
+-   Then, a simple estimate for the standard error of
+    $\widehat{\text{Err}}$ is $$
+    \widehat{\text{se}} = \frac{1}{\sqrt{n}} \text{sd}(r) = \frac{1}{\sqrt{n}} \sqrt{\frac{1}{n-1}\sum_{i=1}^n (r_i - \bar{r})^2}.
+    $$
 
-- Then, a simple estimate for the standard error of $\widehat{\text{Err}}$ is
-$$
-\widehat{\text{se}} = \frac{1}{\sqrt{n}} \text{sd}(r) = \frac{1}{\sqrt{n}} \sqrt{\frac{1}{n-1}\sum_{i=1}^n (r_i - \bar{r})^2}.
-$$
+-   The above formula is often criticized for producing intervals that
+    are [too narrow]{.orange}!
 
-- The above formula is often criticized for producing intervals that are [too narrow]{.orange}!
-
-- Indeed, the estimate $\widehat{\text{se}}$ of the standard deviation of $\widehat{\text{Err}}$ assumes that the observed errors $r_1, \dots, r_n$ are independent, but this is not true! 
-
+-   Indeed, the estimate $\widehat{\text{se}}$ of the standard deviation
+    of $\widehat{\text{Err}}$ assumes that the observed errors
+    $r_1, \dots, r_n$ are independent, but this is not true!
 :::
 
 ## Cross-validation IV (`cholesterol` data)
@@ -1143,8 +1141,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 Let $\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}$ be the leave-one-out
 predictions of a [linear model]{.blue} and let $h_i = [\bm{H}]_{ii}$ and
-$\hat{y}_i$ be the leverages and the predictions of the
-full model. Then: $$
+$\hat{y}_i$ be the leverages and the predictions of the full model.
+Then: $$
 y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 $$ Therefore, the leave-one-out mean squared error is
 $$\widehat{\mathrm{Err}} = \frac{1}{n} \sum_{i=1}^{n} \widehat{\text{Err}}_{V_i}= \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - h_i}\right)^2.$$
@@ -1153,11 +1151,13 @@ $$\widehat{\mathrm{Err}} = \frac{1}{n} \sum_{i=1}^{n} \widehat{\text{Err}}_{V_i}
 ## Generalized cross-validation
 
 ::: incremental
--   An alternative to LOO-CV is the so-called [generalized cross validation]{.orange} (GCV), defined as $$
+-   An alternative to LOO-CV is the so-called [generalized cross
+    validation]{.orange} (GCV), defined as $$
     \text{GCV} = \widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - p/n}\right)^2.
     $$
--   The GCV is an approximate LOO-CV for [ordinary least squares]{.blue}, in which the leverages $h_i$ are
-    replaced by their mean: $$
+-   The GCV is an approximate LOO-CV for [ordinary least
+    squares]{.blue}, in which the leverages $h_i$ are replaced by their
+    mean: $$
     \frac{1}{n}\sum_{i=1}^n h_i = \frac{p}{n}. 
     $$
 -   For small $x >0$ it holds that $(1 - x)^{-2} \approx 1 + 2x$. Then,
@@ -1252,8 +1252,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   However, we cannot pick the value of $p$ that maximizes the
     log-likelihood (why not?)
 
--   We must consider the different number of parameters,
-    introducing a [penalty]{.orange}: $$
+-   We must consider the different number of parameters, introducing a
+    [penalty]{.orange}: $$
     \text{IC}(p) = -2 \ell(\hat{\theta}) + \text{penalty}(p),
     $$
 
@@ -1263,79 +1263,80 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   The choice of the specific penalty identifies a particular
     criterion.
 
--   An advantage of $\text{IC}$ is that they are based on the full dataset.
+-   An advantage of $\text{IC}$ is that they are based on the full
+    dataset.
 :::
 
 ## The Akaike information criterion I
 
 ::: incremental
-
--   Akaike suggested minimizing over $p$ the [expectation]{.blue} of the [Kullback-Leibler
-    divergence]{.orange}: $$
+-   Akaike suggested minimizing over $p$ the [expectation]{.blue} of the
+    [Kullback-Leibler divergence]{.orange}: $$
     \text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta})) = \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} - \int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}},
-    $$ between the "true" model $p(\bm{Y};\theta_0)$ with parameter $\theta_0$ and the estimated model $p(\bm{Y};\hat{\theta})$.
+    $$ between the "true" model $p(\bm{Y};\theta_0)$ with parameter
+    $\theta_0$ and the estimated model $p(\bm{Y};\hat{\theta})$.
 
--   In the above Kullback-Leibler, for any fixed $p$, the parameter $\theta$ is replaced with its [maximum likelihood estimator]{.blue} $\hat{\theta} = \hat{\theta}(\bm{Y})$, using the data $\bm{Y} = (Y_1,\dots,Y_n)$.
-    
-- [Equivalently]{.orange}, we can select $p$ such that the expectation w.r.t. $p(\bm{Y}; \theta_0)$
-$$
-\begin{aligned}
-\Delta(p) &= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - \underbrace{2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}}}_{\text{Does not depend on } p} \\
-& = - 2 \: \mathbb{E}_{\theta_0}\left[\int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}} \right] 
-\end{aligned}
-$$
-is [minimized]{.orange}. Unfortunately, we cannot compute nor minimize $\Delta(p)$ because $\theta_0$ is unknown. 
+-   In the above Kullback-Leibler, for any fixed $p$, the parameter
+    $\theta$ is replaced with its [maximum likelihood estimator]{.blue}
+    $\hat{\theta} = \hat{\theta}(\bm{Y})$, using the data
+    $\bm{Y} = (Y_1,\dots,Y_n)$.
 
+-   [Equivalently]{.orange}, we can select $p$ such that the expectation
+    w.r.t. $p(\bm{Y}; \theta_0)$ $$
+    \begin{aligned}
+    \Delta(p) &= 2 \: \mathbb{E}_{\theta_0}\left[\text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta}))\right] - \underbrace{2 \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}}}_{\text{Does not depend on } p} \\
+    & = - 2 \: \mathbb{E}_{\theta_0}\left[\int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}} \right] 
+    \end{aligned}
+    $$ is [minimized]{.orange}. Unfortunately, we cannot compute nor
+    minimize $\Delta(p)$ because $\theta_0$ is unknown.
 :::
 
 ## The Akaike information criterion II
 
 ::: incremental
+-   The theoretical quantity $\Delta(p)$ cannot be obtained. However,
+    the quantity $$
+    \text{AIC} = -2 \ell(\hat{\theta}) + 2 p,
+    $$ namely the [Akaike information criterion]{.orange}, is a good
+    estimator of $\Delta(p)$.
 
-- The theoretical quantity $\Delta(p)$ cannot be obtained. However, the quantity $$
-\text{AIC} = -2 \ell(\hat{\theta}) + 2 p,
-$$
-namely the [Akaike information criterion]{.orange}, is a good estimator of $\Delta(p)$.
+-   More formally, it can be proved that, under technical conditions: $$
+    \mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = \Delta(p),
+    $$ for $n \rightarrow \infty$.
 
-- More formally, it can be proved that, under technical conditions:
-$$
-\mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = \Delta(p),
-$$
-for $n \rightarrow \infty$. 
+-   In practice, we will select the value of $p$ minimizing the
+    $\text{AIC}$, which is typically quite easy.
 
-
-- In practice, we will select the value of $p$ minimizing the $\text{AIC}$, which is typically quite easy. 
-
-- The factor $2$ is just a [convention]{.blue}, introduced to match the quantities of the usual asymptotic theory. 
-
-
+-   The factor $2$ is just a [convention]{.blue}, introduced to match
+    the quantities of the usual asymptotic theory.
 :::
 
 ## The AIC for Gaussian linear models
 
 ::: incremental
+-   Let us assume that $\sigma^2$ is [known]{.orange}. Then the
+    $\text{AIC}$ for a Gaussian linear model is $$
+    \begin{aligned}
+    \text{AIC} &= -2 \ell(\hat{\beta}) + 2 p = -2 \left\{-\frac{n}{2}\log{(2\pi\sigma^2)} - \frac{1}{2
+    \sigma^2}\sum_{i=1}^n (y_i - \bm{x}_i^T\hat{\beta})^2\right\} + 2p \\
+    & = n\log{(2\pi\sigma^2)} + \frac{n}{
+    \sigma^2}\left\{ \frac{1}{n}\sum_{i=1}^n (y_i - \bm{x}_i^T\hat{\beta})^2 + \frac{2p\sigma^2}{n} \right\} \\
+    & = n\log{(2\pi\sigma^2)} + \frac{n}{
+    \sigma^2} C_p,
+    \end{aligned}
+    $$ implying that for fixed values $\sigma^2$ the $C_p$ of Mallows
+    and the Akaike's $\text{AIC}$ are [equivalent]{.blue}, i.e. they
+    lead to the same [minimum]{.orange}.
 
-- Let us assume that $\sigma^2$ is [known]{.orange}. Then the $\text{AIC}$ for a Gaussian linear model is
-$$
-\begin{aligned}
-\text{AIC} &= -2 \ell(\hat{\beta}) + 2 p = -2 \left\{-\frac{n}{2}\log{(2\pi\sigma^2)} - \frac{1}{2
-\sigma^2}\sum_{i=1}^n (y_i - \bm{x}_i^T\hat{\beta})^2\right\} + 2p \\
-& = n\log{(2\pi\sigma^2)} + \frac{n}{
-\sigma^2}\left\{ \frac{1}{n}\sum_{i=1}^n (y_i - \bm{x}_i^T\hat{\beta})^2 + \frac{2p\sigma^2}{n} \right\} \\
-& = n\log{(2\pi\sigma^2)} + \frac{n}{
-\sigma^2} C_p,
-\end{aligned}
-$$
-implying that for fixed values $\sigma^2$ the $C_p$ of Mallows and the Akaike's $\text{AIC}$ are [equivalent]{.blue}, i.e. they lead to the same [minimum]{.orange}. 
-
-- When $\sigma^2$ is unknown, then it is estimated and the $C_p$ and $\text{AIC}$ may be slightly different.
-
+-   When $\sigma^2$ is unknown, then it is estimated and the $C_p$ and
+    $\text{AIC}$ may be slightly different.
 :::
 
 ## AIC, AICc, BIC
 
-- Several other proposals followed Akaike's original work, differing in their assumptions and the way they approximate certain quantities.
-
+-   Several other proposals followed Akaike's original work, differing
+    in their assumptions and the way they approximate certain
+    quantities.
 
 | Criterion      | Author                | Penalty                           |
 |----------------|-----------------------|-----------------------------------|
@@ -1343,21 +1344,18 @@ implying that for fixed values $\sigma^2$ the $C_p$ of Mallows and the Akaike's 
 | $\text{AIC}_c$ | Sugiura, Hurvich-Tsay | $2p + \frac{2p(p+1)}{n - (p +1)}$ |
 | $\text{BIC}$   | Akaike, Schwarz       | $p \log{n}$                       |
 
-
 -   The $\text{AIC}_c$ is an [higher order correction]{.orange} of the
     $\text{AIC}$ and the differences tend to be negligible for high
     values of $n$.
 
-
-- The justification of $\text{BIC}$ is comes from [Bayesian statistics]{.blue}.
+-   The justification of $\text{BIC}$ is comes from [Bayesian
+    statistics]{.blue}.
 
 -   Since $\log{n} > 2$ for any $n > 7$, it means that the $\text{BIC}$
     [penalty]{.blue} is typically [stronger]{.orange} than the one of
-    $\text{AIC}$ and it favors more parsimonious models. 
+    $\text{AIC}$ and it favors more parsimonious models.
 
 ## AIC and BIC (`cholesterol` data)
-
-
 
 ::: columns
 ::: {.column width="50%"}
@@ -1406,24 +1404,31 @@ ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
 :::
 :::
 
-
 ## An optimistic summary
 
 ::: incremental
+-   In the `cholesterol` dataset, the various indices produced
+    [different results]{.orange}!
 
-- In the `cholesterol` dataset, the various indices produced [different results]{.orange}!
-  - The BIC and  and the $10-$fold cross-validation selected $p = 2$ (linear model); 
-  - The the training / test split suggested $p = 3$ (quadratic model); 
-  - All the others (LOO-CV, $\text{GCV}$, $\text{AIC}$ and $\text{AIC}_c$) concluded that $p = 4$ (cubic model). 
+    -   The BIC and and the $10-$fold cross-validation selected $p = 2$
+        (linear model);
+    -   The the training / test split suggested $p = 3$ (quadratic
+        model);
+    -   All the others (LOO-CV, $\text{GCV}$, $\text{AIC}$ and
+        $\text{AIC}_c$) concluded that $p = 4$ (cubic model).
 
-- The good news is that all the above methods produced [similar findings]{.blue}. For example, we are quite sure that we should choose $p \le 6$. 
+-   The good news is that all the above methods produced [similar
+    findings]{.blue}. For example, we are quite sure that we should
+    choose $p \le 6$.
 
-- On the other hand, there is obviously some [uncertainty]{.orange}, which is a quite common situation. 
+-   On the other hand, there is obviously some [uncertainty]{.orange},
+    which is a quite common situation.
 
-- In this specific case, we may prefer $p = 4$, since it is based on the less-biased estimates of $\text{Err}$, such as the LOO-CV. 
+-   In this specific case, we may prefer $p = 4$, since it is based on
+    the less-biased estimates of $\text{Err}$, such as the LOO-CV.
 
-- However, this choice is [debatable]{.blue}: another statistician may prefer the simpler linear model with $p =2$. 
-
+-   However, this choice is [debatable]{.blue}: another statistician may
+    prefer the simpler linear model with $p =2$.
 :::
 
 ## The `cholesterol` data: final model ($p = 4$)
@@ -1463,4 +1468,5 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
         138--51.
     -   Bates, S., Hastie, T., and R. Tibshirani (2023).
         "[Cross-validation: what does it estimate and how well does it
-        do it?](https://doi.org/10.1080/01621459.2023.2197686)" *Journal of the American Statistical Association*, in press.
+        do it?](https://doi.org/10.1080/01621459.2023.2197686)" *Journal
+        of the American Statistical Association*, in press.

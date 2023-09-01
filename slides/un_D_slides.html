@@ -376,7 +376,7 @@
 <li><p>Let us consider again the <span class="blue">relationship</span> between a response variable <span class="math inline">Y_i</span> and a set of covariates <span class="math inline">\bm{x}_i</span>: <span class="math display">
   Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
   </span> where <span class="math inline">\epsilon_i</span> are <span class="orange">iid</span> with <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span> and <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>.</p></li>
-<li><p>We do not believe <span class="math inline">f(\bm{x})</span> is a polynomial or any other parametric function.</p></li>
+<li><p>We do not believe <span class="math inline">f(\bm{x})</span> is a polynomial nor it belongs to some parametric family of functions.</p></li>
 <li><p>Can we fit a <span class="blue">nonparametric</span> relationship that does <span class="orange">not</span> make strong <span class="orange">assumptions</span> on <span class="math inline">f(\bm{x})</span>? Let us review some old dataset…</p></li>
 </ul>
 </div>
@@ -405,7 +405,7 @@
 <li><p>We assume, as before, that the data are generated according to <span class="math display">
     Y_i = f(x_i) + \epsilon_i, \quad i=1,\dots,n.
     </span></p></li>
-<li><p>In <a href="un_B.html#another-example-cholesterol-data">Unit B</a> we fit a <span class="orange">polynomial</span> with degree <span class="math inline">3</span>, although there was some <span class="blue">uncertainty</span>.</p></li>
+<li><p>In <a href="un_B.html#another-example-cholesterol-data">Unit B</a> we fit a <span class="orange">polynomial</span> with degree <span class="math inline">3</span> on this data, although there was some <span class="blue">uncertainty</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -426,7 +426,7 @@
 <li><p>The chosen model involved a <span class="blue">non-linear</span> function <span class="math display">
 Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 </span> where <span class="math inline">f(x)</span> was “manually” selected.</p></li>
-<li><p>There are <span class="orange">no</span> reasons to believe that <span class="math inline">f(x) = \alpha + \beta\log{x}</span> or <span class="math inline">f(x)</span> has any other <span class="orange">parametric function</span>.</p></li>
+<li><p>There are <span class="orange">no</span> reasons to believe that <span class="math inline">f(x) = \alpha x^\beta</span> or that <span class="math inline">f(x)</span> belongs to any other <span class="orange">parametric</span> family.</p></li>
 <li><p>We would like the data to “speak for themselves”.</p></li>
 </ul>
 </div>
@@ -488,7 +488,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <h2>The regression function</h2>
 <div>
 <ul>
-<li class="fragment"><p>Let us recall again that the only assumption we are making is that <span class="math display">
+<li class="fragment"><p>The only assumption we are making is the following <span class="orange">additive</span> structure <span class="math display">
   Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 </span> where <span class="math inline">\epsilon_i</span> are <span class="orange">iid</span> with <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span> and <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>.</p></li>
 <li class="fragment"><p>In <a href="un_B.html#regression-under-quadratic-loss-ii">Unit B</a> we showed that under the following <span class="orange">quadratic loss</span><span class="math display">
@@ -511,13 +511,13 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <div class="fragment">
 <ul>
 <li><p>This idea, unfortunately, <span class="orange">does not work</span> in most practical cases.</p></li>
-<li><p>Indeed, in a typical dataset it is very unlikely that there exist observations exactly equal to <span class="math inline">x</span> among the points <span class="math inline">(x_i, y_i)</span>.</p></li>
-<li><p>Even if there were values such that <span class="math inline">x_i = x</span>, the <span class="blue">sample size</span> <span class="math inline">n_x</span> would often be so <span class="orange">small</span> (e.g. <span class="math inline">n_x = 1</span>) that the variance of <span class="math inline">\hat{f}(x)</span> would be too high, making this estimator useless.</p></li>
+<li><p>Indeed, in a typical dataset it is very unlikely that there exist multiple observations <span class="orange">exactly equal</span> to <span class="math inline">x</span> among the points <span class="math inline">(x_i, y_i)</span>.</p></li>
+<li><p>Even if there were values such that <span class="math inline">x_i = x</span>, the <span class="blue">sample size</span> <span class="math inline">n_x</span> would be so <span class="orange">small</span> (e.g. <span class="math inline">n_x = 1</span>) that the variance of <span class="math inline">\hat{f}(x)</span> would be extremely high, making this estimator useless.</p></li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li>On the other hand, this idea seems <span class="orange">intuitively appealing</span>. Is there a way to “fix” it?</li>
+<li>However, this “local average” idea seems <span class="orange">intuitively appealing</span>. Can we “fix” it?</li>
 </ul>
 </div>
 </section>
@@ -540,13 +540,18 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <h2>K-nearest neighbours (<span class="math inline">k = 6</span>)</h2>
 
 <img data-src="un_D_files/figure-revealjs/unnamed-chunk-6-1.png" width="1560" class="r-stretch quarto-figure-center"></section>
-<section id="limitations-of-the-k-nearest-neighbor-method" class="slide level2 center">
-<h2>Limitations of the <span class="math inline">k</span>-nearest neighbor method</h2>
+<section id="comments-and-limitations-about-the-knn-method" class="slide level2 center">
+<h2>Comments and limitations about the KNN method</h2>
 <ul>
-<li><p>The number of neighbours <span class="math inline">k</span> influences how “local” is the estimate.</p></li>
-<li><p>The case <span class="math inline">k = 1</span> is unsatisfactory, because the average is based on a single data point. On the other hand, the case <span class="math inline">k = n</span> produces a constant (average of all the observations).</p></li>
-<li><p>Hence, there is a clear <span class="orange">bias-variance trade-off</span> in the choice of <span class="math inline">k</span>, which should be selected e.g.&nbsp;via <span class="blue">cross-validation</span>.</p></li>
+<li><p>The number of neighbours <span class="math inline">k</span> influences how “<span class="orange">local</span>” is the estimate.</p></li>
+<li><p>When <span class="math inline">k</span> is low, the KNN estimator <span class="math inline">\hat{f}(x)</span> has <span class="orange">high variance</span>. The extreme case <span class="math inline">k = 1</span> corresponds to an “average” of a single data point.</p></li>
+<li><p>When <span class="math inline">k</span> is high, the KNN estimator <span class="math inline">\hat{f}(x)</span> is not local and it has <span class="blue">high bias</span>. The extreme case <span class="math inline">k = n</span> produces a constant, i.e.&nbsp;the average of all the observations.</p></li>
 </ul>
+<div class="fragment">
+<ul>
+<li>Thus, there is a <span class="orange">bias-variance trade-off</span> in the choice of <span class="math inline">k</span>, which should be selected e.g.&nbsp;via <span class="blue">cross-validation</span>.</li>
+</ul>
+</div>
 <div class="fragment">
 <ul>
 <li><p>The <span class="math inline">k</span>-nearest neighbours produces a <span class="blue">sensible result</span>, but the method <span class="orange">can be improved</span>.</p></li>
@@ -559,7 +564,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <section id="nadaraya-watson-estimator" class="slide level2 center">
 <h2>Nadaraya-Watson estimator</h2>
 <ul>
-<li>The <span class="blue">Nadaraya-Watson</span> estimator addresses these issues. It is a <span class="orange">weighted average</span> <span class="math display">
+<li>The <span class="blue">Nadaraya-Watson</span> estimator addresses the aforementioned issues of the KNN method. It is a <span class="orange">weighted average</span> <span class="math display">
 \hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(x)}\sum_{i=1}^n w_i(x) y_i = \sum_{i=1}^n s_i(x) y_i,
 </span> where <span class="math inline">s_i(x) = w_i(x) / \sum_{i'=1}^n w_{i'}(x)</span> are the <span class="blue">normalized weights</span>.</li>
 </ul>
@@ -572,7 +577,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <ul>
 <li><p>A convenient way of selecting these weights is through <span class="blue">kernel functions</span>: <span class="math display">
 w_i(x) = \frac{1}{h}w\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
-</span> where <span class="math inline">w(\cdot)</span> is a <span class="orange">symmetric density</span> function around the origin, called kernel in this context.</p></li>
+</span> where <span class="math inline">w(\cdot)</span> is a <span class="orange">density</span> function, <span class="orange">symmetric</span> around the origin, called kernel in this context.</p></li>
 <li><p>The value <span class="math inline">h &gt; 0</span> is a <span class="blue">scale factor</span>, sometimes called <span class="orange">bandwidth</span> or <span class="orange">smoothing parameter</span>.</p></li>
 </ul>
 </div>
@@ -583,7 +588,7 @@ w_i(x) = \frac{1}{h}w\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
 <li><p>The fitted function <span class="math inline">\hat{f}(x)</span> is <span class="blue">continuous</span> and is obtained by computing several weighted averages, one for each value of <span class="math inline">x</span>.</p></li>
 <li><p>A popular kernel is the <span class="orange">Gaussian kernel</span>, that is: <span class="math display">
 w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
-</span> so that <span class="math inline">h^2</span> represents the <span class="blue">variance</span>. We will discuss alternative choices later on.</p></li>
+</span> tehrefore <span class="math inline">h^2</span> represents the <span class="blue">variance</span>. We will discuss alternative choices later on.</p></li>
 </ul>
 <div class="fragment">
 <ul>
@@ -692,7 +697,7 @@ f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) +
 <section id="linear-smoothers-i" class="slide level2 center">
 <h2>Linear smoothers I</h2>
 <ul>
-<li>The Nadaraya-Watson estimator and local linear regression are special instances of <span class="blue">linear smoothers</span>, which are estimators admitting the following form: <span class="math display">
+<li>The Nadaraya-Watson estimator and local linear regression are special instances of <span class="blue">linear smoothers</span>, which are estimators having the following form: <span class="math display">
 \hat{f}(x) = \sum_{i=1}^ns_i(x) y_i.
 </span></li>
 </ul>
@@ -822,18 +827,73 @@ h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2
 <ul>
 <li><p>Unfortunately, <span class="math inline">h_\text{opt}(x)</span> is of <span class="orange">little practical utility</span>, as it involves the <span class="orange">unknown</span> terms <span class="math inline">f''(x)</span>, <span class="math inline">g(x)</span> and <span class="math inline">\sigma^2</span>. However, it highlights two important facts:</p></li>
 <li><p>The bandwidth <span class="math inline">h</span> should decrease at the rate <span class="math inline">n^{-1/5}</span>, i.e.&nbsp;<span class="blue">quite slowly</span>.</p></li>
-<li><p>If we plug-in <span class="math inline">h_\text{opt}(x)</span> into the bias/variance formulas, we get that the mean squared error <span class="math inline">\rightarrow 0</span> at the rate <span class="math inline">n^{-4/5}</span>, which is much <span class="orange">slower</span> than the <span class="orange">parametric</span> case <span class="math inline">n^{-1}</span>.</p></li>
+<li><p>If we plug-in <span class="math inline">h_\text{opt}(x)</span> into the bias/variance formulas, we get that the mean squared error tends to <span class="math inline">0</span> at the rate <span class="math inline">n^{-4/5}</span>, which is much <span class="orange">slower</span> than the <span class="orange">parametric</span> case <span class="math inline">n^{-1}</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="bias-reduction-of-local-linear-regression" class="slide level2 center">
+<h2>☠️ - Bias reduction of local linear regression</h2>
+<ul>
+<li><p>Local linear regression, compared to the Nadaraya-Watson estimator, correct the <span class="orange">first-order</span> term of the <span class="orange">bias</span>, without affecting the variance in a sensible way.</p></li>
+<li><p>Indeed, it can be shown that the <span class="blue">asymptotic variance</span> of Nadaraya-Watson and local linear regression is the <span class="blue">same</span>, but the <span class="orange">asymptotic bias</span> is <span class="orange">different</span>.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>To get an intuition of this, consider the following Taylor expansion for <span class="math inline">\mathbb{E}\{\hat{f}(x)\}</span> around <span class="math inline">x_0</span>, and for the local linear regression case: <span class="math display">
+\begin{aligned}
+\mathbb{E}\{\hat{f}(x)\} &amp;= \sum_{i=1}^n s_i(x)f(x_i) \\
+&amp; = f(x_0)\underbrace{\sum_{i=1}^ns_i(x_0)}_{=1} + f'(x_0) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x_0)}_{=0} + \frac{f''(x_0)}{2}(x_i - x_0)^2s_i(x_0) + \text{rest}.
+\end{aligned}
+</span></p></li>
+<li><p>It can be shown, with some algebra, that the first order term simplifies (<span class="math inline">=0</span>) in the local linear regression case but it doesn’t for the Nadaraya-Watson, therefore <span class="orange">reducing the bias</span>.</p></li>
 </ul>
 </div>
 </section>
 <section id="choice-of-the-bandwidth-i" class="slide level2 center">
 <h2>Choice of the bandwidth I</h2>
+<ul>
+<li><p>In practice, we need to choose the bandwidth by other means. A first solution is based on <span class="blue">information criteria</span> such as the <span class="math inline">C_p</span> or the AIC/BIC.</p></li>
+<li><p>However, as before, their usage requires a suitable notion of <span class="orange">effective degrees of freedom</span>.</p></li>
+</ul>
+<div class="fragment">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Effective degrees of freedom for linear smoothers</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\hat{f}(x) = \sum_{i=1}^ns_i(x)y_i</span> be a linear smoother. Then the effective degrees of freedom are <span class="math display">
+\text{df}_\text{sm} = \frac{1}{\sigma^2}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(x_i)) =\frac{1}{\sigma^2} \text{tr}\{\text{cov}(\bm{Y}, \bm{S}\bm{Y})\} = \frac{\sigma^2}{\sigma^2}\text{tr} (\bm{S}) = \text{tr} (\bm{S}).
+</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li>Some authors proposed to use <span class="math inline">\text{tr}(\bm{S}\bm{S}^T)</span> or even <span class="math inline">\text{tr}(2\bm{S} - \bm{S}\bm{S}^T)</span>, but the connection with the <span class="orange">optimism</span> and the definition of effective degrees of freedom is less clear.</li>
+</ul>
+</div>
 </section>
 <section id="choice-of-the-bandwidth-ii" class="slide level2 center">
 <h2>Choice of the bandwidth II</h2>
-</section>
-<section id="bias-reduction-of-local-linear-regression" class="slide level2 center">
-<h2>☠️ - Bias reduction of local linear regression</h2>
+<ul>
+<li>Cross-validation is another option for selecting the bandwidth <span class="math inline">h</span>. In <span class="blue">linear smoothers</span> there is a brilliant <span class="orange">computational shortcut</span> for the leave-one-out case.</li>
+</ul>
+<div class="fragment">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>LOO-CV (Linear smoothers)</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\hat{y}_{-i} = \hat{f}_{-i}(x_i)</span> be the leave-one-out predictions of a <span class="blue">linear smoother</span> and let <span class="math inline">\hat{\bm{y}} = \bm{S}\bm{y}</span> be the predictions of the full model. Then: <span class="math display">
+y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots,n.
+</span> Therefore, the leave-one-out mean squared error is <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}\right)^2.</span></p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="loess-i" class="slide level2 center">
 <h2>Loess I</h2>

@@ -86,8 +86,8 @@ object treasured both for its artistic merit as well as usefulness."*
     $\mathbb{E}(\epsilon_i) = 0$ and
     $\text{var}(\epsilon_i) = \sigma^2$.
 
--   We do not believe $f(\bm{x})$ is a polynomial or any other
-    parametric function.
+-   We do not believe $f(\bm{x})$ is a polynomial nor it belongs to some
+    parametric family of functions.
 
 -   Can we fit a [nonparametric]{.blue} relationship that does
     [not]{.orange} make strong [assumptions]{.orange} on $f(\bm{x})$?
@@ -136,7 +136,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
         $$
 
 -   In [Unit B](un_B.html#another-example-cholesterol-data) we fit a
-    [polynomial]{.orange} with degree $3$, although there was some
+    [polynomial]{.orange} with degree $3$ on this data, although there was some
     [uncertainty]{.blue}.
 :::
 :::
@@ -173,8 +173,7 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
     $$ where $f(x)$ was "manually" selected.
 
 -   There are [no]{.orange} reasons to believe that
-    $f(x) = \alpha + \beta\log{x}$ or $f(x)$ has any other [parametric
-    function]{.orange}.
+    $f(x) = \alpha x^\beta$ or that $f(x)$ belongs to any other [parametric]{.orange} family.
 
 -   We would like the data to "speak for themselves".
 
@@ -300,7 +299,7 @@ ggplot(data = data_pred) +
 ## The regression function
 
 ::: incremental
--   Let us recall again that the only assumption we are making is that
+-   The only assumption we are making is the following [additive]{.orange} structure
     $$
       Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
     $$ where $\epsilon_i$ are [iid]{.orange} with
@@ -338,17 +337,17 @@ ggplot(data = data_pred) +
     cases.
 
 -   Indeed, in a typical dataset it is very unlikely that there exist
-    observations exactly equal to $x$ among the points $(x_i, y_i)$.
+    multiple observations [exactly equal]{.orange} to $x$ among the points $(x_i, y_i)$.
 
 -   Even if there were values such that $x_i = x$, the [sample
-    size]{.blue} $n_x$ would often be so [small]{.orange} (e.g.
-    $n_x = 1$) that the variance of $\hat{f}(x)$ would be too high,
+    size]{.blue} $n_x$ would be so [small]{.orange} (e.g.
+    $n_x = 1$) that the variance of $\hat{f}(x)$ would be extremely high,
     making this estimator useless.
 
 . . .
 
--   On the other hand, this idea seems [intuitively appealing]{.orange}.
-    Is there a way to "fix" it?
+-   However, this "local average" idea seems [intuitively appealing]{.orange}.
+    Can we "fix" it?
 
 ## K-nearest neighbours
 
@@ -391,15 +390,17 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   ylab("Head acceleration (g)")
 ```
 
-## Limitations of the $k$-nearest neighbor method
+## Comments and limitations about the KNN method
 
--   The number of neighbours $k$ influences how "local" is the estimate.
+- The number of neighbours $k$ influences how "[local]{.orange}" is the estimate.
 
--   The case $k = 1$ is unsatisfactory, because the average is based on
-    a single data point. On the other hand, the case $k = n$ produces a
-    constant (average of all the observations).
+- When $k$ is low, the KNN estimator $\hat{f}(x)$ has [high variance]{.orange}. The extreme case $k = 1$ corresponds to an "average" of a single data point. 
+    
+- When $k$ is high, the KNN estimator $\hat{f}(x)$ is not local and it has [high bias]{.blue}. The extreme case $k = n$ produces a constant, i.e. the average of all the observations. 
 
--   Hence, there is a clear [bias-variance trade-off]{.orange} in the
+. . .
+
+-   Thus, there is a [bias-variance trade-off]{.orange} in the
     choice of $k$, which should be selected e.g. via
     [cross-validation]{.blue}.
 
@@ -420,7 +421,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 ## Nadaraya-Watson estimator
 
--   The [Nadaraya-Watson]{.blue} estimator addresses these issues. It is
+-   The [Nadaraya-Watson]{.blue} estimator addresses the aforementioned issues of the KNN method. It is
     a [weighted average]{.orange} $$
     \hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(x)}\sum_{i=1}^n w_i(x) y_i = \sum_{i=1}^n s_i(x) y_i,
     $$ where $s_i(x) = w_i(x) / \sum_{i'=1}^n w_{i'}(x)$ are the
@@ -436,7 +437,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 -   A convenient way of selecting these weights is through [kernel
     functions]{.blue}: $$
     w_i(x) = \frac{1}{h}w\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
-    $$ where $w(\cdot)$ is a [symmetric density]{.orange} function
+    $$ where $w(\cdot)$ is a [density]{.orange} function, [symmetric]{.orange}
     around the origin, called kernel in this context.
 
 -   The value $h > 0$ is a [scale factor]{.blue}, sometimes called
@@ -450,7 +451,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 -   A popular kernel is the [Gaussian kernel]{.orange}, that is: $$
     w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
-    $$ so that $h^2$ represents the [variance]{.blue}. We will discuss
+    $$ tehrefore $h^2$ represents the [variance]{.blue}. We will discuss
     alternative choices later on.
 
 . . .
@@ -615,7 +616,11 @@ $j=0,1,2$.
 ```{r}
 library(KernSmooth)
 
+# Optimal parameter is selected using a plug-in method that is not described in the slides.
+# Congratulations for spotting this, I expect ~3% of the students will actually read this code. 
+# Anyway, if you want to understand how this method works, you can read the paper described in the documentation (? dpill)
 h_param <- dpill(x, y)
+
 fit_locpoly <- locpoly(x, y, bandwidth = h_param, gridsize = 2000)
 
 ggplot(data = dataset, aes(x = times, y = accel)) +
@@ -631,7 +636,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 -   The Nadaraya-Watson estimator and local linear regression are
     special instances of [linear smoothers]{.blue}, which are estimators
-    admitting the following form: $$
+    having the following form: $$
     \hat{f}(x) = \sum_{i=1}^ns_i(x) y_i.
     $$
 
@@ -730,13 +735,66 @@ $$
 
 -  The bandwidth $h$ should decrease at the rate $n^{-1/5}$, i.e. [quite slowly]{.blue}.
 
--  If we plug-in $h_\text{opt}(x)$ into the bias/variance formulas, we get that the mean squared error $\rightarrow 0$ at the rate $n^{-4/5}$, which is much [slower]{.orange} than the [parametric]{.orange} case $n^{-1}$.
+-  If we plug-in $h_\text{opt}(x)$ into the bias/variance formulas, we get that the mean squared error tends to $0$ at the rate $n^{-4/5}$, which is much [slower]{.orange} than the [parametric]{.orange} case $n^{-1}$.
+
+## ☠️ - Bias reduction of local linear regression
+
+- Local linear regression, compared to the Nadaraya-Watson estimator, correct the [first-order]{.orange} term of the [bias]{.orange}, without affecting the variance in a sensible way. 
+
+- Indeed, it can be shown that the [asymptotic variance]{.blue} of Nadaraya-Watson and local linear regression is the [same]{.blue}, but the [asymptotic bias]{.orange} is [different]{.orange}.
+
+. . .
+
+- To get an intuition of this, consider the following Taylor expansion for $\mathbb{E}\{\hat{f}(x)\}$ around $x_0$, and for the local linear regression case:
+$$
+\begin{aligned}
+\mathbb{E}\{\hat{f}(x)\} &= \sum_{i=1}^n s_i(x)f(x_i) \\
+& = f(x_0)\underbrace{\sum_{i=1}^ns_i(x_0)}_{=1} + f'(x_0) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x_0)}_{=0} + \frac{f''(x_0)}{2}(x_i - x_0)^2s_i(x_0) + \text{rest}.
+\end{aligned}
+$$
+
+- It can be shown, with some algebra, that the first order term simplifies ($=0$) in the local linear regression case but it doesn't for the Nadaraya-Watson, therefore [reducing the bias]{.orange}.  
+
 
 ## Choice of the bandwidth I
 
+- In practice, we need to choose the bandwidth by other means. A first solution is based on [information criteria]{.blue} such as the $C_p$ or the AIC/BIC. 
+
+- However, as before, their usage requires a suitable notion of [effective degrees of freedom]{.orange}. 
+
+. . .
+
+::: callout-note
+#### Effective degrees of freedom for linear smoothers
+
+Let $\hat{f}(x) = \sum_{i=1}^ns_i(x)y_i$ be a linear smoother. Then the effective degrees of freedom are
+$$
+\text{df}_\text{sm} = \frac{1}{\sigma^2}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(x_i)) =\frac{1}{\sigma^2} \text{tr}\{\text{cov}(\bm{Y}, \bm{S}\bm{Y})\} = \frac{\sigma^2}{\sigma^2}\text{tr} (\bm{S}) = \text{tr} (\bm{S}).
+$$
+:::
+
+. . .
+
+- Some authors proposed to use $\text{tr}(\bm{S}\bm{S}^T)$ or even $\text{tr}(2\bm{S} - \bm{S}\bm{S}^T)$, but the connection with the [optimism]{.orange} and the definition of effective degrees of freedom is less clear.
+
 ## Choice of the bandwidth II
 
-## ☠️ - Bias reduction of local linear regression
+- Cross-validation is another option for selecting the bandwidth $h$. In [linear smoothers]{.blue} there is a brilliant [computational shortcut]{.orange} for the leave-one-out case.
+
+. . .
+
+::: callout-note
+#### LOO-CV (Linear smoothers)
+
+Let $\hat{y}_{-i} = \hat{f}_{-i}(x_i)$ be the leave-one-out
+predictions of a [linear smoother]{.blue} and let 
+$\hat{\bm{y}} = \bm{S}\bm{y}$ be the predictions of the full model.
+Then: $$
+y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots,n.
+$$ Therefore, the leave-one-out mean squared error is
+$$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}\right)^2.$$
+:::
+
 
 ## Loess I
 
