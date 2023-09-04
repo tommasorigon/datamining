@@ -93,9 +93,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#bias-reduction-of-local-linear-regression" id="toc-bias-reduction-of-local-linear-regression" class="nav-link" data-scroll-target="#bias-reduction-of-local-linear-regression">☠️ - Bias reduction of local linear regression</a></li>
   <li><a href="#choice-of-the-bandwidth-i" id="toc-choice-of-the-bandwidth-i" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-i">Choice of the bandwidth I</a></li>
   <li><a href="#choice-of-the-bandwidth-ii" id="toc-choice-of-the-bandwidth-ii" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-ii">Choice of the bandwidth II</a></li>
-  <li><a href="#lowess" id="toc-lowess" class="nav-link" data-scroll-target="#lowess">Lowess</a></li>
-  <li><a href="#local-likelihoods-i" id="toc-local-likelihoods-i" class="nav-link" data-scroll-target="#local-likelihoods-i">Local likelihoods I</a></li>
-  <li><a href="#local-likelihoods-ii" id="toc-local-likelihoods-ii" class="nav-link" data-scroll-target="#local-likelihoods-ii">Local likelihoods II</a></li>
+  <li><a href="#loess" id="toc-loess" class="nav-link" data-scroll-target="#loess">loess</a></li>
+  <li><a href="#local-likelihoods" id="toc-local-likelihoods" class="nav-link" data-scroll-target="#local-likelihoods">Local likelihoods</a></li>
   <li><a href="#the-bivariate-case-i" id="toc-the-bivariate-case-i" class="nav-link" data-scroll-target="#the-bivariate-case-i">The bivariate case I</a></li>
   <li><a href="#the-bivariate-case-ii" id="toc-the-bivariate-case-ii" class="nav-link" data-scroll-target="#the-bivariate-case-ii">The bivariate case II</a></li>
   </ul></li>
@@ -143,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="homepage"><a href="../index.html">Homepage</a></h2>
 <div class="columns">
 <div class="column" style="width:30%;">
-<p><img src="img/nonparametric.jpg" class="img-fluid"></p>
+<p><img src="img/nonparametric.png" class="img-fluid"></p>
 <div style="font-size: 70%;">
 <p><em>“Nonparametric regression might, like linear regression, become an object treasured both for its artistic merit as well as usefulness.”</em></p>
 </div>
@@ -154,7 +153,8 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>Kernel methods and local regression;</li>
 <li>Regression splines;</li>
-<li>Smoothing splines.</li>
+<li>Smoothing splines;</li>
+<li>Penalized splines.</li>
 </ul></li>
 <li><p>Let us consider again the <span class="blue">relationship</span> between a response variable <span class="math inline">Y_i</span> and a set of covariates <span class="math inline">\bm{x}_i</span>: <span class="math display">
   Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
@@ -659,8 +659,8 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 </div>
 </div>
 </section>
-<section id="lowess" class="level2">
-<h2 class="anchored" data-anchor-id="lowess">Lowess</h2>
+<section id="loess" class="level2">
+<h2 class="anchored" data-anchor-id="loess">loess</h2>
 <ul>
 <li><p>Sometimes it is convenient to choose <span class="math inline">h</span> <span class="orange">adaptively</span>, i.e.&nbsp;specifying a variable bandwidth <span class="math inline">h(x)</span> that depends on the local density of the data.</p></li>
 <li><p>Indeed, recall that the asymptotic variance depends on the sampling design of the <span class="math inline">x_i</span>s <span class="math display">
@@ -668,26 +668,35 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 </span></p></li>
 </ul>
 <ul>
-<li>The <code>lowess</code> (Cleveland, 1979) consider a <span class="blue">fixed percentage</span> of data points (assuming a bounded kernel is used), which automatically induces a <span class="orange">variable bandwidth</span>, as in KNN.</li>
+<li>The <code>loess</code> (Cleveland, 1979) consider a <span class="blue">fixed percentage</span> of data points (assuming a bounded kernel is used), which automatically induces a <span class="orange">variable bandwidth</span>, as in KNN.</li>
 </ul>
 <ul>
-<li>Moreover, the <code>lowess</code> algorithm combines the <span class="blue">variable bandwidth</span> with some <span class="orange">robust estimation</span> ideas, so that the resulting estimate is less influenced by outliers.</li>
+<li>Moreover, the <code>loess</code> algorithm combines the <span class="blue">variable bandwidth</span> with some <span class="orange">robust estimation</span> ideas, so that the resulting estimate is less influenced by outliers.</li>
 </ul>
 <ul>
-<li><code>lowess</code> is a short-hand for “<span class="orange">l</span>ocally <span class="orange">w</span>eighted <span class="orange">e</span>stimated <span class="orange">s</span>catterplot <span class="orange">s</span>moothing”.</li>
+<li><code>loess</code> is a short-hand for “<span class="orange">l</span>ocally <span class="orange">w</span>eighted <span class="orange">e</span>stimated <span class="orange">s</span>catterplot <span class="orange">s</span>moothing”.</li>
 </ul>
 </section>
-<section id="local-likelihoods-i" class="level2">
-<h2 class="anchored" data-anchor-id="local-likelihoods-i">Local likelihoods I</h2>
-</section>
-<section id="local-likelihoods-ii" class="level2">
-<h2 class="anchored" data-anchor-id="local-likelihoods-ii">Local likelihoods II</h2>
+<section id="local-likelihoods" class="level2">
+<h2 class="anchored" data-anchor-id="local-likelihoods">Local likelihoods</h2>
+<ul>
+<li></li>
+</ul>
 </section>
 <section id="the-bivariate-case-i" class="level2">
 <h2 class="anchored" data-anchor-id="the-bivariate-case-i">The bivariate case I</h2>
 </section>
 <section id="the-bivariate-case-ii" class="level2">
 <h2 class="anchored" data-anchor-id="the-bivariate-case-ii">The bivariate case II</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_D_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="2000"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="regression-splines" class="level1">

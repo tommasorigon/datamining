@@ -360,7 +360,7 @@
 <h2><a href="../index.html">Homepage</a></h2>
 <div class="columns">
 <div class="column" style="width:30%;">
-<p><img data-src="img/nonparametric.jpg"></p>
+<p><img data-src="img/nonparametric.png"></p>
 <div style="font-size: 70%;">
 <p><em>“Nonparametric regression might, like linear regression, become an object treasured both for its artistic merit as well as usefulness.”</em></p>
 </div>
@@ -371,7 +371,8 @@
 <ul>
 <li>Kernel methods and local regression;</li>
 <li>Regression splines;</li>
-<li>Smoothing splines.</li>
+<li>Smoothing splines;</li>
+<li>Penalized splines.</li>
 </ul></li>
 <li><p>Let us consider again the <span class="blue">relationship</span> between a response variable <span class="math inline">Y_i</span> and a set of covariates <span class="math inline">\bm{x}_i</span>: <span class="math display">
   Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
@@ -512,7 +513,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <ul>
 <li><p>This idea, unfortunately, <span class="orange">does not work</span> in most practical cases.</p></li>
 <li><p>Indeed, in a typical dataset it is very unlikely that there exist multiple observations <span class="orange">exactly equal</span> to <span class="math inline">x</span> among the points <span class="math inline">(x_i, y_i)</span>.</p></li>
-<li><p>Even if there were values such that <span class="math inline">x_i = x</span>, the <span class="blue">sample size</span> <span class="math inline">n_x</span> would be so <span class="orange">small</span> (e.g. <span class="math inline">n_x = 1</span>) that the variance of <span class="math inline">\hat{f}(x)</span> would be extremely high, making this estimator useless.</p></li>
+<li><p>Even if there were values such that <span class="math inline">x_i = x</span>, the <span class="blue">sample size</span> <span class="math inline">n_x</span> would be so <span class="orange">small</span> (e.g.&nbsp;<span class="math inline">n_x = 1</span>) that the variance of <span class="math inline">\hat{f}(x)</span> would be extremely high, making this estimator useless.</p></li>
 </ul>
 </div>
 <div class="fragment">
@@ -826,7 +827,7 @@ h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2
 <div class="fragment">
 <ul>
 <li><p>Unfortunately, <span class="math inline">h_\text{opt}(x)</span> is of <span class="orange">little practical utility</span>, as it involves the <span class="orange">unknown</span> terms <span class="math inline">f''(x)</span>, <span class="math inline">g(x)</span> and <span class="math inline">\sigma^2</span>. However, it highlights two important facts:</p></li>
-<li><p>The bandwidth <span class="math inline">h</span> should decrease at the rate <span class="math inline">n^{-1/5}</span>, i.e.&nbsp;<span class="blue">quite slowly</span>.</p></li>
+<li><p>The bandwidth <span class="math inline">h</span> should decrease at the rate <span class="math inline">n^{-1/5}</span>, i.e. <span class="blue">quite slowly</span>.</p></li>
 <li><p>If we plug-in <span class="math inline">h_\text{opt}(x)</span> into the bias/variance formulas, we get that the mean squared error tends to <span class="math inline">0</span> at the rate <span class="math inline">n^{-4/5}</span>, which is much <span class="orange">slower</span> than the <span class="orange">parametric</span> case <span class="math inline">n^{-1}</span>.</p></li>
 </ul>
 </div>
@@ -871,7 +872,7 @@ h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2
 </div>
 <div class="fragment">
 <ul>
-<li>Some authors proposed to use <span class="math inline">\text{tr}(\bm{S}\bm{S}^T)</span> or even <span class="math inline">\text{tr}(2\bm{S} - \bm{S}\bm{S}^T)</span>, but the connection with the <span class="orange">optimism</span> and the definition of effective degrees of freedom is less clear.</li>
+<li>Some authors proposed to use <span class="math inline">\text{tr}(\bm{S}\bm{S}^T)</span>, but the connection with the <span class="orange">optimism</span> and the definition of effective degrees of freedom is less clear.</li>
 </ul>
 </div>
 </section>
@@ -895,54 +896,246 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 </div>
 </div>
 </section>
-<section id="lowess" class="slide level2 center">
-<h2>Lowess</h2>
+<section id="loess" class="slide level2 center">
+<h2>Loess</h2>
 <ul>
-<li><p>Sometimes it is convenient to choose <span class="math inline">h</span> <span class="orange">adaptively</span>, i.e.&nbsp;specifying a variable bandwidth <span class="math inline">h(x)</span> that depends on the local density of the data.</p></li>
+<li><p>Sometimes it is convenient to choose <span class="math inline">h</span> <span class="orange">adaptively</span>, i.e. specifying a variable bandwidth <span class="math inline">h(x)</span> that depends on the local density of the data.</p></li>
 <li><p>Indeed, recall that the asymptotic variance depends on the sampling design of the <span class="math inline">x_i</span>s <span class="math display">
 \text{var}\{\hat{f}(x)\} \approx \frac{\sigma^2}{n h} \frac{\alpha_w}{\textcolor{darkblue}{g(x)}}.
 </span></p></li>
 </ul>
 <div class="fragment">
 <ul>
-<li>The <code>lowess</code> (Cleveland, 1979) consider a <span class="blue">fixed percentage</span> of data points (assuming a bounded kernel is used), which automatically induces a <span class="orange">variable bandwidth</span>, as in KNN.</li>
+<li>The <code>loess</code> (Cleveland, 1979) consider a <span class="blue">fixed percentage</span> of data points (assuming a bounded kernel is used), which automatically induces a <span class="orange">variable bandwidth</span>, as in KNN.</li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li>Moreover, the <code>lowess</code> algorithm combines the <span class="blue">variable bandwidth</span> with some <span class="orange">robust estimation</span> ideas, so that the resulting estimate is less influenced by outliers.</li>
+<li>Moreover, the <code>loess</code> algorithm combines the <span class="blue">variable bandwidth</span> with some <span class="orange">robust estimation</span> ideas, so that the resulting estimate is less influenced by outliers.</li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li><code>lowess</code> is a short-hand for “<span class="orange">l</span>ocally <span class="orange">w</span>eighted <span class="orange">e</span>stimated <span class="orange">s</span>catterplot <span class="orange">s</span>moothing”.</li>
+<li><code>loess</code> is a short-hand for “<span class="orange">l</span>ocally <span class="orange">w</span>eighted <span class="orange">e</span>stimated <span class="orange">s</span>catterplot <span class="orange">s</span>moothing”.</li>
 </ul>
 </div>
 </section>
-<section id="local-likelihoods-i" class="slide level2 center">
-<h2>Local likelihoods I</h2>
+<section id="local-likelihoods" class="slide level2 center">
+<h2>Local likelihoods</h2>
+<ul>
+<li><p>The concept of local regression and varying coefficients is extremely <span class="orange">broad</span>.</p></li>
+<li><p>In principle any <span class="orange">parametric</span> model can be made <span class="blue">local</span> as long as it accommodates <span class="blue">weights</span>.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>In a <span class="blue">generalized linear model</span> with a single predictor, for every value <span class="math inline">x</span> we seek <span class="math display">
+(\hat{\beta}_1,\hat{\beta}_2)= \arg\max_{(\beta_1, \beta_2)}\sum_{i=1}^nw_i(x) \ell(y_i; \beta_1 + (x_i - x_0)\beta_2) ,
+</span> whose solution can be found using iteratively re-weighted least squares.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>The <span class="orange">computations</span> and the <span class="blue">theory</span> are not necessarily as straightforward and limpid as in the regression case, but most general considerations carry over.</p></li>
+<li><p>For example, the choice of the bandwidth <span class="math inline">h</span> remains a critical parameter, which is usually selected via cross-validation, using a suitable loss function.</p></li>
+</ul>
+</div>
 </section>
-<section id="local-likelihoods-ii" class="slide level2 center">
-<h2>Local likelihoods II</h2>
+<section id="the-bivariate-case" class="slide level2 center">
+<h2>The bivariate case</h2>
+<ul>
+<li><p>Local linear regression can be applied when <span class="orange">two</span> or <span class="orange">more covariates</span>, say <span class="math inline">p</span>, are used. Let us begin with two covariates, so that <span class="math display">
+y_i = f(x_{i1}, x_{i2}) + \epsilon_i.
+</span></p></li>
+<li><p>To estimate <span class="math inline">f</span> on a specific point <span class="math inline">x = (x_1,x_2)</span>, a <span class="blue">natural extension</span> of local linear regression takes the form <span class="math display">
+  (\hat{\beta}_1, \hat{\beta}_2, \hat{\beta}_3) = \arg\min_{(\beta_1, \beta_2, \beta_3)} \sum_{i=1}^n w_i(x)\left\{y_i - \beta_1 - \beta_2(x_{i1} - x_1) - \beta_3(x_{i2} - x_2) \right\}^2.
+</span></p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>A common way of choosing the <span class="orange">weights</span> <span class="math inline">w_i(x)</span> is to set <span class="math display">
+w_i(x) = \frac{1}{h_1 h_2} w\left(\frac{x_{i1} - x_1}{h_1}\right)w\left(\frac{x_{i2} - x_2}{h_2}\right).
+</span></p></li>
+<li><p>Clearly, this now involves the choice of <span class="orange">two</span> different <span class="blue">smoothing parameters</span>.</p></li>
+</ul>
+</div>
 </section>
-<section id="the-bivariate-case-i" class="slide level2 center">
-<h2>The bivariate case I</h2>
-</section>
-<section id="the-bivariate-case-ii" class="slide level2 center">
-<h2>The bivariate case II</h2>
-</section></section>
+<section id="the-bivariate-case-h_1-0.5-h_2-150" class="slide level2 center">
+<h2>The bivariate case (<span class="math inline">h_1 = 0.5, h_2 = 150</span>)</h2>
+
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-12-1.png" width="2000" class="r-stretch quarto-figure-center"></section></section>
+<section>
 <section id="regression-splines" class="title-slide slide level1 center">
 <h1>Regression splines</h1>
 
 </section>
+<section id="basis-expansions" class="slide level2 center">
+<h2>Basis expansions</h2>
+<ul>
+<li>The idea of polynomial regression can be <span class="blue">generalized</span> and <span class="orange">improved</span>. The core idea is to augment or replace the input <span class="math inline">x</span> with additional variables (<span class="blue">basis expansion</span>).</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>Let <span class="math inline">h_1(x), \dots, h_K(x)</span> be <span class="orange">pre-specified</span> functions <span class="math inline">h_j(x) : \mathbb{R} \rightarrow \mathbb{R}</span> that transform the original predictor <span class="math inline">x</span> in some <span class="blue">non-linear</span> fashion. Then, we let <span class="math display">
+f(x,\beta) = \sum_{j=1}^K h_j(x) \beta_j,
+</span> where <span class="math inline">\beta = (\beta_1, \dots, \beta_K)^T</span> is a vector of <span class="orange">unknown coefficients</span>.</p></li>
+<li><p><span class="blue">Polynomials</span> are a specific instance of basis expansion, in which <span class="math display">
+h_1(x) = 1, \quad h_2(x) = x, \quad h_3(x) = x^2, \quad \dots \quad h_K(x) = x^{K-1}.</span></p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>The main advantage of this approach is its <span class="orange">linearity</span> in the <span class="orange">parameters</span>, because it means that <span class="blue">ordinary least squares</span> can be used for the estimation of <span class="math inline">\beta</span>.</li>
+</ul>
+</div>
+</section>
+<section id="piecewise-regression-i" class="slide level2 center">
+<h2>Piecewise regression I</h2>
 
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-13-1.png" width="1200" class="r-stretch quarto-figure-center"><ul>
+<li>A <span class="blue">piecewise constant</span> regression model is another instance of basis expansions, in which we consider step functions, say <span class="math inline">K = 3</span> <span class="math display">
+h_1(x) = I(x &lt; \xi_1), \quad h_2(x) = I(\xi_1 \le x &lt; \xi_2), \quad h_3(x) =  I(x \ge \xi_2),
+</span> where <span class="math inline">\xi = (\xi_1,\xi_2)</span> are pre-specified cutpoints, called <span class="orange">knots</span>. Here <span class="math inline">\xi = (15, 25)</span>.</li>
+</ul>
+</section>
+<section id="piecewise-regression-ii" class="slide level2 center">
+<h2>Piecewise regression II</h2>
+<ul>
+<li>The previous choice of knots is <span class="orange">not working</span> very well. The model is not flexible enough.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>To improve the fit, we could consider <span class="blue">piecewise polynomial</span> functions rather than constant. For example, a piecewise <span class="orange">linear</span> function with <span class="math inline">K = 12</span> is <span class="math display">
+\begin{aligned}
+h_1(x) &amp;= I(x &lt; \xi_1), \qquad &amp;&amp; h_2(x) = x\:I(x &lt; \xi_1),  \\
+h_3(x) &amp;= I(\xi_1 \le x  &lt;\xi_2), \qquad &amp;&amp;h_4(x) = x\:I(\xi_1 \le x &lt; \xi_2), \\
+\vdots &amp; &amp;&amp;\vdots\\
+h_{11}(x) &amp;= I(x \ge \xi_5), \qquad &amp;&amp;h_{12}(x) = x\:I(x \ge \xi_5). \\
+\end{aligned}
+</span></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>The piecewise linear function <span class="math inline">f(x; \beta) = \sum_{j=1}^{12} h_j(x) \beta_j</span> is <span class="orange">not continuous</span> e.g.&nbsp;at the knot <span class="math inline">\xi_1</span>: <span class="math display">
+\beta_1 + \beta_2 \xi_1 \neq \beta_3 + \beta_4 \xi_1.
+</span> To achieve <span class="orange">smoothness</span>, it would be appealing to add some <span class="blue">continuity constraints</span>.</li>
+</ul>
+</div>
+</section>
+<section id="piecewise-polynomial-functions" class="slide level2 center">
+<h2>Piecewise polynomial functions</h2>
+
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-14-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<section id="splines-i" class="slide level2 center">
+<h2>Splines I</h2>
+<ul>
+<li><p>Splines are <span class="blue">piecewise polynomial functions</span> with <span class="orange">smoothness</span> and <span class="orange">continuity</span> constraints.</p></li>
+<li><p>Originally developed for <span class="blue">ship-building</span> to draw a smooth curve through a set of points.</p></li>
+<li><p>The solution was to place metal weights (called <span class="orange">knots</span>) at the control points, and bend a thin metal or wooden beam (called a <span class="blue">spline</span>) through the weights.</p></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/ship.jpg" style="width:70.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/spline_draw.png" style="width:65.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="splines-ii" class="slide level2 center">
+<h2>Splines II</h2>
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Definition (Spline of order <span class="math inline">M</span>th)</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\xi_1 &lt; \cdots &lt; \xi_k</span> be a set of ordered points called <span class="orange">knots</span> belonging to the interval <span class="math inline">(a, b)</span>.</p>
+<p>A <span class="blue">spline</span> <span class="math inline">f(x, \beta) : (a, b) \rightarrow \mathbb{R}</span> of order <span class="math inline">M</span>th is a piecewise polynomial function of degree <span class="math inline">M - 1</span> that has continuous derivatives up to order <span class="math inline">M - 2</span>.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li><span class="blue">Cubic splines</span> (<span class="math inline">M = 4</span>) are the most common spline used in practice.</li>
+</ul>
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Definition (Cubic spline)</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>Cubic splines are continuous functions such that <span class="math inline">f(x, \beta)</span> is a <span class="orange">cubic polynomial</span> over each interval <span class="math inline">(a, \xi_1), (\xi_1,\xi_2),\dots, (\xi_k, b)</span> and <span class="math inline">f(x, \beta)</span> has continuous first and second derivative.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="splines-iii" class="slide level2 center">
+<h2>Splines III</h2>
+<ul>
+<li>Figure 5.2 of <span class="grey">HTF (2011)</span>, in which are shown piecewise <span class="orange">cubic polynomials</span> with <span class="blue">increasing regularity</span>. The bottom-right plot (green line) depicts a <span class="orange">cubic spline</span>.</li>
+</ul>
+
+<img data-src="img/splines_HTF.png" style="width:120.0%" class="r-stretch quarto-figure-center"></section>
+<section id="splines-iv" class="slide level2 center">
+<h2>Splines IV</h2>
+</section>
+<section id="truncated-power-basis-i" class="slide level2 center">
+<h2>Truncated power basis I</h2>
+<div class="callout callout-warning no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Theorem (Truncated power basis)</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">\xi_1 &lt; \cdots &lt; \xi_k</span> be a set of ordered points called <span class="orange">knots</span> belonging to the interval <span class="math inline">(a, b)</span>. Let <span class="math display">
+h_j(x) = x^{j-1}, \qquad j=1,\dots,M,
+</span> and <span class="math display">
+h_j(x) = (x - \xi_j)_+^M, \qquad j = 1 + M, \dots, k + M.
+</span> Then, the functions <span class="math inline">\{h_1,\dots,h_{k+M}\}</span> form a basis for the set of splines of order <span class="math inline">M</span>th at these knots, called the <span class="blue">truncated power basis</span>.</p>
+<p>Thus, any <span class="orange"><span class="math inline">M</span>th order spline</span> <span class="math inline">f(x, \beta)</span> with these knots can be written as a basis expansion <span class="math display">
+f(x, \beta) = \sum_{j=1}^{k+M}h_j(x) \beta_j.
+</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="truncated-power-basis-ii" class="slide level2 center">
+<h2>Truncated power basis II</h2>
+</section>
+<section id="truncated-power-basis-iii" class="slide level2 center">
+<h2>Truncated power basis III</h2>
+</section>
+<section id="natural-splines" class="slide level2 center">
+<h2>Natural splines</h2>
+<ul>
+<li>A cubic spline on an interval <span class="math inline">[\xi_0, \xi_{k+1}]</span> will be said to be a <strong>natural cubic spline</strong> if its second and third derivatives are zero at <span class="math inline">\xi_0</span> and <span class="math inline">\xi_{k+1}</span>.</li>
+</ul>
+</section>
+<section id="computations-b-splines-i" class="slide level2 center">
+<h2>Computations: B-splines I</h2>
+</section>
+<section id="computations-b-splines-ii" class="slide level2 center">
+<h2>Computations: B-splines II</h2>
+</section>
+<section id="computations-b-splines-iii" class="slide level2 center">
+<h2>Computations: B-splines III</h2>
+</section>
+<section id="penalized-splines" class="slide level2 center">
+<h2>Penalized splines</h2>
+</section></section>
 <section id="smoothing-splines" class="title-slide slide level1 center">
 <h1>Smoothing splines</h1>
-
-</section>
-
-<section id="penalized-splines" class="title-slide slide level1 center">
-<h1>Penalized splines</h1>
 
 </section>
 

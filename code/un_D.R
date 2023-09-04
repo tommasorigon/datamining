@@ -198,3 +198,83 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
+
+
+#| message: false
+#| fig-width: 10
+#| fig-height: 8
+#| fig-align: center
+
+library(sm)
+auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
+
+h_sm <- c(0.5, 150)
+sm.options(ngrid = 50)
+
+fit_sm <- sm.regression(cbind(auto$engine.size, auto$curb.weight), auto$city.distance,
+  h = h_sm, display = "none",
+  options = list(xlab = "Engine size (L)", ylab = "Curb weight (kg)", zlab = "City distance (km/L)")
+)
+
+surf.colors <- function(x, col = terrain.colors(20)) {
+  # First we drop the 'borders' and average the facet corners
+  # we need (nx - 1)(ny - 1) facet colours!
+  x.avg <- (x[-1, -1] + x[-1, -(ncol(x) - 1)] +
+    x[-(nrow(x) - 1), -1] + x[-(nrow(x) - 1), -(ncol(x) - 1)]) / 4
+
+  # Now we construct the actual colours matrix
+  colors <- col[cut(x.avg, breaks = length(col), include.lowest = T)]
+
+  return(colors)
+}
+
+persp(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
+  xlab = "Engine size (L)", ylab = "Curb weight (kg)", zlab = "City distance (km/L)", cex = 0.4,
+  theta = 145, phi = 20, ticktype = "detailed", col = surf.colors(fit_sm$estimate, col = terrain.colors(80)), expand = 0.8
+)
+
+
+#| fig-width: 6
+#| fig-height: 3
+#| fig-align: center
+
+library(splines2)
+
+knots <- c(15, 25)
+fit_bs <- lm(accel ~ bsp(times, knots = knots, degree = 0, intercept = TRUE) - 1, data = dataset)
+y_hat_bs <- predict(fit_bs, newdata = data.frame(times = times_seq))
+
+ggplot(data = dataset, aes(x = times, y = accel)) +
+  geom_point(size = 0.7) +
+  geom_line(data = data.frame(x = times_seq, y = y_hat_bs), aes(x = x, y = y), col = "#1170aa") +
+  theme_minimal() +
+  geom_vline(xintercept = 15, linetype = "dotted") +
+  geom_vline(xintercept = 25, linetype = "dotted") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+
+knots <- quantile(dataset$times, ppoints(n = 5))
+
+dataset$time_cut <- cut(dataset$times, breaks = c(2.3, knots, 57.6))
+
+fit_piece <- lm(accel ~ time_cut + times * time_cut, data = dataset)
+y_hat_piece <- predict(fit_piece, newdata = data.frame(times = times_seq, time_cut = cut(times_seq, breaks = c(2.3, knots, 57.6))))
+
+fit_bs <- lm(accel ~ bsp(times, knots = knots, degree = 1, intercept = TRUE) - 1, data = dataset)
+y_hat_bs <- predict(fit_bs, newdata = data.frame(times = times_seq))
+
+ggplot(data = dataset, aes(x = times, y = accel)) +
+  geom_point(size = 0.7) +
+  geom_line(data = data.frame(x = times_seq, y = y_hat_bs), aes(x = x, y = y), col = "#1170aa") +
+  geom_line(data = data.frame(x = times_seq, y = y_hat_piece), aes(x = x, y = y), col = "#fc7d0b") +
+  theme_minimal() +
+  geom_vline(xintercept = knots, linetype = "dotted") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
