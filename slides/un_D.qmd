@@ -1291,7 +1291,19 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
 
 ## Computations: B-splines I
 
-- asd
+::: incremental
+- Despite its conceptual simplicity, the truncated power basis is not used in practice. Indeed, the [condition number]{.orange} of $\bm{B}^T\bm{B}$ is often very large, leading to numerical inaccuracies.
+
+- For this reason, more [computationally convenient]{.blue} bases are preferred. This means that we consider another set of functions $\mathcal{B}_1(x),\dots,\mathcal{B}_K(x)$ such that
+$$
+\mathcal{B}_j(x) = \sum_{\ell=1}^K\gamma_{\ell j} h_\ell(x), \qquad j=1,\dots,K,
+$$
+for some set of weights $\gamma_{\ell j}$ that makes this transformation [one-to-one]{.orange}. 
+
+- This means we will consider a a new design matrix $\tilde{\bm{B}} = \bm{\Gamma}\bm{B}$, having set $[\bm{\Gamma}]_{\ell j} = \gamma_{\ell j}$. Hence, if ordinary least squares are used, this does not change the outcome. 
+
+- A particularly convenient basis are [B-splines]{.blue}, which are [numerically stable]{.orange} and admit a direct construction; i.e. we do not need to compute the coefficients $\gamma_{\ell j}$.
+:::
 
 ## Computations: B-splines II
 

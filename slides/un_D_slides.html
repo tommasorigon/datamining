@@ -1217,9 +1217,16 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <img data-src="un_D_files/figure-revealjs/unnamed-chunk-16-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="computations-b-splines-i" class="slide level2 center">
 <h2>Computations: B-splines I</h2>
+<div>
 <ul>
-<li>asd</li>
+<li class="fragment"><p>Despite its conceptual simplicity, the truncated power basis is not used in practice. Indeed, the <span class="orange">condition number</span> of <span class="math inline">\bm{B}^T\bm{B}</span> is often very large, leading to numerical inaccuracies.</p></li>
+<li class="fragment"><p>For this reason, more <span class="blue">computationally convenient</span> bases are preferred. This means that we consider another set of functions <span class="math inline">\mathcal{B}_1(x),\dots,\mathcal{B}_K(x)</span> such that <span class="math display">
+\mathcal{B}_j(x) = \sum_{\ell=1}^K\gamma_{\ell j} h_\ell(x), \qquad j=1,\dots,K,
+</span> for some set of weights <span class="math inline">\gamma_{\ell j}</span> that makes this transformation <span class="orange">one-to-one</span>.</p></li>
+<li class="fragment"><p>This means we will consider a a new design matrix <span class="math inline">\tilde{\bm{B}} = \bm{\Gamma}\bm{B}</span>, having set <span class="math inline">[\bm{\Gamma}]_{\ell j} = \gamma_{\ell j}</span>. Hence, if ordinary least squares are used, this does not change the outcome.</p></li>
+<li class="fragment"><p>A particularly convenient basis are <span class="blue">B-splines</span>, which are <span class="orange">numerically stable</span> and admit a direct construction; i.e.&nbsp;we do not need to compute the coefficients <span class="math inline">\gamma_{\ell j}</span>.</p></li>
 </ul>
+</div>
 </section>
 <section id="computations-b-splines-ii" class="slide level2 center">
 <h2>Computations: B-splines II</h2>
