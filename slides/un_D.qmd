@@ -77,8 +77,7 @@ object treasured both for its artistic merit as well as usefulness."*
 
     -   Kernel methods and local regression;
     -   Regression splines;
-    -   Smoothing splines;
-    -   Penalized splines.
+    -   Smoothing splines.
 
 -   Let us consider again the [relationship]{.blue} between a response
     variable $Y_i$ and a set of covariates $\bm{x}_i$: $$
@@ -1016,23 +1015,23 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 . . .
 
 -   To improve the fit, we could consider [piecewise polynomial]{.blue}
-    functions rather than constant. For example, a piecewise [linear]{.orange}
-    function with $K = 12$ is $$
+    functions rather than constant. For example, a piecewise [quadratic]{.orange}
+    function with $K = 30$ is $$
     \begin{aligned}
-    h_1(x) &= I(x < \xi_1), \qquad && h_2(x) = x\:I(x < \xi_1),  \\
-    h_3(x) &= I(\xi_1 \le x  <\xi_2), \qquad &&h_4(x) = x\:I(\xi_1 \le x < \xi_2), \\
-    \vdots & &&\vdots\\
-    h_{11}(x) &= I(x \ge \xi_5), \qquad &&h_{12}(x) = x\:I(x \ge \xi_5). \\
+    h_1(x) &= I(x < \xi_1), && h_2(x) = x\:I(x < \xi_1), &&& h_3(x) = x^2\:I(x < \xi_1),  \\
+    h_4(x) &= I(\xi_1 \le x  <\xi_2), &&h_5(x) = x\:I(\xi_1 \le x < \xi_2), &&& h_6(x) = x^2\:I(\xi_1 \le x < \xi_2), \\
+    \vdots & &&\vdots &&&\vdots\\
+    h_{28}(x) &= I(x \ge \xi_9),  &&h_{29}(x) = x\:I(x \ge \xi_9), &&& h_{30}(x) = x^2\:I(x \ge \xi_9).\\
     \end{aligned}
     $$
 
 . . .
 
--   The piecewise linear function
-    $f(x; \beta) = \sum_{j=1}^{12} h_j(x) \beta_j$ is [not continuous]{.orange} e.g. at the knot $\xi_1$: $$
-    \beta_1 + \beta_2 \xi_1 \neq \beta_3 + \beta_4 \xi_1.
-    $$ To achieve [smoothness]{.orange}, it would be appealing to add
-    some [continuity constraints]{.blue}.
+-   The piecewise quadratic
+    $f(x; \beta) = \sum_{j=1}^{30} h_j(x) \beta_j$ is [not continuous]{.orange} e.g. at the knot $\xi_1$: $$
+    \beta_1 + \beta_2 \xi_1 + \beta_3\xi_1^2 \neq \beta_4 + \beta_5 \xi_1 + \beta_6\xi_1^2.
+    $$ To achieve [smoothness]{.blue}, it would be appealing to add
+    some [continuity constraints]{.orange}.
 
 
 ## Piecewise polynomial functions
@@ -1042,22 +1041,25 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 #| fig-height: 5
 #| fig-align: center
 
-knots <- quantile(dataset$times, ppoints(n = 5))
+library(splines)
+knots <- quantile(dataset$times, ppoints(n = 9))
 
 dataset$time_cut <- cut(dataset$times, breaks = c(2.3, knots, 57.6))
 
-fit_piece <- lm(accel ~ time_cut + times * time_cut, data = dataset)
+fit_piece <- lm(accel ~ time_cut + times * time_cut + I(times^2) * time_cut, data = dataset)
 y_hat_piece <- predict(fit_piece, newdata = data.frame(times = times_seq, time_cut = cut(times_seq, breaks = c(2.3, knots, 57.6))))
 
-fit_bs <- lm(accel ~ bsp(times, knots = knots, degree = 1, intercept = TRUE) - 1, data = dataset)
+fit_bs <- lm(accel ~ bsp(times, knots = knots, degree = 2, intercept = TRUE) - 1, data = dataset)
 y_hat_bs <- predict(fit_bs, newdata = data.frame(times = times_seq))
 
-ggplot(data = dataset, aes(x = times, y = accel)) +
-  geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = times_seq, y = y_hat_bs), aes(x = x, y = y), col = "#1170aa") +
-  geom_line(data = data.frame(x = times_seq, y = y_hat_piece), aes(x = x, y = y), col = "#fc7d0b") +
+data_plot <- data.frame(times = times_seq, pred = c(y_hat_piece, y_hat_bs), 
+                        Method = rep(c("Piecewise quadratic","Piecewise quadratic with continuity constraints"), 
+                                     each = length(times_seq)))
+ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
+  geom_line() +
+  geom_point(data = dataset, aes(x = times, y = accel), size = 0.7, col = "black") +
   theme_minimal() +
-  geom_vline(xintercept = knots, linetype = "dotted") +
+  theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
@@ -1093,7 +1095,7 @@ set of points.
 #### Definition (Spline of order $M$th)
 Let $\xi_1 < \cdots < \xi_k$ be a set of ordered points called [knots]{.orange} belonging to the interval $(a, b)$.  
 
-A [spline]{.blue} $f(x, \beta) : (a, b) \rightarrow \mathbb{R}$ of order $M$th is a piecewise polynomial function of degree $M - 1$ that has continuous derivatives up to order $M - 2$.
+A [spline]{.blue} $f(x; \beta) : (a, b) \rightarrow \mathbb{R}$ of order $M$th is a piecewise polynomial function of degree $M - 1$ that has continuous derivatives up to order $M - 2$.
 :::
 
 . . .
@@ -1101,9 +1103,9 @@ A [spline]{.blue} $f(x, \beta) : (a, b) \rightarrow \mathbb{R}$ of order $M$th i
 - [Cubic splines]{.blue} ($M = 4$) are the most common spline used in practice.
 
 ::: callout-tip
-#### Definition (Cubic spline)
+#### Definition (Cubic spline, $M = 4$)
 
-- Cubic splines are continuous functions such that $f(x, \beta)$ is a [cubic polynomial]{.orange} over each interval $(a, \xi_1), (\xi_1,\xi_2),\dots, (\xi_k, b)$ and $f(x, \beta)$ has continuous first and second derivative. 
+Letting $\xi_1 < \dots < \xi_k$ denote a set ordered knots, a [cubic spline]{.blue} $f(x; \beta)$ is a piecewise cubic polynomial that has [continuous first]{.orange} and [second derivatives]{.orange}.
 :::
 
 ## Splines III
@@ -1114,11 +1116,29 @@ A [spline]{.blue} $f(x, \beta) : (a, b) \rightarrow \mathbb{R}$ of order $M$th i
 
 ## Splines IV
 
+- To [recap]{.orange}: a spline of order $M$ is a piecewise polynomial $f(x; \beta)$ of order $M-1$ such that
+$$
+f(\xi_j^+) = f(\xi_j^-), \dots, f^{(M-2)}(\xi_j^+) = f^{(M-2)}(\xi_j^-), \qquad j=1,\dots,k,
+$$
+where $\xi_j^+$ and $\xi_j^-$ denote the left and the right limits. 
+
+. . .
+
+- The order $M$ controls the amount of smoothness:
+    - $M = 1$ is a [piecewise constant]{.blue} function
+    - $M = 2$ is a [polygonal line]{.orange} (continuous, but with discontinous first derivative)
+
+- Higher values of $M$ increase the smoothness, but the spline behave more and more like a global polynomial. In practice one almost never goes beyond $M = 4$. 
+
+. . .
+
+- The current definition of spline is quite [abstract]{.blue} and [non-operative]{.orange}. How do we actually fit a regression model whose $f(x; \beta)$ is a spline? 
+
 ## Truncated power basis I
 
 ::: callout-warning
 #### Theorem (Truncated power basis) 
-Let $\xi_1 < \cdots < \xi_k$ be a set of ordered points called [knots]{.orange} belonging to the interval $(a, b)$. Let $$
+Let $\xi_1 < \cdots < \xi_k$ be a set of ordered points called [knots]{.orange} belonging to $(a, b)$. Let $$
 h_j(x) = x^{j-1}, \qquad j=1,\dots,M,
 $$
 and $$
@@ -1129,26 +1149,154 @@ set of splines of order $M$th at these knots, called the [truncated power
 basis]{.blue}. 
 
 Thus, any [$M$th order spline]{.orange} $f(x, \beta)$ with these knots can be written as a basis expansion $$
-f(x, \beta) = \sum_{j=1}^{k+M}h_j(x) \beta_j.
+f(x; \beta) = \sum_{j=1}^{k+M}h_j(x) \beta_j.
 $$
 :::
 
 ## Truncated power basis II
 
-## Truncated power basis III
+- The truncated power basis of a spline makes is a [constructive]{.orange} way of defining splines. Moreover, it clarifies that splines are [linear in the parameters]{.blue}.
 
-## Natural splines
+. . .
 
-- A cubic spline on an interval $[\xi_0, \xi_{k+1}]$ will be said to be a **natural cubic
-spline** if its second and third derivatives are zero at $\xi_0$ and $\xi_{k+1}$.
+- Let $\bm{B}$ be a $n \times K$ design matrix whose elements are obtained from the basis functions:
+$$
+[\bm{B}]_{ij} = h_j(x_i), \qquad j=1,\dots,K; \quad i=1,\dots,n.
+$$
+
+- Let $f(x;\beta) = \sum_{j=1}^K h_j(x)\beta_j$. Then, the [ordinary least squares]{.blue} for $\beta$ are obtained as usual:
+$$
+\hat{\beta} = (\bm{B}^T\bm{B})^{-1}\bm{B}^T\bm{y} \implies \hat{f}(x) = \sum_{j=1}^K h_j(x)\hat{\beta}_j = \sum_{i=1}^n s_i(x) y_i.
+$$
+
+. . .
+
+- We call this approach [regression splines]{.orange}, which are another instance of [linear smoother]{.blue}. The smoothing matrix in this case is $\bm{S} = \bm{B} (\bm{B}^T\bm{B})^{-1}\bm{B}^T$. 
+
+- The number  and the placement of the knots are [complexity parameters]{.orange}, which should be chosen via cross-validation or other tools. 
+
+
+
+## Regression splines ($k = 15$)
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+
+knots <- quantile(dataset$times, ppoints(n = 15))
+
+fit_bs_3 <- lm(accel ~ bs(times, knots = knots, degree = 3, intercept = TRUE) - 1, data = dataset)
+y_hat_bs_3 <- predict(fit_bs_3, newdata = data.frame(times = times_seq))
+
+fit_bs_2 <- lm(accel ~ bs(times, knots = knots, degree = 2, intercept = TRUE) - 1, data = dataset)
+y_hat_bs_2 <- predict(fit_bs_2, newdata = data.frame(times = times_seq))
+
+
+fit_bs_1 <- lm(accel ~ bs(times, knots = knots, degree = 1, intercept = TRUE) - 1, data = dataset)
+y_hat_bs_1 <- predict(fit_bs_1, newdata = data.frame(times = times_seq))
+
+
+data_plot <- data.frame(times = times_seq, pred = c(y_hat_bs_3, y_hat_bs_2, y_hat_bs_1), 
+                        Method = rep(c("Regression splines (M = 4)", "Regression splines (M = 3)", "Regression splines (M = 2)"), 
+                                     each = length(times_seq)))
+ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
+  geom_line() +
+  geom_point(data = dataset, aes(x = times, y = accel), size = 0.7, col = "black") +
+  theme_minimal() +
+  theme(legend.position = "top") +
+  #geom_vline(xintercept = knots, linetype = "dotted") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
+```
+
+
+## Natural cubic splines I
+
+- Polynomials fit [beyond]{.blue} the [boundary knots]{.blue} $\xi_1$ and $\xi_k$ tends to be [erratic]{.orange}. Prediction and extrapolations can be dangerous. 
+
+. . .
+
+:::callout-note
+#### Definition (Natural cubic spline)
+A [natural cubic spline]{.blue} $f(x; \beta)$ is a cubic spline which is [linear]{.orange} beyond the boundary knots $\xi_1$ and $\xi_k$, which means $f''(\xi_1) = f''(\xi_k) = 0$.
+:::
+
+- Natural cubic splines add $4$ [additional constraints]{.orange}; these degrees of freedom can be used more efficiently to place more internal knots. 
+
+. . .
+
+:::callout-note
+#### Proposition
+A set of $n$ points ($x_i, y_i$) can be exactly [interpolated]{.blue} using a natural cubic spline with the data points $x_1 < \dots < x_n$ as knots. The interpolating natural cubic spline is [unique]{.orange}.
+:::
+
+
+## Natural cubic splines II
+
+- In practice, the [truncated power basis]{.blue} can be easily [modified]{.orange}, to get the following basis
+$$
+\begin{aligned}
+&N_1(x) = 1, \quad N_2(x) = x, \\
+&N_{j + 2}(x) = \frac{(x - \xi_j)^3_+ - (x - \xi_K)^3_+}{\xi_K - \xi_j} - \frac{(x - \xi_{K-1})^3_+ - (x - \xi_K)^3_+}{\xi_K - \xi_{K-1}}, \quad j = 1,\dots,k - 2.
+\end{aligned}
+$$
+
+. . .
+
+- This formula is a [scaled version]{.orange} of the truncated power basis for any $x \le \xi_{K-1}$, namely
+$$
+N_{j+2}(x) = \frac{(x - \xi_j)^3_+}{\xi_K - \xi_j}, \qquad x \le \xi_{K-1}, \quad j = 1,\dots,k - 2.
+$$
+The formula becomes more complicated when $x > \xi_{K-1}$ and the constraint is enforced. 
+
+. . .
+
+- Hence, [natural cubic splines]{.blue} are linear in the parameters and can be express as follows
+$$
+f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
+$$
+
+
+## Natural cubic splines ($k = 15$)
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+
+knots <- quantile(dataset$times, ppoints(n = 15))
+
+fit_bs_3 <- lm(accel ~ bs(times, knots = knots, degree = 3, intercept = TRUE) - 1, data = dataset)
+y_hat_bs_3 <- predict(fit_bs_3, newdata = data.frame(times = times_seq))
+
+# Here it's tricky, because by default ns does a different thing (it uses the boundary knots as regular knots)
+fit_ns_3 <- lm(accel ~ ns(times, knots = knots[-c(1, 15)], Boundary.knots = c(knots[1], knots[15]), intercept = TRUE) - 1, data = dataset)
+y_hat_ns_3 <- predict(fit_ns_3, newdata = data.frame(times = times_seq))
+
+data_plot <- data.frame(times = times_seq, pred = c(y_hat_bs_3, y_hat_ns_3), 
+                        Method = rep(c("Cubic regression splines", "Natural cubic splines"), 
+                                     each = length(times_seq)))
+ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
+  geom_line() +
+  geom_point(data = dataset, aes(x = times, y = accel), size = 0.7, col = "black") +
+  theme_minimal() +
+  theme(legend.position = "top") +
+  geom_vline(xintercept = knots[c(1, 15)], linetype = "dotted") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
+```
 
 ## Computations: B-splines I
+
+- asd
 
 ## Computations: B-splines II
 
 ## Computations: B-splines III
 
-## Penalized splines
 
 # Smoothing splines
 

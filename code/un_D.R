@@ -259,22 +259,92 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 #| fig-height: 5
 #| fig-align: center
 
-knots <- quantile(dataset$times, ppoints(n = 5))
+library(splines)
+knots <- quantile(dataset$times, ppoints(n = 9))
 
 dataset$time_cut <- cut(dataset$times, breaks = c(2.3, knots, 57.6))
 
-fit_piece <- lm(accel ~ time_cut + times * time_cut, data = dataset)
+fit_piece <- lm(accel ~ time_cut + times * time_cut + I(times^2) * time_cut, data = dataset)
 y_hat_piece <- predict(fit_piece, newdata = data.frame(times = times_seq, time_cut = cut(times_seq, breaks = c(2.3, knots, 57.6))))
 
-fit_bs <- lm(accel ~ bsp(times, knots = knots, degree = 1, intercept = TRUE) - 1, data = dataset)
+fit_bs <- lm(accel ~ bsp(times, knots = knots, degree = 2, intercept = TRUE) - 1, data = dataset)
 y_hat_bs <- predict(fit_bs, newdata = data.frame(times = times_seq))
 
-ggplot(data = dataset, aes(x = times, y = accel)) +
-  geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = times_seq, y = y_hat_bs), aes(x = x, y = y), col = "#1170aa") +
-  geom_line(data = data.frame(x = times_seq, y = y_hat_piece), aes(x = x, y = y), col = "#fc7d0b") +
+data_plot <- data.frame(
+  times = times_seq, pred = c(y_hat_piece, y_hat_bs),
+  Method = rep(c("Piecewise quadratic", "Piecewise quadratic with continuity constraints"),
+    each = length(times_seq)
+  )
+)
+ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
+  geom_line() +
+  geom_point(data = dataset, aes(x = times, y = accel), size = 0.7, col = "black") +
   theme_minimal() +
-  geom_vline(xintercept = knots, linetype = "dotted") +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+
+knots <- quantile(dataset$times, ppoints(n = 15))
+
+fit_bs_3 <- lm(accel ~ bs(times, knots = knots, degree = 3, intercept = TRUE) - 1, data = dataset)
+y_hat_bs_3 <- predict(fit_bs_3, newdata = data.frame(times = times_seq))
+
+fit_bs_2 <- lm(accel ~ bs(times, knots = knots, degree = 2, intercept = TRUE) - 1, data = dataset)
+y_hat_bs_2 <- predict(fit_bs_2, newdata = data.frame(times = times_seq))
+
+
+fit_bs_1 <- lm(accel ~ bs(times, knots = knots, degree = 1, intercept = TRUE) - 1, data = dataset)
+y_hat_bs_1 <- predict(fit_bs_1, newdata = data.frame(times = times_seq))
+
+
+data_plot <- data.frame(
+  times = times_seq, pred = c(y_hat_bs_3, y_hat_bs_2, y_hat_bs_1),
+  Method = rep(c("Regression splines (M = 4)", "Regression splines (M = 3)", "Regression splines (M = 2)"),
+    each = length(times_seq)
+  )
+)
+ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
+  geom_line() +
+  geom_point(data = dataset, aes(x = times, y = accel), size = 0.7, col = "black") +
+  theme_minimal() +
+  theme(legend.position = "top") +
+  # geom_vline(xintercept = knots, linetype = "dotted") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+
+knots <- quantile(dataset$times, ppoints(n = 15))
+
+fit_bs_3 <- lm(accel ~ bs(times, knots = knots, degree = 3, intercept = TRUE) - 1, data = dataset)
+y_hat_bs_3 <- predict(fit_bs_3, newdata = data.frame(times = times_seq))
+
+# Here it's tricky, because by default ns does a different thing (it uses the boundary knots as regular knots)
+fit_ns_3 <- lm(accel ~ ns(times, knots = knots[-c(1, 15)], Boundary.knots = c(knots[1], knots[15]), intercept = TRUE) - 1, data = dataset)
+y_hat_ns_3 <- predict(fit_ns_3, newdata = data.frame(times = times_seq))
+
+data_plot <- data.frame(
+  times = times_seq, pred = c(y_hat_bs_3, y_hat_ns_3),
+  Method = rep(c("Cubic regression splines", "Natural cubic splines"),
+    each = length(times_seq)
+  )
+)
+ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
+  geom_line() +
+  geom_point(data = dataset, aes(x = times, y = accel), size = 0.7, col = "black") +
+  theme_minimal() +
+  theme(legend.position = "top") +
+  geom_vline(xintercept = knots[c(1, 15)], linetype = "dotted") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
