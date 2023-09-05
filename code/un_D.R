@@ -348,3 +348,33 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
+
+
+
+tpower <- function(x, t, p) {
+  (x - t)^p * (x > t)
+}
+
+tbase <- function(x, knots, degree = 3) {
+  B <- cbind(outer(x, 0:degree, "^"), outer(x, knots, function(x, y) pmax(x - y, 0))^degree)
+  B
+}
+
+knots <- c(10, 30, 50)
+data_plot <- data.frame(times_seq,
+  rbind(reshape2::melt(bs(times_seq, knots = knots, degree = 3, intercept = TRUE)), reshape2::melt(tbase(times_seq, knots = knots, degree = 3))),
+  Basis = rep(c("B-splines", "Truncated power basis"),
+    each = length(times_seq) * (length(knots) + 4)
+  )
+)
+
+
+ggplot(data = data_plot, aes(x = times_seq, y = value, col = as.factor(Var2))) +
+  geom_line() +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_grid(Basis ~ ., scales = "free_y") +
+  geom_vline(xintercept = knots, linetype = "dotted") +
+  scale_color_tableau(type = "ordered-diverging", palette = "Orange-Blue Diverging") +
+  xlab("x") +
+  ylab(expression(h[j](x)))

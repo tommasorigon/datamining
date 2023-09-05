@@ -116,7 +116,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#natural-cubic-splines-k-15" id="toc-natural-cubic-splines-k-15" class="nav-link" data-scroll-target="#natural-cubic-splines-k-15">Natural cubic splines (<span class="math inline">k = 15</span>)</a></li>
   <li><a href="#computations-b-splines-i" id="toc-computations-b-splines-i" class="nav-link" data-scroll-target="#computations-b-splines-i">Computations: B-splines I</a></li>
   <li><a href="#computations-b-splines-ii" id="toc-computations-b-splines-ii" class="nav-link" data-scroll-target="#computations-b-splines-ii">Computations: B-splines II</a></li>
-  <li><a href="#computations-b-splines-iii" id="toc-computations-b-splines-iii" class="nav-link" data-scroll-target="#computations-b-splines-iii">Computations: B-splines III</a></li>
+  <li><a href="#definition-of-b-splines" id="toc-definition-of-b-splines" class="nav-link" data-scroll-target="#definition-of-b-splines">☠️ - Definition of B-splines</a></li>
+  <li><a href="#properties-of-b-splines" id="toc-properties-of-b-splines" class="nav-link" data-scroll-target="#properties-of-b-splines">☠️ - Properties of B-splines</a></li>
   </ul></li>
   <li><a href="#smoothing-splines" id="toc-smoothing-splines" class="nav-link" data-scroll-target="#smoothing-splines">Smoothing splines</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
@@ -652,7 +653,7 @@ Effective degrees of freedom for linear smoothers
 </div>
 </div>
 <ul>
-<li>Some authors proposed to use <span class="math inline">\text{tr}(\bm{S}\bm{S}^T)</span>, but the connection with the <span class="orange">optimism</span> and the definition of effective degrees of freedom is less clear.</li>
+<li>Some authors proposed to use <span class="math inline">\text{tr}(\bm{S}\bm{S}^T)</span> or <span class="math inline">\text{tr}(2\bm{S}-\bm{S}\bm{S}^T)</span>, but the connection with the <span class="orange">optimism</span> and the definition of effective degrees of freedom is less clear.</li>
 </ul>
 </section>
 <section id="choice-of-the-bandwidth-ii" class="level2">
@@ -745,11 +746,11 @@ w_i(x) = \frac{1}{h_1 h_2} w\left(\frac{x_{i1} - x_1}{h_1}\right)w\left(\frac{x_
 <section id="basis-expansions" class="level2">
 <h2 class="anchored" data-anchor-id="basis-expansions">Basis expansions</h2>
 <ul>
-<li>The idea of polynomial regression can be <span class="blue">generalized</span> and <span class="orange">improved</span>. The core idea is to augment or replace the input <span class="math inline">x</span> with additional variables (<span class="blue">basis expansion</span>).</li>
+<li>The idea of polynomial regression can be <span class="blue">generalized</span> and <span class="orange">improved</span>. The main idea is to augment or replace the input <span class="math inline">x</span> with additional variables (<span class="blue">basis expansion</span>).</li>
 </ul>
 <ul>
 <li><p>Let <span class="math inline">h_1(x), \dots, h_K(x)</span> be <span class="orange">pre-specified</span> functions <span class="math inline">h_j(x) : \mathbb{R} \rightarrow \mathbb{R}</span> that transform the original predictor <span class="math inline">x</span> in some <span class="blue">non-linear</span> fashion. Then, we let <span class="math display">
-f(x,\beta) = \sum_{j=1}^K h_j(x) \beta_j,
+f(x;\beta) = \sum_{j=1}^K h_j(x) \beta_j,
 </span> where <span class="math inline">\beta = (\beta_1, \dots, \beta_K)^T</span> is a vector of <span class="orange">unknown coefficients</span>.</p></li>
 <li><p><span class="blue">Polynomials</span> are a specific instance of basis expansion, in which <span class="math display">
 h_1(x) = 1, \quad h_2(x) = x, \quad h_3(x) = x^2, \quad \dots \quad h_K(x) = x^{K-1}.</span></p></li>
@@ -1017,15 +1018,62 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 </section>
 <section id="computations-b-splines-i" class="level2">
 <h2 class="anchored" data-anchor-id="computations-b-splines-i">Computations: B-splines I</h2>
-<ul>
-<li>Despite its conceptual simplicity, the truncated power basis is not used in practice. Indeed, the <span class="blue">condition number</span> of <span class="math inline">\bm{B}^T\bm{B}</span> is often huge, leading to numerical inaccuracies.</li>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Despite their conceptual simplicity, the truncated power basis and its natural modification are <span class="blue">not</span> used in <span class="blue">practice</span>, due to <span class="orange">ill-conditioning</span>.</p></li>
+<li><p>Indeed, the condition number of <span class="math inline">\bm{B}^T\bm{B}</span> using a truncated power basis is very large, leading to <span class="orange">numerical inaccuracies</span>.</p></li>
+<li><p>For this reason, more <span class="blue">computationally convenient</span> bases are preferred. This means we will consider an <span class="blue">equivalent</span> set of functions <span class="math inline">\mathcal{B}_1(x),\dots,\mathcal{B}_K(x)</span> such that <span class="math display">
+\mathcal{B}_j(x) = \sum_{\ell=1}^K\gamma_{\ell j} h_\ell(x), \qquad j=1,\dots,K,
+</span> for some set of weights <span class="math inline">\gamma_{\ell j}</span> that makes this transformation <span class="orange">one-to-one</span>.</p></li>
+<li><p>Since we are performing a linear transformation, if ordinary least squares are used, this <span class="orange">does not change</span> the fit.</p></li>
+<li><p>A particularly convenient basis are <span class="blue">B-splines</span>, which are <span class="blue">local</span> and <span class="orange">numerically stable</span>. They admit a direct construction; i.e.&nbsp;we do not need to compute the coefficients <span class="math inline">\gamma_{\ell j}</span>.</p></li>
 </ul>
+</div>
 </section>
 <section id="computations-b-splines-ii" class="level2">
 <h2 class="anchored" data-anchor-id="computations-b-splines-ii">Computations: B-splines II</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="un_D_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="1400"></p>
+</div>
+</div>
 </section>
-<section id="computations-b-splines-iii" class="level2">
-<h2 class="anchored" data-anchor-id="computations-b-splines-iii">Computations: B-splines III</h2>
+<section id="definition-of-b-splines" class="level2">
+<h2 class="anchored" data-anchor-id="definition-of-b-splines">☠️ - Definition of B-splines</h2>
+<ul>
+<li>Define <span class="math inline">\xi = (\xi_1,\dots,x_k)</span> and consider an <span class="orange">augmented</span> sequence of ordered <span class="orange">knots</span> <span class="math display">
+\tau = (\tau_1,\dots,\tau_{K + 2M}) = (\underbrace{\xi_{-M+1},\dots,\xi_0}_{\text{auxiliary knots}}, \: \xi,\: \underbrace{\xi_{k+1},\dots,\xi_{k + M}}_{\text{auxiliary knots}}).
+</span> The most common choice is <span class="math inline">\xi_{-M+1}= \dots = \xi_0 = a</span> and <span class="math inline">\xi_{k+1} = \dots = \xi_{k + M} = b</span>.</li>
+</ul>
+<ul>
+<li><span class="blue">Step 1</span>. For <span class="math inline">j = 1,\dots, K + 2M - 1</span>, obtain the B-spline of order <span class="math inline">m = 0</span> as follows: <span class="math display">
+\mathcal{B}_{j,0}(x) = I_{[\tau_j, \tau_{j+1})}(x),
+</span> where by convention we say that <span class="math inline">\mathcal{B}_{j,0}(x) = 0</span> if the knots are equal <span class="math inline">\tau_j = \tau_{j+1}</span>.</li>
+</ul>
+<ul>
+<li><span class="orange">Step 2 (recursion)</span>. The B-spline of <span class="blue">order <span class="math inline">m \le M</span></span> are obtained <span class="orange">recursively</span>, so that <span class="math display">
+\mathcal{B}_{j, m}(x) = \frac{x - \tau_j}{\tau_{j + m - 1} - \tau_j}\mathcal{B}_{j, m-1}(x)  + \frac{\tau_{j + m} - x}{\tau_{j + m } - \tau_{j +1}}\mathcal{B}_{j + 1, m-1}(x),
+</span> for <span class="math inline">j=1,\dots,K + 2M - m</span> and for <span class="math inline">m=1,\dots,M</span>.</li>
+</ul>
+</section>
+<section id="properties-of-b-splines" class="level2">
+<h2 class="anchored" data-anchor-id="properties-of-b-splines">☠️ - Properties of B-splines</h2>
+<ul>
+<li>B-splines have <span class="orange">local support</span>, which means that for <span class="math inline">j=1,\dots,K + 2M - m</span> we have <span class="math display">
+\begin{aligned}
+&amp;\mathcal{B}_{j, M}(x) = 0, \qquad x \not\in (\tau_j, \tau_{j+M}), \\
+&amp;\mathcal{B}_{j, M}(x) &gt; 0, \qquad x \in (\tau_j, \tau_{j+M}).
+\end{aligned}
+</span> This implies that the support of cubic B-splines is at most <span class="math inline">5</span> knots.</li>
+</ul>
+<ul>
+<li>The <span class="blue">intercept</span> term is <span class="orange">implicitly included</span> in a B-spline basis, in fact <span class="math display">
+\sum_{j=1}^{K + M}\mathcal{B}_{j, M}(x) = 1, \qquad x \in (a, b).
+</span></li>
+</ul>
+<ul>
+<li>The presence of <span class="orange">structural zeros</span> implies that, when computing ordinary least squares, extremely efficient Cholesky factorization for <span class="blue">banded matrices</span> can be exploited.</li>
+</ul>
 </section>
 </section>
 <section id="smoothing-splines" class="level1">

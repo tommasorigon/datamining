@@ -811,7 +811,7 @@ $$
 
 . . .
 
--   Some authors proposed to use $\text{tr}(\bm{S}\bm{S}^T)$, but the
+-   Some authors proposed to use $\text{tr}(\bm{S}\bm{S}^T)$ or $\text{tr}(2\bm{S}-\bm{S}\bm{S}^T)$, but the
     connection with the [optimism]{.orange} and the definition of
     effective degrees of freedom is less clear.
 
@@ -953,7 +953,7 @@ persp(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
 ## Basis expansions
 
 -   The idea of polynomial regression can be [generalized]{.blue} and
-    [improved]{.orange}. The core idea is to augment or replace the
+    [improved]{.orange}. The main idea is to augment or replace the
     input $x$ with additional variables ([basis expansion]{.blue}).
 
 . . .
@@ -962,7 +962,7 @@ persp(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
     $h_j(x) : \mathbb{R} \rightarrow \mathbb{R}$ that transform the
     original predictor $x$ in some [non-linear]{.blue} fashion. Then, we
     let $$ 
-    f(x,\beta) = \sum_{j=1}^K h_j(x) \beta_j,
+    f(x;\beta) = \sum_{j=1}^K h_j(x) \beta_j,
     $$ where $\beta = (\beta_1, \dots, \beta_K)^T$ is a vector of
     [unknown coefficients]{.orange}.
 
@@ -1052,9 +1052,12 @@ y_hat_piece <- predict(fit_piece, newdata = data.frame(times = times_seq, time_c
 fit_bs <- lm(accel ~ bsp(times, knots = knots, degree = 2, intercept = TRUE) - 1, data = dataset)
 y_hat_bs <- predict(fit_bs, newdata = data.frame(times = times_seq))
 
-data_plot <- data.frame(times = times_seq, pred = c(y_hat_piece, y_hat_bs), 
-                        Method = rep(c("Piecewise quadratic","Piecewise quadratic with continuity constraints"), 
-                                     each = length(times_seq)))
+data_plot <- data.frame(
+  times = times_seq, pred = c(y_hat_piece, y_hat_bs),
+  Method = rep(c("Piecewise quadratic", "Piecewise quadratic with continuity constraints"),
+    each = length(times_seq)
+  )
+)
 ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   geom_line() +
   geom_point(data = dataset, aes(x = times, y = accel), size = 0.7, col = "black") +
@@ -1197,15 +1200,18 @@ fit_bs_1 <- lm(accel ~ bs(times, knots = knots, degree = 1, intercept = TRUE) - 
 y_hat_bs_1 <- predict(fit_bs_1, newdata = data.frame(times = times_seq))
 
 
-data_plot <- data.frame(times = times_seq, pred = c(y_hat_bs_3, y_hat_bs_2, y_hat_bs_1), 
-                        Method = rep(c("Regression splines (M = 4)", "Regression splines (M = 3)", "Regression splines (M = 2)"), 
-                                     each = length(times_seq)))
+data_plot <- data.frame(
+  times = times_seq, pred = c(y_hat_bs_3, y_hat_bs_2, y_hat_bs_1),
+  Method = rep(c("Regression splines (M = 4)", "Regression splines (M = 3)", "Regression splines (M = 2)"),
+    each = length(times_seq)
+  )
+)
 ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   geom_line() +
   geom_point(data = dataset, aes(x = times, y = accel), size = 0.7, col = "black") +
   theme_minimal() +
   theme(legend.position = "top") +
-  #geom_vline(xintercept = knots, linetype = "dotted") +
+  # geom_vline(xintercept = knots, linetype = "dotted") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
@@ -1275,9 +1281,12 @@ y_hat_bs_3 <- predict(fit_bs_3, newdata = data.frame(times = times_seq))
 fit_ns_3 <- lm(accel ~ ns(times, knots = knots[-c(1, 15)], Boundary.knots = c(knots[1], knots[15]), intercept = TRUE) - 1, data = dataset)
 y_hat_ns_3 <- predict(fit_ns_3, newdata = data.frame(times = times_seq))
 
-data_plot <- data.frame(times = times_seq, pred = c(y_hat_bs_3, y_hat_ns_3), 
-                        Method = rep(c("Cubic regression splines", "Natural cubic splines"), 
-                                     each = length(times_seq)))
+data_plot <- data.frame(
+  times = times_seq, pred = c(y_hat_bs_3, y_hat_ns_3),
+  Method = rep(c("Cubic regression splines", "Natural cubic splines"),
+    each = length(times_seq)
+  )
+)
 ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   geom_line() +
   geom_point(data = dataset, aes(x = times, y = accel), size = 0.7, col = "black") +
@@ -1292,23 +1301,94 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
 ## Computations: B-splines I
 
 ::: incremental
-- Despite its conceptual simplicity, the truncated power basis is not used in practice. Indeed, the [condition number]{.orange} of $\bm{B}^T\bm{B}$ is often very large, leading to numerical inaccuracies.
+- Despite their conceptual simplicity, the truncated power basis and its natural modification are [not]{.blue} used in [practice]{.blue}, due to [ill-conditioning]{.orange}. 
 
-- For this reason, more [computationally convenient]{.blue} bases are preferred. This means that we consider another set of functions $\mathcal{B}_1(x),\dots,\mathcal{B}_K(x)$ such that
+- Indeed, the condition number of $\bm{B}^T\bm{B}$ using a truncated power basis is very large, leading to [numerical inaccuracies]{.orange}.
+
+- For this reason, more [computationally convenient]{.blue} bases are preferred. This means we will consider an [equivalent]{.blue} set of functions $\mathcal{B}_1(x),\dots,\mathcal{B}_K(x)$ such that
 $$
 \mathcal{B}_j(x) = \sum_{\ell=1}^K\gamma_{\ell j} h_\ell(x), \qquad j=1,\dots,K,
 $$
 for some set of weights $\gamma_{\ell j}$ that makes this transformation [one-to-one]{.orange}. 
 
-- This means we will consider a a new design matrix $\tilde{\bm{B}} = \bm{\Gamma}\bm{B}$, having set $[\bm{\Gamma}]_{\ell j} = \gamma_{\ell j}$. Hence, if ordinary least squares are used, this does not change the outcome. 
+- Since we are performing a linear transformation, if ordinary least squares are used, this [does not change]{.orange} the fit. 
 
-- A particularly convenient basis are [B-splines]{.blue}, which are [numerically stable]{.orange} and admit a direct construction; i.e. we do not need to compute the coefficients $\gamma_{\ell j}$.
+- A particularly convenient basis are [B-splines]{.blue}, which are [local]{.blue} and [numerically stable]{.orange}. They admit a direct construction; i.e. we do not need to compute the coefficients $\gamma_{\ell j}$.
 :::
 
 ## Computations: B-splines II
 
-## Computations: B-splines III
+```{r}
+tpower <- function(x, t, p) {
+  (x - t)^p * (x > t)
+}
 
+tbase <- function(x, knots, degree = 3) {
+  B <- cbind(outer(x, 0:degree, "^"), outer(x, knots, function(x, y) pmax(x - y, 0))^degree)
+  B
+}
+
+knots <- c(10, 30, 50)
+data_plot <- data.frame(times_seq, 
+                        rbind(reshape2::melt(bs(times_seq, knots = knots, degree = 3, intercept = TRUE)), reshape2::melt(tbase(times_seq, knots = knots, degree = 3))),
+                        Basis = rep(c("B-splines", "Truncated power basis"), 
+                                    each = length(times_seq) * (length(knots) + 4)))
+
+
+ggplot(data = data_plot, aes(x = times_seq, y = value, col = as.factor(Var2))) +
+  geom_line() +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  facet_grid(Basis~., scales = "free_y") +
+  geom_vline(xintercept = knots, linetype = "dotted") +
+  scale_color_tableau(type = "ordered-diverging", palette = "Orange-Blue Diverging") +
+  xlab("x") +
+  ylab(expression(h[j](x)))
+```
+
+## ☠️ - Definition of B-splines
+
+- Define $\xi = (\xi_1,\dots,x_k)$ and consider an [augmented]{.orange} sequence of ordered [knots]{.orange} $$
+\tau = (\tau_1,\dots,\tau_{K + 2M}) = (\underbrace{\xi_{-M+1},\dots,\xi_0}_{\text{auxiliary knots}}, \: \xi,\: \underbrace{\xi_{k+1},\dots,\xi_{k + M}}_{\text{auxiliary knots}}).
+$$
+The most common choice is $\xi_{-M+1}= \dots = \xi_0 = a$ and $\xi_{k+1} = \dots = \xi_{k + M} = b$.
+
+. . .
+
+- [Step 1]{.blue}. For $j = 1,\dots, K + 2M - 1$, obtain the B-spline of order $m = 0$ as follows: 
+$$
+\mathcal{B}_{j,0}(x) = I_{[\tau_j, \tau_{j+1})}(x),
+$$
+where by convention we say that $\mathcal{B}_{j,0}(x) = 0$ if the knots are equal $\tau_j = \tau_{j+1}$. 
+
+. . .
+
+- [Step 2 (recursion)]{.orange}. The B-spline of [order $m \le M$]{.blue} are obtained [recursively]{.orange}, so that  $$
+\mathcal{B}_{j, m}(x) = \frac{x - \tau_j}{\tau_{j + m - 1} - \tau_j}\mathcal{B}_{j, m-1}(x)  + \frac{\tau_{j + m} - x}{\tau_{j + m } - \tau_{j +1}}\mathcal{B}_{j + 1, m-1}(x),
+$$
+for $j=1,\dots,K + 2M - m$ and for $m=1,\dots,M$. 
+
+## ☠️ - Properties of B-splines
+
+- B-splines have [local support]{.orange}, which means that for $j=1,\dots,K + 2M - m$ we have
+$$
+\begin{aligned}
+&\mathcal{B}_{j, M}(x) = 0, \qquad x \not\in (\tau_j, \tau_{j+M}), \\
+&\mathcal{B}_{j, M}(x) > 0, \qquad x \in (\tau_j, \tau_{j+M}).
+\end{aligned}
+$$
+This implies that the support of cubic B-splines is at most $5$ knots. 
+
+. . .
+
+- The [intercept]{.blue} term is [implicitly included]{.orange} in a B-spline basis, in fact 
+$$
+\sum_{j=1}^{K + M}\mathcal{B}_{j, M}(x) = 1, \qquad x \in (a, b).
+$$
+
+. . .
+
+- The presence of [structural zeros]{.orange} implies that, when computing ordinary least squares, extremely efficient Cholesky factorization for [banded matrices]{.blue} can be exploited. 
 
 # Smoothing splines
 

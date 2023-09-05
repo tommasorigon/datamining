@@ -871,7 +871,7 @@ h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2
 </div>
 <div class="fragment">
 <ul>
-<li>Some authors proposed to use <span class="math inline">\text{tr}(\bm{S}\bm{S}^T)</span>, but the connection with the <span class="orange">optimism</span> and the definition of effective degrees of freedom is less clear.</li>
+<li>Some authors proposed to use <span class="math inline">\text{tr}(\bm{S}\bm{S}^T)</span> or <span class="math inline">\text{tr}(2\bm{S}-\bm{S}\bm{S}^T)</span>, but the connection with the <span class="orange">optimism</span> and the definition of effective degrees of freedom is less clear.</li>
 </ul>
 </div>
 </section>
@@ -970,12 +970,12 @@ w_i(x) = \frac{1}{h_1 h_2} w\left(\frac{x_{i1} - x_1}{h_1}\right)w\left(\frac{x_
 <section id="basis-expansions" class="slide level2 center">
 <h2>Basis expansions</h2>
 <ul>
-<li>The idea of polynomial regression can be <span class="blue">generalized</span> and <span class="orange">improved</span>. The core idea is to augment or replace the input <span class="math inline">x</span> with additional variables (<span class="blue">basis expansion</span>).</li>
+<li>The idea of polynomial regression can be <span class="blue">generalized</span> and <span class="orange">improved</span>. The main idea is to augment or replace the input <span class="math inline">x</span> with additional variables (<span class="blue">basis expansion</span>).</li>
 </ul>
 <div class="fragment">
 <ul>
 <li><p>Let <span class="math inline">h_1(x), \dots, h_K(x)</span> be <span class="orange">pre-specified</span> functions <span class="math inline">h_j(x) : \mathbb{R} \rightarrow \mathbb{R}</span> that transform the original predictor <span class="math inline">x</span> in some <span class="blue">non-linear</span> fashion. Then, we let <span class="math display">
-f(x,\beta) = \sum_{j=1}^K h_j(x) \beta_j,
+f(x;\beta) = \sum_{j=1}^K h_j(x) \beta_j,
 </span> where <span class="math inline">\beta = (\beta_1, \dots, \beta_K)^T</span> is a vector of <span class="orange">unknown coefficients</span>.</p></li>
 <li><p><span class="blue">Polynomials</span> are a specific instance of basis expansion, in which <span class="math display">
 h_1(x) = 1, \quad h_2(x) = x, \quad h_3(x) = x^2, \quad \dots \quad h_K(x) = x^{K-1}.</span></p></li>
@@ -1219,20 +1219,64 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <h2>Computations: B-splines I</h2>
 <div>
 <ul>
-<li class="fragment"><p>Despite its conceptual simplicity, the truncated power basis is not used in practice. Indeed, the <span class="orange">condition number</span> of <span class="math inline">\bm{B}^T\bm{B}</span> is often very large, leading to numerical inaccuracies.</p></li>
-<li class="fragment"><p>For this reason, more <span class="blue">computationally convenient</span> bases are preferred. This means that we consider another set of functions <span class="math inline">\mathcal{B}_1(x),\dots,\mathcal{B}_K(x)</span> such that <span class="math display">
+<li class="fragment"><p>Despite their conceptual simplicity, the truncated power basis and its natural modification are <span class="blue">not</span> used in <span class="blue">practice</span>, due to <span class="orange">ill-conditioning</span>.</p></li>
+<li class="fragment"><p>Indeed, the condition number of <span class="math inline">\bm{B}^T\bm{B}</span> using a truncated power basis is very large, leading to <span class="orange">numerical inaccuracies</span>.</p></li>
+<li class="fragment"><p>For this reason, more <span class="blue">computationally convenient</span> bases are preferred. This means we will consider an <span class="blue">equivalent</span> set of functions <span class="math inline">\mathcal{B}_1(x),\dots,\mathcal{B}_K(x)</span> such that <span class="math display">
 \mathcal{B}_j(x) = \sum_{\ell=1}^K\gamma_{\ell j} h_\ell(x), \qquad j=1,\dots,K,
 </span> for some set of weights <span class="math inline">\gamma_{\ell j}</span> that makes this transformation <span class="orange">one-to-one</span>.</p></li>
-<li class="fragment"><p>This means we will consider a a new design matrix <span class="math inline">\tilde{\bm{B}} = \bm{\Gamma}\bm{B}</span>, having set <span class="math inline">[\bm{\Gamma}]_{\ell j} = \gamma_{\ell j}</span>. Hence, if ordinary least squares are used, this does not change the outcome.</p></li>
-<li class="fragment"><p>A particularly convenient basis are <span class="blue">B-splines</span>, which are <span class="orange">numerically stable</span> and admit a direct construction; i.e.&nbsp;we do not need to compute the coefficients <span class="math inline">\gamma_{\ell j}</span>.</p></li>
+<li class="fragment"><p>Since we are performing a linear transformation, if ordinary least squares are used, this <span class="orange">does not change</span> the fit.</p></li>
+<li class="fragment"><p>A particularly convenient basis are <span class="blue">B-splines</span>, which are <span class="blue">local</span> and <span class="orange">numerically stable</span>. They admit a direct construction; i.e.&nbsp;we do not need to compute the coefficients <span class="math inline">\gamma_{\ell j}</span>.</p></li>
 </ul>
 </div>
 </section>
 <section id="computations-b-splines-ii" class="slide level2 center">
 <h2>Computations: B-splines II</h2>
+
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-17-1.png" width="2000" class="r-stretch"></section>
+<section id="definition-of-b-splines" class="slide level2 center">
+<h2>☠️ - Definition of B-splines</h2>
+<ul>
+<li>Define <span class="math inline">\xi = (\xi_1,\dots,x_k)</span> and consider an <span class="orange">augmented</span> sequence of ordered <span class="orange">knots</span> <span class="math display">
+\tau = (\tau_1,\dots,\tau_{K + 2M}) = (\underbrace{\xi_{-M+1},\dots,\xi_0}_{\text{auxiliary knots}}, \: \xi,\: \underbrace{\xi_{k+1},\dots,\xi_{k + M}}_{\text{auxiliary knots}}).
+</span> The most common choice is <span class="math inline">\xi_{-M+1}= \dots = \xi_0 = a</span> and <span class="math inline">\xi_{k+1} = \dots = \xi_{k + M} = b</span>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><span class="blue">Step 1</span>. For <span class="math inline">j = 1,\dots, K + 2M - 1</span>, obtain the B-spline of order <span class="math inline">m = 0</span> as follows: <span class="math display">
+\mathcal{B}_{j,0}(x) = I_{[\tau_j, \tau_{j+1})}(x),
+</span> where by convention we say that <span class="math inline">\mathcal{B}_{j,0}(x) = 0</span> if the knots are equal <span class="math inline">\tau_j = \tau_{j+1}</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><span class="orange">Step 2 (recursion)</span>. The B-spline of <span class="blue">order <span class="math inline">m \le M</span></span> are obtained <span class="orange">recursively</span>, so that <span class="math display">
+\mathcal{B}_{j, m}(x) = \frac{x - \tau_j}{\tau_{j + m - 1} - \tau_j}\mathcal{B}_{j, m-1}(x)  + \frac{\tau_{j + m} - x}{\tau_{j + m } - \tau_{j +1}}\mathcal{B}_{j + 1, m-1}(x),
+</span> for <span class="math inline">j=1,\dots,K + 2M - m</span> and for <span class="math inline">m=1,\dots,M</span>.</li>
+</ul>
+</div>
 </section>
-<section id="computations-b-splines-iii" class="slide level2 center">
-<h2>Computations: B-splines III</h2>
+<section id="properties-of-b-splines" class="slide level2 center">
+<h2>☠️ - Properties of B-splines</h2>
+<ul>
+<li>B-splines have <span class="orange">local support</span>, which means that for <span class="math inline">j=1,\dots,K + 2M - m</span> we have <span class="math display">
+\begin{aligned}
+&amp;\mathcal{B}_{j, M}(x) = 0, \qquad x \not\in (\tau_j, \tau_{j+M}), \\
+&amp;\mathcal{B}_{j, M}(x) &gt; 0, \qquad x \in (\tau_j, \tau_{j+M}).
+\end{aligned}
+</span> This implies that the support of cubic B-splines is at most <span class="math inline">5</span> knots.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>The <span class="blue">intercept</span> term is <span class="orange">implicitly included</span> in a B-spline basis, in fact <span class="math display">
+\sum_{j=1}^{K + M}\mathcal{B}_{j, M}(x) = 1, \qquad x \in (a, b).
+</span></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>The presence of <span class="orange">structural zeros</span> implies that, when computing ordinary least squares, extremely efficient Cholesky factorization for <span class="blue">banded matrices</span> can be exploited.</li>
+</ul>
+</div>
 </section></section>
 <section id="smoothing-splines" class="title-slide slide level1 center">
 <h1>Smoothing splines</h1>
