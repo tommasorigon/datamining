@@ -122,9 +122,16 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#computations-b-splines-ii" id="toc-computations-b-splines-ii" class="nav-link" data-scroll-target="#computations-b-splines-ii">Computations: B-splines II</a></li>
   <li><a href="#definition-of-b-splines" id="toc-definition-of-b-splines" class="nav-link" data-scroll-target="#definition-of-b-splines">☠️ - Definition of B-splines</a></li>
   <li><a href="#properties-of-b-splines" id="toc-properties-of-b-splines" class="nav-link" data-scroll-target="#properties-of-b-splines">☠️ - Properties of B-splines</a></li>
+  <li><a href="#tensor-splines-i" id="toc-tensor-splines-i" class="nav-link" data-scroll-target="#tensor-splines-i">Tensor splines I</a></li>
+  <li><a href="#tensor-splines-ii" id="toc-tensor-splines-ii" class="nav-link" data-scroll-target="#tensor-splines-ii">Tensor splines II</a></li>
   <li><a href="#pros-and-cons-of-regression-splines" id="toc-pros-and-cons-of-regression-splines" class="nav-link" data-scroll-target="#pros-and-cons-of-regression-splines">Pros and cons of regression splines</a></li>
   </ul></li>
-  <li><a href="#smoothing-splines" id="toc-smoothing-splines" class="nav-link" data-scroll-target="#smoothing-splines">Smoothing splines</a></li>
+  <li><a href="#smoothing-splines" id="toc-smoothing-splines" class="nav-link" data-scroll-target="#smoothing-splines">Smoothing splines</a>
+  <ul class="collapse">
+  <li><a href="#smoothing-splines-1" id="toc-smoothing-splines-1" class="nav-link" data-scroll-target="#smoothing-splines-1">Smoothing splines</a></li>
+  <li><a href="#thin-plate-splines-i" id="toc-thin-plate-splines-i" class="nav-link" data-scroll-target="#thin-plate-splines-i">Thin-plate splines I</a></li>
+  <li><a href="#thin-plate-splines-ii" id="toc-thin-plate-splines-ii" class="nav-link" data-scroll-target="#thin-plate-splines-ii">Thin-plate splines II</a></li>
+  </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_D_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
@@ -1170,6 +1177,12 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <li>The B-spline basis can be modified to produce a <span class="blue">natural cubic spline</span>, by numerically enforcing the linearity constraint. This is implemented in the <code>ns</code> <strong>R</strong> function.</li>
 </ul>
 </section>
+<section id="tensor-splines-i" class="level2">
+<h2 class="anchored" data-anchor-id="tensor-splines-i">Tensor splines I</h2>
+</section>
+<section id="tensor-splines-ii" class="level2">
+<h2 class="anchored" data-anchor-id="tensor-splines-ii">Tensor splines II</h2>
+</section>
 <section id="pros-and-cons-of-regression-splines" class="level2">
 <h2 class="anchored" data-anchor-id="pros-and-cons-of-regression-splines">Pros and cons of regression splines</h2>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
@@ -1201,7 +1214,7 @@ Cons
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Knots placement based on quantiles or other automatic choices could be inefficient.</p></li>
-<li><p>Manual placement of the knots is out of question, because it is an almost impossibile optimization problem.<br>
+<li><p>Manual placement of the knots is out of question, because it is an almost impossible optimization problem.<br>
 </p></li>
 </ul>
 </div>
@@ -1210,6 +1223,15 @@ Cons
 </section>
 <section id="smoothing-splines" class="level1">
 <h1>Smoothing splines</h1>
+<section id="smoothing-splines-1" class="level2">
+<h2 class="anchored" data-anchor-id="smoothing-splines-1">Smoothing splines</h2>
+</section>
+<section id="thin-plate-splines-i" class="level2">
+<h2 class="anchored" data-anchor-id="thin-plate-splines-i">Thin-plate splines I</h2>
+</section>
+<section id="thin-plate-splines-ii" class="level2">
+<h2 class="anchored" data-anchor-id="thin-plate-splines-ii">Thin-plate splines II</h2>
+</section>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>

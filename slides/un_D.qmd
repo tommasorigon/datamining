@@ -1552,6 +1552,10 @@ This implies that the support of cubic B-splines is at most $4$ knots.
 
 - The B-spline basis can be modified to produce a [natural cubic spline]{.blue}, by numerically enforcing the linearity constraint. This is implemented in the `ns` **R** function. 
 
+## Tensor splines I
+
+## Tensor splines II
+
 ## Pros and cons of regression splines
 
 ::: callout-tip
@@ -1571,11 +1575,17 @@ This implies that the support of cubic B-splines is at most $4$ knots.
 
 - Knots placement based on quantiles or other automatic choices could be inefficient.
 
-- Manual placement of the knots is out of question, because it is an almost impossibile optimization problem.  
+- Manual placement of the knots is out of question, because it is an almost impossible optimization problem.  
 :::
 
 
 # Smoothing splines
+
+## Smoothing splines
+
+## Thin-plate splines I
+
+## Thin-plate splines II
 
 
 # References
