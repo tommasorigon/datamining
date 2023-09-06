@@ -122,7 +122,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 :::
 
 ::: {.column width="60%"}
--   A drug called "cholestyramine" is administered to $n = 164$ men.
+-   In this first example, a drug called "cholestyramine" is administered to $n = 164$ men.
 
 -   For each man, we observe the pair $(x_i, y_i)$.
 
@@ -144,22 +144,6 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 ## The `auto` dataset
 
 ::: columns
-::: {.column width="40%"}
-```{r}
-#| fig-width: 5
-#| fig-height: 4
-
-rm(list = ls())
-# The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
-auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
-
-ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
-  geom_point() +
-  theme_minimal() +
-  xlab("Engine size (L)") +
-  ylab("Urban distance (km/L)")
-```
-:::
 
 ::: {.column width="60%"}
 -   In [Unit A](un_A.html) we considered the `auto` dataset.
@@ -177,6 +161,24 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
 
 -   We would like the data to "speak for themselves".
 :::
+
+::: {.column width="40%"}
+```{r}
+#| fig-width: 5
+#| fig-height: 4
+
+rm(list = ls())
+# The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
+auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
+
+ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
+  geom_point() +
+  theme_minimal() +
+  xlab("Engine size (L)") +
+  ylab("Urban distance (km/L)")
+```
+:::
+
 :::
 
 ## The `mcycle` dataset
@@ -231,7 +233,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 . . .
 
--   The [theory]{.orange} says that [polynomials]{.blue} can
+-   In [theory]{.orange} [polynomials]{.blue} can
     [approximate]{.blue} a large class of functions, as a consequence of
     Taylor's expansion theorem.
 
@@ -297,15 +299,15 @@ ggplot(data = data_pred) +
 ## The regression function
 
 ::: incremental
--   The only assumption we are making is the following
+-   The only assumption we are making in this Unit is the following
     [additive]{.orange} structure $$
       Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
     $$ where $\epsilon_i$ are [iid]{.orange} with
     $\mathbb{E}(\epsilon_i) = 0$ and
-    $\text{var}(\epsilon_i) = \sigma^2$.
+    $\text{var}(\epsilon_i) = \sigma^2$. This structure can be relaxed even further. 
 
--   In [Unit B](un_B.html#regression-under-quadratic-loss-ii) we showed
-    that under the following [quadratic loss]{.orange}$$
+-   Let $\tilde{Y}_i$ be a new data point. In [Unit B](un_B.html#regression-under-quadratic-loss-ii) we showed
+    that under the [quadratic loss]{.orange}$$
     \mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(x_i)\}^2\right],
     $$ the best prediction $\hat{f}(x_i)$, i.e. the one minimizing the
     loss, coincides with $$
@@ -456,7 +458,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 -   A popular kernel is the [Gaussian kernel]{.orange}, that is: $$
     w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
-    $$ tehrefore $h^2$ represents the [variance]{.blue}. We will discuss
+    $$ therefore $h^2$ represents the [variance]{.blue}. We will discuss
     alternative choices later on.
 
 . . .
@@ -616,21 +618,70 @@ $$ where $a_j(x) = n^{-1}\sum_{i=1}^n w_i(x) (x_i - x)^j$, for
 $j=0,1,2$.
 :::
 
-## Local linear regression ($h = 1.45$, Gaussian kernel)
+## Local linear regression ($h = 1.46$, Gaussian kernel)
 
 ```{r}
-library(KernSmooth)
+loclin1 <- function(x, y, bandwidth, x0){
+  w <- dnorm(x, mean = x0, sd = bandwidth)
+  a0 <- mean(w)
+  a1 <- mean(w * (x - x0))
+  a2 <- mean(w * (x - x0)^2)
+  mean( ((a2 - a1 * (x - x0)) * w * y) / (a2 * a0 - a1^2))
+}
 
-# Optimal parameter is selected using a plug-in method that is not described in the slides.
-# Congratulations for spotting this, I expect ~3% of the students will actually read this code.
-# Anyway, if you want to understand how this method works, you can read the paper described in the documentation (? dpill)
-h_param <- dpill(x, y)
+loclin <- Vectorize(loclin1, vectorize.args = "x0")
 
-fit_locpoly <- locpoly(x, y, bandwidth = h_param, gridsize = 2000)
+S_diag <- function(x, y, bandwidth){
+  n <- length(y)
+  S_diag <- numeric(n)
+  for(i in 1:n){
+    x0 <- x[i]
+    w <- dnorm(x, mean = x0, sd = bandwidth)
+    a0 <- mean(w)
+    a1 <- mean(w * (x - x0))
+    a2 <- mean(w * (x - x0)^2)
+    S_diag[i] <- ((a2 - a1 * (x[i] - x0)) * w[i]) / (a2 * a0 - a1^2) / n
+  }
+  S_diag
+}
+
+df_loclin <- function(x, y, bandwidth){
+  sum(S_diag(x, y, bandwidth))
+}
+```
+
+```{r}
+# Code execution and storage of the interesting quantities
+bandwidth_list <- exp(seq(from = -1, to = 2, length = 100))
+data_goodness <- data.frame(bandwidth = bandwidth_list)
+for (i in 1:length(bandwidth_list)) {
+  # Fitting a polynomial of degree p -1
+  lev <- S_diag(x, y, bandwidth_list[i])
+  fit <- loclin(x, y, bandwidth_list[i], x)
+  res_loo <- (y - fit) / (1 - lev)
+  data_goodness$df[i] <- sum(lev)
+  data_goodness$LOO_CV[i] <- mean(res_loo^2)
+  data_goodness$LOO_CV_SE[i] <- sd(res_loo) / sqrt(nrow(dataset))
+  data_goodness$GCV[i] <- mean(((y - fit) / (1 - sum(lev) / nrow(dataset)))^2)
+}
+```
+
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+#| 
+id_opt <- which.min(data_goodness$LOO_CV)
+h_opt <- data_goodness$bandwidth[id_opt]
+df_opt <- data_goodness$df[id_opt]
+
+x_seq <- seq(from = min(x), to = max(x), length = 2000)
+fit_locpoly <- loclin(x, y, bandwidth = h_opt, x0 = x_seq)
 
 ggplot(data = dataset, aes(x = times, y = accel)) +
   geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = fit_locpoly$x, y = fit_locpoly$y), aes(x = x, y = y), col = "#1170aa") +
+  geom_line(data = data.frame(x = x_seq, y = fit_locpoly), aes(x = x, y = y), col = "#1170aa") +
   theme_minimal() +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
@@ -781,7 +832,7 @@ $$ where $\alpha_w = \int w^2(z)\mathrm{d}z$.
     linear regression case: $$
     \begin{aligned}
     \mathbb{E}\{\hat{f}(x)\} &= \sum_{i=1}^n s_i(x)f(x_i) \\
-    & = f(x_0)\underbrace{\sum_{i=1}^ns_i(x_0)}_{=1} + f'(x_0) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x_0)}_{=0} + \frac{f''(x_0)}{2}(x_i - x_0)^2s_i(x_0) + \text{rest}.
+    & = f(x_0)\underbrace{\sum_{i=1}^ns_i(x_0)}_{=1} + f'(x_0) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x_0)}_{=0} + \frac{f''(x_0)}{2}\sum_{i=1}^n(x_i - x_0)^2s_i(x_0) + \text{rest}.
     \end{aligned}
     $$
 
@@ -834,6 +885,33 @@ $$ Therefore, the leave-one-out mean squared error is
 $$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}\right)^2.$$
 :::
 
+## Choice of the bandwidth III
+
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+
+# Organization of the results for graphical purposes
+data_bv <- data.frame(df = data_goodness$df, GCV = data_goodness$GCV, LOO_CV = data_goodness$LOO_CV, SE = data_goodness$LOO_CV_SE)
+data_bv <- reshape2::melt(data_bv, id = c("df", "SE"))
+data_bv$SE[data_bv$variable == "GCV"] <- NA
+levels(data_bv$variable) <- c("GCV", "LOO-CV")
+colnames(data_bv) <- c("df", "SE", "Error term", "value")
+
+ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = df_opt, linetype = "dotted", col ="#fc7d0b") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Effective degrees of freedom (df)") +
+  ylab("Mean Squared Error (MSE)") 
+```
+
+
 ## Loess
 
 -   Sometimes it is convenient to choose $h$ [adaptively]{.orange}, i.e.
@@ -874,7 +952,7 @@ $$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{
 
 -   In a [generalized linear model]{.blue} with a single predictor, for
     every value $x$ we seek $$
-    (\hat{\beta}_1,\hat{\beta}_2)= \arg\max_{(\beta_1, \beta_2)}\sum_{i=1}^nw_i(x) \ell(y_i; \beta_1 + (x_i - x_0)\beta_2) ,
+    (\hat{\beta}_1,\hat{\beta}_2)= \arg\max_{(\beta_1, \beta_2)}\sum_{i=1}^nw_i(x) \ell(\beta_1 + (x_i - x_0)\beta_2; y_i) ,
     $$ whose solution can be found using iteratively re-weighted least
     squares.
 
@@ -947,6 +1025,28 @@ persp(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
   theta = 145, phi = 20, ticktype = "detailed", col = surf.colors(fit_sm$estimate, col = terrain.colors(80)), expand = 0.8
 )
 ```
+
+## Pros and cons of kernel nonparametric regression
+
+::: callout-tip
+#### Pros
+
+-   Local linear regression is a [nonparametric]{.blue} estimator for unknown functions $f(x)$ which makes very [few assumptions]{.orange} on its form.
+
+- The procedure is simple and [computationally efficient]{.blue}. 
+
+- Smoothing parameter can be easily handled, being a linear smoother.
+:::
+
+. . .
+
+::: callout-warning
+#### Cons
+
+- There is a price to pay for not making assumption: estimation is [less efficient]{.orange} in terms of mean squared error compared to parametric models (when they are correctly specified!).
+
+- This is a drawback of all nonparametric estimators, not just local linear regression.
+:::
 
 # Regression splines
 

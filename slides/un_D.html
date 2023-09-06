@@ -84,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#nadaraya-watson-gaussian-kernel" id="toc-nadaraya-watson-gaussian-kernel" class="nav-link" data-scroll-target="#nadaraya-watson-gaussian-kernel">Nadaraya-Watson (Gaussian kernel)</a></li>
   <li><a href="#local-linear-regression-i" id="toc-local-linear-regression-i" class="nav-link" data-scroll-target="#local-linear-regression-i">Local linear regression I</a></li>
   <li><a href="#local-linear-regression-ii" id="toc-local-linear-regression-ii" class="nav-link" data-scroll-target="#local-linear-regression-ii">Local linear regression II</a></li>
-  <li><a href="#local-linear-regression-h-1.45-gaussian-kernel" id="toc-local-linear-regression-h-1.45-gaussian-kernel" class="nav-link" data-scroll-target="#local-linear-regression-h-1.45-gaussian-kernel">Local linear regression (<span class="math inline">h = 1.45</span>, Gaussian kernel)</a></li>
+  <li><a href="#local-linear-regression-h-1.46-gaussian-kernel" id="toc-local-linear-regression-h-1.46-gaussian-kernel" class="nav-link" data-scroll-target="#local-linear-regression-h-1.46-gaussian-kernel">Local linear regression (<span class="math inline">h = 1.46</span>, Gaussian kernel)</a></li>
   <li><a href="#linear-smoothers-i" id="toc-linear-smoothers-i" class="nav-link" data-scroll-target="#linear-smoothers-i">Linear smoothers I</a></li>
   <li><a href="#linear-smoothers-ii" id="toc-linear-smoothers-ii" class="nav-link" data-scroll-target="#linear-smoothers-ii">Linear smoothers II</a></li>
   <li><a href="#on-the-choice-of-the-kernel" id="toc-on-the-choice-of-the-kernel" class="nav-link" data-scroll-target="#on-the-choice-of-the-kernel">On the choice of the kernel</a></li>
@@ -93,10 +93,12 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#bias-reduction-of-local-linear-regression" id="toc-bias-reduction-of-local-linear-regression" class="nav-link" data-scroll-target="#bias-reduction-of-local-linear-regression">☠️ - Bias reduction of local linear regression</a></li>
   <li><a href="#choice-of-the-bandwidth-i" id="toc-choice-of-the-bandwidth-i" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-i">Choice of the bandwidth I</a></li>
   <li><a href="#choice-of-the-bandwidth-ii" id="toc-choice-of-the-bandwidth-ii" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-ii">Choice of the bandwidth II</a></li>
+  <li><a href="#choice-of-the-bandwidth-iii" id="toc-choice-of-the-bandwidth-iii" class="nav-link" data-scroll-target="#choice-of-the-bandwidth-iii">Choice of the bandwidth III</a></li>
   <li><a href="#loess" id="toc-loess" class="nav-link" data-scroll-target="#loess">Loess</a></li>
   <li><a href="#local-likelihoods" id="toc-local-likelihoods" class="nav-link" data-scroll-target="#local-likelihoods">Local likelihoods</a></li>
   <li><a href="#the-bivariate-case" id="toc-the-bivariate-case" class="nav-link" data-scroll-target="#the-bivariate-case">The bivariate case</a></li>
   <li><a href="#the-bivariate-case-h_1-0.5-h_2-150" id="toc-the-bivariate-case-h_1-0.5-h_2-150" class="nav-link" data-scroll-target="#the-bivariate-case-h_1-0.5-h_2-150">The bivariate case (<span class="math inline">h_1 = 0.5, h_2 = 150</span>)</a></li>
+  <li><a href="#pros-and-cons-of-kernel-nonparametric-regression" id="toc-pros-and-cons-of-kernel-nonparametric-regression" class="nav-link" data-scroll-target="#pros-and-cons-of-kernel-nonparametric-regression">Pros and cons of kernel nonparametric regression</a></li>
   </ul></li>
   <li><a href="#regression-splines" id="toc-regression-splines" class="nav-link" data-scroll-target="#regression-splines">Regression splines</a>
   <ul class="collapse">
@@ -196,7 +198,7 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div><div class="column" style="width:60%;">
 <ul>
-<li><p>A drug called “cholestyramine” is administered to <span class="math inline">n = 164</span> men.</p></li>
+<li><p>In this first example, a drug called “cholestyramine” is administered to <span class="math inline">n = 164</span> men.</p></li>
 <li><p>For each man, we observe the pair <span class="math inline">(x_i, y_i)</span>.</p></li>
 <li><p>The response <span class="math inline">y_i</span> is the <span class="orange">decrease in cholesterol level</span> over the experiment.</p></li>
 <li><p>The covariate <span class="math inline">x_i</span> is a measure of <span class="blue">compliance</span>.</p></li>
@@ -211,13 +213,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="the-auto-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="the-auto-dataset">The <code>auto</code> dataset</h2>
 <div class="columns">
-<div class="column" style="width:40%;">
-<div class="cell">
-<div class="cell-output-display">
-<p><img src="un_D_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="1000"></p>
-</div>
-</div>
-</div><div class="column" style="width:60%;">
+<div class="column" style="width:60%;">
 <ul>
 <li><p>In <a href="un_A.html">Unit A</a> we considered the <code>auto</code> dataset.</p></li>
 <li><p>We wanted to model the relationship between <code>city.distance</code> (<span class="math inline">y</span>) and <code>engine.size</code> (<span class="math inline">x</span>).</p></li>
@@ -227,6 +223,12 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <li><p>There are <span class="orange">no</span> reasons to believe that <span class="math inline">f(x) = \alpha x^\beta</span> or that <span class="math inline">f(x)</span> belongs to any other <span class="orange">parametric</span> family.</p></li>
 <li><p>We would like the data to “speak for themselves”.</p></li>
 </ul>
+</div><div class="column" style="width:40%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="un_D_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="1000"></p>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -260,7 +262,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <li>In the <code>mcycle</code> dataset it is <span class="orange">not</span> obvious which <span class="orange">parametric</span> function we should consider, therefore this route is not an option.</li>
 </ul>
 <ul>
-<li><p>The <span class="orange">theory</span> says that <span class="blue">polynomials</span> can <span class="blue">approximate</span> a large class of functions, as a consequence of Taylor’s expansion theorem.</p></li>
+<li><p>In <span class="orange">theory</span> <span class="blue">polynomials</span> can <span class="blue">approximate</span> a large class of functions, as a consequence of Taylor’s expansion theorem.</p></li>
 <li><p>In the statistical <span class="orange">practice</span>, however, polynomial regression is not very well suited for modelling complex relationships.</p></li>
 </ul>
 <ul>
@@ -288,10 +290,10 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <h2 class="anchored" data-anchor-id="the-regression-function">The regression function</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>The only assumption we are making is the following <span class="orange">additive</span> structure <span class="math display">
+<li><p>The only assumption we are making in this Unit is the following <span class="orange">additive</span> structure <span class="math display">
   Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
-</span> where <span class="math inline">\epsilon_i</span> are <span class="orange">iid</span> with <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span> and <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>.</p></li>
-<li><p>In <a href="un_B.html#regression-under-quadratic-loss-ii">Unit B</a> we showed that under the following <span class="orange">quadratic loss</span><span class="math display">
+</span> where <span class="math inline">\epsilon_i</span> are <span class="orange">iid</span> with <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span> and <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>. This structure can be relaxed even further.</p></li>
+<li><p>Let <span class="math inline">\tilde{Y}_i</span> be a new data point. In <a href="un_B.html#regression-under-quadratic-loss-ii">Unit B</a> we showed that under the <span class="orange">quadratic loss</span><span class="math display">
 \mathbb{E}\left[\{\tilde{Y}_i - \hat{f}(x_i)\}^2\right],
 </span> the best prediction <span class="math inline">\hat{f}(x_i)</span>, i.e.&nbsp;the one minimizing the loss, coincides with <span class="math display">
 \hat{f}(x_i) = \mathbb{E}(\tilde{Y}_i) = f(x_i),
@@ -382,7 +384,7 @@ w_i(x) = \frac{1}{h}w\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
 <li><p>The fitted function <span class="math inline">\hat{f}(x)</span> is <span class="blue">continuous</span> and is obtained by computing several weighted averages, one for each value of <span class="math inline">x</span>.</p></li>
 <li><p>A popular kernel is the <span class="orange">Gaussian kernel</span>, that is: <span class="math display">
 w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
-</span> tehrefore <span class="math inline">h^2</span> represents the <span class="blue">variance</span>. We will discuss alternative choices later on.</p></li>
+</span> therefore <span class="math inline">h^2</span> represents the <span class="blue">variance</span>. We will discuss alternative choices later on.</p></li>
 </ul>
 <ul>
 <li><p>The most important factor, however, is not the functional form of <span class="math inline">w(\cdot)</span>, but rather the <span class="orange">smoothing parameter</span> <span class="math inline">h</span>, which is a complexity parameter.</p></li>
@@ -483,11 +485,15 @@ Theorem (Local linear smoothing)
 </div>
 </div>
 </section>
-<section id="local-linear-regression-h-1.45-gaussian-kernel" class="level2">
-<h2 class="anchored" data-anchor-id="local-linear-regression-h-1.45-gaussian-kernel">Local linear regression (<span class="math inline">h = 1.45</span>, Gaussian kernel)</h2>
-<div class="cell">
+<section id="local-linear-regression-h-1.46-gaussian-kernel" class="level2">
+<h2 class="anchored" data-anchor-id="local-linear-regression-h-1.46-gaussian-kernel">Local linear regression (<span class="math inline">h = 1.46</span>, Gaussian kernel)</h2>
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
-<p><img src="un_D_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="1400"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_D_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="1800"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -625,7 +631,7 @@ h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2
 <li><p>To get an intuition of this, consider the following Taylor expansion for <span class="math inline">\mathbb{E}\{\hat{f}(x)\}</span> around <span class="math inline">x_0</span>, and for the local linear regression case: <span class="math display">
 \begin{aligned}
 \mathbb{E}\{\hat{f}(x)\} &amp;= \sum_{i=1}^n s_i(x)f(x_i) \\
-&amp; = f(x_0)\underbrace{\sum_{i=1}^ns_i(x_0)}_{=1} + f'(x_0) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x_0)}_{=0} + \frac{f''(x_0)}{2}(x_i - x_0)^2s_i(x_0) + \text{rest}.
+&amp; = f(x_0)\underbrace{\sum_{i=1}^ns_i(x_0)}_{=1} + f'(x_0) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x_0)}_{=0} + \frac{f''(x_0)}{2}\sum_{i=1}^n(x_i - x_0)^2s_i(x_0) + \text{rest}.
 \end{aligned}
 </span></p></li>
 <li><p>It can be shown with some algebra that the first order term simplifies (<span class="math inline">=0</span>) in the local linear regression case but it doesn’t for the Nadaraya-Watson, therefore <span class="orange">reducing the bias</span>.</p></li>
@@ -677,6 +683,18 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 </div>
 </div>
 </section>
+<section id="choice-of-the-bandwidth-iii" class="level2">
+<h2 class="anchored" data-anchor-id="choice-of-the-bandwidth-iii">Choice of the bandwidth III</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_D_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="1800"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 <section id="loess" class="level2">
 <h2 class="anchored" data-anchor-id="loess">Loess</h2>
 <ul>
@@ -703,7 +721,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 </ul>
 <ul>
 <li>In a <span class="blue">generalized linear model</span> with a single predictor, for every value <span class="math inline">x</span> we seek <span class="math display">
-(\hat{\beta}_1,\hat{\beta}_2)= \arg\max_{(\beta_1, \beta_2)}\sum_{i=1}^nw_i(x) \ell(y_i; \beta_1 + (x_i - x_0)\beta_2) ,
+(\hat{\beta}_1,\hat{\beta}_2)= \arg\max_{(\beta_1, \beta_2)}\sum_{i=1}^nw_i(x) \ell(\beta_1 + (x_i - x_0)\beta_2; y_i) ,
 </span> whose solution can be found using iteratively re-weighted least squares.</li>
 </ul>
 <ul>
@@ -734,9 +752,45 @@ w_i(x) = \frac{1}{h_1 h_2} w\left(\frac{x_{i1} - x_1}{h_1}\right)w\left(\frac{x_
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_D_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="2000"></p>
+<p><img src="un_D_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="2000"></p>
 </figure>
 </div>
+</div>
+</div>
+</section>
+<section id="pros-and-cons-of-kernel-nonparametric-regression" class="level2">
+<h2 class="anchored" data-anchor-id="pros-and-cons-of-kernel-nonparametric-regression">Pros and cons of kernel nonparametric regression</h2>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pros
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Local linear regression is a <span class="blue">nonparametric</span> estimator for unknown functions <span class="math inline">f(x)</span> which makes very <span class="orange">few assumptions</span> on its form.</p></li>
+<li><p>The procedure is simple and <span class="blue">computationally efficient</span>.</p></li>
+<li><p>Smoothing parameter can be easily handled, being a linear smoother.</p></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cons
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>There is a price to pay for not making assumption: estimation is <span class="orange">less efficient</span> in terms of mean squared error compared to parametric models (when they are correctly specified!).</p></li>
+<li><p>This is a drawback of all nonparametric estimators, not just local linear regression.</p></li>
+</ul>
 </div>
 </div>
 </section>
@@ -765,7 +819,7 @@ h_1(x) = 1, \quad h_2(x) = x, \quad h_3(x) = x^2, \quad \dots \quad h_K(x) = x^{
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_D_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="1200"></p>
+<p><img src="un_D_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="1200"></p>
 </figure>
 </div>
 </div>
@@ -803,7 +857,7 @@ h_{28}(x) &amp;= I(x \ge \xi_9),  &amp;&amp;h_{29}(x) = x\:I(x \ge \xi_9), &amp;
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_D_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="1800"></p>
+<p><img src="un_D_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="1800"></p>
 </figure>
 </div>
 </div>
@@ -942,7 +996,7 @@ f(x; \beta) = \sum_{j=1}^{k+M}h_j(x) \beta_j.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_D_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="1800"></p>
+<p><img src="un_D_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="1800"></p>
 </figure>
 </div>
 </div>
@@ -1010,7 +1064,7 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_D_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="1800"></p>
+<p><img src="un_D_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="1800"></p>
 </figure>
 </div>
 </div>
@@ -1034,7 +1088,7 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <h2 class="anchored" data-anchor-id="computations-b-splines-ii">Computations: B-splines II</h2>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="un_D_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="1400"></p>
+<p><img src="un_D_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="1400"></p>
 </div>
 </div>
 </section>

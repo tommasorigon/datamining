@@ -182,22 +182,91 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 
 
-library(KernSmooth)
+loclin1 <- function(x, y, bandwidth, x0) {
+  w <- dnorm(x, mean = x0, sd = bandwidth)
+  a0 <- mean(w)
+  a1 <- mean(w * (x - x0))
+  a2 <- mean(w * (x - x0)^2)
+  mean(((a2 - a1 * (x - x0)) * w * y) / (a2 * a0 - a1^2))
+}
 
-# Optimal parameter is selected using a plug-in method that is not described in the slides.
-# Congratulations for spotting this, I expect ~3% of the students will actually read this code.
-# Anyway, if you want to understand how this method works, you can read the paper described in the documentation (? dpill)
-h_param <- dpill(x, y)
+loclin <- Vectorize(loclin1, vectorize.args = "x0")
 
-fit_locpoly <- locpoly(x, y, bandwidth = h_param, gridsize = 2000)
+S_diag <- function(x, y, bandwidth) {
+  n <- length(y)
+  S_diag <- numeric(n)
+  for (i in 1:n) {
+    x0 <- x[i]
+    w <- dnorm(x, mean = x0, sd = bandwidth)
+    a0 <- mean(w)
+    a1 <- mean(w * (x - x0))
+    a2 <- mean(w * (x - x0)^2)
+    S_diag[i] <- ((a2 - a1 * (x[i] - x0)) * w[i]) / (a2 * a0 - a1^2) / n
+  }
+  S_diag
+}
+
+df_loclin <- function(x, y, bandwidth) {
+  sum(S_diag(x, y, bandwidth))
+}
+
+
+
+# Code execution and storage of the interesting quantities
+bandwidth_list <- exp(seq(from = -1, to = 2, length = 100))
+data_goodness <- data.frame(bandwidth = bandwidth_list)
+for (i in 1:length(bandwidth_list)) {
+  # Fitting a polynomial of degree p -1
+  lev <- S_diag(x, y, bandwidth_list[i])
+  fit <- loclin(x, y, bandwidth_list[i], x)
+  res_loo <- (y - fit) / (1 - lev)
+  data_goodness$df[i] <- sum(lev)
+  data_goodness$LOO_CV[i] <- mean(res_loo^2)
+  data_goodness$LOO_CV_SE[i] <- sd(res_loo) / sqrt(nrow(dataset))
+  data_goodness$GCV[i] <- mean(((y - fit) / (1 - sum(lev) / nrow(dataset)))^2)
+}
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+#|
+id_opt <- which.min(data_goodness$LOO_CV)
+h_opt <- data_goodness$bandwidth[id_opt]
+df_opt <- data_goodness$df[id_opt]
+
+x_seq <- seq(from = min(x), to = max(x), length = 2000)
+fit_locpoly <- loclin(x, y, bandwidth = h_opt, x0 = x_seq)
 
 ggplot(data = dataset, aes(x = times, y = accel)) +
   geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = fit_locpoly$x, y = fit_locpoly$y), aes(x = x, y = y), col = "#1170aa") +
+  geom_line(data = data.frame(x = x_seq, y = fit_locpoly), aes(x = x, y = y), col = "#1170aa") +
   theme_minimal() +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+
+# Organization of the results for graphical purposes
+data_bv <- data.frame(df = data_goodness$df, GCV = data_goodness$GCV, LOO_CV = data_goodness$LOO_CV, SE = data_goodness$LOO_CV_SE)
+data_bv <- reshape2::melt(data_bv, id = c("df", "SE"))
+data_bv$SE[data_bv$variable == "GCV"] <- NA
+levels(data_bv$variable) <- c("GCV", "LOO-CV")
+colnames(data_bv) <- c("df", "SE", "Error term", "value")
+
+ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = df_opt, linetype = "dotted", col = "#fc7d0b") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Effective degrees of freedom (df)") +
+  ylab("Mean Squared Error (MSE)")
 
 
 #| message: false
