@@ -112,14 +112,17 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#splines-iv" id="toc-splines-iv" class="nav-link" data-scroll-target="#splines-iv">Splines IV</a></li>
   <li><a href="#truncated-power-basis-i" id="toc-truncated-power-basis-i" class="nav-link" data-scroll-target="#truncated-power-basis-i">Truncated power basis I</a></li>
   <li><a href="#truncated-power-basis-ii" id="toc-truncated-power-basis-ii" class="nav-link" data-scroll-target="#truncated-power-basis-ii">Truncated power basis II</a></li>
-  <li><a href="#regression-splines-k-15" id="toc-regression-splines-k-15" class="nav-link" data-scroll-target="#regression-splines-k-15">Regression splines (<span class="math inline">k = 15</span>)</a></li>
+  <li><a href="#on-the-choice-of-the-knots" id="toc-on-the-choice-of-the-knots" class="nav-link" data-scroll-target="#on-the-choice-of-the-knots">On the choice of the knots</a></li>
+  <li><a href="#regression-splines-p-12" id="toc-regression-splines-p-12" class="nav-link" data-scroll-target="#regression-splines-p-12">Regression splines (<span class="math inline">p = 12</span>)</a></li>
+  <li><a href="#on-the-choice-of-p-cubic-splines" id="toc-on-the-choice-of-p-cubic-splines" class="nav-link" data-scroll-target="#on-the-choice-of-p-cubic-splines">On the choice of <span class="math inline">p</span> (cubic splines)</a></li>
   <li><a href="#natural-cubic-splines-i" id="toc-natural-cubic-splines-i" class="nav-link" data-scroll-target="#natural-cubic-splines-i">Natural cubic splines I</a></li>
   <li><a href="#natural-cubic-splines-ii" id="toc-natural-cubic-splines-ii" class="nav-link" data-scroll-target="#natural-cubic-splines-ii">Natural cubic splines II</a></li>
-  <li><a href="#natural-cubic-splines-k-15" id="toc-natural-cubic-splines-k-15" class="nav-link" data-scroll-target="#natural-cubic-splines-k-15">Natural cubic splines (<span class="math inline">k = 15</span>)</a></li>
+  <li><a href="#natural-cubic-splines-k-12" id="toc-natural-cubic-splines-k-12" class="nav-link" data-scroll-target="#natural-cubic-splines-k-12">Natural cubic splines (<span class="math inline">k = 12</span>)</a></li>
   <li><a href="#computations-b-splines-i" id="toc-computations-b-splines-i" class="nav-link" data-scroll-target="#computations-b-splines-i">Computations: B-splines I</a></li>
   <li><a href="#computations-b-splines-ii" id="toc-computations-b-splines-ii" class="nav-link" data-scroll-target="#computations-b-splines-ii">Computations: B-splines II</a></li>
   <li><a href="#definition-of-b-splines" id="toc-definition-of-b-splines" class="nav-link" data-scroll-target="#definition-of-b-splines">☠️ - Definition of B-splines</a></li>
   <li><a href="#properties-of-b-splines" id="toc-properties-of-b-splines" class="nav-link" data-scroll-target="#properties-of-b-splines">☠️ - Properties of B-splines</a></li>
+  <li><a href="#pros-and-cons-of-regression-splines" id="toc-pros-and-cons-of-regression-splines" class="nav-link" data-scroll-target="#pros-and-cons-of-regression-splines">Pros and cons of regression splines</a></li>
   </ul></li>
   <li><a href="#smoothing-splines" id="toc-smoothing-splines" class="nav-link" data-scroll-target="#smoothing-splines">Smoothing splines</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
@@ -773,7 +776,7 @@ Pros
 <ul>
 <li><p>Local linear regression is a <span class="blue">nonparametric</span> estimator for unknown functions <span class="math inline">f(x)</span> which makes very <span class="orange">few assumptions</span> on its form.</p></li>
 <li><p>The procedure is simple and <span class="blue">computationally efficient</span>.</p></li>
-<li><p>Smoothing parameter can be easily handled, being a linear smoother.</p></li>
+<li><p>The smoothing parameter <span class="math inline">h</span> can be easily handled, since <span class="math inline">\hat{f}(x)</span> a linear smoother.</p></li>
 </ul>
 </div>
 </div>
@@ -803,11 +806,11 @@ Cons
 <li>The idea of polynomial regression can be <span class="blue">generalized</span> and <span class="orange">improved</span>. The main idea is to augment or replace the input <span class="math inline">x</span> with additional variables (<span class="blue">basis expansion</span>).</li>
 </ul>
 <ul>
-<li><p>Let <span class="math inline">h_1(x), \dots, h_K(x)</span> be <span class="orange">pre-specified</span> functions <span class="math inline">h_j(x) : \mathbb{R} \rightarrow \mathbb{R}</span> that transform the original predictor <span class="math inline">x</span> in some <span class="blue">non-linear</span> fashion. Then, we let <span class="math display">
-f(x;\beta) = \sum_{j=1}^K h_j(x) \beta_j,
-</span> where <span class="math inline">\beta = (\beta_1, \dots, \beta_K)^T</span> is a vector of <span class="orange">unknown coefficients</span>.</p></li>
+<li><p>Let <span class="math inline">h_1(x), \dots, h_p(x)</span> be <span class="orange">pre-specified</span> functions <span class="math inline">h_j(x) : \mathbb{R} \rightarrow \mathbb{R}</span> that transform the original predictor <span class="math inline">x</span> in some <span class="blue">non-linear</span> fashion. Then, we let <span class="math display">
+f(x;\beta) = \sum_{j=1}^p h_j(x) \beta_j,
+</span> where <span class="math inline">\beta = (\beta_1, \dots, \beta_p)^T</span> is a vector of <span class="orange">unknown coefficients</span>.</p></li>
 <li><p><span class="blue">Polynomials</span> are a specific instance of basis expansion, in which <span class="math display">
-h_1(x) = 1, \quad h_2(x) = x, \quad h_3(x) = x^2, \quad \dots \quad h_K(x) = x^{K-1}.</span></p></li>
+h_1(x) = 1, \quad h_2(x) = x, \quad h_3(x) = x^2, \quad \dots \quad h_p(x) = x^{p-1}.</span></p></li>
 </ul>
 <ul>
 <li>The main advantage of this approach is its <span class="orange">linearity</span> in the <span class="orange">parameters</span>, because it means that <span class="blue">ordinary least squares</span> can be used for the estimation of <span class="math inline">\beta</span>.</li>
@@ -825,7 +828,7 @@ h_1(x) = 1, \quad h_2(x) = x, \quad h_3(x) = x^2, \quad \dots \quad h_K(x) = x^{
 </div>
 </div>
 <ul>
-<li>A <span class="blue">piecewise constant</span> regression model is another instance of basis expansions, in which we consider step functions, say <span class="math inline">K = 3</span> <span class="math display">
+<li>A <span class="blue">piecewise constant</span> regression model is another instance of basis expansions, in which we consider step functions, say <span class="math inline">p = 3</span> <span class="math display">
 h_1(x) = I(x &lt; \xi_1), \quad h_2(x) = I(\xi_1 \le x &lt; \xi_2), \quad h_3(x) =  I(x \ge \xi_2),
 </span> where <span class="math inline">\xi = (\xi_1,\xi_2)</span> are pre-specified cutpoints, called <span class="orange">knots</span>. Here <span class="math inline">\xi = (15, 25)</span>.</li>
 </ul>
@@ -836,7 +839,7 @@ h_1(x) = I(x &lt; \xi_1), \quad h_2(x) = I(\xi_1 \le x &lt; \xi_2), \quad h_3(x)
 <li>The previous choice of knots is <span class="orange">not working</span> very well. The model is not flexible enough.</li>
 </ul>
 <ul>
-<li>To improve the fit, we could consider <span class="blue">piecewise polynomial</span> functions rather than constant. For example, a piecewise <span class="orange">quadratic</span> function with <span class="math inline">K = 30</span> is <span class="math display">
+<li>To improve the fit, we could consider <span class="blue">piecewise polynomial</span> functions rather than constant. For example, a piecewise <span class="orange">quadratic</span> function with <span class="math inline">p = 30</span> is <span class="math display">
 \begin{aligned}
 h_1(x) &amp;= I(x &lt; \xi_1), &amp;&amp; h_2(x) = x\:I(x &lt; \xi_1), &amp;&amp;&amp; h_3(x) = x^2\:I(x &lt; \xi_1),  \\
 h_4(x) &amp;= I(\xi_1 \le x  &lt;\xi_2), &amp;&amp;h_5(x) = x\:I(\xi_1 \le x &lt; \xi_2), &amp;&amp;&amp; h_6(x) = x^2\:I(\xi_1 \le x &lt; \xi_2), \\
@@ -894,16 +897,16 @@ h_{28}(x) &amp;= I(x \ge \xi_9),  &amp;&amp;h_{29}(x) = x\:I(x \ge \xi_9), &amp;
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition (Spline of order <span class="math inline">M</span>th)
+Definition (Spline of degree <span class="math inline">d</span>)
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Let <span class="math inline">\xi_1 &lt; \cdots &lt; \xi_k</span> be a set of ordered points called <span class="orange">knots</span> belonging to the interval <span class="math inline">(a, b)</span>.</p>
-<p>A <span class="blue">spline</span> <span class="math inline">f(x; \beta) : (a, b) \rightarrow \mathbb{R}</span> of order <span class="math inline">M</span>th is a piecewise polynomial function of degree <span class="math inline">M - 1</span> that has continuous derivatives up to order <span class="math inline">M - 2</span>.</p>
+<p>A <span class="blue">spline</span> <span class="math inline">f(x; \beta) : (a, b) \rightarrow \mathbb{R}</span> of degree <span class="math inline">d</span> is a piecewise polynomial function of degree <span class="math inline">d</span> that has continuous derivatives up to order <span class="math inline">d - 1</span>.</p>
 </div>
 </div>
 <ul>
-<li><span class="blue">Cubic splines</span> (<span class="math inline">M = 4</span>) are the most common spline used in practice.</li>
+<li><span class="blue">Cubic splines</span> (<span class="math inline">d = 3</span>) are the most common spline used in practice.</li>
 </ul>
 <div class="callout callout-style-simple callout-tip no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -911,7 +914,7 @@ Definition (Spline of order <span class="math inline">M</span>th)
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Definition (Cubic spline, <span class="math inline">M = 4</span>)
+Definition (Cubic spline, <span class="math inline">d = 3</span>)
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -933,17 +936,17 @@ Definition (Cubic spline, <span class="math inline">M = 4</span>)
 <section id="splines-iv" class="level2">
 <h2 class="anchored" data-anchor-id="splines-iv">Splines IV</h2>
 <ul>
-<li>To <span class="orange">recap</span>: a spline of order <span class="math inline">M</span> is a piecewise polynomial <span class="math inline">f(x; \beta)</span> of order <span class="math inline">M-1</span> such that <span class="math display">
-f(\xi_j^+) = f(\xi_j^-), \dots, f^{(M-2)}(\xi_j^+) = f^{(M-2)}(\xi_j^-), \qquad j=1,\dots,k,
+<li>To <span class="orange">recap</span>: a spline of degree <span class="math inline">d</span> is a piecewise polynomial <span class="math inline">f(x; \beta)</span> of order <span class="math inline">d</span> such that <span class="math display">
+f(\xi_j^+) = f(\xi_j^-), \dots, f^{(d-1)}(\xi_j^+) = f^{(d-1)}(\xi_j^-), \qquad j=1,\dots,k,
 </span> where <span class="math inline">\xi_j^+</span> and <span class="math inline">\xi_j^-</span> denote the left and the right limits.</li>
 </ul>
 <ul>
-<li>The order <span class="math inline">M</span> controls the amount of smoothness:
+<li>The degree <span class="math inline">d</span> controls the amount of smoothness:
 <ul>
-<li><span class="math inline">M = 1</span> is a <span class="blue">piecewise constant</span> function</li>
-<li><span class="math inline">M = 2</span> is a <span class="orange">polygonal line</span> (continuous, but with discontinous first derivative)</li>
+<li><span class="math inline">d = 0</span> is a <span class="blue">piecewise constant</span> function;</li>
+<li><span class="math inline">d = 1</span> is a <span class="orange">polygonal line</span> (continuous, but with discontinous first derivative).</li>
 </ul></li>
-<li>Higher values of <span class="math inline">M</span> increase the smoothness, but the spline behave more and more like a global polynomial. In practice one almost never goes beyond <span class="math inline">M = 4</span>.</li>
+<li>Higher values of <span class="math inline">d</span> increase the smoothness, but the spline behave more and more like a global polynomial. In practice one almost never goes beyond <span class="math inline">d = 3</span>.</li>
 </ul>
 <ul>
 <li>The current definition of spline is quite <span class="blue">abstract</span> and <span class="orange">non-operative</span>. How do we actually fit a regression model whose <span class="math inline">f(x; \beta)</span> is a spline?</li>
@@ -962,12 +965,12 @@ Theorem (Truncated power basis)
 </div>
 <div class="callout-body-container callout-body">
 <p>Let <span class="math inline">\xi_1 &lt; \cdots &lt; \xi_k</span> be a set of ordered points called <span class="orange">knots</span> belonging to <span class="math inline">(a, b)</span>. Let <span class="math display">
-h_j(x) = x^{j-1}, \qquad j=1,\dots,M,
+h_j(x) = x^{j-1}, \qquad j=1,\dots,d + 1,
 </span> and <span class="math display">
-h_j(x) = (x - \xi_j)_+^M, \qquad j = 1 + M, \dots, k + M.
-</span> Then, the functions <span class="math inline">\{h_1,\dots,h_{k+M}\}</span> form a basis for the set of splines of order <span class="math inline">M</span>th at these knots, called the <span class="blue">truncated power basis</span>.</p>
-<p>Thus, any <span class="orange"><span class="math inline">M</span>th order spline</span> <span class="math inline">f(x, \beta)</span> with these knots can be written as a basis expansion <span class="math display">
-f(x; \beta) = \sum_{j=1}^{k+M}h_j(x) \beta_j.
+h_j(x) = (x - \xi_j)_+^d, \qquad j = 2 + d, \dots, k + d + 1.
+</span> Then, the functions <span class="math inline">\{h_1,\dots,h_{k+d + 1}\}</span> form a basis for the set of splines of degree <span class="math inline">d</span> at these knots, called the <span class="blue">truncated power basis</span>.</p>
+<p>Thus, any <span class="orange"><span class="math inline">d</span>th degree spline</span> <span class="math inline">f(x, \beta)</span> with these knots can be written as a basis expansion <span class="math display">
+f(x; \beta) = \sum_{j=1}^{k+d+1}h_j(x) \beta_j.
 </span></p>
 </div>
 </div>
@@ -978,25 +981,60 @@ f(x; \beta) = \sum_{j=1}^{k+M}h_j(x) \beta_j.
 <li>The truncated power basis of a spline makes is a <span class="orange">constructive</span> way of defining splines. Moreover, it clarifies that splines are <span class="blue">linear in the parameters</span>.</li>
 </ul>
 <ul>
-<li><p>Let <span class="math inline">\bm{B}</span> be a <span class="math inline">n \times K</span> design matrix whose elements are obtained from the basis functions: <span class="math display">
-[\bm{B}]_{ij} = h_j(x_i), \qquad j=1,\dots,K; \quad i=1,\dots,n.
+<li><p>Let <span class="math inline">\bm{B}</span> be a <span class="math inline">n \times p</span> design matrix whose elements are obtained from the basis functions: <span class="math display">
+[\bm{B}]_{ij} = h_j(x_i), \qquad j=1,\dots,p; \quad i=1,\dots,n.
 </span></p></li>
-<li><p>Let <span class="math inline">f(x;\beta) = \sum_{j=1}^K h_j(x)\beta_j</span>. Then, the <span class="blue">ordinary least squares</span> for <span class="math inline">\beta</span> are obtained as usual: <span class="math display">
-\hat{\beta} = (\bm{B}^T\bm{B})^{-1}\bm{B}^T\bm{y} \implies \hat{f}(x) = \sum_{j=1}^K h_j(x)\hat{\beta}_j = \sum_{i=1}^n s_i(x) y_i.
+<li><p>Let <span class="math inline">f(x;\beta) = \sum_{j=1}^p h_j(x)\beta_j</span>. Then, the <span class="blue">ordinary least squares</span> for <span class="math inline">\beta</span> are obtained as usual: <span class="math display">
+\hat{\beta} = (\bm{B}^T\bm{B})^{-1}\bm{B}^T\bm{y} \implies \hat{f}(x) = \sum_{j=1}^p h_j(x)\hat{\beta}_j = \sum_{i=1}^n s_i(x) y_i.
 </span></p></li>
 </ul>
 <ul>
-<li><p>We call this approach <span class="orange">regression splines</span>, which are another instance of <span class="blue">linear smoother</span>. The smoothing matrix in this case is <span class="math inline">\bm{S} = \bm{B} (\bm{B}^T\bm{B})^{-1}\bm{B}^T</span>.</p></li>
-<li><p>The number and the placement of the knots are <span class="orange">complexity parameters</span>, which should be chosen via cross-validation or other tools.</p></li>
+<li>Hence, <span class="orange">regression splines</span> are another instance of <span class="blue">linear smoother</span> (actually, of <span class="blue">linear model</span>). The smoothing matrix in this case is <span class="math inline">\bm{S} = \bm{B} (\bm{B}^T\bm{B})^{-1}\bm{B}^T</span>, so that <span class="math inline">\text{tr}(\bm{S}) = p</span>.</li>
 </ul>
 </section>
-<section id="regression-splines-k-15" class="level2">
-<h2 class="anchored" data-anchor-id="regression-splines-k-15">Regression splines (<span class="math inline">k = 15</span>)</h2>
+<section id="on-the-choice-of-the-knots" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-choice-of-the-knots">On the choice of the knots</h2>
+<ul>
+<li>The placement and the number <span class="math inline">k</span> of the knots are <span class="orange">complexity parameters</span>, which should be chosen via cross-validation or other tools.</li>
+</ul>
+<ul>
+<li>In principle the <span class="blue">position of the knots</span> could be manually selected to get the best fit. However, this results in an <span class="orange">incredible optimization problem</span>.</li>
+</ul>
+<ul>
+<li>In practice, the knots are typically selected in two ways:
+<ol type="1">
+<li>Knots are <span class="orange">equally spaced</span> on a grid of values ranging from <span class="math inline">\min(x)</span> to <span class="math inline">\max(x)</span>;</li>
+<li>Knots are placed on <span class="blue">quantiles</span> (<code>bs</code> default), to get <span class="blue">variable bandwidth</span>.</li>
+</ol></li>
+</ul>
+<ul>
+<li>The <span class="blue">degree</span> <span class="math inline">d</span> influences the <span class="orange">number of knots</span> we can place for a fixed number of degrees of freedom <span class="math inline">p</span>. For example:
+<ul>
+<li>In linear splines (<span class="math inline">d = 1</span>), with <span class="math inline">p = 12</span> we can place <span class="math inline">k = p - d - 1 = 10</span> knots;</li>
+<li>In quadratic splines (<span class="math inline">d = 2</span>), with <span class="math inline">p = 12</span> we can place <span class="math inline">k = 9</span> knots;</li>
+<li>In cubic splines (<span class="math inline">d = 3</span>), with <span class="math inline">p = 12</span> we can place <span class="math inline">k = 8</span> knots.</li>
+</ul></li>
+</ul>
+</section>
+<section id="regression-splines-p-12" class="level2">
+<h2 class="anchored" data-anchor-id="regression-splines-p-12">Regression splines (<span class="math inline">p = 12</span>)</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="un_D_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="1800"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="on-the-choice-of-p-cubic-splines" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-choice-of-p-cubic-splines">On the choice of <span class="math inline">p</span> (cubic splines)</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_D_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="1800"></p>
 </figure>
 </div>
 </div>
@@ -1021,7 +1059,7 @@ Definition (Natural cubic spline)
 </div>
 </div>
 <ul>
-<li>Natural cubic splines add <span class="math inline">4</span> <span class="orange">additional constraints</span>; these degrees of freedom can be used more efficiently to place more internal knots.</li>
+<li>Natural cubic splines enforce <span class="math inline">4</span> <span class="orange">additional constraints</span>; these degrees of freedom can be used more efficiently to place more internal knots.</li>
 </ul>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -1043,28 +1081,28 @@ Proposition
 <li>In practice, the <span class="blue">truncated power basis</span> can be easily <span class="orange">modified</span>, to get the following basis <span class="math display">
 \begin{aligned}
 &amp;N_1(x) = 1, \quad N_2(x) = x, \\
-&amp;N_{j + 2}(x) = \frac{(x - \xi_j)^3_+ - (x - \xi_K)^3_+}{\xi_K - \xi_j} - \frac{(x - \xi_{K-1})^3_+ - (x - \xi_K)^3_+}{\xi_K - \xi_{K-1}}, \quad j = 1,\dots,k - 2.
+&amp;N_{j + 2}(x) = \frac{(x - \xi_j)^3_+ - (x - \xi_k)^3_+}{\xi_k - \xi_j} - \frac{(x - \xi_{k-1})^3_+ - (x - \xi_k)^3_+}{\xi_k - \xi_{k-1}}, \quad j = 1,\dots,k - 2.
 \end{aligned}
 </span></li>
 </ul>
 <ul>
-<li>This formula is a <span class="orange">scaled version</span> of the truncated power basis for any <span class="math inline">x \le \xi_{K-1}</span>, namely <span class="math display">
-N_{j+2}(x) = \frac{(x - \xi_j)^3_+}{\xi_K - \xi_j}, \qquad x \le \xi_{K-1}, \quad j = 1,\dots,k - 2.
-</span> The formula becomes more complicated when <span class="math inline">x &gt; \xi_{K-1}</span> and the constraint is enforced.</li>
+<li>This formula is a <span class="orange">scaled version</span> of the truncated power basis for any <span class="math inline">x \le \xi_{k-1}</span>, namely <span class="math display">
+N_{j+2}(x) = \frac{(x - \xi_j)^3_+}{\xi_k - \xi_j}, \qquad x \le \xi_{k-1}, \quad j = 1,\dots,k - 2.
+</span> The formula becomes more complicated when <span class="math inline">x &gt; \xi_{k-1}</span> and the constraint is enforced.</li>
 </ul>
 <ul>
-<li>Hence, <span class="blue">natural cubic splines</span> are linear in the parameters and can be express as follows <span class="math display">
+<li>Hence, in <span class="blue">natural cubic splines</span> <span class="math inline">k = p</span> and the function can be express as follows <span class="math display">
 f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 </span></li>
 </ul>
 </section>
-<section id="natural-cubic-splines-k-15" class="level2">
-<h2 class="anchored" data-anchor-id="natural-cubic-splines-k-15">Natural cubic splines (<span class="math inline">k = 15</span>)</h2>
+<section id="natural-cubic-splines-k-12" class="level2">
+<h2 class="anchored" data-anchor-id="natural-cubic-splines-k-12">Natural cubic splines (<span class="math inline">k = 12</span>)</h2>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="un_D_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="1800"></p>
+<p><img src="un_D_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="1800"></p>
 </figure>
 </div>
 </div>
@@ -1076,8 +1114,8 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <ul class="incremental">
 <li><p>Despite their conceptual simplicity, the truncated power basis and its natural modification are <span class="blue">not</span> used in <span class="blue">practice</span>, due to <span class="orange">ill-conditioning</span>.</p></li>
 <li><p>Indeed, the condition number of <span class="math inline">\bm{B}^T\bm{B}</span> using a truncated power basis is very large, leading to <span class="orange">numerical inaccuracies</span>.</p></li>
-<li><p>For this reason, more <span class="blue">computationally convenient</span> bases are preferred. This means we will consider an <span class="blue">equivalent</span> set of functions <span class="math inline">\mathcal{B}_1(x),\dots,\mathcal{B}_K(x)</span> such that <span class="math display">
-\mathcal{B}_j(x) = \sum_{\ell=1}^K\gamma_{\ell j} h_\ell(x), \qquad j=1,\dots,K,
+<li><p>For this reason, more <span class="blue">computationally convenient</span> bases are preferred. This means we will consider an <span class="blue">equivalent</span> set of functions <span class="math inline">\mathcal{B}_1(x),\dots,\mathcal{B}_p(x)</span> such that <span class="math display">
+\mathcal{B}_j(x) = \sum_{\ell=1}^p\gamma_{\ell j} h_\ell(x), \qquad j=1,\dots,p,
 </span> for some set of weights <span class="math inline">\gamma_{\ell j}</span> that makes this transformation <span class="orange">one-to-one</span>.</p></li>
 <li><p>Since we are performing a linear transformation, if ordinary least squares are used, this <span class="orange">does not change</span> the fit.</p></li>
 <li><p>A particularly convenient basis are <span class="blue">B-splines</span>, which are <span class="blue">local</span> and <span class="orange">numerically stable</span>. They admit a direct construction; i.e.&nbsp;we do not need to compute the coefficients <span class="math inline">\gamma_{\ell j}</span>.</p></li>
@@ -1088,46 +1126,86 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <h2 class="anchored" data-anchor-id="computations-b-splines-ii">Computations: B-splines II</h2>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="un_D_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="1400"></p>
+<p><img src="un_D_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="1400"></p>
 </div>
 </div>
 </section>
 <section id="definition-of-b-splines" class="level2">
 <h2 class="anchored" data-anchor-id="definition-of-b-splines">☠️ - Definition of B-splines</h2>
 <ul>
-<li>Define <span class="math inline">\xi = (\xi_1,\dots,x_k)</span> and consider an <span class="orange">augmented</span> sequence of ordered <span class="orange">knots</span> <span class="math display">
-\tau = (\tau_1,\dots,\tau_{K + 2M}) = (\underbrace{\xi_{-M+1},\dots,\xi_0}_{\text{auxiliary knots}}, \: \xi,\: \underbrace{\xi_{k+1},\dots,\xi_{k + M}}_{\text{auxiliary knots}}).
-</span> The most common choice is <span class="math inline">\xi_{-M+1}= \dots = \xi_0 = a</span> and <span class="math inline">\xi_{k+1} = \dots = \xi_{k + M} = b</span>.</li>
+<li>Define <span class="math inline">\xi = (\xi_1,\dots,\xi_k)</span> and consider an <span class="orange">augmented</span> sequence of ordered <span class="orange">knots</span> <span class="math display">
+\tau = (\tau_1,\dots,\tau_{k + 2d + 2}) = (\underbrace{\xi_{-d},\dots,\xi_0}_{\text{auxiliary knots}}, \: \xi,\: \underbrace{\xi_{k+1},\dots,\xi_{k + d + 1}}_{\text{auxiliary knots}}).
+</span> The most common choice is <span class="math inline">\xi_{-d}= \dots = \xi_0 = a</span> and <span class="math inline">\xi_{k+1} = \dots = \xi_{k + d+ 1} = b</span>.</li>
 </ul>
 <ul>
-<li><span class="blue">Step 1</span>. For <span class="math inline">j = 1,\dots, K + 2M - 1</span>, obtain the B-spline of order <span class="math inline">m = 0</span> as follows: <span class="math display">
+<li><span class="blue">Step 1</span>. For <span class="math inline">j = 1,\dots, k + 2d + 1</span>, obtain the B-spline of degree <span class="math inline">m = 0</span> as follows: <span class="math display">
 \mathcal{B}_{j,0}(x) = I_{[\tau_j, \tau_{j+1})}(x),
 </span> where by convention we say that <span class="math inline">\mathcal{B}_{j,0}(x) = 0</span> if the knots are equal <span class="math inline">\tau_j = \tau_{j+1}</span>.</li>
 </ul>
 <ul>
-<li><span class="orange">Step 2 (recursion)</span>. The B-spline of <span class="blue">order <span class="math inline">m \le M</span></span> are obtained <span class="orange">recursively</span>, so that <span class="math display">
-\mathcal{B}_{j, m}(x) = \frac{x - \tau_j}{\tau_{j + m - 1} - \tau_j}\mathcal{B}_{j, m-1}(x)  + \frac{\tau_{j + m} - x}{\tau_{j + m } - \tau_{j +1}}\mathcal{B}_{j + 1, m-1}(x),
-</span> for <span class="math inline">j=1,\dots,K + 2M - m</span> and for <span class="math inline">m=1,\dots,M</span>.</li>
+<li><span class="orange">Step 2 (recursion)</span>. The B-spline of <span class="blue">degree <span class="math inline">m \le d</span></span> are obtained <span class="orange">recursively</span>, so that <span class="math display">
+\mathcal{B}_{j, m}(x) = \frac{x - \tau_j}{\tau_{j + m} - \tau_j}\mathcal{B}_{j, m-1}(x)  + \frac{\tau_{j + m + 1} - x}{\tau_{j + m + 1} - \tau_{j +1}}\mathcal{B}_{j + 1, m-1}(x),
+</span> for <span class="math inline">j=1,\dots,k + 2d + 1 - m</span> and for <span class="math inline">m=1,\dots,d</span>.</li>
 </ul>
 </section>
 <section id="properties-of-b-splines" class="level2">
 <h2 class="anchored" data-anchor-id="properties-of-b-splines">☠️ - Properties of B-splines</h2>
 <ul>
-<li>B-splines have <span class="orange">local support</span>, which means that for <span class="math inline">j=1,\dots,K + 2M - m</span> we have <span class="math display">
-\begin{aligned}
-&amp;\mathcal{B}_{j, M}(x) = 0, \qquad x \not\in (\tau_j, \tau_{j+M}), \\
-&amp;\mathcal{B}_{j, M}(x) &gt; 0, \qquad x \in (\tau_j, \tau_{j+M}).
-\end{aligned}
-</span> This implies that the support of cubic B-splines is at most <span class="math inline">5</span> knots.</li>
+<li>The <span class="blue">intercept</span> term is <span class="orange">implicitly included</span> in a B-spline basis, in fact <span class="math display">
+\sum_{j=1}^{k + d + 1}\mathcal{B}_{j, d}(x) = 1, \qquad x \in (a, b).
+</span></li>
 </ul>
 <ul>
-<li>The <span class="blue">intercept</span> term is <span class="orange">implicitly included</span> in a B-spline basis, in fact <span class="math display">
-\sum_{j=1}^{K + M}\mathcal{B}_{j, M}(x) = 1, \qquad x \in (a, b).
-</span></li>
+<li>B-splines <span class="math inline">\tau</span> have <span class="orange">local support</span>, which means that for <span class="math inline">j=1,\dots,k + 2d + 1 - m</span> we have <span class="math display">
+\begin{aligned}
+&amp;\mathcal{B}_{j, d}(x) = 0, \qquad x \not\in (\tau_j, \tau_{j+d+1}), \\
+&amp;\mathcal{B}_{j, d}(x) &gt; 0, \qquad x \in (\tau_j, \tau_{j+d +1}).
+\end{aligned}
+</span> This implies that the support of cubic B-splines is at most <span class="math inline">4</span> knots.</li>
 </ul>
 <ul>
 <li>The presence of <span class="orange">structural zeros</span> implies that, when computing ordinary least squares, extremely efficient Cholesky factorization for <span class="blue">banded matrices</span> can be exploited.</li>
 </ul>
+<ul>
+<li>The B-spline basis can be modified to produce a <span class="blue">natural cubic spline</span>, by numerically enforcing the linearity constraint. This is implemented in the <code>ns</code> <strong>R</strong> function.</li>
+</ul>
+</section>
+<section id="pros-and-cons-of-regression-splines" class="level2">
+<h2 class="anchored" data-anchor-id="pros-and-cons-of-regression-splines">Pros and cons of regression splines</h2>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pros
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Regression splines is a <span class="orange">semi-parametric</span> estimator for unknown functions <span class="math inline">f(x)</span>.</p></li>
+<li><p>They are essentially a <span class="blue">linear model</span> with smart covariates that account for non-linearity. Hence, the procedure is simple and <span class="blue">computationally efficient</span> (thanks to B-splines).</p></li>
+<li><p>The smoothing parameter <span class="math inline">k</span> is discrete and can be easily handled, being directly associated with the number of degrees of freedom.</p></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cons
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><p>Knots placement based on quantiles or other automatic choices could be inefficient.</p></li>
+<li><p>Manual placement of the knots is out of question, because it is an almost impossibile optimization problem.<br>
+</p></li>
+</ul>
+</div>
+</div>
 </section>
 </section>
 <section id="smoothing-splines" class="level1">

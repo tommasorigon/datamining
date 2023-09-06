@@ -341,7 +341,7 @@ y_hat_bs <- predict(fit_bs, newdata = data.frame(times = times_seq))
 
 data_plot <- data.frame(
   times = times_seq, pred = c(y_hat_piece, y_hat_bs),
-  Method = rep(c("Piecewise quadratic", "Piecewise quadratic with continuity constraints"),
+  Method = rep(c("Piecewise quadratic", "Piecewise quadratic (continuity constraints)"),
     each = length(times_seq)
   )
 )
@@ -359,22 +359,18 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
 #| fig-height: 5
 #| fig-align: center
 
-knots <- quantile(dataset$times, ppoints(n = 15))
-
-fit_bs_3 <- lm(accel ~ bs(times, knots = knots, degree = 3, intercept = TRUE) - 1, data = dataset)
+fit_bs_3 <- lm(accel ~ bs(times, df = 12, degree = 3, intercept = TRUE) - 1, data = dataset)
 y_hat_bs_3 <- predict(fit_bs_3, newdata = data.frame(times = times_seq))
 
-fit_bs_2 <- lm(accel ~ bs(times, knots = knots, degree = 2, intercept = TRUE) - 1, data = dataset)
+fit_bs_2 <- lm(accel ~ bs(times, df = 12, degree = 2, intercept = TRUE) - 1, data = dataset)
 y_hat_bs_2 <- predict(fit_bs_2, newdata = data.frame(times = times_seq))
 
-
-fit_bs_1 <- lm(accel ~ bs(times, knots = knots, degree = 1, intercept = TRUE) - 1, data = dataset)
+fit_bs_1 <- lm(accel ~ bs(times, df = 12, degree = 1, intercept = TRUE) - 1, data = dataset)
 y_hat_bs_1 <- predict(fit_bs_1, newdata = data.frame(times = times_seq))
-
 
 data_plot <- data.frame(
   times = times_seq, pred = c(y_hat_bs_3, y_hat_bs_2, y_hat_bs_1),
-  Method = rep(c("Regression splines (M = 4)", "Regression splines (M = 3)", "Regression splines (M = 2)"),
+  Method = rep(c("3. Cubic spline (d = 3)", "2. Quadratic spline (d = 2)", "1. Linear splines (d = 1)"),
     each = length(times_seq)
   )
 )
@@ -389,17 +385,54 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   ylab("Head acceleration (g)")
 
 
+
+# Code execution and storage of the interesting quantities
+p_list <- 4:40
+data_goodness <- data.frame(p = p_list)
+for (i in 1:length(p_list)) {
+  # Fitting a polynomial of degree p -1
+  fit <- lm(accel ~ bs(times, degree = 3, df = p_list[i], intercept = TRUE) - 1, data = dataset)
+  # Computation of the leverages h_i efficiently (using QR)
+  lev <- influence(fit)$hat
+  res_loo <- (y - fitted(fit)) / (1 - lev)
+  data_goodness$LOO_CV[i] <- mean(res_loo^2)
+  data_goodness$LOO_CV_SE[i] <- sd(res_loo) / sqrt(nrow(dataset))
+  data_goodness$GCV[i] <- mean(((y - fitted(fit)) / (1 - p_list[i] / nrow(dataset)))^2)
+}
+
+# Organization of the results for graphical purposes
+data_bv <- data.frame(p = p_list, GCV = data_goodness$GCV, LOO_CV = data_goodness$LOO_CV, SE = data_goodness$LOO_CV_SE)
+data_bv <- reshape2::melt(data_bv, id = c("p", "SE"))
+data_bv$SE[data_bv$variable == "GCV"] <- NA
+levels(data_bv$variable) <- c("GCV", "LOO-CV")
+colnames(data_bv) <- c("p", "SE", "Error term", "value")
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = 12, linetype = "dotted", col = "#fc7d0b") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Mean Squared Error (MSE)")
+
+
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
 
-knots <- quantile(dataset$times, ppoints(n = 15))
+knots <- quantile(dataset$times, ppoints(n = 12))
 
 fit_bs_3 <- lm(accel ~ bs(times, knots = knots, degree = 3, intercept = TRUE) - 1, data = dataset)
 y_hat_bs_3 <- predict(fit_bs_3, newdata = data.frame(times = times_seq))
 
 # Here it's tricky, because by default ns does a different thing (it uses the boundary knots as regular knots)
-fit_ns_3 <- lm(accel ~ ns(times, knots = knots[-c(1, 15)], Boundary.knots = c(knots[1], knots[15]), intercept = TRUE) - 1, data = dataset)
+fit_ns_3 <- lm(accel ~ ns(times, knots = knots[-c(1, 12)], Boundary.knots = c(knots[1], knots[12]), intercept = TRUE) - 1, data = dataset)
 y_hat_ns_3 <- predict(fit_ns_3, newdata = data.frame(times = times_seq))
 
 data_plot <- data.frame(
@@ -413,7 +446,7 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   geom_point(data = dataset, aes(x = times, y = accel), size = 0.7, col = "black") +
   theme_minimal() +
   theme(legend.position = "top") +
-  geom_vline(xintercept = knots[c(1, 15)], linetype = "dotted") +
+  geom_vline(xintercept = knots[c(1, 12)], linetype = "dotted") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")

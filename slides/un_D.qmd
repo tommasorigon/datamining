@@ -1035,7 +1035,7 @@ persp(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
 
 - The procedure is simple and [computationally efficient]{.blue}. 
 
-- Smoothing parameter can be easily handled, being a linear smoother.
+- The smoothing parameter $h$ can be easily handled, since $\hat{f}(x)$ a linear smoother.
 :::
 
 . . .
@@ -1058,17 +1058,17 @@ persp(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
 
 . . .
 
--   Let $h_1(x), \dots, h_K(x)$ be [pre-specified]{.orange} functions
+-   Let $h_1(x), \dots, h_p(x)$ be [pre-specified]{.orange} functions
     $h_j(x) : \mathbb{R} \rightarrow \mathbb{R}$ that transform the
     original predictor $x$ in some [non-linear]{.blue} fashion. Then, we
     let $$ 
-    f(x;\beta) = \sum_{j=1}^K h_j(x) \beta_j,
-    $$ where $\beta = (\beta_1, \dots, \beta_K)^T$ is a vector of
+    f(x;\beta) = \sum_{j=1}^p h_j(x) \beta_j,
+    $$ where $\beta = (\beta_1, \dots, \beta_p)^T$ is a vector of
     [unknown coefficients]{.orange}.
 
 -   [Polynomials]{.blue} are a specific instance of basis expansion, in
     which $$
-    h_1(x) = 1, \quad h_2(x) = x, \quad h_3(x) = x^2, \quad \dots \quad h_K(x) = x^{K-1}.$$
+    h_1(x) = 1, \quad h_2(x) = x, \quad h_3(x) = x^2, \quad \dots \quad h_p(x) = x^{p-1}.$$
 
 . . .
 
@@ -1102,7 +1102,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 -   A [piecewise constant]{.blue} regression model is another instance
     of basis expansions, in which we consider step functions, say
-    $K = 3$ $$
+    $p = 3$ $$
     h_1(x) = I(x < \xi_1), \quad h_2(x) = I(\xi_1 \le x < \xi_2), \quad h_3(x) =  I(x \ge \xi_2),
     $$ where $\xi = (\xi_1,\xi_2)$ are pre-specified cutpoints, called
     [knots]{.orange}. Here $\xi = (15, 25)$.
@@ -1116,7 +1116,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 -   To improve the fit, we could consider [piecewise polynomial]{.blue}
     functions rather than constant. For example, a piecewise [quadratic]{.orange}
-    function with $K = 30$ is $$
+    function with $p = 30$ is $$
     \begin{aligned}
     h_1(x) &= I(x < \xi_1), && h_2(x) = x\:I(x < \xi_1), &&& h_3(x) = x^2\:I(x < \xi_1),  \\
     h_4(x) &= I(\xi_1 \le x  <\xi_2), &&h_5(x) = x\:I(\xi_1 \le x < \xi_2), &&& h_6(x) = x^2\:I(\xi_1 \le x < \xi_2), \\
@@ -1154,7 +1154,7 @@ y_hat_bs <- predict(fit_bs, newdata = data.frame(times = times_seq))
 
 data_plot <- data.frame(
   times = times_seq, pred = c(y_hat_piece, y_hat_bs),
-  Method = rep(c("Piecewise quadratic", "Piecewise quadratic with continuity constraints"),
+  Method = rep(c("Piecewise quadratic", "Piecewise quadratic (continuity constraints)"),
     each = length(times_seq)
   )
 )
@@ -1195,18 +1195,18 @@ set of points.
 ## Splines II
 
 ::: callout-note
-#### Definition (Spline of order $M$th)
+#### Definition (Spline of degree $d$)
 Let $\xi_1 < \cdots < \xi_k$ be a set of ordered points called [knots]{.orange} belonging to the interval $(a, b)$.  
 
-A [spline]{.blue} $f(x; \beta) : (a, b) \rightarrow \mathbb{R}$ of order $M$th is a piecewise polynomial function of degree $M - 1$ that has continuous derivatives up to order $M - 2$.
+A [spline]{.blue} $f(x; \beta) : (a, b) \rightarrow \mathbb{R}$ of degree $d$ is a piecewise polynomial function of degree $d$ that has continuous derivatives up to order $d - 1$.
 :::
 
 . . .
 
-- [Cubic splines]{.blue} ($M = 4$) are the most common spline used in practice.
+- [Cubic splines]{.blue} ($d = 3$) are the most common spline used in practice.
 
 ::: callout-tip
-#### Definition (Cubic spline, $M = 4$)
+#### Definition (Cubic spline, $d = 3$)
 
 Letting $\xi_1 < \dots < \xi_k$ denote a set ordered knots, a [cubic spline]{.blue} $f(x; \beta)$ is a piecewise cubic polynomial that has [continuous first]{.orange} and [second derivatives]{.orange}.
 :::
@@ -1219,19 +1219,19 @@ Letting $\xi_1 < \dots < \xi_k$ denote a set ordered knots, a [cubic spline]{.bl
 
 ## Splines IV
 
-- To [recap]{.orange}: a spline of order $M$ is a piecewise polynomial $f(x; \beta)$ of order $M-1$ such that
+- To [recap]{.orange}: a spline of degree $d$ is a piecewise polynomial $f(x; \beta)$ of order $d$ such that
 $$
-f(\xi_j^+) = f(\xi_j^-), \dots, f^{(M-2)}(\xi_j^+) = f^{(M-2)}(\xi_j^-), \qquad j=1,\dots,k,
+f(\xi_j^+) = f(\xi_j^-), \dots, f^{(d-1)}(\xi_j^+) = f^{(d-1)}(\xi_j^-), \qquad j=1,\dots,k,
 $$
 where $\xi_j^+$ and $\xi_j^-$ denote the left and the right limits. 
 
 . . .
 
-- The order $M$ controls the amount of smoothness:
-    - $M = 1$ is a [piecewise constant]{.blue} function
-    - $M = 2$ is a [polygonal line]{.orange} (continuous, but with discontinous first derivative)
+- The degree $d$ controls the amount of smoothness:
+    - $d = 0$ is a [piecewise constant]{.blue} function;
+    - $d = 1$ is a [polygonal line]{.orange} (continuous, but with discontinous first derivative).
 
-- Higher values of $M$ increase the smoothness, but the spline behave more and more like a global polynomial. In practice one almost never goes beyond $M = 4$. 
+- Higher values of $d$ increase the smoothness, but the spline behave more and more like a global polynomial. In practice one almost never goes beyond $d = 3$. 
 
 . . .
 
@@ -1242,17 +1242,17 @@ where $\xi_j^+$ and $\xi_j^-$ denote the left and the right limits.
 ::: callout-warning
 #### Theorem (Truncated power basis) 
 Let $\xi_1 < \cdots < \xi_k$ be a set of ordered points called [knots]{.orange} belonging to $(a, b)$. Let $$
-h_j(x) = x^{j-1}, \qquad j=1,\dots,M,
+h_j(x) = x^{j-1}, \qquad j=1,\dots,d + 1,
 $$
 and $$
-h_j(x) = (x - \xi_j)_+^M, \qquad j = 1 + M, \dots, k + M.
+h_j(x) = (x - \xi_j)_+^d, \qquad j = 2 + d, \dots, k + d + 1.
 $$
-Then, the functions $\{h_1,\dots,h_{k+M}\}$ form a basis for the
-set of splines of order $M$th at these knots, called the [truncated power
+Then, the functions $\{h_1,\dots,h_{k+d + 1}\}$ form a basis for the
+set of splines of degree $d$ at these knots, called the [truncated power
 basis]{.blue}. 
 
-Thus, any [$M$th order spline]{.orange} $f(x, \beta)$ with these knots can be written as a basis expansion $$
-f(x; \beta) = \sum_{j=1}^{k+M}h_j(x) \beta_j.
+Thus, any [$d$th degree spline]{.orange} $f(x, \beta)$ with these knots can be written as a basis expansion $$
+f(x; \beta) = \sum_{j=1}^{k+d+1}h_j(x) \beta_j.
 $$
 :::
 
@@ -1262,47 +1262,63 @@ $$
 
 . . .
 
-- Let $\bm{B}$ be a $n \times K$ design matrix whose elements are obtained from the basis functions:
+- Let $\bm{B}$ be a $n \times p$ design matrix whose elements are obtained from the basis functions:
 $$
-[\bm{B}]_{ij} = h_j(x_i), \qquad j=1,\dots,K; \quad i=1,\dots,n.
+[\bm{B}]_{ij} = h_j(x_i), \qquad j=1,\dots,p; \quad i=1,\dots,n.
 $$
 
-- Let $f(x;\beta) = \sum_{j=1}^K h_j(x)\beta_j$. Then, the [ordinary least squares]{.blue} for $\beta$ are obtained as usual:
+- Let $f(x;\beta) = \sum_{j=1}^p h_j(x)\beta_j$. Then, the [ordinary least squares]{.blue} for $\beta$ are obtained as usual:
 $$
-\hat{\beta} = (\bm{B}^T\bm{B})^{-1}\bm{B}^T\bm{y} \implies \hat{f}(x) = \sum_{j=1}^K h_j(x)\hat{\beta}_j = \sum_{i=1}^n s_i(x) y_i.
+\hat{\beta} = (\bm{B}^T\bm{B})^{-1}\bm{B}^T\bm{y} \implies \hat{f}(x) = \sum_{j=1}^p h_j(x)\hat{\beta}_j = \sum_{i=1}^n s_i(x) y_i.
 $$
 
 . . .
 
-- We call this approach [regression splines]{.orange}, which are another instance of [linear smoother]{.blue}. The smoothing matrix in this case is $\bm{S} = \bm{B} (\bm{B}^T\bm{B})^{-1}\bm{B}^T$. 
-
-- The number  and the placement of the knots are [complexity parameters]{.orange}, which should be chosen via cross-validation or other tools. 
+- Hence, [regression splines]{.orange} are another instance of [linear smoother]{.blue} (actually, of [linear model]{.blue}). The smoothing matrix in this case is $\bm{S} = \bm{B} (\bm{B}^T\bm{B})^{-1}\bm{B}^T$, so that $\text{tr}(\bm{S}) = p$. 
 
 
+## On the choice of the knots
 
-## Regression splines ($k = 15$)
+- The placement and the number $k$ of the knots are [complexity parameters]{.orange}, which should be chosen via cross-validation or other tools. 
+
+. . .
+
+- In principle the [position of the knots]{.blue} could be manually selected to get the best fit. However, this results in an [incredible optimization problem]{.orange}.
+
+. . .
+
+- In practice, the knots are typically selected in two ways:
+    1. Knots are [equally spaced]{.orange} on a grid of values ranging from $\min(x)$ to $\max(x)$;
+    2. Knots are placed on [quantiles]{.blue} (`bs` default), to get [variable bandwidth]{.blue}.
+
+. . .
+
+- The [degree]{.blue} $d$ influences the [number of knots]{.orange} we can place for a fixed number of degrees of freedom $p$. For example:
+  - In linear splines ($d = 1$), with $p = 12$ we can place $k = p - d - 1 = 10$ knots;
+  - In quadratic splines ($d = 2$), with $p = 12$ we can place $k = 9$ knots;
+  - In cubic splines ($d = 3$), with $p = 12$ we can place $k = 8$ knots.
+
+
+
+## Regression splines ($p = 12$)
 
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
 
-knots <- quantile(dataset$times, ppoints(n = 15))
-
-fit_bs_3 <- lm(accel ~ bs(times, knots = knots, degree = 3, intercept = TRUE) - 1, data = dataset)
+fit_bs_3 <- lm(accel ~ bs(times, df = 12, degree = 3, intercept = TRUE) - 1, data = dataset)
 y_hat_bs_3 <- predict(fit_bs_3, newdata = data.frame(times = times_seq))
 
-fit_bs_2 <- lm(accel ~ bs(times, knots = knots, degree = 2, intercept = TRUE) - 1, data = dataset)
+fit_bs_2 <- lm(accel ~ bs(times, df = 12, degree = 2, intercept = TRUE) - 1, data = dataset)
 y_hat_bs_2 <- predict(fit_bs_2, newdata = data.frame(times = times_seq))
 
-
-fit_bs_1 <- lm(accel ~ bs(times, knots = knots, degree = 1, intercept = TRUE) - 1, data = dataset)
+fit_bs_1 <- lm(accel ~ bs(times, df = 12, degree = 1, intercept = TRUE) - 1, data = dataset)
 y_hat_bs_1 <- predict(fit_bs_1, newdata = data.frame(times = times_seq))
-
 
 data_plot <- data.frame(
   times = times_seq, pred = c(y_hat_bs_3, y_hat_bs_2, y_hat_bs_1),
-  Method = rep(c("Regression splines (M = 4)", "Regression splines (M = 3)", "Regression splines (M = 2)"),
+  Method = rep(c("3. Cubic spline (d = 3)", "2. Quadratic spline (d = 2)", "1. Linear splines (d = 1)"),
     each = length(times_seq)
   )
 )
@@ -1317,6 +1333,45 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   ylab("Head acceleration (g)")
 ```
 
+## On the choice of $p$ (cubic splines)
+
+```{r}
+# Code execution and storage of the interesting quantities
+p_list <- 4:40
+data_goodness <- data.frame(p = p_list)
+for (i in 1:length(p_list)) {
+  # Fitting a polynomial of degree p -1
+  fit <- lm(accel ~ bs(times, degree = 3, df = p_list[i], intercept = TRUE) - 1, data = dataset)
+  # Computation of the leverages h_i efficiently (using QR)
+  lev <- influence(fit)$hat
+  res_loo <- (y - fitted(fit)) / (1 - lev)
+  data_goodness$LOO_CV[i] <- mean(res_loo^2)
+  data_goodness$LOO_CV_SE[i] <- sd(res_loo) / sqrt(nrow(dataset))
+  data_goodness$GCV[i] <- mean(((y - fitted(fit)) / (1 - p_list[i] / nrow(dataset)))^2)
+}
+
+# Organization of the results for graphical purposes
+data_bv <- data.frame(p = p_list, GCV = data_goodness$GCV, LOO_CV = data_goodness$LOO_CV, SE = data_goodness$LOO_CV_SE)
+data_bv <- reshape2::melt(data_bv, id = c("p", "SE"))
+data_bv$SE[data_bv$variable == "GCV"] <- NA
+levels(data_bv$variable) <- c("GCV", "LOO-CV")
+colnames(data_bv) <- c("p", "SE", "Error term", "value")
+```
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
+  geom_line() +
+  geom_point() +
+  geom_vline(xintercept = 12, linetype = "dotted", col ="#fc7d0b") +
+  theme_light() +
+  theme(legend.position = "top") +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Model complexity (p)") +
+  ylab("Mean Squared Error (MSE)") 
+```
 
 ## Natural cubic splines I
 
@@ -1329,7 +1384,7 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
 A [natural cubic spline]{.blue} $f(x; \beta)$ is a cubic spline which is [linear]{.orange} beyond the boundary knots $\xi_1$ and $\xi_k$, which means $f''(\xi_1) = f''(\xi_k) = 0$.
 :::
 
-- Natural cubic splines add $4$ [additional constraints]{.orange}; these degrees of freedom can be used more efficiently to place more internal knots. 
+- Natural cubic splines enforce $4$ [additional constraints]{.orange}; these degrees of freedom can be used more efficiently to place more internal knots. 
 
 . . .
 
@@ -1345,40 +1400,40 @@ A set of $n$ points ($x_i, y_i$) can be exactly [interpolated]{.blue} using a na
 $$
 \begin{aligned}
 &N_1(x) = 1, \quad N_2(x) = x, \\
-&N_{j + 2}(x) = \frac{(x - \xi_j)^3_+ - (x - \xi_K)^3_+}{\xi_K - \xi_j} - \frac{(x - \xi_{K-1})^3_+ - (x - \xi_K)^3_+}{\xi_K - \xi_{K-1}}, \quad j = 1,\dots,k - 2.
+&N_{j + 2}(x) = \frac{(x - \xi_j)^3_+ - (x - \xi_k)^3_+}{\xi_k - \xi_j} - \frac{(x - \xi_{k-1})^3_+ - (x - \xi_k)^3_+}{\xi_k - \xi_{k-1}}, \quad j = 1,\dots,k - 2.
 \end{aligned}
 $$
 
 . . .
 
-- This formula is a [scaled version]{.orange} of the truncated power basis for any $x \le \xi_{K-1}$, namely
+- This formula is a [scaled version]{.orange} of the truncated power basis for any $x \le \xi_{k-1}$, namely
 $$
-N_{j+2}(x) = \frac{(x - \xi_j)^3_+}{\xi_K - \xi_j}, \qquad x \le \xi_{K-1}, \quad j = 1,\dots,k - 2.
+N_{j+2}(x) = \frac{(x - \xi_j)^3_+}{\xi_k - \xi_j}, \qquad x \le \xi_{k-1}, \quad j = 1,\dots,k - 2.
 $$
-The formula becomes more complicated when $x > \xi_{K-1}$ and the constraint is enforced. 
+The formula becomes more complicated when $x > \xi_{k-1}$ and the constraint is enforced. 
 
 . . .
 
-- Hence, [natural cubic splines]{.blue} are linear in the parameters and can be express as follows
+- Hence, in [natural cubic splines]{.blue} $k = p$ and the function can be express as follows
 $$
 f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 $$
 
 
-## Natural cubic splines ($k = 15$)
+## Natural cubic splines ($k = 12$)
 
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
 #| fig-align: center
 
-knots <- quantile(dataset$times, ppoints(n = 15))
+knots <- quantile(dataset$times, ppoints(n = 12))
 
 fit_bs_3 <- lm(accel ~ bs(times, knots = knots, degree = 3, intercept = TRUE) - 1, data = dataset)
 y_hat_bs_3 <- predict(fit_bs_3, newdata = data.frame(times = times_seq))
 
 # Here it's tricky, because by default ns does a different thing (it uses the boundary knots as regular knots)
-fit_ns_3 <- lm(accel ~ ns(times, knots = knots[-c(1, 15)], Boundary.knots = c(knots[1], knots[15]), intercept = TRUE) - 1, data = dataset)
+fit_ns_3 <- lm(accel ~ ns(times, knots = knots[-c(1, 12)], Boundary.knots = c(knots[1], knots[12]), intercept = TRUE) - 1, data = dataset)
 y_hat_ns_3 <- predict(fit_ns_3, newdata = data.frame(times = times_seq))
 
 data_plot <- data.frame(
@@ -1392,7 +1447,7 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   geom_point(data = dataset, aes(x = times, y = accel), size = 0.7, col = "black") +
   theme_minimal() +
   theme(legend.position = "top") +
-  geom_vline(xintercept = knots[c(1, 15)], linetype = "dotted") +
+  geom_vline(xintercept = knots[c(1, 12)], linetype = "dotted") +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
@@ -1405,9 +1460,9 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
 
 - Indeed, the condition number of $\bm{B}^T\bm{B}$ using a truncated power basis is very large, leading to [numerical inaccuracies]{.orange}.
 
-- For this reason, more [computationally convenient]{.blue} bases are preferred. This means we will consider an [equivalent]{.blue} set of functions $\mathcal{B}_1(x),\dots,\mathcal{B}_K(x)$ such that
+- For this reason, more [computationally convenient]{.blue} bases are preferred. This means we will consider an [equivalent]{.blue} set of functions $\mathcal{B}_1(x),\dots,\mathcal{B}_p(x)$ such that
 $$
-\mathcal{B}_j(x) = \sum_{\ell=1}^K\gamma_{\ell j} h_\ell(x), \qquad j=1,\dots,K,
+\mathcal{B}_j(x) = \sum_{\ell=1}^p\gamma_{\ell j} h_\ell(x), \qquad j=1,\dots,p,
 $$
 for some set of weights $\gamma_{\ell j}$ that makes this transformation [one-to-one]{.orange}. 
 
@@ -1448,14 +1503,14 @@ ggplot(data = data_plot, aes(x = times_seq, y = value, col = as.factor(Var2))) +
 
 ## ☠️ - Definition of B-splines
 
-- Define $\xi = (\xi_1,\dots,x_k)$ and consider an [augmented]{.orange} sequence of ordered [knots]{.orange} $$
-\tau = (\tau_1,\dots,\tau_{K + 2M}) = (\underbrace{\xi_{-M+1},\dots,\xi_0}_{\text{auxiliary knots}}, \: \xi,\: \underbrace{\xi_{k+1},\dots,\xi_{k + M}}_{\text{auxiliary knots}}).
+- Define $\xi = (\xi_1,\dots,\xi_k)$ and consider an [augmented]{.orange} sequence of ordered [knots]{.orange} $$
+\tau = (\tau_1,\dots,\tau_{k + 2d + 2}) = (\underbrace{\xi_{-d},\dots,\xi_0}_{\text{auxiliary knots}}, \: \xi,\: \underbrace{\xi_{k+1},\dots,\xi_{k + d + 1}}_{\text{auxiliary knots}}).
 $$
-The most common choice is $\xi_{-M+1}= \dots = \xi_0 = a$ and $\xi_{k+1} = \dots = \xi_{k + M} = b$.
+The most common choice is $\xi_{-d}= \dots = \xi_0 = a$ and $\xi_{k+1} = \dots = \xi_{k + d+ 1} = b$.
 
 . . .
 
-- [Step 1]{.blue}. For $j = 1,\dots, K + 2M - 1$, obtain the B-spline of order $m = 0$ as follows: 
+- [Step 1]{.blue}. For $j = 1,\dots, k + 2d + 1$, obtain the B-spline of degree $m = 0$ as follows: 
 $$
 \mathcal{B}_{j,0}(x) = I_{[\tau_j, \tau_{j+1})}(x),
 $$
@@ -1463,32 +1518,62 @@ where by convention we say that $\mathcal{B}_{j,0}(x) = 0$ if the knots are equa
 
 . . .
 
-- [Step 2 (recursion)]{.orange}. The B-spline of [order $m \le M$]{.blue} are obtained [recursively]{.orange}, so that  $$
-\mathcal{B}_{j, m}(x) = \frac{x - \tau_j}{\tau_{j + m - 1} - \tau_j}\mathcal{B}_{j, m-1}(x)  + \frac{\tau_{j + m} - x}{\tau_{j + m } - \tau_{j +1}}\mathcal{B}_{j + 1, m-1}(x),
+- [Step 2 (recursion)]{.orange}. The B-spline of [degree $m \le d$]{.blue} are obtained [recursively]{.orange}, so that  $$
+\mathcal{B}_{j, m}(x) = \frac{x - \tau_j}{\tau_{j + m} - \tau_j}\mathcal{B}_{j, m-1}(x)  + \frac{\tau_{j + m + 1} - x}{\tau_{j + m + 1} - \tau_{j +1}}\mathcal{B}_{j + 1, m-1}(x),
 $$
-for $j=1,\dots,K + 2M - m$ and for $m=1,\dots,M$. 
+for $j=1,\dots,k + 2d + 1 - m$ and for $m=1,\dots,d$. 
 
 ## ☠️ - Properties of B-splines
 
-- B-splines have [local support]{.orange}, which means that for $j=1,\dots,K + 2M - m$ we have
-$$
-\begin{aligned}
-&\mathcal{B}_{j, M}(x) = 0, \qquad x \not\in (\tau_j, \tau_{j+M}), \\
-&\mathcal{B}_{j, M}(x) > 0, \qquad x \in (\tau_j, \tau_{j+M}).
-\end{aligned}
-$$
-This implies that the support of cubic B-splines is at most $5$ knots. 
-
-. . .
 
 - The [intercept]{.blue} term is [implicitly included]{.orange} in a B-spline basis, in fact 
 $$
-\sum_{j=1}^{K + M}\mathcal{B}_{j, M}(x) = 1, \qquad x \in (a, b).
+\sum_{j=1}^{k + d + 1}\mathcal{B}_{j, d}(x) = 1, \qquad x \in (a, b).
 $$
+
+. . .
+
+
+- B-splines $\tau$ have [local support]{.orange}, which means that for $j=1,\dots,k + 2d + 1 - m$ we have
+$$
+\begin{aligned}
+&\mathcal{B}_{j, d}(x) = 0, \qquad x \not\in (\tau_j, \tau_{j+d+1}), \\
+&\mathcal{B}_{j, d}(x) > 0, \qquad x \in (\tau_j, \tau_{j+d +1}).
+\end{aligned}
+$$
+This implies that the support of cubic B-splines is at most $4$ knots. 
+
 
 . . .
 
 - The presence of [structural zeros]{.orange} implies that, when computing ordinary least squares, extremely efficient Cholesky factorization for [banded matrices]{.blue} can be exploited. 
+
+. . .
+
+- The B-spline basis can be modified to produce a [natural cubic spline]{.blue}, by numerically enforcing the linearity constraint. This is implemented in the `ns` **R** function. 
+
+## Pros and cons of regression splines
+
+::: callout-tip
+#### Pros
+
+-   Regression splines is a [semi-parametric]{.orange} estimator for unknown functions $f(x)$.
+
+- They are essentially a [linear model]{.blue} with smart covariates that account for non-linearity. Hence, the procedure is simple and [computationally efficient]{.blue} (thanks to B-splines). 
+
+- The smoothing parameter $k$ is discrete and can be easily handled, being directly associated with the number of degrees of freedom.
+:::
+
+. . .
+
+::: callout-warning
+#### Cons
+
+- Knots placement based on quantiles or other automatic choices could be inefficient.
+
+- Manual placement of the knots is out of question, because it is an almost impossibile optimization problem.  
+:::
+
 
 # Smoothing splines
 
