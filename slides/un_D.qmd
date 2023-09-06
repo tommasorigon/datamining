@@ -1390,7 +1390,7 @@ A [natural cubic spline]{.blue} $f(x; \beta)$ is a cubic spline which is [linear
 
 :::callout-note
 #### Proposition
-A set of $n$ points ($x_i, y_i$) can be exactly [interpolated]{.blue} using a natural cubic spline with the data points $x_1 < \dots < x_n$ as knots. The interpolating natural cubic spline is [unique]{.orange}.
+A set of $n$ [distinct]{.blue} points ($x_i, y_i$) can be [interpolated]{.blue} using a natural cubic spline with the data points $x_1 < \dots < x_n$ as knots. The interpolating natural cubic spline is [unique]{.orange}.
 :::
 
 
@@ -1567,7 +1567,7 @@ This implies that the support of cubic B-splines is at most $4$ knots.
 
 - The smoothing parameter $k$ is discrete and can be easily handled, being directly associated with the number of degrees of freedom.
 
-- Trivial to extend to generalized linear models.
+- They are trivial to extend to generalized linear models.
 :::
 
 . . .
@@ -1580,18 +1580,115 @@ This implies that the support of cubic B-splines is at most $4$ knots.
 - Manual placement of the knots is out of question, because it is an almost impossible optimization problem.  
 :::
 
-
 # Smoothing splines
 
 ## Smoothing splines I
 
+- Let us consider the following penalized least squares criterion
+$$
+\mathscr{L}(f; \lambda) = \sum_{i=1}^n\{y_i - f(x_i)\}^2 + \lambda \underbrace{\int_a^b\{f''(t)\}^2\mathrm{d}t}_{\text{roughness penalty}},
+$$
+where $(a, b)$ is an interval containing the data points and $\lambda > 0$ is a [smoothing parameter]{.orange}.
+
+. . .
+
+- We consider as our estimator the [minimizer]{.blue} of the above loss, that is
+$$
+\hat{f}(x) = \arg\min_{f \in \mathcal{F}} \mathscr{L}(f; \lambda),
+$$
+where $\mathcal{F}$ is a sufficiently regular [functional space]{.blue} (Sobolev space). 
+
+- The [roughness penalty]{.orange} quantifies the "wiggliness" of the curve. There are two extremes:
+  -  When $\lambda = 0$ there is no penalization: any solution [interpolates]{.blue} the points $(x_i, y_i)$;
+  -  When $\lambda = \infty$ then necessarily $f''(x) = 0$, i.e. the solution is a [linear model]{.orange}.
+
+
 ## Smoothing splines II
+
+:::callout-warning
+#### Theorem (Green and Silverman, 1994)
+Let $n_0 \le n$ be the [distinct]{.blue} points among $x_1,\dots,x_n$, with $x_i \in (a,b)$. Suppose $n_0 \ge 3$. 
+
+Then, for any $\lambda > 0$ the minimizer of $\mathscr{L}(f; \lambda)$ is [unique]{.orange} and is a [natural cubic spline]{.blue} with $n_0$ knots at the distinct points. 
+:::
+
+. . .
+
+- The Green and Silverman theorem is remarkably [elegant]{.orange} and [powerful]{.blue}. 
+
+- Since the solution is a [natural cubic spline]{.blue}, we can write it as follows:
+$$
+f(x; \beta) = \sum_{j=1}^{n_0} N_j(x)\beta_j,
+$$
+whose coefficients $\beta$ still [needs]{.orange} to be [determined]{.orange}.
+
+. . .
+
+- In smoothing splines we do [not]{.orange} need to [choose the knots]{.orange}: every distinct observations is a knot. The model is not overparametrized, because the [complexity]{.blue} is controlled by $\lambda$. 
+
+## Smoothing splines III
+
+- Since $f(x;\beta)$ is a [natural cubic spline]{.orange}, the penalized least squares criterion becomes
+$$
+\mathscr{L}(\beta; \lambda) = \sum_{i=1}^n\{y_i - f(x_i; \beta)\}^2 + \lambda \beta^T\bm{\Omega}\beta,
+\qquad [\bm{\Omega}]_{jk} = \int_a^bN''_j(t)N''_k(t)\mathrm{d}t,
+$$
+whose [minimization]{.blue} over $\beta$ is much easier, because it becomes [finite-dimensional]{.orange}.
+
+. . .
+
+- The minimization of $\mathscr{L}(\beta; \lambda)$ is reminiscent of [ridge regression]{.blue}, and in fact the solution is
+$$
+\hat{\beta} = (\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T\bm{y}, \qquad [\bm{N}]_{ij} = N_j(x_i).
+$$
+which leads to a [linear smoother]{.orange}, with $\bm{S} = \bm{N}(\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T$.
+
+. . .
+
+- The above formula is not used in practice directly. The `smooth.spline` **R** implementation rely on B-splines to make computations [fast]{.orange} and [stable]{.blue}. 
+
+- Alternatively, the so-called Reinsch (1967) algorithm has computational complexity is $\sim n$. 
+
+## Smoothing splines ($\text{df}_\text{sm} = 12.26$)
+
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+#| 
+
+x_seq <- seq(from = min(x), to = max(x), length = 2000)
+fit_smooth <- smooth.spline(x, y, all.knots = TRUE)
+y_hat_smooth <- predict(fit_smooth, x = x_seq)
+
+ggplot(data = dataset, aes(x = times, y = accel)) +
+  geom_point(size = 0.7) +
+  geom_line(data = data.frame(x =y_hat_smooth$x, y = y_hat_smooth$y), aes(x = x, y = y), col = "#1170aa") +
+  theme_minimal() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
+```
+
 
 ## The equivalent kernel
 
-## Smoothing splines ($\lambda = 3$)
+- As already mentioned, smoothing splines are [linear smoothers]{.orange}, which means that
+$$
+\hat{f}(x) = \sum_{i=1}^ns_i(x) y_i.
+$$
+- Provided $x$ is not too near the edge of the interval $(a, b)$, and $\lambda$ is not too big or too small, we obtain the following [approximation]{.orange} for the [equivalent kernel]{.blue} $$
+s_i(x) \approx \frac{1}{g(x)}\frac{1}{h(x)}w\left(\frac{x - x_i}{h(x)}\right).
+$$
 
-## On the choice of $\lambda$
+. . .
+
+- The [kernel function]{.orange} $w(t)$, which is not a density, and the [local bandwidth]{.blue} equal to
+$$
+w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sqrt{2}} + \frac{\pi}{4}\right), \qquad h(x) = \lambda^{1/4} \{\textcolor{red}{n} \textcolor{darkblue}{g(x)}\}^{-1/4}.
+$$
+
+- Smoothing splines [automatically]{.orange} incorporate a [local bandwidth]{.blue} decreasing with $n$.  
 
 ## Further properties of smoothing splines
 

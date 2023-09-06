@@ -1249,7 +1249,7 @@ f(x; \beta) = \sum_{j=1}^{k+d+1}h_j(x) \beta_j.
 <p><strong>Proposition</strong></p>
 </div>
 <div class="callout-content">
-<p>A set of <span class="math inline">n</span> points (<span class="math inline">x_i, y_i</span>) can be exactly <span class="blue">interpolated</span> using a natural cubic spline with the data points <span class="math inline">x_1 &lt; \dots &lt; x_n</span> as knots. The interpolating natural cubic spline is <span class="orange">unique</span>.</p>
+<p>A set of <span class="math inline">n</span> <span class="blue">distinct</span> points (<span class="math inline">x_i, y_i</span>) can be <span class="blue">interpolated</span> using a natural cubic spline with the data points <span class="math inline">x_1 &lt; \dots &lt; x_n</span> as knots. The interpolating natural cubic spline is <span class="orange">unique</span>.</p>
 </div>
 </div>
 </div>
@@ -1370,7 +1370,7 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <li><p>Regression splines is a <span class="orange">semi-parametric</span> estimator for unknown functions <span class="math inline">f(x)</span>.</p></li>
 <li><p>They are essentially a <span class="blue">linear model</span> with smart covariates that account for non-linearity. Hence, the procedure is simple and <span class="blue">computationally efficient</span> (thanks to B-splines).</p></li>
 <li><p>The smoothing parameter <span class="math inline">k</span> is discrete and can be easily handled, being directly associated with the number of degrees of freedom.</p></li>
-<li><p>Trivial to extend to generalized linear models.</p></li>
+<li><p>They are trivial to extend to generalized linear models.</p></li>
 </ul>
 </div>
 </div>
@@ -1399,18 +1399,95 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 </section>
 <section id="smoothing-splines-i" class="slide level2 center">
 <h2>Smoothing splines I</h2>
+<ul>
+<li>Let us consider the following penalized least squares criterion <span class="math display">
+\mathscr{L}(f; \lambda) = \sum_{i=1}^n\{y_i - f(x_i)\}^2 + \lambda \underbrace{\int_a^b\{f''(t)\}^2\mathrm{d}t}_{\text{roughness penalty}},
+</span> where <span class="math inline">(a, b)</span> is an interval containing the data points and <span class="math inline">\lambda &gt; 0</span> is a <span class="orange">smoothing parameter</span>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>We consider as our estimator the <span class="blue">minimizer</span> of the above loss, that is <span class="math display">
+\hat{f}(x) = \arg\min_{f \in \mathcal{F}} \mathscr{L}(f; \lambda),
+</span> where <span class="math inline">\mathcal{F}</span> is a sufficiently regular <span class="blue">functional space</span> (Sobolev space).</p></li>
+<li><p>The <span class="orange">roughness penalty</span> quantifies the “wiggliness” of the curve. There are two extremes:</p>
+<ul>
+<li>When <span class="math inline">\lambda = 0</span> there is no penalization: any solution <span class="blue">interpolates</span> the points <span class="math inline">(x_i, y_i)</span>;</li>
+<li>When <span class="math inline">\lambda = \infty</span> then necessarily <span class="math inline">f''(x) = 0</span>, i.e.&nbsp;the solution is a <span class="orange">linear model</span>.</li>
+</ul></li>
+</ul>
+</div>
 </section>
 <section id="smoothing-splines-ii" class="slide level2 center">
 <h2>Smoothing splines II</h2>
+<div class="callout callout-warning no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Theorem (Green and Silverman, 1994)</strong></p>
+</div>
+<div class="callout-content">
+<p>Let <span class="math inline">n_0 \le n</span> be the <span class="blue">distinct</span> points among <span class="math inline">x_1,\dots,x_n</span>, with <span class="math inline">x_i \in (a,b)</span>. Suppose <span class="math inline">n_0 \ge 3</span>.</p>
+<p>Then, for any <span class="math inline">\lambda &gt; 0</span> the minimizer of <span class="math inline">\mathscr{L}(f; \lambda)</span> is <span class="orange">unique</span> and is a <span class="blue">natural cubic spline</span> with <span class="math inline">n_0</span> knots at the distinct points.</p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li><p>The Green and Silverman theorem is remarkably <span class="orange">elegant</span> and <span class="blue">powerful</span>.</p></li>
+<li><p>Since the solution is a <span class="blue">natural cubic spline</span>, we can write it as follows: <span class="math display">
+f(x; \beta) = \sum_{j=1}^{n_0} N_j(x)\beta_j,
+</span> whose coefficients <span class="math inline">\beta</span> still <span class="orange">needs</span> to be <span class="orange">determined</span>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>In smoothing splines we do <span class="orange">not</span> need to <span class="orange">choose the knots</span>: every distinct observations is a knot. The model is not overparametrized, because the <span class="blue">complexity</span> is controlled by <span class="math inline">\lambda</span>.</li>
+</ul>
+</div>
 </section>
+<section id="smoothing-splines-iii" class="slide level2 center">
+<h2>Smoothing splines III</h2>
+<ul>
+<li>Since <span class="math inline">f(x;\beta)</span> is a <span class="orange">natural cubic spline</span>, the penalized least squares criterion becomes <span class="math display">
+\mathscr{L}(\beta; \lambda) = \sum_{i=1}^n\{y_i - f(x_i; \beta)\}^2 + \lambda \beta^T\bm{\Omega}\beta,
+\qquad [\bm{\Omega}]_{jk} = \int_a^bN''_j(t)N''_k(t)\mathrm{d}t,
+</span> whose <span class="blue">minimization</span> over <span class="math inline">\beta</span> is much easier, because it becomes <span class="orange">finite-dimensional</span>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>The minimization of <span class="math inline">\mathscr{L}(\beta; \lambda)</span> is reminiscent of <span class="blue">ridge regression</span>, and in fact the solution is <span class="math display">
+\hat{\beta} = (\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T\bm{y}, \qquad [\bm{N}]_{ij} = N_j(x_i).
+</span> which leads to a <span class="orange">linear smoother</span>, with <span class="math inline">\bm{S} = \bm{N}(\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>The above formula is not used in practice directly. The <code>smooth.spline</code> <strong>R</strong> implementation rely on B-splines to make computations <span class="orange">fast</span> and <span class="blue">stable</span>.</p></li>
+<li><p>Alternatively, the so-called Reinsch (1967) algorithm has computational complexity is <span class="math inline">\sim n</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="smoothing-splines-textdf_textsm-12.26" class="slide level2 center">
+<h2>Smoothing splines (<span class="math inline">\text{df}_\text{sm} = 12.26</span>)</h2>
+
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-23-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="the-equivalent-kernel" class="slide level2 center">
 <h2>The equivalent kernel</h2>
-</section>
-<section id="smoothing-splines-lambda-3" class="slide level2 center">
-<h2>Smoothing splines (<span class="math inline">\lambda = 3</span>)</h2>
-</section>
-<section id="on-the-choice-of-lambda" class="slide level2 center">
-<h2>On the choice of <span class="math inline">\lambda</span></h2>
+<ul>
+<li>As already mentioned, smoothing splines are <span class="orange">linear smoothers</span>, which means that <span class="math display">
+\hat{f}(x) = \sum_{i=1}^ns_i(x) y_i.
+</span></li>
+<li>Provided <span class="math inline">x</span> is not too near the edge of the interval <span class="math inline">(a, b)</span>, and <span class="math inline">\lambda</span> is not too big or too small, we obtain the following <span class="orange">approximation</span> for the <span class="blue">equivalent kernel</span> <span class="math display">
+s_i(x) \approx \frac{1}{g(x)}\frac{1}{h(x)}w\left(\frac{x - x_i}{h(x)}\right).
+</span></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>The <span class="orange">kernel function</span> <span class="math inline">w(t)</span>, which is not a density, and the <span class="blue">local bandwidth</span> equal to <span class="math display">
+w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sqrt{2}} + \frac{\pi}{4}\right), \qquad h(x) = \lambda^{1/4} \{\textcolor{red}{n} \textcolor{darkblue}{g(x)}\}^{-1/4}.
+</span></p></li>
+<li><p>Smoothing splines <span class="orange">automatically</span> incorporate a <span class="blue">local bandwidth</span> decreasing with <span class="math inline">n</span>.</p></li>
+</ul>
+</div>
 </section>
 <section id="further-properties-of-smoothing-splines" class="slide level2 center">
 <h2>Further properties of smoothing splines</h2>

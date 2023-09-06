@@ -480,3 +480,21 @@ ggplot(data = data_plot, aes(x = times_seq, y = value, col = as.factor(Var2))) +
   scale_color_tableau(type = "ordered-diverging", palette = "Orange-Blue Diverging") +
   xlab("x") +
   ylab(expression(h[j](x)))
+
+
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+#|
+
+x_seq <- seq(from = min(x), to = max(x), length = 2000)
+fit_smooth <- smooth.spline(x, y, all.knots = TRUE)
+y_hat_smooth <- predict(fit_smooth, x = x_seq)
+
+ggplot(data = dataset, aes(x = times, y = accel)) +
+  geom_point(size = 0.7) +
+  geom_line(data = data.frame(x = y_hat_smooth$x, y = y_hat_smooth$y), aes(x = x, y = y), col = "#1170aa") +
+  theme_minimal() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Time (ms)") +
+  ylab("Head acceleration (g)")
