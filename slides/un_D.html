@@ -128,9 +128,16 @@ ul.task-list li input[type="checkbox"] {
   </ul></li>
   <li><a href="#smoothing-splines" id="toc-smoothing-splines" class="nav-link" data-scroll-target="#smoothing-splines">Smoothing splines</a>
   <ul class="collapse">
-  <li><a href="#smoothing-splines-1" id="toc-smoothing-splines-1" class="nav-link" data-scroll-target="#smoothing-splines-1">Smoothing splines</a></li>
+  <li><a href="#smoothing-splines-i" id="toc-smoothing-splines-i" class="nav-link" data-scroll-target="#smoothing-splines-i">Smoothing splines I</a></li>
+  <li><a href="#smoothing-splines-ii" id="toc-smoothing-splines-ii" class="nav-link" data-scroll-target="#smoothing-splines-ii">Smoothing splines II</a></li>
+  <li><a href="#the-equivalent-kernel" id="toc-the-equivalent-kernel" class="nav-link" data-scroll-target="#the-equivalent-kernel">The equivalent kernel</a></li>
+  <li><a href="#smoothing-splines-lambda-3" id="toc-smoothing-splines-lambda-3" class="nav-link" data-scroll-target="#smoothing-splines-lambda-3">Smoothing splines (<span class="math inline">\lambda = 3</span>)</a></li>
+  <li><a href="#on-the-choice-of-lambda" id="toc-on-the-choice-of-lambda" class="nav-link" data-scroll-target="#on-the-choice-of-lambda">On the choice of <span class="math inline">\lambda</span></a></li>
+  <li><a href="#further-properties-of-smoothing-splines" id="toc-further-properties-of-smoothing-splines" class="nav-link" data-scroll-target="#further-properties-of-smoothing-splines">Further properties of smoothing splines</a></li>
+  <li><a href="#the-mgcv-r-package" id="toc-the-mgcv-r-package" class="nav-link" data-scroll-target="#the-mgcv-r-package">The <code>mgcv</code> R package</a></li>
   <li><a href="#thin-plate-splines-i" id="toc-thin-plate-splines-i" class="nav-link" data-scroll-target="#thin-plate-splines-i">Thin-plate splines I</a></li>
   <li><a href="#thin-plate-splines-ii" id="toc-thin-plate-splines-ii" class="nav-link" data-scroll-target="#thin-plate-splines-ii">Thin-plate splines II</a></li>
+  <li><a href="#pros-and-cons-of-smoothing-splines" id="toc-pros-and-cons-of-smoothing-splines" class="nav-link" data-scroll-target="#pros-and-cons-of-smoothing-splines">Pros and cons of smoothing splines</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
@@ -638,10 +645,10 @@ h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2
 <li><p>Indeed, it can be shown that the <span class="blue">asymptotic variance</span> of Nadaraya-Watson and local linear regression is the <span class="blue">same</span>, but the <span class="orange">asymptotic bias</span> is <span class="orange">different</span>.</p></li>
 </ul>
 <ul>
-<li><p>To get an intuition of this, consider the following Taylor expansion for <span class="math inline">\mathbb{E}\{\hat{f}(x)\}</span> around <span class="math inline">x_0</span>, and for the local linear regression case: <span class="math display">
+<li><p>To get an intuition of this, consider the following Taylor expansion for <span class="math inline">\mathbb{E}\{\hat{f}(x)\}</span> around <span class="math inline">x</span>, and for the local linear regression case: <span class="math display">
 \begin{aligned}
 \mathbb{E}\{\hat{f}(x)\} &amp;= \sum_{i=1}^n s_i(x)f(x_i) \\
-&amp; = f(x_0)\underbrace{\sum_{i=1}^ns_i(x_0)}_{=1} + f'(x_0) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x_0)}_{=0} + \frac{f''(x_0)}{2}\sum_{i=1}^n(x_i - x_0)^2s_i(x_0) + \text{rest}.
+&amp; = f(x)\underbrace{\sum_{i=1}^ns_i(x)}_{=1} + f'(x) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x)}_{=0} + \frac{f''(x)}{2}\sum_{i=1}^n(x_i - x)^2s_i(x) + \text{rest}.
 \end{aligned}
 </span></p></li>
 <li><p>It can be shown with some algebra that the first order term simplifies (<span class="math inline">=0</span>) in the local linear regression case but it doesn’t for the Nadaraya-Watson, therefore <span class="orange">reducing the bias</span>.</p></li>
@@ -1199,6 +1206,7 @@ Pros
 <li><p>Regression splines is a <span class="orange">semi-parametric</span> estimator for unknown functions <span class="math inline">f(x)</span>.</p></li>
 <li><p>They are essentially a <span class="blue">linear model</span> with smart covariates that account for non-linearity. Hence, the procedure is simple and <span class="blue">computationally efficient</span> (thanks to B-splines).</p></li>
 <li><p>The smoothing parameter <span class="math inline">k</span> is discrete and can be easily handled, being directly associated with the number of degrees of freedom.</p></li>
+<li><p>Trivial to extend to generalized linear models.</p></li>
 </ul>
 </div>
 </div>
@@ -1223,14 +1231,35 @@ Cons
 </section>
 <section id="smoothing-splines" class="level1">
 <h1>Smoothing splines</h1>
-<section id="smoothing-splines-1" class="level2">
-<h2 class="anchored" data-anchor-id="smoothing-splines-1">Smoothing splines</h2>
+<section id="smoothing-splines-i" class="level2">
+<h2 class="anchored" data-anchor-id="smoothing-splines-i">Smoothing splines I</h2>
+</section>
+<section id="smoothing-splines-ii" class="level2">
+<h2 class="anchored" data-anchor-id="smoothing-splines-ii">Smoothing splines II</h2>
+</section>
+<section id="the-equivalent-kernel" class="level2">
+<h2 class="anchored" data-anchor-id="the-equivalent-kernel">The equivalent kernel</h2>
+</section>
+<section id="smoothing-splines-lambda-3" class="level2">
+<h2 class="anchored" data-anchor-id="smoothing-splines-lambda-3">Smoothing splines (<span class="math inline">\lambda = 3</span>)</h2>
+</section>
+<section id="on-the-choice-of-lambda" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-choice-of-lambda">On the choice of <span class="math inline">\lambda</span></h2>
+</section>
+<section id="further-properties-of-smoothing-splines" class="level2">
+<h2 class="anchored" data-anchor-id="further-properties-of-smoothing-splines">Further properties of smoothing splines</h2>
+</section>
+<section id="the-mgcv-r-package" class="level2">
+<h2 class="anchored" data-anchor-id="the-mgcv-r-package">The <code>mgcv</code> R package</h2>
 </section>
 <section id="thin-plate-splines-i" class="level2">
 <h2 class="anchored" data-anchor-id="thin-plate-splines-i">Thin-plate splines I</h2>
 </section>
 <section id="thin-plate-splines-ii" class="level2">
 <h2 class="anchored" data-anchor-id="thin-plate-splines-ii">Thin-plate splines II</h2>
+</section>
+<section id="pros-and-cons-of-smoothing-splines" class="level2">
+<h2 class="anchored" data-anchor-id="pros-and-cons-of-smoothing-splines">Pros and cons of smoothing splines</h2>
 </section>
 </section>
 <section id="references" class="level1">

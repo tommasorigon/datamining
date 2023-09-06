@@ -839,10 +839,10 @@ h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2
 </ul>
 <div class="fragment">
 <ul>
-<li><p>To get an intuition of this, consider the following Taylor expansion for <span class="math inline">\mathbb{E}\{\hat{f}(x)\}</span> around <span class="math inline">x_0</span>, and for the local linear regression case: <span class="math display">
+<li><p>To get an intuition of this, consider the following Taylor expansion for <span class="math inline">\mathbb{E}\{\hat{f}(x)\}</span> around <span class="math inline">x</span>, and for the local linear regression case: <span class="math display">
 \begin{aligned}
 \mathbb{E}\{\hat{f}(x)\} &amp;= \sum_{i=1}^n s_i(x)f(x_i) \\
-&amp; = f(x_0)\underbrace{\sum_{i=1}^ns_i(x_0)}_{=1} + f'(x_0) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x_0)}_{=0} + \frac{f''(x_0)}{2}\sum_{i=1}^n(x_i - x_0)^2s_i(x_0) + \text{rest}.
+&amp; = f(x)\underbrace{\sum_{i=1}^ns_i(x)}_{=1} + f'(x) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x)}_{=0} + \frac{f''(x)}{2}\sum_{i=1}^n(x_i - x)^2s_i(x) + \text{rest}.
 \end{aligned}
 </span></p></li>
 <li><p>It can be shown with some algebra that the first order term simplifies (<span class="math inline">=0</span>) in the local linear regression case but it doesn’t for the Nadaraya-Watson, therefore <span class="orange">reducing the bias</span>.</p></li>
@@ -1352,6 +1352,12 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 </ul>
 </div>
 </section>
+<section id="tensor-splines-i" class="slide level2 center">
+<h2>Tensor splines I</h2>
+</section>
+<section id="tensor-splines-ii" class="slide level2 center">
+<h2>Tensor splines II</h2>
+</section>
 <section id="pros-and-cons-of-regression-splines" class="slide level2 center">
 <h2>Pros and cons of regression splines</h2>
 <div class="callout callout-tip no-icon callout-titled callout-style-simple">
@@ -1364,6 +1370,7 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <li><p>Regression splines is a <span class="orange">semi-parametric</span> estimator for unknown functions <span class="math inline">f(x)</span>.</p></li>
 <li><p>They are essentially a <span class="blue">linear model</span> with smart covariates that account for non-linearity. Hence, the procedure is simple and <span class="blue">computationally efficient</span> (thanks to B-splines).</p></li>
 <li><p>The smoothing parameter <span class="math inline">k</span> is discrete and can be easily handled, being directly associated with the number of degrees of freedom.</p></li>
+<li><p>Trivial to extend to generalized linear models.</p></li>
 </ul>
 </div>
 </div>
@@ -1390,8 +1397,35 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <h1>Smoothing splines</h1>
 
 </section>
-<section id="smoothing-splines-1" class="slide level2 center">
-<h2>Smoothing splines</h2>
+<section id="smoothing-splines-i" class="slide level2 center">
+<h2>Smoothing splines I</h2>
+</section>
+<section id="smoothing-splines-ii" class="slide level2 center">
+<h2>Smoothing splines II</h2>
+</section>
+<section id="the-equivalent-kernel" class="slide level2 center">
+<h2>The equivalent kernel</h2>
+</section>
+<section id="smoothing-splines-lambda-3" class="slide level2 center">
+<h2>Smoothing splines (<span class="math inline">\lambda = 3</span>)</h2>
+</section>
+<section id="on-the-choice-of-lambda" class="slide level2 center">
+<h2>On the choice of <span class="math inline">\lambda</span></h2>
+</section>
+<section id="further-properties-of-smoothing-splines" class="slide level2 center">
+<h2>Further properties of smoothing splines</h2>
+</section>
+<section id="the-mgcv-r-package" class="slide level2 center">
+<h2>The <code>mgcv</code> R package</h2>
+</section>
+<section id="thin-plate-splines-i" class="slide level2 center">
+<h2>Thin-plate splines I</h2>
+</section>
+<section id="thin-plate-splines-ii" class="slide level2 center">
+<h2>Thin-plate splines II</h2>
+</section>
+<section id="pros-and-cons-of-smoothing-splines" class="slide level2 center">
+<h2>Pros and cons of smoothing splines</h2>
 </section></section>
 <section id="references" class="title-slide slide level1 center">
 <h1>References</h1>

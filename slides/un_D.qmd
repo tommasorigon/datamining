@@ -828,11 +828,11 @@ $$ where $\alpha_w = \int w^2(z)\mathrm{d}z$.
 . . .
 
 -   To get an intuition of this, consider the following Taylor expansion
-    for $\mathbb{E}\{\hat{f}(x)\}$ around $x_0$, and for the local
+    for $\mathbb{E}\{\hat{f}(x)\}$ around $x$, and for the local
     linear regression case: $$
     \begin{aligned}
     \mathbb{E}\{\hat{f}(x)\} &= \sum_{i=1}^n s_i(x)f(x_i) \\
-    & = f(x_0)\underbrace{\sum_{i=1}^ns_i(x_0)}_{=1} + f'(x_0) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x_0)}_{=0} + \frac{f''(x_0)}{2}\sum_{i=1}^n(x_i - x_0)^2s_i(x_0) + \text{rest}.
+    & = f(x)\underbrace{\sum_{i=1}^ns_i(x)}_{=1} + f'(x) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x)}_{=0} + \frac{f''(x)}{2}\sum_{i=1}^n(x_i - x)^2s_i(x) + \text{rest}.
     \end{aligned}
     $$
 
@@ -1566,6 +1566,8 @@ This implies that the support of cubic B-splines is at most $4$ knots.
 - They are essentially a [linear model]{.blue} with smart covariates that account for non-linearity. Hence, the procedure is simple and [computationally efficient]{.blue} (thanks to B-splines). 
 
 - The smoothing parameter $k$ is discrete and can be easily handled, being directly associated with the number of degrees of freedom.
+
+- Trivial to extend to generalized linear models.
 :::
 
 . . .
@@ -1581,11 +1583,24 @@ This implies that the support of cubic B-splines is at most $4$ knots.
 
 # Smoothing splines
 
-## Smoothing splines
+## Smoothing splines I
+
+## Smoothing splines II
+
+## The equivalent kernel
+
+## Smoothing splines ($\lambda = 3$)
+
+## On the choice of $\lambda$
+
+## Further properties of smoothing splines
+
+## The `mgcv` R package
 
 ## Thin-plate splines I
 
 ## Thin-plate splines II
 
+## Pros and cons of smoothing splines
 
 # References
