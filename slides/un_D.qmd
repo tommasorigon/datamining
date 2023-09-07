@@ -1511,12 +1511,12 @@ for $j=1,\dots,k + 2d + 1 - m$ and for $m=1,\dots,d$.
 ## ☠️ - Details of B-splines II
 
 
+::: incremental
+
 - The [intercept]{.blue} term is [implicitly included]{.orange} in a B-spline basis, in fact 
 $$
 \sum_{j=1}^{k + d + 1}\mathcal{B}_{j, d}(x) = 1, \qquad x \in (a, b).
 $$
-
-. . .
 
 
 - B-splines $\tau$ have [local support]{.orange}, which means that for $j=1,\dots,k + 2d + 1 - m$ we have
@@ -1528,14 +1528,10 @@ $$
 $$
 This implies that the support of cubic B-splines is at most $4$ knots. 
 
-
-. . .
-
 - The presence of [structural zeros]{.orange} implies that, when computing ordinary least squares, extremely efficient Cholesky factorization for [banded matrices]{.blue} can be exploited. 
 
-. . .
-
 - The B-spline basis can be modified to produce a [natural cubic spline]{.blue}, by numerically enforcing the linearity constraint. This is implemented in the `ns` **R** function. 
+:::
 
 ## Pros and cons of regression splines
 
@@ -1670,7 +1666,27 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 $$
 - Smoothing splines [automatically]{.orange} incorporate a [local bandwidth]{.blue} decreasing with $n$.  
 
-## Thin-plate splines
+## Multi-dimensional splines
+
+- There are several ways of extending regression and smoothing splines to the multivariate case. An example are [tensor splines]{.blue}, based on the cross-multiplication of basis function. 
+
+. . .
+
+- Another instance are the [thin-plate splines]{.blue}, in which the 2-$d$ [roughness]{.orange} penalty becomes
+$$
+\int_{\mathbb{R}^2}\left\{\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1^2}\right)^2 + 2\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1 \partial x_2}\right)^2 + \left(\frac{\partial^2 f(x_1,x_2)}{\partial x_2^2}\right)^2\right\}\mathrm{d}x_1\mathrm{d}x_2.
+$$
+The minimization of the above loss has simple [finite-dimensional]{.orange} solution. 
+
+. . .
+
+- We do not discuss any further multi-dimensional splines because, when the [dimension is large]{.orange}, they are affected by the so-called [curse of dimensionality]{.blue}; see [Unit E](un_E.html).
+
+. . .
+
+- Nonetheless, the 2d case is extremely useful in [spatial statistics]{.orange}, in which $x_1$ and $x_2$ represent longitude and latitude. 
+
+- There will be strong connection between the [smoothers]{.orange} we have seen in this unit and the so-called [kriging equations]{.blue}.
 
 ## Further properties of smoothing splines
 
@@ -1678,7 +1694,7 @@ $$
 
 . . .
 
-- Smoothing splines have a Bayesian interpretation. It can be shown that they are a special instance of [Gaussian process]{.blue} (Wahba, 1978). 
+- Smoothing splines have a Bayesian interpretation, being an instance of [Gaussian process]{.blue}. 
 
 - From a theoretical perspective, there exists (Chapter 5.8 of [HTF, 2011]{.grey}) an elegant theory based on [reprocuding kernel Hilbert spaces]{.orange}, that [unifies]{.blue}:
     - Gaussian processes;
@@ -1694,4 +1710,47 @@ $$
 
 ## Pros and cons of smoothing splines
 
+::: callout-tip
+#### Pros
+
+- Smoothing splines is a [nonparametric]{.orange} estimator for unknown functions $f(x)$.
+
+- They are a [linear smoother]{.blue} with variable bandwidth.
+
+- Compared to regression splines, they do not require the choice of the knots.
+
+- Simple and efficient algorithms for computing 1-d smoothing splines exists, such as `smooth.spline` available in **R**. 
+:::
+
+. . .
+
+::: callout-warning
+#### Cons
+
+- Efficient implementations require a very deep knowledge of linear algebra, B-spline basis, etc. 
+
+- Hence, the "manual" incorporation (i.e. the coding) of smoothing splines into bigger and non-standard models is not straightforward.
+:::
+
+
 # References
+
+## References
+
+-   [Main references]{.blue}
+    - **Chapter 4** of Azzalini, A. and Scarpa, B. (2011), [*Data
+        Analysis and Data
+        Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
+        University Press.
+    - **Chapter 5 and 6** of Hastie, T., Tibshirani, R. and Friedman, J.
+        (2009), [*The Elements of Statistical
+        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
+        Edition, Springer.
+    - **Chapter 5** of Wasserman, L. (2006), [*All of Nonparametric statistics*](https://link.springer.com/book/10.1007/0-387-30623-4), Springer.
+
+- [Kernel methods]{.orange}
+    - **Chapter 5** of Wand, M. P., and Jones, M.C. (1995). *Kernel Smoothing*. Chapman and Hall.
+    - **Chapters 2, 3 and 4** of Fan, J., and Gijbels, I. (1996). *Local Polynomial Modelling and Its Applications*. Chapman and Hall.
+
+- [Smoothing splines]{.grey}
+    - Green, P. J., and Silverman, B. W. (1994). *Nonparametric Regression and Generalized Linear Models: A Roughness Penalty Approach*. Springer.

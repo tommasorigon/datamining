@@ -1,0 +1,97 @@
+---
+title: "Curse of dimensionality"
+subtitle: "Data Mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+execute:
+  cache: false
+filters: 
+  - remove-pause.lua
+format:
+  revealjs:
+    df-print: tibble
+    auto-stretch: true
+    center: true
+    html-math-method: katex
+    transition: none
+    output-file: un_E_slides.html
+    slide-number: true
+    callout-appearance: minimal
+    code-line-numbers: true
+    theme: [default, ../template.css] # alternative themes (subset): default, night, dark
+    embed-resources: false
+    echo: false
+    fig-dpi: 200
+    # incremental: true  # Remove comment if you like incremental bullet points
+    logo: img/logoB.png
+    footer: "[Home page](https://tommasorigon.github.io/datamining)"
+    highlight-style: github
+  html:
+    html-math-method: katex
+    echo: false
+    callout-appearance: minimal
+    theme: [cosmo, ../template.css]
+    toc: true
+    toc-title: Table of contents
+    embed-resources: false
+    code-line-numbers: true
+    smooth-scroll: true
+    code-fold: false
+    code-summary: "Show the code"
+    fig-dpi: 200
+    highlight-style: github
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+## [Homepage](../index.html)
+
+```{r}
+#| warning: false
+#| echo: false
+#| include: false
+#| message: false
+#| purl: false
+
+knitr::purl("un_E.qmd", output = "../code/un_E.R")
+styler:::style_file("../code/un_E.R")
+```
+
+::: columns
+::: {.column width="30%"}
+![](img/nonparametric.png)
+
+::: {style="font-size: 70%;"}
+*"Nonparametric regression might, like linear regression, become an
+object treasured both for its artistic merit as well as usefulness."*
+:::
+
+[Leo Breiman]{.grey}
+:::
+
+::: {.column width="70%"}
+-   In this unit we will cover the following [topics]{.orange}:
+
+    -   Kernel methods and local regression;
+    -   Regression splines;
+    -   Smoothing splines.
+
+-   Let us consider again the [relationship]{.blue} between a response
+    variable $Y_i$ and a set of covariates $\bm{x}_i$: $$
+      Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
+      $$ where $\epsilon_i$ are [iid]{.orange} with
+    $\mathbb{E}(\epsilon_i) = 0$ and
+    $\text{var}(\epsilon_i) = \sigma^2$.
+
+-   We do not believe $f(\bm{x})$ is a polynomial nor it belongs to some
+    parametric family of functions.
+
+-   Can we fit a [nonparametric]{.blue} relationship that does
+    [not]{.orange} make strong [assumptions]{.orange} on $f(\bm{x})$?
+    Let us review some old dataset...
+:::
+:::
+

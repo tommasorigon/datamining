@@ -1331,29 +1331,19 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 </section>
 <section id="details-of-b-splines-ii" class="slide level2 center">
 <h2>☠️ - Details of B-splines II</h2>
+<div>
 <ul>
-<li>The <span class="blue">intercept</span> term is <span class="orange">implicitly included</span> in a B-spline basis, in fact <span class="math display">
+<li class="fragment"><p>The <span class="blue">intercept</span> term is <span class="orange">implicitly included</span> in a B-spline basis, in fact <span class="math display">
 \sum_{j=1}^{k + d + 1}\mathcal{B}_{j, d}(x) = 1, \qquad x \in (a, b).
-</span></li>
-</ul>
-<div class="fragment">
-<ul>
-<li>B-splines <span class="math inline">\tau</span> have <span class="orange">local support</span>, which means that for <span class="math inline">j=1,\dots,k + 2d + 1 - m</span> we have <span class="math display">
+</span></p></li>
+<li class="fragment"><p>B-splines <span class="math inline">\tau</span> have <span class="orange">local support</span>, which means that for <span class="math inline">j=1,\dots,k + 2d + 1 - m</span> we have <span class="math display">
 \begin{aligned}
 &amp;\mathcal{B}_{j, d}(x) = 0, \qquad x \not\in (\tau_j, \tau_{j+d+1}), \\
 &amp;\mathcal{B}_{j, d}(x) &gt; 0, \qquad x \in (\tau_j, \tau_{j+d +1}).
 \end{aligned}
-</span> This implies that the support of cubic B-splines is at most <span class="math inline">4</span> knots.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>The presence of <span class="orange">structural zeros</span> implies that, when computing ordinary least squares, extremely efficient Cholesky factorization for <span class="blue">banded matrices</span> can be exploited.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>The B-spline basis can be modified to produce a <span class="blue">natural cubic spline</span>, by numerically enforcing the linearity constraint. This is implemented in the <code>ns</code> <strong>R</strong> function.</li>
+</span> This implies that the support of cubic B-splines is at most <span class="math inline">4</span> knots.</p></li>
+<li class="fragment"><p>The presence of <span class="orange">structural zeros</span> implies that, when computing ordinary least squares, extremely efficient Cholesky factorization for <span class="blue">banded matrices</span> can be exploited.</p></li>
+<li class="fragment"><p>The B-spline basis can be modified to produce a <span class="blue">natural cubic spline</span>, by numerically enforcing the linearity constraint. This is implemented in the <code>ns</code> <strong>R</strong> function.</p></li>
 </ul>
 </div>
 </section>
@@ -1488,8 +1478,29 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 </ul>
 </div>
 </section>
-<section id="thin-plate-splines" class="slide level2 center">
-<h2>Thin-plate splines</h2>
+<section id="multi-dimensional-splines" class="slide level2 center">
+<h2>Multi-dimensional splines</h2>
+<ul>
+<li>There are several ways of extending regression and smoothing splines to the multivariate case. An example are <span class="blue">tensor splines</span>, based on the cross-multiplication of basis function.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Another instance are the <span class="blue">thin-plate splines</span>, in which the 2-<span class="math inline">d</span> <span class="orange">roughness</span> penalty becomes <span class="math display">
+\int_{\mathbb{R}^2}\left\{\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1^2}\right)^2 + 2\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1 \partial x_2}\right)^2 + \left(\frac{\partial^2 f(x_1,x_2)}{\partial x_2^2}\right)^2\right\}\mathrm{d}x_1\mathrm{d}x_2.
+</span> The minimization of the above loss has simple <span class="orange">finite-dimensional</span> solution.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>We do not discuss any further multi-dimensional splines because, when the <span class="orange">dimension is large</span>, they are affected by the so-called <span class="blue">curse of dimensionality</span>; see <a href="un_E.html">Unit E</a>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Nonetheless, the 2d case is extremely useful in <span class="orange">spatial statistics</span>, in which <span class="math inline">x_1</span> and <span class="math inline">x_2</span> represent longitude and latitude.</p></li>
+<li><p>There will be strong connection between the <span class="orange">smoothers</span> we have seen in this unit and the so-called <span class="blue">kriging equations</span>.</p></li>
+</ul>
+</div>
 </section>
 <section id="further-properties-of-smoothing-splines" class="slide level2 center">
 <h2>Further properties of smoothing splines</h2>
@@ -1498,7 +1509,7 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 </ul>
 <div class="fragment">
 <ul>
-<li><p>Smoothing splines have a Bayesian interpretation. It can be shown that they are a special instance of <span class="blue">Gaussian process</span> (Wahba, 1978).</p></li>
+<li><p>Smoothing splines have a Bayesian interpretation, being an instance of <span class="blue">Gaussian process</span>.</p></li>
 <li><p>From a theoretical perspective, there exists (Chapter 5.8 of <span class="grey">HTF, 2011</span>) an elegant theory based on <span class="orange">reprocuding kernel Hilbert spaces</span>, that <span class="blue">unifies</span>:</p>
 <ul>
 <li>Gaussian processes;</li>
@@ -1520,14 +1531,66 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 </section>
 <section id="pros-and-cons-of-smoothing-splines" class="slide level2 center">
 <h2>Pros and cons of smoothing splines</h2>
+<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Pros</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>Smoothing splines is a <span class="orange">nonparametric</span> estimator for unknown functions <span class="math inline">f(x)</span>.</p></li>
+<li><p>They are a <span class="blue">linear smoother</span> with variable bandwidth.</p></li>
+<li><p>Compared to regression splines, they do not require the choice of the knots.</p></li>
+<li><p>Simple and efficient algorithms for computing 1-d smoothing splines exists, such as <code>smooth.spline</code> available in <strong>R</strong>.</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="callout callout-warning no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Cons</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li><p>Efficient implementations require a very deep knowledge of linear algebra, B-spline basis, etc.</p></li>
+<li><p>Hence, the “manual” incorporation (i.e.&nbsp;the coding) of smoothing splines into bigger and non-standard models is not straightforward.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
 </section></section>
+<section>
 <section id="references" class="title-slide slide level1 center">
 <h1>References</h1>
+
+</section>
+<section id="references-1" class="slide level2 center">
+<h2>References</h2>
+<ul>
+<li><span class="blue">Main references</span>
+<ul>
+<li><strong>Chapter 4</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
+<li><strong>Chapter 5 and 6</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+<li><strong>Chapter 5</strong> of Wasserman, L. (2006), <a href="https://link.springer.com/book/10.1007/0-387-30623-4"><em>All of Nonparametric statistics</em></a>, Springer.</li>
+</ul></li>
+<li><span class="orange">Kernel methods</span>
+<ul>
+<li><strong>Chapter 5</strong> of Wand, M. P., and Jones, M.C. (1995). <em>Kernel Smoothing</em>. Chapman and Hall.</li>
+<li><strong>Chapters 2, 3 and 4</strong> of Fan, J., and Gijbels, I. (1996). <em>Local Polynomial Modelling and Its Applications</em>. Chapman and Hall.</li>
+</ul></li>
+<li><span class="grey">Smoothing splines</span>
+<ul>
+<li>Green, P. J., and Silverman, B. W. (1994). <em>Nonparametric Regression and Generalized Linear Models: A Roughness Penalty Approach</em>. Springer.</li>
+</ul></li>
+</ul>
 
 <img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 
