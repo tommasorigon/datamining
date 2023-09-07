@@ -92,3 +92,5 @@ styler:::style_file("../code/un_E.R")
 ## The curse of dimensionality ([HTF, 2011]{.grey})
 
 ![](img/curse.png){fig-align="center" width="70%"}
+
+## So what?
