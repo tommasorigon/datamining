@@ -644,10 +644,6 @@ S_diag <- function(x, y, bandwidth){
   }
   S_diag
 }
-
-df_loclin <- function(x, y, bandwidth){
-  sum(S_diag(x, y, bandwidth))
-}
 ```
 
 ```{r}
@@ -991,8 +987,8 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
 
 ```{r}
 #| message: false
-#| fig-width: 10
-#| fig-height: 8
+#| fig-width: 9
+#| fig-height: 7
 #| fig-align: center
 
 library(sm)
@@ -1002,26 +998,14 @@ h_sm <- c(0.5, 150)
 sm.options(ngrid = 50)
 
 fit_sm <- sm.regression(cbind(auto$engine.size, auto$curb.weight), auto$city.distance,
-  h = h_sm, display = "none",
+  h = h_sm, display = "none", ngrid = 500,
+  hull = TRUE,
   options = list(xlab = "Engine size (L)", ylab = "Curb weight (kg)", zlab = "City distance (km/L)")
 )
 
-surf.colors <- function(x, col = terrain.colors(20)) {
-  # First we drop the 'borders' and average the facet corners
-  # we need (nx - 1)(ny - 1) facet colours!
-  x.avg <- (x[-1, -1] + x[-1, -(ncol(x) - 1)] +
-    x[-(nrow(x) - 1), -1] + x[-(nrow(x) - 1), -(ncol(x) - 1)]) / 4
-
-  # Now we construct the actual colours matrix
-  colors <- col[cut(x.avg, breaks = length(col), include.lowest = T)]
-
-  return(colors)
-}
-
-persp(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
-  xlab = "Engine size (L)", ylab = "Curb weight (kg)", zlab = "City distance (km/L)", cex = 0.4,
-  theta = 145, phi = 20, ticktype = "detailed", col = surf.colors(fit_sm$estimate, col = terrain.colors(80)), expand = 0.8
-)
+contour(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
+  xlab = "Engine size (L)", ylab = "Curb weight (kg)", col = "#1170aa")
+points(auto$engine.size, auto$curb.weight, cex = 0.5, pch = 16, col = "#fc7d0b")
 ```
 
 ## Pros and cons of kernel nonparametric regression
@@ -1235,7 +1219,7 @@ where $\xi_j^+$ and $\xi_j^-$ denote the left and the right limits.
 
 - The current definition of spline is quite [abstract]{.blue} and [non-operative]{.orange}. How do we actually fit a regression model whose $f(x; \beta)$ is a spline? 
 
-## Truncated power basis I
+## Truncated power basis
 
 ::: callout-warning
 #### Theorem (Truncated power basis) 
@@ -1254,7 +1238,7 @@ f(x; \beta) = \sum_{j=1}^{k+d+1}h_j(x) \beta_j.
 $$
 :::
 
-## Truncated power basis II
+## Regression splines
 
 - The truncated power basis of a spline makes is a [constructive]{.orange} way of defining splines. Moreover, it clarifies that splines are [linear in the parameters]{.blue}.
 
@@ -1265,15 +1249,18 @@ $$
 [\bm{B}]_{ij} = h_j(x_i), \qquad j=1,\dots,p; \quad i=1,\dots,n.
 $$
 
+. . .
+
 - Let $f(x;\beta) = \sum_{j=1}^p h_j(x)\beta_j$. Then, the [ordinary least squares]{.blue} for $\beta$ are obtained as usual:
 $$
 \hat{\beta} = (\bm{B}^T\bm{B})^{-1}\bm{B}^T\bm{y} \implies \hat{f}(x) = \sum_{j=1}^p h_j(x)\hat{\beta}_j = \sum_{i=1}^n s_i(x) y_i.
 $$
 
-. . .
-
 - Hence, [regression splines]{.orange} are another instance of [linear smoother]{.blue} (actually, of [linear model]{.blue}). The smoothing matrix in this case is $\bm{S} = \bm{B} (\bm{B}^T\bm{B})^{-1}\bm{B}^T$, so that $\text{tr}(\bm{S}) = p$. 
 
+. . .
+
+- Regression splines are generating "new" covariates. Hence, their extension to GLMs and in particular to [logistic regression]{.orange} is straightforward. 
 
 ## On the choice of the knots
 
@@ -1499,7 +1486,7 @@ ggplot(data = data_plot, aes(x = times_seq, y = value, col = as.factor(Var2))) +
   ylab(expression(h[j](x)))
 ```
 
-## ☠️ - Definition of B-splines
+## ☠️ - Details of B-splines I
 
 - Define $\xi = (\xi_1,\dots,\xi_k)$ and consider an [augmented]{.orange} sequence of ordered [knots]{.orange} $$
 \tau = (\tau_1,\dots,\tau_{k + 2d + 2}) = (\underbrace{\xi_{-d},\dots,\xi_0}_{\text{auxiliary knots}}, \: \xi,\: \underbrace{\xi_{k+1},\dots,\xi_{k + d + 1}}_{\text{auxiliary knots}}).
@@ -1521,7 +1508,7 @@ where by convention we say that $\mathcal{B}_{j,0}(x) = 0$ if the knots are equa
 $$
 for $j=1,\dots,k + 2d + 1 - m$ and for $m=1,\dots,d$. 
 
-## ☠️ - Properties of B-splines
+## ☠️ - Details of B-splines II
 
 
 - The [intercept]{.blue} term is [implicitly included]{.orange} in a B-spline basis, in fact 
@@ -1549,10 +1536,6 @@ This implies that the support of cubic B-splines is at most $4$ knots.
 . . .
 
 - The B-spline basis can be modified to produce a [natural cubic spline]{.blue}, by numerically enforcing the linearity constraint. This is implemented in the `ns` **R** function. 
-
-## Tensor splines I
-
-## Tensor splines II
 
 ## Pros and cons of regression splines
 
@@ -1685,12 +1668,22 @@ $$
 $$
 w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sqrt{2}} + \frac{\pi}{4}\right), \qquad h(x) = \lambda^{1/4} \{\textcolor{red}{n} \textcolor{darkblue}{g(x)}\}^{-1/4}.
 $$
-
 - Smoothing splines [automatically]{.orange} incorporate a [local bandwidth]{.blue} decreasing with $n$.  
+
+## Thin-plate splines
 
 ## Further properties of smoothing splines
 
+- Extension of smoothing splines to [generalized linear models]{.blue} are possible by adding the "roughness" penalty to the log-likelihood function. 
+
 . . .
+
+- Smoothing splines have a Bayesian interpretation. It can be shown that they are a special instance of [Gaussian process]{.blue} (Wahba, 1978). 
+
+- From a theoretical perspective, there exists (Chapter 5.8 of [HTF, 2011]{.grey}) an elegant theory based on [reprocuding kernel Hilbert spaces]{.orange}, that [unifies]{.blue}:
+    - Gaussian processes;
+    - Smoothing splines;
+    - Support vector machine.
 
 :::callout-tip
 #### Pro-tip (a joke?)
@@ -1698,11 +1691,6 @@ $$
 *"If you want to derive an estimator that performs well in practice, define a Bayesian model, derive the posterior mean, call this a frequentist estimator and hide all evidence you ever considered a Bayesian approach."* [Credits to Eric B. Laber](https://github.com/ericlaber/ericlaber.github.io/blob/main/docs/topic_one_linear_regression_regularization.pdf)
 :::
 
-## The `mgcv` R package
-
-## Thin-plate splines I
-
-## Thin-plate splines II
 
 ## Pros and cons of smoothing splines
 

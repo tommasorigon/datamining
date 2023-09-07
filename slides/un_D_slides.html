@@ -965,7 +965,7 @@ w_i(x) = \frac{1}{h_1 h_2} w\left(\frac{x_{i1} - x_1}{h_1}\right)w\left(\frac{x_
 <section id="the-bivariate-case-h_1-0.5-h_2-150" class="slide level2 center">
 <h2>The bivariate case (<span class="math inline">h_1 = 0.5, h_2 = 150</span>)</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-15-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-15-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
 <section id="pros-and-cons-of-kernel-nonparametric-regression" class="slide level2 center">
 <h2>Pros and cons of kernel nonparametric regression</h2>
 <div class="callout callout-tip no-icon callout-titled callout-style-simple">
@@ -1143,8 +1143,8 @@ f(\xi_j^+) = f(\xi_j^-), \dots, f^{(d-1)}(\xi_j^+) = f^{(d-1)}(\xi_j^-), \qquad 
 </ul>
 </div>
 </section>
-<section id="truncated-power-basis-i" class="slide level2 center">
-<h2>Truncated power basis I</h2>
+<section id="truncated-power-basis" class="slide level2 center">
+<h2>Truncated power basis</h2>
 <div class="callout callout-warning no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -1163,24 +1163,29 @@ f(x; \beta) = \sum_{j=1}^{k+d+1}h_j(x) \beta_j.
 </div>
 </div>
 </section>
-<section id="truncated-power-basis-ii" class="slide level2 center">
-<h2>Truncated power basis II</h2>
+<section id="regression-splines-1" class="slide level2 center">
+<h2>Regression splines</h2>
 <ul>
 <li>The truncated power basis of a spline makes is a <span class="orange">constructive</span> way of defining splines. Moreover, it clarifies that splines are <span class="blue">linear in the parameters</span>.</li>
 </ul>
 <div class="fragment">
 <ul>
-<li><p>Let <span class="math inline">\bm{B}</span> be a <span class="math inline">n \times p</span> design matrix whose elements are obtained from the basis functions: <span class="math display">
+<li>Let <span class="math inline">\bm{B}</span> be a <span class="math inline">n \times p</span> design matrix whose elements are obtained from the basis functions: <span class="math display">
 [\bm{B}]_{ij} = h_j(x_i), \qquad j=1,\dots,p; \quad i=1,\dots,n.
-</span></p></li>
-<li><p>Let <span class="math inline">f(x;\beta) = \sum_{j=1}^p h_j(x)\beta_j</span>. Then, the <span class="blue">ordinary least squares</span> for <span class="math inline">\beta</span> are obtained as usual: <span class="math display">
-\hat{\beta} = (\bm{B}^T\bm{B})^{-1}\bm{B}^T\bm{y} \implies \hat{f}(x) = \sum_{j=1}^p h_j(x)\hat{\beta}_j = \sum_{i=1}^n s_i(x) y_i.
-</span></p></li>
+</span></li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li>Hence, <span class="orange">regression splines</span> are another instance of <span class="blue">linear smoother</span> (actually, of <span class="blue">linear model</span>). The smoothing matrix in this case is <span class="math inline">\bm{S} = \bm{B} (\bm{B}^T\bm{B})^{-1}\bm{B}^T</span>, so that <span class="math inline">\text{tr}(\bm{S}) = p</span>.</li>
+<li><p>Let <span class="math inline">f(x;\beta) = \sum_{j=1}^p h_j(x)\beta_j</span>. Then, the <span class="blue">ordinary least squares</span> for <span class="math inline">\beta</span> are obtained as usual: <span class="math display">
+\hat{\beta} = (\bm{B}^T\bm{B})^{-1}\bm{B}^T\bm{y} \implies \hat{f}(x) = \sum_{j=1}^p h_j(x)\hat{\beta}_j = \sum_{i=1}^n s_i(x) y_i.
+</span></p></li>
+<li><p>Hence, <span class="orange">regression splines</span> are another instance of <span class="blue">linear smoother</span> (actually, of <span class="blue">linear model</span>). The smoothing matrix in this case is <span class="math inline">\bm{S} = \bm{B} (\bm{B}^T\bm{B})^{-1}\bm{B}^T</span>, so that <span class="math inline">\text{tr}(\bm{S}) = p</span>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Regression splines are generating “new” covariates. Hence, their extension to GLMs and in particular to <span class="orange">logistic regression</span> is straightforward.</li>
 </ul>
 </div>
 </section>
@@ -1302,8 +1307,8 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <h2>Computations: B-splines II</h2>
 
 <img data-src="un_D_files/figure-revealjs/unnamed-chunk-22-1.png" width="2000" class="r-stretch"></section>
-<section id="definition-of-b-splines" class="slide level2 center">
-<h2>☠️ - Definition of B-splines</h2>
+<section id="details-of-b-splines-i" class="slide level2 center">
+<h2>☠️ - Details of B-splines I</h2>
 <ul>
 <li>Define <span class="math inline">\xi = (\xi_1,\dots,\xi_k)</span> and consider an <span class="orange">augmented</span> sequence of ordered <span class="orange">knots</span> <span class="math display">
 \tau = (\tau_1,\dots,\tau_{k + 2d + 2}) = (\underbrace{\xi_{-d},\dots,\xi_0}_{\text{auxiliary knots}}, \: \xi,\: \underbrace{\xi_{k+1},\dots,\xi_{k + d + 1}}_{\text{auxiliary knots}}).
@@ -1324,8 +1329,8 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 </ul>
 </div>
 </section>
-<section id="properties-of-b-splines" class="slide level2 center">
-<h2>☠️ - Properties of B-splines</h2>
+<section id="details-of-b-splines-ii" class="slide level2 center">
+<h2>☠️ - Details of B-splines II</h2>
 <ul>
 <li>The <span class="blue">intercept</span> term is <span class="orange">implicitly included</span> in a B-spline basis, in fact <span class="math display">
 \sum_{j=1}^{k + d + 1}\mathcal{B}_{j, d}(x) = 1, \qquad x \in (a, b).
@@ -1351,12 +1356,6 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <li>The B-spline basis can be modified to produce a <span class="blue">natural cubic spline</span>, by numerically enforcing the linearity constraint. This is implemented in the <code>ns</code> <strong>R</strong> function.</li>
 </ul>
 </div>
-</section>
-<section id="tensor-splines-i" class="slide level2 center">
-<h2>Tensor splines I</h2>
-</section>
-<section id="tensor-splines-ii" class="slide level2 center">
-<h2>Tensor splines II</h2>
 </section>
 <section id="pros-and-cons-of-regression-splines" class="slide level2 center">
 <h2>Pros and cons of regression splines</h2>
@@ -1482,16 +1481,31 @@ s_i(x) \approx \frac{1}{g(x)}\frac{1}{h(x)}w\left(\frac{x - x_i}{h(x)}\right).
 </ul>
 <div class="fragment">
 <ul>
-<li><p>The <span class="orange">kernel function</span> <span class="math inline">w(t)</span>, which is not a density, and the <span class="blue">local bandwidth</span> equal to <span class="math display">
+<li>The <span class="orange">kernel function</span> <span class="math inline">w(t)</span>, which is not a density, and the <span class="blue">local bandwidth</span> equal to <span class="math display">
 w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sqrt{2}} + \frac{\pi}{4}\right), \qquad h(x) = \lambda^{1/4} \{\textcolor{red}{n} \textcolor{darkblue}{g(x)}\}^{-1/4}.
-</span></p></li>
-<li><p>Smoothing splines <span class="orange">automatically</span> incorporate a <span class="blue">local bandwidth</span> decreasing with <span class="math inline">n</span>.</p></li>
+</span></li>
+<li>Smoothing splines <span class="orange">automatically</span> incorporate a <span class="blue">local bandwidth</span> decreasing with <span class="math inline">n</span>.</li>
 </ul>
 </div>
 </section>
+<section id="thin-plate-splines" class="slide level2 center">
+<h2>Thin-plate splines</h2>
+</section>
 <section id="further-properties-of-smoothing-splines" class="slide level2 center">
 <h2>Further properties of smoothing splines</h2>
+<ul>
+<li>Extension of smoothing splines to <span class="blue">generalized linear models</span> are possible by adding the “roughness” penalty to the log-likelihood function.</li>
+</ul>
 <div class="fragment">
+<ul>
+<li><p>Smoothing splines have a Bayesian interpretation. It can be shown that they are a special instance of <span class="blue">Gaussian process</span> (Wahba, 1978).</p></li>
+<li><p>From a theoretical perspective, there exists (Chapter 5.8 of <span class="grey">HTF, 2011</span>) an elegant theory based on <span class="orange">reprocuding kernel Hilbert spaces</span>, that <span class="blue">unifies</span>:</p>
+<ul>
+<li>Gaussian processes;</li>
+<li>Smoothing splines;</li>
+<li>Support vector machine.</li>
+</ul></li>
+</ul>
 <div class="callout callout-tip no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -1503,15 +1517,6 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 </div>
 </div>
 </div>
-</section>
-<section id="the-mgcv-r-package" class="slide level2 center">
-<h2>The <code>mgcv</code> R package</h2>
-</section>
-<section id="thin-plate-splines-i" class="slide level2 center">
-<h2>Thin-plate splines I</h2>
-</section>
-<section id="thin-plate-splines-ii" class="slide level2 center">
-<h2>Thin-plate splines II</h2>
 </section>
 <section id="pros-and-cons-of-smoothing-splines" class="slide level2 center">
 <h2>Pros and cons of smoothing splines</h2>

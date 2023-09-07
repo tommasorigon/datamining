@@ -206,10 +206,6 @@ S_diag <- function(x, y, bandwidth) {
   S_diag
 }
 
-df_loclin <- function(x, y, bandwidth) {
-  sum(S_diag(x, y, bandwidth))
-}
-
 
 
 # Code execution and storage of the interesting quantities
@@ -270,8 +266,8 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
 
 
 #| message: false
-#| fig-width: 10
-#| fig-height: 8
+#| fig-width: 9
+#| fig-height: 7
 #| fig-align: center
 
 library(sm)
@@ -281,26 +277,15 @@ h_sm <- c(0.5, 150)
 sm.options(ngrid = 50)
 
 fit_sm <- sm.regression(cbind(auto$engine.size, auto$curb.weight), auto$city.distance,
-  h = h_sm, display = "none",
+  h = h_sm, display = "none", ngrid = 500,
+  hull = TRUE,
   options = list(xlab = "Engine size (L)", ylab = "Curb weight (kg)", zlab = "City distance (km/L)")
 )
 
-surf.colors <- function(x, col = terrain.colors(20)) {
-  # First we drop the 'borders' and average the facet corners
-  # we need (nx - 1)(ny - 1) facet colours!
-  x.avg <- (x[-1, -1] + x[-1, -(ncol(x) - 1)] +
-    x[-(nrow(x) - 1), -1] + x[-(nrow(x) - 1), -(ncol(x) - 1)]) / 4
-
-  # Now we construct the actual colours matrix
-  colors <- col[cut(x.avg, breaks = length(col), include.lowest = T)]
-
-  return(colors)
-}
-
-persp(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
-  xlab = "Engine size (L)", ylab = "Curb weight (kg)", zlab = "City distance (km/L)", cex = 0.4,
-  theta = 145, phi = 20, ticktype = "detailed", col = surf.colors(fit_sm$estimate, col = terrain.colors(80)), expand = 0.8
+contour(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
+  xlab = "Engine size (L)", ylab = "Curb weight (kg)", col = "#1170aa"
 )
+points(auto$engine.size, auto$curb.weight, cex = 0.5, pch = 16, col = "#fc7d0b")
 
 
 #| fig-width: 6
