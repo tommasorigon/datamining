@@ -968,16 +968,16 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
     y_i = f(x_{i1}, x_{i2}) + \epsilon_i.
     $$
 
--   To estimate $f$ on a specific point $x = (x_1,x_2)$, a [natural
+-   To estimate $f$ on a specific point $\bm{x} = (x_1,x_2)^T$, a [natural
     extension]{.blue} of local linear regression takes the form $$
-      (\hat{\beta}_1, \hat{\beta}_2, \hat{\beta}_3) = \arg\min_{(\beta_1, \beta_2, \beta_3)} \sum_{i=1}^n w_i(x)\left\{y_i - \beta_1 - \beta_2(x_{i1} - x_1) - \beta_3(x_{i2} - x_2) \right\}^2.
+      (\hat{\beta}_1, \hat{\beta}_2, \hat{\beta}_3) = \arg\min_{(\beta_1, \beta_2, \beta_3)} \sum_{i=1}^n w_i(\bm{x})\left\{y_i - \beta_1 - \beta_2(x_{i1} - x_1) - \beta_3(x_{i2} - x_2) \right\}^2.
     $$
 
 . . .
 
--   A common way of choosing the [weights]{.orange} $w_i(x)$ is to set
+-   A common way of choosing the [weights]{.orange} $w_i(\bm{x})$ is to set
     $$
-    w_i(x) = \frac{1}{h_1 h_2} w\left(\frac{x_{i1} - x_1}{h_1}\right)w\left(\frac{x_{i2} - x_2}{h_2}\right).
+    w_i(\bm{x}) = \frac{1}{h_1 h_2} w\left(\frac{x_{i1} - x_1}{h_1}\right)w\left(\frac{x_{i2} - x_2}{h_2}\right).
     $$
 
 -   Clearly, this now involves the choice of [two]{.orange} different
@@ -1672,7 +1672,7 @@ $$
 
 . . .
 
-- Another instance are the [thin-plate splines]{.blue}, in which the 2-$d$ [roughness]{.orange} penalty becomes
+- Another instance are the [thin-plate splines]{.blue}, in which the 2d [roughness]{.orange} penalty becomes
 $$
 \int_{\mathbb{R}^2}\left\{\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1^2}\right)^2 + 2\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1 \partial x_2}\right)^2 + \left(\frac{\partial^2 f(x_1,x_2)}{\partial x_2^2}\right)^2\right\}\mathrm{d}x_1\mathrm{d}x_2.
 $$

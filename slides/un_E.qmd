@@ -89,6 +89,31 @@ styler:::style_file("../code/un_E.R")
 
 ## Multidimensional local regression
 
+-  At least [conceptually]{.orange}, kernel methods could be applied with [two]{.orange} or [more covariates]{.orange}. 
+    
+. . .
+
+-   To estimate $f$ on a specific point $\bm{x} = (x_1,\dots,x_p)$, a [natural
+    extension]{.blue} of the Nadaraya-Watson takes the form 
+    $$
+    \hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(\bm{x})}\sum_{i=1}^n w_i(\bm{x}) y_i = \sum_{i=1}^n s_i(\bm{x}) y_i,
+    $$ where the [weights]{.orange} $w_i(\bm{x})$ are defined as
+    $$
+    w_i(\bm{x}) = \prod_{j=1}^p \frac{1}{h_j} w\left(\frac{x_{ij} - x_j}{h_j}\right).
+    $$
+
+. . .
+    
+- This estimator is well-defined and it considers "[local]{.orange}" points in $p$ dimensions. 
+
+- If the theoretical definition of multidimensional nonparametric tools is not a problem, why are they [not used]{.orange} in practice?
+
+## The curse of dimensionality I
+
+## The curse of dimensionality II
+
+## The curse of dimensionality III
+
 ## The curse of dimensionality ([HTF, 2011]{.grey})
 
 ![](img/curse.png){fig-align="center" width="70%"}

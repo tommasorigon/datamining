@@ -751,13 +751,13 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 <li><p>Local linear regression can be applied when <span class="orange">two</span> or <span class="orange">more covariates</span>, say <span class="math inline">p</span>, are used. Let us begin with two covariates, so that <span class="math display">
 y_i = f(x_{i1}, x_{i2}) + \epsilon_i.
 </span></p></li>
-<li><p>To estimate <span class="math inline">f</span> on a specific point <span class="math inline">x = (x_1,x_2)</span>, a <span class="blue">natural extension</span> of local linear regression takes the form <span class="math display">
-  (\hat{\beta}_1, \hat{\beta}_2, \hat{\beta}_3) = \arg\min_{(\beta_1, \beta_2, \beta_3)} \sum_{i=1}^n w_i(x)\left\{y_i - \beta_1 - \beta_2(x_{i1} - x_1) - \beta_3(x_{i2} - x_2) \right\}^2.
+<li><p>To estimate <span class="math inline">f</span> on a specific point <span class="math inline">\bm{x} = (x_1,x_2)^T</span>, a <span class="blue">natural extension</span> of local linear regression takes the form <span class="math display">
+  (\hat{\beta}_1, \hat{\beta}_2, \hat{\beta}_3) = \arg\min_{(\beta_1, \beta_2, \beta_3)} \sum_{i=1}^n w_i(\bm{x})\left\{y_i - \beta_1 - \beta_2(x_{i1} - x_1) - \beta_3(x_{i2} - x_2) \right\}^2.
 </span></p></li>
 </ul>
 <ul>
-<li><p>A common way of choosing the <span class="orange">weights</span> <span class="math inline">w_i(x)</span> is to set <span class="math display">
-w_i(x) = \frac{1}{h_1 h_2} w\left(\frac{x_{i1} - x_1}{h_1}\right)w\left(\frac{x_{i2} - x_2}{h_2}\right).
+<li><p>A common way of choosing the <span class="orange">weights</span> <span class="math inline">w_i(\bm{x})</span> is to set <span class="math display">
+w_i(\bm{x}) = \frac{1}{h_1 h_2} w\left(\frac{x_{i1} - x_1}{h_1}\right)w\left(\frac{x_{i2} - x_2}{h_2}\right).
 </span></p></li>
 <li><p>Clearly, this now involves the choice of <span class="orange">two</span> different <span class="blue">smoothing parameters</span>.</p></li>
 </ul>
@@ -1320,7 +1320,7 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 <li>There are several ways of extending regression and smoothing splines to the multivariate case. An example are <span class="blue">tensor splines</span>, based on the cross-multiplication of basis function.</li>
 </ul>
 <ul>
-<li>Another instance are the <span class="blue">thin-plate splines</span>, in which the 2-<span class="math inline">d</span> <span class="orange">roughness</span> penalty becomes <span class="math display">
+<li>Another instance are the <span class="blue">thin-plate splines</span>, in which the 2d <span class="orange">roughness</span> penalty becomes <span class="math display">
 \int_{\mathbb{R}^2}\left\{\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1^2}\right)^2 + 2\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1 \partial x_2}\right)^2 + \left(\frac{\partial^2 f(x_1,x_2)}{\partial x_2^2}\right)^2\right\}\mathrm{d}x_1\mathrm{d}x_2.
 </span> The minimization of the above loss has simple <span class="orange">finite-dimensional</span> solution.</li>
 </ul>
