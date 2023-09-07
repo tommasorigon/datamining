@@ -2764,9 +2764,9 @@ ggplot(data = df, aes(x = X, y = Y)) +
 
 - Shrinkage methods such as ridge and lasso can be also generalized to GLMs.
 
-- The elastic-net approach, which covers ridge and lasso as special cases, becomes:
+- The elastic-net approach for [logistic regression]{.blue}, which covers ridge and lasso as special cases, becomes:
 $$
-(\hat{\beta}_0,\hat{\beta})= \arg\min_{(\beta_0, \beta)}\left\{ -\frac{1}{n}\sum_{i=1}^n\ell(y_i; \beta_0 + \bm{x}_i^T\beta) + \lambda\sum_{j=1}^p\left(\alpha  |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\right)\right\},
+\min_{(\beta_0, \beta)}\left\{ -\frac{1}{n}\sum_{i=1}^n y_i (\beta_0 + \bm{x}_i^T\beta) - \log\{1 + \exp(\beta_0 + \bm{x}_i^T\beta)\} + \lambda\sum_{j=1}^p\left(\alpha  |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\right)\right\},
 $$ 
 which is an instance of [penalized log-likelihood]{.orange}.
 

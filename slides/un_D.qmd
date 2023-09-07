@@ -588,7 +588,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
     (\hat{\beta}_1, \hat{\beta}_2) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n \textcolor{darkblue}{w_i(x)}\left\{y_i - \beta_1 - \textcolor{red}{\beta_2(x_i - x)}\right\}^2.
     $$
 
--   Once the parameter $\hat{\beta}_1$ and $\beta_2$ are obtained, the
+-   Once the parameter $\hat{\beta}_1$ and $\hat{\beta}_2$ are obtained, the
     local [linear regression estimator]{.blue} is $$
     \hat{f}(x) = \hat{\beta}_1 + \hat{\beta}_2 (x - x) = \hat{\beta}_1.
     $$
@@ -950,21 +950,19 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
 
 . . .
 
--   In a [generalized linear model]{.blue} with a single predictor, for
+-   Let us consider a [logistic regression]{.blue} with a single predictor. For
     every value $x$ we seek $$
-    (\hat{\beta}_1,\hat{\beta}_2)= \arg\max_{(\beta_1, \beta_2)}\sum_{i=1}^nw_i(x) \ell(\beta_1 + (x_i - x_0)\beta_2; y_i) ,
+    (\hat{\beta}_1,\hat{\beta}_2)= \arg\max_{(\beta_1, \beta_2)}\sum_{i=1}^nw_i(x)\left[y_i (\beta_1 + \beta_2 x_i) - \log\{1 + \exp(\beta_1 + \beta_2 x_i)\}\right],
     $$ whose solution can be found using iteratively re-weighted least
     squares.
 
 . . .
 
--   The [computations]{.orange} and the [theory]{.blue} are not
-    necessarily as straightforward and limpid as in the regression case,
-    but most general considerations carry over.
+-   The [computations]{.orange} and the [theory]{.blue} are not as straightforward and limpid as in the regression case,
+    but they do hold in an [approximate]{.orange} sense.
 
--   For example, the choice of the bandwidth $h$ remains a critical
-    parameter, which is usually selected via cross-validation, using a
-    suitable loss function.
+- Once again, the conceptual scheme is: (i) perform a [quadratic approximation]{.orange} of the log-likelihood; (ii) proceed as in the [regression]{.blue} case. 
+
 
 ## The bivariate case
 
@@ -1691,6 +1689,14 @@ $$
 - Smoothing splines [automatically]{.orange} incorporate a [local bandwidth]{.blue} decreasing with $n$.  
 
 ## Further properties of smoothing splines
+
+. . .
+
+:::callout-tip
+#### Pro-tip (a joke?)
+
+*"If you want to derive an estimator that performs well in practice, define a Bayesian model, derive the posterior mean, call this a frequentist estimator and hide all evidence you ever considered a Bayesian approach."* [Credits to Eric B. Laber](https://github.com/ericlaber/ericlaber.github.io/blob/main/docs/topic_one_linear_regression_regularization.pdf)
+:::
 
 ## The `mgcv` R package
 
