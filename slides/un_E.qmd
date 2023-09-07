@@ -1,5 +1,5 @@
 ---
-title: "Curse of dimensionality"
+title: "The curse of dimensionality"
 subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
@@ -62,18 +62,33 @@ styler:::style_file("../code/un_E.R")
 
 ::: columns
 ::: {.column width="30%"}
-![](img/nonparametric.png)
 
-::: {style="font-size: 70%;"}
-*"Nonparametric regression might, like linear regression, become an
-object treasured both for its artistic merit as well as usefulness."*
+![](img/curse2.png){fig-align="center" width="80%"}
+
+::: {style="font-size: 50%;"}
+*"In view of all that we have said in the foregoing sections, the many obstacles we appear to have surmounted, what casts the pall over our victory celebration? It is the [curse of dimensionality]{.orange}, a malediction that has plagued the scientist from the earliest days."*
 :::
 
-[Leo Breiman]{.grey}
+[Richard Bellman]{.grey}
 :::
 
 ::: {.column width="70%"}
--   
+- In [Unit C](un_C.html) we explored [linear]{.blue} predictive models for [high-dimensional]{.orange} data (i.e. $p$ is large).
+
+- In [Unit D](un_D.html) we explored [nonparametric]{.blue} predictive models for [univariate]{.orange} data, placing almost no assumptions on $f(x)$.
+
+- Thus, the expectations are that this unit should cover models with the following features:
+    - [High-dimensional]{.orange}, with large $p$;
+    - [Nonparametric]{.blue}, placing no assumptions on $f(\bm{x})$.
+    
+- The title of this unit, however, is not "*fully flexible high-dimensional models*". 
+
+- Instead, it sounds like [bad news]{.orange} are coming. Let us see why, unfortunately, this will be indeed the case. 
 :::
 :::
 
+## Multidimensional local regression
+
+## The curse of dimensionality ([HTF, 2011]{.grey})
+
+![](img/curse.png){fig-align="center" width="70%"}

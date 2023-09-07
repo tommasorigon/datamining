@@ -1719,7 +1719,7 @@ The minimization of the above loss has simple [finite-dimensional]{.orange} solu
 
 - Compared to regression splines, they do not require the choice of the knots.
 
-- Simple and efficient algorithms for computing 1-d smoothing splines exists, such as `smooth.spline` available in **R**. 
+- Simple and efficient algorithms for computing 1d smoothing splines exists, such as `smooth.spline` available in **R**. 
 :::
 
 . . .

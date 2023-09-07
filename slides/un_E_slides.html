@@ -11,7 +11,7 @@
   <meta name="generator" content="quarto-1.3.433">
 
   <meta name="author" content="Tommaso Rigon">
-  <title>Curse of dimensionality</title>
+  <title>The curse of dimensionality</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -341,7 +341,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Curse of dimensionality</h1>
+  <h1 class="title">The curse of dimensionality</h1>
   <p class="subtitle">Data Mining - CdL CLAMSES</p>
 
 <div class="quarto-title-authors">
@@ -360,26 +360,39 @@
 <h2><a href="../index.html">Homepage</a></h2>
 <div class="columns">
 <div class="column" style="width:30%;">
-<p><img data-src="img/nonparametric.png"></p>
-<div style="font-size: 70%;">
-<p><em>“Nonparametric regression might, like linear regression, become an object treasured both for its artistic merit as well as usefulness.”</em></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/curse2.png" style="width:80.0%"></p>
+</figure>
 </div>
-<p><span class="grey">Leo Breiman</span></p>
+<div style="font-size: 50%;">
+<p><em>“In view of all that we have said in the foregoing sections, the many obstacles we appear to have surmounted, what casts the pall over our victory celebration? It is the <span class="orange">curse of dimensionality</span>, a malediction that has plagued the scientist from the earliest days.”</em></p>
+</div>
+<p><span class="grey">Richard Bellman</span></p>
 </div><div class="column" style="width:70%;">
 <ul>
-<li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
+<li><p>In <a href="un_C.html">Unit C</a> we explored <span class="blue">linear</span> predictive models for <span class="orange">high-dimensional</span> data (i.e.&nbsp;<span class="math inline">p</span> is large).</p></li>
+<li><p>In <a href="un_D.html">Unit D</a> we explored <span class="blue">nonparametric</span> predictive models for <span class="orange">univariate</span> data, placing almost no assumptions on <span class="math inline">f(x)</span>.</p></li>
+<li><p>Thus, the expectations are that this unit should cover models with the following features:</p>
 <ul>
-<li>Kernel methods and local regression;</li>
-<li>Regression splines;</li>
-<li>Smoothing splines.</li>
+<li><span class="orange">High-dimensional</span>, with large <span class="math inline">p</span>;</li>
+<li><span class="blue">Nonparametric</span>, placing no assumptions on <span class="math inline">f(\bm{x})</span>.</li>
 </ul></li>
-<li><p>Let us consider again the <span class="blue">relationship</span> between a response variable <span class="math inline">Y_i</span> and a set of covariates <span class="math inline">\bm{x}_i</span>: <span class="math display">
-  Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
-  </span> where <span class="math inline">\epsilon_i</span> are <span class="orange">iid</span> with <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span> and <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>.</p></li>
-<li><p>We do not believe <span class="math inline">f(\bm{x})</span> is a polynomial nor it belongs to some parametric family of functions.</p></li>
-<li><p>Can we fit a <span class="blue">nonparametric</span> relationship that does <span class="orange">not</span> make strong <span class="orange">assumptions</span> on <span class="math inline">f(\bm{x})</span>? Let us review some old dataset…</p></li>
+<li><p>The title of this unit, however, is not “<em>fully flexible high-dimensional models</em>”.</p></li>
+<li><p>Instead, it sounds like <span class="orange">bad news</span> are coming. Let us see why, unfortunately, this will be indeed the case.</p></li>
 </ul>
 </div>
+</div>
+</section>
+<section id="multidimensional-local-regression" class="slide level2 center">
+<h2>Multidimensional local regression</h2>
+</section>
+<section id="the-curse-of-dimensionality-htf-2011" class="slide level2 center">
+<h2>The curse of dimensionality (<span class="grey">HTF, 2011</span>)</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/curse.png" style="width:70.0%"></p>
+</figure>
 </div>
 <p><img src="img/logoB.png" class="slide-logo"></p>
 <div class="footer footer-default">

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Tommaso Rigon">
 
-<title>Curse of dimensionality</title>
+<title>The curse of dimensionality</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -36,6 +36,22 @@ ul.task-list li input[type="checkbox"] {
 <link href="un_E_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 </head>
 
@@ -48,6 +64,8 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a></li>
+  <li><a href="#multidimensional-local-regression" id="toc-multidimensional-local-regression" class="nav-link" data-scroll-target="#multidimensional-local-regression">Multidimensional local regression</a></li>
+  <li><a href="#the-curse-of-dimensionality-htf-2011" id="toc-the-curse-of-dimensionality-htf-2011" class="nav-link" data-scroll-target="#the-curse-of-dimensionality-htf-2011">The curse of dimensionality (<span class="grey">HTF, 2011</span>)</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_E_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
@@ -55,7 +73,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Curse of dimensionality</h1>
+<h1 class="title">The curse of dimensionality</h1>
 <p class="subtitle lead">Data Mining - CdL CLAMSES</p>
 </div>
 
@@ -88,16 +106,39 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="homepage"><a href="../index.html">Homepage</a></h2>
 <div class="columns">
 <div class="column" style="width:30%;">
-<p><img src="img/nonparametric.png" class="img-fluid"></p>
-<div style="font-size: 70%;">
-<p><em>“Nonparametric regression might, like linear regression, become an object treasured both for its artistic merit as well as usefulness.”</em></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/curse2.png" class="img-fluid figure-img" style="width:80.0%"></p>
+</figure>
 </div>
-<p><span class="grey">Leo Breiman</span></p>
+<div style="font-size: 50%;">
+<p><em>“In view of all that we have said in the foregoing sections, the many obstacles we appear to have surmounted, what casts the pall over our victory celebration? It is the <span class="orange">curse of dimensionality</span>, a malediction that has plagued the scientist from the earliest days.”</em></p>
+</div>
+<p><span class="grey">Richard Bellman</span></p>
 </div><div class="column" style="width:70%;">
 <ul>
-<li></li>
+<li><p>In <a href="un_C.html">Unit C</a> we explored <span class="blue">linear</span> predictive models for <span class="orange">high-dimensional</span> data (i.e.&nbsp;<span class="math inline">p</span> is large).</p></li>
+<li><p>In <a href="un_D.html">Unit D</a> we explored <span class="blue">nonparametric</span> predictive models for <span class="orange">univariate</span> data, placing almost no not assumptions on <span class="math inline">f(x)</span>.</p></li>
+<li><p>The expectations for this Unit should be models that are:</p>
+<ul>
+<li>High-dimensional;</li>
+<li>Nonparametric, placing no assumptions on the multivariate function <span class="math inline">f(\bm{x})</span>.</li>
+</ul></li>
+<li><p>The title of this unit, however, is not “<em>fully flexible high-dimensional models</em>”. Instead, it sounds like <span class="orange">bad news</span> are coming.</p></li>
+<li><p>Let us see why, unfortunately, this is indeed the case.</p></li>
 </ul>
 </div>
+</div>
+</section>
+<section id="multidimensional-local-regression" class="level2">
+<h2 class="anchored" data-anchor-id="multidimensional-local-regression">Multidimensional local regression</h2>
+</section>
+<section id="the-curse-of-dimensionality-htf-2011" class="level2">
+<h2 class="anchored" data-anchor-id="the-curse-of-dimensionality-htf-2011">The curse of dimensionality (<span class="grey">HTF, 2011</span>)</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/curse.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
 </div>
 </section>
 
