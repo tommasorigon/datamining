@@ -68,7 +68,7 @@ to convert the HTML slides into pdf files, you can [follow the instruction of th
 | **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)           | [Code D](code/un_D.R) |
 | *Exercises*                            | \[Exercises 4\]                      |                                                    |                       |
 | Lab 4                                  | \[Lab 4\]                            |                                                    | \[Code Lab 4\]        |
-| **The curse of dimensionality**        | \[Unit E\]                           | \[Slides Unit E\]                                  |                       |
+| **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html)           |                       |
 | **Additive models**                    | \[Unit F\]                           | \[Slides Unit F\]                                  |                       |
 | *Exercises*                            | \[Exercises 5\]                      |                                                    |                       |
 | Lab 5                                  | \[Lab 5\]                            |                                                    | \[Code Lab 5\]        |
