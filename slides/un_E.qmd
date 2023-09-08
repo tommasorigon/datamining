@@ -104,7 +104,7 @@ styler:::style_file("../code/un_E.R")
 
 . . .
     
-- This estimator is well-defined and it considers "[local]{.orange}" points in $p$ dimensions. 
+- This estimator is well-defined and it considers "[local]{.blue}" points in $p$ dimensions. 
 
 - If the theoretical definition of multidimensional nonparametric tools is not a problem, why are they [not used]{.orange} in practice?
 
@@ -216,7 +216,7 @@ which is increasing [linearly]{.blue} in $p$, but [not exponentially]{.orange}.
 
 - Linear models make [assumptions]{.orange} and impose a [structure]{.blue}. If the assumptions are correct, the estimates exploit [global features]{.orange} and are less affected by the local sparsity.
 
-- Nature is not necessarily a linear model, this is why we wanted to go explore the nonparametric case.
+- Nature is not necessarily a linear model, this is why we explored the nonparametric case.
 
 - Nonetheless, making (correct) [assumptions]{.orange} and therefore imposing (appropriate) restrictions is [beneficial]{.blue}, to the extent that is [unavoidable]{.orange} in high-dimensions. 
 :::
