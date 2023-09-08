@@ -206,7 +206,7 @@ $$
 ::: incremental
 - Is there a "[solution]{.blue}" to the [curse of dimensionality]{.orange}? Well, yes... and no.
 
-- If $f(x)$ is assumed to be [arbitrarily complex]{.orange} and our estimator $f(x)$ is [nonparametric]{.blue}, we destined to face the curse.
+- If $f(x)$ is assumed to be [arbitrarily complex]{.orange} and our estimator $f(x)$ is [nonparametric]{.blue}, we are destined to face the curse.
 
 - However, in [linear models]{.blue} you never encountered the curse of dimensionality. Indeed:
 $$
