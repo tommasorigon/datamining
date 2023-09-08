@@ -63,7 +63,7 @@ styler:::style_file("../code/un_E.R")
 ::: columns
 ::: {.column width="30%"}
 
-![](img/curse2.png){fig-align="center" width="80%"}
+![](img/curse3.jpg){fig-align="center" width="80%"}
 
 ::: {style="font-size: 50%;"}
 *"In view of all that we have said in the foregoing sections, the many obstacles we appear to have surmounted, what casts the pall over our victory celebration? It is the [curse of dimensionality]{.orange}, a malediction that has plagued the scientist from the earliest days."*
@@ -93,7 +93,7 @@ styler:::style_file("../code/un_E.R")
     
 . . .
 
--   To estimate $f$ on a specific point $\bm{x} = (x_1,\dots,x_p)$, a [natural
+-   To estimate $f$ on a specific point $\bm{x} = (x_1,\dots,x_p)^T$, a [natural
     extension]{.blue} of the Nadaraya-Watson takes the form 
     $$
     \hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(\bm{x})}\sum_{i=1}^n w_i(\bm{x}) y_i = \sum_{i=1}^n s_i(\bm{x}) y_i,
@@ -110,12 +110,130 @@ styler:::style_file("../code/un_E.R")
 
 ## The curse of dimensionality I
 
+- When the function $f(x)$ is entirely unspecified and a [local nonparametric]{.orange} method is used, a [dense]{.blue} dataset is needed to get a reasonably accurate estimate $\hat{f}(x)$.
+
+. . .
+
+- However, when $p$ grows, the data points becomes [sparse]{.orange}, even when $n$ is "big" in absolute terms. 
+
+- In other words, a neighborhood of a generic point $x$ contains a small fraction of observations.
+
+- Thus, a [neighborhood]{.blue} with a fixed percentage of data points is [no longer local]{.orange}. 
+
+. . .
+
+- To put it another way: to get a local neighborhood with $10$ data points along each axis, then $10^p$ data points are needed in the corresponding $p$-dimensional neighborhood. 
+
+. . .
+
+- As a consequence, [much larger]{.orange} datasets are needed even for moderate $p$, because the sample size $n$ needs to grows [exponentially]{.blue} with $p$. 
+
 ## The curse of dimensionality II
+
+::: incremental
+
+- The following illustration may help in clarifying this notion of [sparsity]{.orange}. Let us consider data points that are uniformaly distributed on $(0, 1)^p$, that is $\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)$.
+
+- Then, the [median distance]{.orange} from the origin $(0,\dots,0)^T$ to the [closest point]{.blue} is:
+$$
+\text{dist}(p, n) = \left\{1 - \left(\frac{1}{2}\right)^{1/n}\right\}^{1/p}.
+$$
+
+- In the [univariate]{.blue} case, such a median distance for $n = 100$ is quite small:
+$$
+\text{dist}(1, 100) = 0.007.
+$$
+
+- Conversely, when the [dimension]{.orange} $p$ [increases]{.orange}, the [median distance]{.blue} becomes:
+$$
+\text{dist}(2, 100) = 0.083, \quad \text{dist}(10, 100) = 0.608, \quad \text{dist}(50, 100) = 0.905.
+$$
+Note that even with a much larger sample size, we get $\text{dist}(10, 1000) = 0.483$. 
+
+- The vast majority of points is [close to the boundary]{.blue}, making predictions very hard.
+:::
 
 ## The curse of dimensionality III
 
-## The curse of dimensionality ([HTF, 2011]{.grey})
+::: incremental
+
+- Another [intuition]{.orange} of the curse of dimensionality is given by the following argument. Let us consider again [uniform]{.blue} covariates $\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)$. 
+
+- Let us consider a subcube which contains a fraction $r \in (0, 1)$ of the total number of observations $n$. In the univeriate case ($p = 1$), the side of this cube is simply $r$. 
+
+- In the more general case, in can be shown that, on [average]{.orange}, the [side]{.blue} of the cube is
+$$
+\text{side}(r, p) = r^{1/p},
+$$
+which is again exponentially decreasing in $p$.
+
+- Hence, when $p = 1$ the expected amount of points in the [local sub-interval]{.orange} $(0, 1/10)$ is again $1/10$. 
+
+- Instead, when $p = 10$ the amount of point is the [local subcube]{.blue} $(0, 1)^{10}$ is
+$$
+n \left(\frac{1}{10}\right)^{10} = \frac{n}{1.000.000.000}.
+$$
+
+:::
+
+## The curse of dimensionality ([HTF, 2011]{.orange})
 
 ![](img/curse.png){fig-align="center" width="70%"}
 
-## So what?
+## Implications of the curse of dimensionality
+
+::: incremental
+- In the local [kernel smoothing]{.blue} approach, we can precisely quantify the impact of the [curse of dimensionality]{.orange} on the [mean squared error]{.blue}.
+
+- Under some regularity conditions, the Nadaraya-Watson and the local linear regression estimator has [asymptotic mean squared error]{.blue}
+$$
+\mathbb{E}\left[\{f(x) - \hat{f}(x)\}^2\right] \sim n^{-4/5},
+$$
+which is [slower]{.orange} than the [parametric rate]{.orange} $n^{-1}$, but still reasonably fast for predictions.
+
+- Conversely, it can be shown that in [high-dimension]{.orange} the [asymptotic rate]{.blue} becomes
+$$
+\mathbb{E}\left[\{f(\bm{x}) - \hat{f}(\bm{x})\}^2\right] \sim n^{-4/(4 + p)}.
+$$
+
+- Thus, the sample size for a $p$-dimensional problem to have the same accuracy as a sample size $n$ in one dimension is $m \propto n^{c p}$, with $c = (4 + p)/(5p) > 0$.
+
+- To maintain a given degree of accuracy of a [local nonparametric]{.blue} estimator, the sample size must increase [exponentially]{.orange} with the dimension $p$. 
+:::
+
+## Escaping the curse
+
+::: incremental
+- Is there a "[solution]{.blue}" to the [curse of dimensionality]{.orange}? Well, yes... and no.
+
+- If $f(x)$ is assumed to be [arbitrarily complex]{.orange} and our estimator $f(x)$ is [nonparametric]{.blue}, we destined to face the curse.
+
+- However, in [linear models]{.blue} you never encountered the curse of dimensionality. Indeed:
+$$
+\frac{1}{n}\sum_{i=1}^n\mathbb{E}\left\{(\bm{x}_i^T\beta - \bm{x}_i^T\hat{\beta})^2\right\} =  \sigma^2\frac{p}{n},
+$$
+which is increasing [linearly]{.blue} in $p$, but [not exponentially]{.orange}.
+
+- Linear models make [assumptions]{.orange} and impose a [structure]{.blue}. If the assumptions are correct, the estimates exploit [global features]{.orange} and are less affected by the local sparsity.
+
+- Nature is not necessarily a linear model, this is why we wanted to go explore the nonparametric case.
+
+- Nonetheless, making (correct) [assumptions]{.orange} and therefore imposing (appropriate) restrictions is [beneficial]{.blue}, to the extent that is [unavoidable]{.orange} in high-dimensions. 
+:::
+
+## Escaping the curse
+
+::: incremental
+- The [multidimensional]{.blue} methods you will study (GAM, trees, random forest, boosting, neural networks, etc.) deal with the curse of dimensionality by making (implicit) assumptions.
+
+- These [assumptions]{.orange} differentiate because of:
+    - The particular [nature]{.grey} of the knowledge the impose (e.g. no interactions, piecewise constant functions, etc.);
+    - The [strength]{.orange} of this assumption;
+    - The [sensibility]{.blue} of the methods to potential violation of the assumptions.
+
+- Thus, several alternative ideas and methods are needed; there is no single "best" algorithm. 
+
+- This is why having a well-trained statistician in the team is important, because she/he will be able to identify the method that best suit the specific applied example.
+
+- ...or at least, she/he will be aware of the [limitations]{.orange} of the methods. 
+:::

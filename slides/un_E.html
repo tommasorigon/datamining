@@ -68,8 +68,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-curse-of-dimensionality-i" id="toc-the-curse-of-dimensionality-i" class="nav-link" data-scroll-target="#the-curse-of-dimensionality-i">The curse of dimensionality I</a></li>
   <li><a href="#the-curse-of-dimensionality-ii" id="toc-the-curse-of-dimensionality-ii" class="nav-link" data-scroll-target="#the-curse-of-dimensionality-ii">The curse of dimensionality II</a></li>
   <li><a href="#the-curse-of-dimensionality-iii" id="toc-the-curse-of-dimensionality-iii" class="nav-link" data-scroll-target="#the-curse-of-dimensionality-iii">The curse of dimensionality III</a></li>
-  <li><a href="#the-curse-of-dimensionality-htf-2011" id="toc-the-curse-of-dimensionality-htf-2011" class="nav-link" data-scroll-target="#the-curse-of-dimensionality-htf-2011">The curse of dimensionality (<span class="grey">HTF, 2011</span>)</a></li>
-  <li><a href="#so-what" id="toc-so-what" class="nav-link" data-scroll-target="#so-what">So what?</a></li>
+  <li><a href="#the-curse-of-dimensionality-htf-2011" id="toc-the-curse-of-dimensionality-htf-2011" class="nav-link" data-scroll-target="#the-curse-of-dimensionality-htf-2011">The curse of dimensionality (<span class="orange">HTF, 2011</span>)</a></li>
+  <li><a href="#implications-of-the-curse-of-dimensionality" id="toc-implications-of-the-curse-of-dimensionality" class="nav-link" data-scroll-target="#implications-of-the-curse-of-dimensionality">Implications of the curse of dimensionality</a></li>
+  <li><a href="#escaping-the-curse" id="toc-escaping-the-curse" class="nav-link" data-scroll-target="#escaping-the-curse">Escaping the curse</a></li>
+  <li><a href="#escaping-the-curse-1" id="toc-escaping-the-curse-1" class="nav-link" data-scroll-target="#escaping-the-curse-1">Escaping the curse</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_E_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
@@ -112,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
 <div class="column" style="width:30%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="img/curse2.png" class="img-fluid figure-img" style="width:80.0%"></p>
+<p><img src="img/curse3.jpg" class="img-fluid figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 <div style="font-size: 50%;">
@@ -140,7 +142,7 @@ ul.task-list li input[type="checkbox"] {
 <li>At least <span class="orange">conceptually</span>, kernel methods could be applied with <span class="orange">two</span> or <span class="orange">more covariates</span>.</li>
 </ul>
 <ul>
-<li>To estimate <span class="math inline">f</span> on a specific point <span class="math inline">\bm{x} = (x_1,\dots,x_p)</span>, a <span class="blue">natural extension</span> of the Nadaraya-Watson takes the form <span class="math display">
+<li>To estimate <span class="math inline">f</span> on a specific point <span class="math inline">\bm{x} = (x_1,\dots,x_p)^T</span>, a <span class="blue">natural extension</span> of the Nadaraya-Watson takes the form <span class="math display">
 \hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(\bm{x})}\sum_{i=1}^n w_i(\bm{x}) y_i = \sum_{i=1}^n s_i(\bm{x}) y_i,
 </span> where the <span class="orange">weights</span> <span class="math inline">w_i(\bm{x})</span> are defined as <span class="math display">
 w_i(\bm{x}) = \prod_{j=1}^p \frac{1}{h_j} w\left(\frac{x_{ij} - x_j}{h_j}\right).
@@ -153,23 +155,110 @@ w_i(\bm{x}) = \prod_{j=1}^p \frac{1}{h_j} w\left(\frac{x_{ij} - x_j}{h_j}\right)
 </section>
 <section id="the-curse-of-dimensionality-i" class="level2">
 <h2 class="anchored" data-anchor-id="the-curse-of-dimensionality-i">The curse of dimensionality I</h2>
+<ul>
+<li>When the function <span class="math inline">f(x)</span> is entirely unspecified and a <span class="orange">local nonparametric</span> method is used, a <span class="blue">dense</span> dataset is needed to get a reasonably accurate estimate <span class="math inline">\hat{f}(x)</span>.</li>
+</ul>
+<ul>
+<li><p>However, when <span class="math inline">p</span> grows, the data points becomes <span class="orange">sparse</span>, even when <span class="math inline">n</span> is “big” in absolute terms.</p></li>
+<li><p>In other words, a neighborhood of a generic point <span class="math inline">x</span> contains a small fraction of observations.</p></li>
+<li><p>Thus, a <span class="blue">neighborhood</span> with a fixed percentage of data points is <span class="orange">no longer local</span>.</p></li>
+</ul>
+<ul>
+<li>To put it another way: to get a local neighborhood with <span class="math inline">10</span> data points along each axis, then <span class="math inline">10^p</span> data points are needed in the corresponding <span class="math inline">p</span>-dimensional neighborhood.</li>
+</ul>
+<ul>
+<li>As a consequence, <span class="orange">much larger</span> datasets are needed even for moderate <span class="math inline">p</span>, because the sample size <span class="math inline">n</span> needs to grows <span class="blue">exponentially</span> with <span class="math inline">p</span>.</li>
+</ul>
 </section>
 <section id="the-curse-of-dimensionality-ii" class="level2">
 <h2 class="anchored" data-anchor-id="the-curse-of-dimensionality-ii">The curse of dimensionality II</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The following illustration may help in clarifying this notion of <span class="orange">sparsity</span>. Let us consider data points that are uniformaly distributed on <span class="math inline">(0, 1)^p</span>, that is <span class="math inline">\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)</span>.</p></li>
+<li><p>Then, the <span class="orange">median distance</span> from the origin <span class="math inline">(0,\dots,0)^T</span> to the <span class="blue">closest point</span> is: <span class="math display">
+\text{dist}(p, n) = \left\{1 - \left(\frac{1}{2}\right)^{1/n}\right\}^{1/p}.
+</span></p></li>
+<li><p>In the <span class="blue">univariate</span> case, such a median distance for <span class="math inline">n = 100</span> is quite small: <span class="math display">
+\text{dist}(1, 100) = 0.007.
+</span></p></li>
+<li><p>Conversely, when the <span class="orange">dimension</span> <span class="math inline">p</span> <span class="orange">increases</span>, the <span class="blue">median distance</span> becomes: <span class="math display">
+\text{dist}(2, 100) = 0.083, \quad \text{dist}(10, 100) = 0.608, \quad \text{dist}(50, 100) = 0.905.
+</span> Note that even with a much larger sample size, we get <span class="math inline">\text{dist}(10, 1000) = 0.483</span>.</p></li>
+<li><p>The vast majority of points is <span class="blue">close to the boundary</span>, making predictions very hard.</p></li>
+</ul>
+</div>
 </section>
 <section id="the-curse-of-dimensionality-iii" class="level2">
 <h2 class="anchored" data-anchor-id="the-curse-of-dimensionality-iii">The curse of dimensionality III</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Another <span class="orange">intuition</span> of the curse of dimensionality is given by the following argument. Let us consider again <span class="blue">uniform</span> covariates <span class="math inline">\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)</span>.</p></li>
+<li><p>Let us consider a subcube which contains a fraction <span class="math inline">r \in (0, 1)</span> of the total number of observations <span class="math inline">n</span>. In the univeriate case (<span class="math inline">p = 1</span>), the side of this cube is simply <span class="math inline">r</span>.</p></li>
+<li><p>In the more general case, in can be shown that, on <span class="orange">average</span>, the <span class="blue">side</span> of the cube is <span class="math display">
+\text{side}(r, p) = r^{1/p},
+</span> which is again exponentially decreasing in <span class="math inline">p</span>.</p></li>
+<li><p>Hence, when <span class="math inline">p = 1</span> the expected amount of points in the <span class="orange">local sub-interval</span> <span class="math inline">(0, 1/10)</span> is again <span class="math inline">1/10</span>.</p></li>
+<li><p>Instead, when <span class="math inline">p = 10</span> the amount of point is the <span class="blue">local subcube</span> <span class="math inline">(0, 1)^{10}</span> is <span class="math display">
+n \left(\frac{1}{10}\right)^{10} = \frac{n}{1.000.000.000}.
+</span></p></li>
+</ul>
+</div>
 </section>
 <section id="the-curse-of-dimensionality-htf-2011" class="level2">
-<h2 class="anchored" data-anchor-id="the-curse-of-dimensionality-htf-2011">The curse of dimensionality (<span class="grey">HTF, 2011</span>)</h2>
+<h2 class="anchored" data-anchor-id="the-curse-of-dimensionality-htf-2011">The curse of dimensionality (<span class="orange">HTF, 2011</span>)</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="img/curse.png" class="img-fluid figure-img" style="width:70.0%"></p>
 </figure>
 </div>
 </section>
-<section id="so-what" class="level2">
-<h2 class="anchored" data-anchor-id="so-what">So what?</h2>
+<section id="implications-of-the-curse-of-dimensionality" class="level2">
+<h2 class="anchored" data-anchor-id="implications-of-the-curse-of-dimensionality">Implications of the curse of dimensionality</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>In the local <span class="blue">kernel smoothing</span> approach, we can precisely quantify the impact of the <span class="orange">curse of dimensionality</span> on the <span class="blue">mean squared error</span>.</p></li>
+<li><p>Under some regularity conditions, the Nadaraya-Watson and the local linear regression estimator has <span class="blue">asymptotic mean squared error</span> <span class="math display">
+\mathbb{E}\left[\{f(x) - \hat{f}(x)\}^2\right] \sim n^{-4/5},
+</span> which is <span class="orange">slower</span> than the <span class="orange">parametric rate</span> <span class="math inline">n^{-1}</span>, but still reasonably fast for predictions.</p></li>
+<li><p>Conversely, it can be shown that in <span class="orange">high-dimension</span> the <span class="blue">asymptotic rate</span> becomes <span class="math display">
+\mathbb{E}\left[\{f(\bm{x}) - \hat{f}(\bm{x})\}^2\right] \sim n^{-4/(4 + p)}.
+</span></p></li>
+<li><p>Thus, the sample size for a <span class="math inline">p</span>-dimensional problem to have the same accuracy as a sample size <span class="math inline">n</span> in one dimension is <span class="math inline">m \propto n^{c p}</span>, with <span class="math inline">c = (4 + p)/(5p) &gt; 0</span>.</p></li>
+<li><p>To maintain a given degree of accuracy of a <span class="blue">local nonparametric</span> estimator, the sample size must increase <span class="orange">exponentially</span> with the dimension <span class="math inline">p</span>.</p></li>
+</ul>
+</div>
+</section>
+<section id="escaping-the-curse" class="level2">
+<h2 class="anchored" data-anchor-id="escaping-the-curse">Escaping the curse</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>Is there a “<span class="blue">solution</span>” to the <span class="orange">curse of dimensionality</span>? Well, yes… and no.</p></li>
+<li><p>If <span class="math inline">f(x)</span> is assumed to be <span class="orange">arbitrarily complex</span> and our estimator <span class="math inline">f(x)</span> is <span class="blue">nonparametric</span>, we destined to face the curse.</p></li>
+<li><p>However, in <span class="blue">linear models</span> you never encountered the curse of dimensionality. Indeed: <span class="math display">
+\frac{1}{n}\sum_{i=1}^n\mathbb{E}\left\{(\bm{x}_i^T\beta - \bm{x}_i^T\hat{\beta})^2\right\} =  \sigma^2\frac{p}{n},
+</span> which is increasing <span class="blue">linearly</span> in <span class="math inline">p</span>, but <span class="orange">not exponentially</span>.</p></li>
+<li><p>Linear models make <span class="orange">assumptions</span> and impose a <span class="blue">structure</span>. If the assumptions are correct, the estimates exploit <span class="orange">global features</span> and are less affected by the local sparsity.</p></li>
+<li><p>Nature is not necessarily a linear model, this is why we wanted to go explore the nonparametric case.</p></li>
+<li><p>Nonetheless, making (correct) <span class="orange">assumptions</span> and therefore imposing (appropriate) restrictions is <span class="blue">beneficial</span>, to the extent that is <span class="orange">unavoidable</span> in high-dimensions.</p></li>
+</ul>
+</div>
+</section>
+<section id="escaping-the-curse-1" class="level2">
+<h2 class="anchored" data-anchor-id="escaping-the-curse-1">Escaping the curse</h2>
+<div class="incremental">
+<ul class="incremental">
+<li><p>The <span class="blue">multidimensional</span> methods you will study (GAM, trees, random forest, boosting, neural networks, etc.) deal with the curse of dimensionality by making (implicit) assumptions.</p></li>
+<li><p>These <span class="orange">assumptions</span> differentiate because of:</p>
+<ul class="incremental">
+<li>The particular <span class="grey">nature</span> of the knowledge the impose (e.g.&nbsp;no interactions, piecewise constant functions, etc.);</li>
+<li>The <span class="orange">strength</span> of this assumption;</li>
+<li>The <span class="blue">sensibility</span> of the methods to potential violation of the assumptions.</li>
+</ul></li>
+<li><p>Thus, several alternative ideas and methods are needed; there is no single “best” algorithm.</p></li>
+<li><p>This is why having a well-trained statistician in the team is important, because she/he will be able to identify the method that best suit the specific applied example.</p></li>
+<li><p>…or at least, she/he will be aware of the <span class="orange">limitations</span> of the methods.</p></li>
+</ul>
+</div>
 </section>
 
 </main>
