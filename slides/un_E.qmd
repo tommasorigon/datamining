@@ -237,3 +237,16 @@ which is increasing [linearly]{.blue} in $p$, but [not exponentially]{.orange}.
 
 - ...or at least, she/he will be aware of the [limitations]{.orange} of the methods. 
 :::
+
+## References
+
+-   [Main references]{.orange}
+    - **Section 4.3** of Azzalini, A. and Scarpa, B. (2011), [*Data
+        Analysis and Data
+        Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
+        University Press.
+    - **Section 2.5** of Hastie, T., Tibshirani, R. and Friedman, J.
+        (2009), [*The Elements of Statistical
+        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
+        Edition, Springer.
+    - **Sections 4.5 and 5.12** of Wasserman, L. (2006), [*All of Nonparametric statistics*](https://link.springer.com/book/10.1007/0-387-30623-4), Springer.

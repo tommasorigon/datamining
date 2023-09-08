@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="un_E_files/libs/clipboard/clipboard.min.js"></script>
-<script src="un_E_files/libs/quarto-html/tabby.min.js"></script>
-<script src="un_E_files/libs/quarto-html/popper.min.js"></script>
-<script src="un_E_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="un_E_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="un_E_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="un_E_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="un_E_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="un_F_files/libs/clipboard/clipboard.min.js"></script>
+<script src="un_F_files/libs/quarto-html/tabby.min.js"></script>
+<script src="un_F_files/libs/quarto-html/popper.min.js"></script>
+<script src="un_F_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="un_F_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="un_F_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="un_F_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="un_F_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.3.433">
 
   <meta name="author" content="Tommaso Rigon">
-  <title>The curse of dimensionality</title>
+  <title>Additive models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="un_E_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="un_E_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="un_F_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="un_F_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -30,7 +30,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="un_E_files/libs/revealjs/dist/theme/quarto.css">
+  <link rel="stylesheet" href="un_F_files/libs/revealjs/dist/theme/quarto.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -47,10 +47,10 @@
 }}});
   </script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
-  <link href="un_E_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="un_E_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="un_E_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="un_E_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link href="un_F_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="un_F_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="un_F_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="un_F_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -341,7 +341,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">The curse of dimensionality</h1>
+  <h1 class="title">Additive models</h1>
   <p class="subtitle">Data Mining - CdL CLAMSES</p>
 
 <div class="quarto-title-authors">
@@ -359,192 +359,137 @@
 <section id="homepage" class="slide level2 center">
 <h2><a href="../index.html">Homepage</a></h2>
 <div class="columns">
-<div class="column" style="width:30%;">
+<div class="column" style="width:35%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="img/curse3.jpg" style="width:80.0%"></p>
+<p><img data-src="img/baseball.png" style="width:60.0%"></p>
 </figure>
 </div>
-<div style="font-size: 50%;">
-<p><em>“In view of all that we have said in the foregoing sections, the many obstacles we appear to have surmounted, what casts the pall over our victory celebration? It is the <span class="orange">curse of dimensionality</span>, a malediction that has plagued the scientist from the earliest days.”</em></p>
+<div style="font-size: 90%;">
+<p><em>“I never keep a scorecard or the batting averages. I hate statistics. What I got to know, I keep in my head.”</em></p>
 </div>
-<p><span class="grey">Richard Bellman</span></p>
-</div><div class="column" style="width:70%;">
+<p><span class="grey">Dizzy Dean</span>, baseball player in the ’30s and ’40s.</p>
+</div><div class="column" style="width:65%;">
 <ul>
-<li><p>In <a href="un_C.html">Unit C</a> we explored <span class="blue">linear</span> predictive models for <span class="orange">high-dimensional</span> data (i.e.&nbsp;<span class="math inline">p</span> is large).</p></li>
-<li><p>In <a href="un_D.html">Unit D</a> we explored <span class="blue">nonparametric</span> predictive models for <span class="orange">univariate</span> data, placing almost no assumptions on <span class="math inline">f(x)</span>.</p></li>
-<li><p>Thus, the expectations are that this unit should cover models with the following features:</p>
+<li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
 <ul>
-<li><span class="orange">High-dimensional</span>, with large <span class="math inline">p</span>;</li>
-<li><span class="blue">Nonparametric</span>, placing no assumptions on <span class="math inline">f(\bm{x})</span>.</li>
+<li>Generalized additive models (GAMs)</li>
+<li>Multivariate Adaptive Regression Splines (MARS)</li>
 </ul></li>
-<li><p>The title of this unit, however, is not “<em>fully flexible high-dimensional models</em>”.</p></li>
-<li><p>Instead, it sounds like <span class="orange">bad news</span> are coming. Let us see why, unfortunately, this will be indeed the case.</p></li>
+<li><p>The running example is about baseball data… but a lot has changed since the ’30s!</p></li>
 </ul>
 </div>
 </div>
 </section>
-<section id="multidimensional-local-regression" class="slide level2 center">
-<h2>Multidimensional local regression</h2>
-<ul>
-<li>At least <span class="orange">conceptually</span>, kernel methods could be applied with <span class="orange">two</span> or <span class="orange">more covariates</span>.</li>
-</ul>
-<div class="fragment">
-<ul>
-<li>To estimate <span class="math inline">f</span> on a specific point <span class="math inline">\bm{x} = (x_1,\dots,x_p)^T</span>, a <span class="blue">natural extension</span> of the Nadaraya-Watson takes the form <span class="math display">
-\hat{f}(x) = \frac{1}{\sum_{i'=1}^n w_{i'}(\bm{x})}\sum_{i=1}^n w_i(\bm{x}) y_i = \sum_{i=1}^n s_i(\bm{x}) y_i,
-</span> where the <span class="orange">weights</span> <span class="math inline">w_i(\bm{x})</span> are defined as <span class="math display">
-w_i(\bm{x}) = \prod_{j=1}^p \frac{1}{h_j} w\left(\frac{x_{ij} - x_j}{h_j}\right).
-</span></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>This estimator is well-defined and it considers “<span class="orange">local</span>” points in <span class="math inline">p</span> dimensions.</p></li>
-<li><p>If the theoretical definition of multidimensional nonparametric tools is not a problem, why are they <span class="orange">not used</span> in practice?</p></li>
-</ul>
-</div>
-</section>
-<section id="the-curse-of-dimensionality-i" class="slide level2 center">
-<h2>The curse of dimensionality I</h2>
-<ul>
-<li>When the function <span class="math inline">f(x)</span> is entirely unspecified and a <span class="orange">local nonparametric</span> method is used, a <span class="blue">dense</span> dataset is needed to get a reasonably accurate estimate <span class="math inline">\hat{f}(x)</span>.</li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>However, when <span class="math inline">p</span> grows, the data points becomes <span class="orange">sparse</span>, even when <span class="math inline">n</span> is “big” in absolute terms.</p></li>
-<li><p>In other words, a neighborhood of a generic point <span class="math inline">x</span> contains a small fraction of observations.</p></li>
-<li><p>Thus, a <span class="blue">neighborhood</span> with a fixed percentage of data points is <span class="orange">no longer local</span>.</p></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>To put it another way: to get a local neighborhood with <span class="math inline">10</span> data points along each axis, then <span class="math inline">10^p</span> data points are needed in the corresponding <span class="math inline">p</span>-dimensional neighborhood.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>As a consequence, <span class="orange">much larger</span> datasets are needed even for moderate <span class="math inline">p</span>, because the sample size <span class="math inline">n</span> needs to grows <span class="blue">exponentially</span> with <span class="math inline">p</span>.</li>
-</ul>
-</div>
-</section>
-<section id="the-curse-of-dimensionality-ii" class="slide level2 center">
-<h2>The curse of dimensionality II</h2>
+<section id="the-hitters-dataset" class="slide level2 center">
+<h2>The <code>Hitters</code> dataset</h2>
 <div>
 <ul>
-<li class="fragment"><p>The following illustration may help in clarifying this notion of <span class="orange">sparsity</span>. Let us consider data points that are uniformaly distributed on <span class="math inline">(0, 1)^p</span>, that is <span class="math inline">\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)</span>.</p></li>
-<li class="fragment"><p>Then, the <span class="orange">median distance</span> from the origin <span class="math inline">(0,\dots,0)^T</span> to the <span class="blue">closest point</span> is: <span class="math display">
-\text{dist}(p, n) = \left\{1 - \left(\frac{1}{2}\right)^{1/n}\right\}^{1/p}.
-</span></p></li>
-<li class="fragment"><p>In the <span class="blue">univariate</span> case, such a median distance for <span class="math inline">n = 100</span> is quite small: <span class="math display">
-\text{dist}(1, 100) = 0.007.
-</span></p></li>
-<li class="fragment"><p>Conversely, when the <span class="orange">dimension</span> <span class="math inline">p</span> <span class="orange">increases</span>, the <span class="blue">median distance</span> becomes: <span class="math display">
-\text{dist}(2, 100) = 0.083, \quad \text{dist}(10, 100) = 0.608, \quad \text{dist}(50, 100) = 0.905.
-</span> Note that even with a much larger sample size, we get <span class="math inline">\text{dist}(10, 1000) = 0.483</span>.</p></li>
-<li class="fragment"><p>The vast majority of points is <span class="blue">close to the boundary</span>, making predictions very hard.</p></li>
-</ul>
-</div>
-</section>
-<section id="the-curse-of-dimensionality-iii" class="slide level2 center">
-<h2>The curse of dimensionality III</h2>
-<div>
+<li class="fragment"><p>We consider the <code>Hitters</code> dataset, which contains information about <span class="math inline">n = 263</span> Major League <span class="blue">Baseball players</span> from the 1986 and 1987 seasons.</p></li>
+<li class="fragment"><p>We want to <span class="blue">predict</span> the <span class="orange">Salary</span> of 1987 of each player, as a function of several covariates:</p>
 <ul>
-<li class="fragment"><p>Another <span class="orange">intuition</span> of the curse of dimensionality is given by the following argument. Let us consider again <span class="blue">uniform</span> covariates <span class="math inline">\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)</span>.</p></li>
-<li class="fragment"><p>Let us consider a subcube which contains a fraction <span class="math inline">r \in (0, 1)</span> of the total number of observations <span class="math inline">n</span>. In the univeriate case (<span class="math inline">p = 1</span>), the side of this cube is simply <span class="math inline">r</span>.</p></li>
-<li class="fragment"><p>In the more general case, in can be shown that, on <span class="orange">average</span>, the <span class="blue">side</span> of the cube is <span class="math display">
-\text{side}(r, p) = r^{1/p},
-</span> which is again exponentially decreasing in <span class="math inline">p</span>.</p></li>
-<li class="fragment"><p>Hence, when <span class="math inline">p = 1</span> the expected amount of points in the <span class="orange">local sub-interval</span> <span class="math inline">(0, 1/10)</span> is again <span class="math inline">1/10</span>.</p></li>
-<li class="fragment"><p>Instead, when <span class="math inline">p = 10</span> the amount of point is the <span class="blue">local subcube</span> <span class="math inline">(0, 1)^{10}</span> is <span class="math display">
-n \left(\frac{1}{10}\right)^{10} = \frac{n}{1.000.000.000}.
-</span></p></li>
+<li class="fragment">number of hits/runs/walks/assists/errors in 1986 and during the whole career;</li>
+<li class="fragment">number of years in the major leagues;</li>
+<li class="fragment">The league/division of the player at the end of 1986;</li>
+<li class="fragment">…and many others.</li>
+</ul></li>
+<li class="fragment"><p>We considered the logarithmic transform of the salary (<code>logSalary</code>) and the logarithmic transform of the number of years in major leagues (<code>logYears</code>).</p></li>
+<li class="fragment"><p>Including the intercept, there are in total <span class="math inline">p = 20</span> <span class="orange">variables</span> that can be used to predict the salary of each player.</p></li>
+<li class="fragment"><p>The <a href="https://search.r-project.org/CRAN/refmans/ISLR/html/Hitters.html">original dataset</a> is available in the <code>ISLR</code> R package.</p></li>
 </ul>
 </div>
 </section>
-<section id="the-curse-of-dimensionality-htf-2011" class="slide level2 center">
-<h2>The curse of dimensionality (<span class="orange">HTF, 2011</span>)</h2>
+<section id="a-glimpse-of-the-hitters-dataset" class="slide level2 center">
+<h2>A <code>glimpse</code> of the <code>Hitters</code> dataset</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 263
+Columns: 20
+$ AtBat     &lt;int&gt; 315, 479, 496, 321, 594, 185, 298, 323, 401, 574, 202, 418, …
+$ Hits      &lt;int&gt; 81, 130, 141, 87, 169, 37, 73, 81, 92, 159, 53, 113, 60, 43,…
+$ HmRun     &lt;int&gt; 7, 18, 20, 10, 4, 1, 0, 6, 17, 21, 4, 13, 0, 7, 20, 2, 8, 16…
+$ Runs      &lt;int&gt; 24, 66, 65, 39, 74, 23, 24, 26, 49, 107, 31, 48, 30, 29, 89,…
+$ RBI       &lt;int&gt; 38, 72, 78, 42, 51, 8, 24, 32, 66, 75, 26, 61, 11, 27, 75, 8…
+$ Walks     &lt;int&gt; 39, 76, 37, 30, 35, 21, 7, 8, 65, 59, 27, 47, 22, 30, 73, 15…
+$ Years     &lt;int&gt; 14, 3, 11, 2, 11, 2, 3, 2, 13, 10, 9, 4, 6, 13, 15, 5, 8, 1,…
+$ CAtBat    &lt;int&gt; 3449, 1624, 5628, 396, 4408, 214, 509, 341, 5206, 4631, 1876…
+$ CHits     &lt;int&gt; 835, 457, 1575, 101, 1133, 42, 108, 86, 1332, 1300, 467, 392…
+$ CHmRun    &lt;int&gt; 69, 63, 225, 12, 19, 1, 0, 6, 253, 90, 15, 41, 4, 36, 177, 5…
+$ CRuns     &lt;int&gt; 321, 224, 828, 48, 501, 30, 41, 32, 784, 702, 192, 205, 309,…
+$ CRBI      &lt;int&gt; 414, 266, 838, 46, 336, 9, 37, 34, 890, 504, 186, 204, 103, …
+$ CWalks    &lt;int&gt; 375, 263, 354, 33, 194, 24, 12, 8, 866, 488, 161, 203, 207, …
+$ League    &lt;fct&gt; N, A, N, N, A, N, A, N, A, A, N, N, A, N, N, A, N, N, A, N, …
+$ Division  &lt;fct&gt; W, W, E, E, W, E, W, W, E, E, W, E, E, E, W, W, W, E, W, W, …
+$ PutOuts   &lt;int&gt; 632, 880, 200, 805, 282, 76, 121, 143, 0, 238, 304, 211, 121…
+$ Assists   &lt;int&gt; 43, 82, 11, 40, 421, 127, 283, 290, 0, 445, 45, 11, 151, 45,…
+$ Errors    &lt;int&gt; 10, 14, 3, 4, 25, 7, 9, 19, 0, 22, 11, 7, 6, 8, 10, 16, 2, 5…
+$ Salary    &lt;dbl&gt; 475.000, 480.000, 500.000, 91.500, 750.000, 70.000, 100.000,…
+$ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N, N, …</code></pre>
+</div>
+</div>
+</section>
+<section id="preliminary-operations" class="slide level2 center">
+<h2>Preliminary operations</h2>
+<!-- ## The variable selection problem -->
+<!-- ::: incremental -->
+<!-- - We consider a [linear model]{.orange} in which the response variable $Y_i$ (`logSalary`) is related to the -->
+<!-- covariates through the function$$ -->
+<!--     \mathbb{E}(Y_i) = f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta, -->
+<!--     $$  -->
+<!-- using the same notation of [Unit A.1](un_A1.html). -->
+<!-- - Among these $p = 26$ variables, some are likely to be [irrelevant]{.blue}, because they might be [correlated]{.orange} or even [collinear]{.orange}. -->
+<!-- - As we have seen in [Unit B](un_B.html), irrelevant variables are problematic because they [increase the variance]{.orange} of the estimates without important gain in term of bias.  -->
+<!-- - For the polynomial regression problem of [Unit B](un_B.html) we used [cross-validation]{.blue} and other tools to find a good [bias-variance trade-off]{.blue}. Can we use the same strategy in this example? -->
+<!-- - In theory, yes... but here there are $2^{20} = 1048576$ competing models!  -->
+<!-- ::: -->
+<!-- ## Correlation matrix of `Hitters` -->
+<!-- ```{r} -->
+<!-- #| fig-width: 15 -->
+<!-- #| fig-height: 7 -->
+<!-- #| fig-align: center -->
+<!-- library(ggcorrplot) -->
+<!-- corr <- cor(subset(Hitters_train, select = -c(Salary, Division, League, NewLeague))) # Remove logSalary -->
+<!-- ggcorrplot(corr, -->
+<!--   hc.order = TRUE, -->
+<!--   outline.col = "white", -->
+<!--   ggtheme = ggplot2::theme_bw, -->
+<!--   colors = c("#fc7d0b", "white", "#1170aa") -->
+<!-- ) -->
+<!-- ``` -->
+</section>
+<section id="generalized-additive-models" class="title-slide slide level1 center">
+<h1>Generalized additive models</h1>
 
-<img data-src="img/curse.png" style="width:70.0%" class="r-stretch quarto-figure-center"></section>
-<section id="implications-of-the-curse-of-dimensionality" class="slide level2 center">
-<h2>Implications of the curse of dimensionality</h2>
-<div>
-<ul>
-<li class="fragment"><p>In the local <span class="blue">kernel smoothing</span> approach, we can precisely quantify the impact of the <span class="orange">curse of dimensionality</span> on the <span class="blue">mean squared error</span>.</p></li>
-<li class="fragment"><p>Under some regularity conditions, the Nadaraya-Watson and the local linear regression estimator has <span class="blue">asymptotic mean squared error</span> <span class="math display">
-\mathbb{E}\left[\{f(x) - \hat{f}(x)\}^2\right] \sim n^{-4/5},
-</span> which is <span class="orange">slower</span> than the <span class="orange">parametric rate</span> <span class="math inline">n^{-1}</span>, but still reasonably fast for predictions.</p></li>
-<li class="fragment"><p>Conversely, it can be shown that in <span class="orange">high-dimension</span> the <span class="blue">asymptotic rate</span> becomes <span class="math display">
-\mathbb{E}\left[\{f(\bm{x}) - \hat{f}(\bm{x})\}^2\right] \sim n^{-4/(4 + p)}.
-</span></p></li>
-<li class="fragment"><p>Thus, the sample size for a <span class="math inline">p</span>-dimensional problem to have the same accuracy as a sample size <span class="math inline">n</span> in one dimension is <span class="math inline">m \propto n^{c p}</span>, with <span class="math inline">c = (4 + p)/(5p) &gt; 0</span>.</p></li>
-<li class="fragment"><p>To maintain a given degree of accuracy of a <span class="blue">local nonparametric</span> estimator, the sample size must increase <span class="orange">exponentially</span> with the dimension <span class="math inline">p</span>.</p></li>
-</ul>
-</div>
 </section>
-<section id="escaping-the-curse" class="slide level2 center">
-<h2>Escaping the curse</h2>
-<div>
-<ul>
-<li class="fragment"><p>Is there a “<span class="blue">solution</span>” to the <span class="orange">curse of dimensionality</span>? Well, yes… and no.</p></li>
-<li class="fragment"><p>If <span class="math inline">f(x)</span> is assumed to be <span class="orange">arbitrarily complex</span> and our estimator <span class="math inline">f(x)</span> is <span class="blue">nonparametric</span>, we destined to face the curse.</p></li>
-<li class="fragment"><p>However, in <span class="blue">linear models</span> you never encountered the curse of dimensionality. Indeed: <span class="math display">
-\frac{1}{n}\sum_{i=1}^n\mathbb{E}\left\{(\bm{x}_i^T\beta - \bm{x}_i^T\hat{\beta})^2\right\} =  \sigma^2\frac{p}{n},
-</span> which is increasing <span class="blue">linearly</span> in <span class="math inline">p</span>, but <span class="orange">not exponentially</span>.</p></li>
-<li class="fragment"><p>Linear models make <span class="orange">assumptions</span> and impose a <span class="blue">structure</span>. If the assumptions are correct, the estimates exploit <span class="orange">global features</span> and are less affected by the local sparsity.</p></li>
-<li class="fragment"><p>Nature is not necessarily a linear model, this is why we wanted to go explore the nonparametric case.</p></li>
-<li class="fragment"><p>Nonetheless, making (correct) <span class="orange">assumptions</span> and therefore imposing (appropriate) restrictions is <span class="blue">beneficial</span>, to the extent that is <span class="orange">unavoidable</span> in high-dimensions.</p></li>
-</ul>
-</div>
-</section>
-<section id="escaping-the-curse-1" class="slide level2 center">
-<h2>Escaping the curse</h2>
-<div>
-<ul>
-<li class="fragment"><p>The <span class="blue">multidimensional</span> methods you will study (GAM, trees, random forest, boosting, neural networks, etc.) deal with the curse of dimensionality by making (implicit) assumptions.</p></li>
-<li class="fragment"><p>These <span class="orange">assumptions</span> differentiate because of:</p>
-<ul>
-<li class="fragment">The particular <span class="grey">nature</span> of the knowledge the impose (e.g.&nbsp;no interactions, piecewise constant functions, etc.);</li>
-<li class="fragment">The <span class="orange">strength</span> of this assumption;</li>
-<li class="fragment">The <span class="blue">sensibility</span> of the methods to potential violation of the assumptions.</li>
-</ul></li>
-<li class="fragment"><p>Thus, several alternative ideas and methods are needed; there is no single “best” algorithm.</p></li>
-<li class="fragment"><p>This is why having a well-trained statistician in the team is important, because she/he will be able to identify the method that best suit the specific applied example.</p></li>
-<li class="fragment"><p>…or at least, she/he will be aware of the <span class="orange">limitations</span> of the methods.</p></li>
-</ul>
-</div>
+
+<section>
+<section id="mars" class="title-slide slide level1 center">
+<h1>MARS</h1>
+
 </section>
 <section id="references" class="slide level2 center">
 <h2>References</h2>
-<ul>
-<li><span class="orange">Main references</span>
-<ul>
-<li><strong>Section 4.3</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
-<li><strong>Section 2.5</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
-<li><strong>Sections 4.5 and 5.12</strong> of Wasserman, L. (2006), <a href="https://link.springer.com/book/10.1007/0-387-30623-4"><em>All of Nonparametric statistics</em></a>, Springer.</li>
-</ul></li>
-</ul>
 
 <img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="un_E_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="un_F_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="un_E_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="un_E_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="un_E_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="un_E_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="un_E_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="un_F_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="un_F_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="un_F_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="un_F_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="un_F_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="un_E_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="un_E_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="un_E_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="un_F_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="un_F_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="un_F_files/libs/revealjs/plugin/zoom/zoom.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

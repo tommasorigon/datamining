@@ -1,5 +1,5 @@
 ---
-title: "Methods for model selection"
+title: "Additive models"
 subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
@@ -14,14 +14,14 @@ format:
     center: true
     html-math-method: katex
     transition: none
-    output-file: un_C_slides.html
+    output-file: un_F_slides.html
     slide-number: true
     callout-appearance: minimal
     code-line-numbers: true
-    theme: [default, template.css] # alternative themes (subset): default, night, dark
+    theme: [default, ../template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: false
-    fig-dpi: 150
+    fig-dpi: 200
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
@@ -30,7 +30,7 @@ format:
     html-math-method: katex
     echo: false
     callout-appearance: minimal
-    theme: [cosmo, template.css]
+    theme: [cosmo, ../template.css]
     toc: true
     toc-title: Table of contents
     embed-resources: false
@@ -38,7 +38,7 @@ format:
     smooth-scroll: true
     code-fold: false
     code-summary: "Show the code"
-    fig-dpi: 150
+    fig-dpi: 200
     highlight-style: github
 editor: 
   markdown: 
@@ -56,30 +56,30 @@ editor_options:
 #| message: false
 #| purl: false
 
-knitr::purl("un_C.qmd", output = "../code/un_C.R")
-styler:::style_file("../code/un_C.R")
+knitr::purl("un_F.qmd", output = "../code/un_F.R")
+styler:::style_file("../code/un_F.R")
 ```
 
 ::: columns
-::: {.column width="50%"}
+::: {.column width="35%"}
 ![](img/baseball.png){width=60% fig-align="center"} 
 
-*"I never keep a scorecard or the batting averages. I hate statistics. What I got to know, I keep in my head."* Dizzy Dean, baseball player in the '30s and '40s.
+
+::: {style="font-size: 90%;"}
+*"I never keep a scorecard or the batting averages. I hate statistics. What I got to know, I keep in my head."* 
 :::
 
-::: {.column width="50%"}
+[Dizzy Dean]{.grey}, baseball player in the '30s and '40s.
+
+:::
+
+::: {.column width="65%"}
 
 -   In this unit we will cover the following [topics]{.orange}:
 
-    -   Best subset regression
-    -   Principal component regression
-    -   Ridge regression
-    -   Lasso, LARS, elastic-net
+    - Generalized additive models (GAMs)
+    - Multivariate Adaptive Regression Splines (MARS)
     
-- The common thread among these topics is the so-called [variable selection]{.blue} problem.
-
-- In other words: what do we do when we have many [irrelevant]{.orange} variables?
-
 - The running example is about baseball data... but a lot has changed since the '30s!
 :::
 :::
@@ -119,24 +119,24 @@ glimpse(Hitters)
 ## Preliminary operations
 
 ```{r}
-Hitters <- mutate(Hitters,
-  TotalScore = (RBI + Assists + Walks - Errors) / AtBat,
-  logAHits = log1p(CHits / Years),
-  logAAtBat = log1p(CAtBat / Years),
-  logARuns = log1p(CRuns / Years),
-  logARBI = log1p(CRBI / Years),
-  logAWalks = log1p(CWalks / Years),
-  logAHmRun = log1p(CHmRun / Years),
-  RatioHits = Hits / CHits,
-  RatioAtBat = AtBat / CAtBat,
-  RatioRuns = Runs / CRuns,
-  RatioRBI = RBI / CRBI,
-  RatioWalks = Walks / CWalks,
-  RatioHmRun = HmRun / (CHmRun + 1),
-  logYears = log(Years),
-  logSalary = log(Salary)
-) %>% select(-c(Salary, Years))
-
+# Hitters <- mutate(Hitters,
+#   TotalScore = (RBI + Assists + Walks - Errors) / AtBat,
+#   logAHits = log1p(CHits / Years),
+#   logAAtBat = log1p(CAtBat / Years),
+#   logARuns = log1p(CRuns / Years),
+#   logARBI = log1p(CRBI / Years),
+#   logAWalks = log1p(CWalks / Years),
+#   logAHmRun = log1p(CHmRun / Years),
+#   RatioHits = Hits / CHits,
+#   RatioAtBat = AtBat / CAtBat,
+#   RatioRuns = Runs / CRuns,
+#   RatioRBI = RBI / CRBI,
+#   RatioWalks = Walks / CWalks,
+#   RatioHmRun = HmRun / (CHmRun + 1),
+#   logYears = log(Years),
+#   logSalary = log(Salary)
+# ) %>% select(-c(Salary, Years))
+# 
 # Data splitting
 set.seed(123)
 id_train <- sample(1:nrow(Hitters), size = floor(0.75 * nrow(Hitters)), replace = FALSE)
@@ -146,394 +146,46 @@ Hitters_test <- Hitters[id_test, ]
 ```
 
 
-## The variable selection problem
+<!-- ## The variable selection problem -->
 
-::: incremental
+<!-- ::: incremental -->
 
-- We consider a [linear model]{.orange} in which the response variable $Y_i$ (`logSalary`) is related to the
-covariates through the function$$
-    \mathbb{E}(Y_i) = f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta,
-    $$ 
-using the same notation of [Unit A.1](un_A1.html).
+<!-- - We consider a [linear model]{.orange} in which the response variable $Y_i$ (`logSalary`) is related to the -->
+<!-- covariates through the function$$ -->
+<!--     \mathbb{E}(Y_i) = f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta, -->
+<!--     $$  -->
+<!-- using the same notation of [Unit A.1](un_A1.html). -->
 
-- Among these $p = 26$ variables, some are likely to be [irrelevant]{.blue}, because they might be [correlated]{.orange} or even [collinear]{.orange}.
+<!-- - Among these $p = 26$ variables, some are likely to be [irrelevant]{.blue}, because they might be [correlated]{.orange} or even [collinear]{.orange}. -->
 
-- As we have seen in [Unit B](un_B.html), irrelevant variables are problematic because they [increase the variance]{.orange} of the estimates without important gain in term of bias. 
+<!-- - As we have seen in [Unit B](un_B.html), irrelevant variables are problematic because they [increase the variance]{.orange} of the estimates without important gain in term of bias.  -->
 
-- For the polynomial regression problem of [Unit B](un_B.html) we used [cross-validation]{.blue} and other tools to find a good [bias-variance trade-off]{.blue}. Can we use the same strategy in this example?
+<!-- - For the polynomial regression problem of [Unit B](un_B.html) we used [cross-validation]{.blue} and other tools to find a good [bias-variance trade-off]{.blue}. Can we use the same strategy in this example? -->
 
-- In theory, yes... but here there are $2^{20} = 1048576$ competing models! 
+<!-- - In theory, yes... but here there are $2^{20} = 1048576$ competing models!  -->
 
-:::
-
-## Correlation matrix of `Hitters`
-
-```{r}
-#| fig-width: 15
-#| fig-height: 7
-#| fig-align: center
-library(ggcorrplot)
-corr <- cor(subset(Hitters_train, select = -c(logSalary, Division, League, NewLeague))) # Remove logSalary
-ggcorrplot(corr,
-  hc.order = TRUE,
-  outline.col = "white",
-  ggtheme = ggplot2::theme_bw,
-  colors = c("#fc7d0b", "white", "#1170aa")
-)
-```
-
-
-## Old friends: stepwise regression
-
-## Forward regression
-
-## Backward regression
-
-## Backward and forward regression I
-
-```{r}
-library(leaps)
-n <- nrow(Hitters_train)
-which_vars <- which(colnames(Hitters_train) %in% c("logSalary", "Division", "League", "NewLeague"))
-Hitters_train[, -which_vars] <- scale(Hitters_train[, -which_vars])
-
-fit_forward <- regsubsets(logSalary ~ ., data = Hitters_train, method = "forward", nbest = 1, nvmax = 33)
-sum_forward <- summary(fit_forward)
-
-sum_forward$p <- rowSums(sum_forward$which)
-sum_forward$aic <- n * log(2 * pi * sum_forward$rss / n) + n + 2 * (sum_forward$p + 1)
-sum_forward$bic <- n * log(2 * pi * sum_forward$rss / n) + n + log(n) * (sum_forward$p + 1)
-sum_forward$gcv <- (sum_forward$rss / n) / (1 - sum_forward$p / n)^2
-
-fit_backward <- regsubsets(logSalary ~ ., data = Hitters_train, method = "backward", nbest = 1, nvmax = 33)
-sum_backward <- summary(fit_backward)
-
-sum_backward$p <- rowSums(sum_backward$which)
-sum_backward$aic <- n * log(2 * pi * sum_backward$rss / n) + n + 2 * (sum_backward$p + 1)
-sum_backward$bic <- n * log(2 * pi * sum_backward$rss / n) + n + log(n) * (sum_backward$p + 1)
-sum_backward$gcv <- (sum_backward$rss / n) / (1 - sum_backward$p / n)^2
-```
-
-```{r}
-#| fig-width: 10
-#| fig-height: 3.5
-#| fig-align: center
-
-library(ggplot2)
-library(ggthemes)
-data_ic <- data.frame(
-  p = c(sum_forward$p, sum_backward$p),
-  BIC = c(sum_forward$bic, sum_backward$bic),
-  AIC = c(sum_forward$aic, sum_backward$aic),
-  GCV = c(sum_forward$gcv, sum_backward$gcv),
-  step = rep(c("Forward", "Backward"), each = length(sum_forward$p))
-)
-data_ic <- reshape2::melt(data_ic, id = c("p", "step"))
-colnames(data_ic) <- c("p", "Stepwise", "Criterion", "value")
-
-ggplot(data = data_ic, aes(x = p, y = value, col = Stepwise)) +
-  geom_point() +
-  geom_line() +
-  facet_wrap(. ~ Criterion, scales = "free") +
-  theme_light() +
-  theme(legend.position = "top") +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("Model complexity (p)") +
-  ylab("Error terms") #+ ylim(c(9e-05, 6e-4))
-```
-
-<!-- ## Backward and forward regression {.scrollable} -->
-<!-- ::: {style="font-size: 60%;"} -->
-
-<!-- ```{r} -->
-<!-- library(DT) -->
-<!-- # BIC based -->
-<!-- p <- ncol(sum_backward$which) -->
-<!-- tab <- data.frame(OLS =rep(0, p), BIC_backward = rep(0, p), BIC_forward = rep(0, p), AIC_backward = rep(0, p), AIC_forward = rep(0, p)) -->
-<!-- rownames(tab) <- colnames(sum_backward$which) -->
-
-<!-- tab$OLS <- coef(lm(logSalary ~ ., data = Hitters_train)) -->
-
-<!-- tab$BIC_backward[sum_backward$which[which.min(sum_backward$bic), ]] <- coef(fit_backward, which.min(sum_backward$bic)) -->
-<!-- tab$BIC_forward[sum_forward$which[which.min(sum_forward$bic), ]] <- coef(fit_forward, which.min(sum_forward$bic)) -->
-
-<!-- tab$AIC_backward[sum_backward$which[which.min(sum_backward$aic), ]] <- coef(fit_backward, which.min(sum_backward$aic)) -->
-<!-- tab$AIC_forward[sum_forward$which[which.min(sum_forward$aic), ]] <- coef(fit_forward, which.min(sum_forward$aic)) -->
-
-<!-- datatable(tab, colnames=c("OLS", "BIC backward", "BIC forward", "AIC backward", "AIC forward"), options = list( -->
-<!--   pageLength = 13, -->
-<!--   dom = "pt", -->
-<!--   order = list(list(0, "asc")))) %>% formatRound(columns = 1:5, digits = 2) %>% formatStyle( -->
-<!--     columns = 0,fontWeight = "bold" -->
-<!--   ) %>%formatStyle( -->
-<!--           columns = 1:5, -->
-<!--           backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA")) -->
-<!--         ) %>% formatStyle( -->
-<!--           columns = 1:5, -->
-<!--           backgroundColor = styleEqual(0, c("white")) -->
-<!--         )  -->
-<!-- ``` -->
 <!-- ::: -->
 
-## ☠️ - The multiple testing problem
-
-## Best subset regression I
-
-## Best subset regression II
-
-```{r}
-fit_best <- regsubsets(logSalary ~ ., data = Hitters_train, method = "exhaustive", nbest = 20, nvmax = 33)
-sum_best <- summary(fit_best)
-
-sum_best$p <- rowSums(sum_best$which)
-sum_best$aic <- n * log(2 * pi * sum_best$rss / n) + n + 2 * (sum_best$p + 1)
-sum_best$bic <- n * log(2 * pi * sum_best$rss / n) + n + log(n) * (sum_best$p + 1)
-sum_best$gcv <- (sum_best$rss / n) / (1 - sum_best$p / n)^2
-```
-
-```{r}
-#| fig-width: 10
-#| fig-height: 3.5
-#| fig-align: center
-
-library(ggplot2)
-library(ggthemes)
-data_ic <- data.frame(p = sum_best$p, BIC = sum_best$bic, AIC = sum_best$aic, GCV = sum_best$gcv)
-data_ic <- reshape2::melt(data_ic, id = c("p"))
-colnames(data_ic) <- c("p", "Criterion", "value")
-
-ggplot(data = data_ic, aes(x = p, y = value, col = Criterion)) +
-  geom_point() +
-  # geom_line() +
-  facet_wrap(. ~ Criterion, scales = "free") +
-  theme_light() +
-  theme(legend.position = "top") +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("Model complexity (p)") +
-  ylab("Information Criterion")
-```
-
-## Best subset regression III
-
-::: {style="font-size: 55%;"}
-
-```{r}
-library(DT)
-p <- ncol(sum_best$which)
-tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p))
-rownames(tab) <- colnames(sum_best$which)
-
-tab$OLS <- coef(lm(logSalary ~ ., data = Hitters_train))
-tab$best_subset[sum_best$which[which.min(sum_best$bic), ]] <- coef(fit_best, which.min(sum_best$bic))
-
-datatable(tab[-1, ], colnames = c("OLS", "Best subset"), options = list(
-  pageLength = 13,
-  dom = "pt",
-  order = list(list(0, "asc"))
-)) %>%
-  formatRound(columns = 1:2, digits = 2) %>%
-  formatStyle(
-    columns = 0, fontWeight = "bold"
-  ) %>%
-  formatStyle(
-    columns = 1:2,
-    backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA"))
-  ) %>%
-  formatStyle(
-    columns = 1:2,
-    backgroundColor = styleEqual(0, c("white"))
-  )
-```
-:::
-
-# Principal components
-
-## Principal component analysis
-
-## Principal components regression
-
-```{r}
-# I use cor = FALSE because the variables have been standardized
-pr <- princomp(model.matrix(logSalary ~ ., data = Hitters_train)[, -1], cor = FALSE)
-
-X <- model.matrix(logSalary ~ ., data = Hitters_train)
-y <- Hitters_train$logSalary
-Z <- pr$scores
-V <- as.matrix(pr$loadings)
-n <- length(y)
-
-# Main chunk of code; fitting several models and storing some relevant quantities
-ncomp_list <- 1:ncol(Z)
-
-# Initialization
-data_goodness <- data.frame(ncomp = ncomp_list, BIC = NA, AIC = NA, GCV = NA)
-
-# Code execution
-for (ncomp in ncomp_list) {
-  # Fitting a model with
-  # Equivalent to lm(y ~ Z)
-  Z_comp <- matrix(Z[, 1:ncomp], ncol = ncomp)
-  V_comp <- matrix(V[, 1:ncomp], ncol = ncomp)
-  gamma <- apply(Z_comp, 2, function(x) crossprod(x, y)) / apply(Z_comp, 2, function(x) crossprod(x))
-  # beta <- c(mean(y), V_comp %*% gamma) # Equivalent to coef()
-  # fit <- lm(logSalary ~ Z_comp, data = Hitters_train)
-  # y_hat <- fitted(fit)
-  y_hat <- c(mean(y) + Z_comp %*% gamma)
-  sigma2 <- mean((y - y_hat)^2)
-  # Training goodness of fit
-  data_goodness$BIC[ncomp] <- n * log(2 * pi * sigma2) + n + log(n) * (ncomp + 2)
-  data_goodness$AIC[ncomp] <- n * log(2 * pi * sigma2) + n + 2 * (ncomp + 2)
-  data_goodness$GCV[ncomp] <- sigma2 / (1 - (ncomp + 1) / n)^2
-}
-```
-
-## PCR
-
-```{r}
-#| fig-width: 10
-#| fig-height: 3.5
-#| fig-align: center
-
-# Organization of the results for graphical purposes
-data_bv <- data.frame(p = ncomp_list + 1, BIC = data_goodness$BIC, AIC = data_goodness$AIC, GCV = data_goodness$GCV)
-data_bv <- reshape2::melt(data_bv, id = "p")
-levels(data_bv$variable) <- c("BIC", "AIC", "GCV")
-colnames(data_bv) <- c("p", "Criterion", "value")
-
-ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
-  geom_line() +
-  geom_point() +
-  facet_wrap(. ~ Criterion, scales = "free") +
-  theme_light() +
-  theme(legend.position = "none") +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("Model complexity (p)") +
-  ylab("Error term")
-```
-
-## PCR beta
-
-::: {style="font-size: 55%;"}
-```{r}
-library(DT)
-tab <- data.frame(OLS = rep(0, p), best_subset = rep(0, p), PCR = rep(0, p))
-rownames(tab) <- colnames(sum_best$which)
-
-tab$OLS <- coef(lm(logSalary ~ ., data = Hitters_train))
-tab$best_subset[sum_best$which[which.min(sum_best$bic), ]] <- coef(fit_best, which.min(sum_best$bic))
-
-Z_comp <- Z[, 1:21]
-V_comp <- V[, 1:21]
-gamma <- apply(Z_comp, 2, function(x) crossprod(x, y)) / apply(Z_comp, 2, function(x) crossprod(x))
-tab$PCR <- c(mean(y), V_comp %*% gamma)
-
-
-datatable(tab[-1, ], colnames = c("OLS", "Best subset", "PCR"), options = list(
-  pageLength = 13,
-  dom = "pt",
-  order = list(list(0, "asc"))
-)) %>%
-  formatRound(columns = 1:3, digits = 3) %>%
-  formatStyle(
-    columns = 0, fontWeight = "bold"
-  ) %>%
-  formatStyle(
-    columns = 1:3,
-    backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA"))
-  ) %>%
-  formatStyle(
-    columns = 1:3,
-    backgroundColor = styleEqual(0, c("white"))
-  )
-```
-:::
-
-# Ridge regression
-
-```{r}
-library(glmnet)
-asd <- cv.glmnet(X, y, family = "gaussian", alpha = 0, lambda = exp(seq(-10, -2, length = 100)), nfolds = 190, grouped = FALSE)
-asd
-plot(asd)
-
-lasso.mod <- glmnet(X, y, alpha = 0.5)
-plot(lasso.mod, "lambda", label = TRUE)
-```
-
-
-## The wrong way of doing cross-validation
-
-::: incremental
-
-- Consider a regression problem with a [large number of predictors]{.blue}, as may arise, for example, in genomic or proteomic applications. 
-
-- A typical strategy for analysis might be as follows:
-
-  1. Screen the predictors: find a subset of "good" predictors that show fairly strong (univariate) correlation with the class labels;
-  2. Using just this subset of predictors, build a regression model;
-  3. Use cross-validation to estimate the unknown tuning parameters (i.e. degree of polynomials) and to estimate the prediction error of the final model.
-
-- Is this a correct application of cross-validation? 
-
-- If your reaction was "[this is  absolutely wrong!]{.orange}", it means you correctly understood the principles of cross-validation. 
-
-- If you though this was an ok-ish idea, please read [Section 7.10.2]{.blue} of HTF (2009).
-:::
-
-# Lasso, LARS, and elastic-net
-
-## Lasso
-
-::: columns
-::: {.column width="25%"}
-![](img/lasso.png){}
-:::
-
-::: {.column width="75%"}
--   asdasd
-:::
-:::
-
-
-
-<!-- ## 3D plots -->
-
-
+<!-- ## Correlation matrix of `Hitters` -->
 
 <!-- ```{r} -->
-<!-- #| message: false -->
-<!-- library(plotly) -->
-<!-- logYears <- seq(from = min(Hitters$logYears), to = max(Hitters$logYears), length = 100) -->
-<!-- Hits <- seq(from = min(Hitters$Hits), to = max(Hitters$Hits), length = 100) -->
-<!-- logSalary <- matrix(predict(lm(logSalary ~ Hits + logYears, data = Hitters_train), -->
-<!--   newdata = data.frame(expand.grid(logYears = logYears, Hits = Hits, logSalary = NA)) -->
-<!-- ), ncol = length(logYears)) -->
-<!-- ``` -->
-
-
-<!-- ```{r} -->
-<!-- #| fig-width: 6 -->
-<!-- #| fig-height: 4 -->
+<!-- #| fig-width: 15 -->
+<!-- #| fig-height: 7 -->
 <!-- #| fig-align: center -->
-<!-- #| warning: false -->
-<!-- #| message: false -->
-<!-- plot_ly() %>% -->
-<!--   add_surface( -->
-<!--     x = ~logYears, y = ~Hits, z = ~logSalary, colors = "Reds", -->
-<!--     contours = list( -->
-<!--       x = list(show = TRUE, start = 0, end = 3, size = 0.15, color = "white"), -->
-<!--       y = list(show = TRUE, start = 0, end = 200, size = 25, color = "white") -->
-<!--     ) -->
-<!--   ) %>% -->
-<!--   add_markers(x = ~ Hitters$logYears, y = ~ Hitters$Hits, z = ~ Hitters$logSalary, size = 0.15, marker = list(color = "black"), showlegend = FALSE) %>% -->
-<!--   layout( -->
-<!--     scene = list( -->
-<!--       camera = list( -->
-<!--         eye = list(x = 0.9, y = -2, z = 0.3) -->
-<!--       ) -->
-<!--     ) -->
-<!--   ) %>% hide_colorbar() -->
+<!-- library(ggcorrplot) -->
+<!-- corr <- cor(subset(Hitters_train, select = -c(Salary, Division, League, NewLeague))) # Remove logSalary -->
+<!-- ggcorrplot(corr, -->
+<!--   hc.order = TRUE, -->
+<!--   outline.col = "white", -->
+<!--   ggtheme = ggplot2::theme_bw, -->
+<!--   colors = c("#fc7d0b", "white", "#1170aa") -->
+<!-- ) -->
 <!-- ``` -->
+
+
+# Generalized additive models
+
+# MARS
 
 
 ## References
