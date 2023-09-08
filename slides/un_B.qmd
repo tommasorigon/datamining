@@ -62,7 +62,8 @@ styler:::style_file("../code/un_B.R")
 ::: columns
 ::: {.column width="40%"}
 ![](img/razor.jpg) *"Pluralitas non est ponenda sine necessitate."*
-William of Ockham
+
+[William of Ockham]{.grey}
 :::
 
 ::: {.column width="60%"}
