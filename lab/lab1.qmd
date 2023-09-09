@@ -384,7 +384,10 @@ library(biglm)
 drivers_chunk1 <- read_csv("../data/drivers2.csv", 
                            n_max = 100000, skip = 0, col_names = TRUE)
 name_cols <- colnames(drivers_chunk1)
+```
 
+
+```{r}
 m_big <- biglm(hazard ~ poly(age, 10) + poly(experience, 10) + habilit + gender +  city, 
                data = drivers_chunk1)
 summary(m_big)
@@ -398,7 +401,10 @@ gc() # Free unused R memory
 drivers_chunk2 <- read_csv("../data/drivers2.csv", 
                            n_max = 100000, skip = 100000, col_names = FALSE)
 colnames(drivers_chunk2) <- name_cols
+```
 
+
+```{r}
 m_big <- update(m_big, drivers_chunk2)
 summary(m_big)
 ```
@@ -410,8 +416,17 @@ gc() # Free unused R memory
 drivers_chunk3 <- read_csv("../data/drivers2.csv", 
                            n_max = 100000, skip = 200000, col_names = FALSE)
 colnames(drivers_chunk3) <- name_cols
+```
 
+
+```{r}
 m_big <- update(m_big, drivers_chunk3)
 summary(m_big)
 ```
+
+```{r}
+print(object.size(m_big), units = "KB")
+```
+
+
 

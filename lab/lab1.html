@@ -450,33 +450,39 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>drivers_chunk1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers2.csv"</span>, </span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n_max =</span> <span class="dv">100000</span>, <span class="at">skip =</span> <span class="dv">0</span>, <span class="at">col_names =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>name_cols <span class="ot">&lt;-</span> <span class="fu">colnames</span>(drivers_chunk1)</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>m_big <span class="ot">&lt;-</span> <span class="fu">biglm</span>(hazard <span class="sc">~</span> <span class="fu">poly</span>(age, <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">poly</span>(experience, <span class="dv">10</span>) <span class="sc">+</span> habilit <span class="sc">+</span> gender <span class="sc">+</span>  city, </span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> drivers_chunk1)</span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_big)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>name_cols <span class="ot">&lt;-</span> <span class="fu">colnames</span>(drivers_chunk1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(drivers_chunk1)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>() <span class="co"># Free unused R memory</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>drivers_chunk2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers2.csv"</span>, </span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n_max =</span> <span class="dv">100000</span>, <span class="at">skip =</span> <span class="dv">100000</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(drivers_chunk2) <span class="ot">&lt;-</span> name_cols</span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>m_big <span class="ot">&lt;-</span> <span class="fu">update</span>(m_big, drivers_chunk2)</span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_big)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>m_big <span class="ot">&lt;-</span> <span class="fu">biglm</span>(hazard <span class="sc">~</span> <span class="fu">poly</span>(age, <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">poly</span>(experience, <span class="dv">10</span>) <span class="sc">+</span> habilit <span class="sc">+</span> gender <span class="sc">+</span>  city, </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> drivers_chunk1)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_big)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(drivers_chunk2)</span>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(drivers_chunk1)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>() <span class="co"># Free unused R memory</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>drivers_chunk3 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers2.csv"</span>, </span>
-<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n_max =</span> <span class="dv">100000</span>, <span class="at">skip =</span> <span class="dv">200000</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(drivers_chunk3) <span class="ot">&lt;-</span> name_cols</span>
-<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>m_big <span class="ot">&lt;-</span> <span class="fu">update</span>(m_big, drivers_chunk3)</span>
-<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_big)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>drivers_chunk2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers2.csv"</span>, </span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n_max =</span> <span class="dv">100000</span>, <span class="at">skip =</span> <span class="dv">100000</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(drivers_chunk2) <span class="ot">&lt;-</span> name_cols</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>m_big <span class="ot">&lt;-</span> <span class="fu">update</span>(m_big, drivers_chunk2)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_big)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(drivers_chunk2)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>() <span class="co"># Free unused R memory</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>drivers_chunk3 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers2.csv"</span>, </span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n_max =</span> <span class="dv">100000</span>, <span class="at">skip =</span> <span class="dv">200000</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(drivers_chunk3) <span class="ot">&lt;-</span> name_cols</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>m_big <span class="ot">&lt;-</span> <span class="fu">update</span>(m_big, drivers_chunk3)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_big)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">object.size</span>(m_big), <span class="at">units =</span> <span class="st">"KB"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>

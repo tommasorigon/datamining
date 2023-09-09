@@ -256,3 +256,5 @@ colnames(drivers_chunk3) <- name_cols
 
 m_big <- update(m_big, drivers_chunk3)
 summary(m_big)
+
+print(object.size(m_big), units = "KB")
