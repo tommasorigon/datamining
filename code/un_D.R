@@ -1,7 +1,3 @@
-#| fig-width: 5
-#| fig-height: 4.5
-#| warning: false
-
 library(tidyverse)
 library(ggplot2)
 library(ggthemes)
@@ -15,10 +11,6 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
   xlab("Compliance") +
   ylab("Cholesterol Decrease")
 
-
-#| fig-width: 5
-#| fig-height: 4
-
 rm(list = ls())
 # The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
 auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
@@ -28,10 +20,6 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
   theme_minimal() +
   xlab("Engine size (L)") +
   ylab("Urban distance (km/L)")
-
-
-#| fig-width: 5
-#| fig-height: 4
 
 rm(list = ls())
 dataset <- MASS::mcycle
@@ -45,11 +33,6 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
-
-
-#| fig-width: 7.8
-#| fig-height: 4.55
-#| fig-align: center
 
 # Degrees of the polynomials
 degree_list <- c(9, 11, 13, 15, 17, 19)
@@ -81,10 +64,6 @@ ggplot(data = data_pred) +
   xlab("x") +
   ylab("y") # Manual identification of an "interesting" region
 
-
-#| fig-width: 7.8
-#| fig-height: 4.55
-#| fig-align: center
 library(kknn)
 fit_knn <- fitted(kknn(accel ~ times, train = dataset, test = data.frame(times = times_seq), kernel = "rectangular", k = 6))
 
@@ -100,11 +79,6 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 
-
-#| fig-width: 7.8
-#| fig-height: 4
-#| fig-align: center
-#| message: false
 library(KernSmooth)
 
 h_param <- 1
@@ -122,11 +96,6 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 
-
-#| fig-width: 7.8
-#| fig-height: 4
-#| fig-align: center
-
 h_param <- 0.3
 band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
 fit_nw <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = times_seq)
@@ -142,10 +111,6 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 
-
-#| fig-width: 7.8
-#| fig-height: 4
-#| fig-align: center
 h_param <- 2
 band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
 fit_nw <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = times_seq)
@@ -161,10 +126,6 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 
-
-#| fig-width: 7.8
-#| fig-height: 4
-#| fig-align: center
 h_param <- 4
 band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
 fit_nw <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = times_seq)
@@ -179,8 +140,6 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
-
-
 
 loclin1 <- function(x, y, bandwidth, x0) {
   w <- dnorm(x, mean = x0, sd = bandwidth)
@@ -206,8 +165,6 @@ S_diag <- function(x, y, bandwidth) {
   S_diag
 }
 
-
-
 # Code execution and storage of the interesting quantities
 bandwidth_list <- exp(seq(from = -1, to = 2, length = 100))
 data_goodness <- data.frame(bandwidth = bandwidth_list)
@@ -222,11 +179,6 @@ for (i in 1:length(bandwidth_list)) {
   data_goodness$GCV[i] <- mean(((y - fit) / (1 - sum(lev) / nrow(dataset)))^2)
 }
 
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
-#|
 id_opt <- which.min(data_goodness$LOO_CV)
 h_opt <- data_goodness$bandwidth[id_opt]
 df_opt <- data_goodness$df[id_opt]
@@ -241,11 +193,6 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
-
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
 
 # Organization of the results for graphical purposes
 data_bv <- data.frame(df = data_goodness$df, GCV = data_goodness$GCV, LOO_CV = data_goodness$LOO_CV, SE = data_goodness$LOO_CV_SE)
@@ -264,12 +211,6 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
   xlab("Effective degrees of freedom (df)") +
   ylab("Mean Squared Error (MSE)")
 
-
-#| message: false
-#| fig-width: 9
-#| fig-height: 7
-#| fig-align: center
-
 library(sm)
 auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
 
@@ -287,11 +228,6 @@ contour(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
 )
 points(auto$engine.size, auto$curb.weight, cex = 0.5, pch = 16, col = "#fc7d0b")
 
-
-#| fig-width: 6
-#| fig-height: 3
-#| fig-align: center
-
 library(splines2)
 
 knots <- c(15, 25)
@@ -307,11 +243,6 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
-
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
 
 library(splines)
 knots <- quantile(dataset$times, ppoints(n = 9))
@@ -339,11 +270,6 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
-
 fit_bs_3 <- lm(accel ~ bs(times, df = 12, degree = 3, intercept = TRUE) - 1, data = dataset)
 y_hat_bs_3 <- predict(fit_bs_3, newdata = data.frame(times = times_seq))
 
@@ -369,8 +295,6 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 
-
-
 # Code execution and storage of the interesting quantities
 p_list <- 4:40
 data_goodness <- data.frame(p = p_list)
@@ -392,10 +316,6 @@ data_bv$SE[data_bv$variable == "GCV"] <- NA
 levels(data_bv$variable) <- c("GCV", "LOO-CV")
 colnames(data_bv) <- c("p", "SE", "Error term", "value")
 
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
   geom_point() +
@@ -405,11 +325,6 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Model complexity (p)") +
   ylab("Mean Squared Error (MSE)")
-
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
 
 knots <- quantile(dataset$times, ppoints(n = 12))
 
@@ -435,8 +350,6 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
-
-
 
 tpower <- function(x, t, p) {
   (x - t)^p * (x > t)
@@ -465,12 +378,6 @@ ggplot(data = data_plot, aes(x = times_seq, y = value, col = as.factor(Var2))) +
   scale_color_tableau(type = "ordered-diverging", palette = "Orange-Blue Diverging") +
   xlab("x") +
   ylab(expression(h[j](x)))
-
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
-#|
 
 x_seq <- seq(from = min(x), to = max(x), length = 2000)
 fit_smooth <- smooth.spline(x, y, all.knots = TRUE)

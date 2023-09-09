@@ -56,7 +56,7 @@ editor_options:
 #| message: false
 #| purl: false
 
-knitr::purl("un_C.qmd", output = "../code/un_C.R")
+knitr::purl("un_C.qmd", output = "../code/un_C.R", documentation = 0)
 styler:::style_file("../code/un_C.R")
 ```
 

@@ -1,10 +1,7 @@
-#| message: false
 rm(list = ls())
 library(tidyverse)
 prostate <- read.table("../data/prostate_data.txt")
 glimpse(prostate)
-
-
 
 # Standardize the predictors, as in Tibshirani (1996)
 which_vars <- which(colnames(prostate) %in% c("lpsa", "train"))
@@ -16,10 +13,6 @@ prostate_test <- filter(prostate, train == FALSE) %>% select(-train)
 
 glimpse(prostate)
 
-
-#| fig-width: 15
-#| fig-height: 7
-#| fig-align: center
 library(ggcorrplot)
 corr <- cor(subset(prostate_train, select = -lpsa)) # Remove the outcome lpsa
 ggcorrplot(corr,
@@ -29,14 +22,10 @@ ggcorrplot(corr,
   colors = c("#fc7d0b", "white", "#1170aa")
 )
 
-
-
 tab <- data.frame(broom::tidy(lm(lpsa ~ ., data = prostate_train), conf.int = FALSE))
 rownames(tab) <- tab[, 1]
 tab <- t(as.matrix(tab[, -1]))
 knitr::kable(tab, digits = 2)
-
-
 
 # Here I compute some basic quantities
 X <- model.matrix(lpsa ~ ., data = prostate_train)[, -1]
@@ -44,17 +33,10 @@ y <- prostate_train$lpsa
 n <- nrow(X)
 p <- ncol(X) # This does not include the intercept
 
-
-
 library(leaps)
 fit_best <- regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest = 40, nvmax = p)
 sum_best <- summary(fit_best)
 sum_best$p <- rowSums(sum_best$which) - 1 # Does not include the intercept here
-
-
-#| fig-width: 10
-#| fig-height: 5
-#| fig-align: center
 
 library(ggplot2)
 library(ggthemes)
@@ -74,11 +56,7 @@ ggplot(data = data_best_subset, aes(x = p, y = value)) +
   xlab("Number of covariates") +
   ylab("Mean squared error (training)")
 
-
-
 summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest = 1, nvmax = p))$outmat
-
-
 
 library(rsample)
 
@@ -107,11 +85,6 @@ for (k in 1:10) {
   }
 }
 
-
-#| fig-width: 10
-#| fig-height: 5
-#| fig-align: center
-
 data_cv <- data.frame(
   p = 0:p,
   MSE = apply(resid_subs^2, 2, mean),
@@ -134,17 +107,10 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   xlab("Number of covariates") +
   ylab("Mean squared error (10-fold cv)")
 
-
-
 fit_forward <- regsubsets(lpsa ~ ., data = prostate_train, method = "forward", nbest = 1, nvmax = p)
 sum_forward <- summary(fit_forward)
 fit_backward <- regsubsets(lpsa ~ ., data = prostate_train, method = "backward", nbest = 1, nvmax = p)
 sum_backward <- summary(fit_backward)
-
-
-#| fig-width: 10
-#| fig-height: 3.5
-#| fig-align: center
 
 # Organization of the results for graphical purposes
 data_stepwise <- data.frame(
@@ -169,10 +135,6 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
   xlab("Number of covariates") +
   ylab("MSE (training)")
 
-
-#| fig-width: 10
-#| fig-height: 5
-#| fig-align: center
 pr <- princomp(prostate_train[, -9], cor = FALSE)
 ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p, xmin = p, xmax = p, y = vars, ymax = vars, ymin = 0)) +
   geom_pointrange() +
@@ -182,8 +144,6 @@ ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p,
   xlab("Number of principal components") +
   ylab("Fraction of explained variance")
 
-
-#| message: false
 library(pls)
 resid_pcr <- matrix(0, n, p)
 
@@ -202,11 +162,6 @@ for (k in 1:10) {
     resid_pcr[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
   }
 }
-
-
-#| fig-width: 10
-#| fig-height: 5
-#| fig-align: center
 
 data_cv <- data.frame(
   p = 1:p,
@@ -230,10 +185,6 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
   xlab("Number of principal components") +
   ylab("Mean squared error (10-fold cv)")
 
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
 fit_pcr <- pcr(lpsa ~ ., data = prostate_train, center = TRUE, scale = FALSE)
 
 data_pcr <- reshape2::melt(coef(fit_pcr, 1:8))
@@ -250,8 +201,6 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Number of principal components") +
   ylab("Regression coefficients")
-
-
 
 
 
@@ -282,8 +231,6 @@ my_ridge <- function(X, y, lambda_tilde, standardize = TRUE) {
   return(c(beta0, beta))
 }
 
-
-
 df_ridge <- function(lambda_tilde, X, standardize = TRUE) {
   n <- nrow(X)
   lambda <- lambda_tilde * n
@@ -301,10 +248,6 @@ df_ridge <- function(lambda_tilde, X, standardize = TRUE) {
 
 df_ridge <- Vectorize(df_ridge, vectorize.args = "lambda_tilde")
 
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
 lambda_tilde_seq <- exp(seq(from = -4, to = 5, length = 50))
 data_ridge <- cbind(lambda_tilde_seq, matrix(0, length(lambda_tilde_seq), p))
 
@@ -331,9 +274,6 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
   xlab(expression(lambda / n)) +
   ylab("Coefficients (original scale)")
 
-
-#| fig-width: 5
-#| fig-height: 4
 df_min_cp <- mse_ridge$df[which.min(mse_ridge$Cp)]
 lambda_tilde_min_cp <- mse_ridge$lambda_tilde_seq[which.min(mse_ridge$Cp)]
 
@@ -346,9 +286,6 @@ ggplot(data = mse_ridge, aes(x = df, y = Cp)) +
   xlab("Effective degrees of freedom (df)") +
   ylab(expression(C[p]))
 
-
-#| fig-width: 5
-#| fig-height: 4
 ggplot(data = mse_ridge, aes(x = lambda_tilde_seq, y = Cp)) +
   geom_line() +
   geom_point() +
@@ -358,8 +295,6 @@ ggplot(data = mse_ridge, aes(x = lambda_tilde_seq, y = Cp)) +
   xlab(expression(lambda / n)) +
   ylab(expression(C[p]))
 
-
-#| message: false
 resid_ridge <- matrix(0, n, length(lambda_tilde_seq))
 
 for (k in 1:10) {
@@ -379,11 +314,6 @@ for (k in 1:10) {
     resid_ridge[complement(cv_fold$splits[[k]]), j] <- y_test_k - y_hat
   }
 }
-
-
-#| fig-width: 10
-#| fig-height: 5
-#| fig-align: center
 
 data_cv <- data.frame(
   lambda_tilde = lambda_tilde_seq,
@@ -407,9 +337,6 @@ ggplot(data = data_cv, aes(x = lambda_tilde, y = MSE)) +
   xlab(expression(tilde(lambda))) +
   ylab("Mean squared error (10-fold cv)")
 
-
-#| include: false
-#| execute: false
 # Double checks
 library(glmnet)
 y_std <- prostate_train$lpsa / sqrt(mean(prostate_train$lpsa^2) - mean(prostate_train$lpsa)^2)
@@ -418,10 +345,6 @@ as.numeric(coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha 
 
 my_ridge(X, y_std, standardize = TRUE, lambda_tilde = lambda_tilde_min_cv)
 
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
 ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Covariate)) +
   geom_point() +
   geom_line() +
@@ -433,8 +356,6 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
   scale_color_tableau(palette = "Color Blind") +
   xlab("Effective degrees of freedom (df)") +
   ylab("Regression coefficients")
-
-
 
 
 
@@ -455,9 +376,6 @@ ggplot(data = data_plot, aes(x = x, y = value, col = Estimate)) +
   xlab(expression(hat(beta)[ols])) +
   ylab(expression(hat(beta)))
 
-
-#| warning: false
-#| message: false
 library(lars)
 
 my_lasso <- function(X, y, standardize = TRUE) {
@@ -488,11 +406,6 @@ my_lasso <- function(X, y, standardize = TRUE) {
   return(list(beta_scaled = cbind(intercept = t(beta0), beta), lambda = c(fit$lambda, 0) / n))
 }
 
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
-
 fit_lasso <- my_lasso(X, y)
 data_lasso <- cbind(lambda_seq = fit_lasso$lambda, coef = fit_lasso$beta_scaled)
 mse_lasso <- data.frame(lambda = data_lasso[, 1], Cp = NA, df = 1:9, sigma2 = NA)
@@ -517,8 +430,6 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
   xlab(expression(lambda)) +
   ylab("Regression coefficients")
 
-
-#| cache: true
 n_sim <- 100
 p_sim <- 25
 R <- 5000
@@ -564,10 +475,6 @@ df_best <- colSums(df_best) / sigma_sim^2
 
 data_df <- data.frame(active_set = 1:(p_sim + 1), df = c(df_lasso, df_best), Method = rep(c("LAR", "Best subset"), each = p_sim + 1))
 
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
 ggplot(data = data_df, aes(x = active_set, y = df, col = Method)) +
   geom_point() +
   geom_line() +
@@ -578,8 +485,6 @@ ggplot(data = data_df, aes(x = active_set, y = df, col = Method)) +
   xlab("Number of non-zero coefficients") +
   ylab("Effective degrees of freedom")
 
-
-#| message: false
 resid_lasso <- matrix(0, n, (p + 1))
 
 for (k in 1:10) {
@@ -599,11 +504,6 @@ for (k in 1:10) {
     resid_lasso[complement(cv_fold$splits[[k]]), j] <- y_test_k - y_hat
   }
 }
-
-
-#| fig-width: 10
-#| fig-height: 5
-#| fig-align: center
 
 data_cv <- data.frame(
   df = 1:9,
@@ -625,9 +525,6 @@ ggplot(data = data_cv, aes(x = df, y = MSE)) +
   xlab("Degrees of freedom") +
   ylab("Mean squared error (10-fold cv)")
 
-
-#| include: false
-#| execute: false
 # Double checks
 y_std <- prostate_train$lpsa / sqrt(mean(prostate_train$lpsa^2) - mean(prostate_train$lpsa)^2)
 
@@ -636,11 +533,6 @@ fit_lasso <- my_lasso(X, y_std, standardize = TRUE)
 t(fit_lasso$beta_scaled)
 
 coef(glmnet(X, y_std, family = "gaussian", standardize = TRUE, alpha = 1, thresh = 1e-20, lambda = fit_lasso$lambda))
-
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
 
 data_lasso$df <- 1:9
 ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
@@ -653,8 +545,6 @@ ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Degrees of freedom") +
   ylab("Regression coefficients")
-
-
 
 library(DT)
 
@@ -697,8 +587,6 @@ datatable(tab, colnames = c("OLS", "Best subset", "PCR", "Ridge", "Lasso"), opti
     backgroundColor = styleEqual(0, c("white"))
   )
 
-
-
 X_test <- cbind(1, as.matrix(prostate_test)[, -9])
 y_test <- prostate_test[, 9]
 
@@ -718,8 +606,6 @@ tab_results <- matrix(c(
 colnames(tab_results) <- c("OLS", "Best subset", "PCR", "Ridge", "Lasso")
 rownames(tab_results) <- "Test error (MSE)"
 knitr::kable(tab_results, digits = 3)
-
-
 
 # Objective function
 f <- function(x) {
