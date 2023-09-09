@@ -65,13 +65,13 @@ to convert the HTML slides into pdf files, you can [follow the instruction of th
 | **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html)           | [Code C](code/un_C.R) |
 | *Exercises*                            | [Exercises C]        |                                                    |                       |
 | Lab 3                                  | \[Lab 3\]                            |                                                    | \[Code Lab 3\]        |
+| Lab 4                                  | \[Lab 4\]                            |                                                    | \[Code Lab 4\]        |
 | **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)           | [Code D](code/un_D.R) |
 | *Exercises*                            | \[Exercises 4\]                      |                                                    |                       |
-| Lab 4                                  | \[Lab 4\]                            |                                                    | \[Code Lab 4\]        |
+| Lab 5                                  | \[Lab 5\]                            |                                                    | \[Code Lab 5\]        |
 | **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html)           |                       |
 | **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html)           | [Code F](code/un_F.R) |
 | *Exercises*                            | \[Exercises 5\]                      |                                                    |                       |
-| Lab 5                                  | \[Lab 5\]                            |                                                    | \[Code Lab 5\]        |
 | Lab 6                                  | \[Lab 6\]                            |                                                    | \[Code Lab 6\]        |
 | **The scientific culture**             | \[Unit G\]                           | \[Slides Unit G\]                                  |                       |
 

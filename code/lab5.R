@@ -1,48 +1,3 @@
----
-title: "Lab 4"
-subtitle: "Data Mining - CdL CLAMSES"
-author: "[Tommaso Rigon]{.orange}"
-institute: "_Università degli Studi di Milano-Bicocca_"
-execute:
-  cache: false
-format:
-  html:
-    html-math-method: katex
-    echo: true
-    callout-appearance: minimal
-    theme: [cosmo, ../template.css]
-    toc: false
-    toc-title: Table of contents
-    embed-resources: false
-    code-line-numbers: true
-    smooth-scroll: true
-    code-fold: false
-    code-summary: "Show the code"
-    fig-dpi: 200
-    fig-height: 6
-    fig-width: 9
-    highlight-style: github
-editor: 
-  markdown: 
-    wrap: 72
-editor_options: 
-  chunk_output_type: console
----
-
-## [Homepage](../index.html)
-
-```{r}
-#| warning: false
-#| echo: false
-#| include: false
-#| message: false
-#| purl: false
-
-knitr::purl("lab4.qmd", output = "../code/lab4.R")
-styler:::style_file("../code/lab4.R")
-```
-
-```{r}
 rm(list = ls()) # Clean the environment
 
 # The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
@@ -51,11 +6,7 @@ auto <- subset(auto, select = c(city.distance, engine.size))
 
 # Summary
 str(auto)
-```
 
-## Polynomial regression
-
-```{r}
 y <- auto$city.distance # As the name suggest: city distance
 x <- auto$engine.size # And engine size (L)
 
@@ -76,19 +27,9 @@ lines(newx$x, predict(lm(y ~ poly(x, degree = 3)), newdata = newx), lty = 1, col
 
 # If I use an extreme value for the degree, it does not work well anymore
 lines(newx$x, predict(lm(y ~ poly(x, degree = 10)), newdata = newx), lty = 6)
-```
 
-## Nadaraya-Watson estimator
-
-```{r}
 ? ksmooth
-```
 
-
-## Local linear regression
-
-```{r}
-#| message: false
 # install.packages("sm")
 library(sm)
 
@@ -133,11 +74,7 @@ lines(a2, col = 2)
 # Funzione cubica locale
 a3 <- locpoly(x, y, degree = 3, bandwidth = 30, kernel = "normal", gridsize = 200)
 lines(a3, col = 3)
-```
 
-## Loess
-
-```{r}
 plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
 
 # Stimo un modello di tipo loess
@@ -161,11 +98,7 @@ lines(lo1, col = 4)
 plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
 lo1 <- loess.smooth(x, y, span = 0.2, evaluation = 500) # Necessario aumentare il numero di punti
 lines(lo1, col = 4)
-```
 
-## Regression splines
-
-```{r}
 # Splines di regressione---------------------------------------------------
 
 # install.packages("splines")
@@ -239,11 +172,7 @@ lines(newx$x, fit3, col = 3)
 spl4 <- lm(y ~ bs(x, df = 15, degree = 3, intercept = F))
 fit4 <- predict(spl4, newx)
 lines(newx$x, fit4, col = 4)
-```
 
-## Smoothing splines
-
-```{r}
 # Smoothing Splines ------------------------------------------------
 
 plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
@@ -274,4 +203,3 @@ p1 <- predict(s1, x = newx$x)
 lines(p1, col = 4)
 
 # ESERCIZIO: provare tutto con i "dati di ieri e di domani" (vd. libro) selezionando il parametro di lisciamento sia tramite convalida incrociata sia tramite insieme di stima e verifica
-```
