@@ -323,7 +323,7 @@ print(manual, digits = 12)
 # Created:	20 febbraio 2022, 18:21 (UTC+01:00)
 # Temporal extension (end)	31 December 2019
 
-library(tidyverse)
+library(readr)
 drivers <- read_csv("../data/drivers2.csv", n_max = 10000)
 ```
 
