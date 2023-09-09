@@ -192,8 +192,6 @@ print(ols_chol(X, y), digits = 12)
 print(ols_QR(X, y), digits = 12)
 print(manual, digits = 12)
 
-rm(list = ls())
-
 # Additional information
 
 # Source of the data: https://dati.mit.gov.it/hfs/patenti_Lombardia.csv
@@ -205,25 +203,56 @@ rm(list = ls())
 # Temporal extension (end)	31 December 2019
 
 library(tidyverse)
-library(lubridate)
+drivers <- read_csv("../data/drivers2.csv", n_max = 10000)
 
-# Use n_max = 1000 for most preliminary operations
-drivers <- read_csv("../data/drivers.csv", col_types = "iiffffffcfccfd", n_max = 1000)
+# Design matrix obtained from the model
+X <- model.matrix(hazard ~ poly(age, 10) + poly(experience, 10) + habilit + gender + city, data = drivers)
+y <- drivers$hazard
 
-# # Change the name of the columns
-# colnames(drivers) <- c("id", "birth", "town", "city", "region", "state", "gender", "category", "date", "habilit", "date_habilit", "expiration", "date_foreigners", "points")
-#
-# # Change the format of the date
-# drivers <- drivers %>% mutate(date = ymd_hms(date), experience = 2019 - year(date), age = 2019 - birth)
-#
-# # Select patent B and other things
-# drivers <- drivers %>%
-#   filter(category == "B", is.na(state), !is.na(points)) %>%
-#   filter(experience > 0)
-#
-# # Remove irrelevant columns
-# drivers <- drivers %>% select(-c(id, category, state, date_foreigners, expiration, date_habilit, birth, date, region))
-# drivers <- drivers %>% mutate(hazard = sqrt(-(points - 30)))
-#
-# glimpse(drivers)
-# summary(drivers)
+dim(X)
+
+# Measure the speed of execution
+times <- microbenchmark(
+  matrix_inversion = solve(t(X) %*% X) %*% t(X) %*% y,
+  linear_system = ols_solve(X, y),
+  cholesky = ols_chol(X, y),
+  QR = ols_QR(X, y),
+  times = 50
+)
+
+# Summary of the timings
+times
+
+library(biglm)
+
+drivers_chunk1 <- read_csv("../data/drivers2.csv",
+  n_max = 100000, skip = 0, col_names = TRUE
+)
+name_cols <- colnames(drivers_chunk1)
+
+m_big <- biglm(hazard ~ poly(age, 10) + poly(experience, 10) + habilit + gender + city,
+  data = drivers_chunk1
+)
+summary(m_big)
+
+rm(drivers_chunk1)
+gc() # Free unused R memory
+
+drivers_chunk2 <- read_csv("../data/drivers2.csv",
+  n_max = 100000, skip = 100000, col_names = FALSE
+)
+colnames(drivers_chunk2) <- name_cols
+
+m_big <- update(m_big, drivers_chunk2)
+summary(m_big)
+
+rm(drivers_chunk2)
+gc() # Free unused R memory
+
+drivers_chunk3 <- read_csv("../data/drivers2.csv",
+  n_max = 100000, skip = 200000, col_names = FALSE
+)
+colnames(drivers_chunk3) <- name_cols
+
+m_big <- update(m_big, drivers_chunk3)
+summary(m_big)

@@ -97,6 +97,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#the-drivers-dataset" id="toc-the-drivers-dataset" class="nav-link" data-scroll-target="#the-drivers-dataset">The <code>drivers</code> dataset</a>
   <ul class="collapse">
   <li><a href="#iterative-methods" id="toc-iterative-methods" class="nav-link" data-scroll-target="#iterative-methods">Iterative methods</a></li>
+  <li><a href="#benchmark" id="toc-benchmark" class="nav-link" data-scroll-target="#benchmark">Benchmark</a></li>
+  <li><a href="#recursive-estimates" id="toc-recursive-estimates" class="nav-link" data-scroll-target="#recursive-estimates">Recursive estimates</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -387,133 +389,95 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="iterative-methods" class="level2">
 <h2 class="anchored" data-anchor-id="iterative-methods">Iterative methods</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Additional information</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Additional information</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Source of the data: https://dati.mit.gov.it/hfs/patenti_Lombardia.csv</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Documentation: http://dati.mit.gov.it/catalog/dataset/patenti</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Author:   Direzione generale per la motorizzazione - Div7 - Centro elaborazione dati motorizzazione</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Last update:  21 December 2022, 17:16 (UTC+01:00)</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Created:  20 febbraio 2022, 18:21 (UTC+01:00)</span></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Temporal extension (end)  31 December 2019</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Use n_max = 1000 for most preliminary operations</span></span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>drivers <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers.csv"</span>, <span class="at">col_types =</span> <span class="st">"iiffffffcfccfd"</span>, <span class="at">n_max =</span> <span class="dv">1000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Source of the data: https://dati.mit.gov.it/hfs/patenti_Lombardia.csv</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Documentation: http://dati.mit.gov.it/catalog/dataset/patenti</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Author:   Direzione generale per la motorizzazione - Div7 - Centro elaborazione dati motorizzazione</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Last update:  21 December 2022, 17:16 (UTC+01:00)</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Created:  20 febbraio 2022, 18:21 (UTC+01:00)</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Temporal extension (end)  31 December 2019</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>drivers <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers2.csv"</span>, <span class="at">n_max =</span> <span class="dv">10000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- ```{r} -->
+<!-- # Change the name of the columns -->
+<!-- colnames(drivers) <- c("id", "birth", "town", "city", "region", "state", "gender", "category", "date", "habilit", "date_habilit", "expiration", "date_foreigners", "points") -->
+<!-- # Change the format of the date -->
+<!-- drivers <- drivers %>% mutate(date = ymd_hms(date), experience = 2019 - year(date), age = 2019 - birth) -->
+<!-- # Select patent B and other things -->
+<!-- drivers <- drivers %>% -->
+<!--   filter(category == "B", is.na(state), !is.na(points)) %>% -->
+<!--   filter(experience > 0) -->
+<!-- # Remove irrelevant columns -->
+<!-- drivers <- drivers %>% select(-c(id, category, state, date_foreigners, expiration, date_habilit, birth, date, region)) -->
+<!-- drivers <- drivers %>% mutate(hazard = sqrt(-(points - 30))) -->
+<!-- drivers <- na.omit(drivers) -->
+<!-- glimpse(drivers) -->
+<!-- summary(drivers) -->
+<!-- write_csv(drivers, "../data/drivers2.csv") -->
+<!-- ``` -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Design matrix obtained from the model</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>X <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(hazard <span class="sc">~</span> <span class="fu">poly</span>(age, <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">poly</span>(experience, <span class="dv">10</span>) <span class="sc">+</span> habilit <span class="sc">+</span> gender <span class="sc">+</span> city, <span class="at">data =</span> drivers)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> drivers<span class="sc">$</span>hazard</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="benchmark" class="level2">
+<h2 class="anchored" data-anchor-id="benchmark">Benchmark</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Measure the speed of execution</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>times <span class="ot">&lt;-</span> <span class="fu">microbenchmark</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">matrix_inversion =</span> <span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">linear_system =</span> <span class="fu">ols_solve</span>(X, y),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cholesky =</span> <span class="fu">ols_chol</span>(X, y),</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">QR =</span> <span class="fu">ols_QR</span>(X, y),</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">times =</span> <span class="dv">50</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Summary of the timings</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>times</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="recursive-estimates" class="level2">
+<h2 class="anchored" data-anchor-id="recursive-estimates">Recursive estimates</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(biglm)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>drivers_chunk1 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers2.csv"</span>, </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n_max =</span> <span class="dv">100000</span>, <span class="at">skip =</span> <span class="dv">0</span>, <span class="at">col_names =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>name_cols <span class="ot">&lt;-</span> <span class="fu">colnames</span>(drivers_chunk1)</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>m_big <span class="ot">&lt;-</span> <span class="fu">biglm</span>(hazard <span class="sc">~</span> <span class="fu">poly</span>(age, <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">poly</span>(experience, <span class="dv">10</span>) <span class="sc">+</span> habilit <span class="sc">+</span> gender <span class="sc">+</span>  city, </span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">data =</span> drivers_chunk1)</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_big)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># # Change the name of the columns</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># colnames(drivers) &lt;- c("id", "birth", "town", "city", "region", "state", "gender", "category", "date", "habilit", "date_habilit", "expiration", "date_foreigners", "points")</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># # Change the format of the date</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># drivers &lt;- drivers %&gt;% mutate(date = ymd_hms(date), experience = 2019 - year(date), age = 2019 - birth)</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># # Select patent B and other things</span></span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># drivers &lt;- drivers %&gt;%</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(category == "B", is.na(state), !is.na(points)) %&gt;%</span></span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a><span class="co">#   filter(experience &gt; 0)</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co"># # Remove irrelevant columns</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># drivers &lt;- drivers %&gt;% select(-c(id, category, state, date_foreigners, expiration, date_habilit, birth, date, region))</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a><span class="co"># drivers &lt;- drivers %&gt;% mutate(hazard = sqrt(-(points - 30)))</span></span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a><span class="co"># glimpse(drivers)</span></span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(drivers)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(drivers_chunk1)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>() <span class="co"># Free unused R memory</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>drivers_chunk2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers2.csv"</span>, </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n_max =</span> <span class="dv">100000</span>, <span class="at">skip =</span> <span class="dv">100000</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(drivers_chunk2) <span class="ot">&lt;-</span> name_cols</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>m_big <span class="ot">&lt;-</span> <span class="fu">update</span>(m_big, drivers_chunk2)</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_big)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<!-- ```{r} -->
-<!-- # Start simple, use a subset of the full dataset -->
-<!-- set.seed(12) -->
-<!-- drivers_sub <- sample_n(drivers, 5000, replace = FALSE) # Sub-sampling operation -->
-<!-- # Some preliminary graph -->
-<!-- ggplot(data = drivers_sub, aes(x = experience, y = hazard)) + -->
-<!--   geom_point() + -->
-<!--   theme_bw() -->
-<!-- ggplot(data = drivers_sub, aes(x = age, y = hazard)) + -->
-<!--   geom_point() + -->
-<!--   theme_bw() -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- # Let us remove the missing values -->
-<!-- drivers_sub <- na.omit(drivers_sub) -->
-<!-- #  -->
-<!-- m <- lm(hazard ~ poly(age, 10) + habilit + gender + poly(experience, 10) + city, data = drivers_sub) -->
-<!-- summary(m) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- X <- model.matrix(hazard ~ poly(age, 10) + habilit + gender + poly(experience, 10) + city, data = drivers_sub) -->
-<!-- XtX <- crossprod(X) -->
-<!-- y <- drivers_sub$hazard -->
-<!-- kappa(X, exact = TRUE)^2 -->
-<!-- kappa(XtX, exact = TRUE) -->
-<!-- factorizationQR <- function(X) { -->
-<!--   X <- as.matrix(X) -->
-<!--   p <- ncol(X) -->
-<!--   n <- nrow(X) -->
-<!--   Q <- matrix(0, n, p) -->
-<!--   R <- matrix(0, p, p) -->
-<!--   for (j in 1:p) { -->
-<!--     Zj <- X[, j] -->
-<!--     if (j > 1) { -->
-<!--       for (k in 1:(j - 1)) { -->
-<!--         R[k, j] <- crossprod(Q[, k], X[, j]) -->
-<!--         Zj <- Zj - R[k, j] * Q[, k] -->
-<!--       } -->
-<!--     } -->
-<!--     R[j, j] <- sqrt(crossprod(Zj)) -->
-<!--     Q[, j] <- Zj / R[j, j] -->
-<!--   } -->
-<!--   return(list(Q = Q, R = R)) -->
-<!-- } -->
-<!-- ols_manual <- function(X, y) { -->
-<!--   solve(t(X) %*% X) %*% t(X) %*% y -->
-<!-- } -->
-<!-- ols_solve <- function(X, y) { -->
-<!--   solve(crossprod(X), crossprod(X, y)) -->
-<!-- } -->
-<!-- ols_chol <- function(X, y) { -->
-<!--   XtX <- crossprod(X) -->
-<!--   Xty <- crossprod(X, y) -->
-<!--   L <- chol(XtX) -->
-<!--   betahat <- backsolve(L, forwardsolve(t(L), Xty)) -->
-<!--   betahat -->
-<!-- } -->
-<!-- ols_eig <- function(X, y) { -->
-<!--   XtX <- crossprod(X) -->
-<!--   Xty <- crossprod(X, y) -->
-<!--   eig <- eigen(XtX, symmetric = TRUE) -->
-<!--   crossprod(t(eig$vectors) / sqrt(eig$values)) %*% Xty -->
-<!-- } -->
-<!-- system.time(ols_manual(X, y)) -->
-<!-- system.time(ols_solve(X, y)) -->
-<!-- system.time(ols_qr(X, y)) -->
-<!-- system.time(ols_chol(X, y)) -->
-<!-- system.time(ols_eig(X, y)) -->
-<!-- library(microbenchmark) -->
-<!-- micro_out <- microbenchmark( -->
-<!--   lm = lm(hazard ~ poly(age, 10) + habilit + gender + poly(experience, 10) + city, data = drivers_sub), -->
-<!--   manual = ols_manual(X, y), -->
-<!--   solve = ols_solve(X, y), -->
-<!--   QR = ols_qr(X, y), -->
-<!--   Cholesky = ols_chol(X, y), -->
-<!--   eig = ols_chol(X, y) -->
-<!-- ) -->
-<!-- knitr::kable(summary(micro_out)) -->
-<!-- solve(XtX) -->
-<!-- qr_obj <- qr(X, LAPACK = FALSE) -->
-<!-- chol2inv(qr_obj$qr) -->
-<!-- X - qr.X(qr(X, LAPACK = TRUE)) -->
-<!-- beta -->
-<!-- lm(y ~ X - 1) -->
-<!-- ols_manual(X, y) -->
-<!-- ols_solve(X, y) -->
-<!-- ols_qr(X, y) -->
-<!-- ols_chol(X, y) -->
-<!-- ols_eig(X, y) -->
-<!-- ``` -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(drivers_chunk2)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>() <span class="co"># Free unused R memory</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>drivers_chunk3 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers2.csv"</span>, </span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n_max =</span> <span class="dv">100000</span>, <span class="at">skip =</span> <span class="dv">200000</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(drivers_chunk3) <span class="ot">&lt;-</span> name_cols</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>m_big <span class="ot">&lt;-</span> <span class="fu">update</span>(m_big, drivers_chunk3)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_big)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 </section>
 

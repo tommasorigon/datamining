@@ -313,8 +313,6 @@ print(manual, digits = 12)
 ## Iterative methods
 
 ```{r}
-rm(list = ls())
-
 # Additional information
 
 # Source of the data: https://dati.mit.gov.it/hfs/patenti_Lombardia.csv
@@ -326,147 +324,94 @@ rm(list = ls())
 # Temporal extension (end)	31 December 2019
 
 library(tidyverse)
-library(lubridate)
+drivers <- read_csv("../data/drivers2.csv", n_max = 10000)
+```
 
-# Use n_max = 1000 for most preliminary operations
-drivers <- read_csv("../data/drivers.csv", col_types = "iiffffffcfccfd", n_max = 1000)
+
+<!-- ```{r} -->
+<!-- # Change the name of the columns -->
+<!-- colnames(drivers) <- c("id", "birth", "town", "city", "region", "state", "gender", "category", "date", "habilit", "date_habilit", "expiration", "date_foreigners", "points") -->
+
+<!-- # Change the format of the date -->
+<!-- drivers <- drivers %>% mutate(date = ymd_hms(date), experience = 2019 - year(date), age = 2019 - birth) -->
+
+<!-- # Select patent B and other things -->
+<!-- drivers <- drivers %>% -->
+<!--   filter(category == "B", is.na(state), !is.na(points)) %>% -->
+<!--   filter(experience > 0) -->
+
+<!-- # Remove irrelevant columns -->
+<!-- drivers <- drivers %>% select(-c(id, category, state, date_foreigners, expiration, date_habilit, birth, date, region)) -->
+<!-- drivers <- drivers %>% mutate(hazard = sqrt(-(points - 30))) -->
+<!-- drivers <- na.omit(drivers) -->
+
+<!-- glimpse(drivers) -->
+<!-- summary(drivers) -->
+<!-- write_csv(drivers, "../data/drivers2.csv") -->
+<!-- ``` -->
+
+
+```{r}
+# Design matrix obtained from the model
+X <- model.matrix(hazard ~ poly(age, 10) + poly(experience, 10) + habilit + gender + city, data = drivers)
+y <- drivers$hazard
+
+dim(X)
+```
+
+
+## Benchmark
+
+```{r}
+# Measure the speed of execution
+times <- microbenchmark(
+  matrix_inversion = solve(t(X) %*% X) %*% t(X) %*% y,
+  linear_system = ols_solve(X, y),
+  cholesky = ols_chol(X, y),
+  QR = ols_QR(X, y),
+  times = 50
+)
+
+# Summary of the timings
+times
+```
+
+## Recursive estimates
+
+```{r}
+library(biglm)
+
+drivers_chunk1 <- read_csv("../data/drivers2.csv", 
+                           n_max = 100000, skip = 0, col_names = TRUE)
+name_cols <- colnames(drivers_chunk1)
+
+m_big <- biglm(hazard ~ poly(age, 10) + poly(experience, 10) + habilit + gender +  city, 
+               data = drivers_chunk1)
+summary(m_big)
 ```
 
 
 ```{r}
-# # Change the name of the columns
-# colnames(drivers) <- c("id", "birth", "town", "city", "region", "state", "gender", "category", "date", "habilit", "date_habilit", "expiration", "date_foreigners", "points")
-#
-# # Change the format of the date
-# drivers <- drivers %>% mutate(date = ymd_hms(date), experience = 2019 - year(date), age = 2019 - birth)
-#
-# # Select patent B and other things
-# drivers <- drivers %>%
-#   filter(category == "B", is.na(state), !is.na(points)) %>%
-#   filter(experience > 0)
-#
-# # Remove irrelevant columns
-# drivers <- drivers %>% select(-c(id, category, state, date_foreigners, expiration, date_habilit, birth, date, region))
-# drivers <- drivers %>% mutate(hazard = sqrt(-(points - 30)))
-#
-# glimpse(drivers)
-# summary(drivers)
+rm(drivers_chunk1)
+gc() # Free unused R memory
+
+drivers_chunk2 <- read_csv("../data/drivers2.csv", 
+                           n_max = 100000, skip = 100000, col_names = FALSE)
+colnames(drivers_chunk2) <- name_cols
+
+m_big <- update(m_big, drivers_chunk2)
+summary(m_big)
 ```
 
+```{r}
+rm(drivers_chunk2)
+gc() # Free unused R memory
 
-<!-- ```{r} -->
-<!-- # Start simple, use a subset of the full dataset -->
-<!-- set.seed(12) -->
-<!-- drivers_sub <- sample_n(drivers, 5000, replace = FALSE) # Sub-sampling operation -->
+drivers_chunk3 <- read_csv("../data/drivers2.csv", 
+                           n_max = 100000, skip = 200000, col_names = FALSE)
+colnames(drivers_chunk3) <- name_cols
 
-<!-- # Some preliminary graph -->
-<!-- ggplot(data = drivers_sub, aes(x = experience, y = hazard)) + -->
-<!--   geom_point() + -->
-<!--   theme_bw() -->
-<!-- ggplot(data = drivers_sub, aes(x = age, y = hazard)) + -->
-<!--   geom_point() + -->
-<!--   theme_bw() -->
-<!-- ``` -->
+m_big <- update(m_big, drivers_chunk3)
+summary(m_big)
+```
 
-
-<!-- ```{r} -->
-<!-- # Let us remove the missing values -->
-<!-- drivers_sub <- na.omit(drivers_sub) -->
-
-<!-- #  -->
-<!-- m <- lm(hazard ~ poly(age, 10) + habilit + gender + poly(experience, 10) + city, data = drivers_sub) -->
-<!-- summary(m) -->
-<!-- ``` -->
-
-
-<!-- ```{r} -->
-<!-- X <- model.matrix(hazard ~ poly(age, 10) + habilit + gender + poly(experience, 10) + city, data = drivers_sub) -->
-<!-- XtX <- crossprod(X) -->
-
-<!-- y <- drivers_sub$hazard -->
-
-<!-- kappa(X, exact = TRUE)^2 -->
-<!-- kappa(XtX, exact = TRUE) -->
-
-<!-- factorizationQR <- function(X) { -->
-<!--   X <- as.matrix(X) -->
-<!--   p <- ncol(X) -->
-<!--   n <- nrow(X) -->
-<!--   Q <- matrix(0, n, p) -->
-<!--   R <- matrix(0, p, p) -->
-<!--   for (j in 1:p) { -->
-<!--     Zj <- X[, j] -->
-<!--     if (j > 1) { -->
-<!--       for (k in 1:(j - 1)) { -->
-<!--         R[k, j] <- crossprod(Q[, k], X[, j]) -->
-<!--         Zj <- Zj - R[k, j] * Q[, k] -->
-<!--       } -->
-<!--     } -->
-<!--     R[j, j] <- sqrt(crossprod(Zj)) -->
-<!--     Q[, j] <- Zj / R[j, j] -->
-<!--   } -->
-<!--   return(list(Q = Q, R = R)) -->
-<!-- } -->
-
-<!-- ols_manual <- function(X, y) { -->
-<!--   solve(t(X) %*% X) %*% t(X) %*% y -->
-<!-- } -->
-
-<!-- ols_solve <- function(X, y) { -->
-<!--   solve(crossprod(X), crossprod(X, y)) -->
-<!-- } -->
-
-
-
-<!-- ols_chol <- function(X, y) { -->
-<!--   XtX <- crossprod(X) -->
-<!--   Xty <- crossprod(X, y) -->
-<!--   L <- chol(XtX) -->
-<!--   betahat <- backsolve(L, forwardsolve(t(L), Xty)) -->
-<!--   betahat -->
-<!-- } -->
-
-<!-- ols_eig <- function(X, y) { -->
-<!--   XtX <- crossprod(X) -->
-<!--   Xty <- crossprod(X, y) -->
-<!--   eig <- eigen(XtX, symmetric = TRUE) -->
-<!--   crossprod(t(eig$vectors) / sqrt(eig$values)) %*% Xty -->
-<!-- } -->
-
-<!-- system.time(ols_manual(X, y)) -->
-<!-- system.time(ols_solve(X, y)) -->
-<!-- system.time(ols_qr(X, y)) -->
-<!-- system.time(ols_chol(X, y)) -->
-<!-- system.time(ols_eig(X, y)) -->
-
-
-<!-- library(microbenchmark) -->
-<!-- micro_out <- microbenchmark( -->
-<!--   lm = lm(hazard ~ poly(age, 10) + habilit + gender + poly(experience, 10) + city, data = drivers_sub), -->
-<!--   manual = ols_manual(X, y), -->
-<!--   solve = ols_solve(X, y), -->
-<!--   QR = ols_qr(X, y), -->
-<!--   Cholesky = ols_chol(X, y), -->
-<!--   eig = ols_chol(X, y) -->
-<!-- ) -->
-
-<!-- knitr::kable(summary(micro_out)) -->
-
-
-<!-- solve(XtX) -->
-
-<!-- qr_obj <- qr(X, LAPACK = FALSE) -->
-<!-- chol2inv(qr_obj$qr) -->
-
-
-<!-- X - qr.X(qr(X, LAPACK = TRUE)) -->
-
-<!-- beta -->
-<!-- lm(y ~ X - 1) -->
-
-<!-- ols_manual(X, y) -->
-<!-- ols_solve(X, y) -->
-<!-- ols_qr(X, y) -->
-<!-- ols_chol(X, y) -->
-<!-- ols_eig(X, y) -->
-<!-- ``` -->
