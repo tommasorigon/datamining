@@ -67,9 +67,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-hitters-dataset" id="toc-the-hitters-dataset" class="nav-link" data-scroll-target="#the-hitters-dataset">The <code>Hitters</code> dataset</a></li>
   <li><a href="#a-glimpse-of-the-hitters-dataset" id="toc-a-glimpse-of-the-hitters-dataset" class="nav-link" data-scroll-target="#a-glimpse-of-the-hitters-dataset">A <code>glimpse</code> of the <code>Hitters</code> dataset</a></li>
   <li><a href="#preliminary-operations" id="toc-preliminary-operations" class="nav-link" data-scroll-target="#preliminary-operations">Preliminary operations</a></li>
-  <li><a href="#generalized-additive-models" id="toc-generalized-additive-models" class="nav-link" data-scroll-target="#generalized-additive-models">Generalized additive models</a></li>
+  <li><a href="#generalized-additive-models-gam" id="toc-generalized-additive-models-gam" class="nav-link" data-scroll-target="#generalized-additive-models-gam">Generalized additive models (GAM)</a></li>
   <li><a href="#mars" id="toc-mars" class="nav-link" data-scroll-target="#mars">MARS</a>
   <ul class="collapse">
+  <li><a href="#the-hitters-dataset-1" id="toc-the-hitters-dataset-1" class="nav-link" data-scroll-target="#the-hitters-dataset-1">The <code>Hitters</code> dataset</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
@@ -209,11 +210,138 @@ $ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N,
 <!-- ) -->
 <!-- ``` -->
 </section>
-<section id="generalized-additive-models" class="level1">
-<h1>Generalized additive models</h1>
+<section id="generalized-additive-models-gam" class="level1">
+<h1>Generalized additive models (GAM)</h1>
 </section>
 <section id="mars" class="level1">
 <h1>MARS</h1>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Formula</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: plotmo</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: plotrix</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: TeachingDemos</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: earth(formula=logSalary~., data=Hitters_train, degree=1)
+
+logSalary =
+  6.51823
+  -   0.01629737 * pmax(0,       Hits -        169) 
+  +   0.01118536 * pmax(0,      Walks -         59) 
+  -  0.005811466 * pmax(0,        247 -      CRuns) 
+  +  0.001003021 * pmax(0,      CRuns -        247) 
+  - 0.0005516759 * pmax(0,        659 -    PutOuts) 
+  -  0.000651503 * pmax(0,    PutOuts -        659) 
+  +    0.3668041 * pmax(0, TotalScore -  0.8388626) 
+  +     2.219163 * pmax(0,   logAHits -   4.394449) 
+  -     3.111009 * pmax(0,  logAAtBat -   5.829534) 
+  +     1.762515 * pmax(0,    logARBI -   3.997661) 
+  -     4.067173 * pmax(0,  0.1864407 - RatioWalks) 
+  -    0.9447003 * pmax(0, RatioWalks -  0.1864407) 
+  -     1.722476 * pmax(0,   logYears -   2.564949) 
+
+Selected 14 of 21 terms, and 10 of 32 predictors
+Termination condition: RSq changed by less than 0.001 at 21 terms
+Importance: CRuns, logARBI, TotalScore, RatioWalks, logYears, logAAtBat, ...
+Number of terms at each degree of interaction: 1 13 (additive model)
+GCV 0.1545222    RSS 22.66848    GRSq 0.8160497    RSq 0.8616159</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="un_F_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="1400"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code> plotmo grid:    AtBat Hits HmRun Runs RBI Walks CAtBat CHits CHmRun CRuns CRBI
+                   407  103     9   50  46    39   1924   491     40   247  208
+ CWalks League Division PutOuts Assists Errors NewLeague TotalScore logAHits
+    175      A        W     224      45      7         A  0.3806452 4.465908
+ logAAtBat logARuns  logARBI logAWalks logAHmRun RatioHits RatioAtBat RatioRuns
+  5.808893 3.788725 3.628776  3.390024  2.010449 0.2013699   0.205298 0.2098765
+  RatioRBI RatioWalks RatioHmRun logYears
+ 0.2202899  0.2153285  0.2204724 1.791759</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="un_F_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="1400"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: earth(formula=logSalary~., data=Hitters_train, degree=2)
+
+logSalary =
+  7.253179
+  +    0.8667883 * pmax(0,       Hits -        169) 
+  -   0.02455974 * pmax(0,         13 -      HmRun) 
+  -  0.003480738 * pmax(0,        491 -      CHits) 
+  +  0.001597206 * pmax(0,      CRuns -        247) 
+  - 0.0005803885 * pmax(0,        808 -    PutOuts) 
+  +     1.329527 * pmax(0,    logARBI -    3.89182) 
+  -    0.5518048 * pmax(0,   3.232121 -  logAWalks) 
+  -     3.956706 * pmax(0,  0.3530534 - RatioAtBat) 
+  -     0.448058 * pmax(0,   2.197225 -   logYears) 
+  -    0.9122358 * pmax(0,   logYears -   2.197225) 
+  - 0.0007651018 * AtBat                            * pmax(0,       Hits -        169) 
+  -   0.04449506 * pmax(0,       Hits -        169) * DivisionW                        
+  -   0.09067808 * pmax(0,       Hits -        169) * logARuns                         
+  - 0.0001489024 * pmax(0,    PutOuts -        808) * Errors                           
+  - 5.574428e-06 * pmax(0,      AtBat -        491) * pmax(0,        808 -    PutOuts) 
+  -  0.001954916 * pmax(0,      HmRun -         13) * pmax(0,     Errors -          7) 
+  +   0.02858767 * pmax(0,         34 -      Walks) * pmax(0,    3.89182 -    logARBI) 
+  - 0.0008211653 * pmax(0,        491 -      CHits) * pmax(0,   3.427515 -    logARBI) 
+  - 3.909666e-06 * pmax(0,      CRuns -        247) * pmax(0,    Assists -         43) 
+  +  0.006866712 * pmax(0,      CRuns -        247) * pmax(0,   1.321756 -  logAHmRun) 
+  +   0.04258266 * pmax(0,        247 -      CRuns) * pmax(0,  0.2972973 -   RatioRBI) 
+  +   0.02165705 * pmax(0,      CRuns -        247) * pmax(0, RatioWalks - 0.09734513) 
+  -  0.004333381 * pmax(0,     CWalks -        373) * pmax(0,   logYears -   2.197225) 
+  +  0.005619607 * pmax(0,    Assists -          6) * pmax(0,  0.3530534 - RatioAtBat) 
+  +     2.079171 * pmax(0,  logAWalks -   3.044522) * pmax(0,   logYears -   2.197225) 
+
+Selected 26 of 47 terms, and 19 of 32 predictors
+Termination condition: RSq changed by less than 0.001 at 47 terms
+Importance: logARBI, CHits, CRuns, RatioRBI, RatioWalks, Hits, DivisionW, ...
+Number of terms at each degree of interaction: 1 10 15
+GCV 0.1334604    RSS 12.07393    GRSq 0.8411226    RSq 0.9262924</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="un_F_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="1400"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code> plotmo grid:    AtBat Hits HmRun Runs RBI Walks CAtBat CHits CHmRun CRuns CRBI
+                   407  103     9   50  46    39   1924   491     40   247  208
+ CWalks League Division PutOuts Assists Errors NewLeague TotalScore logAHits
+    175      A        W     224      45      7         A  0.3806452 4.465908
+ logAAtBat logARuns  logARBI logAWalks logAHmRun RatioHits RatioAtBat RatioRuns
+  5.808893 3.788725 3.628776  3.390024  2.010449 0.2013699   0.205298 0.2098765
+  RatioRBI RatioWalks RatioHmRun logYears
+ 0.2202899  0.2153285  0.2204724 1.791759</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="un_F_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="1400"></p>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'pdp'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    partial</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="un_F_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="1400"></p>
+</div>
+</div>
+<section id="the-hitters-dataset-1" class="level2">
+<h2 class="anchored" data-anchor-id="the-hitters-dataset-1">The <code>Hitters</code> dataset</h2>
+</section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>
 <ul>

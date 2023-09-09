@@ -1,0 +1,472 @@
+---
+title: "Lab 1"
+subtitle: "Data Mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+execute:
+  cache: false
+format:
+  html:
+    html-math-method: katex
+    echo: true
+    callout-appearance: minimal
+    theme: [cosmo, ../template.css]
+    toc: true
+    warning: false
+    output: false 
+    toc-title: Table of contents
+    embed-resources: false
+    code-line-numbers: false
+    smooth-scroll: true
+    code-fold: false
+    code-summary: "Show the code"
+    fig-dpi: 200
+    fig-height: 6
+    fig-width: 9
+    highlight-style: github
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+## [Homepage](../index.html)
+
+# The `auto` dataset
+
+```{r}
+#| warning: false
+#| echo: false
+#| include: false
+#| message: false
+#| purl: false
+
+knitr::purl("lab1.qmd", output = "../code/lab1.R", documentation = 0)
+styler:::style_file("../code/lab1.R")
+```
+
+```{r}
+rm(list = ls())
+
+# The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
+auto <- read.table("../data/auto.txt", header = TRUE)
+
+# Select the variables we need
+auto <- subset(auto, select = c(city.distance, engine.size, n.cylinders, curb.weight, fuel))
+```
+
+
+```{r}
+# Create a new variable (cylinders)
+auto$cylinders2 <- factor(auto$n.cylinders == 2)
+
+# This is the final model we obtained in Unit A, after a long modelling process
+m_final <- lm(log(city.distance) ~ I(log(engine.size)) + I(log(curb.weight)) + fuel + cylinders2, data = auto)
+
+# Summary of the results
+summary(m_final)
+```
+
+```{r}
+# Design matrix obtained from the model
+X <- model.matrix(log(city.distance) ~ I(log(engine.size)) + I(log(curb.weight)) + fuel + cylinders2, data = auto)
+y <- log(auto$city.distance)
+
+dim(X)
+```
+
+## Ordinary least squares (naïve solution)
+
+```{r}
+# Least squares, the naive way
+solve(t(X) %*% X) %*% t(X) %*% y
+```
+
+## Normal equations
+
+```{r}
+# Sufficients statistics for this model
+XtX <- crossprod(X)
+Xty <- crossprod(X, y)
+round(XtX, digits = 1)
+round(Xty, digits = 2)
+```
+
+
+```{r}
+# The algorithm used here to compute beta_hat does not coincide with the previous one
+ols_solve <- function(X, y) {
+  XtX <- crossprod(X)
+  Xty <- crossprod(X, y)
+  solve(XtX, Xty)
+}
+
+ols_solve(X, y)
+```
+
+## Benchmarking I
+
+```{r}
+library(microbenchmark) # Needs to be installed
+
+# Measure the speed of execution
+times <- microbenchmark(
+  matrix_inversion = solve(t(X) %*% X) %*% t(X) %*% y,
+  linear_system = ols_solve(X, y), times = 1000
+)
+
+# Summary of the timings
+times
+boxplot(times)
+```
+
+## Cholesky factorization
+
+```{r}
+R <- chol(XtX)
+round(R, 3)
+
+# Confirm that this is the appropriate Cholesky decomposition
+round(XtX, 3)
+round(t(R) %*% R, 3)
+```
+
+
+```{r}
+# Ordinary least squares with Cholesky
+ols_chol <- function(X, y) {
+  XtX <- crossprod(X)
+  Xty <- crossprod(X, y)
+  R <- chol(XtX)
+  beta_hat <- backsolve(R, forwardsolve(t(R), Xty))
+  beta_hat
+}
+
+ols_chol(X, y)
+```
+
+## Benchmarking II
+
+```{r}
+# Measure the speed of execution
+times <- microbenchmark(
+  matrix_inversion = solve(t(X) %*% X) %*% t(X) %*% y,
+  linear_system = ols_solve(X, y),
+  cholesky = ols_chol(X, y),
+  times = 1000
+)
+
+# Summary of the timings
+times
+boxplot(times)
+```
+
+## Cholesky and OLS variance
+
+```{r}
+# However, the Cholesky decomposition is giving us much more.
+# To get the variance of the estimates we need to compute the inverse of XtX
+
+# Traditional inverse (not ideal)
+solve(XtX)
+# Cholesky inverse
+chol2inv(R)
+
+microbenchmark(matrix_inversion = solve(XtX), cholesky = chol2inv(R))
+```
+
+## QR factorization
+
+```{r}
+# This specific linear regression model is fairly well-conditioned
+# Any method (even the naive ones) are going to work just fine
+kappa(t(X) %*% X, exact = TRUE)
+
+# Note that this coincide with:
+kappa(X, exact = TRUE)^2
+```
+
+```{r}
+# Re-implementation via Gram-Schmidt
+factorizationQR <- function(X) {
+  p <- ncol(X)
+  n <- nrow(X)
+  Q <- matrix(0, n, p)
+  R <- matrix(0, p, p)
+  for (j in 1:p) {
+    Zj <- X[, j]
+    if (j > 1) {
+      for (k in 1:(j - 1)) {
+        R[k, j] <- crossprod(Q[, k], X[, j])
+        Zj <- Zj - R[k, j] * Q[, k]
+      }
+    }
+    R[j, j] <- sqrt(crossprod(Zj))
+    Q[, j] <- Zj / R[j, j]
+  }
+  return(list(Q = Q, R = R))
+}
+```
+
+
+```{r}
+QR <- factorizationQR(X)
+
+# This is an orthogonal matrix
+round(crossprod(QR$Q), 3)
+
+# This coincide with the Cholesky
+round(QR$R, 3)
+round(R, 3)
+```
+
+```{r}
+ols_QR <- function(X, y) {
+  qr_obj <- factorizationQR(X)
+  Q <- qr_obj$Q
+  R <- qr_obj$R
+  Qty <- crossprod(Q, y)
+  beta_hat <- backsolve(R, Qty)
+  beta_hat
+}
+ols_QR(X, y)
+```
+
+```{r}
+# Be careful, here pivoting is performed
+# This means the QR might be different with that of factorizationQR
+QR_obj <- qr(X)
+QR_obj
+```
+
+
+```{r}
+ols_QR <- function(X, y) {
+  qr_obj <- qr(X)
+  qr.coef(qr_obj, y)
+}
+
+ols_QR(X, y)
+```
+
+## Benchmark III
+
+```{r}
+# Measure the speed of execution
+times <- microbenchmark(
+  matrix_inversion = solve(t(X) %*% X) %*% t(X) %*% y,
+  linear_system = ols_solve(X, y),
+  cholesky = ols_chol(X, y),
+  QR = ols_QR(X, y),
+  times = 1000
+)
+
+# Summary of the timings
+times
+boxplot(times)
+```
+
+```{r}
+# Estimated coefficients
+qr.coef(QR_obj, y)
+
+# Predicted values
+predict(m_final)
+qr.fitted(QR_obj, y)
+
+# Residuals
+residuals(m_final)
+qr.resid(QR_obj, y)
+
+# Influence points
+influence(m_final)$hat
+rowSums(qr.Q(QR_obj)^2)
+
+# Inverse of XtX
+solve(XtX)
+chol2inv(qr.R(QR_obj))
+```
+
+## Numerical precision of QR
+
+```{r}
+a <- 1e-7
+X <- cbind(c(1, a, 0), c(1, 0, a))
+y <- c(1, 0, -1)
+```
+
+```{r}
+#| eval: false
+manual <- rbind((1 - a) / (-2 * a^2 - a^4) + (-1 - a^2) / (-2 * a^2 - a^4), 1 / (-2 * a^2 - a^4) + ((1 - a) * (-1 - a^2)) / (-2 * a^2 - a^4))
+
+print(ols_solve(X, y), digits = 12)
+print(ols_chol(X, y), digits = 12)
+print(ols_QR(X, y), digits = 12)
+print(manual, digits = 12)
+```
+
+
+# The `drivers` dataset
+
+
+## Iterative methods
+
+```{r}
+rm(list = ls())
+
+# Additional information
+
+# Source of the data: https://dati.mit.gov.it/hfs/patenti_Lombardia.csv
+# Documentation: http://dati.mit.gov.it/catalog/dataset/patenti
+
+# Author:	Direzione generale per la motorizzazione - Div7 - Centro elaborazione dati motorizzazione
+# Last update:	21 December 2022, 17:16 (UTC+01:00)
+# Created:	20 febbraio 2022, 18:21 (UTC+01:00)
+# Temporal extension (end)	31 December 2019
+
+library(tidyverse)
+library(lubridate)
+
+# Use n_max = 1000 for most preliminary operations
+drivers <- read_csv("../data/drivers.csv", col_types = "iiffffffcfccfd", n_max = 1000)
+```
+
+
+```{r}
+# # Change the name of the columns
+# colnames(drivers) <- c("id", "birth", "town", "city", "region", "state", "gender", "category", "date", "habilit", "date_habilit", "expiration", "date_foreigners", "points")
+#
+# # Change the format of the date
+# drivers <- drivers %>% mutate(date = ymd_hms(date), experience = 2019 - year(date), age = 2019 - birth)
+#
+# # Select patent B and other things
+# drivers <- drivers %>%
+#   filter(category == "B", is.na(state), !is.na(points)) %>%
+#   filter(experience > 0)
+#
+# # Remove irrelevant columns
+# drivers <- drivers %>% select(-c(id, category, state, date_foreigners, expiration, date_habilit, birth, date, region))
+# drivers <- drivers %>% mutate(hazard = sqrt(-(points - 30)))
+#
+# glimpse(drivers)
+# summary(drivers)
+```
+
+
+<!-- ```{r} -->
+<!-- # Start simple, use a subset of the full dataset -->
+<!-- set.seed(12) -->
+<!-- drivers_sub <- sample_n(drivers, 5000, replace = FALSE) # Sub-sampling operation -->
+
+<!-- # Some preliminary graph -->
+<!-- ggplot(data = drivers_sub, aes(x = experience, y = hazard)) + -->
+<!--   geom_point() + -->
+<!--   theme_bw() -->
+<!-- ggplot(data = drivers_sub, aes(x = age, y = hazard)) + -->
+<!--   geom_point() + -->
+<!--   theme_bw() -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- # Let us remove the missing values -->
+<!-- drivers_sub <- na.omit(drivers_sub) -->
+
+<!-- #  -->
+<!-- m <- lm(hazard ~ poly(age, 10) + habilit + gender + poly(experience, 10) + city, data = drivers_sub) -->
+<!-- summary(m) -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- X <- model.matrix(hazard ~ poly(age, 10) + habilit + gender + poly(experience, 10) + city, data = drivers_sub) -->
+<!-- XtX <- crossprod(X) -->
+
+<!-- y <- drivers_sub$hazard -->
+
+<!-- kappa(X, exact = TRUE)^2 -->
+<!-- kappa(XtX, exact = TRUE) -->
+
+<!-- factorizationQR <- function(X) { -->
+<!--   X <- as.matrix(X) -->
+<!--   p <- ncol(X) -->
+<!--   n <- nrow(X) -->
+<!--   Q <- matrix(0, n, p) -->
+<!--   R <- matrix(0, p, p) -->
+<!--   for (j in 1:p) { -->
+<!--     Zj <- X[, j] -->
+<!--     if (j > 1) { -->
+<!--       for (k in 1:(j - 1)) { -->
+<!--         R[k, j] <- crossprod(Q[, k], X[, j]) -->
+<!--         Zj <- Zj - R[k, j] * Q[, k] -->
+<!--       } -->
+<!--     } -->
+<!--     R[j, j] <- sqrt(crossprod(Zj)) -->
+<!--     Q[, j] <- Zj / R[j, j] -->
+<!--   } -->
+<!--   return(list(Q = Q, R = R)) -->
+<!-- } -->
+
+<!-- ols_manual <- function(X, y) { -->
+<!--   solve(t(X) %*% X) %*% t(X) %*% y -->
+<!-- } -->
+
+<!-- ols_solve <- function(X, y) { -->
+<!--   solve(crossprod(X), crossprod(X, y)) -->
+<!-- } -->
+
+
+
+<!-- ols_chol <- function(X, y) { -->
+<!--   XtX <- crossprod(X) -->
+<!--   Xty <- crossprod(X, y) -->
+<!--   L <- chol(XtX) -->
+<!--   betahat <- backsolve(L, forwardsolve(t(L), Xty)) -->
+<!--   betahat -->
+<!-- } -->
+
+<!-- ols_eig <- function(X, y) { -->
+<!--   XtX <- crossprod(X) -->
+<!--   Xty <- crossprod(X, y) -->
+<!--   eig <- eigen(XtX, symmetric = TRUE) -->
+<!--   crossprod(t(eig$vectors) / sqrt(eig$values)) %*% Xty -->
+<!-- } -->
+
+<!-- system.time(ols_manual(X, y)) -->
+<!-- system.time(ols_solve(X, y)) -->
+<!-- system.time(ols_qr(X, y)) -->
+<!-- system.time(ols_chol(X, y)) -->
+<!-- system.time(ols_eig(X, y)) -->
+
+
+<!-- library(microbenchmark) -->
+<!-- micro_out <- microbenchmark( -->
+<!--   lm = lm(hazard ~ poly(age, 10) + habilit + gender + poly(experience, 10) + city, data = drivers_sub), -->
+<!--   manual = ols_manual(X, y), -->
+<!--   solve = ols_solve(X, y), -->
+<!--   QR = ols_qr(X, y), -->
+<!--   Cholesky = ols_chol(X, y), -->
+<!--   eig = ols_chol(X, y) -->
+<!-- ) -->
+
+<!-- knitr::kable(summary(micro_out)) -->
+
+
+<!-- solve(XtX) -->
+
+<!-- qr_obj <- qr(X, LAPACK = FALSE) -->
+<!-- chol2inv(qr_obj$qr) -->
+
+
+<!-- X - qr.X(qr(X, LAPACK = TRUE)) -->
+
+<!-- beta -->
+<!-- lm(y ~ X - 1) -->
+
+<!-- ols_manual(X, y) -->
+<!-- ols_solve(X, y) -->
+<!-- ols_qr(X, y) -->
+<!-- ols_chol(X, y) -->
+<!-- ols_eig(X, y) -->
+<!-- ``` -->

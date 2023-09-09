@@ -1,37 +1,49 @@
 rm(list = ls()) # Clean the environment
+
+# The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
 auto <- read.table("../data/auto.txt", header = TRUE)
+auto <- subset(auto, select = c(city.distance, engine.size))
+
+# Summary
 str(auto)
 
 
 
-y <- auto$city.distance # Percorrenza urbana
-x <- auto$engine.size # Cilindrata
+y <- auto$city.distance # As the name suggest: city distance
+x <- auto$engine.size # And engine size (L)
 
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+
+# Set of points at which the curve is evaluated
 newx <- data.frame(x = seq(min(x), max(x), length = 200))
 
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
+# p = 1 (linear regression)
+lines(newx$x, predict(lm(y ~ x), newdata = newx), lty = 1, col = "black")
 
-# p = 1 (regressione lineare semplice)
-lines(newx$x, predict(lm(y ~ x), newdata = newx), lty = 6)
+# p = 2 (parabolic regression)
+lines(newx$x, predict(lm(y ~ x + I(x^2)), newdata = newx), lty = 1, col = "#fc7d0b")
 
-# p = 2 (parabola)
-lines(newx$x, predict(lm(y ~ x + I(x^2)), newdata = newx), lty = 6, col = "red")
+# p = 3 (cubic regression)
+# Here I am using the more convenient syntax "poly"
+lines(newx$x, predict(lm(y ~ poly(x, degree = 3)), newdata = newx), lty = 1, col = "#1170aa")
 
-# p = 3 (funzione cubica)
-lines(newx$x, predict(lm(y ~ x + I(x^2) + I(x^3)), newdata = newx), lty = 6, col = "green")
+# If I use an extreme value for the degree, it does not work well anymore
+lines(newx$x, predict(lm(y ~ poly(x, degree = 10)), newdata = newx), lty = 6)
 
 
 
-# Regressione lineare locale (sm)----------------------------------
+? ksmooth
 
+
+#| message: false
 # install.packages("sm")
 library(sm)
 
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
 
-# Stima di regressione lineare locale
+# Local linear regression
 ? sm.regression
-sm.regression(x, y, h = 10, add = T, ngrid = 200)
+sm.regression(x, y, h = 10, add = TRUE, ngrid = 200)
 
 # Proviamo dei valori di "h" alternativi
 plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)

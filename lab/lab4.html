@@ -114,285 +114,278 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="homepage"><a href="../index.html">Homepage</a></h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>()) <span class="co"># Clean the environment</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a>auto <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../data/auto.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">str</span>(auto)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>auto <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../data/auto.txt"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>auto <span class="ot">&lt;-</span> <span class="fu">subset</span>(auto, <span class="at">select =</span> <span class="fu">c</span>(city.distance, engine.size))</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co"># Summary</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">str</span>(auto)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>'data.frame':   203 obs. of  18 variables:
- $ brand            : chr  "alfa-romeo" "alfa-romeo" "alfa-romeo" "audi" ...
- $ fuel             : chr  "gas" "gas" "gas" "gas" ...
- $ aspiration       : chr  "std" "std" "std" "std" ...
- $ bodystyle        : chr  "convertible" "convertible" "hatchback" "sedan" ...
- $ drive.wheels     : chr  "rwd" "rwd" "rwd" "fwd" ...
- $ engine.location  : chr  "front" "front" "front" "front" ...
- $ wheel.base       : num  225 225 240 254 252 ...
- $ length           : num  429 429 435 449 449 ...
- $ width            : num  163 163 166 168 169 ...
- $ height           : num  124 124 133 138 138 ...
- $ curb.weight      : num  1156 1156 1280 1060 1281 ...
- $ engine.size      : num  2.13 2.13 2.49 1.79 2.23 ...
- $ compression.ratio: num  9 9 9 10 8 8.5 8.5 8.5 8.3 7 ...
- $ HP               : int  111 111 154 102 115 110 110 110 140 160 ...
- $ peak.rot         : int  5000 5000 5000 5500 5500 5500 5500 5500 5500 5500 ...
- $ city.distance    : num  8.93 8.93 8.08 10.2 7.65 ...
- $ highway.distance : num  11.48 11.48 11.05 12.75 9.35 ...
- $ n.cylinders      : int  4 4 6 4 5 5 5 5 5 5 ...</code></pre>
+<pre><code>'data.frame':   203 obs. of  2 variables:
+ $ city.distance: num  8.93 8.93 8.08 10.2 7.65 ...
+ $ engine.size  : num  2.13 2.13 2.49 1.79 2.23 ...</code></pre>
 </div>
 </div>
 </section>
 <section id="polynomial-regression" class="level2">
 <h2 class="anchored" data-anchor-id="polynomial-regression">Polynomial regression</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>y <span class="ot">&lt;-</span> auto<span class="sc">$</span>city.distance <span class="co"># Percorrenza urbana</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a>x <span class="ot">&lt;-</span> auto<span class="sc">$</span>engine.size <span class="co"># Cilindrata</span></span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>y <span class="ot">&lt;-</span> auto<span class="sc">$</span>city.distance <span class="co"># As the name suggest: city distance</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>x <span class="ot">&lt;-</span> auto<span class="sc">$</span>engine.size <span class="co"># And engine size (L)</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a>newx <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x), <span class="at">length =</span> <span class="dv">200</span>))</span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Engine size (L)"</span>, <span class="at">ylab =</span> <span class="st">"City distance (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.7</span>)</span>
 <span id="cb3-5"><a href="#cb3-5"></a></span>
-<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb3-7"><a href="#cb3-7"></a></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co"># p = 1 (regressione lineare semplice)</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, <span class="fu">predict</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x), <span class="at">newdata =</span> newx), <span class="at">lty =</span> <span class="dv">6</span>)</span>
-<span id="cb3-10"><a href="#cb3-10"></a></span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="co"># p = 2 (parabola)</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, <span class="fu">predict</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>)), <span class="at">newdata =</span> newx), <span class="at">lty =</span> <span class="dv">6</span>, <span class="at">col =</span> <span class="st">"red"</span>)</span>
-<span id="cb3-13"><a href="#cb3-13"></a></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="co"># p = 3 (funzione cubica)</span></span>
-<span id="cb3-15"><a href="#cb3-15"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, <span class="fu">predict</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>) <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">3</span>)), <span class="at">newdata =</span> newx), <span class="at">lty =</span> <span class="dv">6</span>, <span class="at">col =</span> <span class="st">"green"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># Set of points at which the curve is evaluated</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>newx <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x), <span class="at">length =</span> <span class="dv">200</span>))</span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="co"># p = 1 (linear regression)</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, <span class="fu">predict</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x), <span class="at">newdata =</span> newx), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"black"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="co"># p = 2 (parabolic regression)</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, <span class="fu">predict</span>(<span class="fu">lm</span>(y <span class="sc">~</span> x <span class="sc">+</span> <span class="fu">I</span>(x<span class="sc">^</span><span class="dv">2</span>)), <span class="at">newdata =</span> newx), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"#fc7d0b"</span>)</span>
+<span id="cb3-14"><a href="#cb3-14"></a></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="co"># p = 3 (cubic regression)</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="co"># Here I am using the more convenient syntax "poly"</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, <span class="fu">predict</span>(<span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">3</span>)), <span class="at">newdata =</span> newx), <span class="at">lty =</span> <span class="dv">1</span>, <span class="at">col =</span> <span class="st">"#1170aa"</span>)</span>
+<span id="cb3-18"><a href="#cb3-18"></a></span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="co"># If I use an extreme value for the degree, it does not work well anymore</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, <span class="fu">predict</span>(<span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">10</span>)), <span class="at">newdata =</span> newx), <span class="at">lty =</span> <span class="dv">6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="1800"></p>
 </div>
+</div>
+</section>
+<section id="nadaraya-watson-estimator" class="level2">
+<h2 class="anchored" data-anchor-id="nadaraya-watson-estimator">Nadaraya-Watson estimator</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>? ksmooth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="local-linear-regression" class="level2">
 <h2 class="anchored" data-anchor-id="local-linear-regression">Local linear regression</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Regressione lineare locale (sm)----------------------------------</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co"># install.packages("sm")</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="fu">library</span>(sm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Package 'sm', version 2.2-5.7: type help(sm) for summary information</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb6-2"><a href="#cb6-2"></a></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co"># Stima di regressione lineare locale</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>? sm.regression</span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="fu">sm.regression</span>(x, y, <span class="at">h =</span> <span class="dv">10</span>, <span class="at">add =</span> T, <span class="at">ngrid =</span> <span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># install.packages("sm")</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">library</span>(sm)</span>
+<span id="cb5-3"><a href="#cb5-3"></a></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Engine size (L)"</span>, <span class="at">ylab =</span> <span class="st">"City distance (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.7</span>)</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co"># Local linear regression</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>? sm.regression</span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="fu">sm.regression</span>(x, y, <span class="at">h =</span> <span class="dv">10</span>, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">ngrid =</span> <span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="1800"></p>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Proviamo dei valori di "h" alternativi</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">sm.regression</span>(x, y, <span class="at">h =</span> <span class="dv">30</span>, <span class="at">add =</span> T, <span class="at">ngrid =</span> <span class="dv">200</span>)</span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="fu">sm.regression</span>(x, y, <span class="at">h =</span> <span class="dv">100</span>, <span class="at">add =</span> T, <span class="at">ngrid =</span> <span class="dv">200</span>)</span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="fu">sm.regression</span>(x, y, <span class="at">h =</span> <span class="dv">5</span>, <span class="at">add =</span> T, <span class="at">ngrid =</span> <span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Proviamo dei valori di "h" alternativi</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="fu">sm.regression</span>(x, y, <span class="at">h =</span> <span class="dv">30</span>, <span class="at">add =</span> T, <span class="at">ngrid =</span> <span class="dv">200</span>)</span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="fu">sm.regression</span>(x, y, <span class="at">h =</span> <span class="dv">100</span>, <span class="at">add =</span> T, <span class="at">ngrid =</span> <span class="dv">200</span>)</span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="fu">sm.regression</span>(x, y, <span class="at">h =</span> <span class="dv">5</span>, <span class="at">add =</span> T, <span class="at">ngrid =</span> <span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="1800"></p>
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># ESERCIZIO PER CASA:</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="co"># Implementare regressione lineare locale (equazione (4.3) del libro A&amp;S) e selezionare il parametro h tramite convalida incrociata. Si noti che nel caso della leave-one-out è possibile adattare equazione (3.4) in questo contesto.</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="fu">h.select</span>(x, y, <span class="at">method =</span> <span class="st">"cv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># ESERCIZIO PER CASA:</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co"># Implementare regressione lineare locale (equazione (4.3) del libro A&amp;S) e selezionare il parametro h tramite convalida incrociata. Si noti che nel caso della leave-one-out è possibile adattare equazione (3.4) in questo contesto.</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="fu">h.select</span>(x, y, <span class="at">method =</span> <span class="st">"cv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.9913982</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">h.select</span>(x, y, <span class="at">method =</span> <span class="st">"aicc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">h.select</span>(x, y, <span class="at">method =</span> <span class="st">"aicc"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.371398</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Aggiunta delle bande di variabilità</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">sm.regression</span>(x, y, <span class="at">h =</span> <span class="dv">30</span>, <span class="at">ngrid =</span> <span class="dv">200</span>, <span class="at">display =</span> <span class="st">"se"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Aggiunta delle bande di variabilità</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">sm.regression</span>(x, y, <span class="at">h =</span> <span class="dv">30</span>, <span class="at">ngrid =</span> <span class="dv">200</span>, <span class="at">display =</span> <span class="st">"se"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid" width="1800"></p>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Regressione polinomiale locale (KernSmooth)---------------------------------------</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="co"># install.packages(KernSmooth)</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a><span class="fu">library</span>(KernSmooth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>KernSmooth 2.23 loaded
-Copyright M. P. Wand 1997-2009</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb15-2"><a href="#cb15-2"></a></span>
-<span id="cb15-3"><a href="#cb15-3"></a><span class="co"># Otteniamo regressione lineare locale</span></span>
-<span id="cb15-4"><a href="#cb15-4"></a>a1 <span class="ot">&lt;-</span> <span class="fu">locpoly</span>(x, y, <span class="at">degree =</span> <span class="dv">1</span>, <span class="at">bandwidth =</span> <span class="dv">30</span>, <span class="at">kernel =</span> <span class="st">"normal"</span>, <span class="at">gridsize =</span> <span class="dv">200</span>)</span>
-<span id="cb15-5"><a href="#cb15-5"></a><span class="fu">lines</span>(a1)</span>
-<span id="cb15-6"><a href="#cb15-6"></a></span>
-<span id="cb15-7"><a href="#cb15-7"></a><span class="co"># Polinomi locali di grado superiore al primo</span></span>
-<span id="cb15-8"><a href="#cb15-8"></a></span>
-<span id="cb15-9"><a href="#cb15-9"></a><span class="co"># Parabola locale</span></span>
-<span id="cb15-10"><a href="#cb15-10"></a>a2 <span class="ot">&lt;-</span> <span class="fu">locpoly</span>(x, y, <span class="at">degree =</span> <span class="dv">2</span>, <span class="at">bandwidth =</span> <span class="dv">30</span>, <span class="at">kernel =</span> <span class="st">"normal"</span>, <span class="at">gridsize =</span> <span class="dv">200</span>)</span>
-<span id="cb15-11"><a href="#cb15-11"></a><span class="fu">lines</span>(a2, <span class="at">col =</span> <span class="dv">2</span>)</span>
-<span id="cb15-12"><a href="#cb15-12"></a></span>
-<span id="cb15-13"><a href="#cb15-13"></a><span class="co"># Funzione cubica locale</span></span>
-<span id="cb15-14"><a href="#cb15-14"></a>a3 <span class="ot">&lt;-</span> <span class="fu">locpoly</span>(x, y, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">bandwidth =</span> <span class="dv">30</span>, <span class="at">kernel =</span> <span class="st">"normal"</span>, <span class="at">gridsize =</span> <span class="dv">200</span>)</span>
-<span id="cb15-15"><a href="#cb15-15"></a><span class="fu">lines</span>(a3, <span class="at">col =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Regressione polinomiale locale (KernSmooth)---------------------------------------</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co"># install.packages(KernSmooth)</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="fu">library</span>(KernSmooth)</span>
+<span id="cb12-5"><a href="#cb12-5"></a></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb12-7"><a href="#cb12-7"></a></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="co"># Otteniamo regressione lineare locale</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a>a1 <span class="ot">&lt;-</span> <span class="fu">locpoly</span>(x, y, <span class="at">degree =</span> <span class="dv">1</span>, <span class="at">bandwidth =</span> <span class="dv">30</span>, <span class="at">kernel =</span> <span class="st">"normal"</span>, <span class="at">gridsize =</span> <span class="dv">200</span>)</span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="fu">lines</span>(a1)</span>
+<span id="cb12-11"><a href="#cb12-11"></a></span>
+<span id="cb12-12"><a href="#cb12-12"></a><span class="co"># Polinomi locali di grado superiore al primo</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a></span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="co"># Parabola locale</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a>a2 <span class="ot">&lt;-</span> <span class="fu">locpoly</span>(x, y, <span class="at">degree =</span> <span class="dv">2</span>, <span class="at">bandwidth =</span> <span class="dv">30</span>, <span class="at">kernel =</span> <span class="st">"normal"</span>, <span class="at">gridsize =</span> <span class="dv">200</span>)</span>
+<span id="cb12-16"><a href="#cb12-16"></a><span class="fu">lines</span>(a2, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb12-17"><a href="#cb12-17"></a></span>
+<span id="cb12-18"><a href="#cb12-18"></a><span class="co"># Funzione cubica locale</span></span>
+<span id="cb12-19"><a href="#cb12-19"></a>a3 <span class="ot">&lt;-</span> <span class="fu">locpoly</span>(x, y, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">bandwidth =</span> <span class="dv">30</span>, <span class="at">kernel =</span> <span class="st">"normal"</span>, <span class="at">gridsize =</span> <span class="dv">200</span>)</span>
+<span id="cb12-20"><a href="#cb12-20"></a><span class="fu">lines</span>(a3, <span class="at">col =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-4-4.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid" width="1800"></p>
 </div>
 </div>
 </section>
 <section id="loess" class="level2">
 <h2 class="anchored" data-anchor-id="loess">Loess</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb16-2"><a href="#cb16-2"></a></span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="co"># Stimo un modello di tipo loess</span></span>
-<span id="cb16-4"><a href="#cb16-4"></a>lo1 <span class="ot">&lt;-</span> <span class="fu">loess.smooth</span>(x, y, <span class="at">span =</span> <span class="fl">0.4</span>, <span class="at">degree =</span> <span class="dv">1</span>)</span>
-<span id="cb16-5"><a href="#cb16-5"></a><span class="fu">lines</span>(lo1)</span>
-<span id="cb16-6"><a href="#cb16-6"></a></span>
-<span id="cb16-7"><a href="#cb16-7"></a><span class="co"># Stimo un modello di tipo loess</span></span>
-<span id="cb16-8"><a href="#cb16-8"></a>lo1bis <span class="ot">&lt;-</span> <span class="fu">loess</span>(y <span class="sc">~</span> x, <span class="at">span =</span> <span class="fl">0.4</span>, <span class="at">family =</span> <span class="st">"gaussian"</span>, <span class="at">degree =</span> <span class="dv">1</span>)</span>
-<span id="cb16-9"><a href="#cb16-9"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, <span class="fu">predict</span>(lo1bis, <span class="at">newdata =</span> newx), <span class="at">col =</span> <span class="st">"red"</span>)</span>
-<span id="cb16-10"><a href="#cb16-10"></a></span>
-<span id="cb16-11"><a href="#cb16-11"></a><span class="co"># Si provano altri parametri di lisciamento, chiamati "span" in questo contesto</span></span>
-<span id="cb16-12"><a href="#cb16-12"></a>lo1 <span class="ot">&lt;-</span> <span class="fu">loess.smooth</span>(x, y, <span class="at">span =</span> <span class="fl">0.9</span>)</span>
-<span id="cb16-13"><a href="#cb16-13"></a><span class="fu">lines</span>(lo1, <span class="at">col =</span> <span class="dv">2</span>)</span>
-<span id="cb16-14"><a href="#cb16-14"></a></span>
-<span id="cb16-15"><a href="#cb16-15"></a>lo1 <span class="ot">&lt;-</span> <span class="fu">loess.smooth</span>(x, y, <span class="at">span =</span> <span class="fl">0.4</span>)</span>
-<span id="cb16-16"><a href="#cb16-16"></a><span class="fu">lines</span>(lo1, <span class="at">col =</span> <span class="dv">3</span>)</span>
-<span id="cb16-17"><a href="#cb16-17"></a></span>
-<span id="cb16-18"><a href="#cb16-18"></a>lo1 <span class="ot">&lt;-</span> <span class="fu">loess.smooth</span>(x, y, <span class="at">span =</span> <span class="fl">0.2</span>)</span>
-<span id="cb16-19"><a href="#cb16-19"></a><span class="fu">lines</span>(lo1, <span class="at">col =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="co"># Stimo un modello di tipo loess</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>lo1 <span class="ot">&lt;-</span> <span class="fu">loess.smooth</span>(x, y, <span class="at">span =</span> <span class="fl">0.4</span>, <span class="at">degree =</span> <span class="dv">1</span>)</span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="fu">lines</span>(lo1)</span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="co"># Stimo un modello di tipo loess</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>lo1bis <span class="ot">&lt;-</span> <span class="fu">loess</span>(y <span class="sc">~</span> x, <span class="at">span =</span> <span class="fl">0.4</span>, <span class="at">family =</span> <span class="st">"gaussian"</span>, <span class="at">degree =</span> <span class="dv">1</span>)</span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, <span class="fu">predict</span>(lo1bis, <span class="at">newdata =</span> newx), <span class="at">col =</span> <span class="st">"red"</span>)</span>
+<span id="cb13-10"><a href="#cb13-10"></a></span>
+<span id="cb13-11"><a href="#cb13-11"></a><span class="co"># Si provano altri parametri di lisciamento, chiamati "span" in questo contesto</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a>lo1 <span class="ot">&lt;-</span> <span class="fu">loess.smooth</span>(x, y, <span class="at">span =</span> <span class="fl">0.9</span>)</span>
+<span id="cb13-13"><a href="#cb13-13"></a><span class="fu">lines</span>(lo1, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb13-14"><a href="#cb13-14"></a></span>
+<span id="cb13-15"><a href="#cb13-15"></a>lo1 <span class="ot">&lt;-</span> <span class="fu">loess.smooth</span>(x, y, <span class="at">span =</span> <span class="fl">0.4</span>)</span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="fu">lines</span>(lo1, <span class="at">col =</span> <span class="dv">3</span>)</span>
+<span id="cb13-17"><a href="#cb13-17"></a></span>
+<span id="cb13-18"><a href="#cb13-18"></a>lo1 <span class="ot">&lt;-</span> <span class="fu">loess.smooth</span>(x, y, <span class="at">span =</span> <span class="fl">0.2</span>)</span>
+<span id="cb13-19"><a href="#cb13-19"></a><span class="fu">lines</span>(lo1, <span class="at">col =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="1800"></p>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb17-2"><a href="#cb17-2"></a>lo1 <span class="ot">&lt;-</span> <span class="fu">loess.smooth</span>(x, y, <span class="at">span =</span> <span class="fl">0.2</span>, <span class="at">evaluation =</span> <span class="dv">500</span>) <span class="co"># Necessario aumentare il numero di punti</span></span>
-<span id="cb17-3"><a href="#cb17-3"></a><span class="fu">lines</span>(lo1, <span class="at">col =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>lo1 <span class="ot">&lt;-</span> <span class="fu">loess.smooth</span>(x, y, <span class="at">span =</span> <span class="fl">0.2</span>, <span class="at">evaluation =</span> <span class="dv">500</span>) <span class="co"># Necessario aumentare il numero di punti</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="fu">lines</span>(lo1, <span class="at">col =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="1800"></p>
 </div>
 </div>
 </section>
 <section id="regression-splines" class="level2">
 <h2 class="anchored" data-anchor-id="regression-splines">Regression splines</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># Splines di regressione---------------------------------------------------</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a></span>
-<span id="cb18-3"><a href="#cb18-3"></a><span class="co"># install.packages("splines")</span></span>
-<span id="cb18-4"><a href="#cb18-4"></a><span class="fu">library</span>(splines)</span>
-<span id="cb18-5"><a href="#cb18-5"></a></span>
-<span id="cb18-6"><a href="#cb18-6"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb18-7"><a href="#cb18-7"></a></span>
-<span id="cb18-8"><a href="#cb18-8"></a><span class="co"># Selezione dei nodi</span></span>
-<span id="cb18-9"><a href="#cb18-9"></a></span>
-<span id="cb18-10"><a href="#cb18-10"></a>xi <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x), <span class="at">length =</span> <span class="dv">4</span>) <span class="co"># Seleziono in totale 4 nodi, basandomi sui dati</span></span>
-<span id="cb18-11"><a href="#cb18-11"></a>xi_int <span class="ot">&lt;-</span> xi[<span class="dv">2</span><span class="sc">:</span>(<span class="fu">length</span>(xi) <span class="sc">-</span> <span class="dv">1</span>)] <span class="co"># Selezione in totale K = 2 nodi INTERNI</span></span>
-<span id="cb18-12"><a href="#cb18-12"></a></span>
-<span id="cb18-13"><a href="#cb18-13"></a><span class="co"># Per questioni grafiche, decido di mostrare la previsione per tutti i valori di + i valori dei nodi interni</span></span>
-<span id="cb18-14"><a href="#cb18-14"></a>newx <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">sort</span>(<span class="fu">c</span>(x, xi_int)))</span>
-<span id="cb18-15"><a href="#cb18-15"></a></span>
-<span id="cb18-16"><a href="#cb18-16"></a>B <span class="ot">&lt;-</span> <span class="fu">bs</span>(x, <span class="at">knots =</span> xi_int, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F) <span class="co"># Si noti che è esclusa l'intercetta, per un totale di K + 3 componenti</span></span>
-<span id="cb18-17"><a href="#cb18-17"></a><span class="fu">dim</span>(B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Splines di regressione---------------------------------------------------</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co"># install.packages("splines")</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="fu">library</span>(splines)</span>
+<span id="cb15-5"><a href="#cb15-5"></a></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb15-7"><a href="#cb15-7"></a></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="co"># Selezione dei nodi</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a></span>
+<span id="cb15-10"><a href="#cb15-10"></a>xi <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x), <span class="at">length =</span> <span class="dv">4</span>) <span class="co"># Seleziono in totale 4 nodi, basandomi sui dati</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a>xi_int <span class="ot">&lt;-</span> xi[<span class="dv">2</span><span class="sc">:</span>(<span class="fu">length</span>(xi) <span class="sc">-</span> <span class="dv">1</span>)] <span class="co"># Selezione in totale K = 2 nodi INTERNI</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="co"># Per questioni grafiche, decido di mostrare la previsione per tutti i valori di + i valori dei nodi interni</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a>newx <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">sort</span>(<span class="fu">c</span>(x, xi_int)))</span>
+<span id="cb15-15"><a href="#cb15-15"></a></span>
+<span id="cb15-16"><a href="#cb15-16"></a>B <span class="ot">&lt;-</span> <span class="fu">bs</span>(x, <span class="at">knots =</span> xi_int, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F) <span class="co"># Si noti che è esclusa l'intercetta, per un totale di K + 3 componenti</span></span>
+<span id="cb15-17"><a href="#cb15-17"></a><span class="fu">dim</span>(B)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 203   5</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>spl1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bs</span>(x, <span class="at">knots =</span> xi_int, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F))</span>
-<span id="cb20-2"><a href="#cb20-2"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl1, newx)</span>
-<span id="cb20-3"><a href="#cb20-3"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit1, <span class="at">col =</span> <span class="dv">2</span>)</span>
-<span id="cb20-4"><a href="#cb20-4"></a></span>
-<span id="cb20-5"><a href="#cb20-5"></a><span class="co"># Disegno delle linee verticali in corrispondenza dei nodi</span></span>
-<span id="cb20-6"><a href="#cb20-6"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">2</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span>
-<span id="cb20-7"><a href="#cb20-7"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">3</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>spl1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bs</span>(x, <span class="at">knots =</span> xi_int, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F))</span>
+<span id="cb17-2"><a href="#cb17-2"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl1, newx)</span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit1, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb17-4"><a href="#cb17-4"></a></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="co"># Disegno delle linee verticali in corrispondenza dei nodi</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">2</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">3</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="1800"></p>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Ci delle parti non molto lisciate, per cui amplio la griglia delle osservazioni</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>newx <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x), <span class="at">length =</span> <span class="dv">200</span>))</span>
-<span id="cb21-3"><a href="#cb21-3"></a></span>
-<span id="cb21-4"><a href="#cb21-4"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb21-5"><a href="#cb21-5"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl1, newx)</span>
-<span id="cb21-6"><a href="#cb21-6"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit1, <span class="at">col =</span> <span class="dv">2</span>)</span>
-<span id="cb21-7"><a href="#cb21-7"></a></span>
-<span id="cb21-8"><a href="#cb21-8"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">2</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span>
-<span id="cb21-9"><a href="#cb21-9"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">3</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># Ci delle parti non molto lisciate, per cui amplio la griglia delle osservazioni</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>newx <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">seq</span>(<span class="fu">min</span>(x), <span class="fu">max</span>(x), <span class="at">length =</span> <span class="dv">200</span>))</span>
+<span id="cb18-3"><a href="#cb18-3"></a></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb18-5"><a href="#cb18-5"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl1, newx)</span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit1, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb18-7"><a href="#cb18-7"></a></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">2</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb18-9"><a href="#cb18-9"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">3</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="1800"></p>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># Splines di regressione - Nodi tramite quantili ----------------------</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a></span>
-<span id="cb22-3"><a href="#cb22-3"></a>xi <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.333</span>, <span class="fl">0.666</span>, <span class="dv">1</span>))</span>
-<span id="cb22-4"><a href="#cb22-4"></a>xi_int <span class="ot">&lt;-</span> xi[<span class="dv">2</span><span class="sc">:</span>(<span class="fu">length</span>(xi) <span class="sc">-</span> <span class="dv">1</span>)] <span class="co"># Selezione in totale K = 2 nodi INTERNI</span></span>
-<span id="cb22-5"><a href="#cb22-5"></a></span>
-<span id="cb22-6"><a href="#cb22-6"></a><span class="co"># unisco alle x i due punti in cui ho scelto di mettere i nodi</span></span>
-<span id="cb22-7"><a href="#cb22-7"></a>spl2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bs</span>(x, <span class="at">knots =</span> xi_int, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F))</span>
-<span id="cb22-8"><a href="#cb22-8"></a></span>
-<span id="cb22-9"><a href="#cb22-9"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb22-10"><a href="#cb22-10"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl2, newx)</span>
-<span id="cb22-11"><a href="#cb22-11"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit2, <span class="at">col =</span> <span class="dv">2</span>)</span>
-<span id="cb22-12"><a href="#cb22-12"></a></span>
-<span id="cb22-13"><a href="#cb22-13"></a><span class="co"># Disegno delle linee verticali in corrispondenza dei nodi</span></span>
-<span id="cb22-14"><a href="#cb22-14"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">2</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span>
-<span id="cb22-15"><a href="#cb22-15"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">3</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Splines di regressione - Nodi tramite quantili ----------------------</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a>xi <span class="ot">&lt;-</span> <span class="fu">quantile</span>(x, <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.333</span>, <span class="fl">0.666</span>, <span class="dv">1</span>))</span>
+<span id="cb19-4"><a href="#cb19-4"></a>xi_int <span class="ot">&lt;-</span> xi[<span class="dv">2</span><span class="sc">:</span>(<span class="fu">length</span>(xi) <span class="sc">-</span> <span class="dv">1</span>)] <span class="co"># Selezione in totale K = 2 nodi INTERNI</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="co"># unisco alle x i due punti in cui ho scelto di mettere i nodi</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a>spl2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bs</span>(x, <span class="at">knots =</span> xi_int, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F))</span>
+<span id="cb19-8"><a href="#cb19-8"></a></span>
+<span id="cb19-9"><a href="#cb19-9"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb19-10"><a href="#cb19-10"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl2, newx)</span>
+<span id="cb19-11"><a href="#cb19-11"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit2, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb19-12"><a href="#cb19-12"></a></span>
+<span id="cb19-13"><a href="#cb19-13"></a><span class="co"># Disegno delle linee verticali in corrispondenza dei nodi</span></span>
+<span id="cb19-14"><a href="#cb19-14"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">2</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span>
+<span id="cb19-15"><a href="#cb19-15"></a><span class="fu">abline</span>(<span class="at">v =</span> xi[<span class="dv">3</span>], <span class="at">lty =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid" width="1800"></p>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Splines di regressione - Utilizzo dei gradi di libertà ---------------</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a></span>
-<span id="cb23-3"><a href="#cb23-3"></a><span class="co"># Funzioni di base B-spline per una spline cubica (degree = 3)</span></span>
-<span id="cb23-4"><a href="#cb23-4"></a><span class="co"># Vale la relazione: df = length(knots) + degree</span></span>
-<span id="cb23-5"><a href="#cb23-5"></a><span class="co"># I nodi vengono scelti usando i quantili della distribuzione delle x</span></span>
-<span id="cb23-6"><a href="#cb23-6"></a></span>
-<span id="cb23-7"><a href="#cb23-7"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb23-8"><a href="#cb23-8"></a></span>
-<span id="cb23-9"><a href="#cb23-9"></a><span class="co"># Equivalente al comando precedente</span></span>
-<span id="cb23-10"><a href="#cb23-10"></a>spl2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bs</span>(x, <span class="at">df =</span> <span class="dv">5</span>, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F))</span>
-<span id="cb23-11"><a href="#cb23-11"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl2, newx)</span>
-<span id="cb23-12"><a href="#cb23-12"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit2, <span class="at">col =</span> <span class="dv">2</span>)</span>
-<span id="cb23-13"><a href="#cb23-13"></a></span>
-<span id="cb23-14"><a href="#cb23-14"></a><span class="co"># Faccio variare i gradi di libertà</span></span>
-<span id="cb23-15"><a href="#cb23-15"></a>spl3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bs</span>(x, <span class="at">df =</span> <span class="dv">10</span>, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F))</span>
-<span id="cb23-16"><a href="#cb23-16"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl3, newx)</span>
-<span id="cb23-17"><a href="#cb23-17"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit3, <span class="at">col =</span> <span class="dv">3</span>)</span>
-<span id="cb23-18"><a href="#cb23-18"></a></span>
-<span id="cb23-19"><a href="#cb23-19"></a>spl4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bs</span>(x, <span class="at">df =</span> <span class="dv">15</span>, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F))</span>
-<span id="cb23-20"><a href="#cb23-20"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl4, newx)</span>
-<span id="cb23-21"><a href="#cb23-21"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit4, <span class="at">col =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># Splines di regressione - Utilizzo dei gradi di libertà ---------------</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a></span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="co"># Funzioni di base B-spline per una spline cubica (degree = 3)</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="co"># Vale la relazione: df = length(knots) + degree</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a><span class="co"># I nodi vengono scelti usando i quantili della distribuzione delle x</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a></span>
+<span id="cb20-7"><a href="#cb20-7"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb20-8"><a href="#cb20-8"></a></span>
+<span id="cb20-9"><a href="#cb20-9"></a><span class="co"># Equivalente al comando precedente</span></span>
+<span id="cb20-10"><a href="#cb20-10"></a>spl2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bs</span>(x, <span class="at">df =</span> <span class="dv">5</span>, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F))</span>
+<span id="cb20-11"><a href="#cb20-11"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl2, newx)</span>
+<span id="cb20-12"><a href="#cb20-12"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit2, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb20-13"><a href="#cb20-13"></a></span>
+<span id="cb20-14"><a href="#cb20-14"></a><span class="co"># Faccio variare i gradi di libertà</span></span>
+<span id="cb20-15"><a href="#cb20-15"></a>spl3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bs</span>(x, <span class="at">df =</span> <span class="dv">10</span>, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F))</span>
+<span id="cb20-16"><a href="#cb20-16"></a>fit3 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl3, newx)</span>
+<span id="cb20-17"><a href="#cb20-17"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit3, <span class="at">col =</span> <span class="dv">3</span>)</span>
+<span id="cb20-18"><a href="#cb20-18"></a></span>
+<span id="cb20-19"><a href="#cb20-19"></a>spl4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">bs</span>(x, <span class="at">df =</span> <span class="dv">15</span>, <span class="at">degree =</span> <span class="dv">3</span>, <span class="at">intercept =</span> F))</span>
+<span id="cb20-20"><a href="#cb20-20"></a>fit4 <span class="ot">&lt;-</span> <span class="fu">predict</span>(spl4, newx)</span>
+<span id="cb20-21"><a href="#cb20-21"></a><span class="fu">lines</span>(newx<span class="sc">$</span>x, fit4, <span class="at">col =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid" width="1800"></p>
 </div>
 </div>
 </section>
 <section id="smoothing-splines" class="level2">
 <h2 class="anchored" data-anchor-id="smoothing-splines">Smoothing splines</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># Smoothing Splines ------------------------------------------------</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a></span>
-<span id="cb24-3"><a href="#cb24-3"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb24-4"><a href="#cb24-4"></a></span>
-<span id="cb24-5"><a href="#cb24-5"></a>s1 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(x, y)</span>
-<span id="cb24-6"><a href="#cb24-6"></a><span class="fu">lines</span>(s1) <span class="co"># Decisamente qualcosa è andato storto</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Smoothing Splines ------------------------------------------------</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a></span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb21-4"><a href="#cb21-4"></a></span>
+<span id="cb21-5"><a href="#cb21-5"></a>s1 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(x, y)</span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="fu">lines</span>(s1) <span class="co"># Decisamente qualcosa è andato storto</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="1800"></p>
 </div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># Provo qualche parametro alternativo</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb25-3"><a href="#cb25-3"></a></span>
-<span id="cb25-4"><a href="#cb25-4"></a>s1 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(x, y, <span class="at">lambda =</span> <span class="fl">0.0001</span>)</span>
-<span id="cb25-5"><a href="#cb25-5"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(s1, <span class="at">x =</span> newx<span class="sc">$</span>x)</span>
-<span id="cb25-6"><a href="#cb25-6"></a><span class="fu">lines</span>(p1, <span class="at">col =</span> <span class="dv">2</span>)</span>
-<span id="cb25-7"><a href="#cb25-7"></a></span>
-<span id="cb25-8"><a href="#cb25-8"></a>s1 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(x, y, <span class="at">lambda =</span> <span class="fl">0.00001</span>)</span>
-<span id="cb25-9"><a href="#cb25-9"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(s1, <span class="at">x =</span> newx<span class="sc">$</span>x)</span>
-<span id="cb25-10"><a href="#cb25-10"></a><span class="fu">lines</span>(p1, <span class="at">col =</span> <span class="dv">3</span>)</span>
-<span id="cb25-11"><a href="#cb25-11"></a></span>
-<span id="cb25-12"><a href="#cb25-12"></a>s1 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(x, y, <span class="at">lambda =</span> <span class="fl">0.01</span>)</span>
-<span id="cb25-13"><a href="#cb25-13"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(s1, <span class="at">x =</span> newx<span class="sc">$</span>x)</span>
-<span id="cb25-14"><a href="#cb25-14"></a><span class="fu">lines</span>(p1, <span class="at">col =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># Provo qualche parametro alternativo</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb22-3"><a href="#cb22-3"></a></span>
+<span id="cb22-4"><a href="#cb22-4"></a>s1 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(x, y, <span class="at">lambda =</span> <span class="fl">0.0001</span>)</span>
+<span id="cb22-5"><a href="#cb22-5"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(s1, <span class="at">x =</span> newx<span class="sc">$</span>x)</span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="fu">lines</span>(p1, <span class="at">col =</span> <span class="dv">2</span>)</span>
+<span id="cb22-7"><a href="#cb22-7"></a></span>
+<span id="cb22-8"><a href="#cb22-8"></a>s1 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(x, y, <span class="at">lambda =</span> <span class="fl">0.00001</span>)</span>
+<span id="cb22-9"><a href="#cb22-9"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(s1, <span class="at">x =</span> newx<span class="sc">$</span>x)</span>
+<span id="cb22-10"><a href="#cb22-10"></a><span class="fu">lines</span>(p1, <span class="at">col =</span> <span class="dv">3</span>)</span>
+<span id="cb22-11"><a href="#cb22-11"></a></span>
+<span id="cb22-12"><a href="#cb22-12"></a>s1 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(x, y, <span class="at">lambda =</span> <span class="fl">0.01</span>)</span>
+<span id="cb22-13"><a href="#cb22-13"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(s1, <span class="at">x =</span> newx<span class="sc">$</span>x)</span>
+<span id="cb22-14"><a href="#cb22-14"></a><span class="fu">lines</span>(p1, <span class="at">col =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="1800"></p>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># Utilizzo spar al posto di lambda</span></span>
-<span id="cb26-2"><a href="#cb26-2"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
-<span id="cb26-3"><a href="#cb26-3"></a></span>
-<span id="cb26-4"><a href="#cb26-4"></a>s1 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(x, y, <span class="at">spar =</span> <span class="fl">0.8</span>)</span>
-<span id="cb26-5"><a href="#cb26-5"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(s1, <span class="at">x =</span> newx<span class="sc">$</span>x)</span>
-<span id="cb26-6"><a href="#cb26-6"></a><span class="fu">lines</span>(p1, <span class="at">col =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Utilizzo spar al posto di lambda</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">plot</span>(x, y, <span class="at">xlab =</span> <span class="st">"Cilindrata"</span>, <span class="at">ylab =</span> <span class="st">"Percorrenza urbana (mpg)"</span>, <span class="at">pch =</span> <span class="dv">16</span>)</span>
+<span id="cb23-3"><a href="#cb23-3"></a></span>
+<span id="cb23-4"><a href="#cb23-4"></a>s1 <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(x, y, <span class="at">spar =</span> <span class="fl">0.8</span>)</span>
+<span id="cb23-5"><a href="#cb23-5"></a>p1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(s1, <span class="at">x =</span> newx<span class="sc">$</span>x)</span>
+<span id="cb23-6"><a href="#cb23-6"></a><span class="fu">lines</span>(p1, <span class="at">col =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="lab4_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid" width="1400"></p>
+<p><img src="lab4_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid" width="1800"></p>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># ESERCIZIO: provare tutto con i "dati di ieri e di domani" (vd. libro) selezionando il parametro di lisciamento sia tramite convalida incrociata sia tramite insieme di stima e verifica</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># ESERCIZIO: provare tutto con i "dati di ieri e di domani" (vd. libro) selezionando il parametro di lisciamento sia tramite convalida incrociata sia tramite insieme di stima e verifica</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 
