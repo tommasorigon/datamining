@@ -1,0 +1,1050 @@
+---
+title: "Case study: the Ames housing dataset"
+subtitle: Foundations of Data Science
+execute:
+  cache: true
+format:
+  revealjs:
+    smaller: true
+    slide-number: true
+    callout-appearance: minimal
+    theme: default # alternative themes (subset): default, night, dark
+    embed-resources: true
+    echo: true
+    # incremental: true  # Remove comment if you like incremental bullet points
+    # logo: https://datasciencebocconi.github.io/Images/Other/logoBocconi.png
+    #footer: "[Home page](https://datasciencebocconi.github.io/Courses/Foundations/)"
+  html:
+    theme: cosmo
+    toc: true
+    toc-title: Table of contents
+    embed-resources: true
+    code-line-numbers: true
+    smooth-scroll: true
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+## The Ames housing problem
+
+![](https://datasciencebocconi.github.io/Images/ames_housing/housesbanner.png){fig-align="center"}
+
+-   Suppose you are interested in [buying a new
+    house]{style="color:DarkOrange"} in the town of Ames, which is
+    located in the US state of Iowa.
+
+-   You want to focus your search on houses that you expect to be able
+    to afford.
+
+-   Can you [predict]{style="color:DarkOrange"} the price of the house
+    based on its characteristics?
+
+-   This is a
+    [**Kaggle**](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)
+    playground competition[^1]. You can join the competition, if you
+    like. Keep in mind that the full dataset, including the test set, is
+    public...
+
+[^1]: De Cock, D. 2011. "Ames, Iowa: Alternative to the Boston Housing
+    Data as an End of Semester Regression Project." Journal of
+    Statistics Education 19 (3).
+
+## Problem description
+
+-   This is a prediction problem, in which the **sale price** is the
+    [output]{style="color:DarkOrange"} variable (response).
+
+-   You have some information from all of the houses sold over the past
+    few years, including the number of bedrooms, the size of the house,
+    the year the house was built, etc.
+
+-   This unit is organized into two sections:
+
+    1.  We clean the data and perform some [exploratory data
+        analysis]{style="color:DarkOrange"} to gain some preliminary
+        understanding of the data;
+    2.  We exploit advanced regression techniques to predict the price
+        of the house using all the remaining
+        [input]{style="color:DarkOrange"} variables (covariates).
+
+-   In other words, we will try to estimate a function $f(\cdot)$ such
+    that $$
+    (\texttt{SalePrice}) = f(\texttt{GarageArea},\texttt{Neighborhood}, \dots) + \epsilon.
+    $$
+
+## The ChatGPT "solution"
+
+-   Cleaning the data is a really hard task to automatize.
+
+![](https://datasciencebocconi.github.io/Images/ames_housing/cleaning.png){fig-align="center"}
+
+## A first look at the data
+
+```{python}
+import pandas as pd
+ames = pd.read_csv("https://datasciencebocconi.github.io/Data/AmesHousing.csv")
+ames.head(3)
+```
+
+-   The `ames` dataset has $2930$ observations (rows), each representing
+    a different [building]{style="color:DarkOrange"} in Ames, Iowa.
+
+-   There are $82$ variables (columns), including our target:
+    `SalePrice`.
+
+## Read the documentation
+
+-   The first thing we need to do is understanding the [meaning of each
+    variable]{style="color:DarkOrange"}.
+
+```{python}
+ames.columns
+```
+
+-   We have access to a detailed
+    [documentation](https://datasciencebocconi.github.io/Data/ames_documentation.txt).
+    Reading the documentation can be time-consuming... but it is
+    probably the most important part of the analysis.
+
+## Houses or commercial activities?
+
+-   A minority of the observations are [non
+    residential]{style="color:DarkOrange"} buildings, as indicated by
+    the `MS Zoning` variable.
+
+```{python}
+ames['MS Zoning'].value_counts()
+```
+
+-   Our goal is to predict the price of a **residential** building,
+    therefore it makes sense to [exclude]{style="color:DarkOrange"}
+    these observations from the dataset.
+
+```{python}
+ames = ames[ames['MS Zoning'] != "C (all)"] # Commercial sales
+ames = ames[ames['MS Zoning'] != "I (all)"] # Industrial sales
+ames = ames[ames['MS Zoning'] != "A (agr)"] # Agricultural sales
+ames = ames[ames['MS Zoning'] != "FV"] # Floating village sales
+```
+
+## Sales typology
+
+-   There is a second caveat. In the original ames dataset there are
+    different [type of sales]{style="color:DarkOrange"}:
+
+```{python}
+ames['Sale Condition'].value_counts()
+```
+
+-   The prices of non-standard sales might be skewed. Moreover, we do
+    not want to predict the price based on the type of sales
+    (`Sale Type`).
+
+-   We are interested only in `Normal` sales, therefore we
+    [exclude]{style="color:DarkOrange"} adjoining land purchases, deed
+    re-allocations, internal-family sales, and incomplete houses.
+
+```{python}
+ames = ames[ames['Sale Condition'] == "Normal"] # Only normal sales
+ames = ames.drop(columns = ['Sale Condition', 'Sale Type']) # The variable can be dropped
+```
+
+-   After these operations, we are left with $n = 2305$ observations.
+
+## Variables and documentation
+
+-   From the documentation we learn that both `Order` and `PID` can be
+    removed from the dataset, as they carry no information about
+    `SalePrice`.
+
+```{python}
+ames = ames.drop(columns = ['Order', 'PID'])
+```
+
+-   Moreover, we can build some intuition and expectations about the
+    variables. A few randomly selected examples:
+    -   The variable `Overall Qual` looks important, being the *rate of
+        the overall material and finish of the house*;
+    -   Do we need both `GarageCars` and `GarageArea` as predictors?
+    -   A few variables has [structural missing
+        data]{style="color:DarkOrange"}, such as `FireplaceQu`, i.e. the
+        quality of the fireplace.
+-   [General tip]{style="color:DarkOrange"}: ask yourself as many
+    questions as possible about the data: what is the correct typology
+    of each variable? is it numerical, ordinal, or discrete? are there
+    *irrelevant* variables?)
+
+## The output variable {.scrollable}
+
+-   [General tip]{style="color:DarkOrange"}: start any data analysis by
+    [making graphs]{style="color:DarkOrange"} and calculating some
+    [descriptive statistics]{style="color:DarkOrange"} of the key
+    variables.
+
+```{python}
+import matplotlib.pyplot as plt # Main graphical library
+import seaborn as sns # More advanced graphs
+```
+
+-   The most important variable is arguably `SalesPrice`, being our
+    target:
+
+```{python}
+ames['SalePrice'].describe()
+```
+
+-   Thus, the average cost of a house in Ames is about 175k USD, ranging
+    from a minimum of 35k to a maximum of 755k.
+
+## The output variable II
+
+-   The distribution of `SalePrice` is slightly asymmetric, as it is
+    often the case with prices. [Idea]{style="color:DarkOrange"}: what
+    about taking the log?
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.histplot(ames['SalePrice'])
+plt.show()
+```
+
+## Missing values
+
+-   The `ames` dataset has a lot of [missing
+    values]{style="color:DarkOrange"}, most of which are **structural**.
+
+```{python}
+freq = ames.isnull().sum().sort_values(ascending=False)
+rel_freq = freq / ames.shape[0]
+tab = pd.concat([freq, rel_freq], axis=1, keys=['Frequency', 'Rel. frequency'])
+tab.head(25) # Showing just a few of them
+```
+
+-   Imputation is not a good idea for most of these variables. A missing
+    value for `Pool QC` means that there is no pool in the house,
+    therefore we should not try to "impute" it.
+
+-   Instead, it makes much more sense to
+    [recode]{style="color:DarkOrange"} these categorical variables.
+
+## Handling missing values I
+
+::: panel-tabset
+### `Alley`
+
+-   Missing values have been re-coded.
+
+```{python}
+ames['Alley'] = ames['Alley'].fillna('No alley access')
+ames['Alley'].value_counts()
+```
+
+### `Bsmt *`
+
+-   Missing values have been re-coded.
+
+```{python}
+ames['Bsmt Exposure'] = ames['Bsmt Exposure'].fillna('No basement')
+ames['Bsmt Cond'] = ames['Bsmt Cond'].fillna('No basement')
+ames['Bsmt Exposure'] = ames['Bsmt Exposure'].fillna('No basement')
+ames['BsmtFin Type 1'] = ames['BsmtFin Type 1'].fillna('No basement')
+ames['BsmtFin Type 2'] = ames['BsmtFin Type 2'].fillna('No basement')
+ames['Bsmt Qual'] = ames['Bsmt Qual'].fillna('No basement')
+```
+
+-   There are two missing values in `Bsmt Full Bath` and
+    `Bsmt Half Bath`, which we impute with the most common value.
+
+```{python}
+ames['Bsmt Full Bath'] = ames['Bsmt Full Bath'].fillna(0)
+ames['Bsmt Half Bath'] = ames['Bsmt Half Bath'].fillna(0)
+```
+
+### `Electrical`
+
+-   The missing value have been imputed with the most common
+    observation.
+
+```{python}
+ames['Electrical'] = ames['Electrical'].fillna('SBrkr')
+ames['Electrical'].value_counts()
+```
+
+### `Fence`
+
+-   Missing values have been re-coded.
+
+```{python}
+ames['Fence'] = ames['Fence'].fillna('No fence')
+ames['Fence'].value_counts()
+```
+
+### `Fireplace Qu`
+
+-   Missing values have been re-coded.
+
+```{python}
+ames['Fireplace Qu'] = ames['Fireplace Qu'].fillna('No fireplace')
+ames['Fireplace Qu'].value_counts()
+```
+
+### `Garage *`
+
+-   We re-code all the variables about the garage.
+
+```{python}
+ames['Garage Cond'] = ames['Garage Cond'].fillna('No garage')
+ames['Garage Finish'] = ames['Garage Finish'].fillna('No garage')
+ames['Garage Qual'] = ames['Garage Qual'].fillna('No garage')
+ames['Garage Type'] = ames['Garage Type'].fillna('No garage')
+```
+
+-   The variable `Garage Yr Blt` is more problematic. By replacing
+    missing values with `No garage` would transform this variable into a
+    categorical variable.
+
+-   For the sake of simplicity, given its low predictive value (i.e. the
+    year of construction of the garage), in this analysis we just
+    exclude this variable.
+
+```{python}
+ames = ames.drop(columns = ['Garage Yr Blt']) # The variable can be dropped
+```
+:::
+
+## Handling missing values II
+
+::: panel-tabset
+### `Lot Frontage`
+
+-   From the documentation: *Lot Frontage (Continuous): Linear feet of
+    street connected to property*.
+
+-   Even though it is not clearly specified in the documentation, it is
+    reasonable replace missing values with $0$ (no street).
+
+```{python}
+ames['Lot Frontage'] = ames['Lot Frontage'].fillna(0)
+```
+
+### `Mas Vnr *`
+
+-   It is not clear what missing values represent: (i) an actual missing
+    or (ii) the absence of the feature.
+
+-   In both cases (i) and (ii) it makes sense to perform the following:
+
+```{python}
+ames['Mas Vnr Type'] = ames['Mas Vnr Type'].fillna('None')
+ames['Mas Vnr Area'] = ames['Mas Vnr Area'].fillna(0)
+```
+
+### `Misc Feature`
+
+-   Missing values are re-coded. Tennis (\`TenC\` is aggregated with the
+    other categories:
+
+```{python}
+ames['Misc Feature'] = ames['Misc Feature'].fillna('No additional feature')
+ames['Misc Feature'] = ames['Misc Feature'].replace(['TenC'],'Othr')
+ames['Misc Feature'].value_counts()
+```
+
+### `Pool QC`
+
+-   Missing values have been re-coded. All the other values have been
+    aggregated.
+
+```{python}
+ames['Pool QC'] = ames['Pool QC'].fillna('No')
+ames['Pool QC'] = ames['Pool QC'].replace(['TA','Ex','Gd', 'Fa'],'Yes')
+ames['Pool QC'].value_counts()
+```
+:::
+
+## Feature engineering
+
+-   By "feature engineering" we mean the process of creating [new
+    interesting variables]{style="color:DarkOrange"}, possibly having a
+    a direct relationship with the response.
+
+-   A first example is the total dimension of the Porch, obtained as the
+    sum of all its sub-components.
+
+```{python}
+ames['Porch Sq Feet'] = ames['Open Porch SF'] + ames['Enclosed Porch'] + ames['3Ssn Porch'] + ames['Screen Porch']
+```
+
+-   In a similar spirit, we can create a variable counting the total
+    number of bathrooms in the house.
+
+```{python}
+ames['Tot Bathrooms'] = ames['Full Bath'] + 0.5 * ames['Half Bath'] + ames['Bsmt Full Bath'] + 0.5 * ames['Bsmt Half Bath'] 
+```
+
+-   Finally, we create the variable indicating the "Age" of the house.
+
+```{python}
+ames['House Age'] = ames['Yr Sold'] - ames['Year Remod/Add']
+```
+
+## Deleting irrelevant variables
+
+-   The theory suggests that [more variables]{style="color:DarkOrange"}
+    = [higher variance]{style="color:DarkOrange"} of the estimates.
+
+-   Thus, deleting irrelevant variables is a useful practice, as long as
+    we expect them to be **not** related to the target variables and/or
+    because we believe the information is already contained in other
+    variables.
+
+-   We already deleted `Order` and `PID` before, but other examples are
+    the following variables:
+
+```{python}
+# The information is already included in House Age
+ames = ames.drop(columns = ['Mo Sold', 'Yr Sold', 'Year Remod/Add', 'Year Built']) 
+# The information is already included in Porch Sq Feet
+ames = ames.drop(columns = ['Open Porch SF', 'Enclosed Porch', '3Ssn Porch','Screen Porch']) 
+# The information is already included in Tot Bathrooms
+ames = ames.drop(columns = ['Full Bath', 'Half Bath', 'Bsmt Full Bath','Bsmt Half Bath']) 
+# Almost no information is present in these variables
+ames = ames.drop(columns = ['Pool Area', 'Utilities']) 
+```
+
+## Rescaling
+
+-   For numerical purposes, it is often convenient to standardize the
+    numerical covariates.
+
+-   Let $x_{1j},\dots,x_{nj}$ be the values of the $j$th covariate, then
+    we compute
+
+$$
+z_{ij} = \frac{x_{ij} - \bar{x}_j}{\sigma_j}, \qquad i=1,\dots,n,
+$$ where $\bar{x}_j$ and $\sigma_j$ are the mean and the standard
+deviation of the data $x_{1j},\dots,x_{nj}$.
+
+```{python}
+import numpy as np
+X = ames.drop(columns = ['SalePrice'])
+numeric_feats = X.dtypes[X.dtypes != "object"].index # Identify the numerical features
+X[numeric_feats] = X[numeric_feats].apply(lambda x: (x - np.mean(x)) / np.std(x)) # Standardization
+```
+
+-   This is useful for many predictive algorithms, such as the lasso.
+
+-   The regression coefficients are in now the same scale and the
+    shrinkage induced by the lasso penalty acts in a more meaningful
+    manner.
+
+-   An important drawback is a [loss]{style="color:DarkOrange"} in terms
+    of [interpretability]{style="color:DarkOrange"}.
+
+## Dummy variables
+
+-   Most of the variables are [categorical]{style="color:DarkOrange"}.
+    In Python, we need to "convert" these variables into numbers.
+
+```{python}
+X = pd.get_dummies(X)
+X.shape
+```
+
+-   The function `get_dummies` does not automatically drop one of the
+    categories, therefore leading to the so-called [dummy
+    trap](https://en.wikipedia.org/wiki/Multicollinearity). Is this an
+    issue? It depends on the algorithm...
+
+-   After this operations, some variables might be collinear (i.e. the
+    `No garage` indicators)
+
+```{python}
+# This removes identical columns
+X = X.T.drop_duplicates().T
+X.shape
+```
+
+-   The number of variables could explode if a certain variable has a
+    lot of categories. In these cases, you could aggregate some
+    categories.
+
+## What else?
+
+-   There are certainly many other fixes one could perform on this
+    dataset.
+
+-   Data-cleaning is a [never-ending process]{style="color:DarkOrange"}.
+    There are certainly many other aspects of the data that improved.
+
+-   However, we need to stop at a certain stage. In this lecture we will
+    not perform additional data cleaning.
+
+-   An example could be using the info contained in the variable `PID`
+    to obtain the geographical coordinates of each house.
+
+-   You are highly [encouraged]{style="color:DarkOrange"} to
+    [explore]{style="color:DarkOrange"} / polish the data even more! It
+    is also possible that further exploration could lead to improved
+    predictions.
+
+-   If you are curious about other cleaning operations that you could
+    perform, you can have a look at this [R
+    code](https://github.com/topepo/AmesHousing/blob/master/R/make_ames.R)
+    associated to this [book chapter](https://www.tmwr.org/ames.html).
+
+## A map of Ames, Iowa
+
+![The picture has been downloaded from here:
+<https://www.tmwr.org/ames.html>](https://www.tmwr.org/premade/ames.png){fig-align="center"}
+
+## Training and test set
+
+-   It is now time to split the data into [training
+    set]{style="color:DarkOrange"} (2/3 of the data) and [test
+    set]{style="color:DarkOrange"} (1/3 of the data).
+
+-   This is very easy from a coding point of view, but it is the most
+    delicate step: many things can go horribly wrong if this operation
+    is not performed correctly.
+
+-   Never perform operations involving the target variable `SalePrice`
+    on the full dataset. In particular, never "clean" the data on the
+    basis of the target, this could lead to overfitting.
+
+```{python}
+from sklearn.model_selection import train_test_split
+y = ames['SalePrice']
+
+ames_train, ames_test, X_train, X_test, y_train, y_test, = train_test_split(ames, X, y, test_size = 0.33, random_state=42)
+```
+
+-   From now on, it is [forbidden]{style="color:DarkOrange"} to look at
+    the [test set]{style="color:DarkOrange"} until the very end of the
+    analysis.
+
+## Some possible predictors
+
+-   Common sense suggest that the [dimension of the
+    house]{style="color:DarkOrange"} (i.e. `Gr Liv Area`) should be
+    among the main predictors of the price.
+
+-   In certain cities, such as Milan, the `Neighborhood` is highly
+    relevant for determining the price. Do we have a similar behavior in
+    Ames?
+
+-   Other interesting variables are `Overal Qual`, that is the overall
+    quality of the finitures, and `House Age`.
+
+-   Let us have a look at these covariates to see whether they have some
+    relationship with `SalePrice`.
+
+-   Please note that these analyses are performed on the [training
+    data]{style="color:DarkOrange"}
+
+## Graphical analysis (Dimension)
+
+::: panel-tabset
+### House (above ground)
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.scatterplot(x="Gr Liv Area", y="SalePrice", data=ames_train);
+plt.show()
+```
+
+### Basement
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.scatterplot(x="Total Bsmt SF", y="SalePrice", data=ames_train);
+plt.show()
+```
+
+### Garage
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.scatterplot(x="Garage Area", y="SalePrice", data=ames_train);
+plt.show()
+```
+
+### Porch
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.scatterplot(x="Porch Sq Feet", y="SalePrice", data=ames_train);
+plt.show()
+```
+
+### \# of bathrooms
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.boxplot(x="Tot Bathrooms", y="SalePrice", data=ames_train);
+plt.show()
+```
+:::
+
+## Graphical analysis (Quality)
+
+::: panel-tabset
+### Overall quality
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.boxplot(x="Overall Qual", y="SalePrice", data=ames_train);
+plt.show()
+```
+
+### Basement quality
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.boxplot(x="Bsmt Qual", y="SalePrice", data=ames_train);
+plt.show()
+```
+
+### Exterior quality
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.boxplot(x="Exter Qual", y="SalePrice", data=ames_train);
+plt.show()
+```
+
+### Kitchen quality
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.boxplot(x="Kitchen Qual", y="SalePrice", data=ames_train);
+plt.show()
+```
+:::
+
+## Graphical analysis (Other)
+
+::: panel-tabset
+### House age
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.scatterplot(x="House Age", y="SalePrice", data=ames_train);
+plt.show()
+```
+
+### Area
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.boxplot(x="MS Zoning", y="SalePrice", data=ames_train);
+plt.show()
+```
+
+### House category
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+plt.xticks(rotation=30)
+sns.boxplot(x="Roof Style", y="SalePrice", data=ames_train);
+plt.show()
+```
+
+### Neighborhood
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+plt.xticks(rotation=30)
+sns.boxplot(x="Neighborhood", y="SalePrice", data=ames_train);
+plt.show()
+```
+:::
+
+## The choice of the loss
+
+-   We rank the performance of different models based on some notion of
+    discrepancy between the actual values and the predictions.
+
+-   We will use the mean absolute error (MAE) on the original scale,
+    namely:
+
+$$
+\text{MAE} = \frac{1}{n}\sum_{i=1}^n |\texttt{SalePrice}_i - \widehat{\texttt{SalePrice}}_i|.
+$$
+
+-   Another possible choice is:
+
+$$
+\text{RMSLE} = \sqrt{\frac{1}{n}\sum_{i=1}^n \left(\log{\{\texttt{SalePrice}_i\}} - \log{\{\widehat{\texttt{SalePrice}_i}}\}\right)^2}.
+$$
+
+## The worst case scenario
+
+-   Since we want to minimize the MAE on the original scale, the median
+    of the training set represents our baseline.
+
+```{python}
+median = np.median(y_train)
+y_median = np.repeat(median, ames_test.shape[0]) # Prediction
+median
+```
+
+-   The following are the associated values of the loss based on the
+    test set.
+
+```{python}
+from sklearn.metrics import mean_absolute_error, mean_squared_error
+print ("Mean absolute error (MAE): ", round(mean_absolute_error(y_median, y_test), 4))
+print ("Root mean squared logarithmic error (RMSLE): ", round(np.sqrt(mean_squared_error(np.log(y_median), np.log(y_test))), 4))
+```
+
+-   Thus, any model having MAE higher that 45k and RMSLE higher than
+    0.36 should be regarded as a [coding
+    error]{style="color:DarkOrange"}.
+
+## A simple linear regression I
+
+-   The first model we consider is a simple linear regression, which
+    just a few predictors that we believe are relevant for this problem.
+
+```{python}
+X_train_simple = ames_train[['Gr Liv Area', 'Overall Qual', 'House Age', 'Tot Bathrooms']]
+```
+
+-   We fit the following linear model, so that
+
+$$
+\texttt{SalePrice} = \beta_0 + \beta_1 \texttt{Gr Liv Area} + \cdots + \beta_4 \texttt{Tot Bathrooms}.
+$$
+
+-   The estimated coefficients are the following:
+
+```{python}
+from sklearn.linear_model import LinearRegression
+
+# Fit a linear regression model
+m_linear = LinearRegression()
+m_linear.fit(X_train_simple, y_train)
+m_linear.coef_ # The intercept is not included in this vector
+```
+
+## A simple linear regression II
+
+-   In order to assess the performance of this very simple model, we
+    rely on the values of MAE and RMSLE based on cross-validated
+    predictions.
+
+```{python}
+def scores_report(y, y_pred):
+  print ("Mean absolute error (MAE): ", round(mean_absolute_error(y, y_pred), 4))
+  print ("Root mean squared logarithmic error (RMSLE): ", round(np.sqrt(mean_squared_error(np.log(y), np.log(y_pred))), 4))
+```
+
+-   We also "correct" the estimates of this first linear model, so that
+    any prediction is higher than 30k.
+
+```{python}
+# Predict labels under cross-validation
+from sklearn.model_selection import cross_val_predict, cross_val_score
+
+# Compute the predicted labels
+y_linear = cross_val_predict(m_linear, X_train_simple, y_train, method = 'predict', cv = 5)
+
+# A reasonable correction
+y_linear = np.maximum(y_linear, 30000)
+
+scores_report(y_train, y_linear)
+```
+
+## A simple linear regression III
+
+-   The proposed model is improving over the median, but we can do much
+    better.
+
+-   A first (very effective) idea is to rely on a multiplicative model,
+    so that
+
+$$
+\texttt{SalePrice} = \beta_0 \times \beta_1 \texttt{Gr Liv Area} \times \cdots \times \beta_4 \texttt{Tot Bathrooms}.
+$$
+
+-   This is equivalent to fit a linear model on the log-scale and then
+    transforming back the predictions, so that
+
+```{python}
+log_y_linear = cross_val_predict(m_linear, X_train_simple, np.log(y_train), method = 'predict', cv = 5)
+y_linear_log = np.exp(log_y_linear)
+
+scores_report(y_train, y_linear_log)
+```
+
+## A simple linear regression IV
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.scatterplot(x=y_linear_log, y=y_train);
+plt.xlabel("Predicted values");
+plt.show()
+```
+
+## Lasso I
+
+-   A simple linear regression model is already capable of predicting
+    the sale price with an average error of 20k, which is remarkable
+    given its simplicity.
+
+-   We can improve over the previous linear model by adding more
+    covariates. .
+
+-   However, there are too many of them! Some form of
+    [regularization]{style="color:DarkOrange"} is needed.
+
+-   A possibility is to use the lasso:
+
+```{python}
+from sklearn.linear_model import LassoCV
+m_lassoCV = LassoCV(cv = 5, alphas = np.linspace(0.00001, 0.001, 100), max_iter = 10000)
+m_lassoCV = m_lassoCV.fit(X_train, np.log(y_train))
+```
+
+-   The penalization parameter (`alpha`) is selected using
+    cross-validation.
+
+-   The collection of possible values for `alphas` is the result of a
+    few trials.
+
+-   The `max_iter` has been increased, as the algorithm was not reaching
+    convergence.
+
+## Lasso II
+
+```{python}
+#| fig-pos: 't'
+plt.close()
+sns.scatterplot(x=m_lassoCV.alphas_, y=np.sqrt(m_lassoCV.mse_path_).mean(axis = 1))
+plt.xlabel("Penalty");
+plt.ylabel("RMSLE (cross-validated)");
+plt.show()
+```
+
+## Lasso III
+
+```{python}
+from sklearn.linear_model import Lasso
+m_lasso = Lasso(alpha = m_lassoCV.alpha_, max_iter = 10000)
+y_lasso_log = np.exp(cross_val_predict(m_lasso, X_train, np.log(y_train), method = 'predict', cv = 5))
+scores_report(y_train, y_lasso_log)
+```
+
+-   The results are promising: the cross-validated MAE and RMSLE are
+    much lower compared to the simple linear regression model.
+
+-   We fit a linear model using lasso based on the full training
+    dataset.
+
+```{python}
+m_lasso = m_lasso.fit(X_train, np.log(y_train))
+```
+
+-   Recall that the number of features in the training dataset is:
+
+```{python}
+X_train.shape
+```
+
+-   The lasso selected only a fraction of these, which is:
+
+```{python}
+sum(m_lasso.coef_!=0)
+```
+
+## Lasso IV
+
+-   We can investigate which are the most relevant covariates according
+    to the lasso, i.e. those having the highest regressions
+    coefficients.
+
+```{python}
+coef = pd.Series(m_lasso.coef_, index = X_train.columns)
+imp_coef = pd.concat([coef.sort_values().head(5), coef.sort_values().tail(5)])
+imp_coef
+```
+
+## Random forest I
+
+-   We now wish to understand whether we can further improve the
+    previous model by including interactions among the covariates.
+
+```{python}
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import GridSearchCV
+
+# Set the grid of parameters to explore
+param_grid = {
+    'max_depth' : [None],
+    'max_features': [None, 50, 100]
+}
+
+# Create a base model
+m_rf = RandomForestRegressor()
+
+# Instantiate the grid search model
+grid_rf = GridSearchCV(estimator = m_rf, param_grid = param_grid, cv = 5, scoring = 'neg_root_mean_squared_error', verbose = 1)
+
+# Estimation and check of the best hyperparameters (it may take some time)
+grid_rf.fit(X_train, np.log(y_train));
+
+# Estimation
+grid_rf.best_params_
+```
+
+## Random forest II
+
+-   The function `GridSearchCV` fit a given regression model under
+    different parameter specifications and compute the cross-validated
+    errors in each case.
+
+-   Feel free to explore other possibilities: have a look at the
+    [documentation](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html).
+
+```{python}
+m_rf = RandomForestRegressor(max_features = 50, max_depth = None)
+y_rf = np.exp(cross_val_predict(m_rf, X_train, np.log(y_train), method = 'predict', cv = 5))
+scores_report(y_train, y_rf)
+```
+
+-   A random forest approach is slightly worse in terms of predictions
+    compared to the lasso.
+
+-   We finally fit the model on the full training dataset.
+
+```{python}
+m_rf = m_rf.fit(X_train, np.log(y_train))
+```
+
+## Random forest III
+
+-   The importance of each variable can be explored using the feature
+    importance.
+
+```{python}
+rf_coef = pd.Series(m_rf.feature_importances_, index = X_train.columns)
+rf_coef.sort_values(ascending = False).head(15)
+```
+
+## Gradient boosting I
+
+-   The last approach we consider is a gradient boosting (with trees).
+
+```{python}
+from sklearn.ensemble import GradientBoostingRegressor
+
+# Set the grid of parameters to explore
+param_grid = {
+    'max_depth' : [2],
+    'subsample' : [1],
+    'learning_rate': np.linspace(0.01, 0.2, 5),
+    'n_estimators': [2000]
+}
+
+# Create a base model
+m_gb = GradientBoostingRegressor()
+
+# Instantiate the grid search model
+grid_gb = GridSearchCV(estimator = m_gb, param_grid = param_grid, cv = 5, scoring = 'neg_root_mean_squared_error', verbose = 1)
+
+# Estimation and identification of the best hyperparameters (it may take some time)
+grid_gb.fit(X_train, np.log(y_train));
+
+# Best parameters according to CV
+grid_gb.best_params_
+```
+
+## Gradient boosting II
+
+-   Carefully tuning the parameters of a gradient boosting algorithm is
+    more complicate, in practice, compared to the lasso or random
+    forest.
+
+-   Conceptually, the operations we perform are identical, but the
+    number of tuning parameters is very high.
+
+-   Play around with `GridSearchCV` and try to find a better solution.
+
+```{python}
+# Fit a linear regression model
+m_gb = GradientBoostingRegressor(learning_rate =  0.0575, max_depth = 2, n_estimators =  2000, subsample = 1)
+
+# Compute the predicted labels
+y_gb = np.exp(cross_val_predict(m_gb, X_train, np.log(y_train), method = 'predict', cv = 5))
+
+scores_report(y_train, y_gb)
+```
+
+```{python}
+m_gb.fit(X_train, np.log(y_train));
+```
+
+## Model selection
+
+-   As a final check, we the compare the model in terms of MAE and
+    RMSLE, using the test set.
+
+-   [Lasso]{style="color:DarkOrange"}
+
+```{python}
+y_lasso_test = np.exp(m_lasso.predict(X_test))
+scores_report(y_test, y_lasso_test)
+```
+
+-   [Random forest]{style="color:DarkOrange"}
+
+```{python}
+y_rf_test = np.exp(m_rf.predict(X_test))
+scores_report(y_test, y_rf_test)
+```
+
+-   [Gradient boosting]{style="color:DarkOrange"}
+
+```{python}
+y_gb_test = np.exp(m_gb.predict(X_test))
+scores_report(y_test, y_gb_test)
+```
+
+## Final considerations
+
+-   Can we do better than this?
+    -   Probably yes, but it becomes harder and harder to improve your
+        predictions.
+    -   In most problems there is some uncertainty that cannot be
+        eliminated.
+-   [Remark 1]{style="color:DarkOrange"}
+    -   The most accurate model is not necessarily the best model.
+    -   The [Netflix Prize
+        competition](https://en.wikipedia.org/wiki/Netflix_Prize) is a
+        clear example of this discrepancy.
+-   [Remark 2]{style="color:DarkOrange"}
+    -   In these experiments we are assuming that the data generative
+        mechanism is the same in the training and the test set.
+    -   Unfortunately, this is not a reasonable assumption in many
+        concrete prediction problems.
+    -   Simpler and highly interpretable models might be preferable in
+        those cases.

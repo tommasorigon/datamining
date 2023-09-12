@@ -21,7 +21,8 @@ y <- log(auto$city.distance)
 
 dim(X)
 
-# Least squares, the naive way
+# Least squares, the naive way.
+# This provides the correct numbers in simple examples, but it is inefficient AND numerically inaccurate
 solve(t(X) %*% X) %*% t(X) %*% y
 
 # Sufficients statistics for this model
@@ -30,7 +31,7 @@ Xty <- crossprod(X, y)
 round(XtX, digits = 1)
 round(Xty, digits = 2)
 
-# The algorithm used here to compute beta_hat does not coincide with the previous one
+# The next algorithm make use of normal equations, but it does not know that XtX is positive definite
 ols_solve <- function(X, y) {
   XtX <- crossprod(X)
   Xty <- crossprod(X, y)
@@ -118,6 +119,7 @@ factorizationQR <- function(X) {
   return(list(Q = Q, R = R))
 }
 
+# Let us compute the QR factorization
 QR <- factorizationQR(X)
 
 # This is an orthogonal matrix
@@ -199,7 +201,7 @@ print(manual, digits = 12)
 
 # Author:	Direzione generale per la motorizzazione - Div7 - Centro elaborazione dati motorizzazione
 # Last update:	21 December 2022, 17:16 (UTC+01:00)
-# Created:	20 febbraio 2022, 18:21 (UTC+01:00)
+# Created:	20 February 2022, 18:21 (UTC+01:00)
 # Temporal extension (end)	31 December 2019
 
 library(readr)

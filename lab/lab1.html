@@ -81,9 +81,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a></li>
-  <li><a href="#the-auto-dataset" id="toc-the-auto-dataset" class="nav-link" data-scroll-target="#the-auto-dataset">The <code>auto</code> dataset</a>
+  <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a>
   <ul class="collapse">
+  <li><a href="#the-auto-dataset" id="toc-the-auto-dataset" class="nav-link" data-scroll-target="#the-auto-dataset">The <code>auto</code> dataset</a></li>
   <li><a href="#ordinary-least-squares-naïve-solution" id="toc-ordinary-least-squares-naïve-solution" class="nav-link" data-scroll-target="#ordinary-least-squares-naïve-solution">Ordinary least squares (naïve solution)</a></li>
   <li><a href="#normal-equations" id="toc-normal-equations" class="nav-link" data-scroll-target="#normal-equations">Normal equations</a></li>
   <li><a href="#benchmarking-i" id="toc-benchmarking-i" class="nav-link" data-scroll-target="#benchmarking-i">Benchmarking I</a></li>
@@ -94,9 +94,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#benchmark-iii" id="toc-benchmark-iii" class="nav-link" data-scroll-target="#benchmark-iii">Benchmark III</a></li>
   <li><a href="#numerical-precision-of-qr" id="toc-numerical-precision-of-qr" class="nav-link" data-scroll-target="#numerical-precision-of-qr">Numerical precision of QR</a></li>
   </ul></li>
-  <li><a href="#the-drivers-dataset" id="toc-the-drivers-dataset" class="nav-link" data-scroll-target="#the-drivers-dataset">The <code>drivers</code> dataset</a>
+  <li><a href="#iterative-methods" id="toc-iterative-methods" class="nav-link" data-scroll-target="#iterative-methods">Iterative methods</a>
   <ul class="collapse">
-  <li><a href="#iterative-methods" id="toc-iterative-methods" class="nav-link" data-scroll-target="#iterative-methods">Iterative methods</a></li>
+  <li><a href="#the-drivers-dataset" id="toc-the-drivers-dataset" class="nav-link" data-scroll-target="#the-drivers-dataset">The <code>drivers</code> dataset</a></li>
   <li><a href="#benchmark" id="toc-benchmark" class="nav-link" data-scroll-target="#benchmark">Benchmark</a></li>
   <li><a href="#recursive-estimates" id="toc-recursive-estimates" class="nav-link" data-scroll-target="#recursive-estimates">Recursive estimates</a></li>
   </ul></li>
@@ -136,11 +136,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="homepage" class="level2">
-<h2 class="anchored" data-anchor-id="homepage"><a href="../index.html">Homepage</a></h2>
-</section>
-<section id="the-auto-dataset" class="level1">
-<h1>The <code>auto</code> dataset</h1>
+<section id="homepage" class="level1">
+<h1><a href="../index.html">Homepage</a></h1>
+<section id="the-auto-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="the-auto-dataset">The <code>auto</code> dataset</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -167,11 +166,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 <section id="ordinary-least-squares-naïve-solution" class="level2">
 <h2 class="anchored" data-anchor-id="ordinary-least-squares-naïve-solution">Ordinary least squares (naïve solution)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Least squares, the naive way</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Least squares, the naive way. </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># This provides the correct numbers in simple examples, but it is inefficient AND numerically inaccurate</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(<span class="fu">t</span>(X) <span class="sc">%*%</span> X) <span class="sc">%*%</span> <span class="fu">t</span>(X) <span class="sc">%*%</span> y</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="normal-equations" class="level2">
@@ -184,7 +185,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(Xty, <span class="at">digits =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The algorithm used here to compute beta_hat does not coincide with the previous one</span></span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The next algorithm make use of normal equations, but it does not know that XtX is positive definite</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ols_solve <span class="ot">&lt;-</span> <span class="cf">function</span>(X, y) {</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  XtX <span class="ot">&lt;-</span> <span class="fu">crossprod</span>(X)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  Xty <span class="ot">&lt;-</span> <span class="fu">crossprod</span>(X, y)</span>
@@ -295,14 +296,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>QR <span class="ot">&lt;-</span> <span class="fu">factorizationQR</span>(X)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This is an orthogonal matrix</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">crossprod</span>(QR<span class="sc">$</span>Q), <span class="dv">3</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># This coincide with the Cholesky</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(QR<span class="sc">$</span>R, <span class="dv">3</span>)</span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(R, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Let us compute the QR factorization</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>QR <span class="ot">&lt;-</span> <span class="fu">factorizationQR</span>(X)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># This is an orthogonal matrix</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">crossprod</span>(QR<span class="sc">$</span>Q), <span class="dv">3</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># This coincide with the Cholesky</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(QR<span class="sc">$</span>R, <span class="dv">3</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(R, <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>ols_QR <span class="ot">&lt;-</span> <span class="cf">function</span>(X, y) {</span>
@@ -384,10 +386,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="the-drivers-dataset" class="level1">
-<h1>The <code>drivers</code> dataset</h1>
-<section id="iterative-methods" class="level2">
-<h2 class="anchored" data-anchor-id="iterative-methods">Iterative methods</h2>
+<section id="iterative-methods" class="level1">
+<h1>Iterative methods</h1>
+<section id="the-drivers-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="the-drivers-dataset">The <code>drivers</code> dataset</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Additional information</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -396,7 +398,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Author:   Direzione generale per la motorizzazione - Div7 - Centro elaborazione dati motorizzazione</span></span>
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Last update:  21 December 2022, 17:16 (UTC+01:00)</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Created:  20 febbraio 2022, 18:21 (UTC+01:00)</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Created:  20 February 2022, 18:21 (UTC+01:00)</span></span>
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Temporal extension (end)  31 December 2019</span></span>
 <span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
