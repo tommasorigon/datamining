@@ -13,7 +13,7 @@ format:
     theme: [cosmo, ../template.css]
     toc: true
     warning: false
-    output: false 
+    output: true 
     toc-title: Table of contents
     embed-resources: false
     code-line-numbers: false
@@ -32,6 +32,8 @@ editor_options:
 ---
 
 # [Homepage](../index.html)
+
+This is the first lab of the course [Data Mining](../index.html). Code is not fully commented, because it will be executed and described in-class. 
 
 ## The `auto` dataset
 
@@ -72,6 +74,9 @@ summary(m_final)
 # Design matrix obtained from the model
 X <- model.matrix(log(city.distance) ~ I(log(engine.size)) + I(log(curb.weight)) + fuel + cylinders2, data = auto)
 y <- log(auto$city.distance)
+
+# Optional. I remove the column names to improve the HTML readibility
+colnames(X) <- NULL
 
 dim(X)
 ```
@@ -239,7 +244,6 @@ ols_QR(X, y)
 # Be careful, here pivoting is performed
 # This means the QR might be different with that of factorizationQR
 QR_obj <- qr(X)
-QR_obj
 ```
 
 
@@ -274,16 +278,16 @@ boxplot(times)
 qr.coef(QR_obj, y)
 
 # Predicted values
-predict(m_final)
-qr.fitted(QR_obj, y)
+head(predict(m_final))
+head(qr.fitted(QR_obj, y))
 
 # Residuals
-residuals(m_final)
-qr.resid(QR_obj, y)
+head(residuals(m_final))
+head(qr.resid(QR_obj, y))
 
 # Influence points
-influence(m_final)$hat
-rowSums(qr.Q(QR_obj)^2)
+head(influence(m_final)$hat)
+head(rowSums(qr.Q(QR_obj)^2))
 
 # Inverse of XtX
 solve(XtX)
@@ -299,7 +303,7 @@ y <- c(1, 0, -1)
 ```
 
 ```{r}
-#| eval: false
+#| eval: true
 manual <- rbind((1 - a) / (-2 * a^2 - a^4) + (-1 - a^2) / (-2 * a^2 - a^4), 1 / (-2 * a^2 - a^4) + ((1 - a) * (-1 - a^2)) / (-2 * a^2 - a^4))
 
 print(ols_solve(X, y), digits = 12)

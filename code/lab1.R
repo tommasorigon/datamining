@@ -19,6 +19,9 @@ summary(m_final)
 X <- model.matrix(log(city.distance) ~ I(log(engine.size)) + I(log(curb.weight)) + fuel + cylinders2, data = auto)
 y <- log(auto$city.distance)
 
+# Optional. I remove the column names to improve the HTML readibility
+colnames(X) <- NULL
+
 dim(X)
 
 # Least squares, the naive way.
@@ -142,7 +145,6 @@ ols_QR(X, y)
 # Be careful, here pivoting is performed
 # This means the QR might be different with that of factorizationQR
 QR_obj <- qr(X)
-QR_obj
 
 ols_QR <- function(X, y) {
   qr_obj <- qr(X)
@@ -168,16 +170,16 @@ boxplot(times)
 qr.coef(QR_obj, y)
 
 # Predicted values
-predict(m_final)
-qr.fitted(QR_obj, y)
+head(predict(m_final))
+head(qr.fitted(QR_obj, y))
 
 # Residuals
-residuals(m_final)
-qr.resid(QR_obj, y)
+head(residuals(m_final))
+head(qr.resid(QR_obj, y))
 
 # Influence points
-influence(m_final)$hat
-rowSums(qr.Q(QR_obj)^2)
+head(influence(m_final)$hat)
+head(rowSums(qr.Q(QR_obj)^2))
 
 # Inverse of XtX
 solve(XtX)
