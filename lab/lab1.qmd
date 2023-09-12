@@ -1,5 +1,5 @@
 ---
-title: "Lab 1"
+title: "Lab 1 (Computations for linear models)"
 subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
@@ -34,6 +34,8 @@ editor_options:
 # [Homepage](../index.html)
 
 This is the first lab of the course [Data Mining](../index.html). Code is not fully commented, because it will be executed and described in-class. 
+
+The associated code [lab1.R](../code/lab1.R) is available online.
 
 ## The `auto` dataset
 

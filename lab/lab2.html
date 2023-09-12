@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Tommaso Rigon">
+
+<title>Lab 2 (Ames housing)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="lab2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lab2_files/libs/quarto-html/quarto.js"></script>
+<script src="lab2_files/libs/quarto-html/popper.min.js"></script>
+<script src="lab2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="lab2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="lab2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lab2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="lab2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="lab2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="lab2_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a>
+  <ul class="collapse">
+  <li><a href="#the-ames-housing-problem" id="toc-the-ames-housing-problem" class="nav-link" data-scroll-target="#the-ames-housing-problem">The Ames housing problem</a></li>
+  <li><a href="#problem-description" id="toc-problem-description" class="nav-link" data-scroll-target="#problem-description">Problem description</a></li>
+  <li><a href="#a-first-look-at-the-data" id="toc-a-first-look-at-the-data" class="nav-link" data-scroll-target="#a-first-look-at-the-data">A first look at the data</a></li>
+  <li><a href="#read-the-documentation" id="toc-read-the-documentation" class="nav-link" data-scroll-target="#read-the-documentation">Read the documentation</a></li>
+  <li><a href="#houses-or-commercial-activities" id="toc-houses-or-commercial-activities" class="nav-link" data-scroll-target="#houses-or-commercial-activities">Houses or commercial activities?</a></li>
+  <li><a href="#sales-typology" id="toc-sales-typology" class="nav-link" data-scroll-target="#sales-typology">Sales typology</a></li>
+  <li><a href="#variables-and-documentation" id="toc-variables-and-documentation" class="nav-link" data-scroll-target="#variables-and-documentation">Variables and documentation</a></li>
+  <li><a href="#the-output-variable" id="toc-the-output-variable" class="nav-link" data-scroll-target="#the-output-variable">The output variable</a></li>
+  <li><a href="#the-output-variable-ii" id="toc-the-output-variable-ii" class="nav-link" data-scroll-target="#the-output-variable-ii">The output variable II</a></li>
+  <li><a href="#missing-values" id="toc-missing-values" class="nav-link" data-scroll-target="#missing-values">Missing values</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lab 2 (Ames housing)</h1>
+<p class="subtitle lead">Data Mining - CdL CLAMSES</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author"><span class="orange">Tommaso Rigon</span> </p>
+  </div>
+    <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <em>Università degli Studi di Milano-Bicocca</em>
+          </p>
+      </div>
+    </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="homepage" class="level1">
+<h1><a href="../index.html">Homepage</a></h1>
+<p>This is the second lab of the course <a href="../index.html">Data Mining</a>. The code is not fully commented, because it will be executed and described in-class. The associated code <a href="../code/lab2.R">lab2.R</a> is available online.</p>
+<section id="the-ames-housing-problem" class="level2">
+<h2 class="anchored" data-anchor-id="the-ames-housing-problem">The Ames housing problem</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/housesbanner.png" class="img-fluid figure-img"></p>
+</figure>
+</div>
+<ul>
+<li><p>Suppose you are interested in <span class="orange">buying a new house</span> in the town of Ames, which is located in the US state of Iowa.</p></li>
+<li><p>You want to focus your search on houses that you expect to be able to afford.</p></li>
+<li><p>Can you <span class="blue">predict</span> the price of the house based on its characteristics?</p></li>
+<li><p>This is a <a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques"><strong>Kaggle</strong></a> playground competition<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. You can join the competition, if you like. Keep in mind that the full dataset, including the test set, is public…</p></li>
+</ul>
+</section>
+<section id="problem-description" class="level2">
+<h2 class="anchored" data-anchor-id="problem-description">Problem description</h2>
+<ul>
+<li><p>This is a prediction problem, in which the <span class="blue">sale price</span> is the <span class="orange">output</span> variable (response).</p></li>
+<li><p>You have some information from all of the houses sold over the past few years, including the number of bedrooms, the size of the house, the year the house was built, etc.</p></li>
+<li><p>This unit is organized into two sections:</p>
+<ol type="1">
+<li>We clean the data and perform some <span class="orange">exploratory data analysis</span> to gain some preliminary understanding of the data;</li>
+<li>We exploit advanced regression techniques to predict the price of the house using all the remaining <span class="blue">input</span> variables (covariates).</li>
+</ol></li>
+<li><p>In other words, we will try to estimate a function <span class="math inline">f(\cdot)</span> such that <span class="math display">
+(\texttt{SalePrice}) = f(\texttt{GarageArea},\texttt{Neighborhood}, \dots) + \epsilon.
+</span></p></li>
+</ul>
+</section>
+<section id="a-first-look-at-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="a-first-look-at-the-data">A first look at the data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/AmesHousing.csv"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>ames</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2,930 × 82
+   Order PID    `MS SubClass` `MS Zoning` `Lot Frontage` `Lot Area` Street Alley
+   &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;         &lt;chr&gt;                &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;
+ 1     1 05263… 020           RL                     141      31770 Pave   &lt;NA&gt; 
+ 2     2 05263… 020           RH                      80      11622 Pave   &lt;NA&gt; 
+ 3     3 05263… 020           RL                      81      14267 Pave   &lt;NA&gt; 
+ 4     4 05263… 020           RL                      93      11160 Pave   &lt;NA&gt; 
+ 5     5 05271… 060           RL                      74      13830 Pave   &lt;NA&gt; 
+ 6     6 05271… 060           RL                      78       9978 Pave   &lt;NA&gt; 
+ 7     7 05271… 120           RL                      41       4920 Pave   &lt;NA&gt; 
+ 8     8 05271… 120           RL                      43       5005 Pave   &lt;NA&gt; 
+ 9     9 05271… 120           RL                      39       5389 Pave   &lt;NA&gt; 
+10    10 05271… 060           RL                      60       7500 Pave   &lt;NA&gt; 
+# ℹ 2,920 more rows
+# ℹ 74 more variables: `Lot Shape` &lt;chr&gt;, `Land Contour` &lt;chr&gt;,
+#   Utilities &lt;chr&gt;, `Lot Config` &lt;chr&gt;, `Land Slope` &lt;chr&gt;,
+#   Neighborhood &lt;chr&gt;, `Condition 1` &lt;chr&gt;, `Condition 2` &lt;chr&gt;,
+#   `Bldg Type` &lt;chr&gt;, `House Style` &lt;chr&gt;, `Overall Qual` &lt;dbl&gt;,
+#   `Overall Cond` &lt;dbl&gt;, `Year Built` &lt;dbl&gt;, `Year Remod/Add` &lt;dbl&gt;,
+#   `Roof Style` &lt;chr&gt;, `Roof Matl` &lt;chr&gt;, `Exterior 1st` &lt;chr&gt;, …</code></pre>
+</div>
+</div>
+<ul>
+<li><p>The <code>ames</code> dataset has <span class="math inline">2930</span> observations (rows), each representing a different <span class="orange">building</span> in Ames, Iowa.</p></li>
+<li><p>There are <span class="math inline">82</span> variables (columns), including our target: <code>SalePrice</code>.</p></li>
+</ul>
+</section>
+<section id="read-the-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="read-the-documentation">Read the documentation</h2>
+<ul>
+<li>The first thing we need to do is understanding the <span class="orange">meaning of each variable</span>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ames)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 2,930
+Columns: 82
+$ Order             &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1…
+$ PID               &lt;chr&gt; "0526301100", "0526350040", "0526351010", "052635303…
+$ `MS SubClass`     &lt;chr&gt; "020", "020", "020", "020", "060", "060", "120", "12…
+$ `MS Zoning`       &lt;chr&gt; "RL", "RH", "RL", "RL", "RL", "RL", "RL", "RL", "RL"…
+$ `Lot Frontage`    &lt;dbl&gt; 141, 80, 81, 93, 74, 78, 41, 43, 39, 60, 75, NA, 63,…
+$ `Lot Area`        &lt;dbl&gt; 31770, 11622, 14267, 11160, 13830, 9978, 4920, 5005,…
+$ Street            &lt;chr&gt; "Pave", "Pave", "Pave", "Pave", "Pave", "Pave", "Pav…
+$ Alley             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+$ `Lot Shape`       &lt;chr&gt; "IR1", "Reg", "IR1", "Reg", "IR1", "IR1", "Reg", "IR…
+$ `Land Contour`    &lt;chr&gt; "Lvl", "Lvl", "Lvl", "Lvl", "Lvl", "Lvl", "Lvl", "HL…
+$ Utilities         &lt;chr&gt; "AllPub", "AllPub", "AllPub", "AllPub", "AllPub", "A…
+$ `Lot Config`      &lt;chr&gt; "Corner", "Inside", "Corner", "Corner", "Inside", "I…
+$ `Land Slope`      &lt;chr&gt; "Gtl", "Gtl", "Gtl", "Gtl", "Gtl", "Gtl", "Gtl", "Gt…
+$ Neighborhood      &lt;chr&gt; "NAmes", "NAmes", "NAmes", "NAmes", "Gilbert", "Gilb…
+$ `Condition 1`     &lt;chr&gt; "Norm", "Feedr", "Norm", "Norm", "Norm", "Norm", "No…
+$ `Condition 2`     &lt;chr&gt; "Norm", "Norm", "Norm", "Norm", "Norm", "Norm", "Nor…
+$ `Bldg Type`       &lt;chr&gt; "1Fam", "1Fam", "1Fam", "1Fam", "1Fam", "1Fam", "Twn…
+$ `House Style`     &lt;chr&gt; "1Story", "1Story", "1Story", "1Story", "2Story", "2…
+$ `Overall Qual`    &lt;dbl&gt; 6, 5, 6, 7, 5, 6, 8, 8, 8, 7, 6, 6, 6, 7, 8, 8, 8, 9…
+$ `Overall Cond`    &lt;dbl&gt; 5, 6, 6, 5, 5, 6, 5, 5, 5, 5, 5, 7, 5, 5, 5, 5, 7, 2…
+$ `Year Built`      &lt;dbl&gt; 1960, 1961, 1958, 1968, 1997, 1998, 2001, 1992, 1995…
+$ `Year Remod/Add`  &lt;dbl&gt; 1960, 1961, 1958, 1968, 1998, 1998, 2001, 1992, 1996…
+$ `Roof Style`      &lt;chr&gt; "Hip", "Gable", "Hip", "Hip", "Gable", "Gable", "Gab…
+$ `Roof Matl`       &lt;chr&gt; "CompShg", "CompShg", "CompShg", "CompShg", "CompShg…
+$ `Exterior 1st`    &lt;chr&gt; "BrkFace", "VinylSd", "Wd Sdng", "BrkFace", "VinylSd…
+$ `Exterior 2nd`    &lt;chr&gt; "Plywood", "VinylSd", "Wd Sdng", "BrkFace", "VinylSd…
+$ `Mas Vnr Type`    &lt;chr&gt; "Stone", "None", "BrkFace", "None", "None", "BrkFace…
+$ `Mas Vnr Area`    &lt;dbl&gt; 112, 0, 108, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60…
+$ `Exter Qual`      &lt;chr&gt; "TA", "TA", "TA", "Gd", "TA", "TA", "Gd", "Gd", "Gd"…
+$ `Exter Cond`      &lt;chr&gt; "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA"…
+$ Foundation        &lt;chr&gt; "CBlock", "CBlock", "CBlock", "CBlock", "PConc", "PC…
+$ `Bsmt Qual`       &lt;chr&gt; "TA", "TA", "TA", "TA", "Gd", "TA", "Gd", "Gd", "Gd"…
+$ `Bsmt Cond`       &lt;chr&gt; "Gd", "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA"…
+$ `Bsmt Exposure`   &lt;chr&gt; "Gd", "No", "No", "No", "No", "No", "Mn", "No", "No"…
+$ `BsmtFin Type 1`  &lt;chr&gt; "BLQ", "Rec", "ALQ", "ALQ", "GLQ", "GLQ", "GLQ", "AL…
+$ `BsmtFin SF 1`    &lt;dbl&gt; 639, 468, 923, 1065, 791, 602, 616, 263, 1180, 0, 0,…
+$ `BsmtFin Type 2`  &lt;chr&gt; "Unf", "LwQ", "Unf", "Unf", "Unf", "Unf", "Unf", "Un…
+$ `BsmtFin SF 2`    &lt;dbl&gt; 0, 144, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1120, 0,…
+$ `Bsmt Unf SF`     &lt;dbl&gt; 441, 270, 406, 1045, 137, 324, 722, 1017, 415, 994, …
+$ `Total Bsmt SF`   &lt;dbl&gt; 1080, 882, 1329, 2110, 928, 926, 1338, 1280, 1595, 9…
+$ Heating           &lt;chr&gt; "GasA", "GasA", "GasA", "GasA", "GasA", "GasA", "Gas…
+$ `Heating QC`      &lt;chr&gt; "Fa", "TA", "TA", "Ex", "Gd", "Ex", "Ex", "Ex", "Ex"…
+$ `Central Air`     &lt;chr&gt; "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y…
+$ Electrical        &lt;chr&gt; "SBrkr", "SBrkr", "SBrkr", "SBrkr", "SBrkr", "SBrkr"…
+$ `1st Flr SF`      &lt;dbl&gt; 1656, 896, 1329, 2110, 928, 926, 1338, 1280, 1616, 1…
+$ `2nd Flr SF`      &lt;dbl&gt; 0, 0, 0, 0, 701, 678, 0, 0, 0, 776, 892, 0, 676, 0, …
+$ `Low Qual Fin SF` &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ `Gr Liv Area`     &lt;dbl&gt; 1656, 896, 1329, 2110, 1629, 1604, 1338, 1280, 1616,…
+$ `Bsmt Full Bath`  &lt;dbl&gt; 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1…
+$ `Bsmt Half Bath`  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ `Full Bath`       &lt;dbl&gt; 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 3, 2, 1…
+$ `Half Bath`       &lt;dbl&gt; 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1…
+$ `Bedroom AbvGr`   &lt;dbl&gt; 3, 2, 3, 3, 3, 3, 2, 2, 2, 3, 3, 3, 3, 2, 1, 4, 4, 1…
+$ `Kitchen AbvGr`   &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
+$ `Kitchen Qual`    &lt;chr&gt; "TA", "TA", "Gd", "Ex", "TA", "Gd", "Gd", "Gd", "Gd"…
+$ `TotRms AbvGrd`   &lt;dbl&gt; 7, 5, 6, 8, 6, 7, 6, 5, 5, 7, 7, 6, 7, 5, 4, 12, 8, …
+$ Functional        &lt;chr&gt; "Typ", "Typ", "Typ", "Typ", "Typ", "Typ", "Typ", "Ty…
+$ Fireplaces        &lt;dbl&gt; 2, 0, 0, 2, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1…
+$ `Fireplace Qu`    &lt;chr&gt; "Gd", NA, NA, "TA", "TA", "Gd", NA, NA, "TA", "TA", …
+$ `Garage Type`     &lt;chr&gt; "Attchd", "Attchd", "Attchd", "Attchd", "Attchd", "A…
+$ `Garage Yr Blt`   &lt;dbl&gt; 1960, 1961, 1958, 1968, 1997, 1998, 2001, 1992, 1995…
+$ `Garage Finish`   &lt;chr&gt; "Fin", "Unf", "Unf", "Fin", "Fin", "Fin", "Fin", "RF…
+$ `Garage Cars`     &lt;dbl&gt; 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3…
+$ `Garage Area`     &lt;dbl&gt; 528, 730, 312, 522, 482, 470, 582, 506, 608, 442, 44…
+$ `Garage Qual`     &lt;chr&gt; "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA"…
+$ `Garage Cond`     &lt;chr&gt; "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA"…
+$ `Paved Drive`     &lt;chr&gt; "P", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y…
+$ `Wood Deck SF`    &lt;dbl&gt; 210, 140, 393, 0, 212, 360, 0, 0, 237, 140, 157, 483…
+$ `Open Porch SF`   &lt;dbl&gt; 62, 0, 36, 0, 34, 36, 0, 82, 152, 60, 84, 21, 75, 0,…
+$ `Enclosed Porch`  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 170, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ `3Ssn Porch`      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ `Screen Porch`    &lt;dbl&gt; 0, 120, 0, 0, 0, 0, 0, 144, 0, 0, 0, 0, 0, 0, 140, 2…
+$ `Pool Area`       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
+$ `Pool QC`         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+$ Fence             &lt;chr&gt; NA, "MnPrv", NA, NA, "MnPrv", NA, NA, NA, NA, NA, NA…
+$ `Misc Feature`    &lt;chr&gt; NA, NA, "Gar2", NA, NA, NA, NA, NA, NA, NA, NA, "She…
+$ `Misc Val`        &lt;dbl&gt; 0, 0, 12500, 0, 0, 0, 0, 0, 0, 0, 0, 500, 0, 0, 0, 0…
+$ `Mo Sold`         &lt;dbl&gt; 5, 6, 6, 4, 3, 6, 4, 1, 3, 6, 4, 3, 5, 2, 6, 6, 6, 6…
+$ `Yr Sold`         &lt;dbl&gt; 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2010…
+$ `Sale Type`       &lt;chr&gt; "WD", "WD", "WD", "WD", "WD", "WD", "WD", "WD", "WD"…
+$ `Sale Condition`  &lt;chr&gt; "Normal", "Normal", "Normal", "Normal", "Normal", "N…
+$ SalePrice         &lt;dbl&gt; 215000, 105000, 172000, 244000, 189900, 195500, 2135…</code></pre>
+</div>
+</div>
+<ul>
+<li>We have access to a detailed <a href="../data/ames_documentation.txt">documentation</a>. Reading the documentation can be time-consuming… but it is probably the most important part of the analysis.</li>
+</ul>
+</section>
+<section id="houses-or-commercial-activities" class="level2">
+<h2 class="anchored" data-anchor-id="houses-or-commercial-activities">Houses or commercial activities?</h2>
+<ul>
+<li>A minority of the observations are <span class="blue">non residential</span> buildings, as indicated by the <code>MS Zoning</code> variable.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">MS Zoning</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+A (agr) C (all)      FV I (all)      RH      RL      RM 
+      2      25     139       2      27    2273     462 </code></pre>
+</div>
+</div>
+<ul>
+<li>Our goal is to predict the price of a <span class="blue">residential</span> building, therefore it makes sense to <span class="orange">exclude</span> these observations from the dataset.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From the documentation:</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># "C (all)" = Commercial sales</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># "I (all)" = Industrial sales</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># "A (agr)" = Agricultural sales</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># "FV" = Floating village sales</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">filter</span>(ames, <span class="sc">!</span>(<span class="st">`</span><span class="at">MS Zoning</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"C (all)"</span>, <span class="st">"I (all)"</span>, <span class="st">"A (agr)"</span>, <span class="st">"FV"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="sales-typology" class="level2">
+<h2 class="anchored" data-anchor-id="sales-typology">Sales typology</h2>
+<ul>
+<li>There is a second caveat. In the original ames dataset there are different <span class="orange">type of sales</span>:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Sale Condition</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Abnorml AdjLand  Alloca  Family  Normal Partial 
+    174      12      22      46    2305     203 </code></pre>
+</div>
+</div>
+<ul>
+<li><p>The prices of non-standard sales might be skewed. Moreover, we do not want to predict the price based on the type of sales (<code>Sale Type</code>).</p></li>
+<li><p>We are interested only in <code>Normal</code> sales, therefore we <span class="orange">exclude</span> adjoining land purchases, deed re-allocations, internal-family sales, and incomplete houses.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Only normal sales</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">filter</span>(ames, <span class="st">`</span><span class="at">Sale Condition</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Normal"</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The variable can be dropped</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Sale Condition</span><span class="st">`</span>, <span class="st">`</span><span class="at">Sale Type</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>After these operations, we are left with <span class="math inline">n = 2305</span> observations and <span class="math inline">80</span> variables.</li>
+</ul>
+</section>
+<section id="variables-and-documentation" class="level2">
+<h2 class="anchored" data-anchor-id="variables-and-documentation">Variables and documentation</h2>
+<ul>
+<li>From the documentation we learn that both <code>Order</code> and <code>PID</code> can be removed from the dataset, as they carry no information about <code>SalePrice</code>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(Order, PID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Moreover, we can build some intuition and expectations about the variables. A few randomly selected examples:
+<ul>
+<li>The variable <code>Overall Qual</code> looks important, being the <em>rate of the overall material and finish of the house</em>;</li>
+<li>Do we need both <code>GarageCars</code> and <code>GarageArea</code> as predictors?</li>
+<li>A few variables has <span class="blue">structural missing data</span>, such as <code>FireplaceQu</code>, i.e.&nbsp;the quality of the fireplace.</li>
+</ul></li>
+<li><span class="blue">General tip</span>: ask yourself as many questions as possible about the data: what is the correct typology of each variable? is it numerical, ordinal, or discrete? are there <span class="orange">irrelevant</span> variables?)</li>
+</ul>
+</section>
+<section id="the-output-variable" class="level2">
+<h2 class="anchored" data-anchor-id="the-output-variable">The output variable</h2>
+<ul>
+<li><p><span class="orange">General tip</span>: start any data analysis by <span class="blue">making graphs</span> and calculating some <span class="orange">descriptive statistics</span> of the key variables.</p></li>
+<li><p>The most important variable is arguably <code>SalesPrice</code>, being our target:</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ames<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  35000  129000  157000  174640  203000  755000 </code></pre>
+</div>
+</div>
+<ul>
+<li>Thus, the average cost of a house in Ames is about 175k USD, ranging from a minimum of 35k to a maximum of 755k.</li>
+</ul>
+</section>
+<section id="the-output-variable-ii" class="level2">
+<h2 class="anchored" data-anchor-id="the-output-variable-ii">The output variable II</h2>
+<ul>
+<li>The distribution of <code>SalePrice</code> is slightly asymmetric, as it is often the case with prices. <span class="orange">Idea</span>: what about taking the log?</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ames<span class="sc">$</span>SalePrice, <span class="at">xlab =</span> <span class="st">"Price"</span>, <span class="at">main =</span> <span class="st">"Histogram of SalePrice"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log</span>(ames<span class="sc">$</span>SalePrice), <span class="at">xlab =</span> <span class="st">"Price"</span>, <span class="at">main =</span> <span class="st">"Histogram of the logarithm of SalePrice"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="lab2_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="1800"></p>
+</div>
+</div>
+</section>
+<section id="missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="missing-values">Missing values</h2>
+<ul>
+<li>The <code>ames</code> dataset has a lot of <span class="orange">missing values</span>, most of which are <span class="blue">structural</span>.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>freq_missing <span class="ot">&lt;-</span> <span class="fu">apply</span>(ames, <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x))) <span class="co"># Number of missing values</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(freq_missing, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Pool QC    Misc Feature           Alley           Fence    Fireplace Qu 
+           2296            2210            2187            1806            1103 
+   Lot Frontage   Garage Yr Blt   Garage Finish     Garage Qual     Garage Cond 
+            431             113             113             113             113 
+    Garage Type   Bsmt Exposure  BsmtFin Type 2       Bsmt Qual       Bsmt Cond 
+            112              67              66              65              65 
+ BsmtFin Type 1    Mas Vnr Type    Mas Vnr Area      Electrical  Bsmt Full Bath 
+             65               9               9               1               1 
+ Bsmt Half Bath     MS SubClass       MS Zoning        Lot Area          Street 
+              1               0               0               0               0 
+      Lot Shape    Land Contour       Utilities      Lot Config      Land Slope 
+              0               0               0               0               0 
+   Neighborhood     Condition 1     Condition 2       Bldg Type     House Style 
+              0               0               0               0               0 
+   Overall Qual    Overall Cond      Year Built  Year Remod/Add      Roof Style 
+              0               0               0               0               0 
+      Roof Matl    Exterior 1st    Exterior 2nd      Exter Qual      Exter Cond 
+              0               0               0               0               0 
+     Foundation    BsmtFin SF 1    BsmtFin SF 2     Bsmt Unf SF   Total Bsmt SF 
+              0               0               0               0               0 
+        Heating      Heating QC     Central Air      1st Flr SF      2nd Flr SF 
+              0               0               0               0               0 
+Low Qual Fin SF     Gr Liv Area       Full Bath       Half Bath   Bedroom AbvGr 
+              0               0               0               0               0 
+  Kitchen AbvGr    Kitchen Qual   TotRms AbvGrd      Functional      Fireplaces 
+              0               0               0               0               0 
+    Garage Cars     Garage Area     Paved Drive    Wood Deck SF   Open Porch SF 
+              0               0               0               0               0 
+ Enclosed Porch      3Ssn Porch    Screen Porch       Pool Area        Misc Val 
+              0               0               0               0               0 
+        Mo Sold         Yr Sold       SalePrice 
+              0               0               0 </code></pre>
+</div>
+</div>
+<ul>
+<li><p>Imputation is not a good idea for most of these variables. A missing value for <code>Pool QC</code> means that there is no pool in the house, therefore we should not try to “impute” it.</p></li>
+<li><p>Instead, it makes much more sense to <span class="orange">recode</span> these categorical variables.</p></li>
+</ul>
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>De Cock, D. 2011. “Ames, Iowa: Alternative to the Boston Housing Data as an End of Semester Regression Project.” Journal of Statistics Education 19 (3).<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+<script src="lab2_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

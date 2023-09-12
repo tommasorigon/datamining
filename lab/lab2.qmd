@@ -1,0 +1,241 @@
+---
+title: "Lab 2 (Ames housing)"
+subtitle: "Data Mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+execute:
+  cache: false
+format:
+  html:
+    html-math-method: katex
+    echo: true
+    callout-appearance: minimal
+    theme: [cosmo, ../template.css]
+    toc: true
+    warning: false
+    output: true 
+    toc-title: Table of contents
+    embed-resources: false
+    code-line-numbers: false
+    smooth-scroll: true
+    code-fold: false
+    code-summary: "Show the code"
+    fig-dpi: 200
+    fig-height: 6
+    fig-width: 9
+    highlight-style: github
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+# [Homepage](../index.html)
+
+This is the second lab of the course [Data Mining](../index.html). The code is not fully commented, because it will be executed and described in-class. The associated code [lab2.R](../code/lab2.R) is available online.
+
+```{r}
+#| warning: false
+#| echo: false
+#| include: false
+#| message: false
+#| purl: false
+
+knitr::purl("lab2.qmd", output = "../code/lab2.R", documentation = 0)
+styler:::style_file("../code/lab2.R")
+```
+
+## The Ames housing problem
+
+![](img/housesbanner.png){fig-align="center"}
+
+-   Suppose you are interested in [buying a new
+    house]{.orange} in the town of Ames, which is
+    located in the US state of Iowa.
+
+-   You want to focus your search on houses that you expect to be able
+    to afford.
+
+-   Can you [predict]{.blue} the price of the house
+    based on its characteristics?
+
+-   This is a
+    [**Kaggle**](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)
+    playground competition[^1]. You can join the competition, if you
+    like. Keep in mind that the full dataset, including the test set, is
+    public...
+    
+## Problem description
+
+-   This is a prediction problem, in which the [sale price]{.blue} is the
+    [output]{.orange} variable (response).
+
+-   You have some information from all of the houses sold over the past
+    few years, including the number of bedrooms, the size of the house,
+    the year the house was built, etc.
+
+-   This unit is organized into two sections:
+
+    1.  We clean the data and perform some [exploratory data
+        analysis]{.orange} to gain some preliminary
+        understanding of the data;
+    2.  We exploit advanced regression techniques to predict the price
+        of the house using all the remaining
+        [input]{.blue} variables (covariates).
+
+-   In other words, we will try to estimate a function $f(\cdot)$ such
+    that $$
+    (\texttt{SalePrice}) = f(\texttt{GarageArea},\texttt{Neighborhood}, \dots) + \epsilon.
+    $$
+
+## A first look at the data
+
+```{r}
+rm(list = ls())
+library(tidyverse)
+ames <- read_csv("../data/AmesHousing.csv")
+ames
+```
+
+-   The `ames` dataset has $2930$ observations (rows), each representing
+    a different [building]{.orange} in Ames, Iowa.
+
+-   There are $82$ variables (columns), including our target: `SalePrice`.
+
+## Read the documentation
+
+-   The first thing we need to do is understanding the [meaning of each
+    variable]{.orange}.
+
+```{r}
+glimpse(ames)
+```
+
+-   We have access to a detailed [documentation](../data/ames_documentation.txt).
+    Reading the documentation can be time-consuming... but it is
+    probably the most important part of the analysis.
+
+## Houses or commercial activities?
+
+-   A minority of the observations are [non
+    residential]{.blue} buildings, as indicated by
+    the `MS Zoning` variable.
+
+```{r}
+table(ames$`MS Zoning`)
+```
+
+-   Our goal is to predict the price of a [residential]{.blue} building,
+    therefore it makes sense to [exclude]{.orange}
+    these observations from the dataset.
+
+```{r}
+# From the documentation:
+# "C (all)" = Commercial sales
+# "I (all)" = Industrial sales
+# "A (agr)" = Agricultural sales
+# "FV" = Floating village sales
+ames <- filter(ames, !(`MS Zoning` %in% c("C (all)", "I (all)", "A (agr)", "FV")))
+```
+
+## Sales typology
+
+-   There is a second caveat. In the original ames dataset there are
+    different [type of sales]{.orange}:
+
+```{r}
+table(ames$`Sale Condition`)
+```
+
+-   The prices of non-standard sales might be skewed. Moreover, we do
+    not want to predict the price based on the type of sales
+    (`Sale Type`).
+
+-   We are interested only in `Normal` sales, therefore we
+    [exclude]{.orange} adjoining land purchases, deed
+    re-allocations, internal-family sales, and incomplete houses.
+
+```{r}
+# Only normal sales
+ames <- filter(ames, `Sale Condition` == "Normal")
+# The variable can be dropped
+ames <- select(ames, -c(`Sale Condition`, `Sale Type`))
+```
+
+-   After these operations, we are left with $n = 2305$ observations and $80$ variables.
+
+## Variables and documentation
+
+-   From the documentation we learn that both `Order` and `PID` can be
+    removed from the dataset, as they carry no information about
+    `SalePrice`.
+
+```{r}
+ames <- select(ames, -c(Order, PID))
+```
+
+-   Moreover, we can build some intuition and expectations about the
+    variables. A few randomly selected examples:
+    -   The variable `Overall Qual` looks important, being the *rate of
+        the overall material and finish of the house*;
+    -   Do we need both `GarageCars` and `GarageArea` as predictors?
+    -   A few variables has [structural missing
+        data]{.blue}, such as `FireplaceQu`, i.e. the
+        quality of the fireplace.
+-   [General tip]{.blue}: ask yourself as many
+    questions as possible about the data: what is the correct typology
+    of each variable? is it numerical, ordinal, or discrete? are there
+    [irrelevant]{.orange} variables?)
+
+## The output variable
+
+-   [General tip]{.orange}: start any data analysis by
+    [making graphs]{.blue} and calculating some
+    [descriptive statistics]{.orange} of the key
+    variables.
+
+-   The most important variable is arguably `SalesPrice`, being our
+    target:
+
+```{r}
+summary(ames$SalePrice)
+```
+
+-   Thus, the average cost of a house in Ames is about 175k USD, ranging
+    from a minimum of 35k to a maximum of 755k.
+
+## The output variable II
+
+-   The distribution of `SalePrice` is slightly asymmetric, as it is
+    often the case with prices. [Idea]{.orange}: what
+    about taking the log?
+
+```{r}
+par(mfrow = c(1, 2))
+hist(ames$SalePrice, xlab = "Price", main = "Histogram of SalePrice")
+hist(log(ames$SalePrice), xlab = "Price", main = "Histogram of the logarithm of SalePrice")
+```
+
+## Missing values
+
+-   The `ames` dataset has a lot of [missing
+    values]{.orange}, most of which are [structural]{.blue}.
+
+```{r}
+freq_missing <- apply(ames, 2, function(x) sum(is.na(x))) # Number of missing values
+sort(freq_missing, decreasing = TRUE)
+```
+
+-   Imputation is not a good idea for most of these variables. A missing
+    value for `Pool QC` means that there is no pool in the house,
+    therefore we should not try to "impute" it.
+
+-   Instead, it makes much more sense to
+    [recode]{.orange} these categorical variables.
+
+
+
+[^1]: De Cock, D. 2011. "Ames, Iowa: Alternative to the Boston Housing
+    Data as an End of Semester Regression Project." Journal of
+    Statistics Education 19 (3).

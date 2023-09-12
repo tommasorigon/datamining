@@ -8,7 +8,7 @@
 
 <meta name="author" content="Tommaso Rigon">
 
-<title>Lab 1</title>
+<title>Lab 1 (Computations for linear models)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -107,7 +107,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lab 1</h1>
+<h1 class="title">Lab 1 (Computations for linear models)</h1>
 <p class="subtitle lead">Data Mining - CdL CLAMSES</p>
 </div>
 
@@ -139,6 +139,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="homepage" class="level1">
 <h1><a href="../index.html">Homepage</a></h1>
 <p>This is the first lab of the course <a href="../index.html">Data Mining</a>. Code is not fully commented, because it will be executed and described in-class.</p>
+<p>The associated code <a href="../code/lab1.R">lab1.R</a> is available online.</p>
 <section id="the-auto-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="the-auto-dataset">The <code>auto</code> dataset</h2>
 <div class="cell">
@@ -273,9 +274,9 @@ F-statistic: 369.7 on 4 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>times</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: microseconds
-             expr    min     lq      mean median     uq     max neval
- matrix_inversion 25.625 26.322 27.679059 27.101 27.675  50.266  1000
-    linear_system  8.159  8.364  9.702527  8.528  8.733 988.756  1000</code></pre>
+             expr    min     lq     mean median     uq      max neval
+ matrix_inversion 25.379 26.240 27.38374 26.978 27.511   58.917  1000
+    linear_system  8.159  8.405  9.74488  8.569  8.774 1023.729  1000</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(times)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -352,10 +353,10 @@ F-statistic: 369.7 on 4 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>times</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: microseconds
-             expr    min     lq      mean median     uq      max neval
- matrix_inversion 24.887 25.748 26.963896 26.814 27.470   52.439  1000
-    linear_system  8.118  8.446  8.783225  8.610  8.856   32.513  1000
-         cholesky 11.521 11.972 15.777538 12.218 12.751 1762.385  1000</code></pre>
+             expr    min     lq     mean median      uq      max neval
+ matrix_inversion 24.846 26.035 27.47180 26.855 28.0030   54.325  1000
+    linear_system  8.159  8.446 10.84356  8.610  8.9790 1942.744  1000
+         cholesky 11.480 11.972 14.28174 12.259 13.0585 1597.401  1000</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(times)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -392,9 +393,9 @@ F-statistic: 369.7 on 4 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">microbenchmark</span>(<span class="at">matrix_inversion =</span> <span class="fu">solve</span>(XtX), <span class="at">cholesky =</span> <span class="fu">chol2inv</span>(R))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: nanoseconds
-             expr  min   lq    mean median     uq   max neval
- matrix_inversion 5453 5658 6013.47   5781 5965.5 23206   100
-         cholesky  656  738  876.99    779  861.0  6847   100</code></pre>
+             expr  min   lq    mean median   uq   max neval
+ matrix_inversion 5699 5863 6358.69   5986 6150 27224   100
+         cholesky  697  779  911.84    820  861  8282   100</code></pre>
 </div>
 </div>
 </section>
@@ -520,11 +521,11 @@ F-statistic: 369.7 on 4 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>times</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: microseconds
-             expr   min     lq     mean  median      uq      max neval
- matrix_inversion 25.01 25.830 28.87327 26.3425 27.3060 1934.093  1000
-    linear_system  8.20  8.528 10.56041  8.6920  8.8970 1740.696  1000
-         cholesky 11.48 12.013 12.54891 12.2590 12.5665   43.501  1000
-               QR 24.60 25.666 28.13580 26.4450 28.6180  755.548  1000</code></pre>
+             expr    min     lq      mean median      uq      max neval
+ matrix_inversion 24.969 26.199 29.786049 26.896 27.8800 2147.580  1000
+    linear_system  8.200  8.569  9.105608  8.774  9.0405   40.016  1000
+         cholesky 11.521 12.095 12.798560 12.382 12.7920   25.666  1000
+               QR 24.846 26.363 30.550863 27.347 28.7820 1816.915  1000</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(times)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -685,11 +686,16 @@ F-statistic: 369.7 on 4 and 198 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb83-11"><a href="#cb83-11" aria-hidden="true" tabindex="-1"></a>times</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Unit: milliseconds
-             expr      min       lq     mean   median        uq       max neval
- matrix_inversion 7.873107 8.234112 8.695635 8.304263  8.937918 10.852618    50
-    linear_system 6.837078 6.843802 6.863147 6.859157  6.876930  6.969180    50
-         cholesky 6.836668 6.846139 6.870227 6.856143  6.872666  7.170367    50
-               QR 9.069118 9.230084 9.818679 9.319854 10.439338 12.135508    50</code></pre>
+             expr      min       lq      mean   median        uq       max
+ matrix_inversion 8.149898 8.312299  8.709106 8.405451  8.648745 10.712234
+    linear_system 6.844089 6.876602  6.925441 6.899665  6.961103  7.162249
+         cholesky 6.841916 6.867992  6.926273 6.889517  6.961718  7.330513
+               QR 9.150462 9.260629 10.622507 9.922861 10.766846 39.465247
+ neval
+    50
+    50
+    50
+    50</code></pre>
 </div>
 </div>
 </section>
@@ -752,8 +758,8 @@ cityVARESE                  0.0150  -0.0153   0.0453 0.0151 0.3221</code></pre>
 <span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>() <span class="co"># Free unused R memory</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          used (Mb) gc trigger  (Mb) limit (Mb) max used  (Mb)
-Ncells 1000725 53.5    1779532  95.1         NA  1721289  92.0
-Vcells 2276033 17.4   14503435 110.7      16384 18129293 138.4</code></pre>
+Ncells 1000725 53.5    1779550  95.1         NA  1693400  90.5
+Vcells 2276108 17.4   14503427 110.7      16384 18129283 138.4</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a>drivers_chunk2 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers2.csv"</span>, </span>
 <span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n_max =</span> <span class="dv">100000</span>, <span class="at">skip =</span> <span class="dv">100000</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
@@ -807,9 +813,9 @@ cityVARESE                  0.0200  -0.0024   0.0424 0.0112 0.0748</code></pre>
 <div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(drivers_chunk2)</span>
 <span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gc</span>() <span class="co"># Free unused R memory</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          used (Mb) gc trigger  (Mb) limit (Mb) max used (Mb)
-Ncells 1001361 53.5    1779532  95.1         NA  1721289   92
-Vcells 2277859 17.4   16980976 129.6      16384 21226220  162</code></pre>
+<pre><code>          used (Mb) gc trigger  (Mb) limit (Mb) max used  (Mb)
+Ncells 1001361 53.5    1779550  95.1         NA  1693400  90.5
+Vcells 2277934 17.4   14639441 111.7      16384 18280203 139.5</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>drivers_chunk3 <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/drivers2.csv"</span>, </span>
 <span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>                           <span class="at">n_max =</span> <span class="dv">100000</span>, <span class="at">skip =</span> <span class="dv">200000</span>, <span class="at">col_names =</span> <span class="cn">FALSE</span>)</span>
