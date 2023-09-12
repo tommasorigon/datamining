@@ -33,7 +33,10 @@ editor_options:
 
 # [Homepage](../index.html)
 
-This is the second lab of the course [Data Mining](../index.html). The code is not fully commented, because it will be executed and described in-class. The associated code [lab2.R](../code/lab2.R) is available online.
+This is the second lab of the course [Data Mining](../index.html). The
+code is not fully commented, because it will be executed and described
+in-class. The associated code [lab2.R](../code/lab2.R) is available
+online.
 
 ```{r}
 #| warning: false
@@ -46,30 +49,33 @@ knitr::purl("lab2.qmd", output = "../code/lab2.R", documentation = 0)
 styler:::style_file("../code/lab2.R")
 ```
 
-## The Ames housing problem
+# The Ames housing problem
 
 ![](img/housesbanner.png){fig-align="center"}
 
--   Suppose you are interested in [buying a new
-    house]{.orange} in the town of Ames, which is
-    located in the US state of Iowa.
+-   Suppose you are interested in [buying a new house]{.orange} in the
+    town of Ames, which is located in the US state of Iowa.
 
 -   You want to focus your search on houses that you expect to be able
     to afford.
 
--   Can you [predict]{.blue} the price of the house
-    based on its characteristics?
+-   Can you [predict]{.blue} the price of the house based on its
+    characteristics?
 
 -   This is a
     [**Kaggle**](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)
     playground competition[^1]. You can join the competition, if you
     like. Keep in mind that the full dataset, including the test set, is
     public...
-    
+
+[^1]: De Cock, D. 2011. "Ames, Iowa: Alternative to the Boston Housing
+    Data as an End of Semester Regression Project." Journal of
+    Statistics Education 19 (3).
+
 ## Problem description
 
--   This is a prediction problem, in which the [sale price]{.blue} is the
-    [output]{.orange} variable (response).
+-   This is a prediction problem, in which the [sale price]{.blue} is
+    the [output]{.orange} variable (response).
 
 -   You have some information from all of the houses sold over the past
     few years, including the number of bedrooms, the size of the house,
@@ -78,16 +84,18 @@ styler:::style_file("../code/lab2.R")
 -   This unit is organized into two sections:
 
     1.  We clean the data and perform some [exploratory data
-        analysis]{.orange} to gain some preliminary
-        understanding of the data;
+        analysis]{.orange} to gain some preliminary understanding of the
+        data;
     2.  We exploit advanced regression techniques to predict the price
-        of the house using all the remaining
-        [input]{.blue} variables (covariates).
+        of the house using all the remaining [input]{.blue} variables
+        (covariates).
 
 -   In other words, we will try to estimate a function $f(\cdot)$ such
     that $$
     (\texttt{SalePrice}) = f(\texttt{GarageArea},\texttt{Neighborhood}, \dots) + \epsilon.
     $$
+
+# Pre-processing operations
 
 ## A first look at the data
 
@@ -101,9 +109,12 @@ ames
 -   The `ames` dataset has $2930$ observations (rows), each representing
     a different [building]{.orange} in Ames, Iowa.
 
--   There are $82$ variables (columns), including our target: `SalePrice`.
+-   There are $82$ variables (columns), including our target:
+    `SalePrice`.
 
 ## Read the documentation
+
+- The Ames housing dataset is described in full detail here: <https://jse.amstat.org/v19n3/decock.pdf>
 
 -   The first thing we need to do is understanding the [meaning of each
     variable]{.orange}.
@@ -112,23 +123,23 @@ ames
 glimpse(ames)
 ```
 
--   We have access to a detailed [documentation](../data/ames_documentation.txt).
-    Reading the documentation can be time-consuming... but it is
-    probably the most important part of the analysis.
+-   We have access to a detailed
+    [documentation](../data/ames_documentation.txt). Reading the
+    documentation can be time-consuming... but it is probably the most
+    important part of the analysis.
 
 ## Houses or commercial activities?
 
--   A minority of the observations are [non
-    residential]{.blue} buildings, as indicated by
-    the `MS Zoning` variable.
+-   A minority of the observations are [non residential]{.blue}
+    buildings, as indicated by the `MS Zoning` variable.
 
 ```{r}
 table(ames$`MS Zoning`)
 ```
 
 -   Our goal is to predict the price of a [residential]{.blue} building,
-    therefore it makes sense to [exclude]{.orange}
-    these observations from the dataset.
+    therefore it makes sense to [exclude]{.orange} these observations
+    from the dataset.
 
 ```{r}
 # From the documentation:
@@ -153,17 +164,18 @@ table(ames$`Sale Condition`)
     (`Sale Type`).
 
 -   We are interested only in `Normal` sales, therefore we
-    [exclude]{.orange} adjoining land purchases, deed
-    re-allocations, internal-family sales, and incomplete houses.
+    [exclude]{.orange} adjoining land purchases, deed re-allocations,
+    internal-family sales, and incomplete houses.
 
 ```{r}
 # Only normal sales
 ames <- filter(ames, `Sale Condition` == "Normal")
-# The variable can be dropped
+# The variables can be dropped
 ames <- select(ames, -c(`Sale Condition`, `Sale Type`))
 ```
 
--   After these operations, we are left with $n = 2305$ observations and $80$ variables.
+-   After these operations, we are left with $n = 2305$ observations and
+    $80$ variables.
 
 ## Variables and documentation
 
@@ -172,6 +184,7 @@ ames <- select(ames, -c(`Sale Condition`, `Sale Type`))
     `SalePrice`.
 
 ```{r}
+# Drop the variables
 ames <- select(ames, -c(Order, PID))
 ```
 
@@ -180,20 +193,18 @@ ames <- select(ames, -c(Order, PID))
     -   The variable `Overall Qual` looks important, being the *rate of
         the overall material and finish of the house*;
     -   Do we need both `GarageCars` and `GarageArea` as predictors?
-    -   A few variables has [structural missing
-        data]{.blue}, such as `FireplaceQu`, i.e. the
-        quality of the fireplace.
--   [General tip]{.blue}: ask yourself as many
-    questions as possible about the data: what is the correct typology
-    of each variable? is it numerical, ordinal, or discrete? are there
-    [irrelevant]{.orange} variables?)
+    -   A few variables has [structural missing data]{.blue}, such as
+        `FireplaceQu`, i.e. the quality of the fireplace.
+-   [General tip]{.blue}: ask yourself as many questions as possible
+    about the data: what is the correct typology of each variable? Is it
+    numerical, ordinal, or discrete? Are there [irrelevant]{.orange}
+    variables?)
 
 ## The output variable
 
--   [General tip]{.orange}: start any data analysis by
-    [making graphs]{.blue} and calculating some
-    [descriptive statistics]{.orange} of the key
-    variables.
+-   [General tip]{.orange}: start any data analysis by [making
+    graphs]{.blue} and calculating some [descriptive
+    statistics]{.orange} of the key variables.
 
 -   The most important variable is arguably `SalesPrice`, being our
     target:
@@ -208,21 +219,23 @@ summary(ames$SalePrice)
 ## The output variable II
 
 -   The distribution of `SalePrice` is slightly asymmetric, as it is
-    often the case with prices. [Idea]{.orange}: what
-    about taking the log?
+    often the case with prices. [Idea]{.orange}: what about taking the
+    log?
 
 ```{r}
+#| fig-height: 5
 par(mfrow = c(1, 2))
-hist(ames$SalePrice, xlab = "Price", main = "Histogram of SalePrice")
-hist(log(ames$SalePrice), xlab = "Price", main = "Histogram of the logarithm of SalePrice")
+hist(ames$SalePrice, xlab = "Price", main = "SalePrice")
+hist(log(ames$SalePrice), xlab = "Price", main = "Logarithm of SalePrice")
 ```
 
 ## Missing values
 
--   The `ames` dataset has a lot of [missing
-    values]{.orange}, most of which are [structural]{.blue}.
+-   The `ames` dataset has a lot of [missing values]{.orange}, most of
+    which are [structural]{.blue}.
 
 ```{r}
+# Compute the frequency of the missing values for each variable
 freq_missing <- apply(ames, 2, function(x) sum(is.na(x))) # Number of missing values
 sort(freq_missing, decreasing = TRUE)
 ```
@@ -231,11 +244,507 @@ sort(freq_missing, decreasing = TRUE)
     value for `Pool QC` means that there is no pool in the house,
     therefore we should not try to "impute" it.
 
--   Instead, it makes much more sense to
-    [recode]{.orange} these categorical variables.
+-   Instead, it makes much more sense to [recode]{.orange} these
+    categorical variables.
+
+## Handling missing values I
+
+::: panel-tabset
+### `Alley`
+
+-   Missing values have been re-coded.
+
+```{r}
+table(ames$Alley, useNA = "always")
+ames$Alley[is.na(ames$Alley)] <- "No alley access"
+```
+
+### `Bsmt *`
+
+-   Missing values have been re-coded.
+
+```{r}
+ames$`Bsmt Exposure`[is.na(ames$`Bsmt Exposure`)] <- "No basement"
+ames$`Bsmt Cond`[is.na(ames$`Bsmt Cond`)] <- "No basement"
+ames$`BsmtFin Type 1`[is.na(ames$`BsmtFin Type 1`)] <- "No basement"
+ames$`BsmtFin Type 2`[is.na(ames$`BsmtFin Type 2`)] <- "No basement"
+ames$`Bsmt Qual`[is.na(ames$`Bsmt Qual`)] <- "No basement"
+```
+
+-   There are two missing values in `Bsmt Full Bath` and
+    `Bsmt Half Bath`, which we impute with the most common value.
+
+```{r}
+ames$`Bsmt Full Bath`[is.na(ames$`Bsmt Full Bath`)] <- 0
+ames$`Bsmt Half Bath`[is.na(ames$`Bsmt Half Bath`)] <- 0
+```
+
+### `Electrical`
+
+-   The missing value have been imputed with the most common
+    observation.
+
+```{r}
+table(ames$Electrical, useNA = "always")
+ames$Electrical[is.na(ames$Electrical)] <- "SBrkr"
+```
+
+### `Fence`
+
+-   Missing values have been re-coded.
+
+```{r}
+table(ames$Fence, useNA = "always")
+ames$`Fence`[is.na(ames$`Fence`)] <- "No fence"
+```
+
+### `Fireplace Qu`
+
+-   Missing values have been re-coded.
+
+```{r}
+table(ames$`Fireplace Qu`, useNA = "always")
+ames$`Fireplace Qu`[is.na(ames$`Fireplace Qu`)] <- "No fireplace"
+```
+
+### `Garage *`
+
+-   We re-code all the variables about the garage.
+
+```{r}
+ames$`Garage Cond`[is.na(ames$`Garage Cond`)] <- "No garage"
+ames$`Garage Finish`[is.na(ames$`Garage Finish`)] <- "No garage"
+ames$`Garage Qual`[is.na(ames$`Garage Qual`)] <- "No garage"
+ames$`Garage Type`[is.na(ames$`Garage Type`)] <- "No garage"
+```
+
+-   The variable `Garage Yr Blt` is more problematic. By replacing
+    missing values with `No garage` would transform this variable into a
+    categorical variable.
+
+-   For the sake of simplicity, given its low predictive value (i.e. the
+    year of construction of the garage), in this analysis we just
+    exclude this variable.
+
+```{r}
+ames <- select(ames, -c(`Garage Yr Blt`))
+```
+:::
+
+## Handling missing values II
+
+::: panel-tabset
+### `Lot Frontage`
+
+-   From the documentation: *Lot Frontage (Continuous): Linear feet of
+    street connected to property*.
+
+-   Even though it is not clearly specified in the documentation, it is
+    reasonable replace missing values with $0$ (no street).
+
+```{r}
+ames$`Lot Frontage`[is.na(ames$`Lot Frontage`)] <- 0
+```
+
+### `Mas Vnr *`
+
+-   It is not clear what missing values represent: (i) an actual missing
+    or (ii) the absence of the feature.
+
+-   In both cases (i) and (ii) it makes sense to perform the following:
+
+```{r}
+ames$`Mas Vnr Type`[is.na(ames$`Mas Vnr Type`)] <- "None"
+ames$`Mas Vnr Area`[is.na(ames$`Mas Vnr Area`)] <- 0
+```
+
+### `Misc Feature`
+
+-   Missing values are re-coded. Tennis `TenC` is aggregated with the
+    other categories:
+
+```{r}
+table(ames$`Misc Feature`, useNA = "always")
+ames$`Misc Feature`[is.na(ames$`Misc Feature`)] <- "No additional feature"
+ames$`Misc Feature`[ames$`Misc Feature` == "TenC"] <- "Othr"
+```
+
+### `Pool QC`
+
+-   Missing values have been re-coded. All the other values have been
+    aggregated.
+
+```{r}
+table(ames$`Pool QC`, useNA = "always")
+ames$`Pool QC`[is.na(ames$`Pool QC`)] <- "No"
+ames$`Pool QC`[ames$`Pool QC` %in% c("TA", "Ex", "Gd", "Fa")] <- "Yes"
+```
+:::
+
+## Feature engineering
+
+-   By "feature engineering" we mean the process of creating [new
+    interesting variables]{.blue}, possibly having a a direct
+    relationship with the response.
+
+-   A first example is the total dimension of the Porch, obtained as the
+    sum of all its sub-components.
+
+```{r}
+ames$`Porch Sq Feet` <- ames$`Open Porch SF` + ames$`Enclosed Porch` + ames$`3Ssn Porch` + ames$`Screen Porch`
+```
+
+-   In a similar spirit, we can create a variable counting the total
+    number of bathrooms in the house.
+
+```{r}
+ames$`Tot Bathrooms` <- ames$`Full Bath` + 0.5 * ames$`Half Bath` + ames$`Bsmt Full Bath` + 0.5 * ames$`Bsmt Half Bath`
+```
+
+-   Finally, we create the variable indicating the "Age" of the house.
+
+```{r}
+ames$`House Age` <- ames$`Yr Sold` - ames$`Year Remod/Add`
+```
+
+## Deleting irrelevant variables
+
+-   The theory suggests that [more variables]{.blue} = [higher
+    variance]{.orange} of the estimates.
+
+-   Thus, deleting irrelevant variables is a useful practice, as long as
+    we expect them to be [not]{.orange} related to the target variables
+    and/or because we believe the information is already contained in
+    other variables.
+
+-   We already deleted `Order` and `PID` before, but other examples are
+    the following variables:
+
+```{r}
+# Most of the information is already included in House Age
+ames <- select(ames, -c(`Mo Sold`, `Yr Sold`, `Year Remod/Add`, `Year Built`))
+# Most of the information is already included in Porch Sq Feet
+ames <- select(ames, -c(`Open Porch SF`, `Enclosed Porch`, `3Ssn Porch`, `Screen Porch`))
+# Most of the information is already included in Tot Bathrooms
+ames <- select(ames, -c(`Full Bath`, `Half Bath`, `Bsmt Full Bath`, `Bsmt Half Bath`))
+# Almost no information is present in these variables
+ames <- select(ames, -c(`Pool Area`, Utilities))
+```
+
+<!-- ## Rescaling -->
+
+<!-- -   For numerical purposes, it is often convenient to [standardize]{.orange} the -->
+
+<!--     numerical covariates. -->
+
+<!-- -   Let $x_{1j},\dots,x_{nj}$ be the values of the $j$th covariate, then -->
+
+<!--     we compute -->
+
+<!-- $$ -->
+
+<!-- z_{ij} = \frac{x_{ij} - \bar{x}_j}{\sigma_j}, \qquad i=1,\dots,n, -->
+
+<!-- $$ where $\bar{x}_j$ and $\sigma_j$ are the mean and the standard -->
+
+<!-- deviation of the data $x_{1j},\dots,x_{nj}$. -->
+
+<!-- ```{python} -->
+
+<!-- import numpy as np -->
+
+<!-- X = ames.drop(columns = ['SalePrice']) -->
+
+<!-- numeric_feats = X.dtypes[X.dtypes != "object"].index # Identify the numerical features -->
+
+<!-- X[numeric_feats] = X[numeric_feats].apply(lambda x: (x - np.mean(x)) / np.std(x)) # Standardization -->
+
+<!-- ``` -->
+
+<!-- -   This is useful for many predictive algorithms, such as the lasso. -->
+
+<!-- -   The regression coefficients are in now the same scale and the -->
+
+<!--     shrinkage induced by the lasso penalty acts in a more meaningful -->
+
+<!--     manner. -->
+
+<!-- -   An important drawback is a [loss]{style="color:DarkOrange"} in terms -->
+
+<!--     of [interpretability]{style="color:DarkOrange"}. -->
+
+<!-- ## Dummy variables -->
+
+<!-- -   Most of the variables are [categorical]{style="color:DarkOrange"}. -->
+
+<!--     In Python, we need to "convert" these variables into numbers. -->
+
+<!-- ```{python} -->
+
+<!-- X = pd.get_dummies(X) -->
+
+<!-- X.shape -->
+
+<!-- ``` -->
+
+<!-- -   The function `get_dummies` does not automatically drop one of the -->
+
+<!--     categories, therefore leading to the so-called [dummy -->
+
+<!--     trap](https://en.wikipedia.org/wiki/Multicollinearity). Is this an -->
+
+<!--     issue? It depends on the algorithm... -->
+
+<!-- -   After this operations, some variables might be collinear (i.e. the -->
+
+<!--     `No garage` indicators) -->
+
+<!-- ```{python} -->
+
+<!-- # This removes identical columns -->
+
+<!-- X = X.T.drop_duplicates().T -->
+
+<!-- X.shape -->
+
+<!-- ``` -->
+
+<!-- -   The number of variables could explode if a certain variable has a -->
+
+<!--     lot of categories. In these cases, you could aggregate some -->
+
+<!--     categories. -->
+
+## What else?
+
+-   There are certainly many other fixes one could perform on this
+    dataset.
+
+-   Data-cleaning is a [never-ending process]{.orange}. There are
+    certainly many other aspects of the data that improved.
+
+-   However, we need to stop at a certain stage. In this lecture we will
+    not perform additional data cleaning.
+
+-   An example could be using the info contained in the variable `PID`
+    to obtain the geographical coordinates of each house.
+
+-   You are highly [encouraged]{.blue} to [explore]{.orange} / polish
+    the data even more! It is also possible that further exploration
+    could lead to improved predictions.
+
+-   If you are curious about other cleaning operations that you could
+    perform, you can have a look at this [R
+    code](https://github.com/topepo/AmesHousing/blob/master/R/make_ames.R)
+    associated to this [book chapter](https://www.tmwr.org/ames.html).
+
+## A map of Ames, Iowa
+
+![The picture has been downloaded from here:
+<https://www.tmwr.org/ames.html>](https://www.tmwr.org/premade/ames.png){fig-align="center"}
+
+## Training and test set
+
+-   It is now time to split the data into [training set]{.blue} (2/3 of
+    the data) and [test set]{.orange} (1/3 of the data).
+
+-   This is very easy from a coding point of view, but it is the most
+    delicate step: many things can go horribly wrong if this operation
+    is not performed correctly.
+
+-   Never perform operations involving the target variable `SalePrice`
+    on the full dataset. In particular, never "clean" the data on the
+    basis of the target, this could lead to overfitting.
+
+```{r}
+# Manual subdivision in training / test
+set.seed(123)
+# Randomly allocate the id of the variables into training and test
+id_train <- sort(sample(1:nrow(ames), size = floor(2 / 3 * nrow(ames)), replace = FALSE))
+id_test <- setdiff(1:nrow(ames), id_train)
+
+# Create two different datasets
+ames_train <- ames[id_train, ]
+ames_test <- ames[id_test, ]
+```
+
+-   From now on, it is [forbidden]{.orange} to look at the [test
+    set]{.orange} until the very end of the analysis.
+
+```{r}
+write.csv(data.frame(ames_train), "../data/ames_train.csv", row.names = FALSE)
+write.csv(data.frame(ames_test), "../data/ames_test.csv", row.names = FALSE)
+```
+
+# Predictive modeling
+
+```{r}
+rm(list = ls())
+ames_train <- read.table("../data/ames_train.csv", header = TRUE, sep = ",")
+ames_test <- read.table("../data/ames_train.csv", header = TRUE, sep = ",")
+```
 
 
+## Some possible predictors
 
-[^1]: De Cock, D. 2011. "Ames, Iowa: Alternative to the Boston Housing
-    Data as an End of Semester Regression Project." Journal of
-    Statistics Education 19 (3).
+-   Common sense suggest that the [dimension of the house]{.blue} (i.e.
+    `Gr Liv Area`) should be among the main predictors of the price.
+
+-   In certain cities, such as Milan, the `Neighborhood` is highly
+    relevant for determining the price. Do we have a similar behavior in
+    Ames?
+
+-   Other interesting variables are `Overal Qual`, that is the overall
+    quality of the finitures, and `House Age`.
+
+-   Let us have a look at these covariates to see whether they have some
+    relationship with `SalePrice`.
+
+-   These analyses are performed on the [training data]{.orange}
+
+## Graphical analysis (Dimension)
+
+::: panel-tabset
+### House (above ground)
+
+```{r}
+par(mfrow = c(1, 1))
+plot(ames_train$Gr.Liv.Area, ames_train$SalePrice, 
+     xlab = "Ground living area", ylab = "Sale Price", pch = 16, cex = 0.8)
+```
+
+### Basement
+
+```{r}
+plot(ames_train$Total.Bsmt.SF, ames_train$SalePrice, 
+     xlab = "Total Basement SF", ylab = "Sale Price", pch = 16, cex = 0.8)
+```
+
+### Garage
+
+```{r}
+plot(ames_train$Garage.Area, ames_train$SalePrice, 
+     xlab = "Garage Area", ylab = "Sale Price", pch = 16, cex = 0.8)
+```
+
+### Porch
+
+```{r}
+plot(ames_train$Porch.Sq.Feet, ames_train$SalePrice, 
+     xlab = "Porch Square Feet", ylab = "Sale Price", pch = 16, cex = 0.8)
+```
+
+### \# of bathrooms
+
+```{r}
+plot(ames_train$Tot.Bathrooms, ames_train$SalePrice, 
+     xlab = "Tot Bathrooms", ylab = "Sale Price", pch = 16, cex = 0.8)
+```
+:::
+
+## Graphical analysis (Quality)
+
+::: panel-tabset
+### Overall quality
+
+```{r}
+boxplot(SalePrice ~ Overall.Qual, data = ames_train)
+```
+
+### Basement quality
+
+```{r}
+boxplot(SalePrice ~ Bsmt.Qual, data = ames_train)
+```
+
+### Exterior quality
+
+```{r}
+boxplot(SalePrice ~ Exter.Qual, data = ames_train)
+```
+
+### Kitchen quality
+
+```{r}
+boxplot(SalePrice ~ Kitchen.Qual, data = ames_train)
+```
+:::
+
+## Graphical analysis (Other)
+
+::: panel-tabset
+### House age
+
+```{r}
+plot(ames_train$House.Age, ames_train$SalePrice,
+     xlab = "House Age (Years)", ylab = "Sale Price", pch = 16, cex = 0.8)
+```
+
+### Area
+
+```{r}
+boxplot(SalePrice ~ MS.Zoning, data = ames_train)
+```
+
+### House category
+
+```{r}
+boxplot(SalePrice ~ Roof.Style, data = ames_train)
+```
+
+### Neighborhood
+
+```{r}
+#| fig-width: 12
+boxplot(SalePrice ~ Neighborhood, data = ames_train)
+```
+:::
+
+## The choice of the loss
+
+-   We rank the performance of different models based on some notion of
+    discrepancy between the actual values and the predictions.
+
+-   We will use the mean absolute error (MAE) on the original scale,
+    namely:
+
+$$
+\text{MAE} = \frac{1}{n}\sum_{i=1}^n |\texttt{SalePrice}_i - \widehat{\texttt{SalePrice}}_i|.
+$$
+
+-   Another possible choice is:
+
+$$
+\text{RMSLE} = \sqrt{\frac{1}{n}\sum_{i=1}^n \left(\log{\{\texttt{SalePrice}_i\}} - \log{\{\widehat{\texttt{SalePrice}_i}}\}\right)^2}.
+$$
+
+## The worst case scenario
+
+-   Since we want to minimize the MAE on the original scale, the median
+    of the training set represents our baseline.
+
+```{r}
+y_hat_median = rep(median(ames_train$SalePrice), nrow(ames_test)) # Prediction
+```
+
+-   The following are the associated values of the loss based on the
+    test set.
+
+```{r}
+MAE <- function(y, y_fit){
+  mean(abs(y - y_fit))
+}
+
+RMSLE <- function(y, y_fit){
+  sqrt(mean( (log(y) - log(y_fit))^2))
+}
+```
+
+
+```{r}
+round(MAE(ames_test$SalePrice, y_hat_median), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_median), 4)
+```
+
+-   Thus, any model having MAE higher that 50k and RMSLE higher than
+    0.37 should be regarded as a [coding error]{.orange}.
