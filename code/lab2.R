@@ -221,10 +221,227 @@ head(cbind(
 head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual.Fin.SF, ames_train$Gr.Liv.Area))
 
 library(leaps)
-fit_forward <- regsubsets(SalePrice ~ ., data = ames_train, method = "forward", nbest = 1, nvmax = p - 10)
+fit_forward <- regsubsets(SalePrice ~ .,
+  data = ames_train, method = "forward",
+  nbest = 1, nvmax = 200
+)
 sum_forward <- summary(fit_forward)
+
+fit_backward <- regsubsets(SalePrice ~ .,
+  data = ames_train, method = "backward",
+  nbest = 1, nvmax = 200
+)
+sum_backward <- summary(fit_backward)
 
 which(sum_forward$which[1, ]) # Model with one covariate
 which(sum_forward$which[2, ]) # Model with two covariates
 which(sum_forward$which[3, ]) # Model with three covariates
 which(sum_forward$which[4, ]) # Model with four covariates
+
+which(sum_backward$which[1, ]) # Model with one covariate
+which(sum_backward$which[2, ]) # Model with two covariates
+which(sum_backward$which[3, ]) # Model with three covariates
+which(sum_backward$which[4, ]) # Model with four covariates
+which(sum_backward$which[5, ]) # Model with four covariates
+which(sum_backward$which[6, ]) # Model with four covariates
+which(sum_backward$which[7, ]) # Model with four covariates
+
+library(broom)
+fit_forward_summary <- fit_forward %>%
+  tidy() %>%
+  rowwise() %>%
+  mutate(p = sum(c_across(MS.SubClass:House.Age)), .keep = "unused") %>%
+  ungroup()
+
+fit_backward_summary <- fit_backward %>%
+  tidy() %>%
+  rowwise() %>%
+  mutate(p = sum(c_across(MS.SubClass:House.Age)), .keep = "unused") %>%
+  ungroup()
+
+par(mfrow = c(1, 2))
+plot(fit_forward_summary$p, fit_forward_summary$r.squared,
+  type = "b", cex = 0.8, pch = 16, ylab = "R-squared", xlab = "p",
+  main = "Forward regression"
+)
+plot(fit_forward_summary$p, fit_forward_summary$mallows_cp,
+  type = "b", cex = 0.8, pch = 16, ylab = "Mallows' Cp", xlab = "p",
+  main = "Forward regression"
+)
+
+plot(fit_backward_summary$p, fit_backward_summary$r.squared,
+  type = "b", cex = 0.8, pch = 16, ylab = "R-squared", xlab = "p",
+  main = "Backward regression"
+)
+plot(fit_backward_summary$p, fit_backward_summary$mallows_cp,
+  type = "b", cex = 0.8, pch = 16, ylab = "Mallows' Cp", xlab = "p",
+  main = "Backward regression"
+)
+abline(v = which.min(fit_backward_summary$mallows_cp), lty = "dashed")
+
+which.min(fit_backward_summary$mallows_cp)
+which(sum_backward$which[which.min(fit_backward_summary$mallows_cp), ])
+
+predict.regsubsets <- function(object, newdata, id, ...) {
+  form <- as.formula(object[["call"]][[2]])
+
+  # Compute the design matrix
+  X <- model.matrix(form, newdata)
+  # Identify the correct beta coefficients
+  beta_hat <- coef(object, id = id)
+  xvars <- names(beta_hat)
+
+  # Making the predictions
+  pred_mat <- X[, xvars] %*% beta_hat
+
+  # Housekeeping
+  pred <- as.numeric(pred_mat)
+  names(pred) <- rownames(X)
+  pred
+}
+
+predict(fit_backward, newdata = ames_train, id = 103)
+
+library(rsample)
+
+p_max <- 200
+set.seed(123)
+V <- 10
+cv_fold <- vfold_cv(ames_train, v = V)
+resid_subs <- matrix(0, nrow(ames_train), p_max + 1)
+resid_log_subs <- matrix(0, nrow(ames_train), p_max + 1)
+
+for (k in 1:V) {
+  # Estimation of the null model
+  fit_null <- lm(SalePrice ~ 1, data = data.frame(analysis(cv_fold$splits[[k]])))
+  # Forward and backward regression
+  fit_cv <- regsubsets(SalePrice ~ .,
+    data = analysis(cv_fold$splits[[k]]),
+    method = "backward", nbest = 1, nvmax = p_max
+  )
+
+  # Hold-out quantities
+  y_k <- assessment(cv_fold$splits[[k]])$SalePrice
+
+  # Residuals for the null model
+  y_hat_null <- pmax(30000, predict(fit_null, assessment(cv_fold$splits[[k]])))
+  resid_subs[complement(cv_fold$splits[[k]]), 1] <- y_k - y_hat_null
+  resid_log_subs[complement(cv_fold$splits[[k]]), 1] <- log(y_k) - log(y_hat_null)
+
+  # Residuals of the best models for different values of p
+  for (j in 2:(p_max + 1)) {
+    y_hat <- pmax(30000, predict(fit_cv, assessment(cv_fold$splits[[k]]), j - 1))
+    resid_subs[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
+    resid_log_subs[complement(cv_fold$splits[[k]]), j] <- log(y_k) - log(y_hat)
+  }
+}
+
+data_cv <- data.frame(
+  p = 0:p_max,
+  MAE = apply(resid_subs, 2, function(x) mean(abs(x))),
+  RMSLE = apply(resid_log_subs^2, 2, function(x) mean(x)),
+  SE = apply(resid_log_subs^2, 2, function(x) sd(x) / sqrt(n))
+)
+
+se_rule <- data_cv$RMSLE[which.min(data_cv$RMSLE)] + data_cv$SE[which.min(data_cv$RMSLE)]
+p_optimal <- which(data_cv$RMSLE < se_rule)[1]
+
+plot(data_cv$p, data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE", xlab = "p")
+abline(v = p_optimal, lty = "dashed")
+
+plot(data_cv$p, data_cv$RMSLE, type = "b", pch = 16, cex = 0.4, ylab = "RMSLE", xlab = "p")
+abline(v = p_optimal, lty = "dashed")
+
+library(leaps)
+fit_forward <- regsubsets(log(SalePrice) ~ .,
+  data = ames_train, method = "forward",
+  nbest = 1, nvmax = p - 10
+)
+sum_forward <- summary(fit_forward)
+
+fit_backward <- regsubsets(log(SalePrice) ~ .,
+  data = ames_train, method = "backward",
+  nbest = 1, nvmax = p - 10
+)
+sum_backward <- summary(fit_backward)
+
+which(sum_forward$which[1, ]) # Model with one covariate
+which(sum_forward$which[2, ]) # Model with two covariates
+which(sum_forward$which[3, ]) # Model with three covariates
+which(sum_forward$which[4, ]) # Model with four covariates
+
+which(sum_backward$which[1, ]) # Model with one covariate
+which(sum_backward$which[2, ]) # Model with two covariates
+which(sum_backward$which[3, ]) # Model with three covariates
+which(sum_backward$which[4, ]) # Model with four covariates
+which(sum_backward$which[5, ]) # Model with four covariates
+which(sum_backward$which[6, ]) # Model with four covariates
+which(sum_backward$which[7, ]) # Model with four covariates
+which(sum_backward$which[8, ]) # Model with four covariates
+
+library(rsample)
+
+p_max <- 200
+set.seed(123)
+V <- 10
+cv_fold <- vfold_cv(ames_train, v = V)
+resid_subs <- matrix(0, nrow(ames_train), p_max + 1)
+resid_log_subs <- matrix(0, nrow(ames_train), p_max + 1)
+
+for (k in 1:V) {
+  # Estimation of the null model
+  fit_null <- lm(log(SalePrice) ~ 1, data = data.frame(analysis(cv_fold$splits[[k]])))
+  # Forward and backward regression
+  fit_backward <- regsubsets(log(SalePrice) ~ .,
+    data = analysis(cv_fold$splits[[k]]),
+    method = "backward", nbest = 1, nvmax = p_max
+  )
+
+  # Hold-out quantities
+  y_k <- assessment(cv_fold$splits[[k]])$SalePrice
+
+  # Residuals for the null model
+  y_hat_null <- exp(predict(fit_null, assessment(cv_fold$splits[[k]])))
+  resid_subs[complement(cv_fold$splits[[k]]), 1] <- y_k - y_hat_null
+  resid_log_subs[complement(cv_fold$splits[[k]]), 1] <- log(y_k) - log(y_hat_null)
+
+  # Residuals of the best models for different values of p
+  for (j in 2:(p_max + 1)) {
+    y_hat <- exp(predict(fit_backward, assessment(cv_fold$splits[[k]]), j - 1))
+    resid_subs[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
+    resid_log_subs[complement(cv_fold$splits[[k]]), j] <- log(y_k) - log(y_hat)
+  }
+}
+
+data_cv <- data.frame(
+  p = 0:p_max,
+  MAE = apply(resid_subs, 2, function(x) mean(abs(x))),
+  RMSLE = apply(resid_log_subs^2, 2, function(x) mean(x)),
+  SE = apply(resid_log_subs^2, 2, function(x) sd(x) / sqrt(n))
+)
+
+
+se_rule <- data_cv$RMSLE[which.min(data_cv$RMSLE)] + data_cv$SE[which.min(data_cv$RMSLE)]
+p_optimal <- which(data_cv$RMSLE < se_rule)[1]
+
+plot(data_cv$p, data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE", xlab = "p")
+abline(v = p_optimal, lty = "dashed")
+
+plot(data_cv$p, data_cv$RMSLE, type = "b", pch = 16, cex = 0.4, ylab = "RMSLE", xlab = "p")
+abline(v = p_optimal, lty = "dashed")
+
+y_hat_backward_log <- exp(predict(fit_backward, newdata = ames_test, id = p_optimal))
+
+y_hat_full <- pmax(30000, predict(m_full, newdata = ames_test))
+
+# Simple log
+round(MAE(ames_test$SalePrice, y_hat_simple_log), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_simple_log), 4)
+
+# Full
+round(MAE(ames_test$SalePrice, y_hat_full), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_full), 4)
+
+# Backward
+round(MAE(ames_test$SalePrice, y_hat_backward), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_backward), 4)

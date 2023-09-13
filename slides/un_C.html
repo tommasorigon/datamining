@@ -2189,8 +2189,8 @@ Principal components for GLMs
 <h2 class="anchored" data-anchor-id="shrinkage-methods-for-glms">Shrinkage methods for GLMs</h2>
 <ul>
 <li><p>Shrinkage methods such as ridge and lasso can be also generalized to GLMs.</p></li>
-<li><p>The elastic-net approach, which covers ridge and lasso as special cases, becomes: <span class="math display">
-(\hat{\beta}_0,\hat{\beta})= \arg\min_{(\beta_0, \beta)}\left\{ -\frac{1}{n}\sum_{i=1}^n\ell(y_i; \beta_0 + \bm{x}_i^T\beta) + \lambda\sum_{j=1}^p\left(\alpha  |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\right)\right\},
+<li><p>The elastic-net approach for <span class="blue">logistic regression</span>, which covers ridge and lasso as special cases, becomes: <span class="math display">
+\min_{(\beta_0, \beta)}\left\{ -\frac{1}{n}\sum_{i=1}^n y_i (\beta_0 + \bm{x}_i^T\beta) - \log\{1 + \exp(\beta_0 + \bm{x}_i^T\beta)\} + \lambda\sum_{j=1}^p\left(\alpha  |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\right)\right\},
 </span> which is an instance of <span class="orange">penalized log-likelihood</span>.</p></li>
 <li><p><span class="blue">Most of the properties</span> (e.g.&nbsp;ridge = variance reduction and shrinkage, lasso = variable selection) and other high-level considerations we made so far are <span class="blue">still valid</span>.</p></li>
 <li><p>Computations are somewhat more cumbersome. The <code>glmnet</code> package provides the numerical routines for fitting this kind of model, using variants of <span class="blue">coordinate descent</span>.</p></li>
