@@ -128,6 +128,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#graphical-analysis-other" id="toc-graphical-analysis-other" class="nav-link" data-scroll-target="#graphical-analysis-other">Graphical analysis (Other)</a></li>
   <li><a href="#the-choice-of-the-loss" id="toc-the-choice-of-the-loss" class="nav-link" data-scroll-target="#the-choice-of-the-loss">The choice of the loss</a></li>
   <li><a href="#the-worst-case-scenario" id="toc-the-worst-case-scenario" class="nav-link" data-scroll-target="#the-worst-case-scenario">The worst case scenario</a></li>
+  <li><a href="#a-simple-linear-regression-i" id="toc-a-simple-linear-regression-i" class="nav-link" data-scroll-target="#a-simple-linear-regression-i">A simple linear regression I</a></li>
+  <li><a href="#a-simple-linear-regression-ii" id="toc-a-simple-linear-regression-ii" class="nav-link" data-scroll-target="#a-simple-linear-regression-ii">A simple linear regression II</a></li>
+  <li><a href="#a-simple-linear-regression-iii" id="toc-a-simple-linear-regression-iii" class="nav-link" data-scroll-target="#a-simple-linear-regression-iii">A simple linear regression III</a></li>
+  <li><a href="#best-subset-selection" id="toc-best-subset-selection" class="nav-link" data-scroll-target="#best-subset-selection">Best subset selection</a></li>
+  <li><a href="#the-full-model" id="toc-the-full-model" class="nav-link" data-scroll-target="#the-full-model">The full model</a></li>
+  <li><a href="#forward-and-backward-regression" id="toc-forward-and-backward-regression" class="nav-link" data-scroll-target="#forward-and-backward-regression">Forward and backward regression</a></li>
+  <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation">Cross-validation</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -205,7 +212,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/AmesHousing.csv"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"../data/AmesHousing.csv"</span>, )</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>ames</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2,930 × 82
@@ -242,93 +249,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>The first thing we need to do is understanding the <span class="orange">meaning of each variable</span>.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ames)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 2,930
-Columns: 82
-$ Order             &lt;dbl&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 1…
-$ PID               &lt;chr&gt; "0526301100", "0526350040", "0526351010", "052635303…
-$ `MS SubClass`     &lt;chr&gt; "020", "020", "020", "020", "060", "060", "120", "12…
-$ `MS Zoning`       &lt;chr&gt; "RL", "RH", "RL", "RL", "RL", "RL", "RL", "RL", "RL"…
-$ `Lot Frontage`    &lt;dbl&gt; 141, 80, 81, 93, 74, 78, 41, 43, 39, 60, 75, NA, 63,…
-$ `Lot Area`        &lt;dbl&gt; 31770, 11622, 14267, 11160, 13830, 9978, 4920, 5005,…
-$ Street            &lt;chr&gt; "Pave", "Pave", "Pave", "Pave", "Pave", "Pave", "Pav…
-$ Alley             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-$ `Lot Shape`       &lt;chr&gt; "IR1", "Reg", "IR1", "Reg", "IR1", "IR1", "Reg", "IR…
-$ `Land Contour`    &lt;chr&gt; "Lvl", "Lvl", "Lvl", "Lvl", "Lvl", "Lvl", "Lvl", "HL…
-$ Utilities         &lt;chr&gt; "AllPub", "AllPub", "AllPub", "AllPub", "AllPub", "A…
-$ `Lot Config`      &lt;chr&gt; "Corner", "Inside", "Corner", "Corner", "Inside", "I…
-$ `Land Slope`      &lt;chr&gt; "Gtl", "Gtl", "Gtl", "Gtl", "Gtl", "Gtl", "Gtl", "Gt…
-$ Neighborhood      &lt;chr&gt; "NAmes", "NAmes", "NAmes", "NAmes", "Gilbert", "Gilb…
-$ `Condition 1`     &lt;chr&gt; "Norm", "Feedr", "Norm", "Norm", "Norm", "Norm", "No…
-$ `Condition 2`     &lt;chr&gt; "Norm", "Norm", "Norm", "Norm", "Norm", "Norm", "Nor…
-$ `Bldg Type`       &lt;chr&gt; "1Fam", "1Fam", "1Fam", "1Fam", "1Fam", "1Fam", "Twn…
-$ `House Style`     &lt;chr&gt; "1Story", "1Story", "1Story", "1Story", "2Story", "2…
-$ `Overall Qual`    &lt;dbl&gt; 6, 5, 6, 7, 5, 6, 8, 8, 8, 7, 6, 6, 6, 7, 8, 8, 8, 9…
-$ `Overall Cond`    &lt;dbl&gt; 5, 6, 6, 5, 5, 6, 5, 5, 5, 5, 5, 7, 5, 5, 5, 5, 7, 2…
-$ `Year Built`      &lt;dbl&gt; 1960, 1961, 1958, 1968, 1997, 1998, 2001, 1992, 1995…
-$ `Year Remod/Add`  &lt;dbl&gt; 1960, 1961, 1958, 1968, 1998, 1998, 2001, 1992, 1996…
-$ `Roof Style`      &lt;chr&gt; "Hip", "Gable", "Hip", "Hip", "Gable", "Gable", "Gab…
-$ `Roof Matl`       &lt;chr&gt; "CompShg", "CompShg", "CompShg", "CompShg", "CompShg…
-$ `Exterior 1st`    &lt;chr&gt; "BrkFace", "VinylSd", "Wd Sdng", "BrkFace", "VinylSd…
-$ `Exterior 2nd`    &lt;chr&gt; "Plywood", "VinylSd", "Wd Sdng", "BrkFace", "VinylSd…
-$ `Mas Vnr Type`    &lt;chr&gt; "Stone", "None", "BrkFace", "None", "None", "BrkFace…
-$ `Mas Vnr Area`    &lt;dbl&gt; 112, 0, 108, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 60…
-$ `Exter Qual`      &lt;chr&gt; "TA", "TA", "TA", "Gd", "TA", "TA", "Gd", "Gd", "Gd"…
-$ `Exter Cond`      &lt;chr&gt; "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA"…
-$ Foundation        &lt;chr&gt; "CBlock", "CBlock", "CBlock", "CBlock", "PConc", "PC…
-$ `Bsmt Qual`       &lt;chr&gt; "TA", "TA", "TA", "TA", "Gd", "TA", "Gd", "Gd", "Gd"…
-$ `Bsmt Cond`       &lt;chr&gt; "Gd", "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA"…
-$ `Bsmt Exposure`   &lt;chr&gt; "Gd", "No", "No", "No", "No", "No", "Mn", "No", "No"…
-$ `BsmtFin Type 1`  &lt;chr&gt; "BLQ", "Rec", "ALQ", "ALQ", "GLQ", "GLQ", "GLQ", "AL…
-$ `BsmtFin SF 1`    &lt;dbl&gt; 639, 468, 923, 1065, 791, 602, 616, 263, 1180, 0, 0,…
-$ `BsmtFin Type 2`  &lt;chr&gt; "Unf", "LwQ", "Unf", "Unf", "Unf", "Unf", "Unf", "Un…
-$ `BsmtFin SF 2`    &lt;dbl&gt; 0, 144, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1120, 0,…
-$ `Bsmt Unf SF`     &lt;dbl&gt; 441, 270, 406, 1045, 137, 324, 722, 1017, 415, 994, …
-$ `Total Bsmt SF`   &lt;dbl&gt; 1080, 882, 1329, 2110, 928, 926, 1338, 1280, 1595, 9…
-$ Heating           &lt;chr&gt; "GasA", "GasA", "GasA", "GasA", "GasA", "GasA", "Gas…
-$ `Heating QC`      &lt;chr&gt; "Fa", "TA", "TA", "Ex", "Gd", "Ex", "Ex", "Ex", "Ex"…
-$ `Central Air`     &lt;chr&gt; "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y…
-$ Electrical        &lt;chr&gt; "SBrkr", "SBrkr", "SBrkr", "SBrkr", "SBrkr", "SBrkr"…
-$ `1st Flr SF`      &lt;dbl&gt; 1656, 896, 1329, 2110, 928, 926, 1338, 1280, 1616, 1…
-$ `2nd Flr SF`      &lt;dbl&gt; 0, 0, 0, 0, 701, 678, 0, 0, 0, 776, 892, 0, 676, 0, …
-$ `Low Qual Fin SF` &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-$ `Gr Liv Area`     &lt;dbl&gt; 1656, 896, 1329, 2110, 1629, 1604, 1338, 1280, 1616,…
-$ `Bsmt Full Bath`  &lt;dbl&gt; 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1…
-$ `Bsmt Half Bath`  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-$ `Full Bath`       &lt;dbl&gt; 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 3, 2, 1…
-$ `Half Bath`       &lt;dbl&gt; 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1…
-$ `Bedroom AbvGr`   &lt;dbl&gt; 3, 2, 3, 3, 3, 3, 2, 2, 2, 3, 3, 3, 3, 2, 1, 4, 4, 1…
-$ `Kitchen AbvGr`   &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…
-$ `Kitchen Qual`    &lt;chr&gt; "TA", "TA", "Gd", "Ex", "TA", "Gd", "Gd", "Gd", "Gd"…
-$ `TotRms AbvGrd`   &lt;dbl&gt; 7, 5, 6, 8, 6, 7, 6, 5, 5, 7, 7, 6, 7, 5, 4, 12, 8, …
-$ Functional        &lt;chr&gt; "Typ", "Typ", "Typ", "Typ", "Typ", "Typ", "Typ", "Ty…
-$ Fireplaces        &lt;dbl&gt; 2, 0, 0, 2, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1…
-$ `Fireplace Qu`    &lt;chr&gt; "Gd", NA, NA, "TA", "TA", "Gd", NA, NA, "TA", "TA", …
-$ `Garage Type`     &lt;chr&gt; "Attchd", "Attchd", "Attchd", "Attchd", "Attchd", "A…
-$ `Garage Yr Blt`   &lt;dbl&gt; 1960, 1961, 1958, 1968, 1997, 1998, 2001, 1992, 1995…
-$ `Garage Finish`   &lt;chr&gt; "Fin", "Unf", "Unf", "Fin", "Fin", "Fin", "Fin", "RF…
-$ `Garage Cars`     &lt;dbl&gt; 2, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 3…
-$ `Garage Area`     &lt;dbl&gt; 528, 730, 312, 522, 482, 470, 582, 506, 608, 442, 44…
-$ `Garage Qual`     &lt;chr&gt; "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA"…
-$ `Garage Cond`     &lt;chr&gt; "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA", "TA"…
-$ `Paved Drive`     &lt;chr&gt; "P", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y", "Y…
-$ `Wood Deck SF`    &lt;dbl&gt; 210, 140, 393, 0, 212, 360, 0, 0, 237, 140, 157, 483…
-$ `Open Porch SF`   &lt;dbl&gt; 62, 0, 36, 0, 34, 36, 0, 82, 152, 60, 84, 21, 75, 0,…
-$ `Enclosed Porch`  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 170, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
-$ `3Ssn Porch`      &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-$ `Screen Porch`    &lt;dbl&gt; 0, 120, 0, 0, 0, 0, 0, 144, 0, 0, 0, 0, 0, 0, 140, 2…
-$ `Pool Area`       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0…
-$ `Pool QC`         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-$ Fence             &lt;chr&gt; NA, "MnPrv", NA, NA, "MnPrv", NA, NA, NA, NA, NA, NA…
-$ `Misc Feature`    &lt;chr&gt; NA, NA, "Gar2", NA, NA, NA, NA, NA, NA, NA, NA, "She…
-$ `Misc Val`        &lt;dbl&gt; 0, 0, 12500, 0, 0, 0, 0, 0, 0, 0, 0, 500, 0, 0, 0, 0…
-$ `Mo Sold`         &lt;dbl&gt; 5, 6, 6, 4, 3, 6, 4, 1, 3, 6, 4, 3, 5, 2, 6, 6, 6, 6…
-$ `Yr Sold`         &lt;dbl&gt; 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2010, 2010…
-$ `Sale Type`       &lt;chr&gt; "WD", "WD", "WD", "WD", "WD", "WD", "WD", "WD", "WD"…
-$ `Sale Condition`  &lt;chr&gt; "Normal", "Normal", "Normal", "Normal", "Normal", "N…
-$ SalePrice         &lt;dbl&gt; 215000, 105000, 172000, 244000, 189900, 195500, 2135…</code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(ames)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>skimr<span class="sc">::</span><span class="fu">skim</span>(ames)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>We have access to a detailed <a href="../data/ames_documentation.txt">documentation</a>. Reading the documentation can be time-consuming… but it is probably the most important part of the analysis.</li>
@@ -340,7 +262,7 @@ $ SalePrice         &lt;dbl&gt; 215000, 105000, 172000, 244000, 189900, 195500, 
 <li>A minority of the observations are <span class="blue">non residential</span> buildings, as indicated by the <code>MS Zoning</code> variable.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">MS Zoning</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">MS Zoning</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 A (agr) C (all)      FV I (all)      RH      RL      RM 
@@ -351,12 +273,12 @@ A (agr) C (all)      FV I (all)      RH      RL      RM
 <li>Our goal is to predict the price of a <span class="blue">residential</span> building, therefore it makes sense to <span class="orange">exclude</span> these observations from the dataset.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From the documentation:</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># "C (all)" = Commercial sales</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># "I (all)" = Industrial sales</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co"># "A (agr)" = Agricultural sales</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co"># "FV" = Floating village sales</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">filter</span>(ames, <span class="sc">!</span>(<span class="st">`</span><span class="at">MS Zoning</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"C (all)"</span>, <span class="st">"I (all)"</span>, <span class="st">"A (agr)"</span>, <span class="st">"FV"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From the documentation:</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># "C (all)" = Commercial sales</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co"># "I (all)" = Industrial sales</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># "A (agr)" = Agricultural sales</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="co"># "FV" = Floating village sales</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">filter</span>(ames, <span class="sc">!</span>(<span class="st">`</span><span class="at">MS Zoning</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"C (all)"</span>, <span class="st">"I (all)"</span>, <span class="st">"A (agr)"</span>, <span class="st">"FV"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="sales-typology" class="level2">
@@ -365,7 +287,7 @@ A (agr) C (all)      FV I (all)      RH      RL      RM
 <li>There is a second caveat. In the original ames dataset there are different <span class="orange">type of sales</span>:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Sale Condition</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Sale Condition</span><span class="st">`</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Abnorml AdjLand  Alloca  Family  Normal Partial 
@@ -377,10 +299,10 @@ Abnorml AdjLand  Alloca  Family  Normal Partial
 <li><p>We are interested only in <code>Normal</code> sales, therefore we <span class="orange">exclude</span> adjoining land purchases, deed re-allocations, internal-family sales, and incomplete houses.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Only normal sales</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">filter</span>(ames, <span class="st">`</span><span class="at">Sale Condition</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Normal"</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The variables can be dropped</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Sale Condition</span><span class="st">`</span>, <span class="st">`</span><span class="at">Sale Type</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Only normal sales</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">filter</span>(ames, <span class="st">`</span><span class="at">Sale Condition</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"Normal"</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The variables can be dropped</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Sale Condition</span><span class="st">`</span>, <span class="st">`</span><span class="at">Sale Type</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>After these operations, we are left with <span class="math inline">n = 2305</span> observations and <span class="math inline">80</span> variables.</li>
@@ -392,8 +314,8 @@ Abnorml AdjLand  Alloca  Family  Normal Partial
 <li>From the documentation we learn that both <code>Order</code> and <code>PID</code> can be removed from the dataset, as they carry no information about <code>SalePrice</code>.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop the variables</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(Order, PID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Drop the variables</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(Order, PID))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Moreover, we can build some intuition and expectations about the variables. A few randomly selected examples:
@@ -412,7 +334,7 @@ Abnorml AdjLand  Alloca  Family  Normal Partial
 <li><p>The most important variable is arguably <code>SalesPrice</code>, being our target:</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ames<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(ames<span class="sc">$</span>SalePrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
   35000  129000  157000  174640  203000  755000 </code></pre>
@@ -428,9 +350,9 @@ Abnorml AdjLand  Alloca  Family  Normal Partial
 <li>The distribution of <code>SalePrice</code> is slightly asymmetric, as it is often the case with prices. <span class="orange">Idea</span>: what about taking the log?</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ames<span class="sc">$</span>SalePrice, <span class="at">xlab =</span> <span class="st">"Price"</span>, <span class="at">main =</span> <span class="st">"SalePrice"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log</span>(ames<span class="sc">$</span>SalePrice), <span class="at">xlab =</span> <span class="st">"Price"</span>, <span class="at">main =</span> <span class="st">"Logarithm of SalePrice"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(ames<span class="sc">$</span>SalePrice, <span class="at">xlab =</span> <span class="st">"Price"</span>, <span class="at">main =</span> <span class="st">"SalePrice"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(<span class="fu">log</span>(ames<span class="sc">$</span>SalePrice), <span class="at">xlab =</span> <span class="st">"Price"</span>, <span class="at">main =</span> <span class="st">"Logarithm of SalePrice"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -442,43 +364,9 @@ Abnorml AdjLand  Alloca  Family  Normal Partial
 <li>The <code>ames</code> dataset has a lot of <span class="orange">missing values</span>, most of which are <span class="blue">structural</span>.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the frequency of the missing values for each variable</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>freq_missing <span class="ot">&lt;-</span> <span class="fu">apply</span>(ames, <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x))) <span class="co"># Number of missing values</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(freq_missing, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>        Pool QC    Misc Feature           Alley           Fence    Fireplace Qu 
-           2296            2210            2187            1806            1103 
-   Lot Frontage   Garage Yr Blt   Garage Finish     Garage Qual     Garage Cond 
-            431             113             113             113             113 
-    Garage Type   Bsmt Exposure  BsmtFin Type 2       Bsmt Qual       Bsmt Cond 
-            112              67              66              65              65 
- BsmtFin Type 1    Mas Vnr Type    Mas Vnr Area      Electrical  Bsmt Full Bath 
-             65               9               9               1               1 
- Bsmt Half Bath     MS SubClass       MS Zoning        Lot Area          Street 
-              1               0               0               0               0 
-      Lot Shape    Land Contour       Utilities      Lot Config      Land Slope 
-              0               0               0               0               0 
-   Neighborhood     Condition 1     Condition 2       Bldg Type     House Style 
-              0               0               0               0               0 
-   Overall Qual    Overall Cond      Year Built  Year Remod/Add      Roof Style 
-              0               0               0               0               0 
-      Roof Matl    Exterior 1st    Exterior 2nd      Exter Qual      Exter Cond 
-              0               0               0               0               0 
-     Foundation    BsmtFin SF 1    BsmtFin SF 2     Bsmt Unf SF   Total Bsmt SF 
-              0               0               0               0               0 
-        Heating      Heating QC     Central Air      1st Flr SF      2nd Flr SF 
-              0               0               0               0               0 
-Low Qual Fin SF     Gr Liv Area       Full Bath       Half Bath   Bedroom AbvGr 
-              0               0               0               0               0 
-  Kitchen AbvGr    Kitchen Qual   TotRms AbvGrd      Functional      Fireplaces 
-              0               0               0               0               0 
-    Garage Cars     Garage Area     Paved Drive    Wood Deck SF   Open Porch SF 
-              0               0               0               0               0 
- Enclosed Porch      3Ssn Porch    Screen Porch       Pool Area        Misc Val 
-              0               0               0               0               0 
-        Mo Sold         Yr Sold       SalePrice 
-              0               0               0 </code></pre>
-</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the frequency of the missing values for each variable</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>freq_missing <span class="ot">&lt;-</span> <span class="fu">apply</span>(ames, <span class="dv">2</span>, <span class="cf">function</span>(x) <span class="fu">sum</span>(<span class="fu">is.na</span>(x))) <span class="co"># Number of missing values</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(freq_missing, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><p>Imputation is not a good idea for most of these variables. A missing value for <code>Pool QC</code> means that there is no pool in the house, therefore we should not try to “impute” it.</p></li>
@@ -495,13 +383,13 @@ Low Qual Fin SF     Gr Liv Area       Full Bath       Half Bath   Bedroom AbvGr
 <li>Missing values have been re-coded.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span>Alley, <span class="at">useNA =</span> <span class="st">"always"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span>Alley, <span class="at">useNA =</span> <span class="st">"always"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Grvl Pave &lt;NA&gt; 
   99   19 2187 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span>Alley[<span class="fu">is.na</span>(ames<span class="sc">$</span>Alley)] <span class="ot">&lt;-</span> <span class="st">"No alley access"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span>Alley[<span class="fu">is.na</span>(ames<span class="sc">$</span>Alley)] <span class="ot">&lt;-</span> <span class="st">"No alley access"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
@@ -509,11 +397,25 @@ Grvl Pave &lt;NA&gt;
 <li>Missing values have been re-coded.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Exposure</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Exposure</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No basement"</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Cond</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Cond</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No basement"</span></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">BsmtFin Type 1</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">BsmtFin Type 1</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No basement"</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">BsmtFin Type 2</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">BsmtFin Type 2</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No basement"</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Qual</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Qual</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No basement"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Exposure</span><span class="st">`</span>, ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Cond</span><span class="st">`</span>, <span class="at">useNA =</span> <span class="st">"always"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      
+         Ex   Fa   Gd   Po   TA &lt;NA&gt;
+  Av      1    2   15    0  282    0
+  Gd      0    1   14    1  203    0
+  Mn      1    8   10    0  172    0
+  No      1   68   46    2 1411    0
+  &lt;NA&gt;    0    0    0    0    2   65</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>id_no_bsmt <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">cbind</span>(<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Exposure</span><span class="st">`</span>), <span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Cond</span><span class="st">`</span>), </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">BsmtFin Type 1</span><span class="st">`</span>), <span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">BsmtFin Type 2</span><span class="st">`</span>),</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Qual</span><span class="st">`</span>)), <span class="dv">1</span>, any)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Exposure</span><span class="st">`</span>[id_no_bsmt] <span class="ot">&lt;-</span> <span class="st">"No basement"</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Cond</span><span class="st">`</span>[id_no_bsmt] <span class="ot">&lt;-</span> <span class="st">"No basement"</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">BsmtFin Type 1</span><span class="st">`</span>[id_no_bsmt] <span class="ot">&lt;-</span> <span class="st">"No basement"</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">BsmtFin Type 2</span><span class="st">`</span>[id_no_bsmt] <span class="ot">&lt;-</span> <span class="st">"No basement"</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Qual</span><span class="st">`</span>[id_no_bsmt] <span class="ot">&lt;-</span> <span class="st">"No basement"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>There are two missing values in <code>Bsmt Full Bath</code> and <code>Bsmt Half Bath</code>, which we impute with the most common value.</li>
@@ -570,17 +472,31 @@ GdPrv  GdWo MnPrv  MnWw  &lt;NA&gt;
 <li>We re-code all the variables about the garage.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Cond</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Cond</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No garage"</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Finish</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Finish</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No garage"</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Qual</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Qual</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No garage"</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Type</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Type</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No garage"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Cond</span><span class="st">`</span>, ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Type</span><span class="st">`</span>, <span class="at">useNA =</span> <span class="st">"always"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      
+       2Types Attchd Basment BuiltIn CarPort Detchd &lt;NA&gt;
+  Ex        0      0       0       0       0      3    0
+  Fa        1      4       0       0       0     56    0
+  Gd        0     11       0       0       0      2    0
+  Po        0      1       0       0       0      8    0
+  TA       18   1350      24     136       8    570    0
+  &lt;NA&gt;      0      0       0       0       0      1  112</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>id_no_garage <span class="ot">&lt;-</span> <span class="fu">apply</span>(<span class="fu">cbind</span>(<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Cond</span><span class="st">`</span>), <span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Finish</span><span class="st">`</span>), </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                            <span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Qual</span><span class="st">`</span>), <span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Type</span><span class="st">`</span>)), <span class="dv">1</span>, any)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Cond</span><span class="st">`</span>[id_no_garage] <span class="ot">&lt;-</span> <span class="st">"No garage"</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Finish</span><span class="st">`</span>[id_no_garage] <span class="ot">&lt;-</span> <span class="st">"No garage"</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Qual</span><span class="st">`</span>[id_no_garage] <span class="ot">&lt;-</span> <span class="st">"No garage"</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Garage Type</span><span class="st">`</span>[id_no_garage] <span class="ot">&lt;-</span> <span class="st">"No garage"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li><p>The variable <code>Garage Yr Blt</code> is more problematic. By replacing missing values with <code>No garage</code> would transform this variable into a categorical variable.</p></li>
 <li><p>For the sake of simplicity, given its low predictive value (i.e.&nbsp;the year of construction of the garage), in this analysis we just exclude this variable.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Garage Yr Blt</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Garage Yr Blt</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -597,7 +513,7 @@ GdPrv  GdWo MnPrv  MnWw  &lt;NA&gt;
 <li><p>Even though it is not clearly specified in the documentation, it is reasonable replace missing values with <span class="math inline">0</span> (no street).</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Lot Frontage</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Lot Frontage</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Lot Frontage</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Lot Frontage</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
@@ -606,8 +522,8 @@ GdPrv  GdWo MnPrv  MnWw  &lt;NA&gt;
 <li><p>In both cases (i) and (ii) it makes sense to perform the following:</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Mas Vnr Type</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Mas Vnr Type</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"None"</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Mas Vnr Area</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Mas Vnr Area</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Mas Vnr Type</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Mas Vnr Type</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"None"</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Mas Vnr Area</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Mas Vnr Area</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-2-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-3-tab">
@@ -615,14 +531,14 @@ GdPrv  GdWo MnPrv  MnWw  &lt;NA&gt;
 <li>Missing values are re-coded. Tennis <code>TenC</code> is aggregated with the other categories:</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Misc Feature</span><span class="st">`</span>, <span class="at">useNA =</span> <span class="st">"always"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Misc Feature</span><span class="st">`</span>, <span class="at">useNA =</span> <span class="st">"always"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Gar2 Othr Shed TenC &lt;NA&gt; 
    5    3   86    1 2210 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Misc Feature</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Misc Feature</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No additional feature"</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Misc Feature</span><span class="st">`</span>[ames<span class="sc">$</span><span class="st">`</span><span class="at">Misc Feature</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"TenC"</span>] <span class="ot">&lt;-</span> <span class="st">"Othr"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Misc Feature</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Misc Feature</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No additional feature"</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Misc Feature</span><span class="st">`</span>[ames<span class="sc">$</span><span class="st">`</span><span class="at">Misc Feature</span><span class="st">`</span> <span class="sc">==</span> <span class="st">"TenC"</span>] <span class="ot">&lt;-</span> <span class="st">"Othr"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 <div id="tabset-2-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-4-tab">
@@ -630,14 +546,14 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 <li>Missing values have been re-coded. All the other values have been aggregated.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Pool QC</span><span class="st">`</span>, <span class="at">useNA =</span> <span class="st">"always"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Pool QC</span><span class="st">`</span>, <span class="at">useNA =</span> <span class="st">"always"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
   Ex   Fa   Gd   TA &lt;NA&gt; 
    2    2    2    3 2296 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Pool QC</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Pool QC</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No"</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Pool QC</span><span class="st">`</span>[ames<span class="sc">$</span><span class="st">`</span><span class="at">Pool QC</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"TA"</span>, <span class="st">"Ex"</span>, <span class="st">"Gd"</span>, <span class="st">"Fa"</span>)] <span class="ot">&lt;-</span> <span class="st">"Yes"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Pool QC</span><span class="st">`</span>[<span class="fu">is.na</span>(ames<span class="sc">$</span><span class="st">`</span><span class="at">Pool QC</span><span class="st">`</span>)] <span class="ot">&lt;-</span> <span class="st">"No"</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Pool QC</span><span class="st">`</span>[ames<span class="sc">$</span><span class="st">`</span><span class="at">Pool QC</span><span class="st">`</span> <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"TA"</span>, <span class="st">"Ex"</span>, <span class="st">"Gd"</span>, <span class="st">"Fa"</span>)] <span class="ot">&lt;-</span> <span class="st">"Yes"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -650,19 +566,19 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 <li><p>A first example is the total dimension of the Porch, obtained as the sum of all its sub-components.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Porch Sq Feet</span><span class="st">`</span> <span class="ot">&lt;-</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Open Porch SF</span><span class="st">`</span> <span class="sc">+</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Enclosed Porch</span><span class="st">`</span> <span class="sc">+</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">3Ssn Porch</span><span class="st">`</span> <span class="sc">+</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Screen Porch</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Porch Sq Feet</span><span class="st">`</span> <span class="ot">&lt;-</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Open Porch SF</span><span class="st">`</span> <span class="sc">+</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Enclosed Porch</span><span class="st">`</span> <span class="sc">+</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">3Ssn Porch</span><span class="st">`</span> <span class="sc">+</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Screen Porch</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>In a similar spirit, we can create a variable counting the total number of bathrooms in the house.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Tot Bathrooms</span><span class="st">`</span> <span class="ot">&lt;-</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Full Bath</span><span class="st">`</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Half Bath</span><span class="st">`</span> <span class="sc">+</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Full Bath</span><span class="st">`</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Half Bath</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">Tot Bathrooms</span><span class="st">`</span> <span class="ot">&lt;-</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Full Bath</span><span class="st">`</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Half Bath</span><span class="st">`</span> <span class="sc">+</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Full Bath</span><span class="st">`</span> <span class="sc">+</span> <span class="fl">0.5</span> <span class="sc">*</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Bsmt Half Bath</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Finally, we create the variable indicating the “Age” of the house.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">House Age</span><span class="st">`</span> <span class="ot">&lt;-</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Yr Sold</span><span class="st">`</span> <span class="sc">-</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Year Remod/Add</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>ames<span class="sc">$</span><span class="st">`</span><span class="at">House Age</span><span class="st">`</span> <span class="ot">&lt;-</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Yr Sold</span><span class="st">`</span> <span class="sc">-</span> ames<span class="sc">$</span><span class="st">`</span><span class="at">Year Remod/Add</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="deleting-irrelevant-variables" class="level2">
@@ -673,57 +589,15 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 <li><p>We already deleted <code>Order</code> and <code>PID</code> before, but other examples are the following variables:</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Most of the information is already included in House Age</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Mo Sold</span><span class="st">`</span>, <span class="st">`</span><span class="at">Yr Sold</span><span class="st">`</span>, <span class="st">`</span><span class="at">Year Remod/Add</span><span class="st">`</span>, <span class="st">`</span><span class="at">Year Built</span><span class="st">`</span>))</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Most of the information is already included in Porch Sq Feet</span></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Open Porch SF</span><span class="st">`</span>, <span class="st">`</span><span class="at">Enclosed Porch</span><span class="st">`</span>, <span class="st">`</span><span class="at">3Ssn Porch</span><span class="st">`</span>, <span class="st">`</span><span class="at">Screen Porch</span><span class="st">`</span>))</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Most of the information is already included in Tot Bathrooms</span></span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Full Bath</span><span class="st">`</span>, <span class="st">`</span><span class="at">Half Bath</span><span class="st">`</span>, <span class="st">`</span><span class="at">Bsmt Full Bath</span><span class="st">`</span>, <span class="st">`</span><span class="at">Bsmt Half Bath</span><span class="st">`</span>))</span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Almost no information is present in these variables</span></span>
-<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Pool Area</span><span class="st">`</span>, Utilities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Most of the information is already included in House Age</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Mo Sold</span><span class="st">`</span>, <span class="st">`</span><span class="at">Yr Sold</span><span class="st">`</span>, <span class="st">`</span><span class="at">Year Remod/Add</span><span class="st">`</span>, <span class="st">`</span><span class="at">Year Built</span><span class="st">`</span>))</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Most of the information is already included in Porch Sq Feet</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Open Porch SF</span><span class="st">`</span>, <span class="st">`</span><span class="at">Enclosed Porch</span><span class="st">`</span>, <span class="st">`</span><span class="at">3Ssn Porch</span><span class="st">`</span>, <span class="st">`</span><span class="at">Screen Porch</span><span class="st">`</span>))</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Most of the information is already included in Tot Bathrooms</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Full Bath</span><span class="st">`</span>, <span class="st">`</span><span class="at">Half Bath</span><span class="st">`</span>, <span class="st">`</span><span class="at">Bsmt Full Bath</span><span class="st">`</span>, <span class="st">`</span><span class="at">Bsmt Half Bath</span><span class="st">`</span>))</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Almost no information is present in these variables</span></span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>ames <span class="ot">&lt;-</span> <span class="fu">select</span>(ames, <span class="sc">-</span><span class="fu">c</span>(<span class="st">`</span><span class="at">Pool Area</span><span class="st">`</span>, Utilities))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<!-- ## Rescaling -->
-<!-- -   For numerical purposes, it is often convenient to [standardize]{.orange} the -->
-<!--     numerical covariates. -->
-<!-- -   Let $x_{1j},\dots,x_{nj}$ be the values of the $j$th covariate, then -->
-<!--     we compute -->
-<!-- $$ -->
-<!-- z_{ij} = \frac{x_{ij} - \bar{x}_j}{\sigma_j}, \qquad i=1,\dots,n, -->
-<!-- $$ where $\bar{x}_j$ and $\sigma_j$ are the mean and the standard -->
-<!-- deviation of the data $x_{1j},\dots,x_{nj}$. -->
-<!-- ```{python} -->
-<!-- import numpy as np -->
-<!-- X = ames.drop(columns = ['SalePrice']) -->
-<!-- numeric_feats = X.dtypes[X.dtypes != "object"].index # Identify the numerical features -->
-<!-- X[numeric_feats] = X[numeric_feats].apply(lambda x: (x - np.mean(x)) / np.std(x)) # Standardization -->
-<!-- ``` -->
-<!-- -   This is useful for many predictive algorithms, such as the lasso. -->
-<!-- -   The regression coefficients are in now the same scale and the -->
-<!--     shrinkage induced by the lasso penalty acts in a more meaningful -->
-<!--     manner. -->
-<!-- -   An important drawback is a [loss]{style="color:DarkOrange"} in terms -->
-<!--     of [interpretability]{style="color:DarkOrange"}. -->
-<!-- ## Dummy variables -->
-<!-- -   Most of the variables are [categorical]{style="color:DarkOrange"}. -->
-<!--     In Python, we need to "convert" these variables into numbers. -->
-<!-- ```{python} -->
-<!-- X = pd.get_dummies(X) -->
-<!-- X.shape -->
-<!-- ``` -->
-<!-- -   The function `get_dummies` does not automatically drop one of the -->
-<!--     categories, therefore leading to the so-called [dummy -->
-<!--     trap](https://en.wikipedia.org/wiki/Multicollinearity). Is this an -->
-<!--     issue? It depends on the algorithm... -->
-<!-- -   After this operations, some variables might be collinear (i.e. the -->
-<!--     `No garage` indicators) -->
-<!-- ```{python} -->
-<!-- # This removes identical columns -->
-<!-- X = X.T.drop_duplicates().T -->
-<!-- X.shape -->
-<!-- ``` -->
-<!-- -   The number of variables could explode if a certain variable has a -->
-<!--     lot of categories. In these cases, you could aggregate some -->
-<!--     categories. -->
 </section>
 <section id="what-else" class="level2">
 <h2 class="anchored" data-anchor-id="what-else">What else?</h2>
@@ -753,31 +627,33 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 <li><p>Never perform operations involving the target variable <code>SalePrice</code> on the full dataset. In particular, never “clean” the data on the basis of the target, this could lead to overfitting.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Manual subdivision in training / test</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Randomly allocate the id of the variables into training and test</span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>id_train <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ames), <span class="at">size =</span> <span class="fu">floor</span>(<span class="dv">2</span> <span class="sc">/</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">nrow</span>(ames)), <span class="at">replace =</span> <span class="cn">FALSE</span>))</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>id_test <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ames), id_train)</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create two different datasets</span></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>ames_train <span class="ot">&lt;-</span> ames[id_train, ]</span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>ames_test <span class="ot">&lt;-</span> ames[id_test, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Manual subdivision in training / test</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Randomly allocate the id of the variables into training and test</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>id_train <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ames), <span class="at">size =</span> <span class="fu">floor</span>(<span class="dv">2</span> <span class="sc">/</span> <span class="dv">3</span> <span class="sc">*</span> <span class="fu">nrow</span>(ames)), <span class="at">replace =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>id_test <span class="ot">&lt;-</span> <span class="fu">setdiff</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(ames), id_train)</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create two different datasets</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>ames_train <span class="ot">&lt;-</span> ames[id_train, ]</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>ames_test <span class="ot">&lt;-</span> ames[id_test, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>From now on, it is <span class="orange">forbidden</span> to look at the <span class="orange">test set</span> until the very end of the analysis.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">data.frame</span>(ames_train), <span class="st">"../data/ames_train.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">data.frame</span>(ames_test), <span class="st">"../data/ames_test.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">data.frame</span>(ames_train), <span class="st">"../data/ames_train.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(<span class="fu">data.frame</span>(ames_test), <span class="st">"../data/ames_test.csv"</span>, <span class="at">row.names =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 </section>
 <section id="predictive-modeling" class="level1">
 <h1>Predictive modeling</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>ames_train <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../data/ames_train.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">","</span>)</span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>ames_test <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../data/ames_train.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">","</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span>(<span class="at">list =</span> <span class="fu">ls</span>())</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>ames_train <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../data/ames_train.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">","</span>,</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">stringsAsFactors =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>ames_test <span class="ot">&lt;-</span> <span class="fu">read.table</span>(<span class="st">"../data/ames_train.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">","</span>,</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>                        <span class="at">stringsAsFactors =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="some-possible-predictors" class="level2">
 <h2 class="anchored" data-anchor-id="some-possible-predictors">Some possible predictors</h2>
@@ -796,9 +672,9 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
-<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>Gr.Liv.Area, ames_train<span class="sc">$</span>SalePrice, </span>
-<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Ground living area"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>Gr.Liv.Area, ames_train<span class="sc">$</span>SalePrice, </span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Ground living area"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -806,8 +682,8 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>Total.Bsmt.SF, ames_train<span class="sc">$</span>SalePrice, </span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Total Basement SF"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>Total.Bsmt.SF, ames_train<span class="sc">$</span>SalePrice, </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Total Basement SF"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -815,8 +691,8 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 </div>
 <div id="tabset-3-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-3-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>Garage.Area, ames_train<span class="sc">$</span>SalePrice, </span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Garage Area"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>Garage.Area, ames_train<span class="sc">$</span>SalePrice, </span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Garage Area"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -824,8 +700,8 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 </div>
 <div id="tabset-3-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-4-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>Porch.Sq.Feet, ames_train<span class="sc">$</span>SalePrice, </span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Porch Square Feet"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>Porch.Sq.Feet, ames_train<span class="sc">$</span>SalePrice, </span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Porch Square Feet"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -833,8 +709,8 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 </div>
 <div id="tabset-3-5" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-5-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>Tot.Bathrooms, ames_train<span class="sc">$</span>SalePrice, </span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Tot Bathrooms"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>Tot.Bathrooms, ames_train<span class="sc">$</span>SalePrice, </span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"Tot Bathrooms"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -850,7 +726,7 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 <div class="tab-content">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Overall.Qual, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Overall.Qual, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -858,7 +734,7 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 </div>
 <div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Bsmt.Qual, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Bsmt.Qual, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-37-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -866,7 +742,7 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 </div>
 <div id="tabset-4-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-3-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Exter.Qual, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Exter.Qual, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-38-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -874,7 +750,7 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 </div>
 <div id="tabset-4-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-4-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Kitchen.Qual, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Kitchen.Qual, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-39-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -890,8 +766,8 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 <div class="tab-content">
 <div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>House.Age, ames_train<span class="sc">$</span>SalePrice,</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"House Age (Years)"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ames_train<span class="sc">$</span>House.Age, ames_train<span class="sc">$</span>SalePrice,</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab =</span> <span class="st">"House Age (Years)"</span>, <span class="at">ylab =</span> <span class="st">"Sale Price"</span>, <span class="at">pch =</span> <span class="dv">16</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-40-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -899,7 +775,7 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 </div>
 <div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> MS.Zoning, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> MS.Zoning, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-41-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -907,7 +783,7 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 </div>
 <div id="tabset-5-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-3-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Roof.Style, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Roof.Style, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-42-1.png" class="img-fluid" width="1800"></p>
 </div>
@@ -915,7 +791,7 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 </div>
 <div id="tabset-5-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-4-tab">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Neighborhood, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(SalePrice <span class="sc">~</span> Neighborhood, <span class="at">data =</span> ames_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="lab2_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid" width="2400"></p>
 </div>
@@ -946,26 +822,26 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 <li>Since we want to minimize the MAE on the original scale, the median of the training set represents our baseline.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>y_hat_median <span class="ot">=</span> <span class="fu">rep</span>(<span class="fu">median</span>(ames_train<span class="sc">$</span>SalePrice), <span class="fu">nrow</span>(ames_test)) <span class="co"># Prediction</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>y_hat_median <span class="ot">=</span> <span class="fu">rep</span>(<span class="fu">median</span>(ames_train<span class="sc">$</span>SalePrice), <span class="fu">nrow</span>(ames_test)) <span class="co"># Prediction</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>The following are the associated values of the loss based on the test set.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>MAE <span class="ot">&lt;-</span> <span class="cf">function</span>(y, y_fit){</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="fu">abs</span>(y <span class="sc">-</span> y_fit))</span>
-<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb62-4"><a href="#cb62-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a>RMSLE <span class="ot">&lt;-</span> <span class="cf">function</span>(y, y_fit){</span>
-<span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="fu">mean</span>( (<span class="fu">log</span>(y) <span class="sc">-</span> <span class="fu">log</span>(y_fit))<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>MAE <span class="ot">&lt;-</span> <span class="cf">function</span>(y, y_fit){</span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="fu">abs</span>(y <span class="sc">-</span> y_fit))</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>RMSLE <span class="ot">&lt;-</span> <span class="cf">function</span>(y, y_fit){</span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>(<span class="fu">mean</span>( (<span class="fu">log</span>(y) <span class="sc">-</span> <span class="fu">log</span>(y_fit))<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">MAE</span>(ames_test<span class="sc">$</span>SalePrice, y_hat_median), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">MAE</span>(ames_test<span class="sc">$</span>SalePrice, y_hat_median), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 49625.06</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">RMSLE</span>(ames_test<span class="sc">$</span>SalePrice, y_hat_median), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">RMSLE</span>(ames_test<span class="sc">$</span>SalePrice, y_hat_median), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.3727</code></pre>
 </div>
@@ -973,6 +849,512 @@ Gar2 Othr Shed TenC &lt;NA&gt;
 <ul>
 <li>Thus, any model having MAE higher that 50k and RMSLE higher than 0.37 should be regarded as a <span class="orange">coding error</span>.</li>
 </ul>
+</section>
+<section id="a-simple-linear-regression-i" class="level2">
+<h2 class="anchored" data-anchor-id="a-simple-linear-regression-i">A simple linear regression I</h2>
+<ul>
+<li><p>The first model we consider is a simple linear regression, which just a few predictors that we believe are relevant for this problem.</p></li>
+<li><p>We fit the following linear model</p></li>
+</ul>
+<p><span class="math display">
+\texttt{SalePrice} = \beta_0 + \beta_1 \texttt{Gr.Liv.Area} + \cdots + \beta_4 \texttt{Tot.Bathrooms}.
+</span></p>
+<ul>
+<li>The estimated coefficients are the following:</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>m_simple <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> Overall.Qual <span class="sc">+</span> House.Age  <span class="sc">+</span> Tot.Bathrooms, <span class="at">data =</span> ames_train)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_simple)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = SalePrice ~ Gr.Liv.Area + Overall.Qual + House.Age + 
+    Tot.Bathrooms, data = ames_train)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-146442  -20356   -1446   17108  264441 
+
+Coefficients:
+                Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   -74152.556   5422.131 -13.676  &lt; 2e-16 ***
+Gr.Liv.Area       50.540      2.392  21.125  &lt; 2e-16 ***
+Overall.Qual   25123.430    863.489  29.095  &lt; 2e-16 ***
+House.Age       -295.573     50.706  -5.829 6.78e-09 ***
+Tot.Bathrooms  14320.582   1451.714   9.865  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 33430 on 1531 degrees of freedom
+Multiple R-squared:  0.775, Adjusted R-squared:  0.7744 
+F-statistic:  1318 on 4 and 1531 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="a-simple-linear-regression-ii" class="level2">
+<h2 class="anchored" data-anchor-id="a-simple-linear-regression-ii">A simple linear regression II</h2>
+<ul>
+<li>In order to assess the performance of this very simple model, we rely on the values of MAE and RMSLE based on cross-validated predictions.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>y_hat_simple <span class="ot">&lt;-</span> <span class="fu">predict</span>(m_simple, <span class="at">newdata =</span> ames_test)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform a small correction:</span></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>y_hat_simple <span class="ot">&lt;-</span> <span class="fu">pmax</span>(y_hat_simple, <span class="dv">30000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">MAE</span>(ames_test<span class="sc">$</span>SalePrice, y_hat_simple), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 23864.66</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">RMSLE</span>(ames_test<span class="sc">$</span>SalePrice, y_hat_simple), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1892</code></pre>
+</div>
+</div>
+<ul>
+<li>We also “correct” the estimates of this first linear model, so that any prediction is higher than 30k.</li>
+</ul>
+</section>
+<section id="a-simple-linear-regression-iii" class="level2">
+<h2 class="anchored" data-anchor-id="a-simple-linear-regression-iii">A simple linear regression III</h2>
+<ul>
+<li><p>The proposed model is improving over the median, but we can do much better.</p></li>
+<li><p>A first (very effective) idea is to rely on a multiplicative model, so that</p></li>
+</ul>
+<p><span class="math display">
+\texttt{SalePrice} = \beta_0 \times \beta_1 \texttt{Gr Liv Area} \times \cdots \times \beta_4 \texttt{Tot Bathrooms}.
+</span></p>
+<ul>
+<li>This is equivalent to fit a linear model on the log-scale and then transforming back the predictions, so that</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>m_simple_log <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="fu">log</span>(SalePrice) <span class="sc">~</span> Gr.Liv.Area <span class="sc">+</span> Overall.Qual <span class="sc">+</span> House.Age <span class="sc">+</span> Tot.Bathrooms, <span class="at">data =</span> ames_train)</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_simple_log)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(SalePrice) ~ Gr.Liv.Area + Overall.Qual + House.Age + 
+    Tot.Bathrooms, data = ames_train)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.76873 -0.09598  0.00652  0.10418  0.66228 
+
+Coefficients:
+                Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    1.071e+01  2.560e-02 418.347   &lt;2e-16 ***
+Gr.Liv.Area    2.471e-04  1.129e-05  21.876   &lt;2e-16 ***
+Overall.Qual   1.337e-01  4.076e-03  32.792   &lt;2e-16 ***
+House.Age     -2.365e-03  2.394e-04  -9.881   &lt;2e-16 ***
+Tot.Bathrooms  8.481e-02  6.853e-03  12.375   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1578 on 1531 degrees of freedom
+Multiple R-squared:  0.8195,    Adjusted R-squared:  0.8191 
+F-statistic:  1738 on 4 and 1531 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Re-obtain the original scale</span></span>
+<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a>y_hat_simple_log <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fu">predict</span>(m_simple_log, <span class="at">newdata =</span> ames_test))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">MAE</span>(ames_test<span class="sc">$</span>SalePrice, y_hat_simple_log), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20577.8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">RMSLE</span>(ames_test<span class="sc">$</span>SalePrice, y_hat_simple_log), <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.1576</code></pre>
+</div>
+</div>
+</section>
+<section id="best-subset-selection" class="level2">
+<h2 class="anchored" data-anchor-id="best-subset-selection">Best subset selection</h2>
+<ul>
+<li><p>A simple linear regression model is already capable of predicting the sale price with an average error of 20k, which is remarkable given its simplicity.</p></li>
+<li><p>We can improve over the previous linear model by adding more covariates…</p></li>
+<li><p>However, there are too many of them! Some form of <span class="orange">regularization</span> is needed.</p></li>
+</ul>
+</section>
+<section id="the-full-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-full-model">The full model</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Here I compute some basic quantities</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>X_train <span class="ot">&lt;-</span> <span class="fu">model.matrix</span>(SalePrice <span class="sc">~</span> ., <span class="at">data =</span> ames_train)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>y_train <span class="ot">&lt;-</span> ames_train<span class="sc">$</span>SalePrice</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(X_train)</span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">ncol</span>(X_train) <span class="co"># This does not include the intercept</span></span>
+<span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(n, p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1536  223</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>m_full <span class="ot">&lt;-</span> <span class="fu">lm</span>(SalePrice <span class="sc">~</span> ., <span class="at">data =</span> ames_train)</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m_full)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = SalePrice ~ ., data = ames_train)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-74762  -8567    270   8242 124151 
+
+Coefficients: (9 not defined because of singularities)
+                                    Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                       -2.035e+04  5.014e+04  -0.406 0.684956    
+MS.SubClass                       -7.169e+01  5.780e+01  -1.240 0.215043    
+MS.ZoningRL                        3.028e+03  5.995e+03   0.505 0.613545    
+MS.ZoningRM                       -5.350e+03  6.398e+03  -0.836 0.403204    
+Lot.Frontage                       9.898e+00  1.632e+01   0.607 0.544238    
+Lot.Area                           7.370e-01  9.094e-02   8.103 1.21e-15 ***
+StreetPave                         1.882e+04  2.377e+04   0.792 0.428584    
+AlleyNo alley access               2.003e+03  2.703e+03   0.741 0.458897    
+AlleyPave                          6.051e+03  5.606e+03   1.079 0.280642    
+Lot.ShapeIR2                       6.357e+02  2.969e+03   0.214 0.830467    
+Lot.ShapeIR3                      -7.307e+03  6.880e+03  -1.062 0.288425    
+Lot.ShapeReg                       9.603e+02  1.216e+03   0.790 0.429953    
+Land.ContourHLS                    5.650e+03  3.699e+03   1.528 0.126852    
+Land.ContourLow                   -7.854e+03  4.553e+03  -1.725 0.084763 .  
+Land.ContourLvl                    1.924e+03  2.711e+03   0.710 0.477932    
+Lot.ConfigCulDSac                  5.333e+03  2.325e+03   2.294 0.021950 *  
+Lot.ConfigFR2                     -7.919e+03  3.019e+03  -2.623 0.008806 ** 
+Lot.ConfigFR3                     -7.263e+03  6.690e+03  -1.086 0.277884    
+Lot.ConfigInside                   5.027e+02  1.304e+03   0.386 0.699841    
+Land.SlopeMod                      9.171e+03  2.887e+03   3.177 0.001523 ** 
+Land.SlopeSev                     -9.109e+03  1.108e+04  -0.822 0.411214    
+NeighborhoodBlueste                2.865e+03  1.094e+04   0.262 0.793353    
+NeighborhoodBrDale                -4.554e+02  8.695e+03  -0.052 0.958240    
+NeighborhoodBrkSide               -1.033e+04  7.092e+03  -1.456 0.145582    
+NeighborhoodClearCr               -1.174e+04  7.120e+03  -1.648 0.099532 .  
+NeighborhoodCollgCr               -1.165e+04  6.073e+03  -1.919 0.055240 .  
+NeighborhoodCrawfor               -3.786e+03  6.742e+03  -0.562 0.574466    
+NeighborhoodEdwards               -2.333e+04  6.442e+03  -3.621 0.000304 ***
+NeighborhoodGilbert               -1.496e+04  6.334e+03  -2.362 0.018303 *  
+NeighborhoodGreens                -7.699e+03  9.441e+03  -0.816 0.414900    
+NeighborhoodIDOTRR                -1.713e+04  7.792e+03  -2.198 0.028095 *  
+NeighborhoodLandmrk               -7.670e+03  1.948e+04  -0.394 0.693801    
+NeighborhoodMeadowV               -2.739e+02  8.408e+03  -0.033 0.974019    
+NeighborhoodMitchel               -1.835e+04  6.434e+03  -2.852 0.004407 ** 
+NeighborhoodNAmes                 -2.150e+04  6.331e+03  -3.395 0.000706 ***
+NeighborhoodNoRidge                1.264e+04  6.754e+03   1.872 0.061454 .  
+NeighborhoodNPkVill                1.016e+02  1.065e+04   0.010 0.992389    
+NeighborhoodNridgHt                7.916e+03  6.337e+03   1.249 0.211809    
+NeighborhoodNWAmes                -2.001e+04  6.465e+03  -3.095 0.002012 ** 
+NeighborhoodOldTown               -2.067e+04  7.133e+03  -2.898 0.003816 ** 
+NeighborhoodSawyer                -1.342e+04  6.459e+03  -2.078 0.037890 *  
+NeighborhoodSawyerW               -1.584e+04  6.354e+03  -2.494 0.012768 *  
+NeighborhoodSomerst                7.788e+03  7.677e+03   1.015 0.310523    
+NeighborhoodStoneBr                2.355e+04  7.045e+03   3.342 0.000854 ***
+NeighborhoodSWISU                 -2.758e+04  7.287e+03  -3.785 0.000161 ***
+NeighborhoodTimber                -1.062e+04  6.669e+03  -1.593 0.111388    
+NeighborhoodVeenker                3.890e+03  7.865e+03   0.495 0.620995    
+Condition.1Feedr                   4.371e+03  3.457e+03   1.264 0.206329    
+Condition.1Norm                    1.440e+04  2.827e+03   5.095 4.00e-07 ***
+Condition.1PosA                    2.166e+04  6.082e+03   3.562 0.000381 ***
+Condition.1PosN                    1.595e+04  5.175e+03   3.081 0.002102 ** 
+Condition.1RRAe                   -2.707e+03  6.016e+03  -0.450 0.652760    
+Condition.1RRAn                    1.095e+04  5.119e+03   2.140 0.032536 *  
+Condition.1RRNe                    2.677e+04  3.034e+04   0.882 0.377801    
+Condition.1RRNn                    8.343e+03  1.070e+04   0.780 0.435797    
+Condition.2Feedr                  -7.727e+03  1.579e+04  -0.489 0.624593    
+Condition.2Norm                    3.179e+03  1.454e+04   0.219 0.826934    
+Condition.2PosA                    9.244e+04  1.992e+04   4.641 3.82e-06 ***
+Condition.2PosN                   -1.090e+04  2.348e+04  -0.464 0.642686    
+Condition.2RRAn                    3.451e+03  2.309e+04   0.149 0.881233    
+Condition.2RRNn                    1.542e+04  1.929e+04   0.800 0.424007    
+Bldg.Type2fmCon                    1.763e+03  8.417e+03   0.209 0.834171    
+Bldg.TypeDuplex                   -6.717e+03  6.153e+03  -1.092 0.275109    
+Bldg.TypeTwnhs                    -1.623e+04  7.107e+03  -2.283 0.022562 *  
+Bldg.TypeTwnhsE                   -1.148e+04  6.266e+03  -1.833 0.067095 .  
+House.Style1.5Unf                  4.941e+02  5.883e+03   0.084 0.933079    
+House.Style1Story                  2.168e+03  3.011e+03   0.720 0.471685    
+House.Style2.5Fin                 -1.886e+04  1.046e+04  -1.803 0.071650 .  
+House.Style2.5Unf                 -1.078e+04  6.117e+03  -1.762 0.078353 .  
+House.Style2Story                 -1.163e+03  2.295e+03  -0.507 0.612268    
+House.StyleSFoyer                  4.909e+03  4.598e+03   1.068 0.285880    
+House.StyleSLvl                    5.945e+03  3.714e+03   1.600 0.109755    
+Overall.Qual                       6.986e+03  7.217e+02   9.680  &lt; 2e-16 ***
+Overall.Cond                       4.366e+03  5.795e+02   7.533 9.16e-14 ***
+Roof.StyleGable                   -4.188e+02  9.541e+03  -0.044 0.964992    
+Roof.StyleGambrel                 -5.011e+03  1.128e+04  -0.444 0.656963    
+Roof.StyleHip                      5.533e+02  9.634e+03   0.057 0.954207    
+Roof.StyleMansard                 -2.536e+03  1.308e+04  -0.194 0.846319    
+Roof.StyleShed                     2.516e+04  1.626e+04   1.548 0.121931    
+Roof.MatlMembran                   2.719e+04  2.311e+04   1.176 0.239644    
+Roof.MatlTar&amp;Grv                  -4.490e+03  7.859e+03  -0.571 0.567875    
+Roof.MatlWdShake                  -9.353e+03  1.056e+04  -0.886 0.375772    
+Roof.MatlWdShngl                   1.280e+04  8.643e+03   1.481 0.138923    
+Exterior.1stAsphShn               -3.153e+03  2.482e+04  -0.127 0.898934    
+Exterior.1stBrkComm               -1.645e+03  1.754e+04  -0.094 0.925280    
+Exterior.1stBrkFace                1.139e+04  7.969e+03   1.430 0.153085    
+Exterior.1stCemntBd                5.372e+03  1.206e+04   0.446 0.656015    
+Exterior.1stHdBoard               -6.520e+03  7.756e+03  -0.841 0.400732    
+Exterior.1stImStucc               -7.317e+03  2.028e+04  -0.361 0.718275    
+Exterior.1stMetalSd                4.681e+02  8.799e+03   0.053 0.957577    
+Exterior.1stPlywood               -3.475e+03  7.693e+03  -0.452 0.651576    
+Exterior.1stStucco                -6.966e+02  9.273e+03  -0.075 0.940136    
+Exterior.1stVinylSd               -1.387e+04  8.505e+03  -1.631 0.103143    
+Exterior.1stWd Sdng               -4.417e+03  7.394e+03  -0.597 0.550402    
+Exterior.1stWdShing                5.937e+02  8.174e+03   0.073 0.942112    
+Exterior.2ndAsphShn                1.489e+04  1.572e+04   0.947 0.343564    
+Exterior.2ndBrk Cmn                9.051e+03  1.306e+04   0.693 0.488439    
+Exterior.2ndBrkFace                3.156e+03  8.781e+03   0.359 0.719365    
+Exterior.2ndCBlock                 3.430e+04  2.296e+04   1.494 0.135465    
+Exterior.2ndCmentBd               -5.812e+03  1.232e+04  -0.472 0.637088    
+Exterior.2ndHdBoard                8.670e+03  7.941e+03   1.092 0.275107    
+Exterior.2ndImStucc               -1.825e+03  9.958e+03  -0.183 0.854636    
+Exterior.2ndMetalSd                4.261e+03  8.978e+03   0.475 0.635161    
+Exterior.2ndPlywood                5.445e+03  7.693e+03   0.708 0.479249    
+Exterior.2ndStone                  5.347e+03  1.537e+04   0.348 0.727966    
+Exterior.2ndStucco                 6.528e+03  9.390e+03   0.695 0.487024    
+Exterior.2ndVinylSd                1.957e+04  8.564e+03   2.286 0.022432 *  
+Exterior.2ndWd Sdng                8.783e+03  7.572e+03   1.160 0.246241    
+Exterior.2ndWd Shng                6.344e+03  8.012e+03   0.792 0.428591    
+Mas.Vnr.TypeBrkFace                9.827e+02  4.903e+03   0.200 0.841167    
+Mas.Vnr.TypeNone                   5.397e+03  4.895e+03   1.102 0.270497    
+Mas.Vnr.TypeStone                  4.513e+03  5.232e+03   0.863 0.388502    
+Mas.Vnr.Area                       3.657e+01  4.627e+00   7.903 5.69e-15 ***
+Exter.QualFa                      -2.629e+04  7.675e+03  -3.426 0.000632 ***
+Exter.QualGd                      -3.169e+04  4.455e+03  -7.114 1.84e-12 ***
+Exter.QualTA                      -3.517e+04  4.819e+03  -7.299 4.98e-13 ***
+Exter.CondFa                       1.708e+04  8.985e+03   1.901 0.057522 .  
+Exter.CondGd                       2.145e+04  8.123e+03   2.640 0.008381 ** 
+Exter.CondPo                       1.052e+04  1.567e+04   0.671 0.502221    
+Exter.CondTA                       2.104e+04  8.124e+03   2.590 0.009710 ** 
+FoundationCBlock                   5.120e+03  2.022e+03   2.532 0.011441 *  
+FoundationPConc                    6.595e+03  2.190e+03   3.012 0.002646 ** 
+FoundationSlab                     2.815e+03  6.084e+03   0.463 0.643711    
+FoundationStone                    1.758e+04  8.513e+03   2.065 0.039131 *  
+FoundationWood                    -1.441e+04  9.347e+03  -1.542 0.123419    
+Bsmt.QualFa                       -1.793e+04  4.153e+03  -4.317 1.70e-05 ***
+Bsmt.QualGd                       -1.521e+04  2.507e+03  -6.066 1.71e-09 ***
+Bsmt.QualNo basement              -5.775e+03  1.333e+04  -0.433 0.664812    
+Bsmt.QualTA                       -1.637e+04  3.009e+03  -5.440 6.34e-08 ***
+Bsmt.CondFa                        7.502e+03  1.112e+04   0.675 0.500010    
+Bsmt.CondGd                        9.511e+03  1.098e+04   0.867 0.386342    
+Bsmt.CondNo basement                      NA         NA      NA       NA    
+Bsmt.CondPo                        2.384e+04  1.784e+04   1.336 0.181717    
+Bsmt.CondTA                        8.030e+03  1.076e+04   0.747 0.455479    
+Bsmt.ExposureGd                    1.132e+04  2.231e+03   5.074 4.45e-07 ***
+Bsmt.ExposureMn                   -5.509e+03  2.186e+03  -2.520 0.011856 *  
+Bsmt.ExposureNo                   -2.444e+03  1.700e+03  -1.438 0.150762    
+Bsmt.ExposureNo basement                  NA         NA      NA       NA    
+BsmtFin.Type.1BLQ                  5.131e+02  1.952e+03   0.263 0.792680    
+BsmtFin.Type.1GLQ                  4.043e+03  1.729e+03   2.338 0.019552 *  
+BsmtFin.Type.1LwQ                 -5.060e+03  2.457e+03  -2.060 0.039628 *  
+BsmtFin.Type.1No basement                 NA         NA      NA       NA    
+BsmtFin.Type.1Rec                 -4.174e+03  2.018e+03  -2.068 0.038829 *  
+BsmtFin.Type.1Unf                  1.897e+03  2.009e+03   0.944 0.345233    
+BsmtFin.SF.1                       3.785e+01  3.060e+00  12.372  &lt; 2e-16 ***
+BsmtFin.Type.2BLQ                 -8.063e+03  4.494e+03  -1.794 0.072970 .  
+BsmtFin.Type.2GLQ                  5.690e+03  5.391e+03   1.056 0.291372    
+BsmtFin.Type.2LwQ                 -7.385e+03  4.415e+03  -1.673 0.094590 .  
+BsmtFin.Type.2No basement                 NA         NA      NA       NA    
+BsmtFin.Type.2Rec                 -8.928e+03  4.119e+03  -2.168 0.030363 *  
+BsmtFin.Type.2Unf                 -7.978e+03  4.329e+03  -1.843 0.065580 .  
+BsmtFin.SF.2                       2.368e+01  5.379e+00   4.403 1.15e-05 ***
+Bsmt.Unf.SF                        1.938e+01  2.752e+00   7.044 2.99e-12 ***
+Total.Bsmt.SF                             NA         NA      NA       NA    
+HeatingGasA                        5.059e+03  1.865e+04   0.271 0.786233    
+HeatingGasW                       -7.630e+02  1.929e+04  -0.040 0.968461    
+HeatingGrav                       -1.340e+03  2.191e+04  -0.061 0.951243    
+HeatingOthW                       -2.789e+04  2.316e+04  -1.204 0.228701    
+HeatingWall                        8.081e+03  2.239e+04   0.361 0.718268    
+Heating.QCFa                      -4.523e+03  3.104e+03  -1.457 0.145313    
+Heating.QCGd                      -2.275e+03  1.414e+03  -1.609 0.107822    
+Heating.QCPo                      -5.168e+03  1.979e+04  -0.261 0.794002    
+Heating.QCTA                      -3.398e+03  1.385e+03  -2.453 0.014281 *  
+Central.AirY                      -2.745e+03  2.596e+03  -1.058 0.290404    
+ElectricalFuseF                    4.255e+03  4.431e+03   0.960 0.337192    
+ElectricalFuseP                    9.393e+03  1.308e+04   0.718 0.472865    
+ElectricalSBrkr                   -2.388e+02  1.973e+03  -0.121 0.903694    
+X1st.Flr.SF                        4.921e+01  3.287e+00  14.970  &lt; 2e-16 ***
+X2nd.Flr.SF                        5.790e+01  3.996e+00  14.491  &lt; 2e-16 ***
+Low.Qual.Fin.SF                    2.580e+01  1.048e+01   2.461 0.013988 *  
+Gr.Liv.Area                               NA         NA      NA       NA    
+Bedroom.AbvGr                     -3.212e+03  9.647e+02  -3.330 0.000893 ***
+Kitchen.AbvGr                     -1.077e+04  5.021e+03  -2.145 0.032110 *  
+Kitchen.QualFa                    -1.579e+04  4.470e+03  -3.532 0.000426 ***
+Kitchen.QualGd                    -1.449e+04  2.890e+03  -5.014 6.06e-07 ***
+Kitchen.QualPo                    -4.208e+02  1.898e+04  -0.022 0.982311    
+Kitchen.QualTA                    -1.632e+04  3.140e+03  -5.197 2.34e-07 ***
+TotRms.AbvGrd                     -1.831e+02  6.965e+02  -0.263 0.792646    
+FunctionalMaj2                     1.653e+03  9.763e+03   0.169 0.865569    
+FunctionalMin1                     6.547e+03  6.204e+03   1.055 0.291452    
+FunctionalMin2                     7.014e+03  6.166e+03   1.138 0.255531    
+FunctionalMod                      6.302e+03  7.052e+03   0.894 0.371633    
+FunctionalTyp                      1.961e+04  5.540e+03   3.539 0.000415 ***
+Fireplaces                         4.386e+03  1.874e+03   2.341 0.019376 *  
+Fireplace.QuFa                    -6.903e+03  4.953e+03  -1.394 0.163656    
+Fireplace.QuGd                    -6.892e+03  4.095e+03  -1.683 0.092568 .  
+Fireplace.QuNo fireplace          -4.631e+03  4.622e+03  -1.002 0.316553    
+Fireplace.QuPo                    -1.054e+04  5.304e+03  -1.988 0.047033 *  
+Fireplace.QuTA                    -6.426e+03  4.157e+03  -1.546 0.122400    
+Garage.TypeAttchd                  8.224e+03  5.311e+03   1.548 0.121742    
+Garage.TypeBasment                 4.356e+03  6.892e+03   0.632 0.527470    
+Garage.TypeBuiltIn                 1.121e+04  5.836e+03   1.921 0.054925 .  
+Garage.TypeCarPort                 7.924e+03  8.693e+03   0.912 0.362152    
+Garage.TypeDetchd                  9.123e+03  5.282e+03   1.727 0.084358 .  
+Garage.TypeNo garage               3.739e+03  1.926e+04   0.194 0.846144    
+Garage.FinishNo garage                    NA         NA      NA       NA    
+Garage.FinishRFn                  -3.648e+03  1.461e+03  -2.496 0.012669 *  
+Garage.FinishUnf                  -2.547e+03  1.678e+03  -1.518 0.129342    
+Garage.Cars                        5.794e+03  1.729e+03   3.351 0.000828 ***
+Garage.Area                        1.160e+01  6.090e+00   1.904 0.057129 .  
+Garage.QualFa                     -3.572e+04  2.607e+04  -1.370 0.170913    
+Garage.QualGd                     -3.443e+04  2.502e+04  -1.376 0.169119    
+Garage.QualNo garage                      NA         NA      NA       NA    
+Garage.QualTA                     -3.528e+04  2.588e+04  -1.363 0.173013    
+Garage.CondFa                      2.669e+04  1.901e+04   1.405 0.160394    
+Garage.CondGd                      2.387e+04  1.934e+04   1.234 0.217382    
+Garage.CondNo garage                      NA         NA      NA       NA    
+Garage.CondPo                      3.469e+04  2.058e+04   1.686 0.092073 .  
+Garage.CondTA                      2.727e+04  1.869e+04   1.459 0.144904    
+Paved.DriveP                       5.497e+03  3.465e+03   1.587 0.112845    
+Paved.DriveY                       5.917e+03  2.285e+03   2.590 0.009717 ** 
+Wood.Deck.SF                      -1.252e+00  4.040e+00  -0.310 0.756596    
+Pool.QCYes                         3.857e+04  9.368e+03   4.118 4.06e-05 ***
+FenceGdWo                          6.287e+03  3.307e+03   1.901 0.057477 .  
+FenceMnPrv                         5.334e+03  2.738e+03   1.948 0.051580 .  
+FenceMnWw                          3.595e+02  7.611e+03   0.047 0.962335    
+FenceNo fence                      3.982e+03  2.478e+03   1.607 0.108359    
+Misc.FeatureNo additional feature -4.270e+03  1.557e+04  -0.274 0.783893    
+Misc.FeatureOthr                   4.811e+03  1.792e+04   0.268 0.788366    
+Misc.FeatureShed                  -2.225e+03  1.483e+04  -0.150 0.880756    
+Misc.Val                           8.919e-02  1.542e+00   0.058 0.953897    
+Porch.Sq.Feet                      9.596e+00  5.171e+00   1.856 0.063729 .  
+Tot.Bathrooms                      2.655e+03  1.079e+03   2.460 0.014012 *  
+House.Age                         -1.327e+02  3.712e+01  -3.574 0.000364 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 16880 on 1321 degrees of freedom
+Multiple R-squared:  0.9505,    Adjusted R-squared:  0.9425 
+F-statistic: 118.5 on 214 and 1321 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 4 collinearities are due to "no basement", 3 collinearities are due to "no garage"</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Moreover, note that at the basement</span></span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">cbind</span>(ames_train<span class="sc">$</span>Bsmt.Unf.SF <span class="sc">+</span> ames_train<span class="sc">$</span>BsmtFin.SF<span class="fl">.1</span> <span class="sc">+</span> ames_train<span class="sc">$</span>BsmtFin.SF<span class="fl">.2</span>, </span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a>           ames_train<span class="sc">$</span>Total.Bsmt.SF))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,] 1080 1080
+[2,]  882  882
+[3,] 2110 2110
+[4,]  926  926
+[5,] 1280 1280
+[6,] 1595 1595</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co"># And that at the ground floors</span></span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(<span class="fu">cbind</span>(ames_train<span class="sc">$</span>X1st.Flr.SF <span class="sc">+</span> ames_train<span class="sc">$</span>X2nd.Flr.SF <span class="sc">+</span> ames_train<span class="sc">$</span>Low.Qual.Fin.SF, ames_train<span class="sc">$</span>Gr.Liv.Area))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,] 1656 1656
+[2,]  896  896
+[3,] 2110 2110
+[4,] 1604 1604
+[5,] 1280 1280
+[6,] 1616 1616</code></pre>
+</div>
+</div>
+</section>
+<section id="forward-and-backward-regression" class="level2">
+<h2 class="anchored" data-anchor-id="forward-and-backward-regression">Forward and backward regression</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(leaps)</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>fit_forward <span class="ot">&lt;-</span> <span class="fu">regsubsets</span>(SalePrice <span class="sc">~</span> ., <span class="at">data =</span> ames_train, <span class="at">method =</span> <span class="st">"forward"</span>, <span class="at">nbest =</span> <span class="dv">1</span>, <span class="at">nvmax =</span> p <span class="sc">-</span> <span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reordering variables and trying again:</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>sum_forward <span class="ot">&lt;-</span> <span class="fu">summary</span>(fit_forward)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(sum_forward<span class="sc">$</span>which[<span class="dv">1</span>, ]) <span class="co"># Model with one covariate</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept) Overall.Qual 
+           1           73 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(sum_forward<span class="sc">$</span>which[<span class="dv">2</span>, ]) <span class="co"># Model with two covariates</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept) Overall.Qual  Gr.Liv.Area 
+           1           73          171 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(sum_forward<span class="sc">$</span>which[<span class="dv">3</span>, ]) <span class="co"># Model with three covariates</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> (Intercept) Overall.Qual BsmtFin.SF.1  Gr.Liv.Area 
+           1           73          145          171 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span>(sum_forward<span class="sc">$</span>which[<span class="dv">4</span>, ]) <span class="co"># Model with four covariates</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept)  Overall.Qual  BsmtFin.SF.1 Total.Bsmt.SF   Gr.Liv.Area 
+            1            73           145           154           171 </code></pre>
+</div>
+</div>
+</section>
+<section id="cross-validation" class="level2">
+<h2 class="anchored" data-anchor-id="cross-validation">Cross-validation</h2>
+<!-- ```{r} -->
+<!-- library(rsample) -->
+<!-- p_max <- 200 -->
+<!-- set.seed(123) -->
+<!-- cv_fold <- vfold_cv(data.frame(SalePrice = y_train, X_train), v = 10) -->
+<!-- resid_subs <- matrix(0, n, p_max + 1) -->
+<!-- for (k in 1:5) { -->
+<!--   # Estimation of the null model -->
+<!--   fit_null <- lm(SalePrice ~ 1, data = data.frame(analysis(cv_fold$splits[[k]]))) -->
+<!--   # Forward and backward regression -->
+<!--   fit_forward <- regsubsets(SalePrice ~ ., data = analysis(cv_fold$splits[[k]]), method = "forward", nbest = 1, nvmax = p_max) -->
+<!--   sum_forward <- summary(fit_forward) -->
+<!--   # Hold-out quantities -->
+<!--   X_k <- as.matrix(cbind(1, assessment(cv_fold$splits[[k]]) %>% select(-SalePrice))) -->
+<!--   y_k <- assessment(cv_fold$splits[[k]])$SalePrice -->
+<!--   # MSE of the null model -->
+<!--   resid_subs[complement(cv_fold$splits[[k]]), 1] <- y_k - predict(fit_null, assessment(cv_fold$splits[[k]])) -->
+<!--   # MSE of the best models for different values of p -->
+<!--   for (j in 2:(p_max + 1)) { -->
+<!--     y_hat <- X_k[, sum_forward$which[j - 1, ]] %*% coef(fit_forward, j - 1) -->
+<!--     resid_subs[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat -->
+<!--   } -->
+<!-- } -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- #| fig-width: 10 -->
+<!-- #| fig-height: 5 -->
+<!-- #| fig-align: center -->
+<!-- data_cv <- data.frame( -->
+<!--   p = 0:p_max, -->
+<!--   MSE = apply(resid_subs, 2, function(x) mean(abs(x))) -->
+<!--   #SE = apply(resid_subs^2, 2, function(x) sd(x) / sqrt(n)) -->
+<!-- ) -->
+<!-- se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)] -->
+<!-- p_optimal <- which(data_cv$MSE < se_rule)[1] - 1 -->
+<!-- ggplot(data = data_cv, aes(x = p, y = MSE)) + -->
+<!--   geom_point() + -->
+<!--   geom_line() + -->
+<!--   #geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) + -->
+<!--   #geom_hline(yintercept = se_rule, linetype = "dotted") + -->
+<!--   #geom_vline(xintercept = p_optimal, linetype = "dotted") + -->
+<!--   theme_light() + -->
+<!--   theme(legend.position = "top") + -->
+
+<!--   scale_color_tableau(palette = "Color Blind") + -->
+<!--   xlab("Number of covariates") + -->
+<!--   ylab("Mean squared error (10-fold cv)") -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- fit_forward <- regsubsets(lpsa ~ ., data = prostate_train, method = "forward", nbest = 1, nvmax = p) -->
+<!-- sum_forward <- summary(fit_forward) -->
+<!-- fit_backward <- regsubsets(lpsa ~ ., data = prostate_train, method = "backward", nbest = 1, nvmax = p) -->
+<!-- sum_backward <- summary(fit_backward) -->
+<!-- ``` -->
 </section>
 </section>
 

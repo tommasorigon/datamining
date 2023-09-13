@@ -1,9 +1,10 @@
 rm(list = ls())
 library(tidyverse)
-ames <- read_csv("../data/AmesHousing.csv")
+ames <- read_csv("../data/AmesHousing.csv", )
 ames
 
 glimpse(ames)
+skimr::skim(ames)
 
 table(ames$`MS Zoning`)
 
@@ -37,11 +38,18 @@ sort(freq_missing, decreasing = TRUE)
 table(ames$Alley, useNA = "always")
 ames$Alley[is.na(ames$Alley)] <- "No alley access"
 
-ames$`Bsmt Exposure`[is.na(ames$`Bsmt Exposure`)] <- "No basement"
-ames$`Bsmt Cond`[is.na(ames$`Bsmt Cond`)] <- "No basement"
-ames$`BsmtFin Type 1`[is.na(ames$`BsmtFin Type 1`)] <- "No basement"
-ames$`BsmtFin Type 2`[is.na(ames$`BsmtFin Type 2`)] <- "No basement"
-ames$`Bsmt Qual`[is.na(ames$`Bsmt Qual`)] <- "No basement"
+table(ames$`Bsmt Exposure`, ames$`Bsmt Cond`, useNA = "always")
+id_no_bsmt <- apply(cbind(
+  is.na(ames$`Bsmt Exposure`), is.na(ames$`Bsmt Cond`),
+  is.na(ames$`BsmtFin Type 1`), is.na(ames$`BsmtFin Type 2`),
+  is.na(ames$`Bsmt Qual`)
+), 1, any)
+
+ames$`Bsmt Exposure`[id_no_bsmt] <- "No basement"
+ames$`Bsmt Cond`[id_no_bsmt] <- "No basement"
+ames$`BsmtFin Type 1`[id_no_bsmt] <- "No basement"
+ames$`BsmtFin Type 2`[id_no_bsmt] <- "No basement"
+ames$`Bsmt Qual`[id_no_bsmt] <- "No basement"
 
 ames$`Bsmt Full Bath`[is.na(ames$`Bsmt Full Bath`)] <- 0
 ames$`Bsmt Half Bath`[is.na(ames$`Bsmt Half Bath`)] <- 0
@@ -55,10 +63,16 @@ ames$`Fence`[is.na(ames$`Fence`)] <- "No fence"
 table(ames$`Fireplace Qu`, useNA = "always")
 ames$`Fireplace Qu`[is.na(ames$`Fireplace Qu`)] <- "No fireplace"
 
-ames$`Garage Cond`[is.na(ames$`Garage Cond`)] <- "No garage"
-ames$`Garage Finish`[is.na(ames$`Garage Finish`)] <- "No garage"
-ames$`Garage Qual`[is.na(ames$`Garage Qual`)] <- "No garage"
-ames$`Garage Type`[is.na(ames$`Garage Type`)] <- "No garage"
+table(ames$`Garage Cond`, ames$`Garage Type`, useNA = "always")
+id_no_garage <- apply(cbind(
+  is.na(ames$`Garage Cond`), is.na(ames$`Garage Finish`),
+  is.na(ames$`Garage Qual`), is.na(ames$`Garage Type`)
+), 1, any)
+
+ames$`Garage Cond`[id_no_garage] <- "No garage"
+ames$`Garage Finish`[id_no_garage] <- "No garage"
+ames$`Garage Qual`[id_no_garage] <- "No garage"
+ames$`Garage Type`[id_no_garage] <- "No garage"
 
 ames <- select(ames, -c(`Garage Yr Blt`))
 
@@ -104,8 +118,14 @@ write.csv(data.frame(ames_train), "../data/ames_train.csv", row.names = FALSE)
 write.csv(data.frame(ames_test), "../data/ames_test.csv", row.names = FALSE)
 
 rm(list = ls())
-ames_train <- read.table("../data/ames_train.csv", header = TRUE, sep = ",")
-ames_test <- read.table("../data/ames_train.csv", header = TRUE, sep = ",")
+ames_train <- read.table("../data/ames_train.csv",
+  header = TRUE, sep = ",",
+  stringsAsFactors = TRUE
+)
+ames_test <- read.table("../data/ames_train.csv",
+  header = TRUE, sep = ",",
+  stringsAsFactors = TRUE
+)
 
 par(mfrow = c(1, 1))
 plot(ames_train$Gr.Liv.Area, ames_train$SalePrice,
@@ -158,3 +178,53 @@ RMSLE <- function(y, y_fit) {
 
 round(MAE(ames_test$SalePrice, y_hat_median), 4)
 round(RMSLE(ames_test$SalePrice, y_hat_median), 4)
+
+m_simple <- lm(SalePrice ~ Gr.Liv.Area + Overall.Qual + House.Age + Tot.Bathrooms, data = ames_train)
+summary(m_simple)
+
+y_hat_simple <- predict(m_simple, newdata = ames_test)
+
+# Perform a small correction:
+y_hat_simple <- pmax(y_hat_simple, 30000)
+
+round(MAE(ames_test$SalePrice, y_hat_simple), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_simple), 4)
+
+m_simple_log <- lm(log(SalePrice) ~ Gr.Liv.Area + Overall.Qual + House.Age + Tot.Bathrooms, data = ames_train)
+summary(m_simple_log)
+
+# Re-obtain the original scale
+y_hat_simple_log <- exp(predict(m_simple_log, newdata = ames_test))
+
+round(MAE(ames_test$SalePrice, y_hat_simple_log), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_simple_log), 4)
+
+# Here I compute some basic quantities
+X_train <- model.matrix(SalePrice ~ ., data = ames_train)[, -1]
+y_train <- ames_train$SalePrice
+n <- nrow(X_train)
+p <- ncol(X_train) # This does not include the intercept
+c(n, p)
+
+m_full <- lm(SalePrice ~ ., data = ames_train)
+summary(m_full)
+
+# 4 collinearities are due to "no basement", 3 collinearities are due to "no garage"
+
+# Moreover, note that at the basement
+head(cbind(
+  ames_train$Bsmt.Unf.SF + ames_train$BsmtFin.SF.1 + ames_train$BsmtFin.SF.2,
+  ames_train$Total.Bsmt.SF
+))
+
+# And that at the ground floors
+head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual.Fin.SF, ames_train$Gr.Liv.Area))
+
+library(leaps)
+fit_forward <- regsubsets(SalePrice ~ ., data = ames_train, method = "forward", nbest = 1, nvmax = p - 10)
+sum_forward <- summary(fit_forward)
+
+which(sum_forward$which[1, ]) # Model with one covariate
+which(sum_forward$which[2, ]) # Model with two covariates
+which(sum_forward$which[3, ]) # Model with three covariates
+which(sum_forward$which[4, ]) # Model with four covariates

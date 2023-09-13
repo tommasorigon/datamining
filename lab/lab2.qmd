@@ -102,7 +102,7 @@ styler:::style_file("../code/lab2.R")
 ```{r}
 rm(list = ls())
 library(tidyverse)
-ames <- read_csv("../data/AmesHousing.csv")
+ames <- read_csv("../data/AmesHousing.csv", )
 ames
 ```
 
@@ -120,7 +120,9 @@ ames
     variable]{.orange}.
 
 ```{r}
+#| output: false
 glimpse(ames)
+skimr::skim(ames)
 ```
 
 -   We have access to a detailed
@@ -235,6 +237,7 @@ hist(log(ames$SalePrice), xlab = "Price", main = "Logarithm of SalePrice")
     which are [structural]{.blue}.
 
 ```{r}
+#| output: false
 # Compute the frequency of the missing values for each variable
 freq_missing <- apply(ames, 2, function(x) sum(is.na(x))) # Number of missing values
 sort(freq_missing, decreasing = TRUE)
@@ -264,11 +267,16 @@ ames$Alley[is.na(ames$Alley)] <- "No alley access"
 -   Missing values have been re-coded.
 
 ```{r}
-ames$`Bsmt Exposure`[is.na(ames$`Bsmt Exposure`)] <- "No basement"
-ames$`Bsmt Cond`[is.na(ames$`Bsmt Cond`)] <- "No basement"
-ames$`BsmtFin Type 1`[is.na(ames$`BsmtFin Type 1`)] <- "No basement"
-ames$`BsmtFin Type 2`[is.na(ames$`BsmtFin Type 2`)] <- "No basement"
-ames$`Bsmt Qual`[is.na(ames$`Bsmt Qual`)] <- "No basement"
+table(ames$`Bsmt Exposure`, ames$`Bsmt Cond`, useNA = "always")
+id_no_bsmt <- apply(cbind(is.na(ames$`Bsmt Exposure`), is.na(ames$`Bsmt Cond`), 
+                            is.na(ames$`BsmtFin Type 1`), is.na(ames$`BsmtFin Type 2`),
+                            is.na(ames$`Bsmt Qual`)), 1, any)
+
+ames$`Bsmt Exposure`[id_no_bsmt] <- "No basement"
+ames$`Bsmt Cond`[id_no_bsmt] <- "No basement"
+ames$`BsmtFin Type 1`[id_no_bsmt] <- "No basement"
+ames$`BsmtFin Type 2`[id_no_bsmt] <- "No basement"
+ames$`Bsmt Qual`[id_no_bsmt] <- "No basement"
 ```
 
 -   There are two missing values in `Bsmt Full Bath` and
@@ -312,10 +320,14 @@ ames$`Fireplace Qu`[is.na(ames$`Fireplace Qu`)] <- "No fireplace"
 -   We re-code all the variables about the garage.
 
 ```{r}
-ames$`Garage Cond`[is.na(ames$`Garage Cond`)] <- "No garage"
-ames$`Garage Finish`[is.na(ames$`Garage Finish`)] <- "No garage"
-ames$`Garage Qual`[is.na(ames$`Garage Qual`)] <- "No garage"
-ames$`Garage Type`[is.na(ames$`Garage Type`)] <- "No garage"
+table(ames$`Garage Cond`, ames$`Garage Type`, useNA = "always")
+id_no_garage <- apply(cbind(is.na(ames$`Garage Cond`), is.na(ames$`Garage Finish`), 
+                            is.na(ames$`Garage Qual`), is.na(ames$`Garage Type`)), 1, any)
+
+ames$`Garage Cond`[id_no_garage] <- "No garage"
+ames$`Garage Finish`[id_no_garage] <- "No garage"
+ames$`Garage Qual`[id_no_garage] <- "No garage"
+ames$`Garage Type`[id_no_garage] <- "No garage"
 ```
 
 -   The variable `Garage Yr Blt` is more problematic. By replacing
@@ -431,89 +443,6 @@ ames <- select(ames, -c(`Full Bath`, `Half Bath`, `Bsmt Full Bath`, `Bsmt Half B
 ames <- select(ames, -c(`Pool Area`, Utilities))
 ```
 
-<!-- ## Rescaling -->
-
-<!-- -   For numerical purposes, it is often convenient to [standardize]{.orange} the -->
-
-<!--     numerical covariates. -->
-
-<!-- -   Let $x_{1j},\dots,x_{nj}$ be the values of the $j$th covariate, then -->
-
-<!--     we compute -->
-
-<!-- $$ -->
-
-<!-- z_{ij} = \frac{x_{ij} - \bar{x}_j}{\sigma_j}, \qquad i=1,\dots,n, -->
-
-<!-- $$ where $\bar{x}_j$ and $\sigma_j$ are the mean and the standard -->
-
-<!-- deviation of the data $x_{1j},\dots,x_{nj}$. -->
-
-<!-- ```{python} -->
-
-<!-- import numpy as np -->
-
-<!-- X = ames.drop(columns = ['SalePrice']) -->
-
-<!-- numeric_feats = X.dtypes[X.dtypes != "object"].index # Identify the numerical features -->
-
-<!-- X[numeric_feats] = X[numeric_feats].apply(lambda x: (x - np.mean(x)) / np.std(x)) # Standardization -->
-
-<!-- ``` -->
-
-<!-- -   This is useful for many predictive algorithms, such as the lasso. -->
-
-<!-- -   The regression coefficients are in now the same scale and the -->
-
-<!--     shrinkage induced by the lasso penalty acts in a more meaningful -->
-
-<!--     manner. -->
-
-<!-- -   An important drawback is a [loss]{style="color:DarkOrange"} in terms -->
-
-<!--     of [interpretability]{style="color:DarkOrange"}. -->
-
-<!-- ## Dummy variables -->
-
-<!-- -   Most of the variables are [categorical]{style="color:DarkOrange"}. -->
-
-<!--     In Python, we need to "convert" these variables into numbers. -->
-
-<!-- ```{python} -->
-
-<!-- X = pd.get_dummies(X) -->
-
-<!-- X.shape -->
-
-<!-- ``` -->
-
-<!-- -   The function `get_dummies` does not automatically drop one of the -->
-
-<!--     categories, therefore leading to the so-called [dummy -->
-
-<!--     trap](https://en.wikipedia.org/wiki/Multicollinearity). Is this an -->
-
-<!--     issue? It depends on the algorithm... -->
-
-<!-- -   After this operations, some variables might be collinear (i.e. the -->
-
-<!--     `No garage` indicators) -->
-
-<!-- ```{python} -->
-
-<!-- # This removes identical columns -->
-
-<!-- X = X.T.drop_duplicates().T -->
-
-<!-- X.shape -->
-
-<!-- ``` -->
-
-<!-- -   The number of variables could explode if a certain variable has a -->
-
-<!--     lot of categories. In these cases, you could aggregate some -->
-
-<!--     categories. -->
 
 ## What else?
 
@@ -580,8 +509,10 @@ write.csv(data.frame(ames_test), "../data/ames_test.csv", row.names = FALSE)
 
 ```{r}
 rm(list = ls())
-ames_train <- read.table("../data/ames_train.csv", header = TRUE, sep = ",")
-ames_test <- read.table("../data/ames_train.csv", header = TRUE, sep = ",")
+ames_train <- read.table("../data/ames_train.csv", header = TRUE, sep = ",",
+                         stringsAsFactors = TRUE)
+ames_test <- read.table("../data/ames_train.csv", header = TRUE, sep = ",",
+                        stringsAsFactors = TRUE)
 ```
 
 
@@ -748,3 +679,200 @@ round(RMSLE(ames_test$SalePrice, y_hat_median), 4)
 
 -   Thus, any model having MAE higher that 50k and RMSLE higher than
     0.37 should be regarded as a [coding error]{.orange}.
+
+## A simple linear regression I
+
+-   The first model we consider is a simple linear regression, which
+    just a few predictors that we believe are relevant for this problem.
+
+-   We fit the following linear model
+
+$$
+\texttt{SalePrice} = \beta_0 + \beta_1 \texttt{Gr.Liv.Area} + \cdots + \beta_4 \texttt{Tot.Bathrooms}.
+$$
+
+-   The estimated coefficients are the following:
+
+```{r}
+m_simple <- lm(SalePrice ~ Gr.Liv.Area + Overall.Qual + House.Age  + Tot.Bathrooms, data = ames_train)
+summary(m_simple)
+```
+
+## A simple linear regression II
+
+-   In order to assess the performance of this very simple model, we
+    rely on the values of MAE and RMSLE based on cross-validated
+    predictions.
+
+```{r}
+y_hat_simple <- predict(m_simple, newdata = ames_test)
+
+# Perform a small correction:
+y_hat_simple <- pmax(y_hat_simple, 30000)
+```
+
+
+```{r}
+round(MAE(ames_test$SalePrice, y_hat_simple), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_simple), 4)
+```
+
+-   We also "correct" the estimates of this first linear model, so that
+    any prediction is higher than 30k.
+
+## A simple linear regression III
+
+-   The proposed model is improving over the median, but we can do much
+    better.
+
+-   A first (very effective) idea is to rely on a multiplicative model,
+    so that
+
+$$
+\texttt{SalePrice} = \beta_0 \times \beta_1 \texttt{Gr Liv Area} \times \cdots \times \beta_4 \texttt{Tot Bathrooms}.
+$$
+
+-   This is equivalent to fit a linear model on the log-scale and then
+    transforming back the predictions, so that
+
+```{r}
+m_simple_log <- lm(log(SalePrice) ~ Gr.Liv.Area + Overall.Qual + House.Age + Tot.Bathrooms, data = ames_train)
+summary(m_simple_log)
+```
+
+```{r}
+# Re-obtain the original scale
+y_hat_simple_log <- exp(predict(m_simple_log, newdata = ames_test))
+```
+
+
+```{r}
+round(MAE(ames_test$SalePrice, y_hat_simple_log), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_simple_log), 4)
+```
+
+## Best subset selection
+
+-   A simple linear regression model is already capable of predicting
+    the sale price with an average error of 20k, which is remarkable
+    given its simplicity.
+
+-   We can improve over the previous linear model by adding more
+    covariates...
+
+-   However, there are too many of them! Some form of
+    [regularization]{.orange} is needed.
+
+
+## The full model
+
+```{r}
+# Here I compute some basic quantities
+X_train <- model.matrix(SalePrice ~ ., data = ames_train)[, -1]
+y_train <- ames_train$SalePrice
+n <- nrow(X_train)
+p <- ncol(X_train) # This does not include the intercept
+c(n, p)
+```
+
+
+```{r}
+m_full <- lm(SalePrice ~ ., data = ames_train)
+summary(m_full)
+```
+
+```{r}
+# 4 collinearities are due to "no basement", 3 collinearities are due to "no garage"
+
+# Moreover, note that at the basement
+head(cbind(ames_train$Bsmt.Unf.SF + ames_train$BsmtFin.SF.1 + ames_train$BsmtFin.SF.2, 
+           ames_train$Total.Bsmt.SF))
+
+# And that at the ground floors
+head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual.Fin.SF, ames_train$Gr.Liv.Area))
+```
+
+## Forward and backward regression
+
+```{r}
+library(leaps)
+fit_forward <- regsubsets(SalePrice ~ ., data = ames_train, method = "forward", nbest = 1, nvmax = p - 10)
+sum_forward <- summary(fit_forward)
+```
+
+
+```{r}
+which(sum_forward$which[1, ]) # Model with one covariate
+which(sum_forward$which[2, ]) # Model with two covariates
+which(sum_forward$which[3, ]) # Model with three covariates
+which(sum_forward$which[4, ]) # Model with four covariates
+```
+
+## Cross-validation
+
+<!-- ```{r} -->
+<!-- library(rsample) -->
+
+<!-- p_max <- 200 -->
+<!-- set.seed(123) -->
+<!-- cv_fold <- vfold_cv(data.frame(SalePrice = y_train, X_train), v = 10) -->
+<!-- resid_subs <- matrix(0, n, p_max + 1) -->
+
+<!-- for (k in 1:5) { -->
+<!--   # Estimation of the null model -->
+<!--   fit_null <- lm(SalePrice ~ 1, data = data.frame(analysis(cv_fold$splits[[k]]))) -->
+<!--   # Forward and backward regression -->
+<!--   fit_forward <- regsubsets(SalePrice ~ ., data = analysis(cv_fold$splits[[k]]), method = "forward", nbest = 1, nvmax = p_max) -->
+<!--   sum_forward <- summary(fit_forward) -->
+
+<!--   # Hold-out quantities -->
+<!--   X_k <- as.matrix(cbind(1, assessment(cv_fold$splits[[k]]) %>% select(-SalePrice))) -->
+<!--   y_k <- assessment(cv_fold$splits[[k]])$SalePrice -->
+
+<!--   # MSE of the null model -->
+<!--   resid_subs[complement(cv_fold$splits[[k]]), 1] <- y_k - predict(fit_null, assessment(cv_fold$splits[[k]])) -->
+
+<!--   # MSE of the best models for different values of p -->
+<!--   for (j in 2:(p_max + 1)) { -->
+<!--     y_hat <- X_k[, sum_forward$which[j - 1, ]] %*% coef(fit_forward, j - 1) -->
+<!--     resid_subs[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat -->
+<!--   } -->
+<!-- } -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- #| fig-width: 10 -->
+<!-- #| fig-height: 5 -->
+<!-- #| fig-align: center -->
+
+<!-- data_cv <- data.frame( -->
+<!--   p = 0:p_max, -->
+<!--   MSE = apply(resid_subs, 2, function(x) mean(abs(x))) -->
+<!--   #SE = apply(resid_subs^2, 2, function(x) sd(x) / sqrt(n)) -->
+<!-- ) -->
+
+<!-- se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)] -->
+<!-- p_optimal <- which(data_cv$MSE < se_rule)[1] - 1 -->
+
+<!-- ggplot(data = data_cv, aes(x = p, y = MSE)) + -->
+<!--   geom_point() + -->
+<!--   geom_line() + -->
+<!--   #geom_linerange(aes(ymax = MSE + SE, ymin = MSE - SE)) + -->
+<!--   #geom_hline(yintercept = se_rule, linetype = "dotted") + -->
+<!--   #geom_vline(xintercept = p_optimal, linetype = "dotted") + -->
+<!--   theme_light() + -->
+<!--   theme(legend.position = "top") + -->
+<!--   scale_color_tableau(palette = "Color Blind") + -->
+<!--   xlab("Number of covariates") + -->
+<!--   ylab("Mean squared error (10-fold cv)") -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- fit_forward <- regsubsets(lpsa ~ ., data = prostate_train, method = "forward", nbest = 1, nvmax = p) -->
+<!-- sum_forward <- summary(fit_forward) -->
+<!-- fit_backward <- regsubsets(lpsa ~ ., data = prostate_train, method = "backward", nbest = 1, nvmax = p) -->
+<!-- sum_backward <- summary(fit_backward) -->
+<!-- ``` -->
+
+
