@@ -56,7 +56,7 @@ instruction of the quarto
 documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf).
 
 | Topic                                  | Notes                                | Slides                                             | Code                      |
-|------------------|------------------|-------------------|------------------|
+|----------------------------------------|--------------------------------------|----------------------------------------------------|---------------------------|
 | **Introduction**                       | [Introduction](slides/un_intro.html) | [Slides Introduction](slides/un_intro_slides.html) |                           |
 | **A-B-C**                              | [Unit A](slides/un_A.html)           | [Slides Unit A](slides/un_A_slides.html)           | [Code A](code/un_A.R)     |
 | Lab 1 (Computations for linear models) |                                      |                                                    | [Code Lab 1](code/lab1.R) |

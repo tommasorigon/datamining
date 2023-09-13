@@ -812,8 +812,8 @@ head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual
 
 ```{r}
 library(leaps)
-fit_forward <- regsubsets(log(SalePrice) ~ ., data = ames_train, method = "forward", 
-                          nbest = 1, nvmax = 200)
+fit_forward <- regsubsets(log(SalePrice) ~ ., data = ames_train, method = "exhaustive", 
+                          nbest = 1, nvmax = 200, really.big = TRUE)
 sum_forward <- summary(fit_forward)
 
 fit_backward <- regsubsets(log(SalePrice) ~ ., data = ames_train, method = "backward", 

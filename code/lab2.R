@@ -190,14 +190,14 @@ y_hat_simple <- pmax(y_hat_simple, 30000)
 round(MAE(ames_test$SalePrice, y_hat_simple), 4)
 round(RMSLE(ames_test$SalePrice, y_hat_simple), 4)
 
-m_simple_log <- lm(log(SalePrice) ~ Gr.Liv.Area + Overall.Qual + House.Age + Tot.Bathrooms, data = ames_train)
-summary(m_simple_log)
+m_simple <- lm(log(SalePrice) ~ Gr.Liv.Area + Overall.Qual + House.Age + Tot.Bathrooms, data = ames_train)
+summary(m_simple)
 
 # Re-obtain the original scale
-y_hat_simple_log <- exp(predict(m_simple_log, newdata = ames_test))
+y_hat_simple <- exp(predict(m_simple, newdata = ames_test))
 
-round(MAE(ames_test$SalePrice, y_hat_simple_log), 4)
-round(RMSLE(ames_test$SalePrice, y_hat_simple_log), 4)
+round(MAE(ames_test$SalePrice, y_hat_simple), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_simple), 4)
 
 # Here I compute some basic quantities
 X_train <- model.matrix(SalePrice ~ ., data = ames_train)[, -1]
@@ -206,7 +206,7 @@ n <- nrow(X_train)
 p <- ncol(X_train) # This does not include the intercept
 c(n, p)
 
-m_full <- lm(SalePrice ~ ., data = ames_train)
+m_full <- lm(log(SalePrice) ~ ., data = ames_train)
 summary(m_full)
 
 # 4 collinearities are due to "no basement", 3 collinearities are due to "no garage"
@@ -221,30 +221,17 @@ head(cbind(
 head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual.Fin.SF, ames_train$Gr.Liv.Area))
 
 library(leaps)
-fit_forward <- regsubsets(SalePrice ~ .,
+fit_forward <- regsubsets(log(SalePrice) ~ .,
   data = ames_train, method = "forward",
   nbest = 1, nvmax = 200
 )
 sum_forward <- summary(fit_forward)
 
-fit_backward <- regsubsets(SalePrice ~ .,
+fit_backward <- regsubsets(log(SalePrice) ~ .,
   data = ames_train, method = "backward",
   nbest = 1, nvmax = 200
 )
 sum_backward <- summary(fit_backward)
-
-which(sum_forward$which[1, ]) # Model with one covariate
-which(sum_forward$which[2, ]) # Model with two covariates
-which(sum_forward$which[3, ]) # Model with three covariates
-which(sum_forward$which[4, ]) # Model with four covariates
-
-which(sum_backward$which[1, ]) # Model with one covariate
-which(sum_backward$which[2, ]) # Model with two covariates
-which(sum_backward$which[3, ]) # Model with three covariates
-which(sum_backward$which[4, ]) # Model with four covariates
-which(sum_backward$which[5, ]) # Model with four covariates
-which(sum_backward$which[6, ]) # Model with four covariates
-which(sum_backward$which[7, ]) # Model with four covariates
 
 library(broom)
 fit_forward_summary <- fit_forward %>%
@@ -282,6 +269,14 @@ abline(v = which.min(fit_backward_summary$mallows_cp), lty = "dashed")
 which.min(fit_backward_summary$mallows_cp)
 which(sum_backward$which[which.min(fit_backward_summary$mallows_cp), ])
 
+which(sum_backward$which[1, ]) # Model with one covariate
+which(sum_backward$which[2, ]) # Model with two covariates
+which(sum_backward$which[3, ]) # Model with three covariates
+which(sum_backward$which[4, ]) # Model with four covariates
+which(sum_backward$which[5, ]) # Model with five covariates
+which(sum_backward$which[6, ]) # Model with six covariates
+which(sum_backward$which[7, ]) # Model with seven covariates
+
 predict.regsubsets <- function(object, newdata, id, ...) {
   form <- as.formula(object[["call"]][[2]])
 
@@ -300,99 +295,33 @@ predict.regsubsets <- function(object, newdata, id, ...) {
   pred
 }
 
-predict(fit_backward, newdata = ames_train, id = 103)
+head(exp(predict(fit_backward, newdata = ames_train, id = 2)))
 
 library(rsample)
 
 p_max <- 200
 set.seed(123)
-V <- 10
+
+V <- 10 # Number of CV fold
 cv_fold <- vfold_cv(ames_train, v = V)
-resid_subs <- matrix(0, nrow(ames_train), p_max + 1)
-resid_log_subs <- matrix(0, nrow(ames_train), p_max + 1)
 
-for (k in 1:V) {
-  # Estimation of the null model
-  fit_null <- lm(SalePrice ~ 1, data = data.frame(analysis(cv_fold$splits[[k]])))
-  # Forward and backward regression
-  fit_cv <- regsubsets(SalePrice ~ .,
-    data = analysis(cv_fold$splits[[k]]),
-    method = "backward", nbest = 1, nvmax = p_max
-  )
+resid_back <- matrix(0, nrow(ames_train), p_max + 1)
+resid_log_back <- matrix(0, nrow(ames_train), p_max + 1)
 
-  # Hold-out quantities
-  y_k <- assessment(cv_fold$splits[[k]])$SalePrice
-
-  # Residuals for the null model
-  y_hat_null <- pmax(30000, predict(fit_null, assessment(cv_fold$splits[[k]])))
-  resid_subs[complement(cv_fold$splits[[k]]), 1] <- y_k - y_hat_null
-  resid_log_subs[complement(cv_fold$splits[[k]]), 1] <- log(y_k) - log(y_hat_null)
-
-  # Residuals of the best models for different values of p
-  for (j in 2:(p_max + 1)) {
-    y_hat <- pmax(30000, predict(fit_cv, assessment(cv_fold$splits[[k]]), j - 1))
-    resid_subs[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
-    resid_log_subs[complement(cv_fold$splits[[k]]), j] <- log(y_k) - log(y_hat)
-  }
-}
-
-data_cv <- data.frame(
-  p = 0:p_max,
-  MAE = apply(resid_subs, 2, function(x) mean(abs(x))),
-  RMSLE = apply(resid_log_subs^2, 2, function(x) mean(x)),
-  SE = apply(resid_log_subs^2, 2, function(x) sd(x) / sqrt(n))
-)
-
-se_rule <- data_cv$RMSLE[which.min(data_cv$RMSLE)] + data_cv$SE[which.min(data_cv$RMSLE)]
-p_optimal <- which(data_cv$RMSLE < se_rule)[1]
-
-plot(data_cv$p, data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE", xlab = "p")
-abline(v = p_optimal, lty = "dashed")
-
-plot(data_cv$p, data_cv$RMSLE, type = "b", pch = 16, cex = 0.4, ylab = "RMSLE", xlab = "p")
-abline(v = p_optimal, lty = "dashed")
-
-library(leaps)
-fit_forward <- regsubsets(log(SalePrice) ~ .,
-  data = ames_train, method = "forward",
-  nbest = 1, nvmax = p - 10
-)
-sum_forward <- summary(fit_forward)
-
-fit_backward <- regsubsets(log(SalePrice) ~ .,
-  data = ames_train, method = "backward",
-  nbest = 1, nvmax = p - 10
-)
-sum_backward <- summary(fit_backward)
-
-which(sum_forward$which[1, ]) # Model with one covariate
-which(sum_forward$which[2, ]) # Model with two covariates
-which(sum_forward$which[3, ]) # Model with three covariates
-which(sum_forward$which[4, ]) # Model with four covariates
-
-which(sum_backward$which[1, ]) # Model with one covariate
-which(sum_backward$which[2, ]) # Model with two covariates
-which(sum_backward$which[3, ]) # Model with three covariates
-which(sum_backward$which[4, ]) # Model with four covariates
-which(sum_backward$which[5, ]) # Model with four covariates
-which(sum_backward$which[6, ]) # Model with four covariates
-which(sum_backward$which[7, ]) # Model with four covariates
-which(sum_backward$which[8, ]) # Model with four covariates
-
-library(rsample)
-
-p_max <- 200
-set.seed(123)
-V <- 10
-cv_fold <- vfold_cv(ames_train, v = V)
-resid_subs <- matrix(0, nrow(ames_train), p_max + 1)
-resid_log_subs <- matrix(0, nrow(ames_train), p_max + 1)
+resid_simple <- numeric(nrow(ames_train))
+resid_log_simple <- numeric(nrow(ames_train))
 
 for (k in 1:V) {
   # Estimation of the null model
   fit_null <- lm(log(SalePrice) ~ 1, data = data.frame(analysis(cv_fold$splits[[k]])))
+
+  # Simple model
+  fit_cv_simple <- lm(log(SalePrice) ~ Gr.Liv.Area + Overall.Qual + House.Age + Tot.Bathrooms,
+    data = analysis(cv_fold$splits[[k]])
+  )
+
   # Forward and backward regression
-  fit_backward <- regsubsets(log(SalePrice) ~ .,
+  fit_cv <- regsubsets(log(SalePrice) ~ .,
     data = analysis(cv_fold$splits[[k]]),
     method = "backward", nbest = 1, nvmax = p_max
   )
@@ -402,37 +331,43 @@ for (k in 1:V) {
 
   # Residuals for the null model
   y_hat_null <- exp(predict(fit_null, assessment(cv_fold$splits[[k]])))
-  resid_subs[complement(cv_fold$splits[[k]]), 1] <- y_k - y_hat_null
-  resid_log_subs[complement(cv_fold$splits[[k]]), 1] <- log(y_k) - log(y_hat_null)
+  resid_back[complement(cv_fold$splits[[k]]), 1] <- y_k - y_hat_null
+  resid_log_back[complement(cv_fold$splits[[k]]), 1] <- log(y_k) - log(y_hat_null)
+
+  # Residuals for the simple model
+  y_k_simple <- exp(predict(fit_cv_simple, assessment(cv_fold$splits[[k]])))
+  resid_simple[complement(cv_fold$splits[[k]])] <- y_k - y_k_simple
+  resid_log_simple[complement(cv_fold$splits[[k]])] <- log(y_k) - log(y_k_simple)
 
   # Residuals of the best models for different values of p
   for (j in 2:(p_max + 1)) {
-    y_hat <- exp(predict(fit_backward, assessment(cv_fold$splits[[k]]), j - 1))
-    resid_subs[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
-    resid_log_subs[complement(cv_fold$splits[[k]]), j] <- log(y_k) - log(y_hat)
+    y_hat <- exp(predict(fit_cv, assessment(cv_fold$splits[[k]]), j - 1))
+    resid_back[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
+    resid_log_back[complement(cv_fold$splits[[k]]), j] <- log(y_k) - log(y_hat)
   }
 }
 
 data_cv <- data.frame(
   p = 0:p_max,
-  MAE = apply(resid_subs, 2, function(x) mean(abs(x))),
-  RMSLE = apply(resid_log_subs^2, 2, function(x) mean(x)),
-  SE = apply(resid_log_subs^2, 2, function(x) sd(x) / sqrt(n))
+  MAE = apply(resid_back, 2, function(x) mean(abs(x))),
+  MSLE = apply(resid_log_back^2, 2, function(x) mean(x)),
+  SE = apply(resid_log_back^2, 2, function(x) sd(x) / sqrt(nrow(ames_train)))
 )
 
-
-se_rule <- data_cv$RMSLE[which.min(data_cv$RMSLE)] + data_cv$SE[which.min(data_cv$RMSLE)]
-p_optimal <- which(data_cv$RMSLE < se_rule)[1]
+se_rule <- data_cv$MSLE[which.min(data_cv$MSLE)] + data_cv$SE[which.min(data_cv$MSLE)]
+p_optimal <- which(data_cv$MSLE < se_rule)[1]
+p_optimal
 
 plot(data_cv$p, data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE", xlab = "p")
 abline(v = p_optimal, lty = "dashed")
+abline(h = mean(abs(resid_simple)), lty = "dotted")
 
-plot(data_cv$p, data_cv$RMSLE, type = "b", pch = 16, cex = 0.4, ylab = "RMSLE", xlab = "p")
+plot(data_cv$p, sqrt(data_cv$MSLE), type = "b", pch = 16, cex = 0.4, ylab = "RMSLE", xlab = "p")
 abline(v = p_optimal, lty = "dashed")
+abline(h = sqrt(mean(resid_log_simple^2)), lty = "dotted")
 
-y_hat_backward_log <- exp(predict(fit_backward, newdata = ames_test, id = p_optimal))
-
-y_hat_full <- pmax(30000, predict(m_full, newdata = ames_test))
+y_hat_median
+y_hat_full <- exp(predict(m_full, newdata = ames_test))
 
 # Simple log
 round(MAE(ames_test$SalePrice, y_hat_simple_log), 4)
