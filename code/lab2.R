@@ -1,19 +1,29 @@
-rm(list = ls())
-library(tidyverse)
-ames <- read_csv("../data/AmesHousing.csv", )
-ames
+# -----------------------------------
+# LAB 2 (Ames Housing)
+# Course: Data Mining
+# Author: Tommaso Rigon
+# --------------------------------
 
-glimpse(ames)
+rm(list = ls())
+
+# The dataset can be also found online here: https://tommasorigon.github.io/datamining/data/AmesHousing.csv
+ames <- read.csv("../data/AmesHousing.csv", header = TRUE)
+
+# Brief look at the dataset
+str(ames)
+
+# The skimr package is requires here; use "summary" as an alternative
 skimr::skim(ames)
 
-table(ames$`MS Zoning`)
+# What do we want to do in the first place?
+table(ames$MS.Zoning)
 
 # From the documentation:
 # "C (all)" = Commercial sales
 # "I (all)" = Industrial sales
 # "A (agr)" = Agricultural sales
 # "FV" = Floating village sales
-ames <- filter(ames, !(`MS Zoning` %in% c("C (all)", "I (all)", "A (agr)", "FV")))
+ames <- filter(ames, !(MS.Zoning %in% c("C (all)", "I (all)", "A (agr)", "FV")))
 
 table(ames$`Sale Condition`)
 
@@ -85,6 +95,8 @@ table(ames$`Misc Feature`, useNA = "always")
 ames$`Misc Feature`[is.na(ames$`Misc Feature`)] <- "No additional feature"
 ames$`Misc Feature`[ames$`Misc Feature` == "TenC"] <- "Othr"
 
+
+
 table(ames$`Pool QC`, useNA = "always")
 ames$`Pool QC`[is.na(ames$`Pool QC`)] <- "No"
 ames$`Pool QC`[ames$`Pool QC` %in% c("TA", "Ex", "Gd", "Fa")] <- "Yes"
@@ -122,10 +134,12 @@ ames_train <- read.table("../data/ames_train.csv",
   header = TRUE, sep = ",",
   stringsAsFactors = TRUE
 )
-ames_test <- read.table("../data/ames_train.csv",
+ames_test <- read.table("../data/ames_test.csv",
   header = TRUE, sep = ",",
   stringsAsFactors = TRUE
 )
+
+skimr::skim(ames_train)
 
 par(mfrow = c(1, 1))
 plot(ames_train$Gr.Liv.Area, ames_train$SalePrice,
@@ -200,11 +214,7 @@ round(MAE(ames_test$SalePrice, y_hat_simple), 4)
 round(RMSLE(ames_test$SalePrice, y_hat_simple), 4)
 
 # Here I compute some basic quantities
-X_train <- model.matrix(SalePrice ~ ., data = ames_train)[, -1]
-y_train <- ames_train$SalePrice
-n <- nrow(X_train)
-p <- ncol(X_train) # This does not include the intercept
-c(n, p)
+dim(model.matrix(SalePrice ~ ., data = ames_train)[, -1])
 
 m_full <- lm(log(SalePrice) ~ ., data = ames_train)
 summary(m_full)
@@ -220,10 +230,12 @@ head(cbind(
 # And that at the ground floors
 head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual.Fin.SF, ames_train$Gr.Liv.Area))
 
+y_hat_full <- exp(predict(m_full, newdata = ames_test))
+
 library(leaps)
 fit_forward <- regsubsets(log(SalePrice) ~ .,
   data = ames_train, method = "forward",
-  nbest = 1, nvmax = 200
+  nbest = 1, nvmax = 200, really.big = TRUE
 )
 sum_forward <- summary(fit_forward)
 
@@ -313,7 +325,7 @@ resid_log_simple <- numeric(nrow(ames_train))
 
 for (k in 1:V) {
   # Estimation of the null model
-  fit_null <- lm(log(SalePrice) ~ 1, data = data.frame(analysis(cv_fold$splits[[k]])))
+  fit_cv_null <- lm(log(SalePrice) ~ 1, data = data.frame(analysis(cv_fold$splits[[k]])))
 
   # Simple model
   fit_cv_simple <- lm(log(SalePrice) ~ Gr.Liv.Area + Overall.Qual + House.Age + Tot.Bathrooms,
@@ -321,7 +333,7 @@ for (k in 1:V) {
   )
 
   # Forward and backward regression
-  fit_cv <- regsubsets(log(SalePrice) ~ .,
+  fit_cv_back <- regsubsets(log(SalePrice) ~ .,
     data = analysis(cv_fold$splits[[k]]),
     method = "backward", nbest = 1, nvmax = p_max
   )
@@ -330,9 +342,9 @@ for (k in 1:V) {
   y_k <- assessment(cv_fold$splits[[k]])$SalePrice
 
   # Residuals for the null model
-  y_hat_null <- exp(predict(fit_null, assessment(cv_fold$splits[[k]])))
-  resid_back[complement(cv_fold$splits[[k]]), 1] <- y_k - y_hat_null
-  resid_log_back[complement(cv_fold$splits[[k]]), 1] <- log(y_k) - log(y_hat_null)
+  y_k_null <- exp(predict(fit_cv_null, assessment(cv_fold$splits[[k]])))
+  resid_back[complement(cv_fold$splits[[k]]), 1] <- y_k - y_k_null
+  resid_log_back[complement(cv_fold$splits[[k]]), 1] <- log(y_k) - log(y_k_null)
 
   # Residuals for the simple model
   y_k_simple <- exp(predict(fit_cv_simple, assessment(cv_fold$splits[[k]])))
@@ -341,11 +353,14 @@ for (k in 1:V) {
 
   # Residuals of the best models for different values of p
   for (j in 2:(p_max + 1)) {
-    y_hat <- exp(predict(fit_cv, assessment(cv_fold$splits[[k]]), j - 1))
-    resid_back[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
-    resid_log_back[complement(cv_fold$splits[[k]]), j] <- log(y_k) - log(y_hat)
+    y_k_back <- exp(predict(fit_cv_back, assessment(cv_fold$splits[[k]]), j - 1))
+    resid_back[complement(cv_fold$splits[[k]]), j] <- y_k - y_k_back
+    resid_log_back[complement(cv_fold$splits[[k]]), j] <- log(y_k) - log(y_k_back)
   }
 }
+
+# Housekeeping
+rm(y_k, y_k_back, y_k_null, y_k_simple, fit_cv_null, fit_cv_simple, fit_cv_back, j, k)
 
 data_cv <- data.frame(
   p = 0:p_max,
@@ -366,17 +381,66 @@ plot(data_cv$p, sqrt(data_cv$MSLE), type = "b", pch = 16, cex = 0.4, ylab = "RMS
 abline(v = p_optimal, lty = "dashed")
 abline(h = sqrt(mean(resid_log_simple^2)), lty = "dotted")
 
-y_hat_median
-y_hat_full <- exp(predict(m_full, newdata = ames_test))
+y_hat_back <- exp(predict(fit_backward, newdata = ames_test, id = p_optimal))
 
-# Simple log
-round(MAE(ames_test$SalePrice, y_hat_simple_log), 4)
-round(RMSLE(ames_test$SalePrice, y_hat_simple_log), 4)
+library(pls)
+p_max <- 200
+V <- 10
+resid_pcr <- matrix(0, nrow(ames_train), p_max)
+resid_log_pcr <- matrix(0, nrow(ames_train), p_max)
+
+for (k in 1:V) {
+  # Estimation of the null model
+  fit_null <- lm(log(SalePrice) ~ 1, data = data.frame(analysis(cv_fold$splits[[k]])))
+
+  # Hold-out dataset
+  y_k <- assessment(cv_fold$splits[[k]])$SalePrice
+  # MSE of the null model
+  resid_pcr[complement(cv_fold$splits[[k]]), 1] <- y_k - exp(predict(fit_null, assessment(cv_fold$splits[[k]])))
+  resid_log_pcr[complement(cv_fold$splits[[k]]), 1] <- log(y_k) - predict(fit_null, assessment(cv_fold$splits[[k]]))
+
+  # Fitting PCR (all the components at once)
+  fit_cv_pcr <- pcr(log(SalePrice) ~ ., data = analysis(cv_fold$splits[[k]]), center = TRUE, scale = FALSE)
+  # Predictions
+  y_k_pcr <- exp(predict(fit_cv_pcr, newdata = assessment(cv_fold$splits[[k]])))
+  for (j in 2:p_max) {
+    # MSE of the best models for different values of p
+    resid_pcr[complement(cv_fold$splits[[k]]), j] <- y_k - y_k_pcr[, , j - 1]
+    resid_log_pcr[complement(cv_fold$splits[[k]]), j] <- log(y_k) - log(y_k_pcr[, , j - 1])
+  }
+}
+
+data_cv <- data.frame(
+  p = 1:p_max,
+  MAE = apply(resid_pcr, 2, function(x) mean(abs(x))),
+  MSLE = apply(resid_log_pcr^2, 2, function(x) mean(x)),
+  SE = apply(resid_log_pcr^2, 2, function(x) sd(x) / sqrt(nrow(ames_train)))
+)
+
+se_rule <- data_cv$MSLE[which.min(data_cv$MSLE)] + data_cv$SE[which.min(data_cv$MSLE)]
+p_optimal <- which(data_cv$MSLE < se_rule)[1]
+p_optimal
+
+plot(data_cv$p, data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE", xlab = "p")
+abline(v = p_optimal, lty = "dashed")
+abline(h = mean(abs(resid_simple)), lty = "dotted")
+
+plot(data_cv$p, sqrt(data_cv$MSLE), type = "b", pch = 16, cex = 0.6, ylab = "RMSLE", xlab = "p")
+abline(v = p_optimal, lty = "dashed")
+abline(h = sqrt(mean(resid_log_simple^2)), lty = "dotted")
+
+# Null
+round(MAE(ames_test$SalePrice, y_hat_median), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_median), 4)
+
+# Simple
+round(MAE(ames_test$SalePrice, y_hat_simple), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_simple), 4)
 
 # Full
 round(MAE(ames_test$SalePrice, y_hat_full), 4)
 round(RMSLE(ames_test$SalePrice, y_hat_full), 4)
 
 # Backward
-round(MAE(ames_test$SalePrice, y_hat_backward), 4)
-round(RMSLE(ames_test$SalePrice, y_hat_backward), 4)
+round(MAE(ames_test$SalePrice, y_hat_back), 4)
+round(RMSLE(ames_test$SalePrice, y_hat_back), 4)

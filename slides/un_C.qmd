@@ -914,6 +914,8 @@ library(pls)
 resid_pcr <- matrix(0, n, p)
 
 for (k in 1:10) {
+  # Estimation of the null model
+  fit_null <- lm(lpsa ~ 1, data = analysis(cv_fold$splits[[k]]))
   # Hold-out dataset
   y_k <- assessment(cv_fold$splits[[k]])$lpsa
   # MSE of the null model
@@ -928,12 +930,6 @@ for (k in 1:10) {
     resid_pcr[complement(cv_fold$splits[[k]]), j] <- y_k - y_hat
   }
 }
-```
-
-```{r}
-#| fig-width: 10
-#| fig-height: 5
-#| fig-align: center
 
 data_cv <- data.frame(
   p = 1:p,
@@ -943,6 +939,12 @@ data_cv <- data.frame(
 
 se_rule <- data_cv$MSE[which.min(data_cv$MSE)] + data_cv$SE[which.min(data_cv$MSE)]
 p_optimal <- which(data_cv$MSE < se_rule)[1]
+```
+
+```{r}
+#| fig-width: 10
+#| fig-height: 5
+#| fig-align: center
 
 ggplot(data = data_cv, aes(x = p, y = MSE)) +
   geom_point() +
