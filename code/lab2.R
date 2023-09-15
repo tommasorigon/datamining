@@ -74,8 +74,6 @@ table(ames$Bsmt.Exposure, ames$Bsmt.Cond, useNA = "always")
 ames$Bsmt.Exposure[is.na(ames$Bsmt.Exposure)] <- "No basement"
 ames$Bsmt.Cond[is.na(ames$Bsmt.Cond)] <- "No basement"
 ames$Bsmt.Qual[is.na(ames$Bsmt.Qual)] <- "No basement"
-ames$BsmtFin.Type.1[is.na(ames$BsmtFin.Type.1)] <- "No basement"
-ames$BsmtFin.Type.2[is.na(ames$BsmtFin.Type.2)] <- "No basement"
 
 # The "No basement" values are occuring at the same rows. Can you spot why this is going to be problematic?
 
@@ -83,11 +81,8 @@ ames$BsmtFin.Type.2[is.na(ames$BsmtFin.Type.2)] <- "No basement"
 table(ames$Bsmt.Exposure, useNA = "always")
 ames$Bsmt.Exposure[ames$Bsmt.Exposure == ""] <- "No"
 
-# For the sake of simplicity, we just omit the variables
-ames <- cbind(ames, model.matrix(SalePrice ~ Bsmt.Unf.SF + BsmtFin.Type.1:BsmtFin.SF.1 + BsmtFin.Type.2:BsmtFin.SF.2, data = ames)[, -1])
-
-ames <- subset(ames, select = -c(BsmtFin.Type.1, BsmtFin.Type.2, BsmtFin.SF.1, BsmtFin.SF.2, Bsmt.Unf.SF, 
-                                 `BsmtFin.Type.1No basement:BsmtFin.SF.1`, `BsmtFin.Type.2No basement:BsmtFin.SF.2`))
+# For the sake of simplicity, we just omit these variables
+ames <- subset(ames, select = -c(BsmtFin.Type.1, BsmtFin.Type.2, BsmtFin.SF.1, BsmtFin.SF.2))
 
 # For the garage, there is a slighly different situation because there are some inconsistencies:
 table(ames$Garage.Cond, ames$Garage.Type, useNA = "always")
@@ -208,11 +203,9 @@ table(ames$Utilities)
 table(ames$Condition.2)
 table(ames$Pool.Area)
 table(ames$Roof.Matl)
-table(ames$`BsmtFin.Type.2Unf:BsmtFin.SF.2`)
 
 # Almost no information is present in these variables
-ames <- subset(ames, select = -c(Pool.Area, Utilities, Street, Condition.2, Roof.Matl, 
-                                 `BsmtFin.Type.2Unf:BsmtFin.SF.2`, `BsmtFin.Type.1Unf:BsmtFin.SF.1`))
+ames <- subset(ames, select = -c(Pool.Area, Utilities, Street, Condition.2, Roof.Matl))
 
 # Writing the final output
 write.csv(data.frame(ames), "../data/ames.csv", row.names = FALSE)

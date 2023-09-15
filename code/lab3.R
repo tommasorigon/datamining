@@ -1,8 +1,8 @@
-# ------------------------------------
-# LAB 3 (Ames Housing)
+# ###########################################
+# LAB 3 (Ames Housing) 
 # Course: Data Mining
 # Author: Tommaso Rigon
-# ------------------------------------
+# ###########################################
 
 # Predictive analysis ----------------------------------------------------------------------------
 
@@ -102,24 +102,25 @@ round(MSLE(ames_validation$SalePrice, y_hat_simple), 4)
 
 # A larger model -----------------------------------------------------------------------------------------
 
-# Here I compute some basic quantities
-
+# How many variables are involved?
 dim(model.matrix(log(SalePrice) ~ ., data = ames_train)[, -1])
 
+# Linear regression model with all the covariates (some of them are going to be redundant!)
 m_full <- lm(log(SalePrice) ~ ., data = ames_train)
 summary(m_full)
 
 # 4 collinearities are due to "no basement", 3 collinearities are due to "no garage"
 
-# Moreover, note that at the basement
-head(cbind(
-  ames_train$Bsmt.Unf.SF + ames_train$BsmtFin.SF.1 + ames_train$BsmtFin.SF.2,
-  ames_train$Total.Bsmt.SF
-))
+# # In fact, note that at the basement
+# head(cbind(
+#   ames_train$Bsmt.Unf.SF + ames_train$BsmtFin.SF.1 + ames_train$BsmtFin.SF.2,
+#   ames_train$Total.Bsmt.SF
+# ))
+#
+# # And that at the ground floors
+# head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual.Fin.SF, ames_train$Gr.Liv.Area))
 
-# And that at the ground floors
-head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual.Fin.SF, ames_train$Gr.Liv.Area))
-
+# Predictions for the full model
 y_hat_full <- exp(predict(m_full, newdata = ames_validation))
 
 round(MAE(ames_validation$SalePrice, y_hat_full), 5)
@@ -129,14 +130,16 @@ round(MSLE(ames_validation$SalePrice, y_hat_full), 5)
 
 library(leaps)
 
-# Maximum number of covariates included in the list
-p_max <- 180
-fit_forward <- regsubsets(log(SalePrice) ~ ., 
-                          data = ames_train, method = "forward", nbest = 1, nvmax = p_max, really.big = TRUE)
+# Maximum number of covariates included in the list (I need to exclude collinearities)
+p_max <- 175
+fit_forward <- regsubsets(log(SalePrice) ~ .,
+  data = ames_train, method = "forward", nbest = 1, nvmax = p_max, really.big = TRUE
+)
 sum_forward <- summary(fit_forward)
 
-fit_backward <- regsubsets(log(SalePrice) ~ ., 
-                           data = ames_train, method = "backward", nbest = 1, nvmax = p_max)
+fit_backward <- regsubsets(log(SalePrice) ~ .,
+  data = ames_train, method = "backward", nbest = 1, nvmax = p_max
+)
 sum_backward <- summary(fit_backward)
 
 library(broom)
@@ -153,41 +156,11 @@ fit_backward_summary <- fit_backward %>%
   mutate(p = sum(c_across(MS.SubClassOne_and_Half_Story_Finished_All_Ages:House.Age)), .keep = "unused") %>%
   ungroup()
 
-# R-squared and Mallow's Cp
-par(mfrow = c(1, 2))
-plot(fit_forward_summary$p, fit_forward_summary$r.squared,
-  type = "b", cex = 0.8, pch = 16, ylab = "R-squared", xlab = "p",
-  main = "Forward regression"
-)
-plot(fit_forward_summary$p, fit_forward_summary$mallows_cp,
-  type = "b", cex = 0.8, pch = 16, ylab = "Mallows' Cp", xlab = "p",
-  main = "Forward regression"
-)
-abline(v = which.min(fit_forward_summary$mallows_cp), lty = "dashed")
-
-plot(fit_backward_summary$p, fit_backward_summary$r.squared,
-  type = "b", cex = 0.8, pch = 16, ylab = "R-squared", xlab = "p",
-  main = "Backward regression"
-)
-plot(fit_backward_summary$p, fit_backward_summary$mallows_cp,
-  type = "b", cex = 0.8, pch = 16, ylab = "Mallows' Cp", xlab = "p",
-  main = "Backward regression"
-)
-abline(v = which.min(fit_backward_summary$mallows_cp), lty = "dashed")
-
-# Which do we prefer?
-which.min(fit_backward_summary$mallows_cp)
-# The list here is quite long
-which(sum_backward$which[which.min(fit_backward_summary$mallows_cp), ])
-
 # Let us see what happens at the lowest levels
 which(sum_backward$which[1, ]) # Model with one covariate
 which(sum_backward$which[2, ]) # Model with two covariates
 which(sum_backward$which[3, ]) # Model with three covariates
 which(sum_backward$which[4, ]) # Model with four covariates
-which(sum_backward$which[5, ]) # Model with five covariates
-which(sum_backward$which[6, ]) # Model with six covariates
-which(sum_backward$which[7, ]) # Model with seven covariates
 
 # Coding time. Regsubsets does not have a "predict" method, we need to do it ourselves
 predict.regsubsets <- function(object, newdata, id, ...) {
@@ -230,21 +203,18 @@ for (j in 2:(p_max + 1)) {
 data_cv <- data.frame(
   p = 0:p_max,
   MAE = apply(resid_back, 2, function(x) mean(abs(x))),
-  MSLE = apply(resid_log_back^2, 2, function(x) mean(x)),
-  SE = apply(resid_log_back^2, 2, function(x) sd(x) / sqrt(nrow(ames_train)))
+  MSLE = apply(resid_log_back^2, 2, function(x) mean(x))
 )
 
-p_back_optimal <- which.min(data_cv$MAE)
-se_rule <- data_cv$MSLE[which.min(data_cv$MSLE)] + data_cv$SE[which.min(data_cv$MSLE)]
-p_back_optimal_se <- which(data_cv$MSLE < se_rule)[1]
+p_back_optimal <- data_cv$p[which.min(data_cv$MAE)]
+p_back_optimal
 
-c(p_back_optimal, p_back_optimal_se)
-
+par(mfrow = c(1, 2))
 plot(data_cv$p, data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE (validation)", xlab = "p")
 abline(v = p_back_optimal, lty = "dashed")
 abline(h = MAE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
-plot(data_cv$p, data_cv$MSLE, type = "b", pch = 16, cex = 0.4, ylab = "MSLE", xlab = "p")
+plot(data_cv$p, data_cv$MSLE, type = "b", pch = 16, cex = 0.6, ylab = "MSLE", xlab = "p")
 abline(v = p_back_optimal, lty = "dashed")
 abline(h = MSLE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
@@ -277,31 +247,22 @@ for (j in 2:(p_max + 1)) {
 data_cv <- data.frame(
   p = 0:p_max,
   MAE = apply(resid_pcr, 2, function(x) mean(abs(x))),
-  MSLE = apply(resid_log_pcr^2, 2, function(x) mean(x)),
-  SE = apply(resid_log_pcr^2, 2, function(x) sd(x) / sqrt(nrow(ames_train)))
+  MSLE = apply(resid_log_pcr^2, 2, function(x) mean(x))
 )
 
-p_pcr_optimal <- which.min(data_cv$MAE)
-se_rule <- data_cv$MSLE[which.min(data_cv$MSLE)] + data_cv$SE[which.min(data_cv$MSLE)]
-p_pcr_optimal_se <- which(data_cv$MSLE < se_rule)[1]
-c(p_pcr_optimal, p_pcr_optimal_se)
+p_pcr_optimal <- data_cv$p[which.min(data_cv$MAE)]
+p_pcr_optimal
 
+# Plots on the validation set
 plot(data_cv$p, data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE (validation)", xlab = "p")
 abline(v = p_pcr_optimal, lty = "dashed")
-abline(h = MAE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
-plot(data_cv$p, data_cv$MSLE, type = "b", pch = 16, cex = 0.4, ylab = "MSLE", xlab = "p")
+plot(data_cv$p, data_cv$MSLE, type = "b", pch = 16, cex = 0.6, ylab = "MSLE", xlab = "p")
 abline(v = p_pcr_optimal, lty = "dashed")
-abline(h = MSLE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
 # Optimal model on the validation set
-
 MAE(ames_validation$SalePrice, y_hat_pcr[, , p_pcr_optimal])
 MSLE(ames_validation$SalePrice, y_hat_pcr[, , p_pcr_optimal])
-
-# A simplified model is basically almost as appropriate
-MAE(ames_validation$SalePrice, y_hat_pcr[, , 5])
-MSLE(ames_validation$SalePrice, y_hat_pcr[, , 5])
 
 # Ridge regression ----------------------------------------------------------------------
 
@@ -314,6 +275,7 @@ y_shrinkage <- ames_train$SalePrice
 # We need to set alpha = 0 to use the ridge
 lambda_ridge_grid <- exp(seq(-5, 6, length = 100))
 fit_ridge <- glmnet(X_shrinkage, log(y_shrinkage), alpha = 0, lambda = lambda_ridge_grid)
+
 par(mfrow = c(1, 1))
 plot(fit_ridge, xvar = "lambda")
 
@@ -330,23 +292,18 @@ for (j in 1:length(lambda_ridge_grid)) {
 data_cv <- data.frame(
   lambda = lambda_ridge_grid,
   MAE = apply(resid_ridge, 2, function(x) mean(abs(x))),
-  MSLE = apply(resid_log_ridge^2, 2, function(x) mean(x)),
-  SE = apply(resid_log_ridge^2, 2, function(x) sd(x) / sqrt(nrow(ames_train)))
+  MSLE = apply(resid_log_ridge^2, 2, function(x) mean(x))
 )
 
 lambda_ridge_optimal <- lambda_ridge_grid[which.min(data_cv$MSLE)]
-se_rule <- data_cv$MSLE[which.min(data_cv$MSLE)] + data_cv$SE[which.min(data_cv$MSLE)]
-lambda_ridge_optimal_se <- lambda_ridge_grid[tail(which(data_cv$MSLE < se_rule), 1)]
-c(lambda_ridge_optimal, lambda_ridge_optimal_se)
+lambda_ridge_optimal
 
 par(mfrow = c(1, 2))
 plot(log(data_cv$lambda), data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE (validation)", xlab = expression(log(lambda)))
 abline(v = log(lambda_ridge_optimal), lty = "dashed")
-abline(h = MAE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
-plot(log(data_cv$lambda), data_cv$MSLE, type = "b", pch = 16, cex = 0.4, ylab = "MSLE", xlab = "p")
+plot(log(data_cv$lambda), data_cv$MSLE, type = "b", pch = 16, cex = 0.6, ylab = "MSLE", xlab = "p")
 abline(v = log(lambda_ridge_optimal), lty = "dashed")
-abline(h = MSLE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
 # Optimal model on the validation set
 y_hat_ridge <- exp(predict(fit_ridge, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = lambda_ridge_optimal))
@@ -372,7 +329,7 @@ m_lar <- lars(X_shrinkage, log(y_shrinkage), type = "lar")
 
 # Order of inclusion
 m_lar
-plot(m_lar, breaks = FALSE)
+plot(m_lar, breaks = FALSE, xvar = "step")
 
 plot(m_lar$df, m_lar$Cp, type = "b", xlab = "Degrees of freedom", ylab = "Cp of Mallow")
 
@@ -406,14 +363,11 @@ for (j in 1:length(lambda_en_grid)) {
 data_cv <- data.frame(
   lambda = lambda_en_grid,
   MAE = apply(resid_en, 2, function(x) mean(abs(x))),
-  MSLE = apply(resid_log_en^2, 2, function(x) mean(x)),
-  SE = apply(resid_log_en^2, 2, function(x) sd(x) / sqrt(nrow(ames_train)))
+  MSLE = apply(resid_log_en^2, 2, function(x) mean(x))
 )
 
 lambda_en_optimal <- lambda_en_grid[which.min(data_cv$MSLE)]
-se_rule <- data_cv$MSLE[which.min(data_cv$MSLE)] + data_cv$SE[which.min(data_cv$MSLE)]
-lambda_en_optimal_se <- lambda_en_grid[tail(which(data_cv$MSLE < se_rule), 1)]
-c(lambda_en_optimal, lambda_en_optimal_se)
+lambda_en_optimal
 
 plot(log(data_cv$lambda), data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE (validation)", xlab = expression(log(lambda)))
 abline(v = log(lambda_en_optimal), lty = "dashed")
@@ -441,8 +395,8 @@ en_cv$cvm[en_cv$index]
 
 ## Random forests (spoiler!) ------------------------------------------------------------------------------
 library(ranger)
-m_rf <- ranger(SalePrice ~ ., data = ames_train)
-y_hat_rf <- predict(m_rf, data = ames_validation, type = "response")$predictions
+m_rf <- ranger(log(SalePrice) ~ ., data = ames_train, num.trees = 2000, mtry = 10, max.depth = 30)
+y_hat_rf <- exp(predict(m_rf, data = ames_validation, type = "response")$predictions)
 
 MAE(ames_validation$SalePrice, y_hat_rf)
 MSLE(ames_validation$SalePrice, y_hat_rf)
@@ -451,35 +405,47 @@ MSLE(ames_validation$SalePrice, y_hat_rf)
 
 # Null
 y_hat_median <- rep(median(ames_train$SalePrice), times = nrow(ames_test))
-round(MAE(ames_test$SalePrice, y_hat_median), 4)
 
 # Simple
 y_hat_simple <- exp(predict(m_simple, newdata = ames_test))
-round(MAE(ames_test$SalePrice, y_hat_simple), 4)
 
 # Full
 y_hat_full <- exp(predict(m_full, newdata = ames_test))
-round(MAE(ames_test$SalePrice, y_hat_full), 4)
 
 # Backward
 y_hat_back <- exp(predict(fit_backward, newdata = ames_test, id = p_back_optimal))
-round(MAE(ames_test$SalePrice, y_hat_back), 4)
 
 # PCR
+y_hat_pcr <- exp(predict(fit_pcr, newdata = ames_test))[, , p_pcr_optimal]
 
 # Ridge
 y_hat_ridge <- exp(predict(fit_ridge, newx = model.matrix(SalePrice ~ ., data = ames_test)[, -1], s = lambda_en_optimal))
-round(MAE(ames_test$SalePrice, y_hat_ridge), 4)
 
 # LAR
 y_hat_lar <- exp(predict(m_lar, newx = model.matrix(SalePrice ~ ., data = ames_test)[, -1], s = which.min(m_lar$Cp))$fit)
-round(MAE(ames_test$SalePrice, y_hat_lar), 4)
 
 # Elastic net
 y_hat_en <- exp(predict(fit_en, newx = model.matrix(SalePrice ~ ., data = ames_test)[, -1], s = lambda_en_optimal))
-round(MAE(ames_test$SalePrice, y_hat_en), 4)
 
 # Random forest
-y_hat_rf <- predict(m_rf, data = ames_test, type = "response")$predictions
-MAE(ames_test$SalePrice, y_hat_rf)
+y_hat_rf <- exp(predict(m_rf, data = ames_test, type = "response")$predictions)
 
+# Final summary of the results ----------------------------------------------
+n_test <- nrow(ames_test)
+final_summary <- data.frame(
+  Predictions = c(y_hat_simple, y_hat_full, y_hat_back, y_hat_pcr, y_hat_ridge, y_hat_lar, y_hat_en, y_hat_rf),
+  Model = rep(c("Simple", "Full model", "Backward regression", "PCR", "Ridge", "Lar", "Elastic net", "Random Forest"), each = n_test),
+  Truth = ames_test$SalePrice
+)
+final_summary$Errors <- final_summary$Predictions - final_summary$Truth
+
+boxplot(Errors ~ Model, data = final_summary)
+
+# MAE
+tapply(final_summary$Errors, final_summary$Model, function(x) mean(abs(x)))
+
+# Standard deviations
+tapply(final_summary$Errors, final_summary$Model, sd)
+
+# Interquartile range
+tapply(final_summary$Errors, final_summary$Model, function(x) diff(quantile(x, probs = c(0.25, 0.75))))
