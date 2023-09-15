@@ -135,6 +135,27 @@ table(ames$Pool.QC, useNA = "always")
 ames$Pool.QC[is.na(ames$Pool.QC)] <- "No"
 ames$Pool.QC[ames$Pool.QC %in% c("TA", "Ex", "Gd", "Fa")] <- "Yes"
 
+# MS.SubClass
+
+ames$MS.SubClass <- dplyr::recode_factor(
+  factor(ames$MS.SubClass),
+  "20" = "One_Story_1946_and_Newer_All_Styles",
+  "30" = "One_Story_1945_and_Older",
+  "40" = "One_Story_with_Finished_Attic_All_Ages",
+  "45" = "One_and_Half_Story_Unfinished_All_Ages",
+  "50" = "One_and_Half_Story_Finished_All_Ages",
+  "60" = "Two_Story_1946_and_Newer",
+  "70" = "Two_Story_1945_and_Older",
+  "75" = "Two_and_Half_Story_All_Ages",
+  "80" = "Split_or_Multilevel",
+  "85" = "Split_Foyer",
+  "90" = "Duplex_All_Styles_and_Ages",
+  "120" = "One_Story_PUD_1946_and_Newer",
+  "150" = "One_and_Half_Story_PUD_All_Ages",
+  "160" = "Two_Story_PUD_1946_and_Newer",
+  "180" = "PUD_Multilevel_Split_Level_Foyer",
+  "190" = "Two_Family_conversion_All_Styles_and_Ages"
+)
 
 # Neighborhood ------------------------------------------------------------------------------------------------
 freq_neigh <- table(ames$Neighborhood)
@@ -143,7 +164,7 @@ freq_neigh
 ames$Neighborhood[ames$Neighborhood %in% names(freq_neigh)[freq_neigh < 20]] <- "Small neighborhood"
 table(ames$Neighborhood)
 
-# There are smartest way of doing this grouping, taking into account the location of each 
+# There are smartest way of doing this grouping, taking into account the location of each
 
 # Grouping the levels -----------------------------------------------------------------------------------------
 table(ames$Exterior.1st)
@@ -151,12 +172,13 @@ table(ames$Exterior.1st)
 # library forcats
 ames$Exterior.1st <- forcats::fct_lump_lowfreq(ames$Exterior.1st)
 ames$Exterior.2nd <- forcats::fct_lump_lowfreq(ames$Exterior.2nd)
-ames$Garage.Qual <- forcats::fct_lump_lowfreq(ames$Garage.Qual)
-table(ames$Exterior.1st)
+ames$Heating <- forcats::fct_lump_lowfreq(ames$Heating)
+ames$Heating.QC <- forcats::fct_lump_lowfreq(ames$Heating.QC)
+ames$MS.SubClass <- forcats::fct_lump_lowfreq(ames$MS.SubClass)
+
 
 # Even better, we can do it (after carefully checking this), on every single character column (dplyr needs to be installed)
-ames <- dplyr::mutate(ames, dplyr::across(is.character, function(x) forcats::fct_lump_lowfreq(x)))
-
+ames <- dplyr::mutate(ames, dplyr::across(is.character, function(x) forcats::fct_lump_min(x, 20)))
 
 # Feature engineering -----------------------------------------------------------------------------------------
 
@@ -164,14 +186,21 @@ ames$Porch.Sq.Feet <- ames$Open.Porch.SF + ames$Enclosed.Porch + ames$X3Ssn.Porc
 ames$Tot.Bathrooms <- ames$Full.Bath + 0.5 * ames$Half.Bath + ames$Bsmt.Full.Bath + 0.5 * ames$Bsmt.Half.Bath
 ames$House.Age <- ames$Yr.Sold - ames$Year.Remod.Add
 
+# Add some logarithmic terms
+ames$log.Gr.Liv.Area <- log1p(ames$Gr.Liv.Area)
+ames$log.BsmtFin.SF.1 <- log1p(ames$BsmtFin.SF.1)
+ames$log.BsmtFin.SF.2 <- log1p(ames$BsmtFin.SF.2)
+ames$log.Tot.Bathrooms <- log1p(ames$Tot.Bathrooms)
+ames$log.House.Age <- log1p(ames$House.Age)
+
 # Some simplifications ----------------------------------------------------------------------------------------
 
 # Most of the information is already included in House Age
-ames <- subset(ames, select = -c(Mo.Sold, Yr.Sold, Year.Remod.Add, Year.Built))
+#ames <- subset(ames, select = -c(Mo.Sold, Yr.Sold, Year.Remod.Add, Year.Built))
 # Most of the information is already included in Porch Sq Feet
-ames <- subset(ames, select = -c(Open.Porch.SF, Enclosed.Porch, X3Ssn.Porch, Screen.Porch))
+#ames <- subset(ames, select = -c(Open.Porch.SF, Enclosed.Porch, X3Ssn.Porch, Screen.Porch))
 # Most of the information is already included in Tot Bathrooms
-ames <- subset(ames, select = -c(Full.Bath, Half.Bath, Bsmt.Full.Bath, Bsmt.Half.Bath))
+#ames <- subset(ames, select = -c(Full.Bath, Half.Bath, Bsmt.Full.Bath, Bsmt.Half.Bath))
 
 # Near constant variables -------------------------------------------------------------------------------------
 
@@ -187,23 +216,5 @@ table(ames$Roof.Matl)
 # Almost no information is present in these variables
 ames <- subset(ames, select = -c(Pool.Area, Utilities, Street, Condition.2, Roof.Matl))
 
-# Training, validation and test set ----------------------------------------------------------------------------
-
-# Manual subdivision in training / test
-set.seed(123)
-# Randomly allocate the id of the variables into training and test
-id_train <- sort(sample(1:nrow(ames), size = floor(0.5 * nrow(ames)), replace = FALSE))
-id_validation_test <- setdiff(1:nrow(ames), id_train)
-# Now we allocate the validation test
-id_validation <- sort(sample(id_validation_test, size = floor(0.5 * length(id_validation_test)), replace = FALSE))
-# And finally the test set
-id_test <- setdiff(id_validation_test, id_validation)
-
-# Create two different datasets
-ames_train <- ames[id_train, ]
-ames_validation <- ames[id_validation, ]
-ames_test <- ames[id_test, ]
-
-write.csv(data.frame(ames_train), "../data/ames_train.csv", row.names = FALSE)
-write.csv(data.frame(ames_validation), "../data/ames_validation.csv", row.names = FALSE)
-write.csv(data.frame(ames_test), "../data/ames_test.csv", row.names = FALSE)
+# Writing the final output
+write.csv(data.frame(ames), "../data/ames.csv", row.names = FALSE)
