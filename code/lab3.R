@@ -77,7 +77,7 @@ round(MAE(ames_validation$SalePrice, y_hat_median), 4)
 round(MSLE(ames_validation$SalePrice, y_hat_median), 4)
 
 # A first simple model --------------------------------------------------------------------------
-m_simple <- lm(SalePrice ~ Gr.Liv.Area + House.Age + Tot.Bathrooms, data = ames_train)
+m_simple <- lm(SalePrice ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bathrooms, data = ames_train)
 summary(m_simple)
 
 y_hat_simple <- predict(m_simple, newdata = ames_validation)
@@ -89,7 +89,7 @@ round(MAE(ames_validation$SalePrice, y_hat_simple), 4)
 round(MSLE(ames_validation$SalePrice, y_hat_simple), 4)
 
 # Taking the log scale -----------------------------------------------------------------------------------
-m_simple <- lm(log(SalePrice) ~ Gr.Liv.Area + House.Age + Tot.Bathrooms, data = ames_train)
+m_simple <- lm(log(SalePrice) ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bathrooms, data = ames_train)
 summary(m_simple)
 
 # Re-obtain the original scale
@@ -118,7 +118,7 @@ summary(m_full)
 # # And that at the ground floors
 # head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual.Fin.SF, ames_train$Gr.Liv.Area))
 
-# Predictions for the full model
+# Predictions for the full model. This command, due to collinearity, will produced warnings!
 y_hat_full <- exp(predict(m_full, newdata = ames_validation))
 
 round(MAE(ames_validation$SalePrice, y_hat_full), 5)
@@ -128,8 +128,10 @@ round(MSLE(ames_validation$SalePrice, y_hat_full), 5)
 
 library(leaps)
 
-# Maximum number of covariates included in the list (I need to exclude collinearities)
+# Maximum number of covariates included in the list ()
 p_max <- 175
+
+# There are some collinear variables, therefore this will produce warnings!
 fit_forward <- regsubsets(log(SalePrice) ~ .,
   data = ames_train, method = "forward", nbest = 1, nvmax = p_max, really.big = TRUE
 )
@@ -183,7 +185,6 @@ predict.regsubsets <- function(object, newdata, id, ...) {
 head(exp(predict(fit_backward, newdata = ames_train, id = 2)))
 
 # Validation set - selection of p and performance comparisons ----------------------------------------
-
 resid_back <- matrix(0, nrow(ames_validation), p_max + 1)
 resid_log_back <- matrix(0, nrow(ames_validation), p_max + 1)
 
@@ -271,7 +272,7 @@ X_shrinkage <- model.matrix(SalePrice ~ ., data = ames_train)[, -1]
 y_shrinkage <- ames_train$SalePrice
 
 # We need to set alpha = 0 to use the ridge
-lambda_ridge_grid <- exp(seq(-5, 6, length = 100))
+lambda_ridge_grid <- exp(seq(-6, 6, length = 100))
 fit_ridge <- glmnet(X_shrinkage, log(y_shrinkage), alpha = 0, lambda = lambda_ridge_grid)
 
 par(mfrow = c(1, 1))
@@ -310,8 +311,8 @@ MAE(ames_validation$SalePrice, y_hat_ridge)
 MSLE(ames_validation$SalePrice, y_hat_ridge)
 
 ## Cross-validation for ridge regression
-
 ridge_cv <- cv.glmnet(X_shrinkage, log(y_shrinkage), alpha = 0, lambda = lambda_ridge_grid)
+par(mfrow = c(1, 1))
 plot(ridge_cv)
 
 ridge_cv$lambda.min
@@ -327,11 +328,15 @@ m_lar <- lars(X_shrinkage, log(y_shrinkage), type = "lar")
 
 # Order of inclusion
 m_lar
-plot(m_lar, breaks = FALSE, xvar = "step")
+
+# Coefficient path
+plot(m_lar, breaks = FALSE)
 
 plot(m_lar$df, m_lar$Cp, type = "b", xlab = "Degrees of freedom", ylab = "Cp of Mallow")
+abline(v = which.min(m_lar$Cp))
 
-y_hat_lar <- exp(predict(m_lar, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = which.min(m_lar$Cp))$fit)
+y_hat_lar <- exp(predict(m_lar, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], 
+                         s = which.min(m_lar$Cp))$fit)
 
 # Optimal model on the validation set
 MAE(ames_validation$SalePrice, y_hat_lar)
@@ -344,8 +349,9 @@ lar_cv <- cv.lars(X_shrinkage, log(y_shrinkage), plot.it = TRUE)
 
 # We need to set alpha = 0 to use the ridge
 lambda_en_grid <- exp(seq(-10, 0, length = 100))
-fit_en <- glmnet(X_shrinkage, log(y_shrinkage), alpha = 1, lambda = lambda_en_grid)
-par(mfrow = c(1, 1))
+fit_en <- glmnet(X_shrinkage, log(y_shrinkage), alpha = 0.5, lambda = lambda_en_grid)
+
+# Coefficient path
 plot(fit_en, xvar = "lambda")
 
 # How to select the "optimal" lambda?
@@ -367,13 +373,12 @@ data_cv <- data.frame(
 lambda_en_optimal <- lambda_en_grid[which.min(data_cv$MSLE)]
 lambda_en_optimal
 
+par(mfrow = c(1, 2))
 plot(log(data_cv$lambda), data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE (validation)", xlab = expression(log(lambda)))
 abline(v = log(lambda_en_optimal), lty = "dashed")
-abline(h = MAE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
 plot(log(data_cv$lambda), data_cv$MSLE, type = "b", pch = 16, cex = 0.6, ylab = "MSLE", xlab = "p")
 abline(v = log(lambda_en_optimal), lty = "dashed")
-abline(h = MSLE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
 # Optimal model on the validation set
 y_hat_en <- exp(predict(fit_en, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = lambda_en_optimal))
@@ -437,6 +442,7 @@ final_summary <- data.frame(
 )
 final_summary$Errors <- final_summary$Predictions - final_summary$Truth
 
+par(mfrow = c(1, 1))
 boxplot(Errors ~ Model, data = final_summary)
 
 # MAE
