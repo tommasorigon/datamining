@@ -1064,8 +1064,6 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 -   The shrinkage effect on the regression coefficients is somewhat
     indirect and not smooth.
-
--   Principal component regression can not be applied when $p > n$.
 :::
 
 # Ridge regression
