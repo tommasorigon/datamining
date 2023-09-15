@@ -60,7 +60,7 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | **Introduction**                       | [Introduction](slides/un_intro.html) | [Slides Introduction](slides/un_intro_slides.html) |                           |
 | **A-B-C**                              | [Unit A](slides/un_A.html)           | [Slides Unit A](slides/un_A_slides.html)           | [Code A](code/un_A.R)     |
 | Lab 1 (Computations for linear models) |                                      |                                                    | [Code Lab 1](code/lab1.R) |
-| *Exercises*                            | \[Exercises A\]                      |                                                    |                           |
+| *Exercises*                            | [Exercises A](exe/exe_A.html)                      |                                                    |                           |
 | **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)           | [Slides Unit B](slides/un_B_slides.html)           | [Code B](code/un_B.R)     |
 | *Exercises*                            | \[Exercises B\]                      |                                                    |                           |
 | Lab 2 (Ames housing)                   |                                      |                                                    | [Code Lab 2](code/lab2.R) |
