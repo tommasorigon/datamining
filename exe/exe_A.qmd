@@ -1,1 +1,54 @@
+---
+title: "Exercises A"
+subtitle: "Data mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+lang: en
+execute:
+  cache: true
+format:
+  html:
+    html-math-method: katex
+    echo: true
+    callout-appearance: minimal
+    theme: [cosmo, ../template.css]
+    toc: true
+    toc-title: Table of contents
+    embed-resources: true
+    code-line-numbers: true
+    smooth-scroll: true
+    fig-dpi: 250
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
 
+# [Homepage](../index.html)
+
+## Theoretical exercises
+
+#### A.1 - Properties of the projection matrix $\bm{H}$
+
+#### A.2 - Positive definiveness of $\bm{X}^T\bm{X}$
+
+#### A.3 - OLS with orthogonal predictors
+
+Find the estimate (and the variance)
+
+#### A.4 - Last fit of Gram-Schidmt
+
+#### A.5 - Recursive least squares
+
+## Practical exercises
+
+#### A.6 - Recursive least squares
+
+Implement it
+
+#### A.7 - Iteratively re-weighted least squares for logistic regression
+
+Implement it
+
+#### A.8 Exercises (2.1-2.8) of AS
