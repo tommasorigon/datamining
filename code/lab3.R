@@ -1,8 +1,8 @@
-# -----------------------------------
+# ------------------------------------
 # LAB 3 (Ames Housing)
 # Course: Data Mining
 # Author: Tommaso Rigon
-# --------------------------------
+# ------------------------------------
 
 # Predictive analysis ----------------------------------------------------------------------------
 
@@ -72,13 +72,14 @@ MSLE <- function(y, y_fit) {
   mean((log(y) - log(y_fit))^2)
 }
 
+# This is the median prediction, the optimal value if covariates were not available
 y_hat_median <- rep(median(ames_train$SalePrice), nrow(ames_validation)) # Prediction
 
 round(MAE(ames_validation$SalePrice, y_hat_median), 4)
 round(MSLE(ames_validation$SalePrice, y_hat_median), 4)
 
 # A first simple model --------------------------------------------------------------------------
-m_simple <- lm(SalePrice ~ Gr.Liv.Area + Overall.Qual + House.Age + Tot.Bathrooms, data = ames_train)
+m_simple <- lm(SalePrice ~ Gr.Liv.Area + House.Age + Tot.Bathrooms, data = ames_train)
 summary(m_simple)
 
 y_hat_simple <- predict(m_simple, newdata = ames_validation)
@@ -90,7 +91,7 @@ round(MAE(ames_validation$SalePrice, y_hat_simple), 4)
 round(MSLE(ames_validation$SalePrice, y_hat_simple), 4)
 
 # Taking the log scale -----------------------------------------------------------------------------------
-m_simple <- lm(log(SalePrice) ~ Gr.Liv.Area + Overall.Qual + House.Age + Tot.Bathrooms, data = ames_train)
+m_simple <- lm(log(SalePrice) ~ Gr.Liv.Area + House.Age + Tot.Bathrooms, data = ames_train)
 summary(m_simple)
 
 # Re-obtain the original scale
@@ -102,7 +103,8 @@ round(MSLE(ames_validation$SalePrice, y_hat_simple), 4)
 # A larger model -----------------------------------------------------------------------------------------
 
 # Here I compute some basic quantities
-dim(model.matrix(SalePrice ~ ., data = ames_train)[, -1])
+
+dim(model.matrix(log(SalePrice) ~ ., data = ames_train)[, -1])
 
 m_full <- lm(log(SalePrice) ~ ., data = ames_train)
 summary(m_full)
@@ -120,20 +122,21 @@ head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual
 
 y_hat_full <- exp(predict(m_full, newdata = ames_validation))
 
-round(MAE(ames_validation$SalePrice, y_hat_full), 4)
-round(MSLE(ames_validation$SalePrice, y_hat_full), 4)
-
+round(MAE(ames_validation$SalePrice, y_hat_full), 5)
+round(MSLE(ames_validation$SalePrice, y_hat_full), 5)
 
 # Forward and backward regression ----------------------------------------------------
 
 library(leaps)
 
 # Maximum number of covariates included in the list
-p_max <- 190
-fit_forward <- regsubsets(log(SalePrice) ~ ., data = ames_train, method = "forward", nbest = 1, nvmax = p_max, really.big = TRUE)
+p_max <- 180
+fit_forward <- regsubsets(log(SalePrice) ~ ., 
+                          data = ames_train, method = "forward", nbest = 1, nvmax = p_max, really.big = TRUE)
 sum_forward <- summary(fit_forward)
 
-fit_backward <- regsubsets(log(SalePrice) ~ ., data = ames_train, method = "backward", nbest = 1, nvmax = p_max)
+fit_backward <- regsubsets(log(SalePrice) ~ ., 
+                           data = ames_train, method = "backward", nbest = 1, nvmax = p_max)
 sum_backward <- summary(fit_backward)
 
 library(broom)
@@ -231,9 +234,11 @@ data_cv <- data.frame(
   SE = apply(resid_log_back^2, 2, function(x) sd(x) / sqrt(nrow(ames_train)))
 )
 
+p_back_optimal <- which.min(data_cv$MAE)
 se_rule <- data_cv$MSLE[which.min(data_cv$MSLE)] + data_cv$SE[which.min(data_cv$MSLE)]
-p_back_optimal <- which(data_cv$MSLE < se_rule)[1]
-p_back_optimal
+p_back_optimal_se <- which(data_cv$MSLE < se_rule)[1]
+
+c(p_back_optimal, p_back_optimal_se)
 
 plot(data_cv$p, data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE (validation)", xlab = "p")
 abline(v = p_back_optimal, lty = "dashed")
@@ -276,9 +281,10 @@ data_cv <- data.frame(
   SE = apply(resid_log_pcr^2, 2, function(x) sd(x) / sqrt(nrow(ames_train)))
 )
 
+p_pcr_optimal <- which.min(data_cv$MAE)
 se_rule <- data_cv$MSLE[which.min(data_cv$MSLE)] + data_cv$SE[which.min(data_cv$MSLE)]
-p_pcr_optimal <- which(data_cv$MSLE < se_rule)[1]
-p_pcr_optimal
+p_pcr_optimal_se <- which(data_cv$MSLE < se_rule)[1]
+c(p_pcr_optimal, p_pcr_optimal_se)
 
 plot(data_cv$p, data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE (validation)", xlab = "p")
 abline(v = p_pcr_optimal, lty = "dashed")
@@ -328,10 +334,12 @@ data_cv <- data.frame(
   SE = apply(resid_log_ridge^2, 2, function(x) sd(x) / sqrt(nrow(ames_train)))
 )
 
+lambda_ridge_optimal <- lambda_ridge_grid[which.min(data_cv$MSLE)]
 se_rule <- data_cv$MSLE[which.min(data_cv$MSLE)] + data_cv$SE[which.min(data_cv$MSLE)]
-lambda_ridge_optimal <- lambda_ridge_grid[tail(which(data_cv$MSLE < se_rule), 1)]
-lambda_ridge_optimal
+lambda_ridge_optimal_se <- lambda_ridge_grid[tail(which(data_cv$MSLE < se_rule), 1)]
+c(lambda_ridge_optimal, lambda_ridge_optimal_se)
 
+par(mfrow = c(1, 2))
 plot(log(data_cv$lambda), data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE (validation)", xlab = expression(log(lambda)))
 abline(v = log(lambda_ridge_optimal), lty = "dashed")
 abline(h = MAE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
@@ -366,14 +374,22 @@ m_lar <- lars(X_shrinkage, log(y_shrinkage), type = "lar")
 m_lar
 plot(m_lar, breaks = FALSE)
 
+plot(m_lar$df, m_lar$Cp, type = "b", xlab = "Degrees of freedom", ylab = "Cp of Mallow")
+
+y_hat_lar <- exp(predict(m_lar, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = which.min(m_lar$Cp))$fit)
+
+# Optimal model on the validation set
+MAE(ames_validation$SalePrice, y_hat_lar)
+MSLE(ames_validation$SalePrice, y_hat_lar)
+
+# Cross-validation for the lar
 lar_cv <- cv.lars(X_shrinkage, log(y_shrinkage), plot.it = TRUE)
 
-plot(m_lar$df, m_lar$Cp, type = "b")
 ## Elastic-net -----------------------------------------------------------------------------------------
 
 # We need to set alpha = 0 to use the ridge
 lambda_en_grid <- exp(seq(-10, 0, length = 100))
-fit_en <- glmnet(X_shrinkage, log(y_shrinkage), alpha = 0.5, lambda = lambda_en_grid)
+fit_en <- glmnet(X_shrinkage, log(y_shrinkage), alpha = 1, lambda = lambda_en_grid)
 par(mfrow = c(1, 1))
 plot(fit_en, xvar = "lambda")
 
@@ -394,9 +410,10 @@ data_cv <- data.frame(
   SE = apply(resid_log_en^2, 2, function(x) sd(x) / sqrt(nrow(ames_train)))
 )
 
+lambda_en_optimal <- lambda_en_grid[which.min(data_cv$MSLE)]
 se_rule <- data_cv$MSLE[which.min(data_cv$MSLE)] + data_cv$SE[which.min(data_cv$MSLE)]
-lambda_en_optimal <- lambda_en_grid[tail(which(data_cv$MSLE < se_rule), 1)]
-lambda_en_optimal
+lambda_en_optimal_se <- lambda_en_grid[tail(which(data_cv$MSLE < se_rule), 1)]
+c(lambda_en_optimal, lambda_en_optimal_se)
 
 plot(log(data_cv$lambda), data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE (validation)", xlab = expression(log(lambda)))
 abline(v = log(lambda_en_optimal), lty = "dashed")
@@ -448,11 +465,15 @@ round(MAE(ames_test$SalePrice, y_hat_full), 4)
 y_hat_back <- exp(predict(fit_backward, newdata = ames_test, id = p_back_optimal))
 round(MAE(ames_test$SalePrice, y_hat_back), 4)
 
+# PCR
+
 # Ridge
 y_hat_ridge <- exp(predict(fit_ridge, newx = model.matrix(SalePrice ~ ., data = ames_test)[, -1], s = lambda_en_optimal))
 round(MAE(ames_test$SalePrice, y_hat_ridge), 4)
 
-# Lasso
+# LAR
+y_hat_lar <- exp(predict(m_lar, newx = model.matrix(SalePrice ~ ., data = ames_test)[, -1], s = which.min(m_lar$Cp))$fit)
+round(MAE(ames_test$SalePrice, y_hat_lar), 4)
 
 # Elastic net
 y_hat_en <- exp(predict(fit_en, newx = model.matrix(SalePrice ~ ., data = ames_test)[, -1], s = lambda_en_optimal))
@@ -461,3 +482,4 @@ round(MAE(ames_test$SalePrice, y_hat_en), 4)
 # Random forest
 y_hat_rf <- predict(m_rf, data = ames_test, type = "response")$predictions
 MAE(ames_test$SalePrice, y_hat_rf)
+

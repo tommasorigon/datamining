@@ -83,8 +83,11 @@ ames$BsmtFin.Type.2[is.na(ames$BsmtFin.Type.2)] <- "No basement"
 table(ames$Bsmt.Exposure, useNA = "always")
 ames$Bsmt.Exposure[ames$Bsmt.Exposure == ""] <- "No"
 
-table(ames$BsmtFin.Type.2, useNA = "always")
-ames$BsmtFin.Type.2[ames$BsmtFin.Type.2 == ""] <- "Unf"
+# For the sake of simplicity, we just omit the variables
+ames <- cbind(ames, model.matrix(SalePrice ~ Bsmt.Unf.SF + BsmtFin.Type.1:BsmtFin.SF.1 + BsmtFin.Type.2:BsmtFin.SF.2, data = ames)[, -1])
+
+ames <- subset(ames, select = -c(BsmtFin.Type.1, BsmtFin.Type.2, BsmtFin.SF.1, BsmtFin.SF.2, Bsmt.Unf.SF, 
+                                 `BsmtFin.Type.1No basement:BsmtFin.SF.1`, `BsmtFin.Type.2No basement:BsmtFin.SF.2`))
 
 # For the garage, there is a slighly different situation because there are some inconsistencies:
 table(ames$Garage.Cond, ames$Garage.Type, useNA = "always")
@@ -186,21 +189,14 @@ ames$Porch.Sq.Feet <- ames$Open.Porch.SF + ames$Enclosed.Porch + ames$X3Ssn.Porc
 ames$Tot.Bathrooms <- ames$Full.Bath + 0.5 * ames$Half.Bath + ames$Bsmt.Full.Bath + 0.5 * ames$Bsmt.Half.Bath
 ames$House.Age <- ames$Yr.Sold - ames$Year.Remod.Add
 
-# Add some logarithmic terms
-ames$log.Gr.Liv.Area <- log1p(ames$Gr.Liv.Area)
-ames$log.BsmtFin.SF.1 <- log1p(ames$BsmtFin.SF.1)
-ames$log.BsmtFin.SF.2 <- log1p(ames$BsmtFin.SF.2)
-ames$log.Tot.Bathrooms <- log1p(ames$Tot.Bathrooms)
-ames$log.House.Age <- log1p(ames$House.Age)
-
 # Some simplifications ----------------------------------------------------------------------------------------
 
 # Most of the information is already included in House Age
-#ames <- subset(ames, select = -c(Mo.Sold, Yr.Sold, Year.Remod.Add, Year.Built))
+ames <- subset(ames, select = -c(Mo.Sold, Yr.Sold, Year.Remod.Add, Year.Built))
 # Most of the information is already included in Porch Sq Feet
-#ames <- subset(ames, select = -c(Open.Porch.SF, Enclosed.Porch, X3Ssn.Porch, Screen.Porch))
+ames <- subset(ames, select = -c(Open.Porch.SF, Enclosed.Porch, X3Ssn.Porch, Screen.Porch))
 # Most of the information is already included in Tot Bathrooms
-#ames <- subset(ames, select = -c(Full.Bath, Half.Bath, Bsmt.Full.Bath, Bsmt.Half.Bath))
+ames <- subset(ames, select = -c(Full.Bath, Half.Bath, Bsmt.Full.Bath, Bsmt.Half.Bath))
 
 # Near constant variables -------------------------------------------------------------------------------------
 
@@ -212,9 +208,11 @@ table(ames$Utilities)
 table(ames$Condition.2)
 table(ames$Pool.Area)
 table(ames$Roof.Matl)
+table(ames$`BsmtFin.Type.2Unf:BsmtFin.SF.2`)
 
 # Almost no information is present in these variables
-ames <- subset(ames, select = -c(Pool.Area, Utilities, Street, Condition.2, Roof.Matl))
+ames <- subset(ames, select = -c(Pool.Area, Utilities, Street, Condition.2, Roof.Matl, 
+                                 `BsmtFin.Type.2Unf:BsmtFin.SF.2`, `BsmtFin.Type.1Unf:BsmtFin.SF.1`))
 
 # Writing the final output
 write.csv(data.frame(ames), "../data/ames.csv", row.names = FALSE)
