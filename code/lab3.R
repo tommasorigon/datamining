@@ -321,7 +321,7 @@ ridge_cv$lambda.1se
 # MSLE for lambda.min and lambda.1se
 ridge_cv$cvm[ridge_cv$index]
 
-## LARS ------------------------------------------
+## LARS --------------------------------------------------------------------------
 library(lars)
 
 m_lar <- lars(X_shrinkage, log(y_shrinkage), type = "lar")
@@ -404,7 +404,7 @@ y_hat_rf <- exp(predict(m_rf, data = ames_validation, type = "response")$predict
 MAE(ames_validation$SalePrice, y_hat_rf)
 MSLE(ames_validation$SalePrice, y_hat_rf)
 
-# Final choice -------------------------------------------------------------------
+# Final choice --------------------------------------------------------------------------------------------
 
 # Null
 y_hat_median <- rep(median(ames_train$SalePrice), times = nrow(ames_test))
