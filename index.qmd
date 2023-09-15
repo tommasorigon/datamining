@@ -67,14 +67,14 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html)           | [Code C](code/un_C.R)     |
 | *Exercises*                            | \[Exercises C\]                      |                                                    |                           |
 | Lab 3 (Ames housing)                   |                                      |                                                    | [Code Lab 3](code/lab3.R) |
-| Lab 4 (Spam)                                 |                                      |                                                    | \[Code Lab 4\]            |
+| Lab 4 (Telecommunications)                                 |                                      |                                                    | \[Code Lab 4\]            |
 | **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)           | [Code D](code/un_D.R)     |
 | *Exercises*                            | \[Exercises D\]                      |                                                    |                           |
 | Lab 5 (Auto)                                 |                                      |                                                    | \[Code Lab 5\]            |
 | **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html)           |                           |
 | **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html)           | [Code F](code/un_F.R)     |
 | *Exercises*                            | \[Exercises F\]                      |                                                    |                           |
-| Lab 6                                  |                                      |                                                    | \[Code Lab 6\]            |
+| Lab 6 (Telecommunications)                                  |                                      |                                                    | \[Code Lab 6\]            |
 | **The scientific culture**             | \[Unit G\]                           | \[Slides Unit G\]                                  |                           |
 
 ## Prerequisites
