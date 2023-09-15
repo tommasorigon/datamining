@@ -1,8 +1,6 @@
-# -----------------------------------
-# LAB 2 (Ames Housing)
+# LAB 2 (Ames Housing) -------------------------------------------------------------------
 # Course: Data Mining
 # Author: Tommaso Rigon
-# --------------------------------
 
 rm(list = ls())
 
@@ -133,8 +131,7 @@ table(ames$Pool.QC, useNA = "always")
 ames$Pool.QC[is.na(ames$Pool.QC)] <- "No"
 ames$Pool.QC[ames$Pool.QC %in% c("TA", "Ex", "Gd", "Fa")] <- "Yes"
 
-# MS.SubClass
-
+# MS.SubClass recoding. The labels are obtained from the official documentation
 ames$MS.SubClass <- dplyr::recode_factor(
   factor(ames$MS.SubClass),
   "20" = "One_Story_1946_and_Newer_All_Styles",
@@ -173,7 +170,6 @@ ames$Exterior.2nd <- forcats::fct_lump_lowfreq(ames$Exterior.2nd)
 ames$Heating <- forcats::fct_lump_lowfreq(ames$Heating)
 ames$Heating.QC <- forcats::fct_lump_lowfreq(ames$Heating.QC)
 ames$MS.SubClass <- forcats::fct_lump_lowfreq(ames$MS.SubClass)
-
 
 # Even better, we can do it (after carefully checking this), on every single character column (dplyr needs to be installed)
 ames <- dplyr::mutate(ames, dplyr::across(is.character, function(x) forcats::fct_lump_min(x, 20)))
