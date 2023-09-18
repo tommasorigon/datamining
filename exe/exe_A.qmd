@@ -31,11 +31,11 @@ editor_options:
 
 #### A.1 - Properties of the projection matrix $\bm{H}$
 
-Suppose the  $n\times p$  matrix $\bm{X}$ has [full rank]{.blue}, that is $\text{rk}(\bm{X}) = p$, with $p < n$. [Prove]{.orange} that 
+Suppose the $n\times p$ design matrix $\bm{X}$ has [full rank]{.blue}, that is $\text{rk}(\bm{X}) = p$, with $p < n$. [Prove]{.orange} that 
 $$
 \text{rk}(\bm{H}) = \text{tr}(\bm{H}) = p.
 $$
-Moreover, show that $\bm{H}^2 = \bm{H}$. You may want to look for the properties of [projection matrices]{.orange} on your favorite linear algebra textbook. 
+Moreover, show that $\bm{H}^2 = \bm{H}$. You may want to look for the properties of [projection matrices]{.orange} on your favorite linear algebra textbook, otherwise this exercise is quite hard. 
 
 #### A.2 - Positive definiveness of $\bm{X}^T\bm{X}$
 
@@ -49,15 +49,33 @@ $$
 
 Moreover, obtain the covariance matrix of $\hat{\beta}$ and conclude that the estimators $\hat{\beta}_j$ and $\hat{\beta}_{j'}$ are independent, assuming Gaussian errors.
 
-#### A.4 - Last fit of Gram-Schidmt
+#### A.4 - Last step of the Gram-Schidmt algorithm
+
+Show that the last statement of [this slide](../slides/un_A.html#the-qr-decomposition-and-least-squares) is correct, namely that the [last step]{.orange} of the [Gram-Schmidt]{.blue} algorithm
+$$
+\hat{\beta}_p = (\tilde{\bm{z}}_p^T\bm{y}) / (\tilde{\bm{z}}_p^T \tilde{\bm{z}}_p).
+$$
+coincides with the OLS estimate of the $p$th coefficient. 
 
 #### A.5 - Recursive least squares
+
+[Verify]{.orange} the correctness of the [recursive least square]{.blue} equations described in [this slide](../slides/un_A.html#the-recursive-least-squares-algorithm-i). You can (and should) use the Sherman-Morrison lemma. Moreover, verify the correctness for the deviance formula:
+$$
+||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n + 1)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2,
+$$
+which is mentioned [here](../slides/un_A.html#the-recursive-least-squares-algorithm-ii).
+
 
 ## Practical exercises
 
 #### A.6 - Recursive least squares
 
-Implement it
+[Implement]{.orange} a function `ols_function(X, y)` that computes the least squares estimate using therecursive least squares algorithm, described in [this slide](../slides/un_A.html#the-recursive-least-squares-algorithm-i).
+
+A detailed description of the procedure ([Algorithm 2.2]{.blue} of the textbook Azzalini \& Scarpa, 2011) is given below:
+
+![](img/recursive.png)
+
 
 #### A.7 - Iteratively re-weighted least squares for logistic regression
 
