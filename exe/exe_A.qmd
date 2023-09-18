@@ -72,13 +72,17 @@ which is mentioned [here](../slides/un_A.html#the-recursive-least-squares-algori
 
 [Implement]{.orange} a function `ols_function(X, y)` that computes the least squares estimate using therecursive least squares algorithm, described in [this slide](../slides/un_A.html#the-recursive-least-squares-algorithm-i).
 
-A detailed description of the procedure ([Algorithm 2.2]{.blue} of the textbook Azzalini \& Scarpa, 2011) is given below:
+A detailed description of this procedure ([Algorithm 2.2]{.blue} of the textbook Azzalini \& Scarpa, 2011) is given below:
 
 ![](img/recursive.png)
 
 
 #### A.7 - Iteratively re-weighted least squares for logistic regression
 
-Implement it
+Implement a function `logistic_mle(X, y)` which computes the maximum likelihood estimate for a logistic regression model using the [iteratively re-weighted least squares]{.blue}, as described [here](../slides/un_A.html#iteratively-re-weighted-least-squares-ii). 
 
-#### A.8 - Exercises (2.1-2.8) of AS
+Verify that the output of `logistic_mle` and the built-in `glm` function coincide on the [hearth dataset](../slides/un_A.html#the-heart-dataset).
+
+#### A.8 - Additional exercises
+
+Solve the exercises 2.1 - 2.8 of the [textbook]{.orange} Azzalini \& Scarpa (2011).
