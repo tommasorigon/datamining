@@ -39,11 +39,15 @@ Moreover, show that $\bm{H}^2 = \bm{H}$. You may want to look for the properties
 
 #### A.2 - Positive definiveness of $\bm{X}^T\bm{X}$
 
-[Prove]{.orange} the statemente of [Proposition A.2](../slides/un_A.html#cholesky-factorization). In other words, suppose the  $n\times p$  matrix $\bm{X}$ has [full rank]{.blue}, that is $\text{rk}(\bm{X}) = p$, with $p < n$. Then show that $\bm{X}^T\bm{X}$ is [positive definite]{.blue}.
+[Prove]{.orange} the statement of [Proposition A.1](../slides/un_A.html#cholesky-factorization). In other words, suppose the  $n\times p$  matrix $\bm{X}$ has [full rank]{.blue}, that is $\text{rk}(\bm{X}) = p$, with $p < n$. Then, show that $\bm{X}^T\bm{X}$ is [positive definite]{.blue}.
 
 #### A.3 - OLS with orthogonal predictors
 
-Find the estimate (and the variance)
+[Prove]{.orange} the statement of [Proposition A.2](../slides/un_A.html#orthogonal-predictors). In other words, show that when the predictors are orthogonal the least square estimate is $$
+\hat{\beta}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j}, \qquad j=1,\dots,p.
+$$
+
+Moreover, obtain the covariance matrix of $\hat{\beta}$ and conclude that the estimators $\hat{\beta}_j$ and $\hat{\beta}_{j'}$ are independent, assuming Gaussian errors.
 
 #### A.4 - Last fit of Gram-Schidmt
 

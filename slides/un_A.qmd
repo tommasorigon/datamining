@@ -798,9 +798,7 @@ $$
 
 The least square estimate
 $\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T$ with
-orthogonal predictors is
-
-$$
+orthogonal predictors is $$
 \hat{\beta}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j}, \qquad j=1,\dots,p.
 $$
 :::
