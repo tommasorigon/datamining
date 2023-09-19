@@ -376,8 +376,13 @@
 <li>Generalized additive models (GAMs)</li>
 <li>Multivariate Adaptive Regression Splines (MARS)</li>
 </ul></li>
-<li><p>In the previous unit,</p></li>
-<li><p>The running example is about baseball data… but a lot has changed since the ’30s!</p></li>
+<li><p>We have seen that <span class="blue">fully nonparametric</span> methods are plagued by the <span class="orange">curse of dimensionality</span>.</p></li>
+<li><p>GAMs and MARS are <span class="blue">semi-parametric</span> approaches that keep the model complexity under control so that:</p>
+<ul>
+<li>they are more flexible than linear models;</li>
+<li>but they are not hugely impacted by the curse of dimensionality.</li>
+</ul></li>
+<li><p>The running example is about <span class="orange">baseball data</span>… but a lot has changed since the ’30s!</p></li>
 </ul>
 </div>
 </div>
@@ -429,15 +434,16 @@ $ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N,
 </div>
 </div>
 </section>
-<section id="preliminary-operations" class="slide level2 center">
-<h2>Preliminary operations</h2>
-</section>
 <section id="correlation-matrix-of-hitters" class="slide level2 center">
 <h2>Correlation matrix of <code>Hitters</code></h2>
 
 <img data-src="un_F_files/figure-revealjs/unnamed-chunk-5-1.png" width="3600" class="r-stretch quarto-figure-center"></section>
 <section id="a-linear-model" class="slide level2 center">
 <h2>A linear model</h2>
+<ul>
+<li><p>We</p></li>
+<li></li>
+</ul>
 </section>
 <section id="best-subset-selection" class="slide level2 center">
 <h2>Best subset selection</h2>
@@ -522,13 +528,13 @@ $ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N,
 </tbody>
 </table>
 </section>
+<section id="comments-and-cricism-to-linear-models" class="slide level2 center">
+<h2>Comments and cricism to linear models</h2>
+</section>
 <section id="scatterplot-with-loess-estimate" class="slide level2 center">
 <h2>Scatterplot with <code>loess</code> estimate</h2>
 
 <img data-src="un_F_files/figure-revealjs/unnamed-chunk-8-1.png" width="1560" class="r-stretch quarto-figure-center"></section>
-<section id="comments-and-cricism-to-linear-models" class="slide level2 center">
-<h2>Comments and cricism to linear models</h2>
-</section>
 <section>
 <section id="generalized-additive-models-gam" class="title-slide slide level1 center">
 <h1>Generalized additive models (GAM)</h1>
@@ -620,36 +626,36 @@ logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) +
 
 Parametric coefficients:
             Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  5.87718    0.04029 145.870   &lt;2e-16 ***
-LeagueN      0.06292    0.10121   0.622    0.535    
-DivisionW   -0.03305    0.05094  -0.649    0.518    
-NewLeagueN   0.04495    0.09998   0.450    0.654    
+(Intercept)  5.85720    0.04202 139.404   &lt;2e-16 ***
+LeagueN      0.06247    0.10414   0.600    0.550    
+DivisionW   -0.05206    0.05156  -1.010    0.315    
+NewLeagueN   0.11396    0.10272   1.109    0.269    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Approximate significance of smooth terms:
-             edf Ref.df      F  p-value    
-s(AtBat)   5.206  6.337  3.016  0.00706 ** 
-s(Hits)    8.227  8.681  6.439 3.13e-06 ***
-s(HmRun)   5.171  6.236  2.497  0.02448 *  
-s(Runs)    3.077  3.908  1.743  0.14014    
-s(RBI)     3.679  4.619  4.599  0.00116 ** 
-s(Walks)   5.989  7.059  3.024  0.00650 ** 
-s(Years)   7.354  8.180 10.400  &lt; 2e-16 ***
-s(CAtBat)  1.000  1.000  0.814  0.36863    
-s(CHits)   1.000  1.000  5.111  0.02550 *  
-s(CHmRun)  5.773  6.805  5.492 1.73e-05 ***
-s(CRuns)   1.000  1.000  0.459  0.49926    
-s(CRBI)    8.045  8.665  8.359  &lt; 2e-16 ***
-s(CWalks)  1.000  1.000  4.070  0.04578 *  
-s(PutOuts) 6.383  7.453  2.173  0.03875 *  
-s(Assists) 1.000  1.000  1.813  0.18056    
-s(Errors)  4.080  5.002  1.778  0.12214    
+                 edf Ref.df     F  p-value    
+s(AtBat)   8.127e+00      9 9.762  &lt; 2e-16 ***
+s(Hits)    7.754e+00      9 5.205 5.70e-07 ***
+s(HmRun)   6.846e-07      9 0.000 0.429089    
+s(Runs)    4.581e+00      9 1.042 0.046639 *  
+s(RBI)     3.972e+00      9 1.167 0.017451 *  
+s(Walks)   7.939e+00      9 3.918 1.38e-05 ***
+s(Years)   4.276e+00      9 5.440  &lt; 2e-16 ***
+s(CAtBat)  7.933e+00      9 2.640 0.000236 ***
+s(CHits)   5.965e+00      9 1.776 0.005015 ** 
+s(CHmRun)  6.915e+00      9 2.930 0.000148 ***
+s(CRuns)   2.537e-07      9 0.000 0.829913    
+s(CRBI)    3.705e-01      9 0.050 0.251519    
+s(CWalks)  1.615e+00      9 0.496 0.032323 *  
+s(PutOuts) 4.906e-03      9 0.001 0.330331    
+s(Assists) 3.819e-01      9 0.034 0.351409    
+s(Errors)  4.445e+00      9 2.128 0.000411 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-R-sq.(adj) =  0.906   Deviance explained =   94%
-GCV = 0.1233  Scale est. = 0.078246  n = 197</code></pre>
+R-sq.(adj) =  0.899   Deviance explained = 93.4%
+GCV = 0.12909  Scale est. = 0.084351  n = 197</code></pre>
 </div>
 </div>
 </section>
@@ -702,60 +708,77 @@ GCV = 0.1233  Scale est. = 0.078246  n = 197</code></pre>
 <h2></h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Call: earth(formula=logSalary~., data=Hitters_train, degree=1)
+<pre><code>Call: earth(formula=logSalary~., data=Hitters_train, pmethod="cv", degree=1,
+            nfold=10)
 
 logSalary =
-  8.020721
-  +  0.06248825 * pmax(0,     43 -   Hits) 
-  +   0.6740774 * pmax(0,      1 -  HmRun) 
-  +  0.02292479 * pmax(0,  Walks -     61) 
-  -  0.06663346 * pmax(0,      7 -  Years) 
-  -   0.1228443 * pmax(0,  Years -      7) 
-  -  0.08609092 * pmax(0,      6 - CHmRun) 
-  - 0.005131412 * pmax(0,    245 -  CRuns) 
-  -  0.00205555 * pmax(0,   1032 -   CRBI) 
-  - 0.001340798 * pmax(0, CWalks -    619) 
+  5.406817
+  -  0.008447268 * pmax(0,     202 -   AtBat) 
+  +    0.1031473 * pmax(0,      43 -    Hits) 
+  +    0.2025188 * pmax(0,    Hits -     168) 
+  -    0.2357456 * pmax(0,    Hits -     171) 
+  +      0.71938 * pmax(0,       1 -   HmRun) 
+  +    0.1202038 * pmax(0,   Walks -      20) 
+  -     0.118065 * pmax(0,   Walks -      22) 
+  +   0.02494859 * pmax(0,   Walks -      61) 
+  -    0.1181774 * pmax(0,       7 -   Years) 
+  -    0.1078948 * pmax(0,   Years -       7) 
+  -   0.09731185 * pmax(0,       6 -  CHmRun) 
+  +  0.002652355 * pmax(0,  CHmRun -      97) 
+  -  0.007129586 * pmax(0,     245 -   CRuns) 
+  -  0.001426068 * pmax(0,    1032 -    CRBI) 
+  +  0.006684357 * pmax(0,  CWalks -     198) 
+  -  0.002959201 * pmax(0,  CWalks -     351) 
+  +  0.004582707 * pmax(0,     619 -  CWalks) 
+  -  0.005672073 * pmax(0,  CWalks -     619) 
+  - 0.0007817617 * pmax(0, PutOuts -     726) 
+  -  0.004174412 * pmax(0,      56 - Assists) 
+  - 0.0009448666 * pmax(0, Assists -      56) 
 
-Selected 10 of 31 terms, and 8 of 19 predictors
+Selected 22 of 31 terms, and 11 of 19 predictors (pmethod="cv")
 Termination condition: Reached nk 39
 Importance: CRuns, CRBI, Years, Hits, Walks, CWalks, HmRun, CHmRun, ...
-Number of terms at each degree of interaction: 1 9 (additive model)
-GCV 0.1712071    RSS 27.53567    GRSq 0.7961872    RSq 0.8319032</code></pre>
+Number of terms at each degree of interaction: 1 21 (additive model)
+GRSq 0.7874075  RSq 0.8687567  mean.oof.RSq 0.6778706 (sd 0.203)
+
+pmethod="backward" would have selected:
+    10 terms 8 preds,  GRSq 0.7961872  RSq 0.8319032  mean.oof.RSq 0.5971717</code></pre>
 </div>
 <div class="cell-output-display">
 <p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-14-1.png" width="2000"></p>
 </div>
+<div class="cell-output cell-output-stdout">
+<pre><code> plotmo grid:    AtBat Hits HmRun Runs RBI Walks Years CAtBat CHits CHmRun
+                   407  103     9   50  46    39     6   1924   491     40
+ CRuns CRBI CWalks League Division PutOuts Assists Errors NewLeague
+   247  208    175      A        W     224      45      7         A</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-14-2.png" width="2000"></p>
+</div>
 </div>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Call: earth(formula=logSalary~., data=Hitters_train, degree=2)
+<pre><code>Call: earth(formula=logSalary~., data=Hitters_train, pmethod="cv", degree=2,
+            nfold=10)
 
 logSalary =
-  6.585324
-  -   0.06200705 * pmax(0,       7 -   Years) 
-  -   0.09990625 * pmax(0,   Years -       7) 
-  -  0.002750561 * pmax(0,     471 -   CHits) 
-  + 0.0009875533 * pmax(0,   CHits -     471) 
-  +   0.09359974 * pmax(0,  CHmRun -     259) 
-  -  0.000472187 * pmax(0,     942 - PutOuts) 
-  + 6.069929e-06 * AtBat                      * pmax(0, PutOuts -     942) 
-  - 8.932618e-05 * pmax(0,  CHmRun -     259) * CRuns                      
-  - 0.0004101945 * pmax(0, PutOuts -     942) * Errors                     
-  +  0.002969056 * pmax(0,     217 -   AtBat) * pmax(0,       7 -   Years) 
-  - 2.334583e-06 * pmax(0,     424 -   AtBat) * pmax(0,   CHits -     471) 
-  +  0.006861765 * pmax(0,      20 -   Walks) * pmax(0,       7 -   Years) 
-  + 7.799038e-05 * pmax(0,   Walks -      60) * pmax(0,     259 -  CHmRun) 
-  + 6.921979e-06 * pmax(0,    3015 -  CAtBat) * pmax(0,   CRuns -     245) 
-  - 3.052659e-07 * pmax(0,  CAtBat -    3015) * pmax(0,   CRuns -     245) 
-  - 3.839283e-05 * pmax(0,   CHits -     471) * pmax(0,     300 -    CRBI) 
-  +  6.56986e-06 * pmax(0,  CHmRun -      32) * pmax(0,   CRuns -     245) 
-  - 3.852772e-05 * pmax(0,     245 -   CRuns) * pmax(0,     112 -    CRBI) 
+  6.395594
+  -    0.1463821 * pmax(0,  Years -      7) 
+  -  0.004923778 * pmax(0,    471 -  CHits) 
+  +  0.001021812 * pmax(0,  CHits -    471) 
+  +  0.002849097 * pmax(0,    217 -  AtBat) * pmax(0,      7 -  Years) 
+  + 8.517003e-05 * pmax(0,  Walks -     60) * pmax(0,    259 - CHmRun) 
+  - 3.515833e-05 * pmax(0,  CHits -    471) * pmax(0,    300 -   CRBI) 
 
-Selected 19 of 32 terms, and 10 of 19 predictors
+Selected 7 of 32 terms, and 6 of 19 predictors (pmethod="cv")
 Termination condition: RSq changed by less than 0.001 at 32 terms
-Importance: Years, CRuns, AtBat, CHits, CRBI, Walks, CHmRun, CAtBat, ...
-Number of terms at each degree of interaction: 1 6 12
-GCV 0.1621953    RSS 18.77267    GRSq 0.8069152    RSq 0.8853987</code></pre>
+Importance: Years, CRuns-unused, AtBat, CHits, CRBI, Walks, CHmRun, ...
+Number of terms at each degree of interaction: 1 3 3
+GRSq 0.7594717  RSq 0.7948785  mean.oof.RSq 0.6783395 (sd 0.213)
+
+pmethod="backward" would have selected:
+    19 terms 10 preds,  GRSq 0.8069152  RSq 0.8853987  mean.oof.RSq 0.6013759</code></pre>
 </div>
 <div class="cell-output-display">
 <p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-15-1.png" width="2000"></p>
@@ -780,6 +803,51 @@ GCV 0.1621953    RSS 18.77267    GRSq 0.8069152    RSq 0.8853987</code></pre>
 <h2>The <code>Hitters</code> dataset</h2>
 
 <img data-src="un_F_files/figure-revealjs/unnamed-chunk-17-1.png" width="2000" class="r-stretch"></section>
+<section id="final-results" class="slide level2 center">
+<h2>Final results</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table style="width:100%;">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 15%">
+<col style="width: 10%">
+<col style="width: 19%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Best subset</th>
+<th style="text-align: right;">GAM</th>
+<th style="text-align: right;">GAM (selected)</th>
+<th style="text-align: right;">MARS (degree 1)</th>
+<th style="text-align: right;">MARS (degree 2)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Test MAE</td>
+<td style="text-align: right;">319.672</td>
+<td style="text-align: right;">276.908</td>
+<td style="text-align: right;">261.737</td>
+<td style="text-align: right;">239.313</td>
+<td style="text-align: right;">178.091</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Test RMSE</td>
+<td style="text-align: right;">542.381</td>
+<td style="text-align: right;">494.789</td>
+<td style="text-align: right;">492.274</td>
+<td style="text-align: right;">405.818</td>
+<td style="text-align: right;">319.570</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
 <section id="references" class="slide level2 center">
 <h2>References</h2>
 <ul>

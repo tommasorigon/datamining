@@ -95,7 +95,7 @@ summary(m_gam)
 
 
 m_gam_selected <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague,
-  data = Hitters_train, select = FALSE
+  data = Hitters_train, select = TRUE
 )
 
 summary(m_gam_selected)
@@ -134,21 +134,22 @@ ggplot(data = data_plot, aes(x = CHits, y = est)) +
 
 
 library(earth)
-fit_earth <- earth(logSalary ~ ., data = Hitters_train, degree = 1)
-summary(fit_earth, style = "pmax")
-plot(evimp(fit_earth))
+fit_mars_deg1 <- earth(logSalary ~ ., data = Hitters_train, degree = 1, pmethod = "cv", nfold = 10)
+summary(fit_mars_deg1, style = "pmax")
+plot(evimp(fit_mars_deg1))
+plotmo(fit_mars_deg1)
 
 
 
-fit_earth <- earth(logSalary ~ ., data = Hitters_train, degree = 2)
-summary(fit_earth, style = "pmax")
-plot(evimp(fit_earth))
-plotmo(fit_earth)
+fit_mars_deg2 <- earth(logSalary ~ ., data = Hitters_train, degree = 2, pmethod = "cv", nfold = 10)
+summary(fit_mars_deg2, style = "pmax")
+plot(evimp(fit_mars_deg2))
+plotmo(fit_mars_deg2)
 
 
 
 library(pdp)
-earth_partial <- partial(fit_earth, pred.var = c("Years", "CHits"), grid.resolution = 40)
+earth_partial <- partial(fit_mars_deg2, pred.var = c("Years", "CHits"), grid.resolution = 40)
 autoplot(earth_partial) + theme_light()
 
 
@@ -156,3 +157,33 @@ autoplot(earth_partial) + theme_light()
 library(pdp)
 gam_partial <- partial(m_gam_selected, pred.var = c("Years", "CHits"), grid.resolution = 40)
 autoplot(gam_partial) + theme_light()
+
+
+
+y_test <- exp(Hitters_test$logSalary)
+
+y_hat_linear <- exp(predict(m_linear, newdata = Hitters_test))
+y_hat_gam <- exp(predict(m_gam, newdata = Hitters_test))
+y_hat_gam_selected <- exp(predict(m_gam_selected, newdata = Hitters_test))
+y_mars_deg1 <- exp(predict(fit_mars_deg1, newdata = Hitters_test))
+y_mars_deg2 <- exp(predict(fit_mars_deg2, newdata = Hitters_test))
+
+tab_results <- rbind(
+  c(
+    mean(abs(y_test - y_hat_linear)),
+    mean(abs(y_test - y_hat_gam)),
+    mean(abs(y_test - y_hat_gam_selected)),
+    mean(abs(y_test - y_mars_deg1)),
+    mean(abs(y_test - y_mars_deg2))
+  ),
+  sqrt(c(
+    mean(abs(y_test - y_hat_linear)^2),
+    mean(abs(y_test - y_hat_gam)^2),
+    mean(abs(y_test - y_hat_gam_selected)^2),
+    mean(abs(y_test - y_mars_deg1)^2),
+    mean(abs(y_test - y_mars_deg2)^2)
+  ))
+)
+colnames(tab_results) <- c("Best subset", "GAM", "GAM (selected)", "MARS (degree 1)", "MARS (degree 2)")
+rownames(tab_results) <- c("Test MAE", "Test RMSE")
+knitr::kable(tab_results, digits = 3)
