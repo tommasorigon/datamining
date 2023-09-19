@@ -335,16 +335,6 @@
       margin-right: 0; 
     }
   </style>
-  
-  <script src="un_C_files/libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
-  <link href="un_C_files/libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
-  <script src="un_C_files/libs/datatables-binding-0.28/datatables.js"></script>
-  <script src="un_C_files/libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
-  <link href="un_C_files/libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
-  <link href="un_C_files/libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet">
-  <script src="un_C_files/libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
-  <link href="un_C_files/libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
-  <script src="un_C_files/libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -520,8 +510,6 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <section id="a-naïve-approach-abusing-p-values" class="slide level2 center">
 <h2>A naïve approach: (ab)using p-values</h2>
 <div style="font-size: 75%;">
-<div class="cell" data-hash="un_C_cache/revealjs/unnamed-chunk-5_912d5d2cc326cb68cf628428312b5ca0">
-<div class="cell-output-display">
 <table>
 <colgroup>
 <col style="width: 13%">
@@ -538,15 +526,15 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
-<th style="text-align: right;">(Intercept)</th>
-<th style="text-align: right;">lcavol</th>
-<th style="text-align: right;">lweight</th>
-<th style="text-align: right;">age</th>
-<th style="text-align: right;">lbph</th>
-<th style="text-align: right;">svi</th>
-<th style="text-align: right;">lcp</th>
-<th style="text-align: right;">gleason</th>
-<th style="text-align: right;">pgg45</th>
+<th style="text-align: right;"><code>(Intercept)</code></th>
+<th style="text-align: right;"><code>lcavol</code></th>
+<th style="text-align: right;"><code>lweight</code></th>
+<th style="text-align: right;"><code>age</code></th>
+<th style="text-align: right;"><code>lbph</code></th>
+<th style="text-align: right;"><code>svi</code></th>
+<th style="text-align: right;"><code>lcp</code></th>
+<th style="text-align: right;"><code>gleason</code></th>
+<th style="text-align: right;"><code>pgg45</code></th>
 </tr>
 </thead>
 <tbody>
@@ -600,8 +588,6 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 </div>
 <div class="fragment">
 <ul>
@@ -2071,15 +2057,100 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </section>
 <section id="the-prostate-dataset.-a-summary-of-the-estimates" class="slide level2 center">
 <h2>The <code>prostate</code> dataset. A summary of the estimates</h2>
-<div style="font-size: 70%;">
-<div class="cell" data-hash="un_C_cache/revealjs/unnamed-chunk-38_9ef9d684fe95649e54ca29edd2e4746e">
-<div class="cell-output-display">
-
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-244140500d26ffd552d8" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-244140500d26ffd552d8">{"x":{"filter":"none","vertical":false,"data":[["(Intercept)","lcavol","lweight","age","lbph","svi","lcp","gleason","pgg45"],[2.464932922123746,0.6795281412379752,0.2630530657325436,-0.141464833536172,0.2101465572218274,0.3052005971250976,-0.2884927724535462,-0.02130503880294779,0.2669557621199234],[2.477357342449561,0.7397136698758429,0.3163281888271424,0,0,0,0,0,0],[2.455021592228733,0.2866612827183799,0.3391036880563064,0.05628528949356439,0.1015283806908212,0.2614850538133575,0.2186806183758072,-0.01605594153820449,0.06170971163528302],[2.466944796713691,0.5882288487041071,0.2581760179326364,-0.1128882084901707,0.2011682585074609,0.2832605085528289,-0.1721357517114825,0.01032273985298153,0.2040346251751614],[2.468314602273341,0.5321289780171822,0.1687891416769021,0,0,0.09162985645647548,0,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>OLS<\/th>\n      <th>Best subset<\/th>\n      <th>PCR<\/th>\n      <th>Ridge<\/th>\n      <th>Lasso<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":9,"dom":"t","columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":3,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":4,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":5,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[9,10,25,50,100],"rowCallback":"function(row, data, displayNum, displayIndex, dataIndex) {\nvar value=data[0]; $(this.api().cell(row, 0).node()).css({'font-weight':'bold'});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':isNaN(parseFloat(value)) ? '' : value <= 0 ? \"#FED8B1\" : \"#DBE9FA\"});\nvar value=data[1]; $(this.api().cell(row, 1).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[2]; $(this.api().cell(row, 2).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[3]; $(this.api().cell(row, 3).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[4]; $(this.api().cell(row, 4).node()).css({'background-color':value == 0 ? \"white\" : null});\nvar value=data[5]; $(this.api().cell(row, 5).node()).css({'background-color':value == 0 ? \"white\" : null});\n}"}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render","options.columnDefs.2.render","options.columnDefs.3.render","options.columnDefs.4.render","options.rowCallback"],"jsHooks":[]}</script>
-</div>
-</div>
-</div>
+<table>
+<colgroup>
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 19%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Least squares</th>
+<th style="text-align: right;">Best subset</th>
+<th style="text-align: right;">PCR</th>
+<th style="text-align: right;">Ridge</th>
+<th style="text-align: right;">Lasso</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>(Intercept)</code></td>
+<td style="text-align: right;">2.465</td>
+<td style="text-align: right;">2.477</td>
+<td style="text-align: right;">2.455</td>
+<td style="text-align: right;">2.467</td>
+<td style="text-align: right;">2.468</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>lcavol</code></td>
+<td style="text-align: right;">0.680</td>
+<td style="text-align: right;">0.740</td>
+<td style="text-align: right;">0.287</td>
+<td style="text-align: right;">0.588</td>
+<td style="text-align: right;">0.532</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>lweight</code></td>
+<td style="text-align: right;">0.263</td>
+<td style="text-align: right;">0.316</td>
+<td style="text-align: right;">0.339</td>
+<td style="text-align: right;">0.258</td>
+<td style="text-align: right;">0.169</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>age</code></td>
+<td style="text-align: right;">-0.141</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">0.056</td>
+<td style="text-align: right;">-0.113</td>
+<td style="text-align: right;">.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>lbph</code></td>
+<td style="text-align: right;">0.210</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">0.102</td>
+<td style="text-align: right;">0.201</td>
+<td style="text-align: right;">.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>svi</code></td>
+<td style="text-align: right;">0.305</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">0.261</td>
+<td style="text-align: right;">0.283</td>
+<td style="text-align: right;">0.092</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>lcp</code></td>
+<td style="text-align: right;">-0.288</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">0.219</td>
+<td style="text-align: right;">-0.172</td>
+<td style="text-align: right;">.</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>gleason</code></td>
+<td style="text-align: right;">-0.021</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">-0.016</td>
+<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>pgg45</code></td>
+<td style="text-align: right;">0.267</td>
+<td style="text-align: right;">.</td>
+<td style="text-align: right;">0.062</td>
+<td style="text-align: right;">0.204</td>
+<td style="text-align: right;">.</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="the-results-on-the-test-set" class="slide level2 center">
 <h2>The results on the test set</h2>

@@ -233,11 +233,19 @@ ggcorrplot(corr,
 
 ::: {style="font-size: 75%;"}
 ```{r}
+#| output: false
 tab <- data.frame(broom::tidy(lm(lpsa ~ ., data = prostate_train), conf.int = FALSE))
 rownames(tab) <- tab[, 1]
 tab <- t(as.matrix(tab[, -1]))
 knitr::kable(tab, digits = 2)
 ```
+
+|          | `(Intercept)`| `lcavol`| `lweight`|   `age`| `lbph`|  `svi`|   `lcp`| `gleason`| `pgg45`|
+|:---------|-----------:|------:|-------:|-----:|----:|----:|-----:|-------:|-----:|
+|estimate  |        2.46|   0.68|    0.26| -0.14| 0.21| 0.31| -0.29|   -0.02|  0.27|
+|std.error |        0.09|   0.13|    0.10|  0.10| 0.10| 0.12|  0.15|    0.15|  0.15|
+|statistic |       27.60|   5.37|    2.75| -1.40| 2.06| 2.47| -1.87|   -0.15|  1.74|
+|p.value   |        0.00|   0.00|    0.01|  0.17| 0.04| 0.02|  0.07|    0.88|  0.09|
 :::
 
 . . .
@@ -2502,10 +2510,8 @@ ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
 
 ## The `prostate` dataset. A summary of the estimates
 
-::: {style="font-size: 70%;"}
 ```{r}
-library(DT)
-
+#| output: false
 tab <- data.frame(OLS = rep(0, p + 1), best_subset = rep(0, p + 1), PCR = rep(0, p + 1), Ridge = rep(0, p + 1), Lasso = rep(0, p + 1))
 
 rownames(tab) <- colnames(sum_best$which)
@@ -2529,23 +2535,22 @@ tab$Ridge <- my_ridge(X, y, standardize = TRUE, lambda_tilde = lambda_tilde_min_
 # Lasso
 tab$Lasso <- c(my_lasso(X, y)$beta_scale[4, ])
 
-
-# Output
-datatable(tab, colnames = c("OLS", "Best subset", "PCR", "Ridge", "Lasso"), options = list(pageLength = 9, dom = "t")) %>%
-  formatRound(columns = 1:5, digits = 3) %>%
-  formatStyle(
-    columns = 0, fontWeight = "bold"
-  ) %>%
-  formatStyle(
-    columns = 1:5,
-    backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA"))
-  ) %>%
-  formatStyle(
-    columns = 1:5,
-    backgroundColor = styleEqual(0, c("white"))
-  )
+colnames(tab) <- c("OLS", "Best subset", "PCR", "Ridge", "Lasso")
+round(tab, digits = 3)
 ```
-:::
+
+|               | Least squares | Best subset |    PCR |  Ridge | Lasso |
+|:--------------|--------------:|------------:|-------:|-------:|------:|
+| `(Intercept)` |         2.465 |       2.477 |  2.455 |  2.467 | 2.468 |
+| `lcavol`      |         0.680 |       0.740 |  0.287 |  0.588 | 0.532 |
+| `lweight`     |         0.263 |       0.316 |  0.339 |  0.258 | 0.169 |
+| `age`         |        -0.141 |           . |  0.056 | -0.113 |     . |
+| `lbph`        |         0.210 |           . |  0.102 |  0.201 |     . |
+| `svi`         |         0.305 |           . |  0.261 |  0.283 | 0.092 |
+| `lcp`         |        -0.288 |           . |  0.219 |  -0.172|     . |
+| `gleason`     |        -0.021 |           . | -0.016 |  0.010 |     . |
+| `pgg45`       |         0.267 |           . |  0.062 |  0.204 |     . |
+
 
 ## The results on the test set
 

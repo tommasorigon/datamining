@@ -24,7 +24,6 @@ format:
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
-    highlight-style: github
   html:
     html-math-method: katex
     echo: false
@@ -33,12 +32,8 @@ format:
     toc: true
     toc-title: Table of contents
     embed-resources: false
-    code-line-numbers: true
     smooth-scroll: true
-    code-fold: true
-    code-summary: "Show the code"
     fig-dpi: 150
-    highlight-style: github
 editor: 
   markdown: 
     wrap: 72
@@ -347,9 +342,18 @@ estimate]{.orange} has an explicit solution: $$
     coefficients $\hat{\beta}$.
 
 ```{r}
+#| output: false
 m1 <- lm(city.distance ~ engine.size + I(engine.size^2) + I(engine.size^3) + fuel, data = auto)
 kable(tidy(m1, conf.int = FALSE), digits = 3)
 ```
+
+|term             | estimate| std.error| statistic| p.value|
+|:----------------|--------:|---------:|---------:|-------:|
+|`(Intercept)`      |   28.045|     3.076|     9.119|   0.000|
+|`engine.size`      |  -10.980|     3.531|    -3.109|   0.002|
+|`engine.size^2` |    2.098|     1.271|     1.651|   0.100|
+|`engine.size^3` |   -0.131|     0.139|    -0.939|   0.349|
+|`fuel_gas`          |   -3.214|     0.427|    -7.523|   0.000|
 
 -   Moreover, the coefficient $R^2$ and the residual standard deviation
     $s$ are:
@@ -439,9 +443,16 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
 . . .
 
 ```{r}
+#| output: false
 m2 <- lm(log(city.distance) ~ I(log(engine.size)) + fuel, data = auto)
 kable(tidy(m2, conf.int = FALSE), digits = 3)
 ```
+
+|term                | estimate| std.error| statistic| p.value|
+|:-------------------|--------:|---------:|---------:|-------:|
+|`(Intercept)`         |    3.060|     0.047|    64.865|       0|
+|`log(engine.size)` |   -0.682|     0.040|   -17.129|       0|
+|`fuel_gas`             |   -0.278|     0.038|    -7.344|       0|
 
 ## Second model: fitted values
 
@@ -513,10 +524,19 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m2)[c(1, 3, 10)
 . . .
 
 ```{r}
+#| output: false
 auto$cylinders2 <- factor(auto$n.cylinders == 2)
 m3 <- lm(log(city.distance) ~ I(log(engine.size)) + I(log(curb.weight)) + fuel + cylinders2, data = auto)
 kable(tidy(m3, conf.int = FALSE), digits = 3)
 ```
+
+|term                | estimate| std.error| statistic| p.value|
+|:-------------------|--------:|---------:|---------:|-------:|
+|`(Intercept)`         |    9.423|     0.482|    19.549|   0.000|
+|`log(engine.size)` |   -0.180|     0.051|    -3.504|   0.001|
+|`log(curb.weight)` |   -0.943|     0.072|   -13.066|   0.000|
+|`fuel_gas`             |   -0.353|     0.022|   -15.934|   0.000|
+|`cylinders2_TRUE`      |   -0.481|     0.052|    -9.301|   0.000|
 
 ## A third model: graphical diagnostics
 
@@ -553,7 +573,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 
 -   The estimates are coherent with our expectations, based on common
     knowledge. Have a look at the textbook (A&S) for a detailed
-    explaination about $\beta_4$!
+    explanation about $\beta_4$!
 
 -   The car dataset is available from the textbook (A&S) website:
 
@@ -1372,9 +1392,21 @@ known and invertible.
 ## The estimated model
 
 ```{r}
+#| output: false
 m1 <- glm(chd ~ ., data = heart, family = "binomial")
 kable(tidy(m1, conf.int = FALSE), digits = 3)
 ```
+
+|term           | estimate| std.error| statistic| p.value|
+|:--------------|--------:|---------:|---------:|-------:|
+|`(Intercept)`    |   -4.130|     0.964|    -4.283|   0.000|
+|`sbp`            |    0.006|     0.006|     1.023|   0.306|
+|`tobacco`        |    0.080|     0.026|     3.034|   0.002|
+|`ldl`            |    0.185|     0.057|     3.219|   0.001|
+|`famhist_Present` |    0.939|     0.225|     4.177|   0.000|
+|`obesity`        |   -0.035|     0.029|    -1.187|   0.235|
+|`alcohol`        |    0.001|     0.004|     0.136|   0.892|
+|`age`            |    0.043|     0.010|     4.181|   0.000|
 
 -   Results of the IRLS algorithm applied to the logistic regression
     model using `heart` data.

@@ -385,9 +385,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>We obtain the following <span class="orange">summary</span> for the regression coefficients <span class="math inline">\hat{\beta}</span>.</li>
 </ul>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="table">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -399,35 +397,35 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: left;"><code>(Intercept)</code></td>
 <td style="text-align: right;">28.045</td>
 <td style="text-align: right;">3.076</td>
 <td style="text-align: right;">9.119</td>
 <td style="text-align: right;">0.000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">engine.size</td>
+<td style="text-align: left;"><code>engine.size</code></td>
 <td style="text-align: right;">-10.980</td>
 <td style="text-align: right;">3.531</td>
 <td style="text-align: right;">-3.109</td>
 <td style="text-align: right;">0.002</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">I(engine.size^2)</td>
+<td style="text-align: left;"><code>engine.size^2</code></td>
 <td style="text-align: right;">2.098</td>
 <td style="text-align: right;">1.271</td>
 <td style="text-align: right;">1.651</td>
 <td style="text-align: right;">0.100</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">I(engine.size^3)</td>
+<td style="text-align: left;"><code>engine.size^3</code></td>
 <td style="text-align: right;">-0.131</td>
 <td style="text-align: right;">0.139</td>
 <td style="text-align: right;">-0.939</td>
 <td style="text-align: right;">0.349</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">fuelgas</td>
+<td style="text-align: left;"><code>fuel_gas</code></td>
 <td style="text-align: right;">-3.214</td>
 <td style="text-align: right;">0.427</td>
 <td style="text-align: right;">-7.523</td>
@@ -435,8 +433,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <ul>
 <li>Moreover, the coefficient <span class="math inline">R^2</span> and the residual standard deviation <span class="math inline">s</span> are:</li>
 </ul>
@@ -514,9 +510,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>This specification is <span class="orange">linear in the parameters</span>, it fixes the domain issues, and it imposes a monotone relationship between engine size and consumption.</li>
 </ul>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="table">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -528,21 +522,21 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: left;"><code>(Intercept)</code></td>
 <td style="text-align: right;">3.060</td>
 <td style="text-align: right;">0.047</td>
 <td style="text-align: right;">64.865</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">I(log(engine.size))</td>
+<td style="text-align: left;"><code>log(engine.size)</code></td>
 <td style="text-align: right;">-0.682</td>
 <td style="text-align: right;">0.040</td>
 <td style="text-align: right;">-17.129</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">fuelgas</td>
+<td style="text-align: left;"><code>fuel_gas</code></td>
 <td style="text-align: right;">-0.278</td>
 <td style="text-align: right;">0.038</td>
 <td style="text-align: right;">-7.344</td>
@@ -550,8 +544,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 </section>
 <section id="second-model-fitted-values" class="level2">
 <h2 class="anchored" data-anchor-id="second-model-fitted-values">Second model: fitted values</h2>
@@ -621,9 +613,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 \log{Y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
   </span> for <span class="math inline">i=1,\dots,n</span>. The estimates are:</p></li>
 </ul>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="table">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -635,35 +625,35 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: left;"><code>(Intercept)</code></td>
 <td style="text-align: right;">9.423</td>
 <td style="text-align: right;">0.482</td>
 <td style="text-align: right;">19.549</td>
 <td style="text-align: right;">0.000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">I(log(engine.size))</td>
+<td style="text-align: left;"><code>log(engine.size)</code></td>
 <td style="text-align: right;">-0.180</td>
 <td style="text-align: right;">0.051</td>
 <td style="text-align: right;">-3.504</td>
 <td style="text-align: right;">0.001</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">I(log(curb.weight))</td>
+<td style="text-align: left;"><code>log(curb.weight)</code></td>
 <td style="text-align: right;">-0.943</td>
 <td style="text-align: right;">0.072</td>
 <td style="text-align: right;">-13.066</td>
 <td style="text-align: right;">0.000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">fuelgas</td>
+<td style="text-align: left;"><code>fuel_gas</code></td>
 <td style="text-align: right;">-0.353</td>
 <td style="text-align: right;">0.022</td>
 <td style="text-align: right;">-15.934</td>
 <td style="text-align: right;">0.000</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">cylinders2TRUE</td>
+<td style="text-align: left;"><code>cylinders2_TRUE</code></td>
 <td style="text-align: right;">-0.481</td>
 <td style="text-align: right;">0.052</td>
 <td style="text-align: right;">-9.301</td>
@@ -671,8 +661,6 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 </section>
 <section id="a-third-model-graphical-diagnostics" class="level2">
 <h2 class="anchored" data-anchor-id="a-third-model-graphical-diagnostics">A third model: graphical diagnostics</h2>
@@ -716,7 +704,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li><p>In this third model, we took care of the <span class="orange">outliers</span> appearing in the residual plots, which it turns out are identified by the group of cars having 2 cylinders.</p></li>
 <li><p>The diagnostic plots are also very much improved, although still not perfect.</p></li>
-<li><p>The estimates are coherent with our expectations, based on common knowledge. Have a look at the textbook (A&amp;S) for a detailed explaination about <span class="math inline">\beta_4</span>!</p></li>
+<li><p>The estimates are coherent with our expectations, based on common knowledge. Have a look at the textbook (A&amp;S) for a detailed explanation about <span class="math inline">\beta_4</span>!</p></li>
 <li><p>The car dataset is available from the textbook (A&amp;S) website:</p>
 <ul>
 <li>Dataset <a href="http://azzalini.stat.unipd.it/Book-DM/auto.dat" class="uri">http://azzalini.stat.unipd.it/Book-DM/auto.dat</a></li>
@@ -921,8 +909,7 @@ Proposition A.2. OLS with orthogonal predictors
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The least square estimate <span class="math inline">\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T</span> with orthogonal predictors is</p>
-<p><span class="math display">
+<p>The least square estimate <span class="math inline">\hat{\bm{\beta}} = (\hat{\beta}_1,\dots,\hat{\beta}_p)^T</span> with orthogonal predictors is <span class="math display">
 \hat{\beta}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j}, \qquad j=1,\dots,p.
 </span></p>
 </div>
@@ -1340,9 +1327,7 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
 </section>
 <section id="the-estimated-model" class="level2">
 <h2 class="anchored" data-anchor-id="the-estimated-model">The estimated model</h2>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="table">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -1354,56 +1339,56 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: left;"><code>(Intercept)</code></td>
 <td style="text-align: right;">-4.130</td>
 <td style="text-align: right;">0.964</td>
 <td style="text-align: right;">-4.283</td>
 <td style="text-align: right;">0.000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">sbp</td>
+<td style="text-align: left;"><code>sbp</code></td>
 <td style="text-align: right;">0.006</td>
 <td style="text-align: right;">0.006</td>
 <td style="text-align: right;">1.023</td>
 <td style="text-align: right;">0.306</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">tobacco</td>
+<td style="text-align: left;"><code>tobacco</code></td>
 <td style="text-align: right;">0.080</td>
 <td style="text-align: right;">0.026</td>
 <td style="text-align: right;">3.034</td>
 <td style="text-align: right;">0.002</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">ldl</td>
+<td style="text-align: left;"><code>ldl</code></td>
 <td style="text-align: right;">0.185</td>
 <td style="text-align: right;">0.057</td>
 <td style="text-align: right;">3.219</td>
 <td style="text-align: right;">0.001</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">famhistPresent</td>
+<td style="text-align: left;"><code>famhist_Present</code></td>
 <td style="text-align: right;">0.939</td>
 <td style="text-align: right;">0.225</td>
 <td style="text-align: right;">4.177</td>
 <td style="text-align: right;">0.000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">obesity</td>
+<td style="text-align: left;"><code>obesity</code></td>
 <td style="text-align: right;">-0.035</td>
 <td style="text-align: right;">0.029</td>
 <td style="text-align: right;">-1.187</td>
 <td style="text-align: right;">0.235</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">alcohol</td>
+<td style="text-align: left;"><code>alcohol</code></td>
 <td style="text-align: right;">0.001</td>
 <td style="text-align: right;">0.004</td>
 <td style="text-align: right;">0.136</td>
 <td style="text-align: right;">0.892</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">age</td>
+<td style="text-align: left;"><code>age</code></td>
 <td style="text-align: right;">0.043</td>
 <td style="text-align: right;">0.010</td>
 <td style="text-align: right;">4.181</td>
@@ -1411,8 +1396,6 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <ul>
 <li>Results of the IRLS algorithm applied to the logistic regression model using <code>heart</code> data.</li>
 </ul>

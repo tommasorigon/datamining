@@ -148,6 +148,8 @@ library(pls)
 resid_pcr <- matrix(0, n, p)
 
 for (k in 1:10) {
+  # Estimation of the null model
+  fit_null <- lm(lpsa ~ 1, data = analysis(cv_fold$splits[[k]]))
   # Hold-out dataset
   y_k <- assessment(cv_fold$splits[[k]])$lpsa
   # MSE of the null model

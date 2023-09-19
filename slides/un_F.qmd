@@ -25,7 +25,6 @@ format:
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
-    highlight-style: atom-one
   html:
     html-math-method: katex
     echo: false
@@ -39,7 +38,6 @@ format:
     code-fold: false
     code-summary: "Show the code"
     fig-dpi: 200
-    highlight-style: atom-one
 editor: 
   markdown: 
     wrap: 72
