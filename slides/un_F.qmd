@@ -25,7 +25,7 @@ format:
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
-    highlight-style: github
+    highlight-style: atom-one
   html:
     html-math-method: katex
     echo: false
@@ -39,7 +39,7 @@ format:
     code-fold: false
     code-summary: "Show the code"
     fig-dpi: 200
-    highlight-style: github
+    highlight-style: atom-one
 editor: 
   markdown: 
     wrap: 72
@@ -96,9 +96,9 @@ styler:::style_file("../code/un_F.R")
   - The league/division of the player at the end of 1986;
   - ...and many others.
   
-- We considered the logarithmic transform of the salary (`logSalary`) and the logarithmic transform of the number of years in major leagues (`logYears`).
+- We considered the logarithmic transform of the salary (`logSalary`).
 
-- Including the intercept, there are in total $p = 20$ [variables]{.orange} that can be used to predict the salary of each player.
+- There are in total $p = 19$ [variables]{.orange} that can be used to predict the salary of each player.
 
 - The [original dataset](https://search.r-project.org/CRAN/refmans/ISLR/html/Hitters.html) is available in the `ISLR` R package.
 
@@ -110,33 +110,40 @@ styler:::style_file("../code/un_F.R")
 #| message: false
 rm(list = ls())
 library(ISLR)
-library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+
 data(Hitters)
 Hitters <- na.omit(Hitters)
-glimpse(Hitters)
+dplyr::glimpse(Hitters)
 ```
 
 ## Preliminary operations
 
 ```{r}
-Hitters <- mutate(Hitters,
-  TotalScore = (RBI + Assists + Walks - Errors) / AtBat,
-  logAHits = log1p(CHits / Years),
-  logAAtBat = log1p(CAtBat / Years),
-  logARuns = log1p(CRuns / Years),
-  logARBI = log1p(CRBI / Years),
-  logAWalks = log1p(CWalks / Years),
-  logAHmRun = log1p(CHmRun / Years),
-  RatioHits = Hits / CHits,
-  RatioAtBat = AtBat / CAtBat,
-  RatioRuns = Runs / CRuns,
-  RatioRBI = RBI / CRBI,
-  RatioWalks = Walks / CWalks,
-  RatioHmRun = HmRun / (CHmRun + 1),
-  logYears = log(Years),
-  logSalary = log(Salary)
-) %>% select(-c(Salary, Years))
-# 
+# Hitters <- mutate(Hitters,
+#   TotalScore = (RBI + Assists + Walks - Errors) / AtBat,
+#   logAHits = log1p(CHits / Years),
+#   logAAtBat = log1p(CAtBat / Years),
+#   logARuns = log1p(CRuns / Years),
+#   logARBI = log1p(CRBI / Years),
+#   logAWalks = log1p(CWalks / Years),
+#   logAHmRun = log1p(CHmRun / Years),
+#   RatioHits = Hits / CHits,
+#   RatioAtBat = AtBat / CAtBat,
+#   RatioRuns = Runs / CRuns,
+#   RatioRBI = RBI / CRBI,
+#   RatioWalks = Walks / CWalks,
+#   RatioHmRun = HmRun / (CHmRun + 1),
+#   logYears = log(Years),
+#   logSalary = log(Salary)
+# ) %>% select(-c(Salary, Years))
+```
+
+```{r}
+Hitters$logSalary <- log(Hitters$Salary)
+Hitters <- subset(Hitters, select = -Salary)
+
 # Data splitting
 set.seed(123)
 id_train <- sample(1:nrow(Hitters), size = floor(0.75 * nrow(Hitters)), replace = FALSE)
@@ -145,59 +152,174 @@ Hitters_train <- Hitters[id_train, ]
 Hitters_test <- Hitters[id_test, ]
 ```
 
+## Correlation matrix of `Hitters`
 
-<!-- ## The variable selection problem -->
+```{r}
+#| fig-width: 18
+#| fig-height: 8.5
+#| fig-align: center
+library(ggcorrplot)
+corr <- cor(subset(Hitters_train, select = -c(logSalary, Division, League, NewLeague))) # Remove logSalary
+ggcorrplot(corr,
+  hc.order = TRUE,
+  outline.col = "white",
+  ggtheme = ggplot2::theme_bw,
+  colors = c("#fc7d0b", "white", "#1170aa")
+)
+```
 
-<!-- ::: incremental -->
+## A linear model
 
-<!-- - We consider a [linear model]{.orange} in which the response variable $Y_i$ (`logSalary`) is related to the -->
-<!-- covariates through the function$$ -->
-<!--     \mathbb{E}(Y_i) = f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta, -->
-<!--     $$  -->
-<!-- using the same notation of [Unit A.1](un_A1.html). -->
+## Best subset selection
 
-<!-- - Among these $p = 26$ variables, some are likely to be [irrelevant]{.blue}, because they might be [correlated]{.orange} or even [collinear]{.orange}. -->
+```{r}
+#| fig-width: 12
+#| fig-height: 6
+#| fig-align: center
+library(leaps)
+fit.bests <- regsubsets(logSalary ~ ., data = Hitters_train, nvmax = ncol(Hitters_train))
+summary.bests <- summary(fit.bests)
 
-<!-- - As we have seen in [Unit B](un_B.html), irrelevant variables are problematic because they [increase the variance]{.orange} of the estimates without important gain in term of bias.  -->
+par(mfrow = c(1, 2))
+plot(summary.bests$cp, xlab = "Number of covariates", ylab = "Mallow's Cp", type = "b", pch = 16)
+plot(fit.bests, scale = "Cp")
+```
 
-<!-- - For the polynomial regression problem of [Unit B](un_B.html) we used [cross-validation]{.blue} and other tools to find a good [bias-variance trade-off]{.blue}. Can we use the same strategy in this example? -->
+## The selected linear model
 
-<!-- - In theory, yes... but here there are $2^{20} = 1048576$ competing models!  -->
+```{r}
+library(broom)
+m_linear <- lm(logSalary ~ Hits + Walks + Years + CRuns + CWalks + League + Division + Errors, data = Hitters_train)
+knitr::kable(tidy(summary(m_linear)), digits = 3)
+```
 
-<!-- ::: -->
 
-<!-- ## Correlation matrix of `Hitters` -->
+## Scatterplot with `loess` estimate
 
-<!-- ```{r} -->
-<!-- #| fig-width: 15 -->
-<!-- #| fig-height: 7 -->
-<!-- #| fig-align: center -->
-<!-- library(ggcorrplot) -->
-<!-- corr <- cor(subset(Hitters_train, select = -c(Salary, Division, League, NewLeague))) # Remove logSalary -->
-<!-- ggcorrplot(corr, -->
-<!--   hc.order = TRUE, -->
-<!--   outline.col = "white", -->
-<!--   ggtheme = ggplot2::theme_bw, -->
-<!--   colors = c("#fc7d0b", "white", "#1170aa") -->
-<!-- ) -->
-<!-- ``` -->
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+#| message: false
+ggplot(data = Hitters_train, aes(x = Years, y = logSalary)) +
+  geom_point(size = 0.7) +
+  geom_smooth(se = FALSE, span = 1, col = "#1170aa") +
+  theme_minimal() +
+  xlab("Number of years in the major leagues (Years)") +
+  ylab("log(Salary)")
+```
 
+## Comments and cricism to linear models
 
 # Generalized additive models (GAM)
 
-# MARS
+## The ANOVA decomposition of a function
+
+## Generalized additive models (GAM)
+
+## The backfitting algorithm I
+
+## The backfitting algorithm II
+
+## Local scoring for additive logistic regression
+
+## GAM using penalized splines
+
+## GAM using penalized splines
+
+## Additive models
 
 ```{r}
-library(earth)
-fit_earth <- earth(logSalary ~., data = Hitters_train, degree = 1)
-summary(fit_earth, style = "pmax")
-plot(evimp(fit_earth))
-plotmo(fit_earth)
+library(mgcv)
+m_gam <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague, data = Hitters_train, select = FALSE)
 ```
 
 
 ```{r}
-fit_earth <- earth(logSalary ~., data = Hitters_train, degree = 2)
+summary(m_gam)
+```
+
+## Variable selection
+
+```{r}
+m_gam_selected <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague,
+  data = Hitters_train, select = FALSE
+)
+
+summary(m_gam_selected)
+```
+
+## Partial effect (`Years`)
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+#| message: false
+library(gratia)
+data_plot <- smooth_estimates(m_gam_selected, smooth = "s(Years)")
+
+ggplot(data = data_plot, aes(x = Years, y = est)) +
+  geom_line(linewidth = 1, col = "#1170aa") +
+  geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = Years, y = `s(Years)`), size = 0.7) +
+  theme_minimal() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Number of years in the major leagues (Years)") +
+  ylab("Partial effect")
+```
+
+##
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+#| message: false
+data_plot <- smooth_estimates(m_gam_selected, smooth = "s(CHits)")
+
+ggplot(data = data_plot, aes(x = CHits, y = est)) +
+  geom_line(linewidth = 1, col = "#1170aa") +
+  geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = CHits, y = `s(CHits)`), size = 0.7) +
+  theme_minimal() +
+  scale_color_tableau(palette = "Color Blind") +
+  xlab("Number of years in the major leagues (Years)") +
+  ylab("Partial effect")
+```
+
+
+## Pros and cons of generalized additive models (GAMs)
+
+::: callout-tip
+#### Pros
+
+-   asd
+:::
+
+. . .
+
+::: callout-warning
+#### Cons
+
+- asd
+:::
+
+
+# MARS
+
+## MARS
+
+## 
+
+```{r}
+library(earth)
+fit_earth <- earth(logSalary ~ ., data = Hitters_train, degree = 1)
+summary(fit_earth, style = "pmax")
+plot(evimp(fit_earth))
+```
+
+
+```{r}
+fit_earth <- earth(logSalary ~ ., data = Hitters_train, degree = 2)
 summary(fit_earth, style = "pmax")
 plot(evimp(fit_earth))
 plotmo(fit_earth)
@@ -205,15 +327,18 @@ plotmo(fit_earth)
 
 ```{r}
 library(pdp)
-earth_partial <- partial(fit_earth, pred.var = c("CRBI"), grid.resolution = 40)
+earth_partial <- partial(fit_earth, pred.var = c("Years", "CHits"), grid.resolution = 40)
 autoplot(earth_partial) + theme_light()
 ```
 
 ## The `Hitters` dataset
 
 ```{r}
-
+library(pdp)
+gam_partial <- partial(m_gam_selected, pred.var = c("Years", "CHits"), grid.resolution = 40)
+autoplot(gam_partial) + theme_light()
 ```
+
 
 
 ## References

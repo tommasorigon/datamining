@@ -67,9 +67,31 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#the-hitters-dataset" id="toc-the-hitters-dataset" class="nav-link" data-scroll-target="#the-hitters-dataset">The <code>Hitters</code> dataset</a></li>
   <li><a href="#a-glimpse-of-the-hitters-dataset" id="toc-a-glimpse-of-the-hitters-dataset" class="nav-link" data-scroll-target="#a-glimpse-of-the-hitters-dataset">A <code>glimpse</code> of the <code>Hitters</code> dataset</a></li>
   <li><a href="#preliminary-operations" id="toc-preliminary-operations" class="nav-link" data-scroll-target="#preliminary-operations">Preliminary operations</a></li>
-  <li><a href="#generalized-additive-models-gam" id="toc-generalized-additive-models-gam" class="nav-link" data-scroll-target="#generalized-additive-models-gam">Generalized additive models (GAM)</a></li>
+  <li><a href="#correlation-matrix-of-hitters" id="toc-correlation-matrix-of-hitters" class="nav-link" data-scroll-target="#correlation-matrix-of-hitters">Correlation matrix of <code>Hitters</code></a></li>
+  <li><a href="#a-linear-model" id="toc-a-linear-model" class="nav-link" data-scroll-target="#a-linear-model">A linear model</a></li>
+  <li><a href="#best-subset-selection" id="toc-best-subset-selection" class="nav-link" data-scroll-target="#best-subset-selection">Best subset selection</a></li>
+  <li><a href="#the-selected-linear-model" id="toc-the-selected-linear-model" class="nav-link" data-scroll-target="#the-selected-linear-model">The selected linear model</a></li>
+  <li><a href="#scatterplot-with-loess-estimate" id="toc-scatterplot-with-loess-estimate" class="nav-link" data-scroll-target="#scatterplot-with-loess-estimate">Scatterplot with <code>loess</code> estimate</a></li>
+  <li><a href="#comments-and-cricism-to-linear-models" id="toc-comments-and-cricism-to-linear-models" class="nav-link" data-scroll-target="#comments-and-cricism-to-linear-models">Comments and cricism to linear models</a></li>
+  <li><a href="#generalized-additive-models-gam" id="toc-generalized-additive-models-gam" class="nav-link" data-scroll-target="#generalized-additive-models-gam">Generalized additive models (GAM)</a>
+  <ul class="collapse">
+  <li><a href="#the-anova-decomposition-of-a-function" id="toc-the-anova-decomposition-of-a-function" class="nav-link" data-scroll-target="#the-anova-decomposition-of-a-function">The ANOVA decomposition of a function</a></li>
+  <li><a href="#generalized-additive-models-gam-1" id="toc-generalized-additive-models-gam-1" class="nav-link" data-scroll-target="#generalized-additive-models-gam-1">Generalized additive models (GAM)</a></li>
+  <li><a href="#the-backfitting-algorithm-i" id="toc-the-backfitting-algorithm-i" class="nav-link" data-scroll-target="#the-backfitting-algorithm-i">The backfitting algorithm I</a></li>
+  <li><a href="#the-backfitting-algorithm-ii" id="toc-the-backfitting-algorithm-ii" class="nav-link" data-scroll-target="#the-backfitting-algorithm-ii">The backfitting algorithm II</a></li>
+  <li><a href="#local-scoring-for-additive-logistic-regression" id="toc-local-scoring-for-additive-logistic-regression" class="nav-link" data-scroll-target="#local-scoring-for-additive-logistic-regression">Local scoring for additive logistic regression</a></li>
+  <li><a href="#gam-using-penalized-splines" id="toc-gam-using-penalized-splines" class="nav-link" data-scroll-target="#gam-using-penalized-splines">GAM using penalized splines</a></li>
+  <li><a href="#gam-using-penalized-splines-1" id="toc-gam-using-penalized-splines-1" class="nav-link" data-scroll-target="#gam-using-penalized-splines-1">GAM using penalized splines</a></li>
+  <li><a href="#additive-models" id="toc-additive-models" class="nav-link" data-scroll-target="#additive-models">Additive models</a></li>
+  <li><a href="#variable-selection" id="toc-variable-selection" class="nav-link" data-scroll-target="#variable-selection">Variable selection</a></li>
+  <li><a href="#partial-effect-years" id="toc-partial-effect-years" class="nav-link" data-scroll-target="#partial-effect-years">Partial effect (<code>Years</code>)</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#pros-and-cons-of-generalized-additive-models-gams" id="toc-pros-and-cons-of-generalized-additive-models-gams" class="nav-link" data-scroll-target="#pros-and-cons-of-generalized-additive-models-gams">Pros and cons of generalized additive models (GAMs)</a></li>
+  </ul></li>
   <li><a href="#mars" id="toc-mars" class="nav-link" data-scroll-target="#mars">MARS</a>
   <ul class="collapse">
+  <li><a href="#mars-1" id="toc-mars-1" class="nav-link" data-scroll-target="#mars-1">MARS</a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
   <li><a href="#the-hitters-dataset-1" id="toc-the-hitters-dataset-1" class="nav-link" data-scroll-target="#the-hitters-dataset-1">The <code>Hitters</code> dataset</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
@@ -146,8 +168,8 @@ ul.task-list li input[type="checkbox"] {
 <li>The league/division of the player at the end of 1986;</li>
 <li>…and many others.</li>
 </ul></li>
-<li><p>We considered the logarithmic transform of the salary (<code>logSalary</code>) and the logarithmic transform of the number of years in major leagues (<code>logYears</code>).</p></li>
-<li><p>Including the intercept, there are in total <span class="math inline">p = 20</span> <span class="orange">variables</span> that can be used to predict the salary of each player.</p></li>
+<li><p>We considered the logarithmic transform of the salary (<code>logSalary</code>).</p></li>
+<li><p>There are in total <span class="math inline">p = 19</span> <span class="orange">variables</span> that can be used to predict the salary of each player.</p></li>
 <li><p>The <a href="https://search.r-project.org/CRAN/refmans/ISLR/html/Hitters.html">original dataset</a> is available in the <code>ISLR</code> R package.</p></li>
 </ul>
 </div>
@@ -183,38 +205,326 @@ $ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N,
 </section>
 <section id="preliminary-operations" class="level2">
 <h2 class="anchored" data-anchor-id="preliminary-operations">Preliminary operations</h2>
-<!-- ## The variable selection problem -->
-<!-- ::: incremental -->
-<!-- - We consider a [linear model]{.orange} in which the response variable $Y_i$ (`logSalary`) is related to the -->
-<!-- covariates through the function$$ -->
-<!--     \mathbb{E}(Y_i) = f(\bm{x}_i; \beta) = \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\bm{x}_i^T\beta, -->
-<!--     $$  -->
-<!-- using the same notation of [Unit A.1](un_A1.html). -->
-<!-- - Among these $p = 26$ variables, some are likely to be [irrelevant]{.blue}, because they might be [correlated]{.orange} or even [collinear]{.orange}. -->
-<!-- - As we have seen in [Unit B](un_B.html), irrelevant variables are problematic because they [increase the variance]{.orange} of the estimates without important gain in term of bias.  -->
-<!-- - For the polynomial regression problem of [Unit B](un_B.html) we used [cross-validation]{.blue} and other tools to find a good [bias-variance trade-off]{.blue}. Can we use the same strategy in this example? -->
-<!-- - In theory, yes... but here there are $2^{20} = 1048576$ competing models!  -->
-<!-- ::: -->
-<!-- ## Correlation matrix of `Hitters` -->
-<!-- ```{r} -->
-<!-- #| fig-width: 15 -->
-<!-- #| fig-height: 7 -->
-<!-- #| fig-align: center -->
-<!-- library(ggcorrplot) -->
-<!-- corr <- cor(subset(Hitters_train, select = -c(Salary, Division, League, NewLeague))) # Remove logSalary -->
-<!-- ggcorrplot(corr, -->
-<!--   hc.order = TRUE, -->
-<!--   outline.col = "white", -->
-<!--   ggtheme = ggplot2::theme_bw, -->
-<!--   colors = c("#fc7d0b", "white", "#1170aa") -->
-<!-- ) -->
-<!-- ``` -->
+</section>
+<section id="correlation-matrix-of-hitters" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-matrix-of-hitters">Correlation matrix of <code>Hitters</code></h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_F_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="3600"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="a-linear-model" class="level2">
+<h2 class="anchored" data-anchor-id="a-linear-model">A linear model</h2>
+</section>
+<section id="best-subset-selection" class="level2">
+<h2 class="anchored" data-anchor-id="best-subset-selection">Best subset selection</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_F_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="2400"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-selected-linear-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-selected-linear-model">The selected linear model</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">4.493</td>
+<td style="text-align: right;">0.177</td>
+<td style="text-align: right;">25.344</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hits</td>
+<td style="text-align: right;">0.004</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">2.255</td>
+<td style="text-align: right;">0.025</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Walks</td>
+<td style="text-align: right;">0.011</td>
+<td style="text-align: right;">0.003</td>
+<td style="text-align: right;">3.255</td>
+<td style="text-align: right;">0.001</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Years</td>
+<td style="text-align: right;">0.046</td>
+<td style="text-align: right;">0.022</td>
+<td style="text-align: right;">2.112</td>
+<td style="text-align: right;">0.036</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">CRuns</td>
+<td style="text-align: right;">0.002</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">3.562</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">CWalks</td>
+<td style="text-align: right;">-0.001</td>
+<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">-2.204</td>
+<td style="text-align: right;">0.029</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LeagueN</td>
+<td style="text-align: right;">0.173</td>
+<td style="text-align: right;">0.088</td>
+<td style="text-align: right;">1.959</td>
+<td style="text-align: right;">0.052</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">DivisionW</td>
+<td style="text-align: right;">-0.189</td>
+<td style="text-align: right;">0.087</td>
+<td style="text-align: right;">-2.165</td>
+<td style="text-align: right;">0.032</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Errors</td>
+<td style="text-align: right;">-0.012</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">-1.689</td>
+<td style="text-align: right;">0.093</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="scatterplot-with-loess-estimate" class="level2">
+<h2 class="anchored" data-anchor-id="scatterplot-with-loess-estimate">Scatterplot with <code>loess</code> estimate</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_F_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="1560"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="comments-and-cricism-to-linear-models" class="level2">
+<h2 class="anchored" data-anchor-id="comments-and-cricism-to-linear-models">Comments and cricism to linear models</h2>
 </section>
 <section id="generalized-additive-models-gam" class="level1">
 <h1>Generalized additive models (GAM)</h1>
+<section id="the-anova-decomposition-of-a-function" class="level2">
+<h2 class="anchored" data-anchor-id="the-anova-decomposition-of-a-function">The ANOVA decomposition of a function</h2>
+</section>
+<section id="generalized-additive-models-gam-1" class="level2">
+<h2 class="anchored" data-anchor-id="generalized-additive-models-gam-1">Generalized additive models (GAM)</h2>
+</section>
+<section id="the-backfitting-algorithm-i" class="level2">
+<h2 class="anchored" data-anchor-id="the-backfitting-algorithm-i">The backfitting algorithm I</h2>
+</section>
+<section id="the-backfitting-algorithm-ii" class="level2">
+<h2 class="anchored" data-anchor-id="the-backfitting-algorithm-ii">The backfitting algorithm II</h2>
+</section>
+<section id="local-scoring-for-additive-logistic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="local-scoring-for-additive-logistic-regression">Local scoring for additive logistic regression</h2>
+</section>
+<section id="gam-using-penalized-splines" class="level2">
+<h2 class="anchored" data-anchor-id="gam-using-penalized-splines">GAM using penalized splines</h2>
+</section>
+<section id="gam-using-penalized-splines-1" class="level2">
+<h2 class="anchored" data-anchor-id="gam-using-penalized-splines-1">GAM using penalized splines</h2>
+</section>
+<section id="additive-models" class="level2">
+<h2 class="anchored" data-anchor-id="additive-models">Additive models</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: nlme</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is mgcv 1.9-0. For overview type 'help("mgcv-package")'.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Family: gaussian 
+Link function: identity 
+
+Formula:
+logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + 
+    s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + 
+    s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + 
+    s(Assists) + s(Errors) + NewLeague
+
+Parametric coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  5.87718    0.04029 145.870   &lt;2e-16 ***
+LeagueN      0.06292    0.10121   0.622    0.535    
+DivisionW   -0.03305    0.05094  -0.649    0.518    
+NewLeagueN   0.04495    0.09998   0.450    0.654    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Approximate significance of smooth terms:
+             edf Ref.df      F  p-value    
+s(AtBat)   5.206  6.337  3.016  0.00706 ** 
+s(Hits)    8.227  8.681  6.439 3.13e-06 ***
+s(HmRun)   5.171  6.236  2.497  0.02448 *  
+s(Runs)    3.077  3.908  1.743  0.14014    
+s(RBI)     3.679  4.619  4.599  0.00116 ** 
+s(Walks)   5.989  7.059  3.024  0.00650 ** 
+s(Years)   7.354  8.180 10.400  &lt; 2e-16 ***
+s(CAtBat)  1.000  1.000  0.814  0.36863    
+s(CHits)   1.000  1.000  5.111  0.02550 *  
+s(CHmRun)  5.773  6.805  5.492 1.73e-05 ***
+s(CRuns)   1.000  1.000  0.459  0.49926    
+s(CRBI)    8.045  8.665  8.359  &lt; 2e-16 ***
+s(CWalks)  1.000  1.000  4.070  0.04578 *  
+s(PutOuts) 6.383  7.453  2.173  0.03875 *  
+s(Assists) 1.000  1.000  1.813  0.18056    
+s(Errors)  4.080  5.002  1.778  0.12214    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+R-sq.(adj) =  0.906   Deviance explained =   94%
+GCV = 0.1233  Scale est. = 0.078246  n = 197</code></pre>
+</div>
+</div>
+</section>
+<section id="variable-selection" class="level2">
+<h2 class="anchored" data-anchor-id="variable-selection">Variable selection</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Family: gaussian 
+Link function: identity 
+
+Formula:
+logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + 
+    s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + 
+    s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + 
+    s(Assists) + s(Errors) + NewLeague
+
+Parametric coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  5.87718    0.04029 145.870   &lt;2e-16 ***
+LeagueN      0.06292    0.10121   0.622    0.535    
+DivisionW   -0.03305    0.05094  -0.649    0.518    
+NewLeagueN   0.04495    0.09998   0.450    0.654    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Approximate significance of smooth terms:
+             edf Ref.df      F  p-value    
+s(AtBat)   5.206  6.337  3.016  0.00706 ** 
+s(Hits)    8.227  8.681  6.439 3.13e-06 ***
+s(HmRun)   5.171  6.236  2.497  0.02448 *  
+s(Runs)    3.077  3.908  1.743  0.14014    
+s(RBI)     3.679  4.619  4.599  0.00116 ** 
+s(Walks)   5.989  7.059  3.024  0.00650 ** 
+s(Years)   7.354  8.180 10.400  &lt; 2e-16 ***
+s(CAtBat)  1.000  1.000  0.814  0.36863    
+s(CHits)   1.000  1.000  5.111  0.02550 *  
+s(CHmRun)  5.773  6.805  5.492 1.73e-05 ***
+s(CRuns)   1.000  1.000  0.459  0.49926    
+s(CRBI)    8.045  8.665  8.359  &lt; 2e-16 ***
+s(CWalks)  1.000  1.000  4.070  0.04578 *  
+s(PutOuts) 6.383  7.453  2.173  0.03875 *  
+s(Assists) 1.000  1.000  1.813  0.18056    
+s(Errors)  4.080  5.002  1.778  0.12214    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+R-sq.(adj) =  0.906   Deviance explained =   94%
+GCV = 0.1233  Scale est. = 0.078246  n = 197</code></pre>
+</div>
+</div>
+</section>
+<section id="partial-effect-years" class="level2">
+<h2 class="anchored" data-anchor-id="partial-effect-years">Partial effect (<code>Years</code>)</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_F_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="1560"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_F_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="1560"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="pros-and-cons-of-generalized-additive-models-gams" class="level2">
+<h2 class="anchored" data-anchor-id="pros-and-cons-of-generalized-additive-models-gams">Pros and cons of generalized additive models (GAMs)</h2>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pros
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>asd</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cons
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>asd</li>
+</ul>
+</div>
+</div>
+</section>
 </section>
 <section id="mars" class="level1">
 <h1>MARS</h1>
+<section id="mars-1" class="level2">
+<h2 class="anchored" data-anchor-id="mars-1">MARS</h2>
+</section>
+<section id="section-1" class="level2">
+<h2 class="anchored" data-anchor-id="section-1"></h2>
 <div class="cell">
 <div class="cell-output cell-output-stderr">
 <pre><code>Loading required package: Formula</code></pre>
@@ -232,42 +542,25 @@ $ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N,
 <pre><code>Call: earth(formula=logSalary~., data=Hitters_train, degree=1)
 
 logSalary =
-  6.51823
-  -   0.01629737 * pmax(0,       Hits -        169) 
-  +   0.01118536 * pmax(0,      Walks -         59) 
-  -  0.005811466 * pmax(0,        247 -      CRuns) 
-  +  0.001003021 * pmax(0,      CRuns -        247) 
-  - 0.0005516759 * pmax(0,        659 -    PutOuts) 
-  -  0.000651503 * pmax(0,    PutOuts -        659) 
-  +    0.3668041 * pmax(0, TotalScore -  0.8388626) 
-  +     2.219163 * pmax(0,   logAHits -   4.394449) 
-  -     3.111009 * pmax(0,  logAAtBat -   5.829534) 
-  +     1.762515 * pmax(0,    logARBI -   3.997661) 
-  -     4.067173 * pmax(0,  0.1864407 - RatioWalks) 
-  -    0.9447003 * pmax(0, RatioWalks -  0.1864407) 
-  -     1.722476 * pmax(0,   logYears -   2.564949) 
+  8.020721
+  +  0.06248825 * pmax(0,     43 -   Hits) 
+  +   0.6740774 * pmax(0,      1 -  HmRun) 
+  +  0.02292479 * pmax(0,  Walks -     61) 
+  -  0.06663346 * pmax(0,      7 -  Years) 
+  -   0.1228443 * pmax(0,  Years -      7) 
+  -  0.08609092 * pmax(0,      6 - CHmRun) 
+  - 0.005131412 * pmax(0,    245 -  CRuns) 
+  -  0.00205555 * pmax(0,   1032 -   CRBI) 
+  - 0.001340798 * pmax(0, CWalks -    619) 
 
-Selected 14 of 21 terms, and 10 of 32 predictors
-Termination condition: RSq changed by less than 0.001 at 21 terms
-Importance: CRuns, logARBI, TotalScore, RatioWalks, logYears, logAAtBat, ...
-Number of terms at each degree of interaction: 1 13 (additive model)
-GCV 0.1545222    RSS 22.66848    GRSq 0.8160497    RSq 0.8616159</code></pre>
+Selected 10 of 31 terms, and 8 of 19 predictors
+Termination condition: Reached nk 39
+Importance: CRuns, CRBI, Years, Hits, Walks, CWalks, HmRun, CHmRun, ...
+Number of terms at each degree of interaction: 1 9 (additive model)
+GCV 0.1712071    RSS 27.53567    GRSq 0.7961872    RSq 0.8319032</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="un_F_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="1400"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code> plotmo grid:    AtBat Hits HmRun Runs RBI Walks CAtBat CHits CHmRun CRuns CRBI
-                   407  103     9   50  46    39   1924   491     40   247  208
- CWalks League Division PutOuts Assists Errors NewLeague TotalScore logAHits
-    175      A        W     224      45      7         A  0.3806452 4.465908
- logAAtBat logARuns  logARBI logAWalks logAHmRun RatioHits RatioAtBat RatioRuns
-  5.808893 3.788725 3.628776  3.390024  2.010449 0.2013699   0.205298 0.2098765
-  RatioRBI RatioWalks RatioHmRun logYears
- 0.2202899  0.2153285  0.2204724 1.791759</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img src="un_F_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid" width="1400"></p>
+<p><img src="un_F_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="1400"></p>
 </div>
 </div>
 <div class="cell">
@@ -275,72 +568,58 @@ GCV 0.1545222    RSS 22.66848    GRSq 0.8160497    RSq 0.8616159</code></pre>
 <pre><code>Call: earth(formula=logSalary~., data=Hitters_train, degree=2)
 
 logSalary =
-  7.253179
-  +    0.8667883 * pmax(0,       Hits -        169) 
-  -   0.02455974 * pmax(0,         13 -      HmRun) 
-  -  0.003480738 * pmax(0,        491 -      CHits) 
-  +  0.001597206 * pmax(0,      CRuns -        247) 
-  - 0.0005803885 * pmax(0,        808 -    PutOuts) 
-  +     1.329527 * pmax(0,    logARBI -    3.89182) 
-  -    0.5518048 * pmax(0,   3.232121 -  logAWalks) 
-  -     3.956706 * pmax(0,  0.3530534 - RatioAtBat) 
-  -     0.448058 * pmax(0,   2.197225 -   logYears) 
-  -    0.9122358 * pmax(0,   logYears -   2.197225) 
-  - 0.0007651018 * AtBat                            * pmax(0,       Hits -        169) 
-  -   0.04449506 * pmax(0,       Hits -        169) * DivisionW                        
-  -   0.09067808 * pmax(0,       Hits -        169) * logARuns                         
-  - 0.0001489024 * pmax(0,    PutOuts -        808) * Errors                           
-  - 5.574428e-06 * pmax(0,      AtBat -        491) * pmax(0,        808 -    PutOuts) 
-  -  0.001954916 * pmax(0,      HmRun -         13) * pmax(0,     Errors -          7) 
-  +   0.02858767 * pmax(0,         34 -      Walks) * pmax(0,    3.89182 -    logARBI) 
-  - 0.0008211653 * pmax(0,        491 -      CHits) * pmax(0,   3.427515 -    logARBI) 
-  - 3.909666e-06 * pmax(0,      CRuns -        247) * pmax(0,    Assists -         43) 
-  +  0.006866712 * pmax(0,      CRuns -        247) * pmax(0,   1.321756 -  logAHmRun) 
-  +   0.04258266 * pmax(0,        247 -      CRuns) * pmax(0,  0.2972973 -   RatioRBI) 
-  +   0.02165705 * pmax(0,      CRuns -        247) * pmax(0, RatioWalks - 0.09734513) 
-  -  0.004333381 * pmax(0,     CWalks -        373) * pmax(0,   logYears -   2.197225) 
-  +  0.005619607 * pmax(0,    Assists -          6) * pmax(0,  0.3530534 - RatioAtBat) 
-  +     2.079171 * pmax(0,  logAWalks -   3.044522) * pmax(0,   logYears -   2.197225) 
+  6.585324
+  -   0.06200705 * pmax(0,       7 -   Years) 
+  -   0.09990625 * pmax(0,   Years -       7) 
+  -  0.002750561 * pmax(0,     471 -   CHits) 
+  + 0.0009875533 * pmax(0,   CHits -     471) 
+  +   0.09359974 * pmax(0,  CHmRun -     259) 
+  -  0.000472187 * pmax(0,     942 - PutOuts) 
+  + 6.069929e-06 * AtBat                      * pmax(0, PutOuts -     942) 
+  - 8.932618e-05 * pmax(0,  CHmRun -     259) * CRuns                      
+  - 0.0004101945 * pmax(0, PutOuts -     942) * Errors                     
+  +  0.002969056 * pmax(0,     217 -   AtBat) * pmax(0,       7 -   Years) 
+  - 2.334583e-06 * pmax(0,     424 -   AtBat) * pmax(0,   CHits -     471) 
+  +  0.006861765 * pmax(0,      20 -   Walks) * pmax(0,       7 -   Years) 
+  + 7.799038e-05 * pmax(0,   Walks -      60) * pmax(0,     259 -  CHmRun) 
+  + 6.921979e-06 * pmax(0,    3015 -  CAtBat) * pmax(0,   CRuns -     245) 
+  - 3.052659e-07 * pmax(0,  CAtBat -    3015) * pmax(0,   CRuns -     245) 
+  - 3.839283e-05 * pmax(0,   CHits -     471) * pmax(0,     300 -    CRBI) 
+  +  6.56986e-06 * pmax(0,  CHmRun -      32) * pmax(0,   CRuns -     245) 
+  - 3.852772e-05 * pmax(0,     245 -   CRuns) * pmax(0,     112 -    CRBI) 
 
-Selected 26 of 47 terms, and 19 of 32 predictors
-Termination condition: RSq changed by less than 0.001 at 47 terms
-Importance: logARBI, CHits, CRuns, RatioRBI, RatioWalks, Hits, DivisionW, ...
-Number of terms at each degree of interaction: 1 10 15
-GCV 0.1334604    RSS 12.07393    GRSq 0.8411226    RSq 0.9262924</code></pre>
+Selected 19 of 32 terms, and 10 of 19 predictors
+Termination condition: RSq changed by less than 0.001 at 32 terms
+Importance: Years, CRuns, AtBat, CHits, CRBI, Walks, CHmRun, CAtBat, ...
+Number of terms at each degree of interaction: 1 6 12
+GCV 0.1621953    RSS 18.77267    GRSq 0.8069152    RSq 0.8853987</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="un_F_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="1400"></p>
+<p><img src="un_F_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="1400"></p>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code> plotmo grid:    AtBat Hits HmRun Runs RBI Walks CAtBat CHits CHmRun CRuns CRBI
-                   407  103     9   50  46    39   1924   491     40   247  208
- CWalks League Division PutOuts Assists Errors NewLeague TotalScore logAHits
-    175      A        W     224      45      7         A  0.3806452 4.465908
- logAAtBat logARuns  logARBI logAWalks logAHmRun RatioHits RatioAtBat RatioRuns
-  5.808893 3.788725 3.628776  3.390024  2.010449 0.2013699   0.205298 0.2098765
-  RatioRBI RatioWalks RatioHmRun logYears
- 0.2202899  0.2153285  0.2204724 1.791759</code></pre>
+<pre><code> plotmo grid:    AtBat Hits HmRun Runs RBI Walks Years CAtBat CHits CHmRun
+                   407  103     9   50  46    39     6   1924   491     40
+ CRuns CRBI CWalks League Division PutOuts Assists Errors NewLeague
+   247  208    175      A        W     224      45      7         A</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="un_F_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid" width="1400"></p>
+<p><img src="un_F_files/figure-html/unnamed-chunk-15-2.png" class="img-fluid" width="1400"></p>
 </div>
 </div>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'pdp'</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following object is masked from 'package:purrr':
-
-    partial</code></pre>
-</div>
 <div class="cell-output-display">
-<p><img src="un_F_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="1400"></p>
+<p><img src="un_F_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="1400"></p>
 </div>
 </div>
+</section>
 <section id="the-hitters-dataset-1" class="level2">
 <h2 class="anchored" data-anchor-id="the-hitters-dataset-1">The <code>Hitters</code> dataset</h2>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="un_F_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="1400"></p>
+</div>
+</div>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>

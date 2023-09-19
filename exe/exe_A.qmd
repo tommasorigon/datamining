@@ -79,9 +79,9 @@ A detailed description of this procedure ([Algorithm 2.2]{.blue} of the textbook
 
 #### A.7 - Iteratively re-weighted least squares for logistic regression
 
-Implement a function `logistic_mle(X, y)` which computes the maximum likelihood estimate for a logistic regression model using the [iteratively re-weighted least squares]{.blue}, as described [here](../slides/un_A.html#iteratively-re-weighted-least-squares-ii). 
+Implement a function called `logistic_mle(X, y)` which computes the maximum likelihood estimate for a logistic regression model using the [iteratively re-weighted least squares]{.blue}, as described [here](../slides/un_A.html#iteratively-re-weighted-least-squares-ii). 
 
-Verify that the output of `logistic_mle` and the built-in `glm` function coincide on the [hearth dataset](../slides/un_A.html#the-heart-dataset).
+Verify that the output of `logistic_mle` and the built-in `glm` function coincide, using the [hearth dataset](../slides/un_A.html#the-heart-dataset).
 
 #### A.8 - Additional exercises
 
