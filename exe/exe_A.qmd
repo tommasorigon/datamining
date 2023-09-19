@@ -72,10 +72,7 @@ which is mentioned [here](../slides/un_A.html#the-recursive-least-squares-algori
 
 [Implement]{.orange} a function `ols_function(X, y)` that computes the least squares estimate using therecursive least squares algorithm, described in [this slide](../slides/un_A.html#the-recursive-least-squares-algorithm-i).
 
-A detailed description of this procedure ([Algorithm 2.2]{.blue} of the textbook Azzalini \& Scarpa, 2011) is given below:
-
-![](img/recursive.png)
-
+A detailed description of this procedure is also described in [Algorithm 2.2]{.blue} of Azzalini \& Scarpa, 2011
 
 #### A.7 - Iteratively re-weighted least squares for logistic regression
 

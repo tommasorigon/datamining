@@ -66,7 +66,7 @@ plot(summary.bests$cp, xlab = "Number of covariates", ylab = "Mallow's Cp", type
 plot(fit.bests, scale = "Cp")
 
 
-
+#| output: false
 library(broom)
 m_linear <- lm(logSalary ~ Hits + Walks + Years + CRuns + CWalks + League + Division + Errors, data = Hitters_train)
 knitr::kable(tidy(summary(m_linear)), digits = 3)

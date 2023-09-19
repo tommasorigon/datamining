@@ -151,6 +151,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Generalized additive models (GAMs)</li>
 <li>Multivariate Adaptive Regression Splines (MARS)</li>
 </ul></li>
+<li><p>In the previous unit,</p></li>
 <li><p>The running example is about baseball data… but a lot has changed since the ’30s!</p></li>
 </ul>
 </div>
@@ -168,9 +169,9 @@ ul.task-list li input[type="checkbox"] {
 <li>The league/division of the player at the end of 1986;</li>
 <li>…and many others.</li>
 </ul></li>
-<li><p>We considered the logarithmic transform of the salary (<code>logSalary</code>).</p></li>
-<li><p>There are in total <span class="math inline">p = 19</span> <span class="orange">variables</span> that can be used to predict the salary of each player.</p></li>
 <li><p>The <a href="https://search.r-project.org/CRAN/refmans/ISLR/html/Hitters.html">original dataset</a> is available in the <code>ISLR</code> R package.</p></li>
+<li><p>There are in total <span class="math inline">p = 19</span> <span class="orange">variables</span> that can be used to predict the salary of each player.</p></li>
+<li><p>We considered the logarithmic transform of the salary (<code>logSalary</code>). The predictions are then transformed back into the original scale.</p></li>
 </ul>
 </div>
 </section>
@@ -235,9 +236,7 @@ $ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N,
 </section>
 <section id="the-selected-linear-model" class="level2">
 <h2 class="anchored" data-anchor-id="the-selected-linear-model">The selected linear model</h2>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table table-sm table-striped small">
+<table class="table">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -249,63 +248,63 @@ $ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N,
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: left;"><code>(Intercept)</code></td>
 <td style="text-align: right;">4.493</td>
 <td style="text-align: right;">0.177</td>
 <td style="text-align: right;">25.344</td>
 <td style="text-align: right;">0.000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Hits</td>
+<td style="text-align: left;"><code>Hits</code></td>
 <td style="text-align: right;">0.004</td>
 <td style="text-align: right;">0.002</td>
 <td style="text-align: right;">2.255</td>
 <td style="text-align: right;">0.025</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Walks</td>
+<td style="text-align: left;"><code>Walks</code></td>
 <td style="text-align: right;">0.011</td>
 <td style="text-align: right;">0.003</td>
 <td style="text-align: right;">3.255</td>
 <td style="text-align: right;">0.001</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Years</td>
+<td style="text-align: left;"><code>Years</code></td>
 <td style="text-align: right;">0.046</td>
 <td style="text-align: right;">0.022</td>
 <td style="text-align: right;">2.112</td>
 <td style="text-align: right;">0.036</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">CRuns</td>
+<td style="text-align: left;"><code>CRuns</code></td>
 <td style="text-align: right;">0.002</td>
 <td style="text-align: right;">0.001</td>
 <td style="text-align: right;">3.562</td>
 <td style="text-align: right;">0.000</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">CWalks</td>
+<td style="text-align: left;"><code>CWalks</code></td>
 <td style="text-align: right;">-0.001</td>
 <td style="text-align: right;">0.001</td>
 <td style="text-align: right;">-2.204</td>
 <td style="text-align: right;">0.029</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">LeagueN</td>
+<td style="text-align: left;"><code>League_N</code></td>
 <td style="text-align: right;">0.173</td>
 <td style="text-align: right;">0.088</td>
 <td style="text-align: right;">1.959</td>
 <td style="text-align: right;">0.052</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">DivisionW</td>
+<td style="text-align: left;"><code>Division_W</code></td>
 <td style="text-align: right;">-0.189</td>
 <td style="text-align: right;">0.087</td>
 <td style="text-align: right;">-2.165</td>
 <td style="text-align: right;">0.032</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Errors</td>
+<td style="text-align: left;"><code>Errors</code></td>
 <td style="text-align: right;">-0.012</td>
 <td style="text-align: right;">0.007</td>
 <td style="text-align: right;">-1.689</td>
@@ -313,8 +312,6 @@ $ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N,
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 </section>
 <section id="scatterplot-with-loess-estimate" class="level2">
 <h2 class="anchored" data-anchor-id="scatterplot-with-loess-estimate">Scatterplot with <code>loess</code> estimate</h2>

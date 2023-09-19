@@ -77,6 +77,8 @@ styler:::style_file("../code/un_F.R")
 
     - Generalized additive models (GAMs)
     - Multivariate Adaptive Regression Splines (MARS)
+
+- In the previous unit, 
     
 - The running example is about baseball data... but a lot has changed since the '30s!
 :::
@@ -94,11 +96,11 @@ styler:::style_file("../code/un_F.R")
   - The league/division of the player at the end of 1986;
   - ...and many others.
   
-- We considered the logarithmic transform of the salary (`logSalary`).
+- The [original dataset](https://search.r-project.org/CRAN/refmans/ISLR/html/Hitters.html) is available in the `ISLR` R package.
 
 - There are in total $p = 19$ [variables]{.orange} that can be used to predict the salary of each player.
 
-- The [original dataset](https://search.r-project.org/CRAN/refmans/ISLR/html/Hitters.html) is available in the `ISLR` R package.
+- We considered the logarithmic transform of the salary (`logSalary`). The predictions are then transformed back into the original scale. 
 
 :::
 
@@ -186,11 +188,23 @@ plot(fit.bests, scale = "Cp")
 ## The selected linear model
 
 ```{r}
+#| output: false
 library(broom)
 m_linear <- lm(logSalary ~ Hits + Walks + Years + CRuns + CWalks + League + Division + Errors, data = Hitters_train)
 knitr::kable(tidy(summary(m_linear)), digits = 3)
 ```
 
+|term        | estimate| std.error| statistic| p.value|
+|:-----------|--------:|---------:|---------:|-------:|
+|`(Intercept)` |    4.493|     0.177|    25.344|   0.000|
+|`Hits`        |    0.004|     0.002|     2.255|   0.025|
+|`Walks`       |    0.011|     0.003|     3.255|   0.001|
+|`Years`       |    0.046|     0.022|     2.112|   0.036|
+|`CRuns`       |    0.002|     0.001|     3.562|   0.000|
+|`CWalks`      |   -0.001|     0.001|    -2.204|   0.029|
+|`League_N`     |    0.173|     0.088|     1.959|   0.052|
+|`Division_W`   |   -0.189|     0.087|    -2.165|   0.032|
+|`Errors`      |   -0.012|     0.007|    -1.689|   0.093|
 
 ## Scatterplot with `loess` estimate
 
