@@ -60,14 +60,13 @@ styler:::style_file("../code/un_F.R")
 
 ::: columns
 ::: {.column width="35%"}
-![](img/baseball.png){width=60% fig-align="center"} 
+![](img/reef.jpg){width=60% fig-align="center"} 
 
 
 ::: {style="font-size: 90%;"}
-*"I never keep a scorecard or the batting averages. I hate statistics. What I got to know, I keep in my head."* 
+
 :::
 
-[Dizzy Dean]{.grey}, baseball player in the '30s and '40s.
 
 :::
 
@@ -84,311 +83,277 @@ styler:::style_file("../code/un_F.R")
   - they are more flexible than linear models; 
   - but they are not hugely impacted by the curse of dimensionality.
     
-- The running example is about [baseball data]{.orange}... but a lot has changed since the '30s!
+- The running example is about [trawl data]{.orange} from the [Great Barrier Reef]{.blue}.
 :::
 :::
 
-## The `Hitters` dataset
+## The `trawl` dataset
 
 ::: incremental
 
-- We consider the `Hitters` dataset, which contains information about $n = 263$ Major League [Baseball players]{.blue} from the 1986 and 1987 seasons. 
+- We consider the `trawl` dataset, refer to a survey of the fauna on the sea bed lying between the coast of northern Queensland and the Great Barrier Reef. 
 
-- We want to [predict]{.blue} the [Salary]{.orange} of 1987 of each player, as a function of several covariates: 
+- The sampling region covered a zone which was closed to commercial fishing, as well as neighboring zones where fishing was permitted.
+
+- We want to [predict]{.blue} the [catch score]{.orange}, as a function of several covariates: 
   - number of hits/runs/walks/assists/errors in 1986 and during the whole career;
   - number of years in the major leagues;
   - The league/division of the player at the end of 1986;
   - ...and many others.
   
-- The [original dataset](https://search.r-project.org/CRAN/refmans/ISLR/html/Hitters.html) is available in the `ISLR` R package.
-
-- There are in total $p = 19$ [variables]{.orange} that can be used to predict the salary of each player.
-
-- We considered the logarithmic transform of the salary (`logSalary`). The predictions are then transformed back into the original scale. 
+asd
 
 :::
 
-## A `glimpse` of the `Hitters` dataset
+## A `glimpse` of the `trawl` dataset
 
 ```{r}
 #| message: false
 rm(list = ls())
-library(ISLR)
 library(ggplot2)
 library(ggthemes)
+library(sm)
 
-data(Hitters)
-Hitters <- na.omit(Hitters)
-dplyr::glimpse(Hitters)
+data(trawl)
+dplyr::glimpse(trawl)
 ```
 
-```{r}
-# Hitters <- mutate(Hitters,
-#   TotalScore = (RBI + Assists + Walks - Errors) / AtBat,
-#   logAHits = log1p(CHits / Years),
-#   logAAtBat = log1p(CAtBat / Years),
-#   logARuns = log1p(CRuns / Years),
-#   logARBI = log1p(CRBI / Years),
-#   logAWalks = log1p(CWalks / Years),
-#   logAHmRun = log1p(CHmRun / Years),
-#   RatioHits = Hits / CHits,
-#   RatioAtBat = AtBat / CAtBat,
-#   RatioRuns = Runs / CRuns,
-#   RatioRBI = RBI / CRBI,
-#   RatioWalks = Walks / CWalks,
-#   RatioHmRun = HmRun / (CHmRun + 1),
-#   logYears = log(Years),
-#   logSalary = log(Salary)
-# ) %>% select(-c(Salary, Years))
-```
 
 ```{r}
-Hitters$logSalary <- log(Hitters$Salary)
-Hitters <- subset(Hitters, select = -Salary)
-
 # Data splitting
-set.seed(123)
-id_train <- sample(1:nrow(Hitters), size = floor(0.75 * nrow(Hitters)), replace = FALSE)
-id_test <- setdiff(1:nrow(Hitters), id_train)
-Hitters_train <- Hitters[id_train, ]
-Hitters_test <- Hitters[id_test, ]
+set.seed(1234)
+id_train <- sample(1:nrow(trawl), size = floor(0.5 * nrow(trawl)), replace = FALSE)
+id_test <- setdiff(1:nrow(trawl), id_train)
+trawl_train <- trawl[id_train, ]
+trawl_test <- trawl[id_test, ]
 ```
 
-## Correlation matrix of `Hitters`
+## The `trawl` dataset
 
-```{r}
-#| fig-width: 18
-#| fig-height: 8.5
-#| fig-align: center
-library(ggcorrplot)
-corr <- cor(subset(Hitters_train, select = -c(logSalary, Division, League, NewLeague))) # Remove logSalary
-ggcorrplot(corr,
-  hc.order = TRUE,
-  outline.col = "white",
-  ggtheme = ggplot2::theme_bw,
-  colors = c("#fc7d0b", "white", "#1170aa")
-)
-```
+<div class="flourish-embed flourish-map" data-src="visualisation/15070357"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
 
 ## A linear model
 
-- We 
+- In the first place, we split the dataset into [training]{.blue} and [test]{.orange} set, so that the validity of our approach
 
 - 
 
-## Best subset selection
+<!-- ## Best subset selection -->
 
-```{r}
-#| fig-width: 12
-#| fig-height: 6
-#| fig-align: center
-library(leaps)
-fit.bests <- regsubsets(logSalary ~ ., data = Hitters_train, nvmax = ncol(Hitters_train))
-summary.bests <- summary(fit.bests)
+<!-- ```{r} -->
+<!-- #| fig-width: 12 -->
+<!-- #| fig-height: 6 -->
+<!-- #| fig-align: center -->
+<!-- library(leaps) -->
+<!-- fit.bests <- regsubsets(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, nvmax = 5) -->
+<!-- summary.bests <- summary(fit.bests) -->
 
-par(mfrow = c(1, 2))
-plot(summary.bests$cp, xlab = "Number of covariates", ylab = "Mallow's Cp", type = "b", pch = 16)
-plot(fit.bests, scale = "Cp")
-```
+<!-- par(mfrow = c(1, 2)) -->
+<!-- plot(summary.bests$cp, xlab = "Number of covariates", ylab = "Mallow's Cp", type = "b", pch = 16) -->
+<!-- plot(fit.bests, scale = "Cp") -->
+<!-- ``` -->
 
-## The selected linear model
+<!-- ## The selected linear model -->
 
-```{r}
-#| output: false
-library(broom)
-m_linear <- lm(logSalary ~ Hits + Walks + Years + CRuns + CWalks + League + Division + Errors, data = Hitters_train)
-knitr::kable(tidy(summary(m_linear)), digits = 3)
-```
+<!-- ```{r} -->
+<!-- #| output: false -->
+<!-- library(broom) -->
+<!-- m_linear <- lm(logSalary ~ AtBat + Hits + CAtBat + CHits + CHmRUn+ Division, data = Hitters_train) -->
+<!-- knitr::kable(tidy(summary(m_linear)), digits = 3) -->
+<!-- ``` -->
 
-|term        | estimate| std.error| statistic| p.value|
-|:-----------|--------:|---------:|---------:|-------:|
-|`(Intercept)` |    4.493|     0.177|    25.344|   0.000|
-|`Hits`        |    0.004|     0.002|     2.255|   0.025|
-|`Walks`       |    0.011|     0.003|     3.255|   0.001|
-|`Years`       |    0.046|     0.022|     2.112|   0.036|
-|`CRuns`       |    0.002|     0.001|     3.562|   0.000|
-|`CWalks`      |   -0.001|     0.001|    -2.204|   0.029|
-|`League_N`     |    0.173|     0.088|     1.959|   0.052|
-|`Division_W`   |   -0.189|     0.087|    -2.165|   0.032|
-|`Errors`      |   -0.012|     0.007|    -1.689|   0.093|
+<!-- |term        | estimate| std.error| statistic| p.value| -->
+<!-- |:-----------|--------:|---------:|---------:|-------:| -->
+<!-- |`(Intercept)` |    4.493|     0.177|    25.344|   0.000| -->
+<!-- |`Hits`        |    0.004|     0.002|     2.255|   0.025| -->
+<!-- |`Walks`       |    0.011|     0.003|     3.255|   0.001| -->
+<!-- |`Years`       |    0.046|     0.022|     2.112|   0.036| -->
+<!-- |`CRuns`       |    0.002|     0.001|     3.562|   0.000| -->
+<!-- |`CWalks`      |   -0.001|     0.001|    -2.204|   0.029| -->
+<!-- |`League_N`     |    0.173|     0.088|     1.959|   0.052| -->
+<!-- |`Division_W`   |   -0.189|     0.087|    -2.165|   0.032| -->
+<!-- |`Errors`      |   -0.012|     0.007|    -1.689|   0.093| -->
 
-## Comments and cricism to linear models
+<!-- ## Comments and cricism to linear models -->
 
-## Scatterplot with `loess` estimate
+<!-- ## Scatterplot with `loess` estimate -->
 
-```{r}
-#| fig-width: 7.8
-#| fig-height: 4
-#| fig-align: center
-#| message: false
-ggplot(data = Hitters_train, aes(x = Years, y = logSalary)) +
-  geom_point(size = 0.7) +
-  geom_smooth(se = FALSE, span = 1, col = "#1170aa") +
-  theme_minimal() +
-  xlab("Number of years in the major leagues (Years)") +
-  ylab("log(Salary)")
-```
-
-
-# Generalized additive models (GAM)
-
-## The ANOVA decomposition of a function
-
-## Generalized additive models (GAM)
-
-## The backfitting algorithm I
-
-## The backfitting algorithm II
-
-## Local scoring for additive logistic regression
-
-## GAM using penalized splines
-
-## GAM using penalized splines
-
-## Additive models
-
-```{r}
-library(mgcv)
-m_gam <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague, data = Hitters_train, select = FALSE)
-```
+<!-- ```{r} -->
+<!-- #| fig-width: 7.8 -->
+<!-- #| fig-height: 4 -->
+<!-- #| fig-align: center -->
+<!-- #| message: false -->
+<!-- ggplot(data = Hitters_train, aes(x = Years, y = logSalary)) + -->
+<!--   geom_point(size = 0.7) + -->
+<!--   geom_smooth(se = FALSE, span = 1, col = "#1170aa") + -->
+<!--   theme_minimal() + -->
+<!--   xlab("Number of years in the major leagues (Years)") + -->
+<!--   ylab("log(Salary)") -->
+<!-- ``` -->
 
 
-```{r}
-summary(m_gam)
-```
+<!-- # Generalized additive models (GAM) -->
 
-## Variable selection
+<!-- ## The ANOVA decomposition of a function -->
 
-```{r}
-m_gam_selected <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague,
-  data = Hitters_train, select = TRUE
-)
+<!-- ## Generalized additive models (GAM) -->
 
-summary(m_gam_selected)
-```
+<!-- ## The backfitting algorithm I -->
 
-## Partial effect (`Years`)
+<!-- ## The backfitting algorithm II -->
 
-```{r}
-#| fig-width: 7.8
-#| fig-height: 4
-#| fig-align: center
-#| message: false
-library(gratia)
-data_plot <- smooth_estimates(m_gam_selected, smooth = "s(Years)")
+<!-- ## Local scoring for additive logistic regression -->
 
-ggplot(data = data_plot, aes(x = Years, y = est)) +
-  geom_line(linewidth = 1, col = "#1170aa") +
-  geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = Years, y = `s(Years)`), size = 0.7) +
-  theme_minimal() +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of years in the major leagues (Years)") +
-  ylab("Partial effect")
-```
+<!-- ## GAM using penalized splines -->
 
-##
+<!-- ## GAM using penalized splines -->
 
-```{r}
-#| fig-width: 7.8
-#| fig-height: 4
-#| fig-align: center
-#| message: false
-data_plot <- smooth_estimates(m_gam_selected, smooth = "s(CHits)")
+<!-- ## Additive models -->
 
-ggplot(data = data_plot, aes(x = CHits, y = est)) +
-  geom_line(linewidth = 1, col = "#1170aa") +
-  geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = CHits, y = `s(CHits)`), size = 0.7) +
-  theme_minimal() +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("Number of years in the major leagues (Years)") +
-  ylab("Partial effect")
-```
+<!-- ```{r} -->
+<!-- library(mgcv) -->
+<!-- m_gam <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague, data = Hitters_train, select = FALSE) -->
+<!-- ``` -->
 
 
-## Pros and cons of generalized additive models (GAMs)
+<!-- ```{r} -->
+<!-- summary(m_gam) -->
+<!-- ``` -->
 
-::: callout-tip
-#### Pros
+<!-- ## Variable selection -->
 
--   asd
-:::
+<!-- ```{r} -->
+<!-- m_gam_selected <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague, -->
+<!--   data = Hitters_train, select = TRUE -->
+<!-- ) -->
 
-. . .
+<!-- summary(m_gam_selected) -->
+<!-- ``` -->
 
-::: callout-warning
-#### Cons
+<!-- ## Partial effect (`Years`) -->
 
-- asd
-:::
+<!-- ```{r} -->
+<!-- #| fig-width: 7.8 -->
+<!-- #| fig-height: 4 -->
+<!-- #| fig-align: center -->
+<!-- #| message: false -->
+<!-- library(gratia) -->
+<!-- data_plot <- smooth_estimates(m_gam_selected, smooth = "s(Years)") -->
 
+<!-- ggplot(data = data_plot, aes(x = Years, y = est)) + -->
+<!--   geom_line(linewidth = 1, col = "#1170aa") + -->
+<!--   geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = Years, y = `s(Years)`), size = 0.7) + -->
+<!--   theme_minimal() + -->
+<!--   scale_color_tableau(palette = "Color Blind") + -->
+<!--   xlab("Number of years in the major leagues (Years)") + -->
+<!--   ylab("Partial effect") -->
+<!-- ``` -->
 
-# MARS
+<!-- ## -->
 
-## MARS
+<!-- ```{r} -->
+<!-- #| fig-width: 7.8 -->
+<!-- #| fig-height: 4 -->
+<!-- #| fig-align: center -->
+<!-- #| message: false -->
+<!-- data_plot <- smooth_estimates(m_gam_selected, smooth = "s(CHits)") -->
 
-## 
-
-```{r}
-library(earth)
-fit_mars_deg1 <- earth(logSalary ~ ., data = Hitters_train, degree = 1, pmethod="cv", nfold = 10)
-summary(fit_mars_deg1, style = "pmax")
-plot(evimp(fit_mars_deg1))
-plotmo(fit_mars_deg1)
-```
-
-
-```{r}
-fit_mars_deg2 <- earth(logSalary ~ ., data = Hitters_train, degree = 2, pmethod="cv", nfold = 10)
-summary(fit_mars_deg2, style = "pmax")
-plot(evimp(fit_mars_deg2))
-plotmo(fit_mars_deg2)
-```
-
-```{r}
-library(pdp)
-earth_partial <- partial(fit_mars_deg2, pred.var = c("Years", "CHits"), grid.resolution = 40)
-autoplot(earth_partial) + theme_light()
-```
-
-## The `Hitters` dataset
-
-```{r}
-library(pdp)
-gam_partial <- partial(m_gam_selected, pred.var = c("Years", "CHits"), grid.resolution = 40)
-autoplot(gam_partial) + theme_light()
-```
-
-## Final results
-
-```{r}
-y_test <- exp(Hitters_test$logSalary)
-
-y_hat_linear <- exp(predict(m_linear, newdata = Hitters_test))
-y_hat_gam <- exp(predict(m_gam, newdata = Hitters_test))
-y_hat_gam_selected <- exp(predict(m_gam_selected, newdata = Hitters_test))
-y_mars_deg1 <- exp(predict(fit_mars_deg1, newdata = Hitters_test))
-y_mars_deg2 <- exp(predict(fit_mars_deg2, newdata = Hitters_test))
-
-tab_results <-rbind(c(
-  mean(abs(y_test - y_hat_linear)),
-  mean(abs(y_test - y_hat_gam)),
-  mean(abs(y_test - y_hat_gam_selected)),
-  mean(abs(y_test - y_mars_deg1)),
-  mean(abs(y_test - y_mars_deg2))),
-  sqrt(c(mean(abs(y_test - y_hat_linear)^2),
-  mean(abs(y_test - y_hat_gam)^2),
-  mean(abs(y_test - y_hat_gam_selected)^2),
-  mean(abs(y_test - y_mars_deg1)^2),
-  mean(abs(y_test - y_mars_deg2)^2))))
-colnames(tab_results) <- c("Best subset", "GAM", "GAM (selected)", "MARS (degree 1)", "MARS (degree 2)")
-rownames(tab_results) <- c("Test MAE", "Test RMSE")
-knitr::kable(tab_results, digits = 3)
-```
+<!-- ggplot(data = data_plot, aes(x = CHits, y = est)) + -->
+<!--   geom_line(linewidth = 1, col = "#1170aa") + -->
+<!--   geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = CHits, y = `s(CHits)`), size = 0.7) + -->
+<!--   theme_minimal() + -->
+<!--   scale_color_tableau(palette = "Color Blind") + -->
+<!--   xlab("Number of years in the major leagues (Years)") + -->
+<!--   ylab("Partial effect") -->
+<!-- ``` -->
 
 
+<!-- ## Pros and cons of generalized additive models (GAMs) -->
+
+<!-- ::: callout-tip -->
+<!-- #### Pros -->
+
+<!-- -   asd -->
+<!-- ::: -->
+
+<!-- . . . -->
+
+<!-- ::: callout-warning -->
+<!-- #### Cons -->
+
+<!-- - asd -->
+<!-- ::: -->
 
 
-## References
+<!-- # MARS -->
 
-- 
+<!-- ## MARS -->
+
+<!-- ##  -->
+
+<!-- ```{r} -->
+<!-- library(earth) -->
+<!-- fit_mars_deg1 <- earth(logSalary ~ ., data = Hitters_train, degree = 1, pmethod="cv", nfold = 10) -->
+<!-- summary(fit_mars_deg1, style = "pmax") -->
+<!-- plot(evimp(fit_mars_deg1)) -->
+<!-- plotmo(fit_mars_deg1) -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- fit_mars_deg2 <- earth(logSalary ~ ., data = Hitters_train, degree = 2, pmethod="cv", nfold = 10) -->
+<!-- summary(fit_mars_deg2, style = "pmax") -->
+<!-- plot(evimp(fit_mars_deg2)) -->
+<!-- plotmo(fit_mars_deg2) -->
+<!-- ``` -->
+
+<!-- ```{r} -->
+<!-- library(pdp) -->
+<!-- earth_partial <- partial(fit_mars_deg2, pred.var = c("Years", "CHits"), grid.resolution = 40) -->
+<!-- autoplot(earth_partial) + theme_light() -->
+<!-- ``` -->
+
+<!-- ## The `Hitters` dataset -->
+
+<!-- ```{r} -->
+<!-- library(pdp) -->
+<!-- gam_partial <- partial(m_gam_selected, pred.var = c("Years", "CHits"), grid.resolution = 40) -->
+<!-- autoplot(gam_partial) + theme_light() -->
+<!-- ``` -->
+
+<!-- ## Final results -->
+
+<!-- ```{r} -->
+<!-- y_test <- exp(Hitters_test$logSalary) -->
+
+<!-- y_null <- exp(mean(Hitters_train$logSalary)) -->
+<!-- y_hat_linear <- exp(predict(m_linear, newdata = Hitters_test)) -->
+<!-- y_hat_gam <- exp(predict(m_gam, newdata = Hitters_test)) -->
+<!-- y_hat_gam_selected <- exp(predict(m_gam_selected, newdata = Hitters_test)) -->
+<!-- y_mars_deg1 <- exp(predict(fit_mars_deg1, newdata = Hitters_test)) -->
+<!-- y_mars_deg2 <- exp(predict(fit_mars_deg2, newdata = Hitters_test)) -->
+
+<!-- tab_results <-rbind(c( -->
+<!--   mean(abs(y_test - y_null)), -->
+<!--   mean(abs(y_test - y_hat_linear)), -->
+<!--   mean(abs(y_test - y_hat_gam)), -->
+<!--   mean(abs(y_test - y_hat_gam_selected)), -->
+<!--   mean(abs(y_test - y_mars_deg1)), -->
+<!--   mean(abs(y_test - y_mars_deg2))), -->
+<!--   sqrt(c(mean(abs(y_test - y_null)^2), -->
+<!--   mean(abs(y_test - y_hat_linear)^2), -->
+<!--   mean(abs(y_test - y_hat_gam)^2), -->
+<!--   mean(abs(y_test - y_hat_gam_selected)^2), -->
+<!--   mean(abs(y_test - y_mars_deg1)^2), -->
+<!--   mean(abs(y_test - y_mars_deg2)^2)))) -->
+<!-- colnames(tab_results) <- c("Null model", "Best subset", "GAM", "GAM (selected)", "MARS (degree 1)", "MARS (degree 2)") -->
+<!-- rownames(tab_results) <- c("Test MAE", "Test RMSE") -->
+<!-- knitr::kable(tab_results, digits = 3) -->
+<!-- ``` -->
+
+
+
+
+<!-- ## References -->
+
+<!-- -  -->

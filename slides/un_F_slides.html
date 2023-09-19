@@ -31,22 +31,6 @@
     }
   </style>
   <link rel="stylesheet" href="un_F_files/libs/revealjs/dist/theme/quarto.css">
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
-  <script>document.addEventListener("DOMContentLoaded", function () {
- var mathElements = document.getElementsByClassName("math");
- var macros = [];
- for (var i = 0; i < mathElements.length; i++) {
-  var texText = mathElements[i].firstChild;
-  if (mathElements[i].tagName == "SPAN") {
-   katex.render(texText.data, mathElements[i], {
-    displayMode: mathElements[i].classList.contains('display'),
-    throwOnError: false,
-    macros: macros,
-    fleqn: false
-   });
-}}});
-  </script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
   <link href="un_F_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="un_F_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="un_F_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -362,13 +346,12 @@
 <div class="column" style="width:35%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="img/baseball.png" style="width:60.0%"></p>
+<p><img data-src="img/reef.jpg" style="width:60.0%"></p>
 </figure>
 </div>
 <div style="font-size: 90%;">
-<p><em>“I never keep a scorecard or the batting averages. I hate statistics. What I got to know, I keep in my head.”</em></p>
+
 </div>
-<p><span class="grey">Dizzy Dean</span>, baseball player in the ’30s and ’40s.</p>
 </div><div class="column" style="width:65%;">
 <ul>
 <li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
@@ -382,482 +365,226 @@
 <li>they are more flexible than linear models;</li>
 <li>but they are not hugely impacted by the curse of dimensionality.</li>
 </ul></li>
-<li><p>The running example is about <span class="orange">baseball data</span>… but a lot has changed since the ’30s!</p></li>
+<li><p>The running example is about <span class="orange">trawl data</span> from the <span class="blue">Great Barrier Reef</span>.</p></li>
 </ul>
 </div>
 </div>
 </section>
-<section id="the-hitters-dataset" class="slide level2 center">
-<h2>The <code>Hitters</code> dataset</h2>
+<section id="the-trawl-dataset" class="slide level2 center">
+<h2>The <code>trawl</code> dataset</h2>
 <div>
 <ul>
-<li class="fragment"><p>We consider the <code>Hitters</code> dataset, which contains information about <span class="math inline">n = 263</span> Major League <span class="blue">Baseball players</span> from the 1986 and 1987 seasons.</p></li>
-<li class="fragment"><p>We want to <span class="blue">predict</span> the <span class="orange">Salary</span> of 1987 of each player, as a function of several covariates:</p>
+<li class="fragment"><p>We consider the <code>trawl</code> dataset, refer to a survey of the fauna on the sea bed lying between the coast of northern Queensland and the Great Barrier Reef.</p></li>
+<li class="fragment"><p>The sampling region covered a zone which was closed to commercial fishing, as well as neighboring zones where fishing was permitted.</p></li>
+<li class="fragment"><p>We want to <span class="blue">predict</span> the <span class="orange">catch score</span>, as a function of several covariates:</p>
 <ul>
 <li class="fragment">number of hits/runs/walks/assists/errors in 1986 and during the whole career;</li>
 <li class="fragment">number of years in the major leagues;</li>
 <li class="fragment">The league/division of the player at the end of 1986;</li>
 <li class="fragment">…and many others.</li>
 </ul></li>
-<li class="fragment"><p>The <a href="https://search.r-project.org/CRAN/refmans/ISLR/html/Hitters.html">original dataset</a> is available in the <code>ISLR</code> R package.</p></li>
-<li class="fragment"><p>There are in total <span class="math inline">p = 19</span> <span class="orange">variables</span> that can be used to predict the salary of each player.</p></li>
-<li class="fragment"><p>We considered the logarithmic transform of the salary (<code>logSalary</code>). The predictions are then transformed back into the original scale.</p></li>
 </ul>
+<p>asd</p>
 </div>
 </section>
-<section id="a-glimpse-of-the-hitters-dataset" class="slide level2 center">
-<h2>A <code>glimpse</code> of the <code>Hitters</code> dataset</h2>
+<section id="a-glimpse-of-the-trawl-dataset" class="slide level2 center">
+<h2>A <code>glimpse</code> of the <code>trawl</code> dataset</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 263
-Columns: 20
-$ AtBat     &lt;int&gt; 315, 479, 496, 321, 594, 185, 298, 323, 401, 574, 202, 418, …
-$ Hits      &lt;int&gt; 81, 130, 141, 87, 169, 37, 73, 81, 92, 159, 53, 113, 60, 43,…
-$ HmRun     &lt;int&gt; 7, 18, 20, 10, 4, 1, 0, 6, 17, 21, 4, 13, 0, 7, 20, 2, 8, 16…
-$ Runs      &lt;int&gt; 24, 66, 65, 39, 74, 23, 24, 26, 49, 107, 31, 48, 30, 29, 89,…
-$ RBI       &lt;int&gt; 38, 72, 78, 42, 51, 8, 24, 32, 66, 75, 26, 61, 11, 27, 75, 8…
-$ Walks     &lt;int&gt; 39, 76, 37, 30, 35, 21, 7, 8, 65, 59, 27, 47, 22, 30, 73, 15…
-$ Years     &lt;int&gt; 14, 3, 11, 2, 11, 2, 3, 2, 13, 10, 9, 4, 6, 13, 15, 5, 8, 1,…
-$ CAtBat    &lt;int&gt; 3449, 1624, 5628, 396, 4408, 214, 509, 341, 5206, 4631, 1876…
-$ CHits     &lt;int&gt; 835, 457, 1575, 101, 1133, 42, 108, 86, 1332, 1300, 467, 392…
-$ CHmRun    &lt;int&gt; 69, 63, 225, 12, 19, 1, 0, 6, 253, 90, 15, 41, 4, 36, 177, 5…
-$ CRuns     &lt;int&gt; 321, 224, 828, 48, 501, 30, 41, 32, 784, 702, 192, 205, 309,…
-$ CRBI      &lt;int&gt; 414, 266, 838, 46, 336, 9, 37, 34, 890, 504, 186, 204, 103, …
-$ CWalks    &lt;int&gt; 375, 263, 354, 33, 194, 24, 12, 8, 866, 488, 161, 203, 207, …
-$ League    &lt;fct&gt; N, A, N, N, A, N, A, N, A, A, N, N, A, N, N, A, N, N, A, N, …
-$ Division  &lt;fct&gt; W, W, E, E, W, E, W, W, E, E, W, E, E, E, W, W, W, E, W, W, …
-$ PutOuts   &lt;int&gt; 632, 880, 200, 805, 282, 76, 121, 143, 0, 238, 304, 211, 121…
-$ Assists   &lt;int&gt; 43, 82, 11, 40, 421, 127, 283, 290, 0, 445, 45, 11, 151, 45,…
-$ Errors    &lt;int&gt; 10, 14, 3, 4, 25, 7, 9, 19, 0, 22, 11, 7, 6, 8, 10, 16, 2, 5…
-$ Salary    &lt;dbl&gt; 475.000, 480.000, 500.000, 91.500, 750.000, 70.000, 100.000,…
-$ NewLeague &lt;fct&gt; N, A, N, N, A, A, A, N, A, A, N, N, A, N, N, A, N, N, N, N, …</code></pre>
+<pre><code>Rows: 155
+Columns: 7
+$ Zone      &lt;int&gt; 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, …
+$ Year      &lt;int&gt; 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, …
+$ Latitude  &lt;dbl&gt; -11.12, -11.28, -11.48, -11.19, -11.69, -11.39, -11.45, -11.…
+$ Longitude &lt;dbl&gt; 142.84, 142.85, 142.86, 142.87, 142.88, 142.89, 142.91, 142.…
+$ Depth     &lt;dbl&gt; 20, 9, 11, 22, 7, 18, 18, 9, 6, 13, 24, 21, 19, 25, 25, 17, …
+$ Score1    &lt;dbl&gt; 1.63515, -0.30103, 1.54921, 1.03278, 0.18235, 2.05702, 0.901…
+$ Score2    &lt;dbl&gt; -0.30103, 1.54345, 1.75813, -0.30103, 2.45885, -0.30103, -0.…</code></pre>
 </div>
 </div>
 </section>
-<section id="correlation-matrix-of-hitters" class="slide level2 center">
-<h2>Correlation matrix of <code>Hitters</code></h2>
-
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-5-1.png" width="3600" class="r-stretch quarto-figure-center"></section>
+<section id="the-trawl-dataset-1" class="slide level2 center">
+<h2>The <code>trawl</code> dataset</h2>
+<div class="flourish-embed flourish-map" data-src="visualisation/15070357">
+<script src="https://public.flourish.studio/resources/embed.js"></script>
+</div>
+</section>
 <section id="a-linear-model" class="slide level2 center">
 <h2>A linear model</h2>
 <ul>
-<li><p>We</p></li>
+<li><p>In the first place, we split the dataset into <span class="blue">training</span> and <span class="orange">test</span> set, so that the validity of our approach</p></li>
 <li></li>
 </ul>
-</section>
-<section id="best-subset-selection" class="slide level2 center">
-<h2>Best subset selection</h2>
+<!-- ## Best subset selection -->
+<!-- ```{r} -->
+<!-- #| fig-width: 12 -->
+<!-- #| fig-height: 6 -->
+<!-- #| fig-align: center -->
+<!-- library(leaps) -->
+<!-- fit.bests <- regsubsets(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, nvmax = 5) -->
+<!-- summary.bests <- summary(fit.bests) -->
+<!-- par(mfrow = c(1, 2)) -->
+<!-- plot(summary.bests$cp, xlab = "Number of covariates", ylab = "Mallow's Cp", type = "b", pch = 16) -->
+<!-- plot(fit.bests, scale = "Cp") -->
+<!-- ``` -->
+<!-- ## The selected linear model -->
+<!-- ```{r} -->
+<!-- #| output: false -->
+<!-- library(broom) -->
+<!-- m_linear <- lm(logSalary ~ AtBat + Hits + CAtBat + CHits + CHmRUn+ Division, data = Hitters_train) -->
+<!-- knitr::kable(tidy(summary(m_linear)), digits = 3) -->
+<!-- ``` -->
+<!-- |term        | estimate| std.error| statistic| p.value| -->
+<!-- |:-----------|--------:|---------:|---------:|-------:| -->
+<!-- |`(Intercept)` |    4.493|     0.177|    25.344|   0.000| -->
+<!-- |`Hits`        |    0.004|     0.002|     2.255|   0.025| -->
+<!-- |`Walks`       |    0.011|     0.003|     3.255|   0.001| -->
+<!-- |`Years`       |    0.046|     0.022|     2.112|   0.036| -->
+<!-- |`CRuns`       |    0.002|     0.001|     3.562|   0.000| -->
+<!-- |`CWalks`      |   -0.001|     0.001|    -2.204|   0.029| -->
+<!-- |`League_N`     |    0.173|     0.088|     1.959|   0.052| -->
+<!-- |`Division_W`   |   -0.189|     0.087|    -2.165|   0.032| -->
+<!-- |`Errors`      |   -0.012|     0.007|    -1.689|   0.093| -->
+<!-- ## Comments and cricism to linear models -->
+<!-- ## Scatterplot with `loess` estimate -->
+<!-- ```{r} -->
+<!-- #| fig-width: 7.8 -->
+<!-- #| fig-height: 4 -->
+<!-- #| fig-align: center -->
+<!-- #| message: false -->
+<!-- ggplot(data = Hitters_train, aes(x = Years, y = logSalary)) + -->
+<!--   geom_point(size = 0.7) + -->
+<!--   geom_smooth(se = FALSE, span = 1, col = "#1170aa") + -->
+<!--   theme_minimal() + -->
+<!--   xlab("Number of years in the major leagues (Years)") + -->
+<!--   ylab("log(Salary)") -->
+<!-- ``` -->
+<!-- # Generalized additive models (GAM) -->
+<!-- ## The ANOVA decomposition of a function -->
+<!-- ## Generalized additive models (GAM) -->
+<!-- ## The backfitting algorithm I -->
+<!-- ## The backfitting algorithm II -->
+<!-- ## Local scoring for additive logistic regression -->
+<!-- ## GAM using penalized splines -->
+<!-- ## GAM using penalized splines -->
+<!-- ## Additive models -->
+<!-- ```{r} -->
+<!-- library(mgcv) -->
+<!-- m_gam <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague, data = Hitters_train, select = FALSE) -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- summary(m_gam) -->
+<!-- ``` -->
+<!-- ## Variable selection -->
+<!-- ```{r} -->
+<!-- m_gam_selected <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague, -->
+<!--   data = Hitters_train, select = TRUE -->
+<!-- ) -->
+<!-- summary(m_gam_selected) -->
+<!-- ``` -->
+<!-- ## Partial effect (`Years`) -->
+<!-- ```{r} -->
+<!-- #| fig-width: 7.8 -->
+<!-- #| fig-height: 4 -->
+<!-- #| fig-align: center -->
+<!-- #| message: false -->
+<!-- library(gratia) -->
+<!-- data_plot <- smooth_estimates(m_gam_selected, smooth = "s(Years)") -->
+<!-- ggplot(data = data_plot, aes(x = Years, y = est)) + -->
+<!--   geom_line(linewidth = 1, col = "#1170aa") + -->
+<!--   geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = Years, y = `s(Years)`), size = 0.7) + -->
+<!--   theme_minimal() + -->
 
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-6-1.png" width="2400" class="r-stretch quarto-figure-center"></section>
-<section id="the-selected-linear-model" class="slide level2 center">
-<h2>The selected linear model</h2>
-<table>
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><code>(Intercept)</code></td>
-<td style="text-align: right;">4.493</td>
-<td style="text-align: right;">0.177</td>
-<td style="text-align: right;">25.344</td>
-<td style="text-align: right;">0.000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>Hits</code></td>
-<td style="text-align: right;">0.004</td>
-<td style="text-align: right;">0.002</td>
-<td style="text-align: right;">2.255</td>
-<td style="text-align: right;">0.025</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><code>Walks</code></td>
-<td style="text-align: right;">0.011</td>
-<td style="text-align: right;">0.003</td>
-<td style="text-align: right;">3.255</td>
-<td style="text-align: right;">0.001</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>Years</code></td>
-<td style="text-align: right;">0.046</td>
-<td style="text-align: right;">0.022</td>
-<td style="text-align: right;">2.112</td>
-<td style="text-align: right;">0.036</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><code>CRuns</code></td>
-<td style="text-align: right;">0.002</td>
-<td style="text-align: right;">0.001</td>
-<td style="text-align: right;">3.562</td>
-<td style="text-align: right;">0.000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>CWalks</code></td>
-<td style="text-align: right;">-0.001</td>
-<td style="text-align: right;">0.001</td>
-<td style="text-align: right;">-2.204</td>
-<td style="text-align: right;">0.029</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><code>League_N</code></td>
-<td style="text-align: right;">0.173</td>
-<td style="text-align: right;">0.088</td>
-<td style="text-align: right;">1.959</td>
-<td style="text-align: right;">0.052</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>Division_W</code></td>
-<td style="text-align: right;">-0.189</td>
-<td style="text-align: right;">0.087</td>
-<td style="text-align: right;">-2.165</td>
-<td style="text-align: right;">0.032</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><code>Errors</code></td>
-<td style="text-align: right;">-0.012</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">-1.689</td>
-<td style="text-align: right;">0.093</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="comments-and-cricism-to-linear-models" class="slide level2 center">
-<h2>Comments and cricism to linear models</h2>
-</section>
-<section id="scatterplot-with-loess-estimate" class="slide level2 center">
-<h2>Scatterplot with <code>loess</code> estimate</h2>
+<!--   scale_color_tableau(palette = "Color Blind") + -->
+<!--   xlab("Number of years in the major leagues (Years)") + -->
+<!--   ylab("Partial effect") -->
+<!-- ``` -->
+<!-- ## -->
+<!-- ```{r} -->
+<!-- #| fig-width: 7.8 -->
+<!-- #| fig-height: 4 -->
+<!-- #| fig-align: center -->
+<!-- #| message: false -->
+<!-- data_plot <- smooth_estimates(m_gam_selected, smooth = "s(CHits)") -->
+<!-- ggplot(data = data_plot, aes(x = CHits, y = est)) + -->
+<!--   geom_line(linewidth = 1, col = "#1170aa") + -->
+<!--   geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = CHits, y = `s(CHits)`), size = 0.7) + -->
+<!--   theme_minimal() + -->
 
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-8-1.png" width="1560" class="r-stretch quarto-figure-center"></section>
-<section>
-<section id="generalized-additive-models-gam" class="title-slide slide level1 center">
-<h1>Generalized additive models (GAM)</h1>
-
-</section>
-<section id="the-anova-decomposition-of-a-function" class="slide level2 center">
-<h2>The ANOVA decomposition of a function</h2>
-</section>
-<section id="generalized-additive-models-gam-1" class="slide level2 center">
-<h2>Generalized additive models (GAM)</h2>
-</section>
-<section id="the-backfitting-algorithm-i" class="slide level2 center">
-<h2>The backfitting algorithm I</h2>
-</section>
-<section id="the-backfitting-algorithm-ii" class="slide level2 center">
-<h2>The backfitting algorithm II</h2>
-</section>
-<section id="local-scoring-for-additive-logistic-regression" class="slide level2 center">
-<h2>Local scoring for additive logistic regression</h2>
-</section>
-<section id="gam-using-penalized-splines" class="slide level2 center">
-<h2>GAM using penalized splines</h2>
-</section>
-<section id="gam-using-penalized-splines-1" class="slide level2 center">
-<h2>GAM using penalized splines</h2>
-</section>
-<section id="additive-models" class="slide level2 center">
-<h2>Additive models</h2>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Family: gaussian 
-Link function: identity 
-
-Formula:
-logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + 
-    s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + 
-    s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + 
-    s(Assists) + s(Errors) + NewLeague
-
-Parametric coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  5.87718    0.04029 145.870   &lt;2e-16 ***
-LeagueN      0.06292    0.10121   0.622    0.535    
-DivisionW   -0.03305    0.05094  -0.649    0.518    
-NewLeagueN   0.04495    0.09998   0.450    0.654    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Approximate significance of smooth terms:
-             edf Ref.df      F  p-value    
-s(AtBat)   5.206  6.337  3.016  0.00706 ** 
-s(Hits)    8.227  8.681  6.439 3.13e-06 ***
-s(HmRun)   5.171  6.236  2.497  0.02448 *  
-s(Runs)    3.077  3.908  1.743  0.14014    
-s(RBI)     3.679  4.619  4.599  0.00116 ** 
-s(Walks)   5.989  7.059  3.024  0.00650 ** 
-s(Years)   7.354  8.180 10.400  &lt; 2e-16 ***
-s(CAtBat)  1.000  1.000  0.814  0.36863    
-s(CHits)   1.000  1.000  5.111  0.02550 *  
-s(CHmRun)  5.773  6.805  5.492 1.73e-05 ***
-s(CRuns)   1.000  1.000  0.459  0.49926    
-s(CRBI)    8.045  8.665  8.359  &lt; 2e-16 ***
-s(CWalks)  1.000  1.000  4.070  0.04578 *  
-s(PutOuts) 6.383  7.453  2.173  0.03875 *  
-s(Assists) 1.000  1.000  1.813  0.18056    
-s(Errors)  4.080  5.002  1.778  0.12214    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-R-sq.(adj) =  0.906   Deviance explained =   94%
-GCV = 0.1233  Scale est. = 0.078246  n = 197</code></pre>
-</div>
-</div>
-</section>
-<section id="variable-selection" class="slide level2 center">
-<h2>Variable selection</h2>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Family: gaussian 
-Link function: identity 
-
-Formula:
-logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + 
-    s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + 
-    s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + 
-    s(Assists) + s(Errors) + NewLeague
-
-Parametric coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  5.85720    0.04202 139.404   &lt;2e-16 ***
-LeagueN      0.06247    0.10414   0.600    0.550    
-DivisionW   -0.05206    0.05156  -1.010    0.315    
-NewLeagueN   0.11396    0.10272   1.109    0.269    
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Approximate significance of smooth terms:
-                 edf Ref.df     F  p-value    
-s(AtBat)   8.127e+00      9 9.762  &lt; 2e-16 ***
-s(Hits)    7.754e+00      9 5.205 5.70e-07 ***
-s(HmRun)   6.846e-07      9 0.000 0.429089    
-s(Runs)    4.581e+00      9 1.042 0.046639 *  
-s(RBI)     3.972e+00      9 1.167 0.017451 *  
-s(Walks)   7.939e+00      9 3.918 1.38e-05 ***
-s(Years)   4.276e+00      9 5.440  &lt; 2e-16 ***
-s(CAtBat)  7.933e+00      9 2.640 0.000236 ***
-s(CHits)   5.965e+00      9 1.776 0.005015 ** 
-s(CHmRun)  6.915e+00      9 2.930 0.000148 ***
-s(CRuns)   2.537e-07      9 0.000 0.829913    
-s(CRBI)    3.705e-01      9 0.050 0.251519    
-s(CWalks)  1.615e+00      9 0.496 0.032323 *  
-s(PutOuts) 4.906e-03      9 0.001 0.330331    
-s(Assists) 3.819e-01      9 0.034 0.351409    
-s(Errors)  4.445e+00      9 2.128 0.000411 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-R-sq.(adj) =  0.899   Deviance explained = 93.4%
-GCV = 0.12909  Scale est. = 0.084351  n = 197</code></pre>
-</div>
-</div>
-</section>
-<section id="partial-effect-years" class="slide level2 center">
-<h2>Partial effect (<code>Years</code>)</h2>
-
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-12-1.png" width="1560" class="r-stretch quarto-figure-center"></section>
-<section id="section" class="slide level2 center">
-<h2></h2>
-
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-13-1.png" width="1560" class="r-stretch quarto-figure-center"></section>
-<section id="pros-and-cons-of-generalized-additive-models-gams" class="slide level2 center">
-<h2>Pros and cons of generalized additive models (GAMs)</h2>
-<div class="callout callout-tip no-icon callout-titled callout-style-simple">
-<div class="callout-body">
-<div class="callout-title">
-<p><strong>Pros</strong></p>
-</div>
-<div class="callout-content">
-<ul>
-<li>asd</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="callout callout-warning no-icon callout-titled callout-style-simple">
-<div class="callout-body">
-<div class="callout-title">
-<p><strong>Cons</strong></p>
-</div>
-<div class="callout-content">
-<ul>
-<li>asd</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</section></section>
-<section>
-<section id="mars" class="title-slide slide level1 center">
-<h1>MARS</h1>
-
-</section>
-<section id="mars-1" class="slide level2 center">
-<h2>MARS</h2>
-</section>
-<section id="section-1" class="slide level2 center">
-<h2></h2>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Call: earth(formula=logSalary~., data=Hitters_train, pmethod="cv", degree=1,
-            nfold=10)
-
-logSalary =
-  5.406817
-  -  0.008447268 * pmax(0,     202 -   AtBat) 
-  +    0.1031473 * pmax(0,      43 -    Hits) 
-  +    0.2025188 * pmax(0,    Hits -     168) 
-  -    0.2357456 * pmax(0,    Hits -     171) 
-  +      0.71938 * pmax(0,       1 -   HmRun) 
-  +    0.1202038 * pmax(0,   Walks -      20) 
-  -     0.118065 * pmax(0,   Walks -      22) 
-  +   0.02494859 * pmax(0,   Walks -      61) 
-  -    0.1181774 * pmax(0,       7 -   Years) 
-  -    0.1078948 * pmax(0,   Years -       7) 
-  -   0.09731185 * pmax(0,       6 -  CHmRun) 
-  +  0.002652355 * pmax(0,  CHmRun -      97) 
-  -  0.007129586 * pmax(0,     245 -   CRuns) 
-  -  0.001426068 * pmax(0,    1032 -    CRBI) 
-  +  0.006684357 * pmax(0,  CWalks -     198) 
-  -  0.002959201 * pmax(0,  CWalks -     351) 
-  +  0.004582707 * pmax(0,     619 -  CWalks) 
-  -  0.005672073 * pmax(0,  CWalks -     619) 
-  - 0.0007817617 * pmax(0, PutOuts -     726) 
-  -  0.004174412 * pmax(0,      56 - Assists) 
-  - 0.0009448666 * pmax(0, Assists -      56) 
-
-Selected 22 of 31 terms, and 11 of 19 predictors (pmethod="cv")
-Termination condition: Reached nk 39
-Importance: CRuns, CRBI, Years, Hits, Walks, CWalks, HmRun, CHmRun, ...
-Number of terms at each degree of interaction: 1 21 (additive model)
-GRSq 0.7874075  RSq 0.8687567  mean.oof.RSq 0.6778706 (sd 0.203)
-
-pmethod="backward" would have selected:
-    10 terms 8 preds,  GRSq 0.7961872  RSq 0.8319032  mean.oof.RSq 0.5971717</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-14-1.png" width="2000"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code> plotmo grid:    AtBat Hits HmRun Runs RBI Walks Years CAtBat CHits CHmRun
-                   407  103     9   50  46    39     6   1924   491     40
- CRuns CRBI CWalks League Division PutOuts Assists Errors NewLeague
-   247  208    175      A        W     224      45      7         A</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-14-2.png" width="2000"></p>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Call: earth(formula=logSalary~., data=Hitters_train, pmethod="cv", degree=2,
-            nfold=10)
-
-logSalary =
-  6.395594
-  -    0.1463821 * pmax(0,  Years -      7) 
-  -  0.004923778 * pmax(0,    471 -  CHits) 
-  +  0.001021812 * pmax(0,  CHits -    471) 
-  +  0.002849097 * pmax(0,    217 -  AtBat) * pmax(0,      7 -  Years) 
-  + 8.517003e-05 * pmax(0,  Walks -     60) * pmax(0,    259 - CHmRun) 
-  - 3.515833e-05 * pmax(0,  CHits -    471) * pmax(0,    300 -   CRBI) 
-
-Selected 7 of 32 terms, and 6 of 19 predictors (pmethod="cv")
-Termination condition: RSq changed by less than 0.001 at 32 terms
-Importance: Years, CRuns-unused, AtBat, CHits, CRBI, Walks, CHmRun, ...
-Number of terms at each degree of interaction: 1 3 3
-GRSq 0.7594717  RSq 0.7948785  mean.oof.RSq 0.6783395 (sd 0.213)
-
-pmethod="backward" would have selected:
-    19 terms 10 preds,  GRSq 0.8069152  RSq 0.8853987  mean.oof.RSq 0.6013759</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-15-1.png" width="2000"></p>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code> plotmo grid:    AtBat Hits HmRun Runs RBI Walks Years CAtBat CHits CHmRun
-                   407  103     9   50  46    39     6   1924   491     40
- CRuns CRBI CWalks League Division PutOuts Assists Errors NewLeague
-   247  208    175      A        W     224      45      7         A</code></pre>
-</div>
-<div class="cell-output-display">
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-15-2.png" width="2000"></p>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-16-1.png" width="2000"></p>
-</div>
-</div>
-</section>
-<section id="the-hitters-dataset-1" class="slide level2 center">
-<h2>The <code>Hitters</code> dataset</h2>
-
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-17-1.png" width="2000" class="r-stretch"></section>
-<section id="final-results" class="slide level2 center">
-<h2>Final results</h2>
-<div class="cell">
-<div class="cell-output-display">
-<table style="width:100%;">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 15%">
-<col style="width: 10%">
-<col style="width: 19%">
-<col style="width: 20%">
-<col style="width: 20%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Best subset</th>
-<th style="text-align: right;">GAM</th>
-<th style="text-align: right;">GAM (selected)</th>
-<th style="text-align: right;">MARS (degree 1)</th>
-<th style="text-align: right;">MARS (degree 2)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Test MAE</td>
-<td style="text-align: right;">319.672</td>
-<td style="text-align: right;">276.908</td>
-<td style="text-align: right;">261.737</td>
-<td style="text-align: right;">239.313</td>
-<td style="text-align: right;">178.091</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Test RMSE</td>
-<td style="text-align: right;">542.381</td>
-<td style="text-align: right;">494.789</td>
-<td style="text-align: right;">492.274</td>
-<td style="text-align: right;">405.818</td>
-<td style="text-align: right;">319.570</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-<section id="references" class="slide level2 center">
-<h2>References</h2>
-<ul>
-<li></li>
-</ul>
+<!--   scale_color_tableau(palette = "Color Blind") + -->
+<!--   xlab("Number of years in the major leagues (Years)") + -->
+<!--   ylab("Partial effect") -->
+<!-- ``` -->
+<!-- ## Pros and cons of generalized additive models (GAMs) -->
+<!-- ::: callout-tip -->
+<!-- #### Pros -->
+<!-- -   asd -->
+<!-- ::: -->
+<!-- . . . -->
+<!-- ::: callout-warning -->
+<!-- #### Cons -->
+<!-- - asd -->
+<!-- ::: -->
+<!-- # MARS -->
+<!-- ## MARS -->
+<!-- ##  -->
+<!-- ```{r} -->
+<!-- library(earth) -->
+<!-- fit_mars_deg1 <- earth(logSalary ~ ., data = Hitters_train, degree = 1, pmethod="cv", nfold = 10) -->
+<!-- summary(fit_mars_deg1, style = "pmax") -->
+<!-- plot(evimp(fit_mars_deg1)) -->
+<!-- plotmo(fit_mars_deg1) -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- fit_mars_deg2 <- earth(logSalary ~ ., data = Hitters_train, degree = 2, pmethod="cv", nfold = 10) -->
+<!-- summary(fit_mars_deg2, style = "pmax") -->
+<!-- plot(evimp(fit_mars_deg2)) -->
+<!-- plotmo(fit_mars_deg2) -->
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- library(pdp) -->
+<!-- earth_partial <- partial(fit_mars_deg2, pred.var = c("Years", "CHits"), grid.resolution = 40) -->
+<!-- autoplot(earth_partial) + theme_light() -->
+<!-- ``` -->
+<!-- ## The `Hitters` dataset -->
+<!-- ```{r} -->
+<!-- library(pdp) -->
+<!-- gam_partial <- partial(m_gam_selected, pred.var = c("Years", "CHits"), grid.resolution = 40) -->
+<!-- autoplot(gam_partial) + theme_light() -->
+<!-- ``` -->
+<!-- ## Final results -->
+<!-- ```{r} -->
+<!-- y_test <- exp(Hitters_test$logSalary) -->
+<!-- y_null <- exp(mean(Hitters_train$logSalary)) -->
+<!-- y_hat_linear <- exp(predict(m_linear, newdata = Hitters_test)) -->
+<!-- y_hat_gam <- exp(predict(m_gam, newdata = Hitters_test)) -->
+<!-- y_hat_gam_selected <- exp(predict(m_gam_selected, newdata = Hitters_test)) -->
+<!-- y_mars_deg1 <- exp(predict(fit_mars_deg1, newdata = Hitters_test)) -->
+<!-- y_mars_deg2 <- exp(predict(fit_mars_deg2, newdata = Hitters_test)) -->
+<!-- tab_results <-rbind(c( -->
+<!--   mean(abs(y_test - y_null)), -->
+<!--   mean(abs(y_test - y_hat_linear)), -->
+<!--   mean(abs(y_test - y_hat_gam)), -->
+<!--   mean(abs(y_test - y_hat_gam_selected)), -->
+<!--   mean(abs(y_test - y_mars_deg1)), -->
+<!--   mean(abs(y_test - y_mars_deg2))), -->
+<!--   sqrt(c(mean(abs(y_test - y_null)^2), -->
+<!--   mean(abs(y_test - y_hat_linear)^2), -->
+<!--   mean(abs(y_test - y_hat_gam)^2), -->
+<!--   mean(abs(y_test - y_hat_gam_selected)^2), -->
+<!--   mean(abs(y_test - y_mars_deg1)^2), -->
+<!--   mean(abs(y_test - y_mars_deg2)^2)))) -->
+<!-- colnames(tab_results) <- c("Null model", "Best subset", "GAM", "GAM (selected)", "MARS (degree 1)", "MARS (degree 2)") -->
+<!-- rownames(tab_results) <- c("Test MAE", "Test RMSE") -->
+<!-- knitr::kable(tab_results, digits = 3) -->
+<!-- ``` -->
+<!-- ## References -->
+<!-- -  -->
 
 <img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
