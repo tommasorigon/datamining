@@ -1240,7 +1240,7 @@ p0
 In a [generalized linear model]{.blue} the response variable is related
 to the covariates through: $$
 \mathbb{E}(Y_i) = g\{f(\bm{x}_i; \beta)\} = g(\beta_1 x_{i1} + \cdots + \beta_p x_{ip}) = g(\bm{x}_i^T\beta),
-$$ where $g(\cdot)$ is the so-called [link function]{.orange}, which is
+$$ where $g^{-1}(\cdot)$ is the so-called [link function]{.orange}, which is
 known and invertible.
 :::
 

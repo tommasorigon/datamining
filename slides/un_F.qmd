@@ -60,11 +60,11 @@ styler:::style_file("../code/un_F.R")
 
 ::: columns
 ::: {.column width="35%"}
-![](img/reef.jpg){width=60% fig-align="center"} 
+![](img/reef.jpg){width=80% fig-align="center"} 
 
 
 ::: {style="font-size: 90%;"}
-
+The [Great Barrier Reef](https://en.wikipedia.org/wiki/Great_Barrier_Reef)
 :::
 
 
@@ -81,31 +81,13 @@ styler:::style_file("../code/un_F.R")
 
 - GAMs and MARS are [semi-parametric]{.blue} approaches that keep the model complexity under control so that: 
   - they are more flexible than linear models; 
-  - but they are not hugely impacted by the curse of dimensionality.
+  - they are not hugely impacted by the curse of dimensionality.
     
 - The running example is about [trawl data]{.orange} from the [Great Barrier Reef]{.blue}.
 :::
 :::
 
 ## The `trawl` dataset
-
-::: incremental
-
-- We consider the `trawl` dataset, refer to a survey of the fauna on the sea bed lying between the coast of northern Queensland and the Great Barrier Reef. 
-
-- The sampling region covered a zone which was closed to commercial fishing, as well as neighboring zones where fishing was permitted.
-
-- We want to [predict]{.blue} the [catch score]{.orange}, as a function of several covariates: 
-  - number of hits/runs/walks/assists/errors in 1986 and during the whole career;
-  - number of years in the major leagues;
-  - The league/division of the player at the end of 1986;
-  - ...and many others.
-  
-asd
-
-:::
-
-## A `glimpse` of the `trawl` dataset
 
 ```{r}
 #| message: false
@@ -115,203 +97,366 @@ library(ggthemes)
 library(sm)
 
 data(trawl)
-dplyr::glimpse(trawl)
 ```
 
-
 ```{r}
+trawl <- na.omit(trawl)
+trawl$Year <- factor(trawl$Year)
+levels(trawl$Year) <- c("1992", "1993")
+trawl$Zone <- factor(trawl$Zone)
+levels(trawl$Zone) <- c("Open", "Closed")
 # Data splitting
-set.seed(1234)
-id_train <- sample(1:nrow(trawl), size = floor(0.5 * nrow(trawl)), replace = FALSE)
+set.seed(123)
+id_train <- sample(1:nrow(trawl), size = floor(0.80 * nrow(trawl)), replace = FALSE)
 id_test <- setdiff(1:nrow(trawl), id_train)
 trawl_train <- trawl[id_train, ]
 trawl_test <- trawl[id_test, ]
 ```
 
+
+
+::: incremental
+
+- We consider the `trawl` dataset, which refers to a [survey]{.blue} of the [fauna]{.blue} on the sea bed lying between the coast of northern Queensland and the [Great Barrier Reef]{.orange}. 
+
+- The [response]{.blue} variable is `Score`, which is a standardized numeric quantity measuring the amount of fishes caught on a given location.
+
+- We want to [predict]{.blue} the [catch score]{.orange}, as a function of a few covariates: 
+  - the `Latitude` and `Longitude` of the sampling position. The longitude can be seen as a proxy of the distance from the coast in this specific experiment;
+  - the `Depth` of the sea on the sampling position;
+  - the `Zone` of the sampling region, either open or closed to [commercial fishing]{.blue};
+  - the `Year` of the sampling, which can be either `1992` or `1993`. 
+
+
+
+- Having remove a few observations due to missingness, we split the data into [training]{.blue} (119 obs.) and [test]{.orange} set (30 obs.). The full `trawl` dataset is available in the `sm` R package. 
+:::
+
 ## The `trawl` dataset
 
 <div class="flourish-embed flourish-map" data-src="visualisation/15070357"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
 
-## A linear model
+## Getting started: linear models
 
-- In the first place, we split the dataset into [training]{.blue} and [test]{.orange} set, so that the validity of our approach
+- Let begin our analysis by trying to predict the `Score` using a [linear model]{.orange} of the form
+$$
+y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
+$$
+- The above values correspond to the variables of the `trawl` dataset, so that
+$$
+\begin{aligned}
+\texttt{Score}_i = \beta_0 &+ \beta_1 \texttt{Latitude}_i + \beta_2 \texttt{Longitude}_i + \\
+&+ \beta_3\texttt{Depth}_i + \beta_4 I(\texttt{Zone}_i = \texttt{Closed}) + \beta_5 I(\texttt{Year}_i = \texttt{1993}).
+\end{aligned}
+$$
 
-- 
+- Such a model can be estimated using [ordinary least squares]{.orange}, resulting in:
 
-<!-- ## Best subset selection -->
+```{r}
+#| output: false
+library(broom)
+m_linear <- lm(Score1 ~ Latitude + Longitude + Depth + Zone + Year, data = trawl_train)
+knitr::kable(tidy(summary(m_linear)), digits = 3)
+```
 
-<!-- ```{r} -->
-<!-- #| fig-width: 12 -->
-<!-- #| fig-height: 6 -->
-<!-- #| fig-align: center -->
-<!-- library(leaps) -->
-<!-- fit.bests <- regsubsets(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, nvmax = 5) -->
-<!-- summary.bests <- summary(fit.bests) -->
+::: {style="font-size: 75%;"}
+|term        | estimate| std.error| statistic| p.value|
+|:-----------|--------:|---------:|---------:|-------:|
+|`(Intercept)` |  290.750|    23.314|    12.471|   0.000|
+|`Latitude`    |    0.200|     0.192|     1.041|   0.300|
+|`Longitude`   |   -2.010|     0.161|   -12.461|   0.000|
+|`Depth`       |    0.016|     0.006|     2.624|   0.010|
+|`Zone_Closed`  |   -0.109|     0.092|    -1.181|   0.240|
+|`Year_1993`    |    0.314|     0.090|     3.504|   0.001|
+:::
 
-<!-- par(mfrow = c(1, 2)) -->
-<!-- plot(summary.bests$cp, xlab = "Number of covariates", ylab = "Mallow's Cp", type = "b", pch = 16) -->
-<!-- plot(fit.bests, scale = "Cp") -->
-<!-- ``` -->
+## Scatterplot with `loess` estimate
 
-<!-- ## The selected linear model -->
-
-<!-- ```{r} -->
-<!-- #| output: false -->
-<!-- library(broom) -->
-<!-- m_linear <- lm(logSalary ~ AtBat + Hits + CAtBat + CHits + CHmRUn+ Division, data = Hitters_train) -->
-<!-- knitr::kable(tidy(summary(m_linear)), digits = 3) -->
-<!-- ``` -->
-
-<!-- |term        | estimate| std.error| statistic| p.value| -->
-<!-- |:-----------|--------:|---------:|---------:|-------:| -->
-<!-- |`(Intercept)` |    4.493|     0.177|    25.344|   0.000| -->
-<!-- |`Hits`        |    0.004|     0.002|     2.255|   0.025| -->
-<!-- |`Walks`       |    0.011|     0.003|     3.255|   0.001| -->
-<!-- |`Years`       |    0.046|     0.022|     2.112|   0.036| -->
-<!-- |`CRuns`       |    0.002|     0.001|     3.562|   0.000| -->
-<!-- |`CWalks`      |   -0.001|     0.001|    -2.204|   0.029| -->
-<!-- |`League_N`     |    0.173|     0.088|     1.959|   0.052| -->
-<!-- |`Division_W`   |   -0.189|     0.087|    -2.165|   0.032| -->
-<!-- |`Errors`      |   -0.012|     0.007|    -1.689|   0.093| -->
-
-<!-- ## Comments and cricism to linear models -->
-
-<!-- ## Scatterplot with `loess` estimate -->
-
-<!-- ```{r} -->
-<!-- #| fig-width: 7.8 -->
-<!-- #| fig-height: 4 -->
-<!-- #| fig-align: center -->
-<!-- #| message: false -->
-<!-- ggplot(data = Hitters_train, aes(x = Years, y = logSalary)) + -->
-<!--   geom_point(size = 0.7) + -->
-<!--   geom_smooth(se = FALSE, span = 1, col = "#1170aa") + -->
-<!--   theme_minimal() + -->
-<!--   xlab("Number of years in the major leagues (Years)") + -->
-<!--   ylab("log(Salary)") -->
-<!-- ``` -->
+```{r}
+#| fig-width: 9
+#| fig-height: 5
+#| fig-align: center
+#| message: false
+library(ggthemes)
+ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
+  geom_point(size = 1) +
+  geom_smooth(se = FALSE, span = 0.4, col = "#a3acb9", linetype = "dashed") +
+  scale_color_tableau(palette = "Color Blind") +
+  theme_minimal() +
+  theme(legend.position = "top") +
+  xlab("Longitude of the sampling position") +
+  ylab("Catch score")
+```
 
 
-<!-- # Generalized additive models (GAM) -->
+## Comments and cricism
 
-<!-- ## The ANOVA decomposition of a function -->
+- Is this a good model? 
 
-<!-- ## Generalized additive models (GAM) -->
+. . .
 
-<!-- ## The backfitting algorithm I -->
+- Granted that every model is just an approximation of reality, it is undeniable that there are some [problematic]{.orange} aspects.
 
-<!-- ## The backfitting algorithm II -->
+. . .
 
-<!-- ## Local scoring for additive logistic regression -->
+- By simple graphical inspection, it seems that the relationship between `Score` and `Longitude` is [non-linear]{.orange}.
 
-<!-- ## GAM using penalized splines -->
+- Also, an [interaction effect]{.blue} between `Year` and `Longitude` seems to be present. 
 
-<!-- ## GAM using penalized splines -->
+. . .
 
-<!-- ## Additive models -->
+- These considerations support the idea that [nonparametric approach]{.blue} might be more appropriate.
 
-<!-- ```{r} -->
-<!-- library(mgcv) -->
-<!-- m_gam <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague, data = Hitters_train, select = FALSE) -->
-<!-- ``` -->
+- However, the number of covariates is $p = 5$ and therefore a fully nonparametric estimation would [not]{.orange} be [feasible]{.orange}, because of the curse of dimensionality. 
 
-
-<!-- ```{r} -->
-<!-- summary(m_gam) -->
-<!-- ``` -->
-
-<!-- ## Variable selection -->
-
-<!-- ```{r} -->
-<!-- m_gam_selected <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague, -->
-<!--   data = Hitters_train, select = TRUE -->
-<!-- ) -->
-
-<!-- summary(m_gam_selected) -->
-<!-- ``` -->
-
-<!-- ## Partial effect (`Years`) -->
-
-<!-- ```{r} -->
-<!-- #| fig-width: 7.8 -->
-<!-- #| fig-height: 4 -->
-<!-- #| fig-align: center -->
-<!-- #| message: false -->
-<!-- library(gratia) -->
-<!-- data_plot <- smooth_estimates(m_gam_selected, smooth = "s(Years)") -->
-
-<!-- ggplot(data = data_plot, aes(x = Years, y = est)) + -->
-<!--   geom_line(linewidth = 1, col = "#1170aa") + -->
-<!--   geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = Years, y = `s(Years)`), size = 0.7) + -->
-<!--   theme_minimal() + -->
-<!--   scale_color_tableau(palette = "Color Blind") + -->
-<!--   xlab("Number of years in the major leagues (Years)") + -->
-<!--   ylab("Partial effect") -->
-<!-- ``` -->
-
-<!-- ## -->
-
-<!-- ```{r} -->
-<!-- #| fig-width: 7.8 -->
-<!-- #| fig-height: 4 -->
-<!-- #| fig-align: center -->
-<!-- #| message: false -->
-<!-- data_plot <- smooth_estimates(m_gam_selected, smooth = "s(CHits)") -->
-
-<!-- ggplot(data = data_plot, aes(x = CHits, y = est)) + -->
-<!--   geom_line(linewidth = 1, col = "#1170aa") + -->
-<!--   geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = CHits, y = `s(CHits)`), size = 0.7) + -->
-<!--   theme_minimal() + -->
-<!--   scale_color_tableau(palette = "Color Blind") + -->
-<!--   xlab("Number of years in the major leagues (Years)") + -->
-<!--   ylab("Partial effect") -->
-<!-- ``` -->
+- We need a simplified modelling strategy, that accounts for non-linearities but at the same time is not fully flexible. 
 
 
-<!-- ## Pros and cons of generalized additive models (GAMs) -->
+# Generalized additive models (GAM)
 
-<!-- ::: callout-tip -->
-<!-- #### Pros -->
+## The ANOVA decomposition of a function
 
-<!-- -   asd -->
-<!-- ::: -->
+- We seek for an estimate of (a suitable transformation of) the [mean function]{.blue}, namely
+$$
+g^{-1}\{\mathbb{E}(Y_i)\} = f(x_{i1},\dots,x_{ip}),
+$$
+where $g^{-1}(\cdot)$ is the so-called [link function]{.orange}.
 
-<!-- . . . -->
+. . .
 
-<!-- ::: callout-warning -->
-<!-- #### Cons -->
+- The [unknown]{.orange} multivariate function $f(\bm{x}) = f(x_1,\dots,x_p) : \mathbb{R}^p \rightarrow \mathbb{R}$ is [too complex]{.orange}. However, the following [decomposition]{.blue} holds
+$$
+f(\bm{x}) = \beta_0 + \underbrace{\sum_{j=1}^p f_j(x_j)}_{\text{Main effect}} + \underbrace{\sum_{j=1}^p\sum_{k < j}f_{jk}(x_j, x_k)}_{\text{Interaction effect}} + \underbrace{\sum_{j=1}^p\sum_{k < j}\sum_{h < k < j}f_{jkh}(x_j, x_k, x_h)}_{\text{Higher order interaction}} + \cdots.
+$$
 
-<!-- - asd -->
-<!-- ::: -->
+. . .
+
+- By imposing [suitable constraints]{.blue}, this decomposition can be made [unique]{.orange}.
+
+- More importantly, this decomposition gives us an intuition on how to build non-linear models with a simplified structure. 
+
+## Generalized additive models (GAM)
+
+- A [generalized additive model]{.blue} (GAM) presumes a representation of the following type: $$
+f(\bm{x}_i) = \beta_0 + f_1(x_{i1}) + \cdots + f_p(x_{ip}) = \beta_0 + \sum_{j=1}^pf_j(x_{ij}), \qquad i=1,\dots,n,
+$$
+where $f_1,\dots,f_p$ are [smooth univariate]{.orange} functions with a potentially non-linear behavior. 
+
+. . .
+
+- In GAMs we include only the [main effects]{.blue} and we [exclude]{.orange} the [interactions]{.orange} terms. 
+
+- Generalized linear models (GLMs) are a [special case]{.orange} of GAMs, in which $f_j(x_{ij}) = \beta_j x_{ij}$.
+
+. . .
+
+- To avoid what is essentially a problem of [model identifiability]{.blue}, it is necessary for the various $f_j$ to be centered around $0$, that is $$
+\sum_{i=1}^n f_j(x_{ij}) = 0, \qquad j=1,\dots,p.
+$$
+
+## The backfitting algorithm I
+
+## The backfitting algorithm II
+
+::: callout-note
+#### The backfitting algorithm for additive regression models
+
+1.  Initialize $\hat{\beta}_0 = \bar{y}$ and set $f_j(x_j) = 0$, for $j=1,\dots,p$.
+
+2.  Cycle $j =1,\dots,p$, $j =1,\dots,p$, $\dots$, until [convergence]{.orange}:
+
+    i. Update the $k$th function by smoothing via $\mathcal{S}_j$ the [partial residuals]{.blue}, so that $$
+    \hat{f}_j(x) \leftarrow \mathcal{S}_j\left[\left\{x_{ij}, y_i - \hat{\beta}_0 - \sum_{k \neq j} \hat{f}_k(x_{ik})\right\}_{i=1}^n\right].
+    $$
+
+    iii. Center the function by subtracting its
+    $$
+    \hat{f}_j(x) \leftarrow \hat{f}_j(x) - \frac{1}{n}\sum_{i=1}^n\hat{f}_j(x_{ij}).
+    $$
+:::
+
+## The backfitting algorithm III
+
+## Local scoring for additive logistic regression
+
+## GAM using penalized splines
+
+## GAM using penalized splines
+
+## On the choice of smoothing parameters
+
+## GAM and variable selection
+
+## The `trawl` data
+
+```{r}
+library(mgcv)
+m_gam <- gam(Score1 ~ s(Longitude, bs = "tp") + s(Latitude, bs = "tp") + s(Depth, bs = "tp") + Zone + Year,
+  data = trawl_train, method = "REML")
+knitr::kable(tidy(m_gam), digits = 3)
+```
+
+## Partial effect of GAMs (`Longitude`)
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+#| message: false
+library(gratia)
+data_plot <- smooth_estimates(m_gam, smooth = "s(Longitude)")
+
+ggplot(data = data_plot, aes(x = Longitude, y = est)) +
+  geom_line(linewidth = 1, col = "#1170aa") +
+  geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Longitude, y = `s(Longitude)`), size = 0.7) +
+  theme_minimal() +
+  xlab("Longitude of the sampling position") +
+  ylab("Partial effect")
+```
+
+## GAMs with interactions
+
+## ☠️ - Naïve Bayes classifier and GAMs
+
+## ☠️ - The `mgcv` R package
+
+::: columns
+::: {.column width="35%"}
+![](img/iceberg.jpg){width=100% fig-align="center"} 
+
+:::
+
+::: {.column width="65%"}
+
+-   
+:::
+:::
 
 
-<!-- # MARS -->
+## Pros and cons of generalized additive models (GAMs)
 
-<!-- ## MARS -->
+::: callout-tip
+#### Pros
 
-<!-- ##  -->
+-   asd
+:::
 
-<!-- ```{r} -->
-<!-- library(earth) -->
-<!-- fit_mars_deg1 <- earth(logSalary ~ ., data = Hitters_train, degree = 1, pmethod="cv", nfold = 10) -->
-<!-- summary(fit_mars_deg1, style = "pmax") -->
-<!-- plot(evimp(fit_mars_deg1)) -->
-<!-- plotmo(fit_mars_deg1) -->
-<!-- ``` -->
+. . .
+
+::: callout-warning
+#### Cons
+
+- asd
+:::
 
 
-<!-- ```{r} -->
-<!-- fit_mars_deg2 <- earth(logSalary ~ ., data = Hitters_train, degree = 2, pmethod="cv", nfold = 10) -->
-<!-- summary(fit_mars_deg2, style = "pmax") -->
-<!-- plot(evimp(fit_mars_deg2)) -->
-<!-- plotmo(fit_mars_deg2) -->
-<!-- ``` -->
+# MARS
 
-<!-- ```{r} -->
-<!-- library(pdp) -->
-<!-- earth_partial <- partial(fit_mars_deg2, pred.var = c("Years", "CHits"), grid.resolution = 40) -->
-<!-- autoplot(earth_partial) + theme_light() -->
-<!-- ``` -->
+## MARS
+
+
+```{r}
+library(earth)
+m_mars_deg1 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 1, pmethod = "exhaustive", penalty = 3)
+# summary(m_mars_deg1, style = "pmax")
+# plotmo(m_mars_deg1)
+```
+
+
+```{r}
+m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 2, 
+                     pmethod = "exhaustive", penalty = 3, trace = TRUE, nk = 15)
+# summary(m_mars_deg2, style = "pmax")
+# plotmo(m_mars_deg2)
+```
+
+
+## Partial plots
+
+```{r}
+library(pdp)
+partial_linear <- partial(m_linear, pred.var = c("Longitude", "Year"), grid.resolution = 40)
+partial_gam <- partial(m_gam, pred.var = c("Longitude", "Year"), grid.resolution = 40)
+partial_mars_deg1 <- partial(m_mars_deg1, pred.var = c("Longitude", "Year"), grid.resolution = 40)
+partial_mars_deg2 <- partial(m_mars_deg2, pred.var = c("Longitude", "Year"), grid.resolution = 40)
+```
+
+
+::: panel-tabset
+
+## Linear model
+
+```{r}
+#| fig-width: 9
+#| fig-height: 4.5
+#| fig-align: center
+#| message: false
+ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
+  geom_point(size = 1) +
+  facet_grid(.~Year) + 
+  geom_line(data = partial_linear, aes(x = Longitude, y = yhat)) +
+  scale_color_tableau(palette = "Color Blind") +
+  theme_light() +
+  theme(legend.position = "none") +
+  xlab("Longitude of the sampling position") +
+  ylab("Catch score")
+```
+
+## GAM model
+
+```{r}
+#| fig-width: 9
+#| fig-height: 4.5
+#| fig-align: center
+#| message: false
+ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
+  geom_point(size = 1) +
+  facet_grid(.~Year) + 
+  geom_line(data = partial_gam, aes(x = Longitude, y = yhat)) +
+  scale_color_tableau(palette = "Color Blind") +
+  theme_light() +
+  theme(legend.position = "none") +
+  xlab("Longitude of the sampling position") +
+  ylab("Catch score")
+```
+
+## MARS (degree 1)
+
+```{r}
+#| fig-width: 9
+#| fig-height: 4.5
+#| fig-align: center
+#| message: false
+ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
+  geom_point(size = 1) +
+  facet_grid(.~Year) + 
+  geom_line(data = partial_mars_deg1, aes(x = Longitude, y = yhat)) +
+  scale_color_tableau(palette = "Color Blind") +
+  theme_light() +
+  theme(legend.position = "none") +
+  xlab("Longitude of the sampling position") +
+  ylab("Catch score")
+```
+
+## MARS (degree 2)
+
+```{r}
+#| fig-width: 9
+#| fig-height: 4.5
+#| fig-align: center
+#| message: false
+ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
+  geom_point(size = 1) +
+  facet_grid(.~Year) + 
+  geom_line(data = partial_mars_deg2, aes(x = Longitude, y = yhat)) +
+  scale_color_tableau(palette = "Color Blind") +
+  theme_light() +
+  theme(legend.position = "none") +
+  xlab("Longitude of the sampling position") +
+  ylab("Catch score")
+```
+
+:::
 
 <!-- ## The `Hitters` dataset -->
 
@@ -321,39 +466,57 @@ trawl_test <- trawl[id_test, ]
 <!-- autoplot(gam_partial) + theme_light() -->
 <!-- ``` -->
 
-<!-- ## Final results -->
-
-<!-- ```{r} -->
-<!-- y_test <- exp(Hitters_test$logSalary) -->
-
-<!-- y_null <- exp(mean(Hitters_train$logSalary)) -->
-<!-- y_hat_linear <- exp(predict(m_linear, newdata = Hitters_test)) -->
-<!-- y_hat_gam <- exp(predict(m_gam, newdata = Hitters_test)) -->
-<!-- y_hat_gam_selected <- exp(predict(m_gam_selected, newdata = Hitters_test)) -->
-<!-- y_mars_deg1 <- exp(predict(fit_mars_deg1, newdata = Hitters_test)) -->
-<!-- y_mars_deg2 <- exp(predict(fit_mars_deg2, newdata = Hitters_test)) -->
-
-<!-- tab_results <-rbind(c( -->
-<!--   mean(abs(y_test - y_null)), -->
-<!--   mean(abs(y_test - y_hat_linear)), -->
-<!--   mean(abs(y_test - y_hat_gam)), -->
-<!--   mean(abs(y_test - y_hat_gam_selected)), -->
-<!--   mean(abs(y_test - y_mars_deg1)), -->
-<!--   mean(abs(y_test - y_mars_deg2))), -->
-<!--   sqrt(c(mean(abs(y_test - y_null)^2), -->
-<!--   mean(abs(y_test - y_hat_linear)^2), -->
-<!--   mean(abs(y_test - y_hat_gam)^2), -->
-<!--   mean(abs(y_test - y_hat_gam_selected)^2), -->
-<!--   mean(abs(y_test - y_mars_deg1)^2), -->
-<!--   mean(abs(y_test - y_mars_deg2)^2)))) -->
-<!-- colnames(tab_results) <- c("Null model", "Best subset", "GAM", "GAM (selected)", "MARS (degree 1)", "MARS (degree 2)") -->
-<!-- rownames(tab_results) <- c("Test MAE", "Test RMSE") -->
-<!-- knitr::kable(tab_results, digits = 3) -->
-<!-- ``` -->
+## Final results
 
 
+```{r}
+y_test <- trawl_test$Score1
+
+y_null <- mean(trawl_test$Score1)
+y_hat_linear <- predict(m_linear, newdata = trawl_test)
+y_hat_gam <- predict(m_gam, newdata = trawl_test)
+y_hat_mars_deg1 <- predict(m_mars_deg1, newdata = trawl_test)
+y_hat_mars_deg2 <- predict(m_mars_deg2, newdata = trawl_test)
+
+tab_results <- rbind(
+  c(
+    mean(abs(y_test - y_null)),
+    mean(abs(y_test - y_hat_linear)),
+    mean(abs(y_test - y_hat_gam)),
+    mean(abs(y_test - y_hat_mars_deg1)),
+    mean(abs(y_test - y_hat_mars_deg2))
+  ),
+  sqrt(c(
+    mean(abs(y_test - y_null)^2),
+    mean(abs(y_test - y_hat_linear)^2),
+    mean(abs(y_test - y_hat_gam)^2),
+    mean(abs(y_test - y_hat_mars_deg1)^2),
+    mean(abs(y_test - y_hat_mars_deg2)^2)
+  ))
+)
+colnames(tab_results) <- c("Null model", "Linear model", "GAM", "MARS (degree 1)", "MARS (degree 2)")
+rownames(tab_results) <- c("MAE", "RMSE")
+knitr::kable(tab_results, digits = 3)
+```
+
+## Pros and cons of MARS
+
+::: callout-tip
+#### Pros
+
+-   asd
+:::
+
+. . .
+
+::: callout-warning
+#### Cons
+
+- asd
+:::
 
 
-<!-- ## References -->
 
-<!-- -  -->
+## References
+
+-

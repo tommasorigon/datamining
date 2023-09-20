@@ -36,6 +36,22 @@ ul.task-list li input[type="checkbox"] {
 <link href="un_F_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 </head>
 
@@ -49,9 +65,36 @@ ul.task-list li input[type="checkbox"] {
   <ul>
   <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a></li>
   <li><a href="#the-trawl-dataset" id="toc-the-trawl-dataset" class="nav-link" data-scroll-target="#the-trawl-dataset">The <code>trawl</code> dataset</a></li>
-  <li><a href="#a-glimpse-of-the-trawl-dataset" id="toc-a-glimpse-of-the-trawl-dataset" class="nav-link" data-scroll-target="#a-glimpse-of-the-trawl-dataset">A <code>glimpse</code> of the <code>trawl</code> dataset</a></li>
   <li><a href="#the-trawl-dataset-1" id="toc-the-trawl-dataset-1" class="nav-link" data-scroll-target="#the-trawl-dataset-1">The <code>trawl</code> dataset</a></li>
-  <li><a href="#a-linear-model" id="toc-a-linear-model" class="nav-link" data-scroll-target="#a-linear-model">A linear model</a></li>
+  <li><a href="#getting-started-linear-models" id="toc-getting-started-linear-models" class="nav-link" data-scroll-target="#getting-started-linear-models">Getting started: linear models</a></li>
+  <li><a href="#scatterplot-with-loess-estimate" id="toc-scatterplot-with-loess-estimate" class="nav-link" data-scroll-target="#scatterplot-with-loess-estimate">Scatterplot with <code>loess</code> estimate</a></li>
+  <li><a href="#comments-and-cricism" id="toc-comments-and-cricism" class="nav-link" data-scroll-target="#comments-and-cricism">Comments and cricism</a></li>
+  <li><a href="#generalized-additive-models-gam" id="toc-generalized-additive-models-gam" class="nav-link" data-scroll-target="#generalized-additive-models-gam">Generalized additive models (GAM)</a>
+  <ul class="collapse">
+  <li><a href="#the-anova-decomposition-of-a-function" id="toc-the-anova-decomposition-of-a-function" class="nav-link" data-scroll-target="#the-anova-decomposition-of-a-function">The ANOVA decomposition of a function</a></li>
+  <li><a href="#generalized-additive-models-gam-1" id="toc-generalized-additive-models-gam-1" class="nav-link" data-scroll-target="#generalized-additive-models-gam-1">Generalized additive models (GAM)</a></li>
+  <li><a href="#the-backfitting-algorithm-i" id="toc-the-backfitting-algorithm-i" class="nav-link" data-scroll-target="#the-backfitting-algorithm-i">The backfitting algorithm I</a></li>
+  <li><a href="#the-backfitting-algorithm-ii" id="toc-the-backfitting-algorithm-ii" class="nav-link" data-scroll-target="#the-backfitting-algorithm-ii">The backfitting algorithm II</a></li>
+  <li><a href="#the-backfitting-algorithm-iii" id="toc-the-backfitting-algorithm-iii" class="nav-link" data-scroll-target="#the-backfitting-algorithm-iii">The backfitting algorithm III</a></li>
+  <li><a href="#local-scoring-for-additive-logistic-regression" id="toc-local-scoring-for-additive-logistic-regression" class="nav-link" data-scroll-target="#local-scoring-for-additive-logistic-regression">Local scoring for additive logistic regression</a></li>
+  <li><a href="#gam-using-penalized-splines" id="toc-gam-using-penalized-splines" class="nav-link" data-scroll-target="#gam-using-penalized-splines">GAM using penalized splines</a></li>
+  <li><a href="#gam-using-penalized-splines-1" id="toc-gam-using-penalized-splines-1" class="nav-link" data-scroll-target="#gam-using-penalized-splines-1">GAM using penalized splines</a></li>
+  <li><a href="#on-the-choice-of-smoothing-parameters" id="toc-on-the-choice-of-smoothing-parameters" class="nav-link" data-scroll-target="#on-the-choice-of-smoothing-parameters">On the choice of smoothing parameters</a></li>
+  <li><a href="#gam-and-variable-selection" id="toc-gam-and-variable-selection" class="nav-link" data-scroll-target="#gam-and-variable-selection">GAM and variable selection</a></li>
+  <li><a href="#the-trawl-data" id="toc-the-trawl-data" class="nav-link" data-scroll-target="#the-trawl-data">The <code>trawl</code> data</a></li>
+  <li><a href="#partial-effect-of-gams-longitude" id="toc-partial-effect-of-gams-longitude" class="nav-link" data-scroll-target="#partial-effect-of-gams-longitude">Partial effect of GAMs (<code>Longitude</code>)</a></li>
+  <li><a href="#gams-with-interactions" id="toc-gams-with-interactions" class="nav-link" data-scroll-target="#gams-with-interactions">GAMs with interactions</a></li>
+  <li><a href="#naïve-bayes-classifier-and-gams" id="toc-naïve-bayes-classifier-and-gams" class="nav-link" data-scroll-target="#naïve-bayes-classifier-and-gams">☠️ - Naïve Bayes classifier and GAMs</a></li>
+  <li><a href="#the-mgcv-r-package" id="toc-the-mgcv-r-package" class="nav-link" data-scroll-target="#the-mgcv-r-package">☠️ - The <code>mgcv</code> R package</a></li>
+  <li><a href="#pros-and-cons-of-generalized-additive-models-gams" id="toc-pros-and-cons-of-generalized-additive-models-gams" class="nav-link" data-scroll-target="#pros-and-cons-of-generalized-additive-models-gams">Pros and cons of generalized additive models (GAMs)</a></li>
+  </ul></li>
+  <li><a href="#mars" id="toc-mars" class="nav-link" data-scroll-target="#mars">MARS</a>
+  <ul class="collapse">
+  <li><a href="#mars-1" id="toc-mars-1" class="nav-link" data-scroll-target="#mars-1">MARS</a></li>
+  <li><a href="#partial-plots" id="toc-partial-plots" class="nav-link" data-scroll-target="#partial-plots">Partial plots</a></li>
+  <li><a href="#final-results" id="toc-final-results" class="nav-link" data-scroll-target="#final-results">Final results</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_F_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
@@ -94,11 +137,11 @@ ul.task-list li input[type="checkbox"] {
 <div class="column" style="width:35%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="img/reef.jpg" class="img-fluid figure-img" style="width:60.0%"></p>
+<p><img src="img/reef.jpg" class="img-fluid figure-img" style="width:80.0%"></p>
 </figure>
 </div>
 <div style="font-size: 90%;">
-
+<p>The <a href="https://en.wikipedia.org/wiki/Great_Barrier_Reef">Great Barrier Reef</a></p>
 </div>
 </div><div class="column" style="width:65%;">
 <ul>
@@ -111,7 +154,7 @@ ul.task-list li input[type="checkbox"] {
 <li><p>GAMs and MARS are <span class="blue">semi-parametric</span> approaches that keep the model complexity under control so that:</p>
 <ul>
 <li>they are more flexible than linear models;</li>
-<li>but they are not hugely impacted by the curse of dimensionality.</li>
+<li>they are not hugely impacted by the curse of dimensionality.</li>
 </ul></li>
 <li><p>The running example is about <span class="orange">trawl data</span> from the <span class="blue">Great Barrier Reef</span>.</p></li>
 </ul>
@@ -122,33 +165,17 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="the-trawl-dataset">The <code>trawl</code> dataset</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>We consider the <code>trawl</code> dataset, refer to a survey of the fauna on the sea bed lying between the coast of northern Queensland and the Great Barrier Reef.</p></li>
-<li><p>The sampling region covered a zone which was closed to commercial fishing, as well as neighboring zones where fishing was permitted.</p></li>
-<li><p>We want to <span class="blue">predict</span> the <span class="orange">catch score</span>, as a function of several covariates:</p>
+<li><p>We consider the <code>trawl</code> dataset, which refers to a <span class="blue">survey</span> of the <span class="blue">fauna</span> on the sea bed lying between the coast of northern Queensland and the <span class="orange">Great Barrier Reef</span>.</p></li>
+<li><p>The <span class="blue">response</span> variable is <code>Score</code>, which is a standardized numeric quantity measuring the amount of fishes caught on a given location.</p></li>
+<li><p>We want to <span class="blue">predict</span> the <span class="orange">catch score</span>, as a function of a few covariates:</p>
 <ul class="incremental">
-<li>number of hits/runs/walks/assists/errors in 1986 and during the whole career;</li>
-<li>number of years in the major leagues;</li>
-<li>The league/division of the player at the end of 1986;</li>
-<li>…and many others.</li>
+<li>the <code>Latitude</code> and <code>Longitude</code> of the sampling position. The longitude can be seen as a proxy of the distance from the coast in this specific experiment;</li>
+<li>the <code>Depth</code> of the sea on the sampling position;</li>
+<li>the <code>Zone</code> of the sampling region, either open or closed to <span class="blue">commercial fishing</span>;</li>
+<li>the <code>Year</code> of the sampling, which can be either <code>1992</code> or <code>1993</code>.</li>
 </ul></li>
+<li><p>Having remove a few observations due to missingness, we split the data into <span class="blue">training</span> (119 obs.) and <span class="orange">test</span> set (30 obs.). The full <code>trawl</code> dataset is available in the <code>sm</code> R package.</p></li>
 </ul>
-<p>asd</p>
-</div>
-</section>
-<section id="a-glimpse-of-the-trawl-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="a-glimpse-of-the-trawl-dataset">A <code>glimpse</code> of the <code>trawl</code> dataset</h2>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 155
-Columns: 7
-$ Zone      &lt;int&gt; 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, …
-$ Year      &lt;int&gt; 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 0, 0, …
-$ Latitude  &lt;dbl&gt; -11.12, -11.28, -11.48, -11.19, -11.69, -11.39, -11.45, -11.…
-$ Longitude &lt;dbl&gt; 142.84, 142.85, 142.86, 142.87, 142.88, 142.89, 142.91, 142.…
-$ Depth     &lt;dbl&gt; 20, 9, 11, 22, 7, 18, 18, 9, 6, 13, 24, 21, 19, 25, 25, 17, …
-$ Score1    &lt;dbl&gt; 1.63515, -0.30103, 1.54921, 1.03278, 0.18235, 2.05702, 0.901…
-$ Score2    &lt;dbl&gt; -0.30103, 1.54345, 1.75813, -0.30103, 2.45885, -0.30103, -0.…</code></pre>
-</div>
 </div>
 </section>
 <section id="the-trawl-dataset-1" class="level2">
@@ -157,177 +184,454 @@ $ Score2    &lt;dbl&gt; -0.30103, 1.54345, 1.75813, -0.30103, 2.45885, -0.30103,
 <script src="https://public.flourish.studio/resources/embed.js"></script>
 </div>
 </section>
-<section id="a-linear-model" class="level2">
-<h2 class="anchored" data-anchor-id="a-linear-model">A linear model</h2>
+<section id="getting-started-linear-models" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started-linear-models">Getting started: linear models</h2>
 <ul>
-<li><p>In the first place, we split the dataset into <span class="blue">training</span> and <span class="orange">test</span> set, so that the validity of our approach</p></li>
-<li></li>
+<li><p>Let begin our analysis by trying to predict the <code>Score</code> using a <span class="orange">linear model</span> of the form <span class="math display">
+y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
+</span></p></li>
+<li><p>The above values correspond to the variables of the <code>trawl</code> dataset, so that <span class="math display">
+\begin{aligned}
+\texttt{Score}_i = \beta_0 &amp;+ \beta_1 \texttt{Latitude}_i + \beta_2 \texttt{Longitude}_i + \\
+&amp;+ \beta_3\texttt{Depth}_i + \beta_4 I(\texttt{Zone}_i = \texttt{Closed}) + \beta_5 I(\texttt{Year}_i = \texttt{1993}).
+\end{aligned}
+</span></p></li>
+<li><p>Such a model can be estimated using <span class="orange">ordinary least squares</span>, resulting in:</p></li>
 </ul>
-<!-- ## Best subset selection -->
-<!-- ```{r} -->
-<!-- #| fig-width: 12 -->
-<!-- #| fig-height: 6 -->
-<!-- #| fig-align: center -->
-<!-- library(leaps) -->
-<!-- fit.bests <- regsubsets(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, nvmax = 5) -->
-<!-- summary.bests <- summary(fit.bests) -->
-<!-- par(mfrow = c(1, 2)) -->
-<!-- plot(summary.bests$cp, xlab = "Number of covariates", ylab = "Mallow's Cp", type = "b", pch = 16) -->
-<!-- plot(fit.bests, scale = "Cp") -->
-<!-- ``` -->
-<!-- ## The selected linear model -->
-<!-- ```{r} -->
-<!-- #| output: false -->
-<!-- library(broom) -->
-<!-- m_linear <- lm(logSalary ~ AtBat + Hits + CAtBat + CHits + CHmRUn+ Division, data = Hitters_train) -->
-<!-- knitr::kable(tidy(summary(m_linear)), digits = 3) -->
-<!-- ``` -->
-<!-- |term        | estimate| std.error| statistic| p.value| -->
-<!-- |:-----------|--------:|---------:|---------:|-------:| -->
-<!-- |`(Intercept)` |    4.493|     0.177|    25.344|   0.000| -->
-<!-- |`Hits`        |    0.004|     0.002|     2.255|   0.025| -->
-<!-- |`Walks`       |    0.011|     0.003|     3.255|   0.001| -->
-<!-- |`Years`       |    0.046|     0.022|     2.112|   0.036| -->
-<!-- |`CRuns`       |    0.002|     0.001|     3.562|   0.000| -->
-<!-- |`CWalks`      |   -0.001|     0.001|    -2.204|   0.029| -->
-<!-- |`League_N`     |    0.173|     0.088|     1.959|   0.052| -->
-<!-- |`Division_W`   |   -0.189|     0.087|    -2.165|   0.032| -->
-<!-- |`Errors`      |   -0.012|     0.007|    -1.689|   0.093| -->
-<!-- ## Comments and cricism to linear models -->
-<!-- ## Scatterplot with `loess` estimate -->
-<!-- ```{r} -->
-<!-- #| fig-width: 7.8 -->
-<!-- #| fig-height: 4 -->
-<!-- #| fig-align: center -->
-<!-- #| message: false -->
-<!-- ggplot(data = Hitters_train, aes(x = Years, y = logSalary)) + -->
-<!--   geom_point(size = 0.7) + -->
-<!--   geom_smooth(se = FALSE, span = 1, col = "#1170aa") + -->
-<!--   theme_minimal() + -->
-<!--   xlab("Number of years in the major leagues (Years)") + -->
-<!--   ylab("log(Salary)") -->
-<!-- ``` -->
-<!-- # Generalized additive models (GAM) -->
-<!-- ## The ANOVA decomposition of a function -->
-<!-- ## Generalized additive models (GAM) -->
-<!-- ## The backfitting algorithm I -->
-<!-- ## The backfitting algorithm II -->
-<!-- ## Local scoring for additive logistic regression -->
-<!-- ## GAM using penalized splines -->
-<!-- ## GAM using penalized splines -->
-<!-- ## Additive models -->
-<!-- ```{r} -->
-<!-- library(mgcv) -->
-<!-- m_gam <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague, data = Hitters_train, select = FALSE) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- summary(m_gam) -->
-<!-- ``` -->
-<!-- ## Variable selection -->
-<!-- ```{r} -->
-<!-- m_gam_selected <- gam(logSalary ~ s(AtBat) + s(Hits) + s(HmRun) + s(Runs) + s(RBI) + s(Walks) + s(Years) + s(CAtBat) + s(CHits) + s(CHmRun) + s(CRuns) + s(CRBI) + s(CWalks) + League + Division + s(PutOuts) + s(Assists) + s(Errors) + NewLeague, -->
-<!--   data = Hitters_train, select = TRUE -->
-<!-- ) -->
-<!-- summary(m_gam_selected) -->
-<!-- ``` -->
-<!-- ## Partial effect (`Years`) -->
-<!-- ```{r} -->
-<!-- #| fig-width: 7.8 -->
-<!-- #| fig-height: 4 -->
-<!-- #| fig-align: center -->
-<!-- #| message: false -->
-<!-- library(gratia) -->
-<!-- data_plot <- smooth_estimates(m_gam_selected, smooth = "s(Years)") -->
-<!-- ggplot(data = data_plot, aes(x = Years, y = est)) + -->
-<!--   geom_line(linewidth = 1, col = "#1170aa") + -->
-<!--   geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = Years, y = `s(Years)`), size = 0.7) + -->
-<!--   theme_minimal() + -->
-
-<!--   scale_color_tableau(palette = "Color Blind") + -->
-<!--   xlab("Number of years in the major leagues (Years)") + -->
-<!--   ylab("Partial effect") -->
-<!-- ``` -->
-<!-- ## -->
-<!-- ```{r} -->
-<!-- #| fig-width: 7.8 -->
-<!-- #| fig-height: 4 -->
-<!-- #| fig-align: center -->
-<!-- #| message: false -->
-<!-- data_plot <- smooth_estimates(m_gam_selected, smooth = "s(CHits)") -->
-<!-- ggplot(data = data_plot, aes(x = CHits, y = est)) + -->
-<!--   geom_line(linewidth = 1, col = "#1170aa") + -->
-<!--   geom_point(data = add_partial_residuals(m_gam_selected, data = Hitters_train), aes(x = CHits, y = `s(CHits)`), size = 0.7) + -->
-<!--   theme_minimal() + -->
-
-<!--   scale_color_tableau(palette = "Color Blind") + -->
-<!--   xlab("Number of years in the major leagues (Years)") + -->
-<!--   ylab("Partial effect") -->
-<!-- ``` -->
-<!-- ## Pros and cons of generalized additive models (GAMs) -->
-<!-- ::: callout-tip -->
-<!-- #### Pros -->
-<!-- -   asd -->
-<!-- ::: -->
-<!-- . . . -->
-<!-- ::: callout-warning -->
-<!-- #### Cons -->
-<!-- - asd -->
-<!-- ::: -->
-<!-- # MARS -->
-<!-- ## MARS -->
-<!-- ##  -->
-<!-- ```{r} -->
-<!-- library(earth) -->
-<!-- fit_mars_deg1 <- earth(logSalary ~ ., data = Hitters_train, degree = 1, pmethod="cv", nfold = 10) -->
-<!-- summary(fit_mars_deg1, style = "pmax") -->
-<!-- plot(evimp(fit_mars_deg1)) -->
-<!-- plotmo(fit_mars_deg1) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- fit_mars_deg2 <- earth(logSalary ~ ., data = Hitters_train, degree = 2, pmethod="cv", nfold = 10) -->
-<!-- summary(fit_mars_deg2, style = "pmax") -->
-<!-- plot(evimp(fit_mars_deg2)) -->
-<!-- plotmo(fit_mars_deg2) -->
-<!-- ``` -->
-<!-- ```{r} -->
-<!-- library(pdp) -->
-<!-- earth_partial <- partial(fit_mars_deg2, pred.var = c("Years", "CHits"), grid.resolution = 40) -->
-<!-- autoplot(earth_partial) + theme_light() -->
-<!-- ``` -->
+<div style="font-size: 75%;">
+<table class="table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">estimate</th>
+<th style="text-align: right;">std.error</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><code>(Intercept)</code></td>
+<td style="text-align: right;">290.750</td>
+<td style="text-align: right;">23.314</td>
+<td style="text-align: right;">12.471</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>Latitude</code></td>
+<td style="text-align: right;">0.200</td>
+<td style="text-align: right;">0.192</td>
+<td style="text-align: right;">1.041</td>
+<td style="text-align: right;">0.300</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>Longitude</code></td>
+<td style="text-align: right;">-2.010</td>
+<td style="text-align: right;">0.161</td>
+<td style="text-align: right;">-12.461</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>Depth</code></td>
+<td style="text-align: right;">0.016</td>
+<td style="text-align: right;">0.006</td>
+<td style="text-align: right;">2.624</td>
+<td style="text-align: right;">0.010</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>Zone_Closed</code></td>
+<td style="text-align: right;">-0.109</td>
+<td style="text-align: right;">0.092</td>
+<td style="text-align: right;">-1.181</td>
+<td style="text-align: right;">0.240</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>Year_1993</code></td>
+<td style="text-align: right;">0.314</td>
+<td style="text-align: right;">0.090</td>
+<td style="text-align: right;">3.504</td>
+<td style="text-align: right;">0.001</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="scatterplot-with-loess-estimate" class="level2">
+<h2 class="anchored" data-anchor-id="scatterplot-with-loess-estimate">Scatterplot with <code>loess</code> estimate</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_F_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="1800"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="comments-and-cricism" class="level2">
+<h2 class="anchored" data-anchor-id="comments-and-cricism">Comments and cricism</h2>
+<ul>
+<li>Is this a good model?</li>
+</ul>
+<ul>
+<li>Granted that every model is just an approximation of reality, it is undeniable that there are some <span class="orange">problematic</span> aspects.</li>
+</ul>
+<ul>
+<li><p>By simple graphical inspection, it seems that the relationship between <code>Score</code> and <code>Longitude</code> is <span class="orange">non-linear</span>.</p></li>
+<li><p>Also, an <span class="blue">interaction effect</span> between <code>Year</code> and <code>Longitude</code> seems to be present.</p></li>
+</ul>
+<ul>
+<li><p>These considerations support the idea that <span class="blue">nonparametric approach</span> might be more appropriate.</p></li>
+<li><p>However, the number of covariates is <span class="math inline">p = 5</span> and therefore a fully nonparametric estimation would <span class="orange">not</span> be <span class="orange">feasible</span>, because of the curse of dimensionality.</p></li>
+<li><p>We need a simplified modelling strategy, that accounts for non-linearities but at the same time is not fully flexible.</p></li>
+</ul>
+</section>
+<section id="generalized-additive-models-gam" class="level1">
+<h1>Generalized additive models (GAM)</h1>
+<section id="the-anova-decomposition-of-a-function" class="level2">
+<h2 class="anchored" data-anchor-id="the-anova-decomposition-of-a-function">The ANOVA decomposition of a function</h2>
+<ul>
+<li>We seek for an estimate of (a suitable transformation of) the <span class="blue">mean function</span>, namely <span class="math display">
+g^{-1}\{\mathbb{E}(Y_i)\} = f(x_{i1},\dots,x_{ip}),
+</span> where <span class="math inline">g(\cdot)</span> is the so-called <span class="orange">link function</span>.</li>
+</ul>
+<ul>
+<li>The <span class="orange">unknown</span> multivariate function <span class="math inline">f(\bm{x}) = f(x_1,\dots,x_p) : \mathbb{R}^p \rightarrow \mathbb{R}</span> is <span class="orange">too complex</span>. However, the following <span class="blue">decomposition</span> holds <span class="math display">
+f(\bm{x}) = \beta_0 + \underbrace{\sum_{j=1}^p f_j(x_j)}_{\text{Main effect}} + \underbrace{\sum_{j=1}^p\sum_{k &lt; j}f_{jk}(x_j, x_k)}_{\text{Interaction effect}} + \underbrace{\sum_{j=1}^p\sum_{k &lt; j}\sum_{h &lt; k &lt; j}f_{jkh}(x_j, x_k, x_h)}_{\text{Higher order interaction}} + \cdots.
+</span></li>
+</ul>
+<ul>
+<li><p>By imposing <span class="blue">suitable constraints</span>, this decomposition can be made <span class="orange">unique</span>.</p></li>
+<li><p>More importantly, this decomposition gives us an intuition on how to build non-linear models with a simplified structure.</p></li>
+</ul>
+</section>
+<section id="generalized-additive-models-gam-1" class="level2">
+<h2 class="anchored" data-anchor-id="generalized-additive-models-gam-1">Generalized additive models (GAM)</h2>
+<ul>
+<li>A <span class="blue">generalized additive model</span> (GAM) presumes a representation of the following type: <span class="math display">
+f(\bm{x}_i) = \beta_0 + f_1(x_{i1}) + \cdots + f_p(x_{ip}) = \beta_0 + \sum_{j=1}^pf_j(x_{ij}), \qquad i=1,\dots,n,
+</span> where <span class="math inline">f_1,\dots,f_p</span> are <span class="orange">smooth univariate</span> functions with a potentially non-linear behavior.</li>
+</ul>
+<ul>
+<li><p>In GAMs we include only the <span class="blue">main effects</span> and we <span class="orange">exclude</span> the <span class="orange">interactions</span> terms.</p></li>
+<li><p>Generalized linear models (GLMs) are a <span class="orange">special case</span> of GAMs, in which <span class="math inline">f_j(x_{ij}) = \beta_j x_{ij}</span>.</p></li>
+</ul>
+<ul>
+<li>To avoid what is essentially a problem of <span class="blue">model identifiability</span>, it is necessary for the various <span class="math inline">f_j</span> to be centered around <span class="math inline">0</span>, that is <span class="math display">
+\sum_{i=1}^n f_j(x_{ij}) = 0, \qquad j=1,\dots,p.
+</span></li>
+</ul>
+</section>
+<section id="the-backfitting-algorithm-i" class="level2">
+<h2 class="anchored" data-anchor-id="the-backfitting-algorithm-i">The backfitting algorithm I</h2>
+</section>
+<section id="the-backfitting-algorithm-ii" class="level2">
+<h2 class="anchored" data-anchor-id="the-backfitting-algorithm-ii">The backfitting algorithm II</h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The backfitting algorithm for additive models
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>Let <span class="math inline">\mathcal{M}_0</span> be the <span class="blue">null model</span>, which contains no predictors, i.e.&nbsp;set <span class="math inline">\hat{y}_i = \hat{\beta}_0 = \bar{y}</span>.</p></li>
+<li><p>For <span class="math inline">k =1,\dots,p</span>, do:</p>
+<ol type="i">
+<li><p>Estimate <span class="orange">all</span> the <span class="math inline">\binom{p}{k}</span> models that contain exactly <span class="math inline">k</span> covariates;</p></li>
+<li><p>Identify the “best” model with <span class="math inline">k</span> covariates having the smallest <span class="math inline">\text{MSE}_{k, \text{train}}</span>; call it <span class="math inline">\mathcal{M}_k</span>.</p></li>
+</ol></li>
+</ol>
+</div>
+</div>
+</section>
+<section id="the-backfitting-algorithm-iii" class="level2">
+<h2 class="anchored" data-anchor-id="the-backfitting-algorithm-iii">The backfitting algorithm III</h2>
+</section>
+<section id="local-scoring-for-additive-logistic-regression" class="level2">
+<h2 class="anchored" data-anchor-id="local-scoring-for-additive-logistic-regression">Local scoring for additive logistic regression</h2>
+</section>
+<section id="gam-using-penalized-splines" class="level2">
+<h2 class="anchored" data-anchor-id="gam-using-penalized-splines">GAM using penalized splines</h2>
+</section>
+<section id="gam-using-penalized-splines-1" class="level2">
+<h2 class="anchored" data-anchor-id="gam-using-penalized-splines-1">GAM using penalized splines</h2>
+</section>
+<section id="on-the-choice-of-smoothing-parameters" class="level2">
+<h2 class="anchored" data-anchor-id="on-the-choice-of-smoothing-parameters">On the choice of smoothing parameters</h2>
+</section>
+<section id="gam-and-variable-selection" class="level2">
+<h2 class="anchored" data-anchor-id="gam-and-variable-selection">GAM and variable selection</h2>
+</section>
+<section id="the-trawl-data" class="level2">
+<h2 class="anchored" data-anchor-id="the-trawl-data">The <code>trawl</code> data</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: nlme</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>This is mgcv 1.9-0. For overview type 'help("mgcv-package")'.</code></pre>
+</div>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">term</th>
+<th style="text-align: right;">edf</th>
+<th style="text-align: right;">ref.df</th>
+<th style="text-align: right;">statistic</th>
+<th style="text-align: right;">p.value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">s(Longitude)</td>
+<td style="text-align: right;">4.427</td>
+<td style="text-align: right;">5.417</td>
+<td style="text-align: right;">36.610</td>
+<td style="text-align: right;">0.000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">s(Latitude)</td>
+<td style="text-align: right;">3.187</td>
+<td style="text-align: right;">4.030</td>
+<td style="text-align: right;">1.977</td>
+<td style="text-align: right;">0.098</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">s(Depth)</td>
+<td style="text-align: right;">1.580</td>
+<td style="text-align: right;">1.980</td>
+<td style="text-align: right;">1.181</td>
+<td style="text-align: right;">0.343</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="partial-effect-of-gams-longitude" class="level2">
+<h2 class="anchored" data-anchor-id="partial-effect-of-gams-longitude">Partial effect of GAMs (<code>Longitude</code>)</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_F_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="1560"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gams-with-interactions" class="level2">
+<h2 class="anchored" data-anchor-id="gams-with-interactions">GAMs with interactions</h2>
+</section>
+<section id="naïve-bayes-classifier-and-gams" class="level2">
+<h2 class="anchored" data-anchor-id="naïve-bayes-classifier-and-gams">☠️ - Naïve Bayes classifier and GAMs</h2>
+</section>
+<section id="the-mgcv-r-package" class="level2">
+<h2 class="anchored" data-anchor-id="the-mgcv-r-package">☠️ - The <code>mgcv</code> R package</h2>
+<div class="columns">
+<div class="column" style="width:35%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/iceberg.jpg" class="img-fluid figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:65%;">
+<ul>
+<li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
+<ul>
+<li>Generalized additive models (GAMs)</li>
+<li>Multivariate Adaptive Regression Splines (MARS)</li>
+</ul></li>
+<li><p>We have seen that <span class="blue">fully nonparametric</span> methods are plagued by the <span class="orange">curse of dimensionality</span>.</p></li>
+<li><p>GAMs and MARS are <span class="blue">semi-parametric</span> approaches that keep the model complexity under control so that:</p>
+<ul>
+<li>they are more flexible than linear models;</li>
+<li>they are not hugely impacted by the curse of dimensionality.</li>
+</ul></li>
+<li><p>The running example is about <span class="orange">trawl data</span> from the <span class="blue">Great Barrier Reef</span>.</p></li>
+</ul>
+</div>
+</div>
+</section>
+<section id="pros-and-cons-of-generalized-additive-models-gams" class="level2">
+<h2 class="anchored" data-anchor-id="pros-and-cons-of-generalized-additive-models-gams">Pros and cons of generalized additive models (GAMs)</h2>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pros
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>asd</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cons
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>asd</li>
+</ul>
+</div>
+</div>
+</section>
+</section>
+<section id="mars" class="level1">
+<h1>MARS</h1>
+<section id="mars-1" class="level2">
+<h2 class="anchored" data-anchor-id="mars-1">MARS</h2>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: Formula</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: plotmo</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: plotrix</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: TeachingDemos</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>x[119,5] with colnames ZoneClosed Year1993 Latitude Longitude Depth
+y[119,1] with colname Score1, and values 0.7544, 0.9, -0.301, 1.481, -...
+Forward pass term 1, 2, 4, 6, 8, 10, 12, 14
+Reached nk 15
+After forward pass GRSq 0.532 RSq 0.709
+Exhaustive pruning: number of subsets 2047   bx sing val ratio 0.003
+Prune exhaustive penalty 3 nprune null: selected 4 of 11 terms, and 2 of 5 preds
+After pruning pass GRSq 0.583 RSq 0.634</code></pre>
+</div>
+</div>
+</section>
+<section id="partial-plots" class="level2">
+<h2 class="anchored" data-anchor-id="partial-plots">Partial plots</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Linear model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">GAM model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">MARS (degree 1)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href="">MARS (degree 2)</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_F_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="1800"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_F_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="1800"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_F_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="1800"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="un_F_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="1800"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 <!-- ## The `Hitters` dataset -->
 <!-- ```{r} -->
 <!-- library(pdp) -->
 <!-- gam_partial <- partial(m_gam_selected, pred.var = c("Years", "CHits"), grid.resolution = 40) -->
 <!-- autoplot(gam_partial) + theme_light() -->
 <!-- ``` -->
-<!-- ## Final results -->
-<!-- ```{r} -->
-<!-- y_test <- exp(Hitters_test$logSalary) -->
-<!-- y_null <- exp(mean(Hitters_train$logSalary)) -->
-<!-- y_hat_linear <- exp(predict(m_linear, newdata = Hitters_test)) -->
-<!-- y_hat_gam <- exp(predict(m_gam, newdata = Hitters_test)) -->
-<!-- y_hat_gam_selected <- exp(predict(m_gam_selected, newdata = Hitters_test)) -->
-<!-- y_mars_deg1 <- exp(predict(fit_mars_deg1, newdata = Hitters_test)) -->
-<!-- y_mars_deg2 <- exp(predict(fit_mars_deg2, newdata = Hitters_test)) -->
-<!-- tab_results <-rbind(c( -->
-<!--   mean(abs(y_test - y_null)), -->
-<!--   mean(abs(y_test - y_hat_linear)), -->
-<!--   mean(abs(y_test - y_hat_gam)), -->
-<!--   mean(abs(y_test - y_hat_gam_selected)), -->
-<!--   mean(abs(y_test - y_mars_deg1)), -->
-<!--   mean(abs(y_test - y_mars_deg2))), -->
-<!--   sqrt(c(mean(abs(y_test - y_null)^2), -->
-<!--   mean(abs(y_test - y_hat_linear)^2), -->
-<!--   mean(abs(y_test - y_hat_gam)^2), -->
-<!--   mean(abs(y_test - y_hat_gam_selected)^2), -->
-<!--   mean(abs(y_test - y_mars_deg1)^2), -->
-<!--   mean(abs(y_test - y_mars_deg2)^2)))) -->
-<!-- colnames(tab_results) <- c("Null model", "Best subset", "GAM", "GAM (selected)", "MARS (degree 1)", "MARS (degree 2)") -->
-<!-- rownames(tab_results) <- c("Test MAE", "Test RMSE") -->
-<!-- knitr::kable(tab_results, digits = 3) -->
-<!-- ``` -->
-<!-- ## References -->
-<!-- -  -->
+</section>
+<section id="final-results" class="level2">
+<h2 class="anchored" data-anchor-id="final-results">Final results</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 16%">
+<col style="width: 19%">
+<col style="width: 8%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: right;">Null model</th>
+<th style="text-align: right;">Linear model</th>
+<th style="text-align: right;">GAM</th>
+<th style="text-align: right;">MARS (degree 1)</th>
+<th style="text-align: right;">MARS (degree 2)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">MAE</td>
+<td style="text-align: right;">0.707</td>
+<td style="text-align: right;">0.538</td>
+<td style="text-align: right;">0.490</td>
+<td style="text-align: right;">0.469</td>
+<td style="text-align: right;">0.462</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">RMSE</td>
+<td style="text-align: right;">0.805</td>
+<td style="text-align: right;">0.670</td>
+<td style="text-align: right;">0.644</td>
+<td style="text-align: right;">0.625</td>
+<td style="text-align: right;">0.590</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li></li>
+</ul>
+</section>
 </section>
 
 </main>
