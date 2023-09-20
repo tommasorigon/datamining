@@ -93,6 +93,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#mars-1" id="toc-mars-1" class="nav-link" data-scroll-target="#mars-1">MARS</a></li>
   <li><a href="#partial-plots" id="toc-partial-plots" class="nav-link" data-scroll-target="#partial-plots">Partial plots</a></li>
   <li><a href="#final-results" id="toc-final-results" class="nav-link" data-scroll-target="#final-results">Final results</a></li>
+  <li><a href="#pros-and-cons-of-mars" id="toc-pros-and-cons-of-mars" class="nav-link" data-scroll-target="#pros-and-cons-of-mars">Pros and cons of MARS</a></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
@@ -293,7 +294,7 @@ y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
 <ul>
 <li>We seek for an estimate of (a suitable transformation of) the <span class="blue">mean function</span>, namely <span class="math display">
 g^{-1}\{\mathbb{E}(Y_i)\} = f(x_{i1},\dots,x_{ip}),
-</span> where <span class="math inline">g(\cdot)</span> is the so-called <span class="orange">link function</span>.</li>
+</span> where <span class="math inline">g^{-1}(\cdot)</span> is the so-called <span class="orange">link function</span>.</li>
 </ul>
 <ul>
 <li>The <span class="orange">unknown</span> multivariate function <span class="math inline">f(\bm{x}) = f(x_1,\dots,x_p) : \mathbb{R}^p \rightarrow \mathbb{R}</span> is <span class="orange">too complex</span>. However, the following <span class="blue">decomposition</span> holds <span class="math display">
@@ -333,16 +334,20 @@ f(\bm{x}_i) = \beta_0 + f_1(x_{i1}) + \cdots + f_p(x_{ip}) = \beta_0 + \sum_{j=1
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-The backfitting algorithm for additive models
+The backfitting algorithm for additive regression models
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ol type="1">
-<li><p>Let <span class="math inline">\mathcal{M}_0</span> be the <span class="blue">null model</span>, which contains no predictors, i.e.&nbsp;set <span class="math inline">\hat{y}_i = \hat{\beta}_0 = \bar{y}</span>.</p></li>
-<li><p>For <span class="math inline">k =1,\dots,p</span>, do:</p>
+<li><p>Initialize <span class="math inline">\hat{\beta}_0 = \bar{y}</span> and set <span class="math inline">f_j(x_j) = 0</span>, for <span class="math inline">j=1,\dots,p</span>.</p></li>
+<li><p>Cycle <span class="math inline">j =1,\dots,p</span>, <span class="math inline">j =1,\dots,p</span>, <span class="math inline">\dots</span>, until <span class="orange">convergence</span>:</p>
 <ol type="i">
-<li><p>Estimate <span class="orange">all</span> the <span class="math inline">\binom{p}{k}</span> models that contain exactly <span class="math inline">k</span> covariates;</p></li>
-<li><p>Identify the “best” model with <span class="math inline">k</span> covariates having the smallest <span class="math inline">\text{MSE}_{k, \text{train}}</span>; call it <span class="math inline">\mathcal{M}_k</span>.</p></li>
+<li><p>Update the <span class="math inline">k</span>th function by smoothing via <span class="math inline">\mathcal{S}_j</span> the <span class="blue">partial residuals</span>, so that <span class="math display">
+\hat{f}_j(x) \leftarrow \mathcal{S}_j\left[\left\{x_{ij}, y_i - \hat{\beta}_0 - \sum_{k \neq j} \hat{f}_k(x_{ik})\right\}_{i=1}^n\right].
+</span></p></li>
+<li><p>Center the function by subtracting its <span class="math display">
+\hat{f}_j(x) \leftarrow \hat{f}_j(x) - \frac{1}{n}\sum_{i=1}^n\hat{f}_j(x_{ij}).
+</span></p></li>
 </ol></li>
 </ol>
 </div>
@@ -442,18 +447,7 @@ The backfitting algorithm for additive models
 </div>
 </div><div class="column" style="width:65%;">
 <ul>
-<li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
-<ul>
-<li>Generalized additive models (GAMs)</li>
-<li>Multivariate Adaptive Regression Splines (MARS)</li>
-</ul></li>
-<li><p>We have seen that <span class="blue">fully nonparametric</span> methods are plagued by the <span class="orange">curse of dimensionality</span>.</p></li>
-<li><p>GAMs and MARS are <span class="blue">semi-parametric</span> approaches that keep the model complexity under control so that:</p>
-<ul>
-<li>they are more flexible than linear models;</li>
-<li>they are not hugely impacted by the curse of dimensionality.</li>
-</ul></li>
-<li><p>The running example is about <span class="orange">trawl data</span> from the <span class="blue">Great Barrier Reef</span>.</p></li>
+<li></li>
 </ul>
 </div>
 </div>
@@ -623,6 +617,39 @@ After pruning pass GRSq 0.583 RSq 0.634</code></pre>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+</section>
+<section id="pros-and-cons-of-mars" class="level2">
+<h2 class="anchored" data-anchor-id="pros-and-cons-of-mars">Pros and cons of MARS</h2>
+<div class="callout callout-style-simple callout-tip no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Pros
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>asd</li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Cons
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>asd</li>
+</ul>
 </div>
 </div>
 </section>
