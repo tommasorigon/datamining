@@ -87,7 +87,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#partial-effect-of-gams-depth" id="toc-partial-effect-of-gams-depth" class="nav-link" data-scroll-target="#partial-effect-of-gams-depth">Partial effect of GAMs (<code>Depth</code>)</a></li>
   <li><a href="#comments-and-criticism" id="toc-comments-and-criticism" class="nav-link" data-scroll-target="#comments-and-criticism">Comments and criticism</a></li>
   <li><a href="#naïve-bayes-classifier-and-gams" id="toc-naïve-bayes-classifier-and-gams" class="nav-link" data-scroll-target="#naïve-bayes-classifier-and-gams">☠️ - Naïve Bayes classifier and GAMs</a></li>
-  <li><a href="#the-mgcv-r-package" id="toc-the-mgcv-r-package" class="nav-link" data-scroll-target="#the-mgcv-r-package">☠️ - The <code>mgcv</code> R package</a></li>
+  <li><a href="#the-mgcv-r-package" id="toc-the-mgcv-r-package" class="nav-link" data-scroll-target="#the-mgcv-r-package">☠️ - The <code>mgcv</code> <strong>R</strong> package</a></li>
   <li><a href="#pros-and-cons-of-generalized-additive-models-gams" id="toc-pros-and-cons-of-generalized-additive-models-gams" class="nav-link" data-scroll-target="#pros-and-cons-of-generalized-additive-models-gams">Pros and cons of generalized additive models (GAMs)</a></li>
   </ul></li>
   <li><a href="#mars" id="toc-mars" class="nav-link" data-scroll-target="#mars">MARS</a>
@@ -578,9 +578,14 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 </section>
 <section id="naïve-bayes-classifier-and-gams" class="level2">
 <h2 class="anchored" data-anchor-id="naïve-bayes-classifier-and-gams">☠️ - Naïve Bayes classifier and GAMs</h2>
+<ul>
+<li>Recall that the [naïve Bayes classifier] expresses the classification probability <span class="math inline">\text{pr}(y = \ell \mid \bm{x})</span> as <span class="math display">
+\text{pr}(y = \ell \mid \bm{x}) = \frac{\pi_\ell\prod_{j=1}^p p_{j\ell}(x_j)}{\sum_{m = 1}^L \pi_m\prod_{j=1}^p p_{jm}(x_j)} = \frac{\pi_\ell\prod_{j=1}^p p_{j\ell}(x_j)}{p(\bm{x})}, \quad \ell = 1,\dots,L.
+</span></li>
+</ul>
 </section>
 <section id="the-mgcv-r-package" class="level2">
-<h2 class="anchored" data-anchor-id="the-mgcv-r-package">☠️ - The <code>mgcv</code> R package</h2>
+<h2 class="anchored" data-anchor-id="the-mgcv-r-package">☠️ - The <code>mgcv</code> <strong>R</strong> package</h2>
 <div class="columns">
 <div class="column" style="width:35%;">
 <div class="quarto-figure quarto-figure-center">
@@ -590,7 +595,7 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 </div>
 </div><div class="column" style="width:65%;">
 <ul>
-<li></li>
+<li>GAMs were invented by Hastie and Tibshirani in 1986</li>
 </ul>
 </div>
 </div>

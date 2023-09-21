@@ -597,7 +597,12 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 
 ## ☠️ - Naïve Bayes classifier and GAMs
 
-## ☠️ - The `mgcv` R package
+- Recall that the [naïve Bayes classifier] expresses the classification probability $\text{pr}(y = \ell \mid \bm{x})$ as
+$$
+\text{pr}(y = \ell \mid \bm{x}) = \frac{\pi_\ell\prod_{j=1}^p p_{j\ell}(x_j)}{\sum_{m = 1}^L \pi_m\prod_{j=1}^p p_{jm}(x_j)} = \frac{\pi_\ell\prod_{j=1}^p p_{j\ell}(x_j)}{p(\bm{x})}, \quad \ell = 1,\dots,L.
+$$
+
+## ☠️ - The `mgcv` **R** package
 
 ::: columns
 ::: {.column width="35%"}
@@ -605,7 +610,7 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 :::
 
 ::: {.column width="65%"}
--   
+- GAMs were invented by Hastie and Tibshirani in 1986
 :::
 :::
 
