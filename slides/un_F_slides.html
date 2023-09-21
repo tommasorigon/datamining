@@ -803,9 +803,23 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 </section>
 <section id="naïve-bayes-classifier-and-gams" class="slide level2 center">
 <h2>☠️ - Naïve Bayes classifier and GAMs</h2>
+<ul>
+<li><p>The <span class="orange">naïve Bayes classifier</span> expresses the <span class="blue">binary</span> classification probability <span class="math inline">\text{pr}(y = 1 \mid \bm{x})</span> as <span class="math display">
+\text{pr}(y = 1 \mid \bm{x}) = \frac{\pi_1 \prod_{j=1}^p p_{j1}(x_j)}{\pi_0\prod_{j=1}^p p_{j0}(x_j) + \pi_1\prod_{j=1}^p p_{j1}(x_j)} = \frac{\pi_1\prod_{j=1}^p p_{j1}(x_j)}{p(\bm{x})}.
+</span></p></li>
+<li><p>Hence, using class <span class="math inline">0</span> as a <span class="orange">baseline</span>, we can derive the following expression:<span class="math display">
+\log\frac{\text{pr}(y = 1 \mid \bm{x})}{\text{pr}(y = 0 \mid \bm{x})} = \log\frac{\pi_1\prod_{j=1}^p p_{j1}(x_j)}{\pi_0\prod_{j=1}^p p_{j0}(x_j)} = \log\frac{\pi_1}{\pi_0} + \sum_{j=1}^p\log\frac{p_{j1}(x_j)}{p_{j0}(x_j)} = \beta_0 + \sum_{j=1}^pf_j(x_j).
+</span></p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>Therefore, although naïve Bayes and GAMs are fitted in a quite different way, there is a <span class="orange">tight connection</span> among the two methods.</p></li>
+<li><p>Naïve Bayes has a <span class="blue">generalized additive model structure</span>. This also suggests that the “additive assumption” is connected to the notion of independence among the covariates.</p></li>
+</ul>
+</div>
 </section>
 <section id="the-mgcv-r-package" class="slide level2 center">
-<h2>☠️ - The <code>mgcv</code> R package</h2>
+<h2>☠️ - The <code>mgcv</code> <strong>R</strong> package</h2>
 <div class="columns">
 <div class="column" style="width:35%;">
 <div class="quarto-figure quarto-figure-center">
@@ -815,7 +829,7 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 </div>
 </div><div class="column" style="width:65%;">
 <ul>
-<li></li>
+<li>GAMs were invented by Hastie and Tibshirani in 1986</li>
 </ul>
 </div>
 </div>

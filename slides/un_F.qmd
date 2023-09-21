@@ -469,8 +469,8 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
     the Newton-Raphson method.
 
 -   Such an approach is particularly convenient in combination with
-    [smoothing splines]{.orange}, because the [derivatives]{.orange} needed for Newton's
-    method are available in closed form.
+    [smoothing splines]{.orange}, because the [derivatives]{.orange}
+    needed for Newton's method are available in closed form.
 
 ## GAM and variable selection
 
@@ -503,8 +503,8 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
 
 ## GAM modeling of `trawl` data
 
--   Let us get back to the `trawl` data. A [specification]{.blue} based on GAM could
-    be$$
+-   Let us get back to the `trawl` data. A [specification]{.blue} based
+    on GAM could be$$
       \begin{aligned}
       \texttt{Score}_i = \beta_0 &+  f_1(\texttt{Longitude}_i)+ f_2(\texttt{Latitude}_i) + f_3(\texttt{Depth}_i) +\\
       &+ \beta_1 I(\texttt{Zone}_i = \texttt{Closed}) + \beta_2 I(\texttt{Year}_i = \texttt{1993}).
@@ -533,7 +533,7 @@ knitr::kable(tidy(m_gam, parametric = FALSE), digits = 3)
 
 | term           | estimate | std.error |    df |
 |:---------------|---------:|----------:|------:|
-| `(Intercept)`    |    0.865 |     0.099 |     1 |
+| `(Intercept)`  |    0.865 |     0.099 |     1 |
 | `s(Longitude)` |       \- |        \- | 4.427 |
 | `s(Latitude)`  |       \- |        \- | 3.187 |
 | `s(Depth)`     |       \- |        \- | 1.580 |
@@ -597,10 +597,23 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 
 ## ☠️ - Naïve Bayes classifier and GAMs
 
-- Recall that the [naïve Bayes classifier] expresses the classification probability $\text{pr}(y = \ell \mid \bm{x})$ as
-$$
-\text{pr}(y = \ell \mid \bm{x}) = \frac{\pi_\ell\prod_{j=1}^p p_{j\ell}(x_j)}{\sum_{m = 1}^L \pi_m\prod_{j=1}^p p_{jm}(x_j)} = \frac{\pi_\ell\prod_{j=1}^p p_{j\ell}(x_j)}{p(\bm{x})}, \quad \ell = 1,\dots,L.
-$$
+-   The [naïve Bayes classifier]{.orange} expresses the [binary]{.blue} classification
+    probability $\text{pr}(y = 1 \mid \bm{x})$ as $$
+    \text{pr}(y = 1 \mid \bm{x}) = \frac{\pi_1 \prod_{j=1}^p p_{j1}(x_j)}{\pi_0\prod_{j=1}^p p_{j0}(x_j) + \pi_1\prod_{j=1}^p p_{j1}(x_j)} = \frac{\pi_1\prod_{j=1}^p p_{j1}(x_j)}{p(\bm{x})}.
+    $$
+
+-   Hence, using class $0$ as a [baseline]{.orange}, we can derive the following
+    expression:$$
+    \log\frac{\text{pr}(y = 1 \mid \bm{x})}{\text{pr}(y = 0 \mid \bm{x})} = \log\frac{\pi_1\prod_{j=1}^p p_{j1}(x_j)}{\pi_0\prod_{j=1}^p p_{j0}(x_j)} = \log\frac{\pi_1}{\pi_0} + \sum_{j=1}^p\log\frac{p_{j1}(x_j)}{p_{j0}(x_j)} = \beta_0 + \sum_{j=1}^pf_j(x_j).
+    $$
+
+. . .
+
+-   Therefore, although naïve Bayes and GAMs are fitted in a quite
+    different way, there is a [tight connection]{.orange} among the two
+    methods.
+
+-   Naïve Bayes has a [generalized additive model structure]{.blue}. This also suggests that the "additive assumption" is connected to the notion of independence among the covariates. 
 
 ## ☠️ - The `mgcv` **R** package
 
@@ -610,7 +623,7 @@ $$
 :::
 
 ::: {.column width="65%"}
-- GAMs were invented by Hastie and Tibshirani in 1986
+-   GAMs were invented by Hastie and Tibshirani in 1986
 :::
 :::
 
@@ -619,11 +632,11 @@ $$
 ::: callout-tip
 #### Pros
 
-- Sentence from Hastie about interpretability
+-   Sentence from Hastie about interpretability
 
-- Easy to fit
+-   Easy to fit
 
-- Potential manual insertion of interaction
+-   Potential manual insertion of interaction
 :::
 
 . . .
