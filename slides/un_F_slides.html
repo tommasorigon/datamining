@@ -752,6 +752,18 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;"><code>Zone_Closed</code></td>
+<td style="text-align: right;">-0.265</td>
+<td style="text-align: right;">0.137</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>Year_1993</code></td>
+<td style="text-align: right;">0.300</td>
+<td style="text-align: right;">0.081</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;"><code>s(Longitude)</code></td>
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">-</td>
@@ -768,18 +780,6 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">1.580</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><code>Zone_Closed</code></td>
-<td style="text-align: right;">-0.265</td>
-<td style="text-align: right;">0.137</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>Year_1993</code></td>
-<td style="text-align: right;">0.300</td>
-<td style="text-align: right;">0.081</td>
-<td style="text-align: right;">1</td>
 </tr>
 </tbody>
 </table>
@@ -814,7 +814,7 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 <div class="fragment">
 <ul>
 <li><p>Therefore, although naïve Bayes and GAMs are fitted in a quite different way, there is a <span class="orange">tight connection</span> among the two methods.</p></li>
-<li><p>Naïve Bayes has a <span class="blue">generalized additive model structure</span>. This also suggests that the “additive assumption” is connected to the notion of independence among the covariates.</p></li>
+<li><p>Naïve Bayes has a <span class="blue">generalized additive model structure</span>. This also suggests that the “<span class="orange">additive assumption</span>” is linked to the notion of <span class="orange">independence</span> among the covariates.</p></li>
 </ul>
 </div>
 </section>
@@ -828,9 +828,16 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 </figure>
 </div>
 </div><div class="column" style="width:65%;">
+<div>
 <ul>
-<li>GAMs were invented by Hastie and Tibshirani in 1986</li>
+<li class="fragment"><p>GAMs were <span class="orange">invented</span> by Hastie and Tibshirani in 1986, including the backfitting algorithm.</p></li>
+<li class="fragment"><p>Simon Wood (2003) described <span class="blue">thin-plate regression splines</span> and their estimation (no backfitting).</p></li>
+<li class="fragment"><p>Simon Wood (2004, 2011) invented methods for estimating <span class="math inline">\lambda_1,\dots,\lambda_p</span> in an <span class="orange">efficient</span> and <span class="orange">stable</span> manner.</p></li>
+<li class="fragment"><p>Marra and Wood (2011) discussed many methods for practical <span class="orange">variable selection</span> for GAMs.</p></li>
+<li class="fragment"><p>For further details, there is a <span class="blue">recent and advanced book</span> by Simon Wood (2017) entitled “<em>Generalized Additive Models: An Introduction with R</em>”.</p></li>
+<li class="fragment"><p>The <code>mgcv</code> package in <strong>R</strong> (by Simon Wood) implements everything mentioned here.</p></li>
 </ul>
+</div>
 </div>
 </div>
 </section>

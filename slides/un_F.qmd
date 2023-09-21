@@ -534,11 +534,11 @@ knitr::kable(tidy(m_gam, parametric = FALSE), digits = 3)
 | term           | estimate | std.error |    df |
 |:---------------|---------:|----------:|------:|
 | `(Intercept)`  |    0.865 |     0.099 |     1 |
+| `Zone_Closed`  |   -0.265 |     0.137 |     1 |
+| `Year_1993`    |    0.300 |     0.081 |     1 |
 | `s(Longitude)` |       \- |        \- | 4.427 |
 | `s(Latitude)`  |       \- |        \- | 3.187 |
 | `s(Depth)`     |       \- |        \- | 1.580 |
-| `Zone_Closed`  |   -0.265 |     0.137 |     1 |
-| `Year_1993`    |    0.300 |     0.081 |     1 |
 :::
 
 ## Partial effect of GAMs (`Longitude`)
@@ -613,7 +613,7 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
     different way, there is a [tight connection]{.orange} among the two
     methods.
 
--   Naïve Bayes has a [generalized additive model structure]{.blue}. This also suggests that the "additive assumption" is connected to the notion of independence among the covariates. 
+-   Naïve Bayes has a [generalized additive model structure]{.blue}. This also suggests that the "[additive assumption]{.orange}" is linked to the notion of [independence]{.orange} among the covariates. 
 
 ## ☠️ - The `mgcv` **R** package
 
@@ -623,7 +623,19 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 :::
 
 ::: {.column width="65%"}
--   GAMs were invented by Hastie and Tibshirani in 1986
+::: incremental
+- GAMs were [invented]{.orange} by Hastie and Tibshirani in 1986, including the backfitting algorithm.
+
+- Simon Wood (2003) described [thin-plate regression splines]{.blue} and their estimation (no backfitting).
+
+- Simon Wood (2004, 2011) invented methods for estimating $\lambda_1,\dots,\lambda_p$ in an [efficient]{.orange} and [stable]{.orange} manner.
+
+- Marra and Wood (2011) discussed many methods for practical [variable selection]{.orange} for GAMs.
+
+- For further details, there is a [recent and advanced book]{.blue} by Simon Wood (2017) entitled "*Generalized Additive Models: An Introduction with R*". 
+
+- The `mgcv` package  in **R** (by Simon Wood) implements everything mentioned here.
+:::
 :::
 :::
 
