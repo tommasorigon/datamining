@@ -60,30 +60,31 @@ styler:::style_file("../code/un_F.R")
 
 ::: columns
 ::: {.column width="35%"}
-![](img/reef.jpg){width=80% fig-align="center"} 
-
+![](img/reef.jpg){width="80%" fig-align="center"}
 
 ::: {style="font-size: 90%;"}
-The [Great Barrier Reef](https://en.wikipedia.org/wiki/Great_Barrier_Reef)
+The [Great Barrier
+Reef](https://en.wikipedia.org/wiki/Great_Barrier_Reef)
 :::
-
-
 :::
 
 ::: {.column width="65%"}
-
 -   In this unit we will cover the following [topics]{.orange}:
 
-    - Generalized additive models (GAMs)
-    - Multivariate Adaptive Regression Splines (MARS)
+    -   Generalized additive models (GAMs)
+    -   Multivariate Adaptive Regression Splines (MARS)
 
-- We have seen that [fully nonparametric]{.blue} methods are plagued by the [curse of dimensionality]{.orange}.
+-   We have seen that [fully nonparametric]{.blue} methods are plagued
+    by the [curse of dimensionality]{.orange}.
 
-- GAMs and MARS are [semi-parametric]{.blue} approaches that keep the model complexity under control so that: 
-  - they are more flexible than linear models; 
-  - they are not hugely impacted by the curse of dimensionality.
-    
-- The running example is about [trawl data]{.orange} from the [Great Barrier Reef]{.blue}.
+-   GAMs and MARS are [semi-parametric]{.blue} approaches that keep the
+    model complexity under control so that:
+
+    -   they are more flexible than linear models;
+    -   they are not hugely impacted by the curse of dimensionality.
+
+-   The running example is about [trawl data]{.orange} from the [Great
+    Barrier Reef]{.blue}.
 :::
 :::
 
@@ -113,44 +114,57 @@ trawl_train <- trawl[id_train, ]
 trawl_test <- trawl[id_test, ]
 ```
 
-
-
 ::: incremental
+-   We consider the `trawl` dataset, which refers to a [survey]{.blue}
+    of the [fauna]{.blue} on the sea bed lying between the coast of
+    northern Queensland and the [Great Barrier Reef]{.orange}.
 
-- We consider the `trawl` dataset, which refers to a [survey]{.blue} of the [fauna]{.blue} on the sea bed lying between the coast of northern Queensland and the [Great Barrier Reef]{.orange}. 
+-   The [response]{.blue} variable is `Score`, which is a standardized
+    numeric quantity measuring the amount of fishes caught on a given
+    location.
 
-- The [response]{.blue} variable is `Score`, which is a standardized numeric quantity measuring the amount of fishes caught on a given location.
+-   We want to [predict]{.blue} the [catch score]{.orange}, as a
+    function of a few covariates:
 
-- We want to [predict]{.blue} the [catch score]{.orange}, as a function of a few covariates: 
-  - the `Latitude` and `Longitude` of the sampling position. The longitude can be seen as a proxy of the distance from the coast in this specific experiment;
-  - the `Depth` of the sea on the sampling position;
-  - the `Zone` of the sampling region, either open or closed to [commercial fishing]{.blue};
-  - the `Year` of the sampling, which can be either `1992` or `1993`. 
+    -   the `Latitude` and `Longitude` of the sampling position. The
+        longitude can be seen as a proxy of the distance from the coast
+        in this specific experiment;
+    -   the `Depth` of the sea on the sampling position;
+    -   the `Zone` of the sampling region, either open or closed to
+        [commercial fishing]{.blue};
+    -   the `Year` of the sampling, which can be either `1992` or
+        `1993`.
 
-
-
-- Having remove a few observations due to missingness, we split the data into [training]{.blue} (119 obs.) and [test]{.orange} set (30 obs.). The full `trawl` dataset is available in the `sm` R package. 
+-   Having remove a few observations due to missingness, we split the
+    data into [training]{.blue} (119 obs.) and [test]{.orange} set (30
+    obs.). The full `trawl` dataset is available in the `sm` R package.
 :::
 
 ## The `trawl` dataset
 
-<div class="flourish-embed flourish-map" data-src="visualisation/15070357"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
+::: {.flourish-embed .flourish-map data-src="visualisation/15070357"}
+```{=html}
+<script src="https://public.flourish.studio/resources/embed.js"></script>
+```
+:::
 
 ## Getting started: linear models
 
-- Let begin our analysis by trying to predict the `Score` using a [linear model]{.orange} of the form
-$$
-y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
-$$
-- The above values correspond to the variables of the `trawl` dataset, so that
-$$
-\begin{aligned}
-\texttt{Score}_i = \beta_0 &+ \beta_1 \texttt{Latitude}_i + \beta_2 \texttt{Longitude}_i + \\
-&+ \beta_3\texttt{Depth}_i + \beta_4 I(\texttt{Zone}_i = \texttt{Closed}) + \beta_5 I(\texttt{Year}_i = \texttt{1993}).
-\end{aligned}
-$$
+-   Let begin our analysis by trying to predict the `Score` using a
+    [linear model]{.orange} of the form $$
+    y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
+    $$
 
-- Such a model can be estimated using [ordinary least squares]{.orange}, resulting in:
+-   The above values correspond to the variables of the `trawl` dataset,
+    so that $$
+    \begin{aligned}
+    \texttt{Score}_i = \beta_0 &+ \beta_1 \texttt{Latitude}_i + \beta_2 \texttt{Longitude}_i + \\
+    &+ \beta_3\texttt{Depth}_i + \beta_4 I(\texttt{Zone}_i = \texttt{Closed}) + \beta_5 I(\texttt{Year}_i = \texttt{1993}).
+    \end{aligned}
+    $$
+
+-   Such a model can be estimated using [ordinary least
+    squares]{.orange}, resulting in:
 
 ```{r}
 #| output: false
@@ -160,14 +174,14 @@ knitr::kable(tidy(summary(m_linear)), digits = 3)
 ```
 
 ::: {style="font-size: 75%;"}
-|term        | estimate| std.error| statistic| p.value|
-|:-----------|--------:|---------:|---------:|-------:|
-|`(Intercept)` |  290.750|    23.314|    12.471|   0.000|
-|`Latitude`    |    0.200|     0.192|     1.041|   0.300|
-|`Longitude`   |   -2.010|     0.161|   -12.461|   0.000|
-|`Depth`       |    0.016|     0.006|     2.624|   0.010|
-|`Zone_Closed`  |   -0.109|     0.092|    -1.181|   0.240|
-|`Year_1993`    |    0.314|     0.090|     3.504|   0.001|
+| term          | estimate | std.error | statistic | p.value |
+|:--------------|---------:|----------:|----------:|--------:|
+| `(Intercept)` |  290.750 |    23.314 |    12.471 |   0.000 |
+| `Latitude`    |    0.200 |     0.192 |     1.041 |   0.300 |
+| `Longitude`   |   -2.010 |     0.161 |   -12.461 |   0.000 |
+| `Depth`       |    0.016 |     0.006 |     2.624 |   0.010 |
+| `Zone_Closed` |   -0.109 |     0.092 |    -1.181 |   0.240 |
+| `Year_1993`   |    0.314 |     0.090 |     3.504 |   0.001 |
 :::
 
 ## Scatterplot with `loess` estimate
@@ -188,100 +202,217 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   ylab("Catch score")
 ```
 
+## Comments and cricism of linear models
 
-## Comments and cricism
-
-- Is this a good model? 
-
-. . .
-
-- Granted that every model is just an approximation of reality, it is undeniable that there are some [problematic]{.orange} aspects.
+-   Is this a good model?
 
 . . .
 
-- By simple graphical inspection, it seems that the relationship between `Score` and `Longitude` is [non-linear]{.orange}.
-
-- Also, an [interaction effect]{.blue} between `Year` and `Longitude` seems to be present. 
+-   Granted that every model is just an approximation of reality, it is
+    undeniable that there are some [problematic]{.orange} aspects.
 
 . . .
 
-- These considerations support the idea that [nonparametric approach]{.blue} might be more appropriate.
+-   By simple graphical inspection, it seems that the relationship
+    between `Score` and `Longitude` is [non-linear]{.orange}.
 
-- However, the number of covariates is $p = 5$ and therefore a fully nonparametric estimation would [not]{.orange} be [feasible]{.orange}, because of the curse of dimensionality. 
+-   Also, an [interaction effect]{.blue} between `Year` and `Longitude`
+    seems to be present.
 
-- We need a simplified modelling strategy, that accounts for non-linearities but at the same time is not fully flexible. 
+. . .
 
+-   These considerations support the idea that [nonparametric
+    approach]{.blue} might be more appropriate.
+
+-   However, the number of covariates is $p = 5$ and therefore a fully
+    nonparametric estimation would [not]{.orange} be
+    [feasible]{.orange}, because of the curse of dimensionality.
+
+-   We need a simplified modelling strategy, that accounts for
+    non-linearities but at the same time is not fully flexible.
 
 # Generalized additive models (GAM)
 
 ## The ANOVA decomposition of a function
 
-- We seek for an estimate of (a suitable transformation of) the [mean function]{.blue}, namely
-$$
-g^{-1}\{\mathbb{E}(Y_i)\} = f(x_{i1},\dots,x_{ip}),
-$$
-where $g^{-1}(\cdot)$ is the so-called [link function]{.orange}.
+-   We seek for an estimate of (a suitable transformation of) the [mean
+    function]{.blue}, namely $$
+    g^{-1}\{\mathbb{E}(Y_i)\} = f(x_{i1},\dots,x_{ip}),
+    $$ where $g^{-1}(\cdot)$ is the so-called [link function]{.orange}.
 
 . . .
 
-- The [unknown]{.orange} multivariate function $f(\bm{x}) = f(x_1,\dots,x_p) : \mathbb{R}^p \rightarrow \mathbb{R}$ is [too complex]{.orange}. However, the following [decomposition]{.blue} holds
-$$
-f(\bm{x}) = \beta_0 + \underbrace{\sum_{j=1}^p f_j(x_j)}_{\text{Main effect}} + \underbrace{\sum_{j=1}^p\sum_{k < j}f_{jk}(x_j, x_k)}_{\text{Interaction effect}} + \underbrace{\sum_{j=1}^p\sum_{k < j}\sum_{h < k < j}f_{jkh}(x_j, x_k, x_h)}_{\text{Higher order interaction}} + \cdots.
-$$
+-   The [unknown]{.orange} multivariate function
+    $f(\bm{x}) = f(x_1,\dots,x_p) : \mathbb{R}^p \rightarrow \mathbb{R}$
+    is [too complex]{.orange}. However, the following
+    [decomposition]{.blue} holds $$
+    f(\bm{x}) = \beta_0 + \underbrace{\sum_{j=1}^p f_j(x_j)}_{\text{Main effect}} + \underbrace{\sum_{j=1}^p\sum_{k < j}f_{jk}(x_j, x_k)}_{\text{Interaction effect}} + \underbrace{\sum_{j=1}^p\sum_{k < j}\sum_{h < k < j}f_{jkh}(x_j, x_k, x_h)}_{\text{Higher order interaction}} + \cdots.
+    $$
 
 . . .
 
-- By imposing [suitable constraints]{.blue}, this decomposition can be made [unique]{.orange}.
+-   By imposing [suitable constraints]{.blue}, this decomposition can be
+    made [unique]{.orange}.
 
-- More importantly, this decomposition gives us an intuition on how to build non-linear models with a simplified structure. 
+-   More importantly, this decomposition gives us an intuition on how to
+    build non-linear models with a simplified structure.
 
 ## Generalized additive models (GAM)
 
-- A [generalized additive model]{.blue} (GAM) presumes a representation of the following type: $$
-f(\bm{x}_i) = \beta_0 + f_1(x_{i1}) + \cdots + f_p(x_{ip}) = \beta_0 + \sum_{j=1}^pf_j(x_{ij}), \qquad i=1,\dots,n,
-$$
-where $f_1,\dots,f_p$ are [smooth univariate]{.orange} functions with a potentially non-linear behavior. 
+-   A [generalized additive model]{.blue} (GAM) presumes a
+    representation of the following type: $$
+    f(\bm{x}_i) = \beta_0 + f_1(x_{i1}) + \cdots + f_p(x_{ip}) = \beta_0 + \sum_{j=1}^pf_j(x_{ij}), \qquad i=1,\dots,n,
+    $$ where $f_1,\dots,f_p$ are [smooth univariate]{.orange} functions
+    with a potentially non-linear behavior.
 
 . . .
 
-- In GAMs we include only the [main effects]{.blue} and we [exclude]{.orange} the [interactions]{.orange} terms. 
+-   In GAMs we include only the [main effects]{.blue} and we
+    [exclude]{.orange} the [interactions]{.orange} terms.
 
-- Generalized linear models (GLMs) are a [special case]{.orange} of GAMs, in which $f_j(x_{ij}) = \beta_j x_{ij}$.
+-   Generalized linear models (GLMs) are a [special case]{.orange} of
+    GAMs, in which $f_j(x_{ij}) = \beta_j x_{ij}$.
 
 . . .
 
-- To avoid what is essentially a problem of [model identifiability]{.blue}, it is necessary for the various $f_j$ to be centered around $0$, that is $$
-\sum_{i=1}^n f_j(x_{ij}) = 0, \qquad j=1,\dots,p.
-$$
+-   To avoid what is essentially a problem of [model
+    identifiability]{.blue}, it is necessary for the various $f_j$ to be
+    centered around $0$, that is $$
+    \sum_{i=1}^n f_j(x_{ij}) = 0, \qquad j=1,\dots,p.
+    $$
 
 ## The backfitting algorithm I
 
+-   There exist several strategies for [estimating]{.orange} the
+    [unknown functions]{.orange} $f_1,\dots,f_p$. One of them, called
+    [backfitting]{.blue}, is particularly appealing because of its
+    elegance and generality.
+
+. . .
+
+-   Suppose we model each
+    $f_j(x) = \sum_{m = 1}^{M_j}\beta_{mj} h_{mj}(x)$ with a [basis
+    expansion]{.orange}, for example using [regression splines]{.blue}.
+
+-   In a [regression problem]{.orange} we need to minimize, over the unknown $\beta$ parameters, the
+    loss $$
+    \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_{ij})\right\}^2
+    $$ subject to the constraint $\sum_{i=1}^n f_j(x_{ij}) = 0$.
+    
+. . .
+
+- When $f_j$ are regression splines, the above loss can be [minimized]{.orange}
+    using [least squares]{.orange}. The identifiability issue could be handled by removing the intercept term from each spline basis. 
+
+-   However, here we consider an [alternative]{.orange} and [iterative]{.blue}
+    minimization method, which is similar to the coordinate
+    descent algorithm we employed for the elastic-net.
+
 ## The backfitting algorithm II
+
+- Now, let us re-arrange the term in the squared loss as follows:  $$
+    \sum_{i=1}^n\left\{\textcolor{red}{y_i - \beta_0 - \sum_{k\neq j}f_k(x_{ik})} - f_j(x_{ij})\right\}^2,
+$$
+where the highlighted terms are sometimes called [partial residuals]{.blue}.
+
+. . .
+
+<!-- - If all the functions but the $j$th were known, the estimation would reduce to a [univariate nonparametric smoothing]{.orange} of the $j$th covariate using the partial residuals as response. -->
+
+- Hence, we can repeatedly and iteratively fit a [univariate smoothing]{.blue} model for $f_j$ using the [partial residuals]{.orange} as [response]{.orange}, keeping fixed the value of the other functions $f_k$, for $k \neq j$. 
+
+. . .
+
+- This algorithm produces the same fit of least squares when $f_j$ are regression splines, but the idea is appealing because it can be used with any [generic smoothers]{.blue} $\mathcal{S}_j$. 
+
+. . .
+
+- Finally, note that under the constraint $\sum_{i=1}^n f_j(x_{ij}) = 0$ the least square estimate for the [intercept]{.orange} term is $\hat{\beta}_0 = \bar{y}$, i.e. the arithmetic mean.
+
+
+## The backfitting algorithm (regression)
 
 ::: callout-note
 #### The backfitting algorithm for additive regression models
 
-1.  Initialize $\hat{\beta}_0 = \bar{y}$ and set $f_j(x_j) = 0$, for $j=1,\dots,p$.
+1.  Initialize $\hat{\beta}_0 = \bar{y}$ and set $f_j(x_j) = 0$, for
+    $j=1,\dots,p$.
 
-2.  Cycle $j =1,\dots,p$, $j =1,\dots,p$, $\dots$, until [convergence]{.orange}:
+2.  Cycle $j =1,\dots,p$, $j =1,\dots,p$, $\dots$, until
+    [convergence]{.orange}:
 
-    i. Update the $k$th function by smoothing via $\mathcal{S}_j$ the [partial residuals]{.blue}, so that $$
-    \hat{f}_j(x) \leftarrow \mathcal{S}_j\left[\left\{x_{ij}, y_i - \hat{\beta}_0 - \sum_{k \neq j} \hat{f}_k(x_{ik})\right\}_{i=1}^n\right].
-    $$
+    i.  Update the $k$th function by smoothing via $\mathcal{S}_j$ the
+        [partial residuals]{.blue}, so that $$
+        \hat{f}_j(x) \leftarrow \mathcal{S}_j\left[\left\{x_{ij}, y_i - \hat{\beta}_0 - \sum_{k \neq j} \hat{f}_k(x_{ik})\right\}_{i=1}^n\right].
+        $$
 
-    iii. Center the function by subtracting its
-    $$
-    \hat{f}_j(x) \leftarrow \hat{f}_j(x) - \frac{1}{n}\sum_{i=1}^n\hat{f}_j(x_{ij}).
-    $$
+    ii. Center the function by subtracting its mean $$
+        \hat{f}_j(x) \leftarrow \hat{f}_j(x) - \frac{1}{n}\sum_{i=1}^n\hat{f}_j(x_{ij}).
+        $$
 :::
 
-## The backfitting algorithm III
+## Backfitting: comments and considerations
 
-## Local scoring for additive logistic regression
+- The backfitting algorithm, when $f_j$ are modeled as [regression splines]{.blue}, is known as the Gauss-Seidel algorithm and [convergence]{.orange} is [guaranteed]{.orange} under standard conditions.
+
+
+- Interestingly, even when $\mathcal{S}_j$ are [smoothing splines]{.blue} the [convergence]{.orange} of backfitting is [guaranteed]{.orange}; the proof for this statement is less straightforward. 
+
+. . .
+
+- In general, however, there is no theoretical guarantee that the algorithm will ever converge, even though the practical experience suggest that this is [not]{.orange} a [big concern]{.orange}. 
+
+. . .
+
+- When $\mathcal{S}_j$ is a [linear smoother]{.orange} with smoothing matrix $\bm{S}_j$, then by analogy with the previous unit we can define the [effective degrees of freedom]{.blue} of $\hat{f}_j$ as 
+$$
+\text{df}_j = \text{tr}(\bm{S}_j).
+$$
+The number of degrees of the whole model therefore is $1 + \sum_{j=1}^p \text{df}_j$. 
+
+
+. . .
+
+- A variant of backfitting for classification problems is available. Once again, relying on [quadratic approximations]{.orange} of the log-likelihood allows for a generalization to GLMs.
+
+## The backfitting algorithm (classification)
+
+::: callout-note
+#### Local scoring algorithm for additive logistic regression
+
+1.  Initialize $\hat{\beta}_0 = \text{logit}(\bar{y})$ and set $f_j(x_j) = 0$, for
+    $j=1,\dots,p$.
+
+2.  Iterate [until convergence]{.orange}:
+
+    i. Define the quantities $\hat{\eta}_i = \hat{\beta}_0 + \sum_{j=1}^p\hat{f}_j(x_{ij})$ and $\hat{\pi}_i = \{1 + \exp(-\hat{\eta}_i)\}^{-1}$.
+
+    ii. Construct the [working response]{.orange} $$
+    z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qquad i=1,\dots,n.
+    $$
+    
+    iii. Construct the [weights]{.orange} $w_i = \hat{\pi}_i(1 - \hat{\pi}_i)$, for $i=1,\dots,n$.
+    
+    iv. Use a [weighted backfitting]{.blue} algorithm using the $z_i$ as responses, which produces a new set of estimates $\hat{f}_1,\dots,\hat{f}_p$.
+:::
 
 ## GAM using penalized splines
 
-## GAM using penalized splines
+- A common special instance of GAM occurs when [smoothing splines]{.blue} are employed. In the regression case, the [backfitting]{.orange} algorithm implicitly minimizes the following [penalized loss]{.orange}
+$$
+\mathscr{L}(f_1,\dots,f_p; \lambda) = \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_j)\right\}^2 + \sum_{j=1}^p\lambda_j \int_{a_j}^{b_j}\{f''_j(t)\}^2\mathrm{d}t,
+$$
+where $\lambda = (\lambda_1,\dots,\lambda_p)$ is a vector of [smoothing parameters]{.blue}.
+
+. . .
+
+- Each $f_j(x;\beta)$ is a [natural cubic spline]{.orange}, therefore the penalized least squares criterion is
+$$
+\mathscr{L}(\beta; \lambda) = \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_j; \beta_j)\right\}^2 + \sum_{j=1}^p\lambda_j \beta_j^T\bm{\Omega}_j\beta_j,
+$$
+whose joint [minimization]{.blue} over $\beta$ is available in closed form. 
+
+- Hence, a [direct algorithm]{.orange} that minimizes $\mathscr{L}(\beta; \lambda)$ is used instead of backfitting.
 
 ## On the choice of smoothing parameters
 
@@ -322,16 +453,13 @@ ggplot(data = data_plot, aes(x = Longitude, y = est)) +
 
 ::: columns
 ::: {.column width="35%"}
-![](img/iceberg.jpg){width=100% fig-align="center"} 
-
+![](img/iceberg.jpg){width="100%" fig-align="center"}
 :::
 
 ::: {.column width="65%"}
-
 -   
 :::
 :::
-
 
 ## Pros and cons of generalized additive models (GAMs)
 
@@ -346,22 +474,20 @@ ggplot(data = data_plot, aes(x = Longitude, y = est)) +
 ::: callout-warning
 #### Cons
 
-- asd
+-   asd
 :::
-
 
 # MARS
 
 ## MARS
 
-
 ```{r}
+#| message: false
 library(earth)
 m_mars_deg1 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 1, pmethod = "exhaustive", penalty = 3)
 # summary(m_mars_deg1, style = "pmax")
 # plotmo(m_mars_deg1)
 ```
-
 
 ```{r}
 m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 2, 
@@ -369,7 +495,6 @@ m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data =
 # summary(m_mars_deg2, style = "pmax")
 # plotmo(m_mars_deg2)
 ```
-
 
 ## Partial plots
 
@@ -381,9 +506,7 @@ partial_mars_deg1 <- partial(m_mars_deg1, pred.var = c("Longitude", "Year"), gri
 partial_mars_deg2 <- partial(m_mars_deg2, pred.var = c("Longitude", "Year"), grid.resolution = 40)
 ```
 
-
 ::: panel-tabset
-
 ## Linear model
 
 ```{r}
@@ -455,19 +578,21 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   xlab("Longitude of the sampling position") +
   ylab("Catch score")
 ```
-
 :::
 
 <!-- ## The `Hitters` dataset -->
 
 <!-- ```{r} -->
+
 <!-- library(pdp) -->
+
 <!-- gam_partial <- partial(m_gam_selected, pred.var = c("Years", "CHits"), grid.resolution = 40) -->
+
 <!-- autoplot(gam_partial) + theme_light() -->
+
 <!-- ``` -->
 
 ## Final results
-
 
 ```{r}
 y_test <- trawl_test$Score1
@@ -512,11 +637,9 @@ knitr::kable(tab_results, digits = 3)
 ::: callout-warning
 #### Cons
 
-- asd
+-   asd
 :::
-
-
 
 ## References
 
--
+-   

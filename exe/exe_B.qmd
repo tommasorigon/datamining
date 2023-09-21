@@ -1,10 +1,11 @@
 ---
-title: "Exercises - Unit B"
-subtitle: "Data Mining - CdL CLAMSES"
+title: "Exercises B"
+subtitle: "Data mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
+lang: en
 execute:
-  cache: false
+  cache: true
 format:
   html:
     html-math-method: katex
@@ -13,13 +14,10 @@ format:
     theme: [cosmo, ../template.css]
     toc: true
     toc-title: Table of contents
-    embed-resources: false
+    embed-resources: true
     code-line-numbers: true
     smooth-scroll: true
-    code-fold: true
-    code-summary: "Show the code"
-    fig-dpi: 150
-    highlight-style: github
+    fig-dpi: 250
 editor: 
   markdown: 
     wrap: 72
@@ -27,12 +25,17 @@ editor_options:
   chunk_output_type: console
 ---
 
-## [Homepage](../index.html)
+# [Homepage](../index.html)
+
 
 ## Theoretical exercises
 
-### Exercise T.1
+#### B.1 - Bias-variance trade-off
+
+#### B.2 - Optimism
+
+(Also see exercise 3.3 of AS, related to this)
+
+#### B.3 - Leave-one-out
 
 ## Practical exercises
-
-### Exercise P.1

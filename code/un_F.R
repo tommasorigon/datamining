@@ -65,7 +65,7 @@ ggplot(data = data_plot, aes(x = Longitude, y = est)) +
   ylab("Partial effect")
 
 
-
+#| message: false
 library(earth)
 m_mars_deg1 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 1, pmethod = "exhaustive", penalty = 3)
 # summary(m_mars_deg1, style = "pmax")

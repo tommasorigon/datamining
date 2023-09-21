@@ -485,8 +485,8 @@ y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
 <h2>Scatterplot with <code>loess</code> estimate</h2>
 
 <img data-src="un_F_files/figure-revealjs/unnamed-chunk-5-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
-<section id="comments-and-cricism" class="slide level2 center">
-<h2>Comments and cricism</h2>
+<section id="comments-and-cricism-of-linear-models" class="slide level2 center">
+<h2>Comments and cricism of linear models</h2>
 <ul>
 <li>Is this a good model?</li>
 </ul>
@@ -558,9 +558,50 @@ f(\bm{x}_i) = \beta_0 + f_1(x_{i1}) + \cdots + f_p(x_{ip}) = \beta_0 + \sum_{j=1
 </section>
 <section id="the-backfitting-algorithm-i" class="slide level2 center">
 <h2>The backfitting algorithm I</h2>
+<ul>
+<li>There exist several strategies for <span class="orange">estimating</span> the <span class="orange">unknown functions</span> <span class="math inline">f_1,\dots,f_p</span>. One of them, called <span class="blue">backfitting</span>, is particularly appealing because of its elegance and generality.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>Suppose we model each <span class="math inline">f_j(x) = \sum_{m = 1}^{M_j}\beta_{mj} h_{mj}(x)</span> with a <span class="orange">basis expansion</span>, for example using <span class="blue">regression splines</span>.</p></li>
+<li><p>In a <span class="orange">regression problem</span> we need to minimize, over the unknown <span class="math inline">\beta</span> parameters, the loss <span class="math display">
+\sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_{ij})\right\}^2
+</span> subject to the constraint <span class="math inline">\sum_{i=1}^n f_j(x_{ij}) = 0</span>.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>When <span class="math inline">f_j</span> are regression splines, the above loss can be <span class="orange">minimized</span> using <span class="orange">least squares</span>. The identifiability issue could be handled by removing the intercept term from each spline basis.</p></li>
+<li><p>However, here we consider an <span class="orange">alternative</span> and <span class="blue">iterative</span> minimization method, which is similar to the coordinate descent algorithm we employed for the elastic-net.</p></li>
+</ul>
+</div>
 </section>
 <section id="the-backfitting-algorithm-ii" class="slide level2 center">
 <h2>The backfitting algorithm II</h2>
+<ul>
+<li>Now, let us re-arrange the term in the squared loss as follows: <span class="math display">
+  \sum_{i=1}^n\left\{\textcolor{red}{y_i - \beta_0 - \sum_{k\neq j}f_k(x_{ik})} - f_j(x_{ij})\right\}^2,
+</span> where the highlighted terms are sometimes called <span class="blue">partial residuals</span>.</li>
+</ul>
+<div class="fragment">
+<!-- - If all the functions but the $j$th were known, the estimation would reduce to a [univariate nonparametric smoothing]{.orange} of the $j$th covariate using the partial residuals as response. -->
+<ul>
+<li>Hence, we can repeatedly and iteratively fit a <span class="blue">univariate smoothing</span> model for <span class="math inline">f_j</span> using the <span class="orange">partial residuals</span> as <span class="orange">response</span>, keeping fixed the value of the other functions <span class="math inline">f_k</span>, for <span class="math inline">k \neq j</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>This algorithm produces the same fit of least squares when <span class="math inline">f_j</span> are regression splines, but the idea is appealing because it can be used with any <span class="blue">generic smoothers</span> <span class="math inline">\mathcal{S}_j</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Finally, note that under the constraint <span class="math inline">\sum_{i=1}^n f_j(x_{ij}) = 0</span> the least square estimate for the <span class="orange">intercept</span> term is <span class="math inline">\hat{\beta}_0 = \bar{y}</span>, i.e.&nbsp;the arithmetic mean.</li>
+</ul>
+</div>
+</section>
+<section id="the-backfitting-algorithm-regression" class="slide level2 center">
+<h2>The backfitting algorithm (regression)</h2>
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
@@ -574,7 +615,7 @@ f(\bm{x}_i) = \beta_0 + f_1(x_{i1}) + \cdots + f_p(x_{ip}) = \beta_0 + \sum_{j=1
 <li><p>Update the <span class="math inline">k</span>th function by smoothing via <span class="math inline">\mathcal{S}_j</span> the <span class="blue">partial residuals</span>, so that <span class="math display">
 \hat{f}_j(x) \leftarrow \mathcal{S}_j\left[\left\{x_{ij}, y_i - \hat{\beta}_0 - \sum_{k \neq j} \hat{f}_k(x_{ik})\right\}_{i=1}^n\right].
 </span></p></li>
-<li><p>Center the function by subtracting its <span class="math display">
+<li><p>Center the function by subtracting its mean <span class="math display">
 \hat{f}_j(x) \leftarrow \hat{f}_j(x) - \frac{1}{n}\sum_{i=1}^n\hat{f}_j(x_{ij}).
 </span></p></li>
 </ol></li>
@@ -583,17 +624,69 @@ f(\bm{x}_i) = \beta_0 + f_1(x_{i1}) + \cdots + f_p(x_{ip}) = \beta_0 + \sum_{j=1
 </div>
 </div>
 </section>
-<section id="the-backfitting-algorithm-iii" class="slide level2 center">
-<h2>The backfitting algorithm III</h2>
+<section id="backfitting-comments-and-considerations" class="slide level2 center">
+<h2>Backfitting: comments and considerations</h2>
+<ul>
+<li><p>The backfitting algorithm, when <span class="math inline">f_j</span> are modeled as <span class="blue">regression splines</span>, is known as the Gauss-Seidel algorithm and <span class="orange">convergence</span> is <span class="orange">guaranteed</span> under standard conditions.</p></li>
+<li><p>Interestingly, even when <span class="math inline">\mathcal{S}_j</span> are <span class="blue">smoothing splines</span> the <span class="orange">convergence</span> of backfitting is <span class="orange">guaranteed</span>; the proof for this statement is less straightforward.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>In general, however, there is no theoretical guarantee that the algorithm will ever converge, even though the practical experience suggest that this is <span class="orange">not</span> a <span class="orange">big concern</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>When <span class="math inline">\mathcal{S}_j</span> is a <span class="orange">linear smoother</span> with smoothing matrix <span class="math inline">\bm{S}_j</span>, then by analogy with the previous unit we can define the <span class="blue">effective degrees of freedom</span> of <span class="math inline">\hat{f}_j</span> as <span class="math display">
+\text{df}_j = \text{tr}(\bm{S}_j).
+</span> The number of degrees of the whole model therefore is <span class="math inline">1 + \sum_{j=1}^p \text{df}_j</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>A variant of backfitting for classification problems is available. Once again, relying on <span class="orange">quadratic approximations</span> of the log-likelihood allows for a generalization to GLMs.</li>
+</ul>
+</div>
 </section>
-<section id="local-scoring-for-additive-logistic-regression" class="slide level2 center">
-<h2>Local scoring for additive logistic regression</h2>
+<section id="the-backfitting-algorithm-classification" class="slide level2 center">
+<h2>The backfitting algorithm (classification)</h2>
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Local scoring algorithm for additive logistic regression</strong></p>
+</div>
+<div class="callout-content">
+<ol type="1">
+<li><p>Initialize <span class="math inline">\hat{\beta}_0 = \text{logit}(\bar{y})</span> and set <span class="math inline">f_j(x_j) = 0</span>, for <span class="math inline">j=1,\dots,p</span>.</p></li>
+<li><p>Iterate <span class="orange">until convergence</span>:</p>
+<ol type="i">
+<li><p>Define the quantities <span class="math inline">\hat{\eta}_i = \hat{\beta}_0 + \sum_{j=1}^p\hat{f}_j(x_{ij})</span> and <span class="math inline">\hat{\pi}_i = \{1 + \exp(-\hat{\eta}_i)\}^{-1}</span>.</p></li>
+<li><p>Construct the <span class="orange">working response</span> <span class="math display">
+z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qquad i=1,\dots,n.
+</span></p></li>
+<li><p>Construct the <span class="orange">weights</span> <span class="math inline">w_i = \hat{\pi}_i(1 - \hat{\pi}_i)</span>, for <span class="math inline">i=1,\dots,n</span>.</p></li>
+<li><p>Use a <span class="blue">weighted backfitting</span> algorithm using the <span class="math inline">z_i</span> as responses, which produces a new set of estimates <span class="math inline">\hat{f}_1,\dots,\hat{f}_p</span>.</p></li>
+</ol></li>
+</ol>
+</div>
+</div>
+</div>
 </section>
 <section id="gam-using-penalized-splines" class="slide level2 center">
 <h2>GAM using penalized splines</h2>
-</section>
-<section id="gam-using-penalized-splines-1" class="slide level2 center">
-<h2>GAM using penalized splines</h2>
+<ul>
+<li>A common special instance of GAM occurs when <span class="blue">smoothing splines</span> are employed. In the regression case, the <span class="orange">backfitting</span> algorithm implicitly minimizes the following <span class="orange">penalized loss</span> <span class="math display">
+\mathscr{L}(f_1,\dots,f_p; \lambda) = \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_j)\right\}^2 + \sum_{j=1}^p\lambda_j \int_{a_j}^{b_j}\{f''_j(t)\}^2\mathrm{d}t,
+</span> where <span class="math inline">\lambda = (\lambda_1,\dots,\lambda_p)</span> is a vector of <span class="blue">smoothing parameters</span>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>Each <span class="math inline">f_j(x;\beta)</span> is a <span class="orange">natural cubic spline</span>, therefore the penalized least squares criterion is <span class="math display">
+\mathscr{L}(\beta; \lambda) = \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_j; \beta_j)\right\}^2 + \sum_{j=1}^p\lambda_j \beta_j^T\bm{\Omega}_j\beta_j,
+</span> whose joint <span class="blue">minimization</span> over <span class="math inline">\beta</span> is available in closed form.</p></li>
+<li><p>Hence, a <span class="orange">direct algorithm</span> that minimizes <span class="math inline">\mathscr{L}(\beta; \lambda)</span> is used instead of backfitting.</p></li>
+</ul>
+</div>
 </section>
 <section id="on-the-choice-of-smoothing-parameters" class="slide level2 center">
 <h2>On the choice of smoothing parameters</h2>
