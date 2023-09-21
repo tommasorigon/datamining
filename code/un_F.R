@@ -42,7 +42,7 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   ylab("Catch score")
 
 
-
+#| message: false
 library(mgcv)
 m_gam <- gam(Score1 ~ s(Longitude, bs = "tp") + s(Latitude, bs = "tp") + s(Depth, bs = "tp") + Zone + Year,
   data = trawl_train, method = "REML"

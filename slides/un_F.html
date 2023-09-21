@@ -396,7 +396,7 @@ The backfitting algorithm for additive regression models
 <ul>
 <li>When <span class="math inline">\mathcal{S}_j</span> is a <span class="orange">linear smoother</span> with smoothing matrix <span class="math inline">\bm{S}_j</span>, then by analogy with the previous unit we can define the <span class="blue">effective degrees of freedom</span> of <span class="math inline">\hat{f}_j</span> as <span class="math display">
 \text{df}_j = \text{tr}(\bm{S}_j).
-</span> The number of degrees of the whole model therefore is <span class="math inline">1 + \sum_{j=1}^p \text{df}_j</span>.</li>
+</span> The number of degrees of the whole model therefore is <span class="math inline">\text{df} = 1 + \sum_{j=1}^p \text{df}_j</span>.</li>
 </ul>
 <ul>
 <li>A variant of backfitting for classification problems is available. Once again, relying on <span class="orange">quadratic approximations</span> of the log-likelihood allows for a generalization to GLMs.</li>
@@ -445,6 +445,21 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 </section>
 <section id="on-the-choice-of-smoothing-parameters" class="level2">
 <h2 class="anchored" data-anchor-id="on-the-choice-of-smoothing-parameters">On the choice of smoothing parameters</h2>
+<ul>
+<li>In GAMs there are <span class="math inline">p</span> <span class="orange">smoothing parameters</span> <span class="math inline">\lambda_1,\dots,\lambda_p</span> that must be selected. We can proceed in the usual way, e.g.&nbsp;considering the <span class="blue">generalized cross-validation</span> criteria: <span class="math display">
+\text{GCV}(\lambda_1,\dots,\lambda_p) = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - \text{df}/n}\right)^2.
+</span></li>
+</ul>
+<ul>
+<li>A practical complication is that it is <span class="orange">not feasible</span> to construct a grid of values for all the possible combinations of values for <span class="math inline">\lambda_1,\dots,\lambda_p</span>.</li>
+</ul>
+<ul>
+<li><p>Hence, many software packages <span class="blue">numerically optimize</span> <span class="math inline">\text{GCV}(\lambda_1,\dots,\lambda_p)</span>, or similar information criteria, as a function of <span class="math inline">\lambda_1,\dots,\lambda_p</span>, using Newton-Raphson method.</p></li>
+<li><p>This is particularly convenient in combination with smoothing splines, because the derivatives are available in closed form.</p></li>
+</ul>
+<ul>
+<li>asd</li>
+</ul>
 </section>
 <section id="gam-and-variable-selection" class="level2">
 <h2 class="anchored" data-anchor-id="gam-and-variable-selection">GAM and variable selection</h2>
@@ -452,12 +467,6 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 <section id="the-trawl-data" class="level2">
 <h2 class="anchored" data-anchor-id="the-trawl-data">The <code>trawl</code> data</h2>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: nlme</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>This is mgcv 1.9-0. For overview type 'help("mgcv-package")'.</code></pre>
-</div>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>

@@ -368,7 +368,7 @@ where the highlighted terms are sometimes called [partial residuals]{.blue}.
 $$
 \text{df}_j = \text{tr}(\bm{S}_j).
 $$
-The number of degrees of the whole model therefore is $1 + \sum_{j=1}^p \text{df}_j$. 
+The number of degrees of the whole model therefore is $\text{df} = 1 + \sum_{j=1}^p \text{df}_j$. 
 
 
 . . .
@@ -416,11 +416,30 @@ whose joint [minimization]{.blue} over $\beta$ is available in closed form.
 
 ## On the choice of smoothing parameters
 
+- In GAMs there are $p$ [smoothing parameters]{.orange} $\lambda_1,\dots,\lambda_p$ that must be selected. We can proceed in the usual way, e.g. considering the [generalized cross-validation]{.blue} criteria: $$
+\text{GCV}(\lambda_1,\dots,\lambda_p) = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - \text{df}/n}\right)^2.
+$$
+
+. . .
+
+- A practical complication is that it is [not feasible]{.orange} to construct a grid of values for all the possible combinations of values for $\lambda_1,\dots,\lambda_p$.
+
+. . .
+
+- Hence, many software packages [numerically optimize]{.blue} $\text{GCV}(\lambda_1,\dots,\lambda_p)$, or similar information criteria, as a function of $\lambda_1,\dots,\lambda_p$, using Newton-Raphson method.
+
+- This is particularly convenient in combination with smoothing splines, because the derivatives are available in closed form. 
+
+. . .
+
+- asd
+
 ## GAM and variable selection
 
 ## The `trawl` data
 
 ```{r}
+#| message: false
 library(mgcv)
 m_gam <- gam(Score1 ~ s(Longitude, bs = "tp") + s(Latitude, bs = "tp") + s(Depth, bs = "tp") + Zone + Year,
   data = trawl_train, method = "REML")
