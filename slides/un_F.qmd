@@ -353,7 +353,7 @@ where the highlighted terms are sometimes called [partial residuals]{.blue}.
 
 ## Backfitting: comments and considerations
 
-- The backfitting algorithm, when $f_j$ are modeled as [regression splines]{.blue}, is known as the Gauss-Seidel algorithm and [convergence]{.orange} is [guaranteed]{.orange} under standard conditions.
+- The backfitting algorithm, when $f_j$ are modeled as [regression splines]{.blue}, is known as "Gauss-Seidel". The [convergence]{.orange} is [guaranteed]{.orange} under standard conditions.
 
 
 - Interestingly, even when $\mathcal{S}_j$ are [smoothing splines]{.blue} the [convergence]{.orange} of backfitting is [guaranteed]{.orange}; the proof for this statement is less straightforward. 
