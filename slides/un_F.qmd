@@ -294,41 +294,50 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
     $f_j(x) = \sum_{m = 1}^{M_j}\beta_{mj} h_{mj}(x)$ with a [basis
     expansion]{.orange}, for example using [regression splines]{.blue}.
 
--   In a [regression problem]{.orange} we need to minimize, over the unknown $\beta$ parameters, the
-    loss $$
+-   In a [regression problem]{.orange} we need to minimize, over the
+    unknown $\beta$ parameters, the loss $$
     \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_{ij})\right\}^2
     $$ subject to the constraint $\sum_{i=1}^n f_j(x_{ij}) = 0$.
-    
+
 . . .
 
-- When $f_j$ are regression splines, the above loss can be [minimized]{.orange}
-    using [least squares]{.orange}. The identifiability issue could be handled by removing the intercept term from each spline basis. 
+-   When $f_j$ are regression splines, the above loss can be
+    [minimized]{.orange} using [least squares]{.orange}. The
+    identifiability issue could be handled by removing the intercept
+    term from each spline basis.
 
--   However, here we consider an [alternative]{.orange} and [iterative]{.blue}
-    minimization method, which is similar to the coordinate
-    descent algorithm we employed for the elastic-net.
+-   However, here we consider an [alternative]{.orange} and
+    [iterative]{.blue} minimization method, which is similar to the
+    coordinate descent algorithm we employed for the elastic-net.
 
 ## The backfitting algorithm II
 
-- Now, let us re-arrange the term in the squared loss as follows:  $$
-    \sum_{i=1}^n\left\{\textcolor{red}{y_i - \beta_0 - \sum_{k\neq j}f_k(x_{ik})} - f_j(x_{ij})\right\}^2,
-$$
-where the highlighted terms are sometimes called [partial residuals]{.blue}.
+-   Now, let us re-arrange the term in the squared loss as follows: $$
+      \sum_{i=1}^n\left\{\textcolor{red}{y_i - \beta_0 - \sum_{k\neq j}f_k(x_{ik})} - f_j(x_{ij})\right\}^2,
+    $$ where the highlighted terms are sometimes called [partial
+    residuals]{.blue}.
 
 . . .
 
 <!-- - If all the functions but the $j$th were known, the estimation would reduce to a [univariate nonparametric smoothing]{.orange} of the $j$th covariate using the partial residuals as response. -->
 
-- Hence, we can repeatedly and iteratively fit a [univariate smoothing]{.blue} model for $f_j$ using the [partial residuals]{.orange} as [response]{.orange}, keeping fixed the value of the other functions $f_k$, for $k \neq j$. 
+-   Hence, we can repeatedly and iteratively fit a [univariate
+    smoothing]{.blue} model for $f_j$ using the [partial
+    residuals]{.orange} as [response]{.orange}, keeping fixed the value
+    of the other functions $f_k$, for $k \neq j$.
 
 . . .
 
-- This algorithm produces the same fit of least squares when $f_j$ are regression splines, but the idea is appealing because it can be used with any [generic smoothers]{.blue} $\mathcal{S}_j$. 
+-   This algorithm produces the same fit of least squares when $f_j$ are
+    regression splines, but the idea is appealing because it can be used
+    with any [generic smoothers]{.blue} $\mathcal{S}_j$.
 
 . . .
 
-- Finally, note that under the constraint $\sum_{i=1}^n f_j(x_{ij}) = 0$ the least square estimate for the [intercept]{.orange} term is $\hat{\beta}_0 = \bar{y}$, i.e. the arithmetic mean.
-
+-   Finally, note that under the constraint
+    $\sum_{i=1}^n f_j(x_{ij}) = 0$ the least square estimate for the
+    [intercept]{.orange} term is $\hat{\beta}_0 = \bar{y}$, i.e. the
+    arithmetic mean.
 
 ## The backfitting algorithm (regression)
 
@@ -353,98 +362,184 @@ where the highlighted terms are sometimes called [partial residuals]{.blue}.
 
 ## Backfitting: comments and considerations
 
-- The backfitting algorithm, when $f_j$ are modeled as [regression splines]{.blue}, is known as "Gauss-Seidel". The [convergence]{.orange} is [guaranteed]{.orange} under standard conditions.
+-   The backfitting algorithm, when $f_j$ are modeled as [regression
+    splines]{.blue}, is known as "Gauss-Seidel". The
+    [convergence]{.orange} is [guaranteed]{.orange} under standard
+    conditions.
 
-
-- Interestingly, even when $\mathcal{S}_j$ are [smoothing splines]{.blue} the [convergence]{.orange} of backfitting is [guaranteed]{.orange}; the proof for this statement is less straightforward. 
-
-. . .
-
-- In general, however, there is no theoretical guarantee that the algorithm will ever converge, even though the practical experience suggest that this is [not]{.orange} a [big concern]{.orange}. 
-
-. . .
-
-- When $\mathcal{S}_j$ is a [linear smoother]{.orange} with smoothing matrix $\bm{S}_j$, then by analogy with the previous unit we can define the [effective degrees of freedom]{.blue} of $\hat{f}_j$ as 
-$$
-\text{df}_j = \text{tr}(\bm{S}_j).
-$$
-The number of degrees of the whole model therefore is $\text{df} = 1 + \sum_{j=1}^p \text{df}_j$. 
-
+-   Interestingly, even when $\mathcal{S}_j$ are [smoothing
+    splines]{.blue} the [convergence]{.orange} of backfitting is
+    [guaranteed]{.orange}; the proof for this statement is less
+    straightforward.
 
 . . .
 
-- A variant of backfitting for classification problems is available. Once again, relying on [quadratic approximations]{.orange} of the log-likelihood allows for a generalization to GLMs.
+-   In general, however, there is no theoretical guarantee that the
+    algorithm will ever converge, even though the practical experience
+    suggest that this is [not]{.orange} a [big concern]{.orange}.
+
+. . .
+
+-   When $\mathcal{S}_j$ is a [linear smoother]{.orange} with smoothing
+    matrix $\bm{S}_j$, then by analogy with the previous unit we can
+    define the [effective degrees of freedom]{.blue} of $\hat{f}_j$ as
+    $$
+    \text{df}_j = \text{tr}(\bm{S}_j).
+    $$ The number of degrees of the whole model therefore is
+    $\text{df} = 1 + \sum_{j=1}^p \text{df}_j$.
+
+. . .
+
+-   A variant of backfitting for classification problems is available.
+    Once again, relying on [quadratic approximations]{.orange} of the
+    log-likelihood allows for a generalization to GLMs.
 
 ## The backfitting algorithm (classification)
 
 ::: callout-note
 #### Local scoring algorithm for additive logistic regression
 
-1.  Initialize $\hat{\beta}_0 = \text{logit}(\bar{y})$ and set $f_j(x_j) = 0$, for
-    $j=1,\dots,p$.
+1.  Initialize $\hat{\beta}_0 = \text{logit}(\bar{y})$ and set
+    $f_j(x_j) = 0$, for $j=1,\dots,p$.
 
 2.  Iterate [until convergence]{.orange}:
 
-    i. Define the quantities $\hat{\eta}_i = \hat{\beta}_0 + \sum_{j=1}^p\hat{f}_j(x_{ij})$ and $\hat{\pi}_i = \{1 + \exp(-\hat{\eta}_i)\}^{-1}$.
+    i.  Define the quantities
+        $\hat{\eta}_i = \hat{\beta}_0 + \sum_{j=1}^p\hat{f}_j(x_{ij})$
+        and $\hat{\pi}_i = \{1 + \exp(-\hat{\eta}_i)\}^{-1}$.
 
     ii. Construct the [working response]{.orange} $$
-    z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qquad i=1,\dots,n.
-    $$
-    
-    iii. Construct the [weights]{.orange} $w_i = \hat{\pi}_i(1 - \hat{\pi}_i)$, for $i=1,\dots,n$.
-    
-    iv. Use a [weighted backfitting]{.blue} algorithm using the $z_i$ as responses, which produces a new set of estimates $\hat{f}_1,\dots,\hat{f}_p$.
+        z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qquad i=1,\dots,n.
+        $$
+
+    iii. Construct the [weights]{.orange}
+         $w_i = \hat{\pi}_i(1 - \hat{\pi}_i)$, for $i=1,\dots,n$.
+
+    iv. Use a [weighted backfitting]{.blue} algorithm using the $z_i$ as
+        responses, which produces a new set of estimates
+        $\hat{f}_1,\dots,\hat{f}_p$.
 :::
 
 ## GAM using penalized splines
 
-- A common special instance of GAM occurs when [smoothing splines]{.blue} are employed. In the regression case, the [backfitting]{.orange} algorithm implicitly minimizes the following [penalized loss]{.orange}
-$$
-\mathscr{L}(f_1,\dots,f_p; \lambda) = \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_j)\right\}^2 + \sum_{j=1}^p\lambda_j \int_{a_j}^{b_j}\{f''_j(t)\}^2\mathrm{d}t,
-$$
-where $\lambda = (\lambda_1,\dots,\lambda_p)$ is a vector of [smoothing parameters]{.blue}.
+-   A common special instance of GAM occurs when [smoothing
+    splines]{.blue} are employed. In the regression case, the
+    [backfitting]{.orange} algorithm implicitly minimizes the following
+    [penalized loss]{.orange} $$
+    \mathscr{L}(f_1,\dots,f_p; \lambda) = \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_j)\right\}^2 + \sum_{j=1}^p\lambda_j \int_{a_j}^{b_j}\{f''_j(t)\}^2\mathrm{d}t,
+    $$ where $\lambda = (\lambda_1,\dots,\lambda_p)$ is a vector of
+    [smoothing parameters]{.blue}.
 
 . . .
 
-- Each $f_j(x;\beta)$ is a [natural cubic spline]{.orange}, therefore the penalized least squares criterion is
-$$
-\mathscr{L}(\beta; \lambda) = \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_j; \beta_j)\right\}^2 + \sum_{j=1}^p\lambda_j \beta_j^T\bm{\Omega}_j\beta_j,
-$$
-whose joint [minimization]{.blue} over $\beta$ is available in closed form. 
+-   Each $f_j(x;\beta)$ is a [natural cubic spline]{.orange}, therefore
+    the penalized least squares criterion is $$
+    \mathscr{L}(\beta; \lambda) = \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_j; \beta_j)\right\}^2 + \sum_{j=1}^p\lambda_j \beta_j^T\bm{\Omega}_j\beta_j,
+    $$ whose joint [minimization]{.blue} over $\beta$ is available in
+    closed form.
 
-- Hence, a [direct algorithm]{.orange} that minimizes $\mathscr{L}(\beta; \lambda)$ is used instead of backfitting.
+-   Hence, a [direct algorithm]{.orange} that minimizes
+    $\mathscr{L}(\beta; \lambda)$ is used instead of backfitting.
 
 ## On the choice of smoothing parameters
 
-- In GAMs there are $p$ [smoothing parameters]{.orange} $\lambda_1,\dots,\lambda_p$ that must be selected. We can proceed in the usual way, e.g. considering the [generalized cross-validation]{.blue} criteria: $$
-\text{GCV}(\lambda_1,\dots,\lambda_p) = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - \text{df}/n}\right)^2.
-$$
+-   In GAMs there are $p$ [smoothing parameters]{.orange}
+    $\lambda_1,\dots,\lambda_p$ that must be selected. We can proceed in
+    the usual way, e.g. considering the [generalized
+    cross-validation]{.blue} criteria: $$
+    \text{GCV}(\lambda_1,\dots,\lambda_p) = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - \text{df}/n}\right)^2.
+    $$
+
+-   An alternative criterion in this context is the [REML]{.blue}
+    (Restricted Maximum Likelihood), which is the [marginal
+    likelihood]{.blue} of the corresponding [Bayesian model]{.orange}.
 
 . . .
 
-- A practical complication is that it is [not feasible]{.orange} to construct a grid of values for all the possible combinations of values for $\lambda_1,\dots,\lambda_p$.
+-   It is [not possible]{.orange} to construct a [grid]{.orange} of
+    values for all the combinations of smoothing parameters
+    $\lambda_1,\dots,\lambda_p$, because the number of terms increases
+    exponentially in $p$.
 
 . . .
 
-- Hence, many software packages [numerically optimize]{.blue} $\text{GCV}(\lambda_1,\dots,\lambda_p)$, or similar information criteria, as a function of $\lambda_1,\dots,\lambda_p$, using Newton-Raphson method.
+-   Hence, many software packages [numerically optimize]{.blue} the
+    $\text{GCV}(\lambda_1,\dots,\lambda_p)$, or other information
+    criteria, as a function of $\lambda_1,\dots,\lambda_p$, using e.g.
+    the Newton-Raphson method.
 
-- This is particularly convenient in combination with smoothing splines, because the derivatives are available in closed form. 
-
-. . .
-
-- asd
+-   Such an approach is particularly convenient in combination with
+    [smoothing splines]{.orange}, because the [derivatives]{.orange} needed for Newton's
+    method are available in closed form.
 
 ## GAM and variable selection
 
-## The `trawl` data
+::: incremental
+-   When $p$ is large there is need to remove the potentially
+    [irrelevant variables]{.orange}. There exist several [variable
+    selection]{.blue} ideas for GAMs, but we will not cover the details
+    here.
 
+-   [Option 1]{.blue}. [Stepwise regression]{.orange}. Perhaps the
+    simplest method, although it is not as efficient as in linear models
+    because we cannot exploit the same computational tricks.
+
+-   [Option 2]{.blue}. [COSSO: Component Selection and Smoothing
+    Operator]{.orange} (Lin and Zhang, 2006). It's an idea based on
+    combining lasso-type penalties and GAMs.
+
+-   [Option 3]{.blue}. [SpAM: Sparse Additive Models]{.orange}
+    (Ravikumar, Liu, Lafferty and Wasserman, 2009). Similar to the
+    above, but it exploits a variation of the non-negative garrote.
+
+-   [Option 4]{.blue}. [Double-penalty and shrinkage]{.orange} (Marra
+    and Wood, 2011). It acts on the penalty term of smoothing splines so
+    that high-values of $\lambda_1,\dots,\lambda_p$ leads to constant
+    functions.
+
+-   [Option X]{.blue}. [Fancy name]{.orange}. Yet another method for
+    variable selection with GAMs.
+:::
+
+## GAM modeling of `trawl` data
+
+-   Let us get back to the `trawl` data. A [specification]{.blue} based on GAM could
+    be$$
+      \begin{aligned}
+      \texttt{Score}_i = \beta_0 &+  f_1(\texttt{Longitude}_i)+ f_2(\texttt{Latitude}_i) + f_3(\texttt{Depth}_i) +\\
+      &+ \beta_1 I(\texttt{Zone}_i = \texttt{Closed}) + \beta_2 I(\texttt{Year}_i = \texttt{1993}).
+      \end{aligned}
+      $$
+
+-   In GAMs the predictors are [not necessarily]{.blue} modeled using
+    [nonparametric]{.blue} methods. Indeed, it is common to have a
+    combination of smooth functions and linear terms.
+
+-   Besides, it does [not make sense]{.orange} to "smooth" a [dummy
+    variable]{.orange}.
+
+. . .
+
+::: {style="font-size: 75%;"}
 ```{r}
 #| message: false
+#| output: false
 library(mgcv)
 m_gam <- gam(Score1 ~ s(Longitude, bs = "tp") + s(Latitude, bs = "tp") + s(Depth, bs = "tp") + Zone + Year,
   data = trawl_train, method = "REML")
-knitr::kable(tidy(m_gam), digits = 3)
+knitr::kable(tidy(m_gam, parametric = TRUE), digits = 3)
+knitr::kable(tidy(m_gam, parametric = FALSE), digits = 3)
 ```
+
+| term           | estimate | std.error |    df |
+|:---------------|---------:|----------:|------:|
+| `(Intercept)`    |    0.865 |     0.099 |     1 |
+| `s(Longitude)` |       \- |        \- | 4.427 |
+| `s(Latitude)`  |       \- |        \- | 3.187 |
+| `s(Depth)`     |       \- |        \- | 1.580 |
+| `Zone_Closed`  |   -0.265 |     0.137 |     1 |
+| `Year_1993`    |    0.300 |     0.081 |     1 |
+:::
 
 ## Partial effect of GAMs (`Longitude`)
 
@@ -464,7 +559,41 @@ ggplot(data = data_plot, aes(x = Longitude, y = est)) +
   ylab("Partial effect")
 ```
 
-## GAMs with interactions
+## Partial effect of GAMs (`Latitude`)
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+#| message: false
+data_plot <- smooth_estimates(m_gam, smooth = "s(Latitude)")
+
+ggplot(data = data_plot, aes(x = Latitude, y = est)) +
+  geom_line(linewidth = 1, col = "#1170aa") +
+  geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Latitude, y = `s(Latitude)`), size = 0.7) +
+  theme_minimal() +
+  xlab("Latitude of the sampling position") +
+  ylab("Partial effect")
+```
+
+## Partial effect of GAMs (`Depth`)
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+#| message: false
+data_plot <- smooth_estimates(m_gam, smooth = "s(Depth)")
+
+ggplot(data = data_plot, aes(x = Depth, y = est)) +
+  geom_line(linewidth = 1, col = "#1170aa") +
+  geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Depth, y = `s(Depth)`), size = 0.7) +
+  theme_minimal() +
+  xlab("Depth of the sampling position") +
+  ylab("Partial effect")
+```
+
+## Comments and criticism
 
 ## ☠️ - Naïve Bayes classifier and GAMs
 
@@ -485,7 +614,11 @@ ggplot(data = data_plot, aes(x = Longitude, y = est)) +
 ::: callout-tip
 #### Pros
 
--   asd
+- Sentence from Hastie about interpretability
+
+- Easy to fit
+
+- Potential manual insertion of interaction
 :::
 
 . . .
@@ -493,7 +626,7 @@ ggplot(data = data_plot, aes(x = Longitude, y = est)) +
 ::: callout-warning
 #### Cons
 
--   asd
+-   No interactions
 :::
 
 # MARS

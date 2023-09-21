@@ -43,11 +43,13 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
 
 
 #| message: false
+#| output: false
 library(mgcv)
 m_gam <- gam(Score1 ~ s(Longitude, bs = "tp") + s(Latitude, bs = "tp") + s(Depth, bs = "tp") + Zone + Year,
   data = trawl_train, method = "REML"
 )
-knitr::kable(tidy(m_gam), digits = 3)
+knitr::kable(tidy(m_gam, parametric = TRUE), digits = 3)
+knitr::kable(tidy(m_gam, parametric = FALSE), digits = 3)
 
 
 #| fig-width: 7.8
@@ -62,6 +64,34 @@ ggplot(data = data_plot, aes(x = Longitude, y = est)) +
   geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Longitude, y = `s(Longitude)`), size = 0.7) +
   theme_minimal() +
   xlab("Longitude of the sampling position") +
+  ylab("Partial effect")
+
+
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+#| message: false
+data_plot <- smooth_estimates(m_gam, smooth = "s(Latitude)")
+
+ggplot(data = data_plot, aes(x = Latitude, y = est)) +
+  geom_line(linewidth = 1, col = "#1170aa") +
+  geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Latitude, y = `s(Latitude)`), size = 0.7) +
+  theme_minimal() +
+  xlab("Latitude of the sampling position") +
+  ylab("Partial effect")
+
+
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+#| message: false
+data_plot <- smooth_estimates(m_gam, smooth = "s(Depth)")
+
+ggplot(data = data_plot, aes(x = Depth, y = est)) +
+  geom_line(linewidth = 1, col = "#1170aa") +
+  geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Depth, y = `s(Depth)`), size = 0.7) +
+  theme_minimal() +
+  xlab("Depth of the sampling position") +
   ylab("Partial effect")
 
 
