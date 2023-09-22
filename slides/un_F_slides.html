@@ -798,8 +798,8 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 <h2>Partial effect of GAMs (<code>Depth</code>)</h2>
 
 <img data-src="un_F_files/figure-revealjs/unnamed-chunk-9-1.png" width="1560" class="r-stretch quarto-figure-center"></section>
-<section id="comments-and-criticism" class="slide level2 center">
-<h2>Comments and criticism</h2>
+<section id="comments-and-criticism-trawl-data" class="slide level2 center">
+<h2>Comments and criticism (<code>trawl</code> data)</h2>
 <ul>
 <li>The fitted GAM model highlights some interesting aspects of the <code>trawl</code> data.</li>
 </ul>
@@ -891,7 +891,7 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 </div>
 <div class="callout-content">
 <ul>
-<li>Especially when <span class="math inline">p</span> is large, it is not feasible to manually model <span class="orange">interactions</span> among covariates. GAMs do not take second-order effects (or higher) into account.</li>
+<li>Especially when <span class="math inline">p</span> is large, it is almost impossible to manually model all the <span class="orange">interactions</span> among covariates. GAMs do <span class="orange">not</span> take <span class="orange">second-order</span> effects (or higher) into account.</li>
 </ul>
 </div>
 </div>
@@ -903,55 +903,63 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 <h1>MARS</h1>
 
 </section>
-<section id="mars-1" class="slide level2 center">
-<h2>MARS</h2>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Call: earth(formula=Score1~Zone+Year+Latitude+Longitude+Depth,
-            data=trawl_train, pmethod="exhaustive", degree=1, penalty=3, nk=15)
+<section id="multivariate-adaptive-regression-splines" class="slide level2 center">
+<h2><span class="orange">M</span>ultivariate <span class="orange">A</span>daptive <span class="orange">R</span>egression <span class="orange">S</span>plines</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><img data-src="img/mars.png"></p>
+</div><div class="column" style="width:60%;">
+<ul>
+<li><p>MARS are a generalization of GAMs that avoid the <span class="orange">additivity assumption</span>.</p></li>
+<li><p>MARS allow modeling of <span class="blue">non–linear interactions</span> and not just non–linear marginal effects.</p></li>
+<li><p>MARS are a the same time:</p>
+<ul>
+<li>A generalization of <span class="blue">stepwise regression</span>;</li>
+<li>A method based on multi-dimensional <span class="orange">tensor splines</span>;</li>
+<li>A modification of <span class="blue">classification and regression trees</span> (CART).</li>
+</ul></li>
+<li><p>MARS combine many of the techniques we have seen into a single sophisticated algorithm.</p></li>
+</ul>
+</div>
+</div>
+<!-- ```{r} -->
+<!-- #| fig-width: 7.8 -->
+<!-- #| fig-height: 4 -->
+<!-- #| fig-align: center -->
+<!-- x <- y <- seq(from = 0, to = 1, length = 50) -->
+<!-- xy_seq <- expand.grid(x, y) -->
+<!-- z <- matrix(apply(xy_seq, 1, function(x) pmax(0, x[1] - 0.5) * pmax(0, 0.75 - x[2])), nrow = length(x)) -->
+<!-- persp(x, y, z, theta = -60, phi = 20, col = "#fc7d0b", shade = 0.5, xlab = "x1", ylab = "x2", zlab = "h(x)", ) -->
+<!-- ``` -->
+</section>
+<section id="mars-additive-representation" class="slide level2 center">
+<h2>MARS additive representation</h2>
+<ul>
+<li>The core specification of MARS is an <span class="blue">additive model</span> of the form: <span class="math display">
+f(\bm{x}; \beta) = \sum_{m=1}^M \beta_m h_m(\bm{x}),
+</span> where <span class="math inline">h_m(\bm{x})</span> are <span class="orange">basis functions</span> and <span class="math inline">\beta = (\beta_1,\dots,\beta_M)^T</span> are regression coefficients.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>Once the basis functions are specified, the estimate for <span class="math inline">\hat{\beta}</span> is straightforward, using for example <span class="blue">least squares</span> or the IWLS algorithm in the classification case.</p></li>
+<li><p>The main distinction with GAMs is that in MARS the basis functions are <span class="orange">estimated</span> from the <span class="orange">data</span> and therefore they are not pre-specified in advance.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>MARS is essentially a smart <span class="blue">heuristic algorithm</span> for selecting a collection of basis functions <span class="math inline">h_1(\bm{x}),\dots, h_M(\bm{x})</span> that hopefully does not incur in the <span class="orange">curse of dimensionality</span>.</li>
+</ul>
+</div>
+</section>
+<section id="basis-functions-for-mars-reflected-pairs" class="slide level2 center">
+<h2>Basis functions for MARS (reflected pairs)</h2>
 
-Score1 =
-  1.381988
-  - 4.275478 * pmax(0, Longitude -    143.28) 
-  + 3.983579 * pmax(0, Longitude -    143.58) 
-
-Selected 3 of 11 terms, and 1 of 5 predictors (pmethod="exhaustive")
-Termination condition: Reached nk 15
-Importance: Longitude, ZoneClosed-unused, Year1993-unused, Latitude-unused, ...
-Number of terms at each degree of interaction: 1 2 (additive model)
-GCV 0.288727    RSS 30.98113    GRSq 0.526612    RSq 0.5658797</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>x[119,5] with colnames ZoneClosed Year1993 Latitude Longitude Depth
-y[119,1] with colname Score1, and values 1.31, 1.262, 0.2022, -0.301, ...
-Forward pass term 1, 2, 4, 6, 8, 10, 12, 14
-Reached nk 15
-After forward pass GRSq 0.474 RSq 0.673
-Exhaustive pruning: number of subsets 2047   bx sing val ratio 0.0058
-Prune exhaustive penalty 3 nprune null: selected 5 of 11 terms, and 3 of 5 preds
-After pruning pass GRSq 0.537 RSq 0.612</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Call: earth(formula=Score1~Zone+Year+Latitude+Longitude+Depth,
-            data=trawl_train, pmethod="exhaustive", trace=TRUE, degree=2,
-            penalty=3, nk=15)
-
-Score1 =
-  1.317683
-  -  5.388484 * pmax(0, Longitude -    143.28) 
-  +  4.171636 * pmax(0, Longitude -    143.58) 
-  + 0.6793061 * Year1993                       * pmax(0, Longitude -    143.05) 
-  +  1.488869 * pmax(0,  Latitude -    -11.72) * pmax(0, Longitude -    143.05) 
-
-Selected 5 of 11 terms, and 3 of 5 predictors (pmethod="exhaustive")
-Termination condition: Reached nk 15
-Importance: Longitude, Year1993, Latitude, ZoneClosed-unused, Depth-unused
-Number of terms at each degree of interaction: 1 2 2
-GCV 0.2822465    RSS 27.6649    GRSq 0.5372373    RSq 0.6123481</code></pre>
-</div>
-</div>
+<img data-src="un_F_files/figure-revealjs/unnamed-chunk-10-1.png" width="1560" class="r-stretch quarto-figure-center"></section>
+<section id="mars-modeling-of-trawl-data-i" class="slide level2 center">
+<h2>MARS modeling of <code>trawl</code> data I</h2>
+</section>
+<section id="mars-modeling-of-trawl-data-ii" class="slide level2 center">
+<h2>MARS modeling of <code>trawl</code> data II</h2>
 </section>
 <section id="partial-plots" class="slide level2 center">
 <h2>Partial plots</h2>
@@ -963,7 +971,7 @@ GCV 0.2822465    RSS 27.6649    GRSq 0.5372373    RSq 0.6123481</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-13-1.png" width="1800"></p>
+<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-14-1.png" width="1800"></p>
 </figure>
 </div>
 </div>
@@ -974,7 +982,7 @@ GCV 0.2822465    RSS 27.6649    GRSq 0.5372373    RSq 0.6123481</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-14-1.png" width="1800"></p>
+<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-15-1.png" width="1800"></p>
 </figure>
 </div>
 </div>
@@ -985,7 +993,7 @@ GCV 0.2822465    RSS 27.6649    GRSq 0.5372373    RSq 0.6123481</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-15-1.png" width="1800"></p>
+<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-16-1.png" width="1800"></p>
 </figure>
 </div>
 </div>
@@ -996,7 +1004,7 @@ GCV 0.2822465    RSS 27.6649    GRSq 0.5372373    RSq 0.6123481</code></pre>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-16-1.png" width="1800"></p>
+<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-17-1.png" width="1800"></p>
 </figure>
 </div>
 </div>

@@ -54,7 +54,7 @@ editor_options:
 #| message: false
 #| purl: false
 
-knitr::purl("un_F.qmd", output = "../code/un_F.R")
+knitr::purl("un_F.qmd", output = "../code/un_F.R", documentation = 0)
 styler:::style_file("../code/un_F.R")
 ```
 
@@ -526,7 +526,8 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
 #| output: false
 library(mgcv)
 m_gam <- gam(Score1 ~ s(Longitude, bs = "tp") + s(Latitude, bs = "tp") + s(Depth, bs = "tp") + Zone + Year,
-  data = trawl_train, method = "REML")
+  data = trawl_train, method = "REML"
+)
 knitr::kable(tidy(m_gam, parametric = TRUE), digits = 3)
 knitr::kable(tidy(m_gam, parametric = FALSE), digits = 3)
 ```
@@ -593,7 +594,7 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
   ylab("Partial effect")
 ```
 
-## Comments and criticism
+## Comments and criticism (`trawl` data)
 
 - The fitted GAM model highlights some interesting aspects of the `trawl` data. 
 
@@ -680,24 +681,107 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 ::: callout-warning
 #### Cons
 
--   Especially when $p$ is large, it is not feasible to manually model [interactions]{.orange} among covariates. GAMs do not take second-order effects (or higher) into account. 
+-   Especially when $p$ is large, it is almost impossible to manually model all the [interactions]{.orange} among covariates. GAMs do [not]{.orange} take [second-order]{.orange} effects (or higher) into account. 
 :::
 
 # MARS
 
-## MARS
+## [M]{.orange}ultivariate [A]{.orange}daptive [R]{.orange}egression [S]{.orange}plines
+
+::: columns
+::: {.column width="40%"}
+![](img/mars.png)
+
+:::
+
+::: {.column width="60%"}
+- MARS are a generalization of GAMs that avoid the [additivity assumption]{.orange}.
+
+- MARS allow modeling of [non–linear interactions]{.blue} and not just non–linear marginal effects.
+
+- MARS are a the same time: 
+  - A generalization of [stepwise regression]{.blue};
+  - A method based on multi-dimensional [tensor splines]{.orange};
+  - A modification of [classification and regression trees]{.blue} (CART).
+  
+- MARS combine many of the techniques we have seen into a single sophisticated algorithm.
+:::
+
+:::
+
+<!-- ```{r} -->
+<!-- #| fig-width: 7.8 -->
+<!-- #| fig-height: 4 -->
+<!-- #| fig-align: center -->
+<!-- x <- y <- seq(from = 0, to = 1, length = 50) -->
+<!-- xy_seq <- expand.grid(x, y) -->
+
+<!-- z <- matrix(apply(xy_seq, 1, function(x) pmax(0, x[1] - 0.5) * pmax(0, 0.75 - x[2])), nrow = length(x)) -->
+<!-- persp(x, y, z, theta = -60, phi = 20, col = "#fc7d0b", shade = 0.5, xlab = "x1", ylab = "x2", zlab = "h(x)", ) -->
+<!-- ``` -->
+
+## MARS additive representation
+
+- The core specification of MARS is an [additive model]{.blue} of the form:
+$$
+f(\bm{x}; \beta) = \sum_{m=1}^M \beta_m h_m(\bm{x}),
+$$
+where $h_m(\bm{x})$ are [basis functions]{.orange} and $\beta = (\beta_1,\dots,\beta_M)^T$ are regression coefficients. 
+
+. . .
+
+- Once the basis functions are specified, the estimate for $\hat{\beta}$ is straightforward, using for example [least squares]{.blue} or the IWLS algorithm in the classification case.
+
+- The main distinction with GAMs is that in MARS the basis functions are [estimated]{.orange} from the [data]{.orange} and therefore they are not pre-specified in advance. 
+
+. . .
+
+- MARS is essentially a smart [heuristic algorithm]{.blue} for selecting a collection of basis functions $h_1(\bm{x}),\dots, h_M(\bm{x})$ that hopefully does not incur in the [curse of dimensionality]{.orange}.
+
+
+
+## Basis functions for MARS (reflected pairs)
+
+```{r}
+#| fig-width: 7.8
+#| fig-height: 4
+#| fig-align: center
+x_seq <- seq(from = 0, to = 1, length = 200)
+data_plot <- data.frame(
+  x = x_seq,
+  y = c(pmax(0, x_seq - 0.5), pmax(0, 0.5 - x_seq)),
+  basis = rep(c("Basis 1", "Basis 2"), each = length(x_seq))
+)
+ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
+  geom_line() +
+  scale_color_tableau(palette = "Color Blind") +
+  theme_minimal() +
+  geom_vline(xintercept = 0.5, linetype = "dotted") +
+  theme(legend.position = "none") +
+  xlab("x") +
+  ylab("Basis function")
+```
+
+
+## MARS modeling of `trawl` data I
 
 ```{r}
 #| message: false
+#| output: false
 library(earth)
 m_mars_deg1 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 1, pmethod = "exhaustive", penalty = 3, nk = 15)
 summary(m_mars_deg1, style = "pmax")
 # plotmo(m_mars_deg1)
 ```
 
+## MARS modeling of `trawl` data II
+
 ```{r}
-m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 2, 
-                     pmethod = "exhaustive", penalty = 3, trace = TRUE, nk = 15)
+#| output: false
+m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth,
+  data = trawl_train, degree = 2,
+  pmethod = "exhaustive", penalty = 3, trace = TRUE, nk = 15
+)
 summary(m_mars_deg2, style = "pmax")
 # plotmo(m_mars_deg2)
 ```
@@ -722,7 +806,7 @@ partial_mars_deg2 <- partial(m_mars_deg2, pred.var = c("Longitude", "Year"), gri
 #| message: false
 ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   geom_point(size = 1) +
-  facet_grid(.~Year) + 
+  facet_grid(. ~ Year) +
   geom_line(data = partial_linear, aes(x = Longitude, y = yhat)) +
   scale_color_tableau(palette = "Color Blind") +
   theme_light() +
@@ -740,7 +824,7 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
 #| message: false
 ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   geom_point(size = 1) +
-  facet_grid(.~Year) + 
+  facet_grid(. ~ Year) +
   geom_line(data = partial_gam, aes(x = Longitude, y = yhat)) +
   scale_color_tableau(palette = "Color Blind") +
   theme_light() +
@@ -758,7 +842,7 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
 #| message: false
 ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   geom_point(size = 1) +
-  facet_grid(.~Year) + 
+  facet_grid(. ~ Year) +
   geom_line(data = partial_mars_deg1, aes(x = Longitude, y = yhat)) +
   scale_color_tableau(palette = "Color Blind") +
   theme_light() +
@@ -776,7 +860,7 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
 #| message: false
 ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   geom_point(size = 1) +
-  facet_grid(.~Year) + 
+  facet_grid(. ~ Year) +
   geom_line(data = partial_mars_deg2, aes(x = Longitude, y = yhat)) +
   scale_color_tableau(palette = "Color Blind") +
   theme_light() +

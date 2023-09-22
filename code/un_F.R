@@ -1,12 +1,9 @@
-#| message: false
 rm(list = ls())
 library(ggplot2)
 library(ggthemes)
 library(sm)
 
 data(trawl)
-
-
 
 trawl <- na.omit(trawl)
 trawl$Year <- factor(trawl$Year)
@@ -20,17 +17,10 @@ id_test <- setdiff(1:nrow(trawl), id_train)
 trawl_train <- trawl[id_train, ]
 trawl_test <- trawl[id_test, ]
 
-
-#| output: false
 library(broom)
 m_linear <- lm(Score1 ~ Latitude + Longitude + Depth + Zone + Year, data = trawl_train)
 knitr::kable(tidy(summary(m_linear)), digits = 3)
 
-
-#| fig-width: 9
-#| fig-height: 5
-#| fig-align: center
-#| message: false
 library(ggthemes)
 ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   geom_point(size = 1) +
@@ -41,9 +31,6 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   xlab("Longitude of the sampling position") +
   ylab("Catch score")
 
-
-#| message: false
-#| output: false
 library(mgcv)
 m_gam <- gam(Score1 ~ s(Longitude, bs = "tp") + s(Latitude, bs = "tp") + s(Depth, bs = "tp") + Zone + Year,
   data = trawl_train, method = "REML"
@@ -51,11 +38,6 @@ m_gam <- gam(Score1 ~ s(Longitude, bs = "tp") + s(Latitude, bs = "tp") + s(Depth
 knitr::kable(tidy(m_gam, parametric = TRUE), digits = 3)
 knitr::kable(tidy(m_gam, parametric = FALSE), digits = 3)
 
-
-#| fig-width: 7.8
-#| fig-height: 4
-#| fig-align: center
-#| message: false
 library(gratia)
 data_plot <- smooth_estimates(m_gam, smooth = "s(Longitude)")
 
@@ -66,11 +48,6 @@ ggplot(data = data_plot, aes(x = Longitude, y = est)) +
   xlab("Longitude of the sampling position") +
   ylab("Partial effect")
 
-
-#| fig-width: 7.8
-#| fig-height: 4
-#| fig-align: center
-#| message: false
 data_plot <- smooth_estimates(m_gam, smooth = "s(Latitude)")
 
 ggplot(data = data_plot, aes(x = Latitude, y = est)) +
@@ -80,11 +57,6 @@ ggplot(data = data_plot, aes(x = Latitude, y = est)) +
   xlab("Latitude of the sampling position") +
   ylab("Partial effect")
 
-
-#| fig-width: 7.8
-#| fig-height: 4
-#| fig-align: center
-#| message: false
 data_plot <- smooth_estimates(m_gam, smooth = "s(Depth)")
 
 ggplot(data = data_plot, aes(x = Depth, y = est)) +
@@ -94,14 +66,25 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
   xlab("Depth of the sampling position") +
   ylab("Partial effect")
 
+x_seq <- seq(from = 0, to = 1, length = 200)
+data_plot <- data.frame(
+  x = x_seq,
+  y = c(pmax(0, x_seq - 0.5), pmax(0, 0.5 - x_seq)),
+  basis = rep(c("Basis 1", "Basis 2"), each = length(x_seq))
+)
+ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
+  geom_line() +
+  scale_color_tableau(palette = "Color Blind") +
+  theme_minimal() +
+  geom_vline(xintercept = 0.5, linetype = "dotted") +
+  theme(legend.position = "none") +
+  xlab("x") +
+  ylab("Basis function")
 
-#| message: false
 library(earth)
 m_mars_deg1 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 1, pmethod = "exhaustive", penalty = 3, nk = 15)
 summary(m_mars_deg1, style = "pmax")
 # plotmo(m_mars_deg1)
-
-
 
 m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth,
   data = trawl_train, degree = 2,
@@ -110,19 +93,12 @@ m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth,
 summary(m_mars_deg2, style = "pmax")
 # plotmo(m_mars_deg2)
 
-
-
 library(pdp)
 partial_linear <- partial(m_linear, pred.var = c("Longitude", "Year"), grid.resolution = 40)
 partial_gam <- partial(m_gam, pred.var = c("Longitude", "Year"), grid.resolution = 40)
 partial_mars_deg1 <- partial(m_mars_deg1, pred.var = c("Longitude", "Year"), grid.resolution = 40)
 partial_mars_deg2 <- partial(m_mars_deg2, pred.var = c("Longitude", "Year"), grid.resolution = 40)
 
-
-#| fig-width: 9
-#| fig-height: 4.5
-#| fig-align: center
-#| message: false
 ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   geom_point(size = 1) +
   facet_grid(. ~ Year) +
@@ -133,11 +109,6 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   xlab("Longitude of the sampling position") +
   ylab("Catch score")
 
-
-#| fig-width: 9
-#| fig-height: 4.5
-#| fig-align: center
-#| message: false
 ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   geom_point(size = 1) +
   facet_grid(. ~ Year) +
@@ -148,11 +119,6 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   xlab("Longitude of the sampling position") +
   ylab("Catch score")
 
-
-#| fig-width: 9
-#| fig-height: 4.5
-#| fig-align: center
-#| message: false
 ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   geom_point(size = 1) +
   facet_grid(. ~ Year) +
@@ -163,11 +129,6 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   xlab("Longitude of the sampling position") +
   ylab("Catch score")
 
-
-#| fig-width: 9
-#| fig-height: 4.5
-#| fig-align: center
-#| message: false
 ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   geom_point(size = 1) +
   facet_grid(. ~ Year) +
@@ -177,8 +138,6 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   theme(legend.position = "none") +
   xlab("Longitude of the sampling position") +
   ylab("Catch score")
-
-
 
 y_test <- trawl_test$Score1
 
