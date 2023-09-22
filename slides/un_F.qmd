@@ -107,7 +107,7 @@ levels(trawl$Year) <- c("1992", "1993")
 trawl$Zone <- factor(trawl$Zone)
 levels(trawl$Zone) <- c("Open", "Closed")
 # Data splitting
-set.seed(123)
+set.seed(1234)
 id_train <- sample(1:nrow(trawl), size = floor(0.80 * nrow(trawl)), replace = FALSE)
 id_test <- setdiff(1:nrow(trawl), id_train)
 trawl_train <- trawl[id_train, ]
@@ -176,12 +176,12 @@ knitr::kable(tidy(summary(m_linear)), digits = 3)
 ::: {style="font-size: 75%;"}
 | term          | estimate | std.error | statistic | p.value |
 |:--------------|---------:|----------:|----------:|--------:|
-| `(Intercept)` |  290.750 |    23.314 |    12.471 |   0.000 |
-| `Latitude`    |    0.200 |     0.192 |     1.041 |   0.300 |
-| `Longitude`   |   -2.010 |     0.161 |   -12.461 |   0.000 |
-| `Depth`       |    0.016 |     0.006 |     2.624 |   0.010 |
-| `Zone_Closed` |   -0.109 |     0.092 |    -1.181 |   0.240 |
-| `Year_1993`   |    0.314 |     0.090 |     3.504 |   0.001 |
+|`(Intercept)` |  297.690|    26.821|    11.099|   0.000|
+|`Latitude`    |    0.256|     0.222|     1.151|   0.252|
+|`Longitude`   |   -2.054|     0.187|   -10.955|   0.000|
+|`Depth`       |    0.020|     0.007|     3.003|   0.003|
+|`Zone_Closed`  |   -0.116|     0.102|    -1.143|   0.255|
+|`Year_1993`    |    0.127|     0.103|     1.242|   0.217|
 :::
 
 ## Scatterplot with `loess` estimate
@@ -217,7 +217,7 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
     between `Score` and `Longitude` is [non-linear]{.orange}.
 
 -   Also, an [interaction effect]{.blue} between `Year` and `Longitude`
-    seems to be present.
+    could be present.
 
 . . .
 
@@ -533,12 +533,12 @@ knitr::kable(tidy(m_gam, parametric = FALSE), digits = 3)
 
 | term           | estimate | std.error |    df |
 |:---------------|---------:|----------:|------:|
-| `(Intercept)`  |    0.865 |     0.099 |     1 |
-| `Zone_Closed`  |   -0.265 |     0.137 |     1 |
-| `Year_1993`    |    0.300 |     0.081 |     1 |
-| `s(Longitude)` |       \- |        \- | 4.427 |
-| `s(Latitude)`  |       \- |        \- | 3.187 |
-| `s(Depth)`     |       \- |        \- | 1.580 |
+| `(Intercept)`  |    0.849|     0.088  |     1 |
+| `Zone_Closed`  |   -0.075|       0.099|     1 |
+| `Year_1993`    |    0.149|       0.093|     1 |
+| `s(Longitude)` |       \- |        \- | 4.694 |
+| `s(Latitude)`  |       \- |        \- | 1     |
+| `s(Depth)`     |       \- |        \- | 2.447 |
 :::
 
 ## Partial effect of GAMs (`Longitude`)
@@ -595,6 +595,28 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 
 ## Comments and criticism
 
+- The fitted GAM model highlights some interesting aspects of the `trawl` data. 
+
+. . .
+
+- In the first place, it seems confirmed that the `Longitude` has a [marked non-linear]{.orange} impact on the [catch score]{.blue}, as the initial analysis was suggesting.
+
+- In particular, the catch score is high when the sampling location is close to the coast (but not too close!), and then it suddenly decreases.
+
+. . .
+
+- The effective degrees of freedom of `Latitude` is $\text{df}_2 = 1$, meaning that the estimated $\hat{f}_2$ [collapsed]{.blue} to a [linear term]{.blue}. The corresponding shrinkage parameter $\lambda_2$ is very high. 
+
+- Overall, the effect due to the `Latitude` looks [small]{.orange} or [not present]{.orange} at all. 
+
+. . .
+
+- The `Depth` seems to have a [relevant effect]{.orange} on the `Score`, but this is likely due to a few [leverage points]{.blue} at the right extreme of the `Depth` range.  
+
+. . .
+
+- Finally, we note that both `Zone` and `Year` seem to have a minor effect.
+
 ## ☠️ - Naïve Bayes classifier and GAMs
 
 -   The [naïve Bayes classifier]{.orange} expresses the [binary]{.blue} classification
@@ -644,11 +666,13 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 ::: callout-tip
 #### Pros
 
--   Sentence from Hastie about interpretability
+- GAMs can automatically model [non-linear]{.orange} relationships. This can potentially make more accurate predictions for the response.
 
--   Easy to fit
+-   GAMs, as linear models, are [interpretable]{.blue}: the variation of the fitted response, holding all but one predictor fixed, [does not depend]{.orange} on the values of the [other predictors]{.orange}. 
 
--   Potential manual insertion of interaction
+- In practice, this means that we can [plot]{.orange} the [fitted functions]{.orange} $\hat{f}_j$ separately to examine the roles of the predictors in modelling the response.
+
+- Additive assumption is quite strong, but it is still possible to [manually add interactions]{.blue} as in the linear regression case.
 :::
 
 . . .
@@ -656,7 +680,7 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 ::: callout-warning
 #### Cons
 
--   No interactions
+-   Especially when $p$ is large, it is not feasible to manually model [interactions]{.orange} among covariates. GAMs do not take second-order effects (or higher) into account. 
 :::
 
 # MARS
@@ -666,15 +690,15 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 ```{r}
 #| message: false
 library(earth)
-m_mars_deg1 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 1, pmethod = "exhaustive", penalty = 3)
-# summary(m_mars_deg1, style = "pmax")
+m_mars_deg1 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 1, pmethod = "exhaustive", penalty = 3, nk = 15)
+summary(m_mars_deg1, style = "pmax")
 # plotmo(m_mars_deg1)
 ```
 
 ```{r}
 m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 2, 
                      pmethod = "exhaustive", penalty = 3, trace = TRUE, nk = 15)
-# summary(m_mars_deg2, style = "pmax")
+summary(m_mars_deg2, style = "pmax")
 # plotmo(m_mars_deg2)
 ```
 

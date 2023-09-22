@@ -14,7 +14,7 @@ levels(trawl$Year) <- c("1992", "1993")
 trawl$Zone <- factor(trawl$Zone)
 levels(trawl$Zone) <- c("Open", "Closed")
 # Data splitting
-set.seed(123)
+set.seed(1234)
 id_train <- sample(1:nrow(trawl), size = floor(0.80 * nrow(trawl)), replace = FALSE)
 id_test <- setdiff(1:nrow(trawl), id_train)
 trawl_train <- trawl[id_train, ]
@@ -97,8 +97,8 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 
 #| message: false
 library(earth)
-m_mars_deg1 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 1, pmethod = "exhaustive", penalty = 3)
-# summary(m_mars_deg1, style = "pmax")
+m_mars_deg1 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 1, pmethod = "exhaustive", penalty = 3, nk = 15)
+summary(m_mars_deg1, style = "pmax")
 # plotmo(m_mars_deg1)
 
 
@@ -107,7 +107,7 @@ m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth,
   data = trawl_train, degree = 2,
   pmethod = "exhaustive", penalty = 3, trace = TRUE, nk = 15
 )
-# summary(m_mars_deg2, style = "pmax")
+summary(m_mars_deg2, style = "pmax")
 # plotmo(m_mars_deg2)
 
 

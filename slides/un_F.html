@@ -215,45 +215,45 @@ y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><code>(Intercept)</code></td>
-<td style="text-align: right;">290.750</td>
-<td style="text-align: right;">23.314</td>
-<td style="text-align: right;">12.471</td>
+<td style="text-align: right;">297.690</td>
+<td style="text-align: right;">26.821</td>
+<td style="text-align: right;">11.099</td>
 <td style="text-align: right;">0.000</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>Latitude</code></td>
-<td style="text-align: right;">0.200</td>
-<td style="text-align: right;">0.192</td>
-<td style="text-align: right;">1.041</td>
-<td style="text-align: right;">0.300</td>
+<td style="text-align: right;">0.256</td>
+<td style="text-align: right;">0.222</td>
+<td style="text-align: right;">1.151</td>
+<td style="text-align: right;">0.252</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>Longitude</code></td>
-<td style="text-align: right;">-2.010</td>
-<td style="text-align: right;">0.161</td>
-<td style="text-align: right;">-12.461</td>
+<td style="text-align: right;">-2.054</td>
+<td style="text-align: right;">0.187</td>
+<td style="text-align: right;">-10.955</td>
 <td style="text-align: right;">0.000</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>Depth</code></td>
-<td style="text-align: right;">0.016</td>
-<td style="text-align: right;">0.006</td>
-<td style="text-align: right;">2.624</td>
-<td style="text-align: right;">0.010</td>
+<td style="text-align: right;">0.020</td>
+<td style="text-align: right;">0.007</td>
+<td style="text-align: right;">3.003</td>
+<td style="text-align: right;">0.003</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>Zone_Closed</code></td>
-<td style="text-align: right;">-0.109</td>
-<td style="text-align: right;">0.092</td>
-<td style="text-align: right;">-1.181</td>
-<td style="text-align: right;">0.240</td>
+<td style="text-align: right;">-0.116</td>
+<td style="text-align: right;">0.102</td>
+<td style="text-align: right;">-1.143</td>
+<td style="text-align: right;">0.255</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>Year_1993</code></td>
-<td style="text-align: right;">0.314</td>
-<td style="text-align: right;">0.090</td>
-<td style="text-align: right;">3.504</td>
-<td style="text-align: right;">0.001</td>
+<td style="text-align: right;">0.127</td>
+<td style="text-align: right;">0.103</td>
+<td style="text-align: right;">1.242</td>
+<td style="text-align: right;">0.217</td>
 </tr>
 </tbody>
 </table>
@@ -281,7 +281,7 @@ y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
 </ul>
 <ul>
 <li><p>By simple graphical inspection, it seems that the relationship between <code>Score</code> and <code>Longitude</code> is <span class="orange">non-linear</span>.</p></li>
-<li><p>Also, an <span class="blue">interaction effect</span> between <code>Year</code> and <code>Longitude</code> seems to be present.</p></li>
+<li><p>Also, an <span class="blue">interaction effect</span> between <code>Year</code> and <code>Longitude</code> could be present.</p></li>
 </ul>
 <ul>
 <li><p>These considerations support the idea that <span class="blue">nonparametric approach</span> might be more appropriate.</p></li>
@@ -499,39 +499,39 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><code>(Intercept)</code></td>
-<td style="text-align: right;">0.865</td>
-<td style="text-align: right;">0.099</td>
+<td style="text-align: right;">0.849</td>
+<td style="text-align: right;">0.088</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>Zone_Closed</code></td>
-<td style="text-align: right;">-0.265</td>
-<td style="text-align: right;">0.137</td>
+<td style="text-align: right;">-0.075</td>
+<td style="text-align: right;">0.099</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>Year_1993</code></td>
-<td style="text-align: right;">0.300</td>
-<td style="text-align: right;">0.081</td>
+<td style="text-align: right;">0.149</td>
+<td style="text-align: right;">0.093</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>s(Longitude)</code></td>
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">-</td>
-<td style="text-align: right;">4.427</td>
+<td style="text-align: right;">4.694</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><code>s(Latitude)</code></td>
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">-</td>
-<td style="text-align: right;">3.187</td>
+<td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><code>s(Depth)</code></td>
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">-</td>
-<td style="text-align: right;">1.580</td>
+<td style="text-align: right;">2.447</td>
 </tr>
 </tbody>
 </table>
@@ -575,6 +575,23 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 </section>
 <section id="comments-and-criticism" class="level2">
 <h2 class="anchored" data-anchor-id="comments-and-criticism">Comments and criticism</h2>
+<ul>
+<li>The fitted GAM model highlights some interesting aspects of the <code>trawl</code> data.</li>
+</ul>
+<ul>
+<li><p>In the first place, it seems confirmed that the <code>Longitude</code> has a <span class="orange">marked non-linear</span> impact on the <span class="blue">catch score</span>, as the initial analysis was suggesting.</p></li>
+<li><p>In particular, the catch score is high when the sampling location is close to the coast (but not too close!), and then it suddenly decreases.</p></li>
+</ul>
+<ul>
+<li><p>The effective degrees of freedom of <code>Latitude</code> is <span class="math inline">\text{df}_2 = 1</span>, meaning that the estimated <span class="math inline">\hat{f}_2</span> <span class="blue">collapsed</span> to a <span class="blue">linear term</span>. The corresponding shrinkage parameter <span class="math inline">\lambda_2</span> is very high.</p></li>
+<li><p>Overall, the effect due to the <code>Latitude</code> looks <span class="orange">small</span> or <span class="orange">not present</span> at all.</p></li>
+</ul>
+<ul>
+<li>The <code>Depth</code> seems to have a <span class="orange">relevant effect</span> on the <code>Score</code>, but this is likely due to a few <span class="blue">leverage points</span> at the right extreme of the <code>Depth</code> range.</li>
+</ul>
+<ul>
+<li>Finally, we note that both <code>Zone</code> and <code>Year</code> seem to have a minor effect.</li>
+</ul>
 </section>
 <section id="naïve-bayes-classifier-and-gams" class="level2">
 <h2 class="anchored" data-anchor-id="naïve-bayes-classifier-and-gams">☠️ - Naïve Bayes classifier and GAMs</h2>
@@ -627,9 +644,10 @@ Pros
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><p>Sentence from Hastie about interpretability</p></li>
-<li><p>Easy to fit</p></li>
-<li><p>Potential manual insertion of interaction</p></li>
+<li><p>GAMs can automatically model <span class="orange">non-linear</span> relationships. This can potentially make more accurate predictions for the response.</p></li>
+<li><p>GAMs, as linear models, are <span class="blue">interpretable</span>: the variation of the fitted response, holding all but one predictor fixed, <span class="orange">does not depend</span> on the values of the <span class="orange">other predictors</span>.</p></li>
+<li><p>In practice, this means that we can <span class="orange">plot</span> the <span class="orange">fitted functions</span> <span class="math inline">\hat{f}_j</span> separately to examine the roles of the predictors in modelling the response.</p></li>
+<li><p>Additive assumption is quite strong, but it is still possible to <span class="blue">manually add interactions</span> as in the linear regression case.</p></li>
 </ul>
 </div>
 </div>
@@ -644,7 +662,7 @@ Cons
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>No interactions</li>
+<li>Especially when <span class="math inline">p</span> is large, it is not feasible to manually model <span class="orange">interactions</span> among covariates. GAMs do not take second-order effects (or higher) into account.</li>
 </ul>
 </div>
 </div>
@@ -656,14 +674,49 @@ Cons
 <h2 class="anchored" data-anchor-id="mars-1">MARS</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
+<pre><code>Call: earth(formula=Score1~Zone+Year+Latitude+Longitude+Depth,
+            data=trawl_train, pmethod="exhaustive", degree=1, penalty=3, nk=15)
+
+Score1 =
+  1.381988
+  - 4.275478 * pmax(0, Longitude -    143.28) 
+  + 3.983579 * pmax(0, Longitude -    143.58) 
+
+Selected 3 of 11 terms, and 1 of 5 predictors (pmethod="exhaustive")
+Termination condition: Reached nk 15
+Importance: Longitude, ZoneClosed-unused, Year1993-unused, Latitude-unused, ...
+Number of terms at each degree of interaction: 1 2 (additive model)
+GCV 0.288727    RSS 30.98113    GRSq 0.526612    RSq 0.5658797</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
 <pre><code>x[119,5] with colnames ZoneClosed Year1993 Latitude Longitude Depth
-y[119,1] with colname Score1, and values 0.7544, 0.9, -0.301, 1.481, -...
+y[119,1] with colname Score1, and values 1.31, 1.262, 0.2022, -0.301, ...
 Forward pass term 1, 2, 4, 6, 8, 10, 12, 14
 Reached nk 15
-After forward pass GRSq 0.532 RSq 0.709
-Exhaustive pruning: number of subsets 2047   bx sing val ratio 0.003
-Prune exhaustive penalty 3 nprune null: selected 4 of 11 terms, and 2 of 5 preds
-After pruning pass GRSq 0.583 RSq 0.634</code></pre>
+After forward pass GRSq 0.474 RSq 0.673
+Exhaustive pruning: number of subsets 2047   bx sing val ratio 0.0058
+Prune exhaustive penalty 3 nprune null: selected 5 of 11 terms, and 3 of 5 preds
+After pruning pass GRSq 0.537 RSq 0.612</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Call: earth(formula=Score1~Zone+Year+Latitude+Longitude+Depth,
+            data=trawl_train, pmethod="exhaustive", trace=TRUE, degree=2,
+            penalty=3, nk=15)
+
+Score1 =
+  1.317683
+  -  5.388484 * pmax(0, Longitude -    143.28) 
+  +  4.171636 * pmax(0, Longitude -    143.58) 
+  + 0.6793061 * Year1993                       * pmax(0, Longitude -    143.05) 
+  +  1.488869 * pmax(0,  Latitude -    -11.72) * pmax(0, Longitude -    143.05) 
+
+Selected 5 of 11 terms, and 3 of 5 predictors (pmethod="exhaustive")
+Termination condition: Reached nk 15
+Importance: Longitude, Year1993, Latitude, ZoneClosed-unused, Depth-unused
+Number of terms at each degree of interaction: 1 2 2
+GCV 0.2822465    RSS 27.6649    GRSq 0.5372373    RSq 0.6123481</code></pre>
 </div>
 </div>
 </section>
@@ -751,19 +804,19 @@ After pruning pass GRSq 0.583 RSq 0.634</code></pre>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">MAE</td>
-<td style="text-align: right;">0.707</td>
-<td style="text-align: right;">0.538</td>
-<td style="text-align: right;">0.490</td>
-<td style="text-align: right;">0.469</td>
-<td style="text-align: right;">0.462</td>
+<td style="text-align: right;">0.611</td>
+<td style="text-align: right;">0.361</td>
+<td style="text-align: right;">0.315</td>
+<td style="text-align: right;">0.305</td>
+<td style="text-align: right;">0.334</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">RMSE</td>
-<td style="text-align: right;">0.805</td>
-<td style="text-align: right;">0.670</td>
-<td style="text-align: right;">0.644</td>
-<td style="text-align: right;">0.625</td>
-<td style="text-align: right;">0.590</td>
+<td style="text-align: right;">0.718</td>
+<td style="text-align: right;">0.463</td>
+<td style="text-align: right;">0.408</td>
+<td style="text-align: right;">0.390</td>
+<td style="text-align: right;">0.407</td>
 </tr>
 </tbody>
 </table>
