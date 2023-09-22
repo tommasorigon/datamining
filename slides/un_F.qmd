@@ -722,9 +722,9 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 
 ## MARS additive representation
 
-- The core specification of MARS is an [additive model]{.blue} of the form:
+- MARS is an [additive model]{.blue} of the form:
 $$
-f(\bm{x}; \beta) = \sum_{m=1}^M \beta_m h_m(\bm{x}),
+f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^M \beta_m h_m(\bm{x}),
 $$
 where $h_m(\bm{x})$ are [basis functions]{.orange} and $\beta = (\beta_1,\dots,\beta_M)^T$ are regression coefficients. 
 
@@ -739,12 +739,33 @@ where $h_m(\bm{x})$ are [basis functions]{.orange} and $\beta = (\beta_1,\dots,\
 - MARS is essentially a smart [heuristic algorithm]{.blue} for selecting a collection of basis functions $h_1(\bm{x}),\dots, h_M(\bm{x})$ that hopefully does not incur in the [curse of dimensionality]{.orange}.
 
 
-
 ## Basis functions for MARS (reflected pairs)
+
+- The MARS algorithm begins by including just the [intercept term]{.blue}, i.e. $f(\bm{x}; \beta) = \beta_0$. Then, we proceed by [iteratively]{.orange} adding basis functions. 
+
+. . .
+
+- In MARS the basis functions are always [coupled]{.orange} (or [reflected]{.orange}), meaning that we always add them in pairs to the additive specification.
+
+. . .
+
+- Let us consider the following set of [pairs]{.blue} of [basis functions]{.blue} (linear splines):
+$$
+\mathcal{C} = \{(x_j - \xi)_+,  (\xi - x_j)_+ : \xi \in \{x_{1j},\dots,x_{nj}\}, \ j=1,\dots,p \}.
+$$
+For example, two basis functions could be $h_1(\bm{x}) = (x_1 - 0.5)_+$ and $h_2(\bm{x}) = (0.5 - x_1)_+$. 
+
+- The knots are placed in correspondence of the observed data. Hence, there are in [total]{.orange} $2 n p$ [possible basis functions]{.orange} among which we can choose. 
+
+. . .
+
+- In the [first step]{.blue} of the MARS algorithm, we identify the pair $h_1(\bm{x}) = (x_j - \xi)_+$ and $h_2(\bm{x}) = (\xi - x_j)_+$ that, together with the [intercept]{.blue}, [minimize]{.orange} the [mean squared error]{.orange}.
+
+## An example of reflected pair basis
 
 ```{r}
 #| fig-width: 7.8
-#| fig-height: 4
+#| fig-height: 3.5
 #| fig-align: center
 x_seq <- seq(from = 0, to = 1, length = 200)
 data_plot <- data.frame(
@@ -762,6 +783,64 @@ ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
   ylab("Basis function")
 ```
 
+- The function $h_1(x) = (x - 0.5)_+$ ([blue]{.blue}) and its reflection $h_2(x) = (0.5 - x)_+$ ([orange]{.orange}). 
+
+## A stepwise construction
+
+::: incremental
+
+- Hence, [after]{.orange} the [first step]{.orange} of the MARS algorithm, our model for example could be
+$$
+f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1 (x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+.
+$$
+- In the subsequent step, we consider a [new pair]{.blue} of basis functions $(x_j - \xi)_+,  (\xi - x_j)_+$ in $\mathcal{C}$, but this time we are allowed to perform two kind of operations:
+     
+     i. We can include the new pair to the predictor in an [additive]{.orange} way, obtaining for example $$
+     f(\bm{x}; \beta) =  \beta_0 + \beta_1(x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+ + \beta_3\textcolor{red}{ (x_2 - 0.75)_+} + \beta_4\textcolor{red}{(0.75 - x_2)_+}.
+     $$
+     ii. We can include the new pair in a [multiplicative]{.orange} way, by considering the products between the [new basis]{.blue} and one of the [old basis]{.blue} of the model, obtaining for instance
+     $$
+     \begin{aligned}
+     f(\bm{x}; \beta) =  \beta_0 &+ \beta_1\textcolor{darkblue}{(x_1 - 0.5)_+} + \beta_2(0.5 - x_1)_+ \\
+     &+ \beta_3 \textcolor{red}{(x_1 - 0.5)_+(x_2 - 0.75)_+} + \beta_4 \textcolor{red}{(x_1 - 0.5)_+(0.75 - x_2)_+}.
+     \end{aligned}
+     $$
+:::
+
+## An example of tensor product basis
+
+![](img/mars.png){width=50% fig-align="center"}
+
+- The [product]{.orange} function $h(\bm{x}) = (x_1 - 0.5)_+ (x_2 - 0.75)_+$ in the range $(0, 1)^2$. 
+
+
+## MARS algorithm (regression)
+
+::: callout-note
+#### MARS algorithm (degree $d$)
+
+1. Initialize $f(\bm{x}; \beta) = \beta_0$ and let $K$ be [maximum number of pairs]{.orange}, so that $M = 2K$.
+
+2. Identify the [initial pair]{.blue} of basis functions $h_1$ and $h_2$ in $\mathcal{C}$ that minimize the mean squared error. Then, let $h_0(\bm{x}) = 1$ and set $\mathcal{M}_1 = \{h_0, h_1, h_2\}$.
+
+3.  For $k = 1,\dots,K - 1$, do:
+
+    i.  Let $\mathcal{M}_k = \{h_0, h_1,\dots,h_{2k}\}$ be the basis functions already present in the model.
+
+    ii. Consider a [novel pair]{.blue} of bases $\tilde{h}_1,\tilde{h}_2 \in \mathcal{C} \setminus \mathcal{M}_k$. A [candidate pair]{.orange} is obtained [multiplying]{.orange} $\tilde{h}_1,\tilde{h}_2$ with one of the bases in $\mathcal{M}_k$. Note that $h_0 \in \mathcal{M}_k$.
+    
+    iii. A [valid]{.orange} candidate pair does not contain the same variable $x_j$ more than once in the product and the involves at most [$d$ product terms]{.blue}. 
+    
+    iv. Identify the [optimal pair]{.blue} among the candidates at step (ii-iii) that [reduces]{.orange} the [mean squared error]{.orange} the most. This results in a new pair of bases $h_{2k+1}, h_{2k+2}$.
+    
+    v. Set $\mathcal{M}_{k+1} \leftarrow \mathcal{M}_k \cup \{h_{2k+1}, h_{2k+2}\}$.
+
+:::
+
+
+## Pruning and backward regression
+
+## Heuristics behind MARS
 
 ## MARS modeling of `trawl` data I
 

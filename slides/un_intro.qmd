@@ -300,7 +300,7 @@ editor_options:
 | Optimism, conflicts and trade-offs | Bias-variance trade-off. Training and test paradigm, cross-validation. Information criteria, optimism |
 | Shrinkage and variable selection   | Best subset selection, principal component regression. Ridge regression. Lasso and LARS. Elastic net. |
 | Nonparametric estimation           | Local linear regression. Regression and smoothing splines.                                            |
-| Additive models                    | Generalized additive models (GAM). Multivariate adaptive regression spline (MARS).                    |
+| Additive models                    | Generalized additive models (GAM). Multivariate adaptive regression splines (MARS).                    |
 
 . . .
 

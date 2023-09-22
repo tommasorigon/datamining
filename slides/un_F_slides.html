@@ -935,8 +935,8 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 <section id="mars-additive-representation" class="slide level2 center">
 <h2>MARS additive representation</h2>
 <ul>
-<li>The core specification of MARS is an <span class="blue">additive model</span> of the form: <span class="math display">
-f(\bm{x}; \beta) = \sum_{m=1}^M \beta_m h_m(\bm{x}),
+<li>MARS is an <span class="blue">additive model</span> of the form: <span class="math display">
+f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^M \beta_m h_m(\bm{x}),
 </span> where <span class="math inline">h_m(\bm{x})</span> are <span class="orange">basis functions</span> and <span class="math inline">\beta = (\beta_1,\dots,\beta_M)^T</span> are regression coefficients.</li>
 </ul>
 <div class="fragment">
@@ -953,8 +953,94 @@ f(\bm{x}; \beta) = \sum_{m=1}^M \beta_m h_m(\bm{x}),
 </section>
 <section id="basis-functions-for-mars-reflected-pairs" class="slide level2 center">
 <h2>Basis functions for MARS (reflected pairs)</h2>
+<ul>
+<li>The MARS algorithm begins by including just the <span class="blue">intercept term</span>, i.e.&nbsp;<span class="math inline">f(\bm{x}; \beta) = \beta_0</span>. Then, we proceed by <span class="orange">iteratively</span> adding basis functions.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>In MARS the basis functions are always <span class="orange">coupled</span> (or <span class="orange">reflected</span>), meaning that we always add them in pairs to the additive specification.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Let us consider the following set of <span class="blue">pairs</span> of <span class="blue">basis functions</span> (linear splines): <span class="math display">
+\mathcal{C} = \{(x_j - \xi)_+,  (\xi - x_j)_+ : \xi \in \{x_{1j},\dots,x_{nj}\}, \ j=1,\dots,p \}.
+</span> For example, two basis functions could be <span class="math inline">h_1(\bm{x}) = (x_1 - 0.5)_+</span> and <span class="math inline">h_2(\bm{x}) = (0.5 - x_1)_+</span>.</p></li>
+<li><p>The knots are placed in correspondence of the observed data. Hence, there are in <span class="orange">total</span> <span class="math inline">2 n p</span> <span class="orange">possible basis functions</span> among which we can choose.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>In the <span class="blue">first step</span> of the MARS algorithm, we identify the pair <span class="math inline">h_1(\bm{x}) = (x_j - \xi)_+</span> and <span class="math inline">h_2(\bm{x}) = (\xi - x_j)_+</span> that, together with the <span class="blue">intercept</span>, <span class="orange">minimize</span> the <span class="orange">mean squared error</span>.</li>
+</ul>
+</div>
+</section>
+<section id="an-example-of-reflected-pair-basis" class="slide level2 center">
+<h2>An example of reflected pair basis</h2>
 
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-10-1.png" width="1560" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_F_files/figure-revealjs/unnamed-chunk-10-1.png" width="1560" class="r-stretch quarto-figure-center"><ul>
+<li>The function <span class="math inline">h_1(x) = (x - 0.5)_+</span> (<span class="blue">blue</span>) and its reflection <span class="math inline">h_2(x) = (0.5 - x)_+</span> (<span class="orange">orange</span>).</li>
+</ul>
+</section>
+<section id="a-stepwise-construction" class="slide level2 center">
+<h2>A stepwise construction</h2>
+<div>
+<ul>
+<li class="fragment"><p>Hence, <span class="orange">after</span> the <span class="orange">first step</span> of the MARS algorithm, our model for example could be <span class="math display">
+f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1 (x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+.
+</span></p></li>
+<li class="fragment"><p>In the subsequent step, we consider a <span class="blue">new pair</span> of basis functions <span class="math inline">(x_j - \xi)_+, (\xi - x_j)_+</span> in <span class="math inline">\mathcal{C}</span>, but this time we are allowed to perform two kind of operations:</p>
+<ol type="i">
+<li class="fragment">We can include the new pair to the predictor in an <span class="orange">additive</span> way, obtaining for example <span class="math display">
+   f(\bm{x}; \beta) =  \beta_0 + \beta_1(x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+ + \beta_3\textcolor{red}{ (x_2 - 0.75)_+} + \beta_4\textcolor{red}{(0.75 - x_2)_+}.
+   </span></li>
+<li class="fragment">We can include the new pair in a <span class="orange">multiplicative</span> way, by considering the products between the <span class="blue">new basis</span> and one of the <span class="blue">old basis</span> of the model, obtaining for instance <span class="math display">
+   \begin{aligned}
+   f(\bm{x}; \beta) =  \beta_0 &amp;+ \beta_1\textcolor{darkblue}{(x_1 - 0.5)_+} + \beta_2(0.5 - x_1)_+ \\
+   &amp;+ \beta_3 \textcolor{red}{(x_1 - 0.5)_+(x_2 - 0.75)_+} + \beta_4 \textcolor{red}{(x_1 - 0.5)_+(0.75 - x_2)_+}.
+   \end{aligned}
+   </span></li>
+</ol></li>
+</ul>
+</div>
+</section>
+<section id="an-example-of-tensor-product-basis" class="slide level2 center">
+<h2>An example of tensor product basis</h2>
+
+<img data-src="img/mars.png" style="width:50.0%" class="r-stretch quarto-figure-center"><ul>
+<li>The <span class="orange">product</span> function <span class="math inline">h(\bm{x}) = (x_1 - 0.5)_+ (x_2 - 0.75)_+</span> in the range <span class="math inline">(0, 1)^2</span>.</li>
+</ul>
+</section>
+<section id="mars-algorithm-regression" class="slide level2 center">
+<h2>MARS algorithm (regression)</h2>
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>MARS algorithm (degree <span class="math inline">d</span>)</strong></p>
+</div>
+<div class="callout-content">
+<ol type="1">
+<li><p>Initialize <span class="math inline">f(\bm{x}; \beta) = \beta_0</span> and let <span class="math inline">K</span> be <span class="orange">maximum number of pairs</span>, so that <span class="math inline">M = 2K</span>.</p></li>
+<li><p>Identify the <span class="blue">initial pair</span> of basis functions <span class="math inline">h_1</span> and <span class="math inline">h_2</span> in <span class="math inline">\mathcal{C}</span> that minimize the mean squared error. Then, let <span class="math inline">h_0(\bm{x}) = 1</span> and set <span class="math inline">\mathcal{M}_1 = \{h_0, h_1, h_2\}</span>.</p></li>
+<li><p>For <span class="math inline">k = 1,\dots,K - 1</span>, do:</p>
+<ol type="i">
+<li><p>Let <span class="math inline">\mathcal{M}_k = \{h_0, h_1,\dots,h_{2k}\}</span> be the basis functions already present in the model.</p></li>
+<li><p>Consider a <span class="blue">novel pair</span> of bases <span class="math inline">\tilde{h}_1,\tilde{h}_2 \in \mathcal{C} \setminus \mathcal{M}_k</span>. A <span class="orange">candidate pair</span> is obtained <span class="orange">multiplying</span> <span class="math inline">\tilde{h}_1,\tilde{h}_2</span> with one of the bases in <span class="math inline">\mathcal{M}_k</span>. Note that <span class="math inline">h_0 \in \mathcal{M}_k</span>.</p></li>
+<li><p>A <span class="orange">valid</span> candidate pair does not contain the same variable <span class="math inline">x_j</span> more than once in the product and the involves at most <span class="blue"><span class="math inline">d</span> product terms</span>.</p></li>
+<li><p>Identify the <span class="blue">optimal pair</span> among the candidates at step (ii-iii) that <span class="orange">reduces</span> the <span class="orange">mean squared error</span> the most. This results in a new pair of bases <span class="math inline">h_{2k+1}, h_{2k+2}</span>.</p></li>
+<li><p>Set <span class="math inline">\mathcal{M}_{k+1} \leftarrow \mathcal{M}_k \cup \{h_{2k+1}, h_{2k+2}\}</span>.</p></li>
+</ol></li>
+</ol>
+</div>
+</div>
+</div>
+</section>
+<section id="pruning-and-backward-regression" class="slide level2 center">
+<h2>Pruning and backward regression</h2>
+</section>
+<section id="heuristics-behind-mars" class="slide level2 center">
+<h2>Heuristics behind MARS</h2>
+</section>
 <section id="mars-modeling-of-trawl-data-i" class="slide level2 center">
 <h2>MARS modeling of <code>trawl</code> data I</h2>
 </section>
