@@ -429,7 +429,7 @@
 <p><span class="grey">William of Ockham</span></p>
 </div><div class="column" style="width:60%;">
 <ul>
-<li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
+<li><p>This unit will cover the following <span class="orange">topics</span>:</p>
 <ul>
 <li>Bias-variance trade-off</li>
 <li>Cross-validation</li>
@@ -521,7 +521,7 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 <li class="fragment"><p>One might be tempted to let <span class="math inline">p</span> as large as possible to make the model more flexible…</p></li>
 <li class="fragment"><p>Taking this reasoning to the extreme would lead to the choice <span class="math inline">p = n</span>, so that <span class="math display">
 \text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
-</span> i.e., a perfect fit. This procedure is called <span class="blue">interpolation</span>.</p></li>
+</span>, i.e., a perfect fit. This procedure is called <span class="blue">interpolation</span>.</p></li>
 <li class="fragment"><p>However, we are <span class="orange">not</span> interested in predicting <span class="orange">yesterday</span> data. Our goal is to predict <span class="blue">tomorrow</span>’s data, i.e.&nbsp;a <span class="blue">new set</span> of <span class="math inline">n = 30</span> points: <span class="math display">
 (x_1, \tilde{y}_1), \dots, (x_n, \tilde{y}_n),
 </span> using <span class="math inline">\hat{y}_i = f(x_i; \hat{\beta})</span>, where <span class="math inline">\hat{\beta}</span> is obtained using yesterday’s data.</p></li>
@@ -559,7 +559,7 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 \text{MSE}_{\text{test}} = \frac{1}{n}\sum_{i=1}^n\{\tilde{y}_i -f(x_i; \hat{\beta})\}^2,
 </span> and similarly the <span class="math inline">R^2_\text{test}</span>. We would like the <span class="math inline">\text{MSE}_{\text{test}}</span> to be <span class="orange">as small as possible</span>.</p></li>
 <li class="fragment"><p>For <span class="blue">small values</span> of <span class="math inline">p</span>, an increase in the degree of the polynomial <span class="blue">improves the fit</span>. In other words, at the beginning, both the <span class="math inline">\text{MSE}_{\text{train}}</span> and the <span class="math inline">\text{MSE}_{\text{test}}</span> decrease.</p></li>
-<li class="fragment"><p>For <span class="orange">larger values</span> of <span class="math inline">p</span>, the improvement gradually ceases, and the polynomial follows <span class="orange">random fluctuations</span> in yesterday’s data which are <span class="blue">not observed</span> in the <span class="blue">new sample</span>.</p></li>
+<li class="fragment"><p>For <span class="orange">larger values</span> of <span class="math inline">p</span>, the improvement gradually ceases, and the polynomial follows <span class="orange">random fluctuations</span> in yesterday’s data, which are <span class="blue">not observed</span> in the <span class="blue">new sample</span>.</p></li>
 <li class="fragment"><p>An over-adaptation to yesterday’s data is called <span class="orange">overfitting</span>, which occurs when the training <span class="math inline">\text{MSE}_{\text{train}}</span> is low but the test <span class="math inline">\text{MSE}_{\text{test}}</span> is high.</p></li>
 <li class="fragment"><p>Yesterday’s dataset is available from the textbook (A&amp;S) website:</p>
 <ul>
@@ -655,7 +655,7 @@ x3                0  0  0  1</code></pre>
 <ul>
 <li class="fragment">The <span class="orange">misclassification loss</span>, which is defined as <span class="math display">
 \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i  \neq \hat{y}_i).
-</span> The predictions are obtained dichotomizing the probabilities <span class="math inline">\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) &gt; 1/2)</span>.</li>
+</span> The predictions are obtained by dichotomizing the probabilities <span class="math inline">\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) &gt; 1/2)</span>.</li>
 <li class="fragment">The <span class="orange">deviance</span> or <span class="orange">cross-entropy</span> loss functions are defined as <span class="math display">
 \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
 </span></li>
@@ -701,7 +701,7 @@ x3                0  0  0  1</code></pre>
 <h2>Classification under misclassification loss</h2>
 <div>
 <ul>
-<li class="fragment"><p>In <span class="orange">classification problems</span>, under a <span class="blue">misclassification loss</span>, the in sample prediction error is <span class="math display">
+<li class="fragment"><p>In <span class="orange">classification problems</span>, under a <span class="blue">misclassification loss</span>, the in-sample prediction error is <span class="math display">
 \text{ErrF} = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n  \mathbb{E}\{\mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)\}= \frac{1}{n}\sum_{i=1}^n\mathbb{P}(\tilde{Y}_i \neq \hat{y}_i).
 </span></p></li>
 <li class="fragment"><p>The above error is <span class="orange">minimized</span> whenever <span class="math inline">\hat{y}_i</span> corresponds to <span class="orange">Bayes classifier</span> <span class="math display">
@@ -847,7 +847,7 @@ x3                0  0  0  1</code></pre>
 </div><div class="column" style="width:50%;">
 <ul>
 <li><p>A drug called “cholestyramine” is administered to <span class="math inline">n = 164</span> men.</p></li>
-<li><p>For each man, we observe the pair <span class="math inline">(x_i, y_i)</span>.</p></li>
+<li><p>We observe the pair <span class="math inline">(x_i, y_i)</span> for each man.</p></li>
 <li><p>The response <span class="math inline">y_i</span> is the <span class="orange">decrease in cholesterol level</span> over the experiment.</p></li>
 <li><p>The covariate <span class="math inline">x_i</span> is a measure of <span class="blue">compliance</span>.</p></li>
 <li><p>We assume, as before, that the data are generated according to <span class="math display">
@@ -863,7 +863,7 @@ x3                0  0  0  1</code></pre>
 <div>
 <ul>
 <li class="fragment"><p>A slight change to the previous setup is necessary. In fact, there are no reasons to believe that the <span class="blue">compliance</span> is a fixed covariate.</p></li>
-<li class="fragment"><p>We consider a set of iid <span class="blue">random variables</span> <span class="math inline">(X_1, Y_1),\dots, (X_n, Y_n)</span>, whose realization is <span class="math inline">(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)</span>. This time the covariates are <span class="orange">random</span>.</p></li>
+<li class="fragment"><p>We consider a set of iid <span class="blue">random variables</span> <span class="math inline">(X_1, Y_1),\dots, (X_n, Y_n)</span>, whose realization is <span class="math inline">(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)</span>. This time, the covariates are <span class="orange">random</span>.</p></li>
 <li class="fragment"><p>The main assumption is that these pairs are <span class="orange">iid</span>, namely: <span class="math display">(X_i, Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \quad  i=1,\dots,n.</span></p></li>
 <li class="fragment"><p>Conditionally on <span class="math inline">X_i = \bm{x}_i</span>, in <span class="orange">regression problems</span> we let as before <span class="math display">
   Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,n,
@@ -923,8 +923,8 @@ x3                0  0  0  1</code></pre>
 <h2>Cross-validation I</h2>
 <ul>
 <li><p>A way to partially overcome the loss of efficiency of the training / test paradigm consists in <span class="orange">randomly splitting the data</span> <span class="math inline">\{1,\dots,n\}</span> in equal parts, say <span class="math inline">V_1,\ldots,V_K</span>.</p></li>
-<li><p>In the <span class="blue"><span class="math inline">K</span>-fold cross-validation</span> method we use the observations <span class="math inline">i \notin V_k</span> to train the model and the remaining observations <span class="math inline">i \in V_k</span> to assess to perform model selection.</p></li>
-<li><p>In the following scheme we let <span class="math inline">K = 5</span>.</p></li>
+<li><p>In the <span class="blue"><span class="math inline">K</span>-fold cross-validation</span> method we use the observations <span class="math inline">i \notin V_k</span> to train the model and the remaining observations <span class="math inline">i \in V_k</span> to perform model selection.</p></li>
+<li><p>In the following scheme, we let <span class="math inline">K = 5</span>.</p></li>
 </ul>
 <div class="flourish-embed flourish-hierarchy" data-src="visualisation/14247663">
 <script src="https://public.flourish.studio/resources/embed.js"></script>
@@ -954,7 +954,7 @@ r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
 \widehat{\text{se}} = \frac{1}{\sqrt{n}} \text{sd}(r) = \frac{1}{\sqrt{n}} \sqrt{\frac{1}{n-1}\sum_{i=1}^n (r_i - \bar{r})^2}.
 </span></p></li>
 <li class="fragment"><p>The above formula is often criticized for producing intervals that are <span class="orange">too narrow</span>!</p></li>
-<li class="fragment"><p>Indeed, the estimate <span class="math inline">\widehat{\text{se}}</span> of the standard deviation of <span class="math inline">\widehat{\text{Err}}</span> assumes that the observed errors <span class="math inline">r_1, \dots, r_n</span> are independent, but this is not true!</p></li>
+<li class="fragment"><p>Indeed, the estimate <span class="math inline">\widehat{\text{se}}</span> of the standard deviation of <span class="math inline">\widehat{\text{Err}}</span> assumes that the observed errors <span class="math inline">r_1, \dots, r_n</span> are independent, but this is false!</p></li>
 </ul>
 </div>
 </section>
@@ -1034,7 +1034,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <li class="fragment"><p>We must consider the different number of parameters, introducing a <span class="orange">penalty</span>: <span class="math display">
 \text{IC}(p) = -2 \ell(\hat{\theta}) + \text{penalty}(p),
 </span></p></li>
-<li class="fragment"><p>The <span class="math inline">\text{IC}</span> is called an <span class="orange">information criterion</span>. We select the number of parameters that minimizes the <span class="math inline">\text{IC}</span>.</p></li>
+<li class="fragment"><p>The <span class="math inline">\text{IC}</span> is called an <span class="orange">information criterion</span>. We select the number of parameters minimizing the <span class="math inline">\text{IC}</span>.</p></li>
 <li class="fragment"><p>The choice of the specific penalty identifies a particular criterion.</p></li>
 <li class="fragment"><p>An advantage of <span class="math inline">\text{IC}</span> is that they are based on the full dataset.</p></li>
 </ul>
@@ -1064,7 +1064,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <li class="fragment"><p>The theoretical quantity <span class="math inline">\Delta(p)</span> cannot be obtained. However, the quantity <span class="math display">
 \text{AIC} = -2 \ell(\hat{\theta}) + 2 p,
 </span> namely the <span class="orange">Akaike information criterion</span>, is a good estimator of <span class="math inline">\Delta(p)</span>.</p></li>
-<li class="fragment"><p>More formally, it can be proved that, under technical conditions: <span class="math display">
+<li class="fragment"><p>More formally, it can be proved that under technical conditions: <span class="math display">
 \mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = \Delta(p),
 </span> for <span class="math inline">n \rightarrow \infty</span>.</p></li>
 <li class="fragment"><p>In practice, we will select the value of <span class="math inline">p</span> minimizing the <span class="math inline">\text{AIC}</span>, which is typically quite easy.</p></li>
@@ -1086,7 +1086,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 \sigma^2} C_p,
 \end{aligned}
 </span> implying that for fixed values <span class="math inline">\sigma^2</span> the <span class="math inline">C_p</span> of Mallows and the Akaike’s <span class="math inline">\text{AIC}</span> are <span class="blue">equivalent</span>, i.e.&nbsp;they lead to the same <span class="orange">minimum</span>.</p></li>
-<li class="fragment"><p>When <span class="math inline">\sigma^2</span> is unknown, then it is estimated and the <span class="math inline">C_p</span> and <span class="math inline">\text{AIC}</span> may be slightly different.</p></li>
+<li class="fragment"><p>When <span class="math inline">\sigma^2</span> is unknown, then it is estimated, and the <span class="math inline">C_p</span> and <span class="math inline">\text{AIC}</span> may be slightly different.</p></li>
 </ul>
 </div>
 </section>
@@ -1157,11 +1157,11 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <li class="fragment"><p>In the <code>cholesterol</code> dataset, the various indices produced <span class="orange">different results</span>!</p>
 <ul>
 <li class="fragment">The BIC and and the <span class="math inline">10-</span>fold cross-validation selected <span class="math inline">p = 2</span> (linear model);</li>
-<li class="fragment">The the training / test split suggested <span class="math inline">p = 3</span> (quadratic model);</li>
+<li class="fragment">The training/test split suggested <span class="math inline">p = 3</span> (quadratic model);</li>
 <li class="fragment">All the others (LOO-CV, <span class="math inline">\text{GCV}</span>, <span class="math inline">\text{AIC}</span> and <span class="math inline">\text{AIC}_c</span>) concluded that <span class="math inline">p = 4</span> (cubic model).</li>
 </ul></li>
-<li class="fragment"><p>The good news is that all the above methods produced <span class="blue">similar findings</span>. For example, we are quite sure that we should choose <span class="math inline">p \le 6</span>.</p></li>
-<li class="fragment"><p>On the other hand, there is obviously some <span class="orange">uncertainty</span>, which is a quite common situation.</p></li>
+<li class="fragment"><p>The good news is that all the above methods produced <span class="blue">similar findings</span>. For example, we are sure we should choose <span class="math inline">p \le 6</span>.</p></li>
+<li class="fragment"><p>On the other hand, there is some <span class="orange">uncertainty</span>, which is quite a common situation.</p></li>
 <li class="fragment"><p>In this specific case, we may prefer <span class="math inline">p = 4</span>, since it is based on the less-biased estimates of <span class="math inline">\text{Err}</span>, such as the LOO-CV.</p></li>
 <li class="fragment"><p>However, this choice is <span class="blue">debatable</span>: another statistician may prefer the simpler linear model with <span class="math inline">p =2</span>.</p></li>
 </ul>

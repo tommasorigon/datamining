@@ -67,7 +67,7 @@ styler:::style_file("../code/un_B.R")
 :::
 
 ::: {.column width="60%"}
--   In this unit we will cover the following [topics]{.orange}:
+- This unit will cover the following [topics]{.orange}:
 
     -   Bias-variance trade-off
     -   Cross-validation
@@ -287,7 +287,7 @@ curve(f(x), n = 300, add = TRUE)
 -   Taking this reasoning to the extreme would lead to the choice
     $p = n$, so that $$
     \text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
-    $$ i.e., a perfect fit. This procedure is called
+    $$, i.e., a perfect fit. This procedure is called
     [interpolation]{.blue}.
 
 -   However, we are [not]{.orange} interested in predicting
@@ -366,7 +366,7 @@ ggplot(data = data_goodness, aes(x = degree + 1, y = R_squared_test)) +
 
 -   For [larger values]{.orange} of $p$, the improvement gradually
     ceases, and the polynomial follows [random fluctuations]{.orange} in
-    yesterday's data which are [not observed]{.blue} in the [new
+    yesterday's data, which are [not observed]{.blue} in the [new
     sample]{.blue}.
 
 -   An over-adaptation to yesterday's data is called
@@ -494,7 +494,7 @@ $$
 
     -   The [misclassification loss]{.orange}, which is defined as $$
         \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i  \neq \hat{y}_i).
-        $$ The predictions are obtained dichotomizing the probabilities
+        $$ The predictions are obtained by dichotomizing the probabilities
         $\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) > 1/2)$.
     -   The [deviance]{.orange} or [cross-entropy]{.orange} loss
         functions are defined as $$
@@ -548,7 +548,7 @@ and for any $i = 1,\dots,n$.
 
 ::: incremental
 -   In [classification problems]{.orange}, under a [misclassification
-    loss]{.blue}, the in sample prediction error is $$
+    loss]{.blue}, the in-sample prediction error is $$
     \text{ErrF} = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n  \mathbb{E}\{\mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)\}= \frac{1}{n}\sum_{i=1}^n\mathbb{P}(\tilde{Y}_i \neq \hat{y}_i).
     $$
 
@@ -859,7 +859,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 ::: {.column width="50%"}
 -   A drug called "cholestyramine" is administered to $n = 164$ men.
 
--   For each man, we observe the pair $(x_i, y_i)$.
+- We observe the pair $(x_i, y_i)$ for each man.
 
 -   The response $y_i$ is the [decrease in cholesterol level]{.orange}
     over the experiment.
@@ -884,7 +884,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 
 -   We consider a set of iid [random variables]{.blue}
     $(X_1, Y_1),\dots, (X_n, Y_n)$, whose realization is
-    $(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)$. This time the covariates are
+    $(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)$. This time, the covariates are
     [random]{.orange}.
 
 -   The main assumption is that these pairs are [iid]{.orange}, namely:
@@ -1025,9 +1025,9 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 -   In the [$K$-fold cross-validation]{.blue} method we use the
     observations $i \notin V_k$ to train the model and the remaining
-    observations $i \in V_k$ to assess to perform model selection.
+    observations $i \in V_k$ to perform model selection.
 
--   In the following scheme we let $K = 5$.
+-   In the following scheme, we let $K = 5$.
 
 ::: {.flourish-embed .flourish-hierarchy data-src="visualisation/14247663"}
 ```{=html}
@@ -1077,7 +1077,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 -   Indeed, the estimate $\widehat{\text{se}}$ of the standard deviation
     of $\widehat{\text{Err}}$ assumes that the observed errors
-    $r_1, \dots, r_n$ are independent, but this is not true!
+    $r_1, \dots, r_n$ are independent, but this is false!
 :::
 
 ## Cross-validation IV (`cholesterol` data)
@@ -1259,7 +1259,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     $$
 
 -   The $\text{IC}$ is called an [information criterion]{.orange}. We
-    select the number of parameters that minimizes the $\text{IC}$.
+    select the number of parameters minimizing the $\text{IC}$.
 
 -   The choice of the specific penalty identifies a particular
     criterion.
@@ -1301,7 +1301,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     $$ namely the [Akaike information criterion]{.orange}, is a good
     estimator of $\Delta(p)$.
 
--   More formally, it can be proved that, under technical conditions: $$
+-   More formally, it can be proved that under technical conditions: $$
     \mathbb{E}_{\theta_0}(\text{AIC}) + o(1) = \Delta(p),
     $$ for $n \rightarrow \infty$.
 
@@ -1329,7 +1329,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     and the Akaike's $\text{AIC}$ are [equivalent]{.blue}, i.e. they
     lead to the same [minimum]{.orange}.
 
--   When $\sigma^2$ is unknown, then it is estimated and the $C_p$ and
+-   When $\sigma^2$ is unknown, then it is estimated, and the $C_p$ and
     $\text{AIC}$ may be slightly different.
 :::
 
@@ -1413,17 +1413,17 @@ ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
 
     -   The BIC and and the $10-$fold cross-validation selected $p = 2$
         (linear model);
-    -   The the training / test split suggested $p = 3$ (quadratic
+    -   The training/test split suggested $p = 3$ (quadratic
         model);
     -   All the others (LOO-CV, $\text{GCV}$, $\text{AIC}$ and
         $\text{AIC}_c$) concluded that $p = 4$ (cubic model).
 
 -   The good news is that all the above methods produced [similar
-    findings]{.blue}. For example, we are quite sure that we should
+    findings]{.blue}. For example, we are sure we should
     choose $p \le 6$.
 
--   On the other hand, there is obviously some [uncertainty]{.orange},
-    which is a quite common situation.
+-   On the other hand, there is some [uncertainty]{.orange},
+    which is quite a common situation.
 
 -   In this specific case, we may prefer $p = 4$, since it is based on
     the less-biased estimates of $\text{Err}$, such as the LOO-CV.
