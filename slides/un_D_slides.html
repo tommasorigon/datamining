@@ -367,7 +367,7 @@
 <p><span class="grey">Leo Breiman</span></p>
 </div><div class="column" style="width:70%;">
 <ul>
-<li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
+<li><p>This unit will cover the following <span class="orange">topics</span>:</p>
 <ul>
 <li>Kernel methods and local regression;</li>
 <li>Regression splines;</li>
@@ -377,7 +377,7 @@
   Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
   </span> where <span class="math inline">\epsilon_i</span> are <span class="orange">iid</span> with <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span> and <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>.</p></li>
 <li><p>We do not believe <span class="math inline">f(\bm{x})</span> is a polynomial nor it belongs to some parametric family of functions.</p></li>
-<li><p>Can we fit a <span class="blue">nonparametric</span> relationship that does <span class="orange">not</span> make strong <span class="orange">assumptions</span> on <span class="math inline">f(\bm{x})</span>? Let us review some old dataset…</p></li>
+<li><p>Can we fit a <span class="blue">nonparametric</span> relationship that does <span class="orange">not</span> make strong <span class="orange">assumptions</span> on <span class="math inline">f(\bm{x})</span>? Let us review some old datasets…</p></li>
 </ul>
 </div>
 </div>
@@ -399,7 +399,7 @@
 </div><div class="column" style="width:60%;">
 <ul>
 <li><p>In this first example, a drug called “cholestyramine” is administered to <span class="math inline">n = 164</span> men.</p></li>
-<li><p>For each man, we observe the pair <span class="math inline">(x_i, y_i)</span>.</p></li>
+<li><p>We observe the pair <span class="math inline">(x_i, y_i)</span> for each man.</p></li>
 <li><p>The response <span class="math inline">y_i</span> is the <span class="orange">decrease in cholesterol level</span> over the experiment.</p></li>
 <li><p>The covariate <span class="math inline">x_i</span> is a measure of <span class="blue">compliance</span>.</p></li>
 <li><p>We assume, as before, that the data are generated according to <span class="math display">
@@ -421,7 +421,7 @@
 Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 </span> where <span class="math inline">f(x)</span> was “manually” selected.</p></li>
 <li><p>There are <span class="orange">no</span> reasons to believe that <span class="math inline">f(x) = \alpha x^\beta</span> or that <span class="math inline">f(x)</span> belongs to any other <span class="orange">parametric</span> family.</p></li>
-<li><p>We would like the data to “speak for themselves”.</p></li>
+<li><p>We would like the data to “speak for themselves.”</p></li>
 </ul>
 </div><div class="column" style="width:40%;">
 <div class="cell">
@@ -449,7 +449,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <ul>
 <li>The time points are <span class="orange">not regularly spaced</span> and sometimes there are <span class="blue">multiple observations</span>;</li>
 <li>The observations are subject to <span class="orange">error</span>;</li>
-<li>The errors <span class="math inline">\epsilon_i</span> are probably heteroschedastic, but let us ignore this for the moment.</li>
+<li>The errors <span class="math inline">\epsilon_i</span> are probably heteroscedastic, but let us ignore this now.</li>
 </ul></li>
 <li><p>It is of interest to discern the <span class="blue">general shape</span> of the underlying acceleration curve.</p></li>
 </ul>
@@ -459,17 +459,17 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <section id="old-friends-polynomials" class="slide level2 center">
 <h2>Old friends: polynomials</h2>
 <ul>
-<li>In the <code>mcycle</code> dataset it is <span class="orange">not</span> obvious which <span class="orange">parametric</span> function we should consider, therefore this route is not an option.</li>
+<li>In the <code>mcycle</code> dataset, it is <span class="orange">not</span> obvious which <span class="orange">parametric</span> function we should consider, therefore this route is not an option.</li>
 </ul>
 <div class="fragment">
 <ul>
 <li><p>In <span class="orange">theory</span> <span class="blue">polynomials</span> can <span class="blue">approximate</span> a large class of functions, as a consequence of Taylor’s expansion theorem.</p></li>
-<li><p>In the statistical <span class="orange">practice</span>, however, polynomial regression is not very well suited for modelling complex relationships.</p></li>
+<li><p>In the statistical <span class="orange">practice</span>, however, polynomial regression is not very well suited for modeling complex relationships.</p></li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li><p>When performing flexible regression we would expect the prediction at <span class="math inline">x_i</span> to depend on observations close to <span class="math inline">x_i</span>. However, polynomials are <span class="orange">not local</span>.</p></li>
+<li><p>When performing flexible regression, we expect the prediction at <span class="math inline">x_i</span> to depend on observations close to <span class="math inline">x_i</span>. However, polynomials are <span class="orange">not local</span>.</p></li>
 <li><p>Instead, in polynomial regression points that are far away from <span class="math inline">x_i</span> have a big impact on <span class="math inline">\hat{f}(x_i)</span>. This produces <span class="blue">spurious oscillations</span> at the boundaries and <span class="orange">unstable</span> estimates.</p></li>
 <li><p>This is known as <a href="https://en.wikipedia.org/wiki/Runge%27s_phenomenon">Runge’s phenomenon</a> in numerical analysis.</p></li>
 </ul>
@@ -545,18 +545,18 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <ul>
 <li><p>The number of neighbours <span class="math inline">k</span> influences how “<span class="orange">local</span>” is the estimate.</p></li>
 <li><p>When <span class="math inline">k</span> is low, the KNN estimator <span class="math inline">\hat{f}(x)</span> has <span class="orange">high variance</span>. The extreme case <span class="math inline">k = 1</span> corresponds to an “average” of a single data point.</p></li>
-<li><p>When <span class="math inline">k</span> is high, the KNN estimator <span class="math inline">\hat{f}(x)</span> is not local and it has <span class="blue">high bias</span>. The extreme case <span class="math inline">k = n</span> produces a constant, i.e.&nbsp;the average of all the observations.</p></li>
+<li><p>When <span class="math inline">k</span> is high, the KNN estimator <span class="math inline">\hat{f}(x)</span> is not local and it has <span class="blue">high bias</span>. The extreme case <span class="math inline">k = n</span> produces a constant, i.e., the average of all the observations.</p></li>
 </ul>
 <div class="fragment">
 <ul>
-<li>Thus, there is a <span class="orange">bias-variance trade-off</span> in the choice of <span class="math inline">k</span>, which should be selected e.g.&nbsp;via <span class="blue">cross-validation</span>.</li>
+<li>Thus, there is a <span class="orange">bias-variance trade-off</span> in the choice of <span class="math inline">k</span>, which should be selected, e.g., via <span class="blue">cross-validation</span>.</li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li><p>The <span class="math inline">k</span>-nearest neighbours produces a <span class="blue">sensible result</span>, but the method <span class="orange">can be improved</span>.</p></li>
+<li><p>The <span class="math inline">k</span>-nearest neighbors produce a <span class="blue">sensible result</span>, but the method <span class="orange">can be improved</span>.</p></li>
 <li><p>The <span class="blue">blue curve</span> is bumpy, because <span class="math inline">\hat{f}(x)</span> is <span class="orange">discontinuous</span> in <span class="math inline">x</span>.</p></li>
-<li><p>Indeed, as we move <span class="math inline">x</span> from left to right, the <span class="math inline">k</span>-nearest neighborhood remains constant, until a new point <span class="math inline">x_i</span> to the right of <span class="math inline">x</span> is included and one to the left is excluded.</p></li>
+<li><p>Indeed, as we move <span class="math inline">x</span> from left to right, the <span class="math inline">k</span>-nearest neighborhood remains constant until a new point <span class="math inline">x_i</span> to the right of <span class="math inline">x</span> is included, and one to the left is excluded.</p></li>
 <li><p>This discontinuity is <span class="orange">ugly</span> and <span class="orange">unnecessary</span>. We are looking instead for a <span class="blue">smooth</span> prediction.</p></li>
 </ul>
 </div>
@@ -594,7 +594,7 @@ w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
 <ul>
 <li><p>The most important factor, however, is not the functional form of <span class="math inline">w(\cdot)</span>, but rather the <span class="orange">smoothing parameter</span> <span class="math inline">h</span>, which is a complexity parameter.</p></li>
 <li><p>Indeed, <span class="math inline">h</span> defines the “<span class="blue">smoothing window</span>” on the <span class="math inline">x</span>-axis, i.e.&nbsp;the relevant data points that are considered for <span class="math inline">\hat{f}(x)</span>.</p></li>
-<li><p>As any complexity parameter, <span class="math inline">h</span> should be chosen via cross-validation or related ideas.</p></li>
+<li><p>As with any complexity parameter, <span class="math inline">h</span> should be chosen via cross-validation or related ideas.</p></li>
 </ul>
 </div>
 </section>
@@ -729,7 +729,7 @@ f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) +
 </div>
 <div class="fragment">
 <ul>
-<li><p>The weights of all the smoothers we will use have are such that <span class="math inline">\sum_{i=1}^ns_i(x) = 1</span> for all <span class="math inline">x</span>.</p></li>
+<li><p>The weights of all the smoothers we will use are such that <span class="math inline">\sum_{i=1}^ns_i(x) = 1</span> for all <span class="math inline">x</span>.</p></li>
 <li><p>Hence, the smoother <span class="blue">preserves constant curves</span>, namely if all <span class="math inline">y_i = c</span>, then <span class="math inline">\hat{f}(x) = c</span>.</p></li>
 </ul>
 </div>
@@ -834,7 +834,7 @@ h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2
 <section id="bias-reduction-of-local-linear-regression" class="slide level2 center">
 <h2>☠️ - Bias reduction of local linear regression</h2>
 <ul>
-<li><p>Local linear regression, compared to the Nadaraya-Watson estimator, correct the <span class="orange">first-order</span> term of the <span class="orange">bias</span>, without affecting the variance in a sensible way.</p></li>
+<li><p>Compared to the Nadaraya-Watson estimator, local linear regression corrects the <span class="orange">first-order</span> term of the <span class="orange">bias</span>, without affecting the variance sensibly.</p></li>
 <li><p>Indeed, it can be shown that the <span class="blue">asymptotic variance</span> of Nadaraya-Watson and local linear regression is the <span class="blue">same</span>, but the <span class="orange">asymptotic bias</span> is <span class="orange">different</span>.</p></li>
 </ul>
 <div class="fragment">
@@ -845,7 +845,7 @@ h_\text{opt}(x) = \left(\frac{1}{n} \frac{\sigma^2 \alpha_w}{\sigma^4_w f''(x)^2
 &amp; = f(x)\underbrace{\sum_{i=1}^ns_i(x)}_{=1} + f'(x) \underbrace{\sum_{i=1}^n(x_i - x)s_i(x)}_{=0} + \frac{f''(x)}{2}\sum_{i=1}^n(x_i - x)^2s_i(x) + \text{rest}.
 \end{aligned}
 </span></p></li>
-<li><p>It can be shown with some algebra that the first order term simplifies (<span class="math inline">=0</span>) in the local linear regression case but it doesn’t for the Nadaraya-Watson, therefore <span class="orange">reducing the bias</span>.</p></li>
+<li><p>It can be shown with some algebra that the first-order term simplifies (<span class="math inline">=0</span>) in the local linear regression case, but it doesn’t for the Nadaraya-Watson, therefore <span class="orange">reducing the bias</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -909,12 +909,12 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 </ul>
 <div class="fragment">
 <ul>
-<li>The <code>loess</code> (Cleveland, 1979) consider a <span class="blue">fixed percentage</span> of data points (assuming a bounded kernel is used), which automatically induces a <span class="orange">variable bandwidth</span>, as in KNN.</li>
+<li>The <code>loess</code> (Cleveland, 1979) considers a <span class="blue">fixed percentage</span> of data points (assuming a bounded kernel is used), which automatically induces a <span class="orange">variable bandwidth</span>, as in KNN.</li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li>Moreover, the <code>loess</code> algorithm combines the <span class="blue">variable bandwidth</span> with some <span class="orange">robust estimation</span> ideas, so that the resulting estimate is less influenced by outliers.</li>
+<li>Moreover, the <code>loess</code> algorithm combines the <span class="blue">variable bandwidth</span> with some <span class="orange">robust estimation</span> ideas, so that outliers less influence the resulting estimate.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -927,7 +927,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 <h2>Local likelihoods</h2>
 <ul>
 <li><p>The concept of local regression and varying coefficients is extremely <span class="orange">broad</span>.</p></li>
-<li><p>In principle any <span class="orange">parametric</span> model can be made <span class="blue">local</span> as long as it accommodates <span class="blue">weights</span>.</p></li>
+<li><p>In principle, any <span class="orange">parametric</span> model can be made <span class="blue">local</span> as long as it accommodates <span class="blue">weights</span>.</p></li>
 </ul>
 <div class="fragment">
 <ul>
@@ -946,7 +946,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 <section id="the-bivariate-case" class="slide level2 center">
 <h2>The bivariate case</h2>
 <ul>
-<li><p>Local linear regression can be applied when <span class="orange">two</span> or <span class="orange">more covariates</span>, say <span class="math inline">p</span>, are used. Let us begin with two covariates, so that <span class="math display">
+<li><p>Local linear regression can be applied when <span class="orange">two</span> or <span class="orange">more covariates</span>, say <span class="math inline">p</span>, are used. Let us begin with two covariates so that <span class="math display">
 y_i = f(x_{i1}, x_{i2}) + \epsilon_i.
 </span></p></li>
 <li><p>To estimate <span class="math inline">f</span> on a specific point <span class="math inline">\bm{x} = (x_1,x_2)^T</span>, a <span class="blue">natural extension</span> of local linear regression takes the form <span class="math display">
@@ -990,7 +990,7 @@ w_i(\bm{x}) = \frac{1}{h_1 h_2} w\left(\frac{x_{i1} - x_1}{h_1}\right)w\left(\fr
 </div>
 <div class="callout-content">
 <ul>
-<li><p>There is a price to pay for not making assumption: estimation is <span class="orange">less efficient</span> in terms of mean squared error compared to parametric models (when they are correctly specified!).</p></li>
+<li><p>There is a price to pay for not making assumptions: estimation is <span class="orange">less efficient</span> in terms of mean squared error compared to parametric models (when they are correctly specified!).</p></li>
 <li><p>This is a drawback of all nonparametric estimators, not just local linear regression.</p></li>
 </ul>
 </div>
@@ -1107,7 +1107,7 @@ h_{28}(x) &amp;= I(x \ge \xi_9),  &amp;&amp;h_{29}(x) = x\:I(x \ge \xi_9), &amp;
 <p><strong>Definition (Cubic spline, <span class="math inline">d = 3</span>)</strong></p>
 </div>
 <div class="callout-content">
-<p>Letting <span class="math inline">\xi_1 &lt; \dots &lt; \xi_k</span> denote a set ordered knots, a <span class="blue">cubic spline</span> <span class="math inline">f(x; \beta)</span> is a piecewise cubic polynomial that has <span class="orange">continuous first</span> and <span class="orange">second derivatives</span>.</p>
+<p>Letting <span class="math inline">\xi_1 &lt; \dots &lt; \xi_k</span> denote a set of ordered knots, a <span class="blue">cubic spline</span> <span class="math inline">f(x; \beta)</span> is a piecewise cubic polynomial that has <span class="orange">continuous first</span> and <span class="orange">second derivatives</span>.</p>
 </div>
 </div>
 </div>
@@ -1132,14 +1132,14 @@ f(\xi_j^+) = f(\xi_j^-), \dots, f^{(d-1)}(\xi_j^+) = f^{(d-1)}(\xi_j^-), \qquad 
 <li>The degree <span class="math inline">d</span> controls the amount of smoothness:
 <ul>
 <li><span class="math inline">d = 0</span> is a <span class="blue">piecewise constant</span> function;</li>
-<li><span class="math inline">d = 1</span> is a <span class="orange">polygonal line</span> (continuous, but with discontinous first derivative).</li>
+<li><span class="math inline">d = 1</span> is a <span class="orange">polygonal line</span> (continuous, but with discontinuous first derivative).</li>
 </ul></li>
-<li>Higher values of <span class="math inline">d</span> increase the smoothness, but the spline behave more and more like a global polynomial. In practice one almost never goes beyond <span class="math inline">d = 3</span>.</li>
+<li>Higher values of <span class="math inline">d</span> increase the smoothness, but the spline behaves more and more like a global polynomial. In practice, one rarely goes beyond <span class="math inline">d = 3</span>.</li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li>The current definition of spline is quite <span class="blue">abstract</span> and <span class="orange">non-operative</span>. How do we actually fit a regression model whose <span class="math inline">f(x; \beta)</span> is a spline?</li>
+<li>The current definition of spline is quite <span class="blue">abstract</span> and <span class="orange">non-operative</span>. How do we fit a regression model whose <span class="math inline">f(x; \beta)</span> is a spline?</li>
 </ul>
 </div>
 </section>
@@ -1166,7 +1166,7 @@ f(x; \beta) = \sum_{j=1}^{k+d+1}h_j(x) \beta_j.
 <section id="regression-splines-1" class="slide level2 center">
 <h2>Regression splines</h2>
 <ul>
-<li>The truncated power basis of a spline makes is a <span class="orange">constructive</span> way of defining splines. Moreover, it clarifies that splines are <span class="blue">linear in the parameters</span>.</li>
+<li>The truncated power basis is a <span class="orange">constructive</span> way of defining splines. Moreover, it clarifies that splines are <span class="blue">linear in the parameters</span>.</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -1185,18 +1185,18 @@ f(x; \beta) = \sum_{j=1}^{k+d+1}h_j(x) \beta_j.
 </div>
 <div class="fragment">
 <ul>
-<li>Regression splines are generating “new” covariates. Hence, their extension to GLMs and in particular to <span class="orange">logistic regression</span> is straightforward.</li>
+<li>Regression splines are generating “new” covariates. Hence, their extension to GLMs, particularly to <span class="orange">logistic regression</span>, is straightforward.</li>
 </ul>
 </div>
 </section>
 <section id="on-the-choice-of-the-knots" class="slide level2 center">
 <h2>On the choice of the knots</h2>
 <ul>
-<li>The placement and the number <span class="math inline">k</span> of the knots are <span class="orange">complexity parameters</span>, which should be chosen via cross-validation or other tools.</li>
+<li>The knots’ placement and their number <span class="math inline">k</span> are <span class="orange">complexity parameters</span>, which should be chosen via cross-validation or other tools.</li>
 </ul>
 <div class="fragment">
 <ul>
-<li>In principle the <span class="blue">position of the knots</span> could be manually selected to get the best fit. However, this results in an <span class="orange">incredible optimization problem</span>.</li>
+<li>In principle, the <span class="blue">position of the knots</span> could be manually selected to get the best fit. However, this results in an <span class="orange">incredible optimization problem</span>.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -1293,13 +1293,13 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <h2>Computations: B-splines I</h2>
 <div>
 <ul>
-<li class="fragment"><p>Despite their conceptual simplicity, the truncated power basis and its natural modification are <span class="blue">not</span> used in <span class="blue">practice</span>, due to <span class="orange">ill-conditioning</span>.</p></li>
+<li class="fragment"><p>Despite their conceptual simplicity, the truncated power basis and its “natural” modification are <span class="blue">not</span> used in <span class="blue">practice</span>, due to <span class="orange">ill-conditioning</span>.</p></li>
 <li class="fragment"><p>Indeed, the condition number of <span class="math inline">\bm{B}^T\bm{B}</span> using a truncated power basis is very large, leading to <span class="orange">numerical inaccuracies</span>.</p></li>
 <li class="fragment"><p>For this reason, more <span class="blue">computationally convenient</span> bases are preferred. This means we will consider an <span class="blue">equivalent</span> set of functions <span class="math inline">\mathcal{B}_1(x),\dots,\mathcal{B}_p(x)</span> such that <span class="math display">
 \mathcal{B}_j(x) = \sum_{\ell=1}^p\gamma_{\ell j} h_\ell(x), \qquad j=1,\dots,p,
 </span> for some set of weights <span class="math inline">\gamma_{\ell j}</span> that makes this transformation <span class="orange">one-to-one</span>.</p></li>
 <li class="fragment"><p>Since we are performing a linear transformation, if ordinary least squares are used, this <span class="orange">does not change</span> the fit.</p></li>
-<li class="fragment"><p>A particularly convenient basis are <span class="blue">B-splines</span>, which are <span class="blue">local</span> and <span class="orange">numerically stable</span>. They admit a direct construction; i.e.&nbsp;we do not need to compute the coefficients <span class="math inline">\gamma_{\ell j}</span>.</p></li>
+<li class="fragment"><p>A particularly convenient basis are <span class="blue">B-splines</span>, which are <span class="blue">local</span> and <span class="orange">numerically stable</span>. They admit a direct construction; i.e., we do not need to compute the coefficients <span class="math inline">\gamma_{\ell j}</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -1372,8 +1372,8 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 </div>
 <div class="callout-content">
 <ul>
-<li><p>Knots placement based on quantiles or other automatic choices could be inefficient.</p></li>
-<li><p>Manual placement of the knots is out of question, because it is an almost impossible optimization problem.<br>
+<li><p>Knot placement based on quantiles or other automatic choices could be inefficient.</p></li>
+<li><p>Manual placement of the knots is out of question because it is an almost impossible optimization problem.<br>
 </p></li>
 </ul>
 </div>
@@ -1429,7 +1429,7 @@ f(x; \beta) = \sum_{j=1}^{n_0} N_j(x)\beta_j,
 </div>
 <div class="fragment">
 <ul>
-<li>In smoothing splines we do <span class="orange">not</span> need to <span class="orange">choose the knots</span>: every distinct observations is a knot. The model is not overparametrized, because the <span class="blue">complexity</span> is controlled by <span class="math inline">\lambda</span>.</li>
+<li>In smoothing splines, we do <span class="orange">not</span> need to <span class="orange">choose the knots</span>: every distinct observation is a knot. The model is not overparametrized because the <span class="blue">complexity</span> is controlled by <span class="math inline">\lambda</span>.</li>
 </ul>
 </div>
 </section>
@@ -1450,8 +1450,8 @@ f(x; \beta) = \sum_{j=1}^{n_0} N_j(x)\beta_j,
 </div>
 <div class="fragment">
 <ul>
-<li><p>The above formula is not used in practice directly. The <code>smooth.spline</code> <strong>R</strong> implementation rely on B-splines to make computations <span class="orange">fast</span> and <span class="blue">stable</span>.</p></li>
-<li><p>Alternatively, the so-called Reinsch (1967) algorithm has computational complexity is <span class="math inline">\sim n</span>.</p></li>
+<li><p>The above formula is not used in practice directly. The <code>smooth.spline</code> <strong>R</strong> implementation relies on B-splines to make computations <span class="orange">fast</span> and <span class="blue">stable</span>.</p></li>
+<li><p>Alternatively, the so-called Reinsch (1967) algorithm has computational complexity <span class="math inline">\sim n</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -1481,13 +1481,13 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 <section id="multi-dimensional-splines" class="slide level2 center">
 <h2>Multi-dimensional splines</h2>
 <ul>
-<li>There are several ways of extending regression and smoothing splines to the multivariate case. An example are <span class="blue">tensor splines</span>, based on the cross-multiplication of basis function.</li>
+<li>There are several ways of extending regression and smoothing splines to the multivariate case. An example are <span class="blue">tensor splines</span>, based on the cross-multiplication of basis functions.</li>
 </ul>
 <div class="fragment">
 <ul>
 <li>Another instance are the <span class="blue">thin-plate splines</span>, in which the 2d <span class="orange">roughness</span> penalty becomes <span class="math display">
 \int_{\mathbb{R}^2}\left\{\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1^2}\right)^2 + 2\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1 \partial x_2}\right)^2 + \left(\frac{\partial^2 f(x_1,x_2)}{\partial x_2^2}\right)^2\right\}\mathrm{d}x_1\mathrm{d}x_2.
-</span> The minimization of the above loss has simple <span class="orange">finite-dimensional</span> solution.</li>
+</span> The minimization of the above loss has a simple <span class="orange">finite-dimensional</span> solution.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -1498,14 +1498,14 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 <div class="fragment">
 <ul>
 <li><p>Nonetheless, the 2d case is extremely useful in <span class="orange">spatial statistics</span>, in which <span class="math inline">x_1</span> and <span class="math inline">x_2</span> represent longitude and latitude.</p></li>
-<li><p>There will be strong connection between the <span class="orange">smoothers</span> we have seen in this unit and the so-called <span class="blue">kriging equations</span>.</p></li>
+<li><p>There will be a strong connection between the <span class="orange">smoothers</span> we have seen in this unit and the so-called <span class="blue">kriging equations</span>.</p></li>
 </ul>
 </div>
 </section>
 <section id="further-properties-of-smoothing-splines" class="slide level2 center">
 <h2>Further properties of smoothing splines</h2>
 <ul>
-<li>Extension of smoothing splines to <span class="blue">generalized linear models</span> are possible by adding the “roughness” penalty to the log-likelihood function.</li>
+<li>Extension of smoothing splines to <span class="blue">generalized linear models</span> is possible by adding the “roughness” penalty to the log-likelihood function.</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -1523,7 +1523,7 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 <p><strong>Pro-tip (a joke?)</strong></p>
 </div>
 <div class="callout-content">
-<p><em>“If you want to derive an estimator that performs well in practice, define a Bayesian model, derive the posterior mean, call this a frequentist estimator and hide all evidence you ever considered a Bayesian approach.”</em> <a href="https://github.com/ericlaber/ericlaber.github.io/blob/main/docs/topic_one_linear_regression_regularization.pdf">Credits to Eric B. Laber</a></p>
+<p><em>“If you want to derive an estimator that performs well in practice, define a Bayesian model, derive the posterior mean, call this a frequentist estimator, and hide all evidence you ever considered a Bayesian approach.”</em> <a href="https://github.com/ericlaber/ericlaber.github.io/blob/main/docs/topic_one_linear_regression_regularization.pdf">Credits to Eric B. Laber</a></p>
 </div>
 </div>
 </div>
@@ -1541,7 +1541,7 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 <li><p>Smoothing splines is a <span class="orange">nonparametric</span> estimator for unknown functions <span class="math inline">f(x)</span>.</p></li>
 <li><p>They are a <span class="blue">linear smoother</span> with variable bandwidth.</p></li>
 <li><p>Compared to regression splines, they do not require the choice of the knots.</p></li>
-<li><p>Simple and efficient algorithms for computing 1d smoothing splines exists, such as <code>smooth.spline</code> available in <strong>R</strong>.</p></li>
+<li><p>Simple and efficient algorithms for computing 1d smoothing splines exist, such as <code>smooth.spline</code> available in <strong>R</strong>.</p></li>
 </ul>
 </div>
 </div>
@@ -1554,8 +1554,8 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 </div>
 <div class="callout-content">
 <ul>
-<li><p>Efficient implementations require a very deep knowledge of linear algebra, B-spline basis, etc.</p></li>
-<li><p>Hence, the “manual” incorporation (i.e.&nbsp;the coding) of smoothing splines into bigger and non-standard models is not straightforward.</p></li>
+<li><p>Efficient implementations require a profound knowledge of linear algebra, B-spline basis, etc.</p></li>
+<li><p>Hence, the “manual” incorporation (i.e., the coding) of smoothing splines into bigger, non-standard models is not straightforward.</p></li>
 </ul>
 </div>
 </div>
@@ -1573,13 +1573,13 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 <li><span class="blue">Main references</span>
 <ul>
 <li><strong>Chapter 4</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
-<li><strong>Chapter 5 and 6</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+<li><strong>Chapters 5 and 6</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
 <li><strong>Chapter 5</strong> of Wasserman, L. (2006), <a href="https://link.springer.com/book/10.1007/0-387-30623-4"><em>All of Nonparametric statistics</em></a>, Springer.</li>
 </ul></li>
 <li><span class="orange">Kernel methods</span>
 <ul>
 <li><strong>Chapter 5</strong> of Wand, M. P., and Jones, M.C. (1995). <em>Kernel Smoothing</em>. Chapman and Hall.</li>
-<li><strong>Chapters 2, 3 and 4</strong> of Fan, J., and Gijbels, I. (1996). <em>Local Polynomial Modelling and Its Applications</em>. Chapman and Hall.</li>
+<li><strong>Chapters 2, 3, and 4</strong> of Fan, J., and Gijbels, I. (1996). <em>Local Polynomial Modelling and Its Applications</em>. Chapman and Hall.</li>
 </ul></li>
 <li><span class="grey">Smoothing splines</span>
 <ul>

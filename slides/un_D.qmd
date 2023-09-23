@@ -73,7 +73,7 @@ object treasured both for its artistic merit as well as usefulness."*
 :::
 
 ::: {.column width="70%"}
--   In this unit we will cover the following [topics]{.orange}:
+- This unit will cover the following [topics]{.orange}:
 
     -   Kernel methods and local regression;
     -   Regression splines;
@@ -91,7 +91,7 @@ object treasured both for its artistic merit as well as usefulness."*
 
 -   Can we fit a [nonparametric]{.blue} relationship that does
     [not]{.orange} make strong [assumptions]{.orange} on $f(\bm{x})$?
-    Let us review some old dataset...
+    Let us review some old datasets...
 :::
 :::
 
@@ -124,7 +124,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 ::: {.column width="60%"}
 -   In this first example, a drug called "cholestyramine" is administered to $n = 164$ men.
 
--   For each man, we observe the pair $(x_i, y_i)$.
+- We observe the pair $(x_i, y_i)$ for each man.
 
 -   The response $y_i$ is the [decrease in cholesterol level]{.orange}
     over the experiment.
@@ -159,7 +159,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
     $f(x) = \alpha x^\beta$ or that $f(x)$ belongs to any other
     [parametric]{.orange} family.
 
--   We would like the data to "speak for themselves".
+-   We would like the data to "speak for themselves."
 :::
 
 ::: {.column width="40%"}
@@ -168,7 +168,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 #| fig-height: 4
 
 rm(list = ls())
-# The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
+# The dataset can also be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
 auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
 
 ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
@@ -217,8 +217,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
     -   The time points are [not regularly spaced]{.orange} and
         sometimes there are [multiple observations]{.blue};
     -   The observations are subject to [error]{.orange};
-    -   The errors $\epsilon_i$ are probably heteroschedastic, but let
-        us ignore this for the moment.
+    -   The errors $\epsilon_i$ are probably heteroscedastic, but let
+        us ignore this now.
 
 -   It is of interest to discern the [general shape]{.blue} of the
     underlying acceleration curve.
@@ -227,7 +227,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 ## Old friends: polynomials
 
--   In the `mcycle` dataset it is [not]{.orange} obvious which
+-   In the `mcycle` dataset, it is [not]{.orange} obvious which
     [parametric]{.orange} function we should consider, therefore this
     route is not an option.
 
@@ -238,12 +238,12 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
     Taylor's expansion theorem.
 
 -   In the statistical [practice]{.orange}, however, polynomial
-    regression is not very well suited for modelling complex
+    regression is not very well suited for modeling complex
     relationships.
 
 . . .
 
--   When performing flexible regression we would expect the prediction
+-   When performing flexible regression, we expect the prediction
     at $x_i$ to depend on observations close to $x_i$. However,
     polynomials are [not local]{.orange}.
 
@@ -403,24 +403,24 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 -   When $k$ is high, the KNN estimator $\hat{f}(x)$ is not local and it
     has [high bias]{.blue}. The extreme case $k = n$ produces a
-    constant, i.e. the average of all the observations.
+    constant, i.e., the average of all the observations.
 
 . . .
 
 -   Thus, there is a [bias-variance trade-off]{.orange} in the choice of
-    $k$, which should be selected e.g. via [cross-validation]{.blue}.
+    $k$, which should be selected, e.g., via [cross-validation]{.blue}.
 
 . . .
 
--   The $k$-nearest neighbours produces a [sensible result]{.blue}, but
+-   The $k$-nearest neighbors produce a [sensible result]{.blue}, but
     the method [can be improved]{.orange}.
 
 -   The [blue curve]{.blue} is bumpy, because $\hat{f}(x)$ is
     [discontinuous]{.orange} in $x$.
 
 -   Indeed, as we move $x$ from left to right, the $k$-nearest
-    neighborhood remains constant, until a new point $x_i$ to the right
-    of $x$ is included and one to the left is excluded.
+    neighborhood remains constant until a new point $x_i$ to the right
+    of $x$ is included, and one to the left is excluded.
 
 -   This discontinuity is [ugly]{.orange} and [unnecessary]{.orange}. We
     are looking instead for a [smooth]{.blue} prediction.
@@ -470,7 +470,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 -   Indeed, $h$ defines the "[smoothing window]{.blue}" on the $x$-axis,
     i.e. the relevant data points that are considered for $\hat{f}(x)$.
 
--   As any complexity parameter, $h$ should be chosen via
+-   As with any complexity parameter, $h$ should be chosen via
     cross-validation or related ideas.
 
 ## Nadaraya-Watson (Gaussian kernel)
@@ -723,7 +723,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 . . .
 
--   The weights of all the smoothers we will use have are such that
+-   The weights of all the smoothers we will use are such that
     $\sum_{i=1}^ns_i(x) = 1$ for all $x$.
 
 -   Hence, the smoother [preserves constant curves]{.blue}, namely if
@@ -813,9 +813,9 @@ $$ where $\alpha_w = \int w^2(z)\mathrm{d}z$.
 
 ## ☠️ - Bias reduction of local linear regression
 
--   Local linear regression, compared to the Nadaraya-Watson estimator,
-    correct the [first-order]{.orange} term of the [bias]{.orange},
-    without affecting the variance in a sensible way.
+- Compared to the Nadaraya-Watson estimator,
+    local linear regression corrects the [first-order]{.orange} term of the [bias]{.orange},
+    without affecting the variance sensibly.
 
 -   Indeed, it can be shown that the [asymptotic variance]{.blue} of
     Nadaraya-Watson and local linear regression is the [same]{.blue},
@@ -832,8 +832,8 @@ $$ where $\alpha_w = \int w^2(z)\mathrm{d}z$.
     \end{aligned}
     $$
 
--   It can be shown with some algebra that the first order term
-    simplifies ($=0$) in the local linear regression case but it doesn't
+-   It can be shown with some algebra that the first-order term
+    simplifies ($=0$) in the local linear regression case, but it doesn't
     for the Nadaraya-Watson, therefore [reducing the bias]{.orange}.
 
 ## Choice of the bandwidth I
@@ -921,7 +921,7 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
 
 . . .
 
--   The `loess` (Cleveland, 1979) consider a [fixed percentage]{.blue}
+-   The `loess` (Cleveland, 1979) considers a [fixed percentage]{.blue}
     of data points (assuming a bounded kernel is used), which
     automatically induces a [variable bandwidth]{.orange}, as in KNN.
 
@@ -929,7 +929,7 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
 
 -   Moreover, the `loess` algorithm combines the [variable
     bandwidth]{.blue} with some [robust estimation]{.orange} ideas, so
-    that the resulting estimate is less influenced by outliers.
+    that outliers less influence the resulting estimate.
 
 . . .
 
@@ -941,7 +941,7 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
 -   The concept of local regression and varying coefficients is
     extremely [broad]{.orange}.
 
--   In principle any [parametric]{.orange} model can be made
+-   In principle, any [parametric]{.orange} model can be made
     [local]{.blue} as long as it accommodates [weights]{.blue}.
 
 . . .
@@ -964,7 +964,7 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
 
 -   Local linear regression can be applied when [two]{.orange} or [more
     covariates]{.orange}, say $p$, are used. Let us begin with two
-    covariates, so that $$
+    covariates so that $$
     y_i = f(x_{i1}, x_{i2}) + \epsilon_i.
     $$
 
@@ -1025,7 +1025,7 @@ points(auto$engine.size, auto$curb.weight, cex = 0.5, pch = 16, col = "#fc7d0b")
 ::: callout-warning
 #### Cons
 
-- There is a price to pay for not making assumption: estimation is [less efficient]{.orange} in terms of mean squared error compared to parametric models (when they are correctly specified!).
+- There is a price to pay for not making assumptions: estimation is [less efficient]{.orange} in terms of mean squared error compared to parametric models (when they are correctly specified!).
 
 - This is a drawback of all nonparametric estimators, not just local linear regression.
 :::
@@ -1190,7 +1190,7 @@ A [spline]{.blue} $f(x; \beta) : (a, b) \rightarrow \mathbb{R}$ of degree $d$ is
 ::: callout-tip
 #### Definition (Cubic spline, $d = 3$)
 
-Letting $\xi_1 < \dots < \xi_k$ denote a set ordered knots, a [cubic spline]{.blue} $f(x; \beta)$ is a piecewise cubic polynomial that has [continuous first]{.orange} and [second derivatives]{.orange}.
+Letting $\xi_1 < \dots < \xi_k$ denote a set of ordered knots, a [cubic spline]{.blue} $f(x; \beta)$ is a piecewise cubic polynomial that has [continuous first]{.orange} and [second derivatives]{.orange}.
 :::
 
 ## Splines III
@@ -1211,13 +1211,13 @@ where $\xi_j^+$ and $\xi_j^-$ denote the left and the right limits.
 
 - The degree $d$ controls the amount of smoothness:
     - $d = 0$ is a [piecewise constant]{.blue} function;
-    - $d = 1$ is a [polygonal line]{.orange} (continuous, but with discontinous first derivative).
+    - $d = 1$ is a [polygonal line]{.orange} (continuous, but with discontinuous first derivative).
 
-- Higher values of $d$ increase the smoothness, but the spline behave more and more like a global polynomial. In practice one almost never goes beyond $d = 3$. 
+- Higher values of $d$ increase the smoothness, but the spline behaves more and more like a global polynomial. In practice, one rarely goes beyond $d = 3$. 
 
 . . .
 
-- The current definition of spline is quite [abstract]{.blue} and [non-operative]{.orange}. How do we actually fit a regression model whose $f(x; \beta)$ is a spline? 
+- The current definition of spline is quite [abstract]{.blue} and [non-operative]{.orange}. How do we fit a regression model whose $f(x; \beta)$ is a spline? 
 
 ## Truncated power basis
 
@@ -1240,7 +1240,7 @@ $$
 
 ## Regression splines
 
-- The truncated power basis of a spline makes is a [constructive]{.orange} way of defining splines. Moreover, it clarifies that splines are [linear in the parameters]{.blue}.
+- The truncated power basis is a [constructive]{.orange} way of defining splines. Moreover, it clarifies that splines are [linear in the parameters]{.blue}.
 
 . . .
 
@@ -1260,15 +1260,15 @@ $$
 
 . . .
 
-- Regression splines are generating "new" covariates. Hence, their extension to GLMs and in particular to [logistic regression]{.orange} is straightforward. 
+- Regression splines are generating "new" covariates. Hence, their extension to GLMs, particularly to [logistic regression]{.orange}, is straightforward. 
 
 ## On the choice of the knots
 
-- The placement and the number $k$ of the knots are [complexity parameters]{.orange}, which should be chosen via cross-validation or other tools. 
+- The knots' placement and their number $k$ are [complexity parameters]{.orange}, which should be chosen via cross-validation or other tools. 
 
 . . .
 
-- In principle the [position of the knots]{.blue} could be manually selected to get the best fit. However, this results in an [incredible optimization problem]{.orange}.
+- In principle, the [position of the knots]{.blue} could be manually selected to get the best fit. However, this results in an [incredible optimization problem]{.orange}.
 
 . . .
 
@@ -1441,7 +1441,7 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
 ## Computations: B-splines I
 
 ::: incremental
-- Despite their conceptual simplicity, the truncated power basis and its natural modification are [not]{.blue} used in [practice]{.blue}, due to [ill-conditioning]{.orange}. 
+- Despite their conceptual simplicity, the truncated power basis and its "natural" modification are [not]{.blue} used in [practice]{.blue}, due to [ill-conditioning]{.orange}. 
 
 - Indeed, the condition number of $\bm{B}^T\bm{B}$ using a truncated power basis is very large, leading to [numerical inaccuracies]{.orange}.
 
@@ -1453,7 +1453,7 @@ for some set of weights $\gamma_{\ell j}$ that makes this transformation [one-to
 
 - Since we are performing a linear transformation, if ordinary least squares are used, this [does not change]{.orange} the fit. 
 
-- A particularly convenient basis are [B-splines]{.blue}, which are [local]{.blue} and [numerically stable]{.orange}. They admit a direct construction; i.e. we do not need to compute the coefficients $\gamma_{\ell j}$.
+- A particularly convenient basis are [B-splines]{.blue}, which are [local]{.blue} and [numerically stable]{.orange}. They admit a direct construction; i.e., we do not need to compute the coefficients $\gamma_{\ell j}$.
 :::
 
 ## Computations: B-splines II
@@ -1552,9 +1552,9 @@ This implies that the support of cubic B-splines is at most $4$ knots.
 ::: callout-warning
 #### Cons
 
-- Knots placement based on quantiles or other automatic choices could be inefficient.
+- Knot placement based on quantiles or other automatic choices could be inefficient.
 
-- Manual placement of the knots is out of question, because it is an almost impossible optimization problem.  
+- Manual placement of the knots is out of question because it is an almost impossible optimization problem.  
 :::
 
 # Smoothing splines
@@ -1601,7 +1601,7 @@ whose coefficients $\beta$ still [needs]{.orange} to be [determined]{.orange}.
 
 . . .
 
-- In smoothing splines we do [not]{.orange} need to [choose the knots]{.orange}: every distinct observations is a knot. The model is not overparametrized, because the [complexity]{.blue} is controlled by $\lambda$. 
+- In smoothing splines, we do [not]{.orange} need to [choose the knots]{.orange}: every distinct observation is a knot. The model is not overparametrized because the [complexity]{.blue} is controlled by $\lambda$. 
 
 ## Smoothing splines III
 
@@ -1622,9 +1622,9 @@ which leads to a [linear smoother]{.orange}, with $\bm{S} = \bm{N}(\bm{N}^T\bm{N
 
 . . .
 
-- The above formula is not used in practice directly. The `smooth.spline` **R** implementation rely on B-splines to make computations [fast]{.orange} and [stable]{.blue}. 
+- The above formula is not used in practice directly. The `smooth.spline` **R** implementation relies on B-splines to make computations [fast]{.orange} and [stable]{.blue}. 
 
-- Alternatively, the so-called Reinsch (1967) algorithm has computational complexity is $\sim n$. 
+- Alternatively, the so-called Reinsch (1967) algorithm has computational complexity $\sim n$. 
 
 ## Smoothing splines ($\text{df}_\text{sm} = 12.26$)
 
@@ -1668,7 +1668,7 @@ $$
 
 ## Multi-dimensional splines
 
-- There are several ways of extending regression and smoothing splines to the multivariate case. An example are [tensor splines]{.blue}, based on the cross-multiplication of basis function. 
+- There are several ways of extending regression and smoothing splines to the multivariate case. An example are [tensor splines]{.blue}, based on the cross-multiplication of basis functions. 
 
 . . .
 
@@ -1676,7 +1676,7 @@ $$
 $$
 \int_{\mathbb{R}^2}\left\{\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1^2}\right)^2 + 2\left(\frac{\partial^2 f(x_1,x_2)}{\partial x_1 \partial x_2}\right)^2 + \left(\frac{\partial^2 f(x_1,x_2)}{\partial x_2^2}\right)^2\right\}\mathrm{d}x_1\mathrm{d}x_2.
 $$
-The minimization of the above loss has simple [finite-dimensional]{.orange} solution. 
+The minimization of the above loss has a simple [finite-dimensional]{.orange} solution. 
 
 . . .
 
@@ -1686,11 +1686,11 @@ The minimization of the above loss has simple [finite-dimensional]{.orange} solu
 
 - Nonetheless, the 2d case is extremely useful in [spatial statistics]{.orange}, in which $x_1$ and $x_2$ represent longitude and latitude. 
 
-- There will be strong connection between the [smoothers]{.orange} we have seen in this unit and the so-called [kriging equations]{.blue}.
+- There will be a strong connection between the [smoothers]{.orange} we have seen in this unit and the so-called [kriging equations]{.blue}.
 
 ## Further properties of smoothing splines
 
-- Extension of smoothing splines to [generalized linear models]{.blue} are possible by adding the "roughness" penalty to the log-likelihood function. 
+- Extension of smoothing splines to [generalized linear models]{.blue} is possible by adding the "roughness" penalty to the log-likelihood function. 
 
 . . .
 
@@ -1704,7 +1704,7 @@ The minimization of the above loss has simple [finite-dimensional]{.orange} solu
 :::callout-tip
 #### Pro-tip (a joke?)
 
-*"If you want to derive an estimator that performs well in practice, define a Bayesian model, derive the posterior mean, call this a frequentist estimator and hide all evidence you ever considered a Bayesian approach."* [Credits to Eric B. Laber](https://github.com/ericlaber/ericlaber.github.io/blob/main/docs/topic_one_linear_regression_regularization.pdf)
+*"If you want to derive an estimator that performs well in practice, define a Bayesian model, derive the posterior mean, call this a frequentist estimator, and hide all evidence you ever considered a Bayesian approach."* [Credits to Eric B. Laber](https://github.com/ericlaber/ericlaber.github.io/blob/main/docs/topic_one_linear_regression_regularization.pdf)
 :::
 
 
@@ -1719,7 +1719,7 @@ The minimization of the above loss has simple [finite-dimensional]{.orange} solu
 
 - Compared to regression splines, they do not require the choice of the knots.
 
-- Simple and efficient algorithms for computing 1d smoothing splines exists, such as `smooth.spline` available in **R**. 
+- Simple and efficient algorithms for computing 1d smoothing splines exist, such as `smooth.spline` available in **R**. 
 :::
 
 . . .
@@ -1727,9 +1727,9 @@ The minimization of the above loss has simple [finite-dimensional]{.orange} solu
 ::: callout-warning
 #### Cons
 
-- Efficient implementations require a very deep knowledge of linear algebra, B-spline basis, etc. 
+- Efficient implementations require a profound knowledge of linear algebra, B-spline basis, etc. 
 
-- Hence, the "manual" incorporation (i.e. the coding) of smoothing splines into bigger and non-standard models is not straightforward.
+- Hence, the "manual" incorporation (i.e., the coding) of smoothing splines into bigger, non-standard models is not straightforward.
 :::
 
 
@@ -1742,7 +1742,7 @@ The minimization of the above loss has simple [finite-dimensional]{.orange} solu
         Analysis and Data
         Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
         University Press.
-    - **Chapter 5 and 6** of Hastie, T., Tibshirani, R. and Friedman, J.
+    - **Chapters 5 and 6** of Hastie, T., Tibshirani, R. and Friedman, J.
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
@@ -1750,7 +1750,7 @@ The minimization of the above loss has simple [finite-dimensional]{.orange} solu
 
 - [Kernel methods]{.orange}
     - **Chapter 5** of Wand, M. P., and Jones, M.C. (1995). *Kernel Smoothing*. Chapman and Hall.
-    - **Chapters 2, 3 and 4** of Fan, J., and Gijbels, I. (1996). *Local Polynomial Modelling and Its Applications*. Chapman and Hall.
+    - **Chapters 2, 3, and 4** of Fan, J., and Gijbels, I. (1996). *Local Polynomial Modelling and Its Applications*. Chapman and Hall.
 
 - [Smoothing splines]{.grey}
     - Green, P. J., and Silverman, B. W. (1994). *Nonparametric Regression and Generalized Linear Models: A Roughness Penalty Approach*. Springer.

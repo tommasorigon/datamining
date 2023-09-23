@@ -81,9 +81,9 @@ styler:::style_file("../code/un_E.R")
     - [High-dimensional]{.orange}, with large $p$;
     - [Nonparametric]{.blue}, placing no assumptions on $f(\bm{x})$.
     
-- The title of this unit, however, is not "*fully flexible high-dimensional models*". 
+- The title of this unit, however, is not "*fully flexible high-dimensional models*." 
 
-- Instead, it sounds like [bad news]{.orange} are coming. Let us see why, unfortunately, this will be indeed the case. 
+- Instead, it sounds like [bad news]{.orange} is coming. Let us see why, unfortunately, this will be indeed the case. 
 :::
 :::
 
@@ -122,7 +122,7 @@ styler:::style_file("../code/un_E.R")
 
 . . .
 
-- To put it another way: to get a local neighborhood with $10$ data points along each axis, then $10^p$ data points are needed in the corresponding $p$-dimensional neighborhood. 
+- To put it another way, to get a local neighborhood with $10$ data points along each axis, $10^p$ data points are needed in the corresponding $p$-dimensional neighborhood. 
 
 . . .
 
@@ -132,7 +132,7 @@ styler:::style_file("../code/un_E.R")
 
 ::: incremental
 
-- The following illustration may help in clarifying this notion of [sparsity]{.orange}. Let us consider data points that are uniformaly distributed on $(0, 1)^p$, that is $\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)$.
+- The following illustration may help clarify this notion of [sparsity]{.orange}. Let us consider data points that are uniformaly distributed on $(0, 1)^p$, that is $\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)$.
 
 - Then, the [median distance]{.orange} from the origin $(0,\dots,0)^T$ to the [closest point]{.blue} is:
 $$
@@ -148,26 +148,26 @@ $$
 $$
 \text{dist}(2, 100) = 0.083, \quad \text{dist}(10, 100) = 0.608, \quad \text{dist}(50, 100) = 0.905.
 $$
-Note that even with a much larger sample size, we get $\text{dist}(10, 1000) = 0.483$. 
+Note that we get $\text{dist}(10, 1000) = 0.483$ even with a much larger sample size. 
 
-- The vast majority of points is [close to the boundary]{.blue}, making predictions very hard.
+- Most points are [close to the boundary]{.blue}, making predictions very hard.
 :::
 
 ## The curse of dimensionality III
 
 ::: incremental
 
-- Another [intuition]{.orange} of the curse of dimensionality is given by the following argument. Let us consider again [uniform]{.blue} covariates $\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)$. 
+- The following argument gives another [intuition]{.orange} of the curse of dimensionality. Let us consider again [uniform]{.blue} covariates $\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)$. 
 
-- Let us consider a subcube which contains a fraction $r \in (0, 1)$ of the total number of observations $n$. In the univeriate case ($p = 1$), the side of this cube is simply $r$. 
+- Let us consider a subcube which contains a fraction $r \in (0, 1)$ of the total number of observations $n$. In the univariate case ($p = 1$), the side of this cube is $r$. 
 
-- In the more general case, in can be shown that, on [average]{.orange}, the [side]{.blue} of the cube is
+- In the more general case, it can be shown that on [average]{.orange}, the [side]{.blue} of the cube is
 $$
 \text{side}(r, p) = r^{1/p},
 $$
 which is again exponentially decreasing in $p$.
 
-- Hence, when $p = 1$ the expected amount of points in the [local sub-interval]{.orange} $(0, 1/10)$ is again $1/10$. 
+- Hence, when $p = 1$, the expected amount of points in the [local sub-interval]{.orange} $(0, 1/10)$ is again $1/10$. 
 
 - Instead, when $p = 10$ the amount of point is the [local subcube]{.blue} $(0, 1)^{10}$ is
 $$
@@ -216,9 +216,9 @@ which is increasing [linearly]{.blue} in $p$, but [not exponentially]{.orange}.
 
 - Linear models make [assumptions]{.orange} and impose a [structure]{.blue}. If the assumptions are correct, the estimates exploit [global features]{.orange} and are less affected by the local sparsity.
 
-- Nature is not necessarily a linear model, this is why we explored the nonparametric case.
+- Nature is not necessarily a linear model, so we explored the nonparametric case.
 
-- Nonetheless, making (correct) [assumptions]{.orange} and therefore imposing (appropriate) restrictions is [beneficial]{.blue}, to the extent that is [unavoidable]{.orange} in high-dimensions. 
+- Nonetheless, making (correct) [assumptions]{.orange} and therefore imposing (appropriate) restrictions is [beneficial]{.blue}, to the extent that it is [unavoidable]{.orange} in high dimensions. 
 :::
 
 ## Escaping the curse
@@ -227,15 +227,15 @@ which is increasing [linearly]{.blue} in $p$, but [not exponentially]{.orange}.
 - The [multidimensional]{.blue} methods you will study (GAM, trees, random forest, boosting, neural networks, etc.) deal with the curse of dimensionality by making (implicit) assumptions.
 
 - These [assumptions]{.orange} differentiate because of:
-    - The particular [nature]{.grey} of the knowledge the impose (e.g. no interactions, piecewise constant functions, etc.);
+    - The particular [nature]{.grey} of the knowledge they impose (e.g., no interactions, piecewise constant functions, etc.);
     - The [strength]{.orange} of this assumption;
-    - The [sensibility]{.blue} of the methods to potential violation of the assumptions.
+    - The [sensibility]{.blue} of the methods to a potential violation of the assumptions.
 
-- Thus, several alternative ideas and methods are needed; there is no single "best" algorithm. 
+- Thus, several alternative ideas and methods are needed; no single "best" algorithm exists. 
 
-- This is why having a well-trained statistician in the team is important, because she/he will be able to identify the method that best suit the specific applied example.
+- This is why having a well-trained statistician on the team is important because they can identify the method that best suits the specific applied example.
 
-- ...or at least, she/he will be aware of the [limitations]{.orange} of the methods. 
+- ...or at least, they will be aware of the [limitations]{.orange} of the methods. 
 :::
 
 ## References
@@ -245,7 +245,7 @@ which is increasing [linearly]{.blue} in $p$, but [not exponentially]{.orange}.
         Analysis and Data
         Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
         University Press.
-    - **Section 2.5** of Hastie, T., Tibshirani, R. and Friedman, J.
+    - **Section 2.5** of Hastie, T., Tibshirani, R., and Friedman, J.
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.

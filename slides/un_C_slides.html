@@ -363,7 +363,7 @@
 <p><img data-src="img/cowboy.jpg"></p>
 </div><div class="column" style="width:70%;">
 <ul>
-<li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
+<li><p>This unit will cover the following <span class="orange">topics</span>:</p>
 <ul>
 <li>Best subset regression</li>
 <li>Principal component regression</li>
@@ -373,7 +373,7 @@
 <li><p>The common themes are called <span class="blue">variable selection</span> and <span class="orange">shrinkage estimation</span>.</p></li>
 <li><p>The issue we face is the presence of a high number <span class="math inline">p</span> of covariates that are <span class="blue">potentially irrelevant</span>.</p></li>
 <li><p>This problem is quite challenging when the <span class="blue">ratio</span> <span class="math inline">p / n</span> is <span class="blue">large</span>.</p></li>
-<li><p>In the <span class="orange">extreme case</span> <span class="math inline">p &gt; n</span>, is there any hope to fit a meaningful model?</p></li>
+<li><p>In the <span class="orange">extreme case</span> <span class="math inline">p &gt; n</span>, is there any hope of fitting a meaningful model?</p></li>
 </ul>
 </div>
 </div>
@@ -386,7 +386,7 @@
 <section id="the-prostate-dataset" class="slide level2 center">
 <h2>The <code>prostate</code> dataset</h2>
 <ul>
-<li>The <code>prostate</code> cancer data investigates the relationship between the prostate-specific <span class="orange">antigen</span> and a number of clinical measures, in men about to receive a prostatectomy.</li>
+<li>The <code>prostate</code> cancer data investigates the relationship between the prostate-specific <span class="orange">antigen</span> and a number of clinical measures in men about to receive a prostatectomy.</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -470,21 +470,21 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <h2>The regression framework</h2>
 <div>
 <ul>
-<li class="fragment"><p>In this unit we will assume that the response variables <span class="math inline">Y_i</span> (<code>lpsa</code>) are obtained as <span class="math display">
+<li class="fragment"><p>In this unit, we will assume that the response variables <span class="math inline">Y_i</span> (<code>lpsa</code>) are obtained as <span class="math display">
 Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </span> where <span class="math inline">\epsilon_i</span> are <span class="orange">iid</span> random variables with <span class="math inline">\mathbb{E}(\epsilon_i) = 0</span> and <span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>.</p></li>
 <li class="fragment"><p>Unless specifically stated, we will <span class="orange">not</span> assume the <span class="orange">Gaussianity</span> of the errors <span class="math inline">\epsilon_i</span> nor make any specific assumption about <span class="math inline">f(\bm{x})</span>, which could be <span class="blue">non-linear</span>.</p></li>
-<li class="fragment"><p>In practice, we <span class="orange">approximate</span> the true <span class="math inline">f(\bm{x})</span> using a <span class="blue">linear model</span>, e.g.&nbsp;by considering the following function<span class="math display">
+<li class="fragment"><p>In practice, we <span class="orange">approximate</span> the true <span class="math inline">f(\bm{x})</span> using a <span class="blue">linear model</span>, e.g., by considering the following function<span class="math display">
     f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta,
     </span> in which the regression coefficients must be estimated.</p></li>
-<li class="fragment"><p>In this unit the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will often play a special role, therefore we use a slightly different notation compared to <a href="unit_A.html">Unit A</a>.</p></li>
+<li class="fragment"><p>In this unit, the <span class="blue">intercept</span> <span class="math inline">\beta_0</span> will often play a special role therefore we use a slightly different notation compared to <a href="unit_A.html">Unit A</a>.</p></li>
 </ul>
 </div>
 </section>
 <section id="the-variable-selection-problem" class="slide level2 center">
 <h2>The variable selection problem</h2>
 <ul>
-<li>Including a lot of covariates into the model is not necessarily a good thing!</li>
+<li>Including a lot of covariates in the model is not necessarily a good thing!</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -497,7 +497,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </div>
 <div class="fragment">
 <ul>
-<li><p>If we use all the <span class="math inline">p = 8</span> available covariates, the estimated <span class="math inline">f(\bm{x}; \hat{\beta_0}, \hat{\beta})</span> might have a <span class="orange">high variance</span>, without important gain in term of bias, i.e.&nbsp;a <span class="blue">large mean squared error</span>.</p></li>
+<li><p>If we use all the <span class="math inline">p = 8</span> available covariates, the estimated <span class="math inline">f(\bm{x}; \hat{\beta_0}, \hat{\beta})</span> might have a <span class="orange">high variance</span>, without an important gain in terms of bias, i.e., a <span class="blue">large mean squared error</span>.</p></li>
 <li><p>We are looking for a <span class="orange">simpler model</span> having, hopefully, a lower mean squared error.</p></li>
 </ul>
 </div>
@@ -619,7 +619,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <p><span class="grey">George E. P. Box</span></p></li>
 <li><p>If the <span class="blue">focus</span> is on <span class="blue">prediction</span>, we do not necessarily care about selecting the “true” set of parameters.</p></li>
 <li><p>In many data mining problems, the focus is on <span class="orange">minimizing</span> the <span class="orange">prediction errors</span>.</p></li>
-<li><p>Hence, often times we may <span class="blue">accept some bias</span> (i.e.&nbsp;we use a “wrong” but useful model), if this leads to a <span class="orange">reduction in variance</span>.</p></li>
+<li><p>Hence, often we may <span class="blue">accept some bias</span> (i.e., we use a “wrong” but useful model), if this leads to a <span class="orange">reduction in variance</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -627,13 +627,13 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <section id="overview-of-this-unit" class="slide level2 center">
 <h2>Overview of this unit</h2>
 <ul>
-<li><p>In this unit we will discuss two “discrete” methods:</p>
+<li><p>In this unit, we will discuss two “discrete” methods:</p>
 <ul>
 <li>Best subset selection and its greedy approximations: forward / backward regression;</li>
 <li>Principal components regression (PCR).</li>
 </ul></li>
 <li><p>Best subset selection perform <span class="orange">variable selection</span>, whereas principal components regression <span class="orange">reduces the variance</span> of the coefficients.</p></li>
-<li><p>These “discrete” methods can be seen as the naïve counterpart of more advanced and <span class="blue">continuous</span> ideas, that are presented in the second part of the Unit.</p></li>
+<li><p>These “discrete” methods can be seen as the naïve counterpart of more advanced and <span class="blue">continuous</span> ideas that are presented in the second part of the Unit.</p></li>
 </ul>
 <div class="fragment">
 <table>
@@ -774,7 +774,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <section id="best-subset-selection-1" class="slide level2 center">
 <h2>Best subset selection</h2>
 <ul>
-<li><p>Let us get back to our <span class="blue">variable selection problem</span>.</p></li>
+<li><p>Let us return to our <span class="blue">variable selection problem</span>.</p></li>
 <li><p>In principle, we could perform an <span class="orange">exhaustive search</span> considering all the <span class="math inline">2^p</span> possible models and then selecting the one having the best out-of-sample predictive performance.</p></li>
 </ul>
 <div class="fragment">
@@ -796,7 +796,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </div>
 </div>
 <ul>
-<li>A model with more variables has lower <span class="orange">training</span> error, namely <span class="math inline">\text{MSE}_{k + 1, \text{train}} \le \text{MSE}_{k, \text{train}}</span> by construction. Hence, the optimal subset size <span class="math inline">k</span> must be chosen e.g.&nbsp;via <span class="blue">cross-validation</span>.</li>
+<li>A model with more variables has lower <span class="orange">training</span> error, namely <span class="math inline">\text{MSE}_{k + 1, \text{train}} \le \text{MSE}_{k, \text{train}}</span> by construction. Hence, the optimal subset size <span class="math inline">k</span> must be chosen e.g., via <span class="blue">cross-validation</span>.</li>
 </ul>
 </div>
 </section>
@@ -824,7 +824,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </div>
 <div>
 <ul>
-<li class="fragment"><p>The above table means that the best model with <span class="math inline">k = 1</span> uses the variable <code>lcavol</code>, whereas when <span class="math inline">k = 2</span> the selected variables are <code>lcavol</code> and <code>lweight</code>, and so on and so forth.</p></li>
+<li class="fragment"><p>The above table means that the best model with <span class="math inline">k = 1</span> uses the variable <code>lcavol</code>, whereas when <span class="math inline">k = 2</span> the selected variables are <code>lcavol</code> and <code>lweight</code>, and so on.</p></li>
 <li class="fragment"><p>Note that, in general, these models are <span class="orange">not</span> necessarily <span class="orange">nested</span>, i.e.&nbsp;a variable selected at step <span class="math inline">k</span> is not necessarily included at step <span class="math inline">k +1</span>. Here they are, but it is a coincidence.</p></li>
 </ul>
 </div>
@@ -841,13 +841,13 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <li class="fragment"><p>Consider a regression problem with a <span class="orange">large number of predictors</span> (relative to <span class="math inline">n</span>) such as the <code>prostate</code> dataset.</p></li>
 <li class="fragment"><p>A typical strategy for analysis might be as follows:</p>
 <ol type="1">
-<li class="fragment"><p>Screen the predictors: find a subset of “good” predictors that show fairly strong correlation with the response;</p></li>
-<li class="fragment"><p>Using this subset of predictors (e.g.&nbsp;<code>lcavol</code>, <code>lweight</code> and <code>svi</code>), build a regression model;</p></li>
+<li class="fragment"><p>Screen the predictors: find a subset of “good” predictors that show a reasonably strong correlation with the response;</p></li>
+<li class="fragment"><p>Using this subset of predictors (e.g., <code>lcavol</code>, <code>lweight</code> and <code>svi</code>), build a regression model;</p></li>
 <li class="fragment"><p>Use cross-validation to estimate the prediction error of the model of the step 2.</p></li>
 </ol></li>
 <li class="fragment"><p>Is this a correct application of cross-validation?</p></li>
 <li class="fragment"><p>If your reaction was “<span class="orange">this is absolutely wrong!</span>”, it means you correctly understood the principles of cross-validation.</p></li>
-<li class="fragment"><p>If you though this was an ok-ish idea, you may want to read <span class="blue">Section 7.10.2</span> of HTF (2009), called “the wrong way of doing cross-validation”.</p></li>
+<li class="fragment"><p>If you thought this was an ok-ish idea, you may want to read <span class="blue">Section 7.10.2</span> of HTF (2009), called “the wrong way of doing cross-validation”.</p></li>
 </ul>
 </div>
 </section>
@@ -866,7 +866,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <li class="fragment"><p>Best subset selection is conceptually appealing, but it has a <span class="orange">major limitation</span>. There are <span class="math display">
 \sum_{k=1}^p \binom{n}{k} = 2^p
 </span> models to consider, which is <span class="orange">computationally prohibitive</span>!</p></li>
-<li class="fragment"><p>There exists algorithms (i.e.&nbsp;<span class="blue">leaps and bounds</span>) that makes this feasible for <span class="math inline">p \approx 30</span>.</p></li>
+<li class="fragment"><p>There exist algorithms (i.e.&nbsp;<span class="blue">leaps and bounds</span>) that make this feasible for <span class="math inline">p \approx 30</span>.</p></li>
 <li class="fragment"><p>Recently, <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-44/issue-2/Best-subset-selection-via-a-modern-optimization-lens/10.1214/15-AOS1388.full">Bertsimas et al., 2016</a> proposed the usage of a mixed integer optimization formulation, allowing <span class="math inline">p</span> to be in the order of hundreds.</p></li>
 <li class="fragment"><p>Despite these advances, this problem remains <span class="orange">computationally very expensive</span>. See also the recent paper <a href="https://projecteuclid.org/journals/statistical-science/volume-35/issue-4/Best-Subset-Forward-Stepwise-or-Lasso-Analysis-and-Recommendations-Based/10.1214/19-STS733.full">Hastie et al. (2020)</a> for additional considerations and comparisons.</p></li>
 </ul>
@@ -875,7 +875,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <section id="forward-regression" class="slide level2 center">
 <h2>Forward regression</h2>
 <ul>
-<li>Forward regression is <span class="orange">greedy approximation</span> of best subset selection, that produces a sequence of <span class="blue">nested</span> models. It is computationally feasible and can be applied when <span class="math inline">p &gt; n</span>.</li>
+<li>Forward regression is <span class="orange">greedy approximation</span> of best subset selection that produces a sequence of <span class="blue">nested</span> models. It is computationally feasible and can be applied when <span class="math inline">p &gt; n</span>.</li>
 </ul>
 <div class="fragment">
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
@@ -936,7 +936,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <h2>Forward, backward and best subset</h2>
 
 <img data-src="un_C_files/figure-revealjs/unnamed-chunk-13-1.png" width="2000" class="r-stretch quarto-figure-center"><ul>
-<li>In the <code>prostate</code> dataset, forward, backward and best subset selection all gave exactly the <span class="orange">same path of solutions</span> on the full training set.</li>
+<li>In the <code>prostate</code> dataset, forward, backward and best subset selection all gave precisely the <span class="orange">same path of solutions</span> on the full training set.</li>
 </ul>
 </section>
 <section id="pros-and-cons-of-subset-selection-strategies" class="slide level2 center">
@@ -949,7 +949,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <div class="callout-content">
 <ul>
 <li><p>Best subset selection is appealing because of its <span class="blue">conceptual simplicity</span>.</p></li>
-<li><p>Best subset and forward regression can be used, when computations are not problematic, even when <span class="math inline">p &gt; n</span>.</p></li>
+<li><p>Best subset and forward regression can be used when computations are not problematic, even when <span class="math inline">p &gt; n</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -983,10 +983,10 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <p><img data-src="img/cowboy_pixel.jpg"></p>
 </div><div class="column" style="width:70%;">
 <ul>
-<li><p>At this point we established that <span class="orange">many covariates = many problems</span>.</p></li>
+<li><p>At this point, we established that <span class="orange">many covariates = many problems</span>.</p></li>
 <li><p>Instead of selecting the “best” variables, let us consider a different perspective.</p></li>
 <li><p>We consider a <span class="blue">compressed</span> version of the covariates that has smaller dimension <span class="math inline">k</span> but retains most information.</p></li>
-<li><p>Intuitively, we want to <span class="orange">reduce the variance</span> by finding a good compression, without sacrificing too much bias.</p></li>
+<li><p>Intuitively, we want to <span class="orange">reduce the variance</span> by finding a good compression without sacrificing too much bias.</p></li>
 <li><p>The main statistical tool, unsurprisingly, will be the celebrated <span class="blue">principal components analysis</span> (PCA).</p></li>
 <li><p>We will compress the covariate information <span class="math inline">\bm{X}</span> using a smaller set of variables <span class="math inline">\bm{Z}</span>, i.e.&nbsp;the principal components.</p></li>
 </ul>
@@ -997,7 +997,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <h2>The intercept term</h2>
 <div>
 <ul>
-<li class="fragment"><p>In principal component regression and in other related methods (ridge, lasso and elastic-net), we do <span class="orange">not</span> wish to <span class="orange">compress</span> the <span class="orange">intercept</span> term <span class="math inline">\beta_0</span>. We would like to “remove it”.</p></li>
+<li class="fragment"><p>In principal component regression and other related methods (ridge, lasso, and elastic-net), we do <span class="orange">not</span> wish to <span class="orange">compress</span> the <span class="orange">intercept</span> term <span class="math inline">\beta_0</span>. We would like to “remove it”.</p></li>
 <li class="fragment"><p>Let us consider a <span class="blue">reparametrization</span> of the linear model, in which <span class="math inline">\alpha = \beta_0 + \bar{\bm{x}}^T\beta</span>. This is equivalent to a linear model with <span class="orange">centered predictors</span>: <span class="math display">
 \begin{aligned}
 f(\bm{x}_i; \alpha, \beta) &amp; = \beta_0 + \bm{x}_i^T\beta = \alpha - \bar{\bm{x}}^T\beta + \bm{x}_i^T\beta  = \alpha + (\bm{x}_i -\bar{\bm{x}})^T\beta. \\
@@ -1013,8 +1013,8 @@ f(\bm{x}_i; \alpha, \beta) &amp; = \beta_0 + \bm{x}_i^T\beta = \alpha - \bar{\bm
 </ul>
 </div>
 </section>
-<section id="centering-the-predictors" class="slide level2 center">
-<h2>Centering the predictors</h2>
+<section id="centering-the-predictors-i" class="slide level2 center">
+<h2>Centering the predictors I</h2>
 <ul>
 <li>In principal components regression, we replace <span class="orange">original data</span> <span class="math inline">Y_i = f(\bm{x}_i) + \epsilon_i</span> with their <span class="blue">centered</span> version: <span class="math display">
 x_{ij} - \bar{x}_j, \qquad y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
@@ -1022,14 +1022,14 @@ x_{ij} - \bar{x}_j, \qquad y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
 </ul>
 <div class="fragment">
 <ul>
-<li>In the end, we will make predictions in the <span class="blue">original scale</span>, which requires a simple <span class="orange">final adjustment</span>. One simply need to compute the intercept term <span class="math display">
+<li>In the end, we will make predictions in the <span class="blue">original scale</span>, which requires a simple <span class="orange">final adjustment</span>. One need to compute the intercept term <span class="math display">
 \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta},
 </span> and then compute the predictions via the formula <span class="math inline">\hat{\beta}_0 + \bm{x}_i^T\hat{\beta} = \hat{\alpha} + \bm{x}_{i}^T\hat{\beta}</span>.</li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li><span class="orange">Remark</span>. The centering operation is a mathematical trick that facilitate the exposition, but is unconsequential from an estimation point of view.</li>
+<li><span class="orange">Remark</span>. The centering operation is a mathematical trick that facilitate the exposition but is unconsequential from an estimation point of view.</li>
 </ul>
 </div>
 </section>
@@ -1049,14 +1049,14 @@ x_{ij} - \bar{x}_j, \qquad y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
 </div>
 <div class="fragment">
 <ul>
-<li>Using centered predictor means that we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
+<li>Using centered predictors means that we can focus on linear models <span class="blue">without intercept</span>: <span class="math display">
 f(\bm{x}_{i}; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_{i}^T\beta.
 </span></li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li>Under the centering assumption the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
+<li>Under the centering assumption, the <span class="orange">covariance matrix</span> of the data is simply <span class="math display">
 S = \frac{1}{n} \bm{X}^T\bm{X}.
 </span></li>
 </ul>
@@ -1102,11 +1102,11 @@ z_{ij} = x_{i1}v_{i1} + \cdots + x_{ip} v_{ip} = \bm{x}_{i}^T\tilde{\bm{v}}_j.
 <h2>Principal component analysis II</h2>
 <div>
 <ul>
-<li class="fragment"><p>Principal components form an orthogonal basis of <span class="math inline">\bm{X}</span>, but they are not a “random” choice and they do <span class="orange">not</span> coincide with them <span class="orange">Gram-Schmidt</span> basis of <a href="un_A.html#the-qr-decomposition-i">Unit A</a>.</p></li>
+<li class="fragment"><p>Principal components form an orthogonal basis of <span class="math inline">\bm{X}</span>, but they are not a “random” choice, and they do <span class="orange">not</span> coincide with them <span class="orange">Gram-Schmidt</span> basis of <a href="un_A.html#the-qr-decomposition-i">Unit A</a>.</p></li>
 <li class="fragment"><p>Indeed, the <span class="blue">first principal component</span> is the linear combination having <span class="orange">maximal variance</span>: <span class="math display">
 \tilde{\bm{v}}_1 = \arg\max_{\bm{v} \in \mathbb{R}^p} \text{var}(\bm{X}\bm{v})= \arg\max_{\bm{v} \in \mathbb{R}^p} \frac{1}{n} \bm{v}^T\bm{X}^T\bm{X} \bm{v}, \quad \text{ subject to } \quad \bm{v}^T \bm{v} = 1.
 </span></p></li>
-<li class="fragment"><p>The <span class="blue">second principal component</span> maximizes the variance under the additional constraint of being <span class="orange">orthogonal</span> to the former. And so on and so forth.</p></li>
+<li class="fragment"><p>The <span class="blue">second principal component</span> maximizes the variance under the additional constraint of being <span class="orange">orthogonal</span> to the former. And so on.</p></li>
 <li class="fragment"><p>The values <span class="math inline">d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 &gt; 0</span> are the <span class="orange">eigenvalues</span> of <span class="math inline">\bm{X}^T\bm{X}</span> and correspond to the rescaled <span class="blue">variances</span> of each principal component, that is <span class="math inline">\text{var}(\tilde{\bm{z}}_j) = \tilde{\bm{z}}_j^T \tilde{\bm{z}}_j/n = d^2_j / n</span>.</p></li>
 <li class="fragment"><p>Hence, the quantity <span class="math inline">d_j^2 / \sum_{j'=1}^p d_{j'}^2</span> measures the amount of total variance captured by principal components.</p></li>
 </ul>
@@ -1127,7 +1127,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 \hat{\gamma}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \frac{1}{d_j^2}\tilde{\bm{z}}_j^T\bm{y}, \qquad j=1,\dots,k.
 </span></p></li>
 <li class="fragment"><p>The principal components are in <span class="orange">order of importance</span> and effectively <span class="blue">compressing the information</span> contained in <span class="math inline">\bm{X}</span> using only <span class="math inline">k \le p</span> variables.</p></li>
-<li class="fragment"><p>When <span class="math inline">k = p</span> we are simply rotating the original matrix <span class="math inline">\bm{X} = \bm{Z}\bm{V}</span>, i.e.&nbsp;performing <span class="orange">no compression</span>. The predicted values coincide with OLS.</p></li>
+<li class="fragment"><p>When <span class="math inline">k = p</span>, we are simply rotating the original matrix <span class="math inline">\bm{X} = \bm{Z}\bm{V}</span>, i.e.&nbsp;performing <span class="orange">no compression</span>. The predicted values coincide with OLS.</p></li>
 <li class="fragment"><p>The number <span class="math inline">k</span> is a <span class="blue">complexity parameter</span> which should be chosen via information criteria or cross-validation.</p></li>
 </ul>
 </div>
@@ -1140,7 +1140,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>Shrinkage effect of principal components I</h2>
 <div>
 <ul>
-<li class="fragment"><p>A closer look to the PCR solution reveals some interesting aspects. Recall that: <span class="math display">
+<li class="fragment"><p>A closer look at the PCR solution reveals some interesting aspects. Recall that: <span class="math display">
 \tilde{\bm{z}}_j = \bm{X}\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
 </span></p></li>
 <li class="fragment"><p>The <span class="orange">predicted values</span> for the <span class="blue">centered responses</span> <span class="math inline">\bm{y}</span> of the PCR with <span class="math inline">k</span> components are: <span class="math display">
@@ -1163,7 +1163,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li class="fragment"><p>The <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{pcr}</span>, assuming iid errors <span class="math inline">\epsilon_i</span> in the <span class="blue">original data</span>, is: <span class="math display">
 \text{var}(\hat{\beta}_\text{pcr}) = \sigma^2\sum_{j=1}^k \frac{1}{d_j^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T.
 </span></p></li>
-<li class="fragment"><p>Thus, if a <span class="blue">multicollinearity</span> exists, then it appears as a principal component with very small variance, i.e.&nbsp;a small <span class="math inline">d_j^2</span>. Its removal therefore drastically <span class="orange">reduces</span> the <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{pcr}</span>.</p></li>
+<li class="fragment"><p>Thus, if a <span class="blue">multicollinearity</span> exists, then it appears as a principal component with very small variance, i.e., a small <span class="math inline">d_j^2</span>. Its removal, therefore, drastically <span class="orange">reduces</span> the <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{pcr}</span>.</p></li>
 <li class="fragment"><p>Furthermore, the predicted values for the <span class="orange">centered data</span> can be expressed as <span class="math display">
 \bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
 </span></p></li>
@@ -1185,7 +1185,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 <div class="callout-content">
 <ul>
-<li><p>Principal components are a natural tool to <span class="blue">reduce the complexity</span> of the data, especially in presence of <span class="orange">highly correlated</span> variables.</p></li>
+<li><p>Principal components are a natural tool to <span class="blue">reduce the complexity</span> of the data, especially in the presence of <span class="orange">highly correlated</span> variables.</p></li>
 <li><p>If you transform back the coefficients, there is a <span class="blue">clean interpretation</span> of the impact of the covariates on the response.</p></li>
 <li><p>Principal components might be interesting in their own right, as they describe the <span class="blue">dependence structure</span> among covariates.</p></li>
 </ul>
@@ -1226,7 +1226,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <ul>
 <li><p>Shrinkage methods are popular tools for handling the issue of multiple variables.</p></li>
 <li><p>Shrinkage <span class="blue">regularizes</span> the estimates, <span class="blue">constraining</span> the <span class="blue">size</span> of the regression coefficients.</p></li>
-<li><p>This lead to <span class="orange">biased estimator</span> with, hopefully, lower variance.</p></li>
+<li><p>This leads to <span class="orange">biased estimator</span> with, hopefully, lower variance.</p></li>
 <li><p>As a byproduct, the induced regularization procedure enables estimation even when <span class="math inline">p &gt; n</span>.</p></li>
 <li><p>The first method that has been proposed is called <span class="orange">ridge regression</span>. The lasso and the elastic-net are other examples.</p></li>
 </ul>
@@ -1253,14 +1253,14 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 <div class="fragment">
 <ul>
-<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span>, because there are no strong reasons to believe that the mean of <span class="math inline">y_i</span> equals zero. However, as before, we would like to “remove the intercept”.</li>
+<li>The intercept term <span class="math inline">\beta_0</span> is <span class="orange">not penalized</span> because there are no strong reasons to believe that the mean of <span class="math inline">y_i</span> equals zero. However, as before, we want to “remove the intercept”.</li>
 </ul>
 </div>
 </section>
 <section id="centering-and-scaling-the-predictors-i" class="slide level2 center">
 <h2>Centering and scaling the predictors I</h2>
 <ul>
-<li>The ridge solutions are <span class="orange">not equivariant</span> under <span class="orange">scalings of the input</span>, so one normally <span class="blue">standardizes</span> the input to have unit variance, if they are not in the same scale.</li>
+<li>The ridge solutions are <span class="orange">not equivariant</span> under <span class="orange">scalings of the input</span>, so one normally <span class="blue">standardizes</span> the input to have unit variance if they are not on the same scale.</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -1268,13 +1268,13 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <ul>
 <li>The reparametrization <span class="math inline">\alpha = \beta_0 + \bar{\bm{x}}^T\beta</span> is equivalent to centering the predictors;</li>
 <li>The estimate for the centered intercept is <span class="math inline">\hat{\alpha} = \bar{y}</span>;</li>
-<li>The ridge estimate can be obtained considering a model without intercept, using centered responses and predictors.</li>
+<li>The ridge estimate can be obtained by considering a model without intercept, using centered responses and predictors.</li>
 </ul></li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li>Hence, in ridge regression we replace <span class="orange">original data</span> <span class="math inline">Y_i = f(\bm{x}_i) + \epsilon_i</span> with their <span class="blue">standardized</span> version: <span class="math display">
+<li>Hence, in ridge regression, we replace <span class="orange">original data</span> <span class="math inline">Y_i = f(\bm{x}_i) + \epsilon_i</span> with their <span class="blue">standardized</span> version: <span class="math display">
 \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
 </span> where <span class="math inline">s_j^2 = n^{-1}\sum_{i=1}^n (x_{ij} - \bar{x}_j)^2</span> is the <span class="blue">sample variance</span>.</li>
 </ul>
@@ -1291,7 +1291,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <div class="callout callout-note no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
-<p>For ridge problems we will assume the data have been previously <span class="orange">standardized</span>, namely <span class="math display">
+<p>For ridge problems, we will assume the data have been previously <span class="orange">standardized</span>, namely <span class="math display">
     \frac{1}{n}\sum_{i=1}^ny_{i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{i}^2 = 1\qquad j=1,\dots,p.
     </span></p>
 </div>
@@ -1357,11 +1357,11 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>Comments on the ridge path</h2>
 <ul>
 <li><p>The values of <span class="math inline">\lambda</span> are in somewhat <span class="orange">arbitrary scale</span>. The ridge penalty has a concrete effect starting from <span class="math inline">\lambda / n &gt; 0.1</span> or so.</p></li>
-<li><p>The variable <code>lcavol</code> is arguably the most important, followed by <code>lweight</code> and <code>svi</code>, being the one that receive less shrinkage compared to the others.</p></li>
+<li><p>The variable <code>lcavol</code> is arguably the most important, followed by <code>lweight</code> and <code>svi</code>, which are those receiving less shrinkage compared to the others.</p></li>
 </ul>
 <div class="fragment">
 <ul>
-<li><p>The coefficient of <code>age</code>, <code>gleason</code> and <code>lcp</code>, is negative at the beginning and then become positive for large values of <span class="math inline">\lambda</span>.</p></li>
+<li><p>The coefficient of <code>age</code>, <code>gleason</code>, and <code>lcp</code>, is negative at the beginning and then becomes positive for large values of <span class="math inline">\lambda</span>.</p></li>
 <li><p>This indicate that their negative value in <span class="math inline">\hat{\beta}_\text{ols}</span> was probably a consequence of their <span class="orange">correlation</span> with other variables.</p></li>
 </ul>
 </div>
@@ -1454,7 +1454,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li class="fragment"><p>The <span class="orange">condition number</span> of the modified <span class="math inline">(\bm{X}^T\bm{X} + \lambda I_p)</span> matrix becomes <span class="math display">
 \kappa(\bm{X}^T\bm{X} + \lambda I_p) = \frac{\lambda + d_1^2}{\lambda + d_p^2}.
 </span></p></li>
-<li class="fragment"><p>Notice that even if <span class="math inline">d_p = 0</span>, i.e.&nbsp;the matrix <span class="math inline">\bm{X}</span> is <span class="blue">singular</span>, then condition number will be finite as long as <span class="math inline">\lambda &gt; 0</span>.</p></li>
+<li class="fragment"><p>Notice that even if <span class="math inline">d_p = 0</span>, i.e.&nbsp;the matrix <span class="math inline">\bm{X}</span> is <span class="blue">singular</span>, then the condition number will be finite as long as <span class="math inline">\lambda &gt; 0</span>.</p></li>
 <li class="fragment"><p>This technique is known as <span class="orange">Tikhonov regularization</span>, after the Russian mathematician Andrey Tikhonov.</p></li>
 </ul>
 </div>
@@ -1482,7 +1482,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li><p>Suppose we wish to use an <span class="blue">information criteria</span> such as the AIC or BIC, of the form <span class="math display">
   \text{IC}(p) = -2 \ell(\hat{\beta}_\text{ridge}) + \text{penalty}(\text{``degrees of freedom"}).
   </span> We need a careful definition of <span class="blue">degrees of freedom</span> that is appropriate in this context.</p></li>
-<li><p>The current definition of degrees of freedom, i.e.&nbsp;the number of <span class="orange">non-zero coefficients</span>, is <span class="orange">not appropriate</span> for ridge regression, because it would be equal to <span class="math inline">p</span> for any value of <span class="math inline">\lambda</span>.</p></li>
+<li><p>The current definition of degrees of freedom, i.e., the number of <span class="orange">non-zero coefficients</span>, is <span class="orange">not appropriate</span> for ridge regression because it would be equal to <span class="math inline">p</span> for any value of <span class="math inline">\lambda</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -1514,7 +1514,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <ul>
 <li class="fragment"><p>The effective degrees of freedom of <span class="blue">ordinary least squares</span> and <span class="blue">principal component regression</span> are <span class="math display">
 \text{df}_\text{ols} = p + 1, \qquad \text{df}_\text{pcr} = k + 1,
-</span> where the additional term correspond to the <span class="orange">intercept</span>.</p></li>
+</span> where the additional term corresponds to the <span class="orange">intercept</span>.</p></li>
 <li class="fragment"><p>After some algebra, one finds that the effective degrees of freedom of <span class="orange">ridge regression</span> are <span class="math display">
 \text{df}_\text{ridge} = 1 + \text{tr}(\bm{H}_\text{ridge}) = 1 + \sum_{j=1}^p \frac{d_j^2}{d_j^2 + \lambda}.
 </span></p></li>
@@ -1545,14 +1545,14 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="cross-validation-for-ridge-regression-i" class="slide level2 center">
 <h2>Cross-validation for ridge regression I</h2>
 <ul>
-<li><p>Training / test strategies and <span class="blue">cross-validation</span> are also valid tools for selecting <span class="math inline">\lambda</span>.</p></li>
+<li><p>Training/test strategies and <span class="blue">cross-validation</span> are also valid tools for selecting <span class="math inline">\lambda</span>.</p></li>
 <li><p>Most statistical software packages use a slightly <span class="orange">different parametrization</span> for <span class="math inline">\lambda</span>, as they minimize <span class="math display">
 \textcolor{red}{\frac{1}{n}}\sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \tilde{\lambda} \sum_{j=1}^p\beta_j^2,
 </span> where the penalty parameter <span class="math inline">\tilde{\lambda} = \lambda / n</span>.</p></li>
 </ul>
 <div class="fragment">
 <ul>
-<li>This parametrization does not alter the estimate of <span class="math inline">\hat{\beta}_\text{ridge}</span> but is more amenable for <span class="blue">cross-validation</span> as the values of <span class="math inline">\tilde{\lambda}</span> can be compared across dataset with <span class="orange">different sample sizes</span>.</li>
+<li>This parametrization does not alter the estimate of <span class="math inline">\hat{\beta}_\text{ridge}</span> but is more amenable for <span class="blue">cross-validation</span> as the values of <span class="math inline">\tilde{\lambda}</span> can be compared across datasets with <span class="orange">different sample sizes</span>.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -1610,7 +1610,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <ul>
 <li><p>Ridge regression trades some <span class="orange">bias</span> in exchange of a <span class="blue">lower variance</span>, often resulting in more accurate predictions.</p></li>
 <li><p>The ridge solution <span class="orange">always exists</span> and is <span class="blue">unique</span>, even when <span class="math inline">p &gt; n</span> or in presence of perfect <span class="orange">collinearity</span>.</p></li>
-<li><p>For fixed values of <span class="math inline">\lambda</span>, <span class="blue">efficient computations</span> are available using QR and Cholesky decompositions. <!-- -   At the end of this unit we will describe a [general optimization --> <!--     strategy]{.blue} that recovers the entire "ridge path", i.e. the --> <!--     estimate $\hat{\beta}_\text{ridge}$ for several values of $\lambda$. --></p></li>
+<li><p>For fixed values of <span class="math inline">\lambda</span>, <span class="blue">efficient computations</span> are available using QR and Cholesky decompositions. <!-- -   At the end of this unit, we will describe a [general optimization --> <!--     strategy]{.blue} that recovers the entire "ridge path," i.e., the --> <!--     estimate $\hat{\beta}_\text{ridge}$ for several values of $\lambda$. --></p></li>
 </ul>
 </div>
 </div>
@@ -1647,13 +1647,13 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 </div><div class="column" style="width:75%;">
 <ul>
-<li>Signal <span class="orange">sparsity</span> is the assumption that only a small number of predictors have an effect, i.e.&nbsp;<span class="math display">
+<li>Signal <span class="orange">sparsity</span> is the assumption that only a small number of predictors have an effect, i.e., <span class="math display">
 \beta_j = 0, \qquad \text{for most} \qquad j \in \{1,\dots,p\}.</span></li>
 <li>In this case we would like our estimator <span class="math inline">\hat{\beta}</span> to be <span class="blue">sparse</span>, meaning that <span class="math inline">\hat{\beta}_j = 0</span> for many <span class="math inline">j \in \{1,\dots,p\}</span>.</li>
 <li>Sparse estimators are desirable because:
 <ul>
 <li>perform <span class="blue">variable selection</span> and improve the <span class="orange">interpretability</span> of the results;</li>
-<li>Speed up the <span class="blue">computations</span> of the predictions, because less variables are needed.</li>
+<li>Speed up the <span class="blue">computations</span> of the predictions because fewer variables are needed.</li>
 </ul></li>
 <li>Best subset selection is sparse (but computationally unfeasible), the ridge estimator is not.</li>
 </ul>
@@ -1674,7 +1674,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 <div class="fragment">
 <ul>
-<li>The lasso is <span class="orange">deceptively similar</span> to ridge. However, the change from a quadratic penalty to the absolute value has crucial <span class="blue">sparsity</span> implications.</li>
+<li>The lasso is <span class="orange">deceptively similar</span> to ridge. However, the change from a quadratic penalty to an absolute value has a crucial <span class="blue">sparsity</span> implication.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -1709,7 +1709,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <div class="callout callout-note no-icon callout-style-simple">
 <div class="callout-body">
 <div class="callout-content">
-<p>For lasso problems we will assume the data have been previously <span class="orange">standardized</span>, namely <span class="math display">
+<p>For lasso problems, we will assume the data have been previously <span class="orange">standardized</span>, namely <span class="math display">
     \frac{1}{n}\sum_{i=1}^ny_{i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{i}^2 = 1\qquad j=1,\dots,p.
     </span></p>
 </div>
@@ -1728,7 +1728,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>Lagrange multipliers and lasso solution</h2>
 <ul>
 <li><p>The lasso problem can be <span class="blue">equivalently expressed</span> in its Lagrangian form, which is more amenable for computations.</p></li>
-<li><p>Having remove the intercept, the lasso estimator <span class="math inline">\hat{\beta}_\text{lasso}</span> is the <span class="orange">minimizer</span> of <span class="math display">
+<li><p>Having removed the intercept, the lasso estimator <span class="math inline">\hat{\beta}_\text{lasso}</span> is the <span class="orange">minimizer</span> of <span class="math display">
   \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_{i} - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
   </span> where <span class="math inline">\lambda &gt; 0</span> is a <span class="blue">complexity parameter</span> controlling the <span class="orange">penalty</span>.</p></li>
 </ul>
@@ -1775,12 +1775,12 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="soft-thresholding-and-lasso-solution" class="slide level2 center">
 <h2>Soft-thresholding and lasso solution</h2>
 <ul>
-<li>The single predictor special cases provides further intuition of why the lasso perform <span class="blue">variable selection</span> and <span class="orange">shrinkage</span>.</li>
+<li>The single predictor special case provides further intuition of why the lasso perform <span class="blue">variable selection</span> and <span class="orange">shrinkage</span>.</li>
 </ul>
 <div class="fragment">
 <ul>
-<li><p>Ridge regression induce shrinkage in a <span class="orange">multiplicative</span> fashion and the regression coefficients reach zero as <span class="math inline">\lambda \rightarrow \infty</span>.</p></li>
-<li><p>Conversely, lasso shrink the ordinary least squares in an <span class="blue">additive</span> manner, <span class="orange">truncating</span> them at <span class="orange">zero</span> after a certain threshold.</p></li>
+<li><p>Ridge regression induces shrinkage in a <span class="orange">multiplicative</span> fashion, and the regression coefficients reach zero as <span class="math inline">\lambda \rightarrow \infty</span>.</p></li>
+<li><p>Conversely, the lasso shrinks the ordinary least squares in an <span class="blue">additive</span> manner, <span class="orange">truncating</span> them at <span class="orange">zero</span> after a certain threshold.</p></li>
 </ul>
 </div>
 <div class="fragment">
@@ -1795,7 +1795,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <!-- ## Comments on the lasso path -->
 <!-- -   As for ridge regression, the values of $\lambda$ are expressed in -->
 <!--     somewhat [arbitrary scale]{.orange}. -->
-<!-- -   There exist a [maximum value]{.blue} $\lambda_0$, after -->
+<!-- -   There exists a [maximum value]{.blue} $\lambda_0$, after -->
 <!--     which all the coefficients are zero: $$ -->
 <!--     \lambda_0 = \max_{j}\left| \text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \max_{j}\left| \frac{1}{n}\sum_{i=1}^n x_{ij} y_i\right|. -->
 <!--     $$ -->
@@ -1828,7 +1828,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <div class="callout-content">
 <ul>
 <li><p>The LAR algorithm provides a way to <span class="blue">compute</span> the entire <span class="orange">lasso path</span> efficiently at the cost of a full least-squares fit.</p></li>
-<li><p>LAR sheds light on important <span class="orange">statistical aspects</span> of the lasso. A nice <span class="blue">LAR - lasso - boosting</span> relationship is established, which is computationally and conceptually useful.</p></li>
+<li><p>LAR sheds light on important <span class="orange">statistical aspects</span> of the lasso. A nice <span class="blue">LAR - lasso - boosting</span> relationship is established, which is computationally and conceptually sound.</p></li>
 </ul>
 </div>
 </div>
@@ -1960,8 +1960,8 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 <div class="fragment">
 <ul>
-<li><p>Non-uniqueness may occur in presence of <span class="orange">discrete-valued</span> data. It is of practical concern only whenever <span class="math inline">p &gt; n</span> and if we are interested in interpreting the coefficients.</p></li>
-<li><p>Much more <span class="blue">general</span> sufficient conditions for the uniqueness of <span class="math inline">\hat{\beta}_\text{lasso}</span> are known, but they are quite technical and hard to check in practice.</p></li>
+<li><p>Non-uniqueness may occur in the presence of <span class="orange">discrete-valued</span> data. It is of practical concern only whenever <span class="math inline">p &gt; n</span> and if we are interested in interpreting the coefficients.</p></li>
+<li><p>Much more <span class="blue">general</span> sufficient conditions for the uniqueness of <span class="math inline">\hat{\beta}_\text{lasso}</span> are known, but they are quite technical and complex to check in practice.</p></li>
 </ul>
 </div>
 </section>
@@ -1979,7 +1979,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <div class="callout callout-warning no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>Degrees of freedom (Zhou, Hastie and Tibshirani, 2007, Tibshirani and Taylor, 2012)</strong></p>
+<p><strong>Degrees of freedom (Zhou, Hastie, and Tibshirani, 2007, Tibshirani and Taylor, 2012)</strong></p>
 </div>
 <div class="callout-content">
 <ul>
@@ -2013,7 +2013,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <ul>
 <li class="fragment"><p><span class="orange">Bayesian interpretation</span>: the penalty can be interpreted as a Laplace prior on <span class="math inline">\beta</span>.</p></li>
 <li class="fragment"><p>As mentioned, under certain conditions the LAR algorithm can be seen as the limiting case of <span class="blue">boosting procedure</span>, in which small corrections to predictions are iteratively performed.</p></li>
-<li class="fragment"><p>The <span class="orange">nonnegative garrote</span> (Breiman, 1995) is a two-stage procedure, with a close relationship to the lasso. Breiman’s paper was the inspiration for Tibshirani (1996).</p></li>
+<li class="fragment"><p>The <span class="orange">nonnegative garrote</span> (Breiman, 1995) is a two-stage procedure with a close relationship to the lasso. Breiman’s paper was the inspiration for Tibshirani (1996).</p></li>
 <li class="fragment"><p>There is a large body of theoretical work on the behavior of the lasso, focused on:</p>
 <ul>
 <li class="fragment">the mean-squared-error consistency of the lasso;</li>
@@ -2156,7 +2156,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>The results on the test set</h2>
 <ul>
 <li><p>At the beginning of this unit, we split the data into <span class="blue">training</span> set and <span class="orange">test</span> set. Using the training, we selected <span class="math inline">\lambda</span> via cross-validation or the <span class="math inline">C_p</span> index.</p></li>
-<li><p>Using final test set with <span class="math inline">30</span> observations, we will assess which model is <span class="orange">preferable</span>.</p></li>
+<li><p>Using the final test set with <span class="math inline">30</span> observations, we will assess which model is <span class="orange">preferable</span>.</p></li>
 </ul>
 <div class="fragment">
 <div class="cell" data-hash="un_C_cache/revealjs/unnamed-chunk-39_1925c45ff7dfa2dc4410d53358d27f45">
@@ -2188,7 +2188,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </div>
 <div class="fragment">
 <ul>
-<li><p>All the approaches presented in this unit have better performance than ordinary least squares.</p></li>
+<li><p>All the approaches presented in this unit perform better than ordinary least squares.</p></li>
 <li><p>The <span class="blue">lasso</span> is the approach with <span class="orange">lowest mean squared error</span>. At the same time, it is also a <span class="blue">parsimonious</span> choice.</p></li>
 <li><p>Best subset is the second best, doing a good job in this example… but here <span class="math inline">p = 8</span>, so there were no computational difficulties!</p></li>
 </ul>
@@ -2202,7 +2202,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="elastic-net" class="slide level2 center">
 <h2>Elastic-net</h2>
 <ul>
-<li>The <span class="blue">elastic-net</span> is a compromise between ridge and lasso. It selects variables like the lasso, and shrinks together the coefficients of correlated predictors like ridge.</li>
+<li>The <span class="blue">elastic-net</span> is a compromise between ridge and lasso. It selects variables like the lasso and shrinks together the coefficients of correlated predictors like ridge.</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -2227,7 +2227,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="convex-optimization" class="slide level2 center">
 <h2>Convex optimization</h2>
 <ul>
-<li>The estimators OLS, ridge, lasso and elastic-net have a huge <span class="orange">computational advantage</span> compared, e.g., to best subset: they are all <span class="blue">convex optimization problems</span>.</li>
+<li>The estimators OLS, ridge, lasso, and elastic-net have a huge <span class="orange">computational advantage</span> compared, e.g., to best subset: they are all <span class="blue">convex optimization problems</span>.</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -2249,8 +2249,8 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
 </div>
 <div class="callout-content">
 <ul>
-<li>In a <span class="blue">convex</span> optimization problem every local minimum is a <span class="blue">global minimum</span>;</li>
-<li>In a <span class="orange">strictly convex</span> optimization problem there exists a <span class="orange">unique</span> global minimum.</li>
+<li>In a <span class="blue">convex</span> optimization problem, every local minimum is a <span class="blue">global minimum</span>;</li>
+<li>In a <span class="orange">strictly convex</span> optimization problem, there exists a <span class="orange">unique</span> global minimum.</li>
 </ul>
 </div>
 </div>
@@ -2299,17 +2299,17 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
 <section id="pathwise-coordinate-optimization" class="slide level2 center">
 <h2>Pathwise coordinate optimization</h2>
 <div>
+<p>In a regression model with an elastic-net penalty, the coordinate descent is <span class="orange">theoretically guaranteed</span> to reach the global minimum.</p>
 <ul>
-<li class="fragment"><p>The coordinate descent, in a regression model with elastic-net penalty, is <span class="orange">theoretically guaranteed</span> to reach global minimum.</p></li>
 <li class="fragment"><p>The coordinate descent algorithm is implemented in the <code>glmnet</code> package. It is, de facto, the default algorithm for penalized generalized linear models.</p></li>
 <li class="fragment"><p>The <code>glmnet</code> implementation is very efficient due to several additional tricks:</p>
 <ul>
 <li class="fragment">The <span class="blue">warm start</span>. The algorithm for <span class="math inline">\lambda_k</span> is initialized in the previously obtained solution using <span class="math inline">\lambda_{k-1}</span>.</li>
 <li class="fragment">Partial residuals can be efficiently obtained <span class="orange">without re-computing</span> the whole linear predictor.</li>
 <li class="fragment">The code is written in <span class="blue">Fortran</span>.</li>
-<li class="fragment">Many other additional tricks are employed: active set convergence, tools for sparse <span class="math inline">\bm{X}</span> matrices, etc.</li>
+<li class="fragment">Many other tricks are employed: active set convergence, tools for sparse <span class="math inline">\bm{X}</span> matrices, etc.</li>
 </ul></li>
-<li class="fragment"><p>The same algorithm can be used to fit ridge regression and lasso as well, which is often convenient even though alternatives would be available.</p></li>
+<li class="fragment"><p>The same algorithm can also be used to fit ridge regression and lasso, which is often convenient even though alternatives would be available.</p></li>
 </ul>
 </div>
 </section></section>
@@ -2331,8 +2331,8 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
 </div>
 <div class="callout-content">
 <ul>
-<li><p>Best subset selection, together with its forward and backward greedy approximations, are conceptually straightforward to extend to GLMs (using log-likelihood and ML).</p></li>
-<li><p>The only difficulty is about computations, because leaps-and-bound approaches can not be applied here.</p></li>
+<li><p>Best subset selection and its forward and backward greedy approximations are conceptually straightforward to extend to GLMs (using log-likelihood and ML).</p></li>
+<li><p>The only difficulty is computations because leaps-and-bound approaches can not be applied here.</p></li>
 </ul>
 </div>
 </div>
@@ -2346,8 +2346,8 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
 </div>
 <div class="callout-content">
 <ul>
-<li><p>Principal components can be applied to GLMs in a straightforward manner.</p></li>
-<li><p>The shrinkage effect and their ability to control the variance remain unaltered, but the theory (e.g.&nbsp;variance of the estimator) holds only in an approximate sense.</p></li>
+<li><p>Principal components can be straightforwardly applied to GLMs.</p></li>
+<li><p>The shrinkage effect and their ability to control the variance remain unaltered, but the theory (e.g., variance of the estimator) holds only in an approximate sense.</p></li>
 </ul>
 </div>
 </div>
@@ -2357,12 +2357,12 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
 <section id="shrinkage-methods-for-glms" class="slide level2 center">
 <h2>Shrinkage methods for GLMs</h2>
 <ul>
-<li><p>Shrinkage methods such as ridge and lasso can be also generalized to GLMs.</p></li>
+<li><p>Shrinkage methods such as ridge and lasso can also be generalized to GLMs.</p></li>
 <li><p>The elastic-net approach for <span class="blue">logistic regression</span>, which covers ridge and lasso as special cases, becomes: <span class="math display">
 \min_{(\beta_0, \beta)}\left\{ -\frac{1}{n}\sum_{i=1}^n y_i (\beta_0 + \bm{x}_i^T\beta) - \log\{1 + \exp(\beta_0 + \bm{x}_i^T\beta)\} + \lambda\sum_{j=1}^p\left(\alpha  |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\right)\right\},
 </span> which is an instance of <span class="orange">penalized log-likelihood</span>.</p></li>
 <li><p><span class="blue">Most of the properties</span> (e.g.&nbsp;ridge = variance reduction and shrinkage, lasso = variable selection) and other high-level considerations we made so far are <span class="blue">still valid</span>.</p></li>
-<li><p>Computations are somewhat more cumbersome. The <code>glmnet</code> package provides the numerical routines for fitting this kind of model, using variants of <span class="blue">coordinate descent</span>.</p></li>
+<li><p>Computations are somewhat more cumbersome. The <code>glmnet</code> package provides the numerical routines for fitting this model, using variants of <span class="blue">coordinate descent</span>.</p></li>
 <li><p>The core idea is to obtain a <span class="blue">quadratic approximation</span> of the log-likelihood, as for IWLS. Then, the approximated loss becomes a (<span class="orange">weighted</span>) penalized regression problem.</p></li>
 </ul>
 </section></section>
@@ -2377,9 +2377,9 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
 <li><span class="blue">Main references</span>
 <ul>
 <li><strong>Chapter 3</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
-<li><strong>Chapter 3 and 4</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+<li><strong>Chapters 3 and 4</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
 <li><strong>Chapter 16</strong> of Efron, B. and Hastie, T. (2016), <a href="https://hastie.su.domains/CASI/"><em>Computer Age Statistical Inference</em></a>, Cambridge University Press.</li>
-<li><strong>Chapter 2,3 and 5</strong> of Hastie, T., Tibshirani, R. and Wainwright, M. (2015). <a href="https://hastie.su.domains/StatLearnSparsity_files/SLS_corrected_1.4.16.pdf"><em>Statistical Learning with Sparsity: The Lasso and Generalizations</em></a>. CRC Press.</li>
+<li><strong>Chapters 2,3 and 5</strong> of Hastie, T., Tibshirani, R. and Wainwright, M. (2015). <a href="https://hastie.su.domains/StatLearnSparsity_files/SLS_corrected_1.4.16.pdf"><em>Statistical Learning with Sparsity: The Lasso and Generalizations</em></a>. CRC Press.</li>
 </ul></li>
 <li><span class="orange">Best subset selection</span>
 <ul>

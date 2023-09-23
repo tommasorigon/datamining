@@ -66,7 +66,7 @@ styler:::style_file("../code/un_C.R")
 :::
 
 ::: {.column width="70%"}
--   In this unit we will cover the following [topics]{.orange}:
+- This unit will cover the following [topics]{.orange}:
 
     -   Best subset regression
     -   Principal component regression
@@ -82,7 +82,7 @@ styler:::style_file("../code/un_C.R")
 -   This problem is quite challenging when the [ratio]{.blue} $p / n$ is
     [large]{.blue}.
 
--   In the [extreme case]{.orange} $p > n$, is there any hope to fit a
+-   In the [extreme case]{.orange} $p > n$, is there any hope of fitting a
     meaningful model?
 :::
 :::
@@ -93,7 +93,7 @@ styler:::style_file("../code/un_C.R")
 
 -   The `prostate` cancer data investigates the relationship between the
     prostate-specific [antigen]{.orange} and a number of clinical
-    measures, in men about to receive a prostatectomy.
+    measures in men about to receive a prostatectomy.
 
 . . .
 
@@ -179,7 +179,7 @@ ggcorrplot(corr,
 ## The regression framework
 
 ::: incremental
--   In this unit we will assume that the response variables $Y_i$
+-   In this unit, we will assume that the response variables $Y_i$
     (`lpsa`) are obtained as $$
     Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
     $$ where $\epsilon_i$ are [iid]{.orange} random variables with
@@ -192,18 +192,18 @@ ggcorrplot(corr,
     [non-linear]{.blue}.
 
 -   In practice, we [approximate]{.orange} the true $f(\bm{x})$ using a
-    [linear model]{.blue}, e.g. by considering the following function$$
+    [linear model]{.blue}, e.g., by considering the following function$$
         f(\bm{x}_i; \beta_0, \beta) = \beta_0+ \beta_1 x_{i1} + \cdots + \beta_p x_{ip} =\beta_0 + \bm{x}_i^T\beta,
         $$ in which the regression coefficients must be estimated.
 
--   In this unit the [intercept]{.blue} $\beta_0$ will often play a
-    special role, therefore we use a slightly different notation
+-   In this unit, the [intercept]{.blue} $\beta_0$ will often play a
+    special role therefore we use a slightly different notation
     compared to [Unit A](unit_A.html).
 :::
 
 ## The variable selection problem
 
--   Including a lot of covariates into the model is not necessarily a
+-   Including a lot of covariates in the model is not necessarily a
     good thing!
 
 . . .
@@ -218,7 +218,7 @@ ggcorrplot(corr,
 
 -   If we use all the $p = 8$ available covariates, the estimated
     $f(\bm{x}; \hat{\beta_0}, \hat{\beta})$ might have a [high
-    variance]{.orange}, without important gain in term of bias, i.e. a
+    variance]{.orange}, without an important gain in terms of bias, i.e., a
     [large mean squared error]{.blue}.
 
 -   We are looking for a [simpler model]{.orange} having, hopefully, a
@@ -288,7 +288,7 @@ knitr::kable(tab, digits = 2)
 -   In many data mining problems, the focus is on [minimizing]{.orange}
     the [prediction errors]{.orange}.
 
--   Hence, often times we may [accept some bias]{.blue} (i.e. we use a
+-   Hence, often we may [accept some bias]{.blue} (i.e., we use a
     "wrong" but useful model), if this leads to a [reduction in
     variance]{.orange}.
 :::
@@ -296,7 +296,7 @@ knitr::kable(tab, digits = 2)
 
 ## Overview of this unit
 
--   In this unit we will discuss two "discrete" methods:
+-   In this unit, we will discuss two "discrete" methods:
 
     -   Best subset selection and its greedy approximations: forward /
         backward regression;
@@ -307,7 +307,7 @@ knitr::kable(tab, digits = 2)
     the coefficients.
 
 -   These "discrete" methods can be seen as the naïve counterpart of
-    more advanced and [continuous]{.blue} ideas, that are presented in
+    more advanced and [continuous]{.blue} ideas that are presented in
     the second part of the Unit.
 
 . . .
@@ -340,7 +340,7 @@ knitr::kable(tab, digits = 2)
 
 ## Best subset selection
 
--   Let us get back to our [variable selection problem]{.blue}.
+-   Let us return to our [variable selection problem]{.blue}.
 
 -   In principle, we could perform an [exhaustive search]{.orange}
     considering all the $2^p$ possible models and then selecting the one
@@ -368,12 +368,12 @@ knitr::kable(tab, digits = 2)
     namely
     $\text{MSE}_{k + 1, \text{train}} \le \text{MSE}_{k, \text{train}}$
     by construction. Hence, the optimal subset size $k$ must be chosen
-    e.g. via [cross-validation]{.blue}.
+    e.g., via [cross-validation]{.blue}.
 
 ## Step 1. and 2. of best subset selection
 
 ```{r}
-# Here I compute some basic quantities
+# Here, I compute some basic quantities
 X <- model.matrix(lpsa ~ ., data = prostate_train)[, -1]
 y <- prostate_train$lpsa
 n <- nrow(X)
@@ -423,7 +423,7 @@ summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest
 ::: incremental
 -   The above table means that the best model with $k = 1$ uses the
     variable `lcavol`, whereas when $k = 2$ the selected variables are
-    `lcavol` and `lweight`, and so on and so forth.
+    `lcavol` and `lweight`, and so on.
 
 -   Note that, in general, these models are [not]{.orange} necessarily
     [nested]{.orange}, i.e. a variable selected at step $k$ is not
@@ -446,9 +446,9 @@ summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest
 -   A typical strategy for analysis might be as follows:
 
     1.  Screen the predictors: find a subset of "good" predictors that
-        show fairly strong correlation with the response;
+        show a reasonably strong correlation with the response;
 
-    2.  Using this subset of predictors (e.g. `lcavol`, `lweight` and
+    2.  Using this subset of predictors (e.g., `lcavol`, `lweight` and
         `svi`), build a regression model;
 
     3.  Use cross-validation to estimate the prediction error of the
@@ -459,7 +459,7 @@ summary(regsubsets(lpsa ~ ., data = prostate_train, method = "exhaustive", nbest
 -   If your reaction was "[this is absolutely wrong!]{.orange}", it
     means you correctly understood the principles of cross-validation.
 
--   If you though this was an ok-ish idea, you may want to read [Section
+-   If you thought this was an ok-ish idea, you may want to read [Section
     7.10.2]{.blue} of HTF (2009), called "the wrong way of doing
     cross-validation".
 :::
@@ -539,7 +539,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
     $$ models to consider, which is [computationally
     prohibitive]{.orange}!
 
--   There exists algorithms (i.e. [leaps and bounds]{.blue}) that makes
+-   There exist algorithms (i.e. [leaps and bounds]{.blue}) that make
     this feasible for $p \approx 30$.
 
 -   Recently, [Bertsimas et al.,
@@ -556,7 +556,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 ## Forward regression
 
 -   Forward regression is [greedy approximation]{.orange} of best subset
-    selection, that produces a sequence of [nested]{.blue} models. It is
+    selection that produces a sequence of [nested]{.blue} models. It is
     computationally feasible and can be applied when $p > n$.
 
 . . .
@@ -652,7 +652,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 ```
 
 -   In the `prostate` dataset, forward, backward and best subset
-    selection all gave exactly the [same path of solutions]{.orange} on
+    selection all gave precisely the [same path of solutions]{.orange} on
     the full training set.
 
 ## Pros and cons of subset selection strategies
@@ -663,7 +663,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 -   Best subset selection is appealing because of its [conceptual
     simplicity]{.blue}.
 
--   Best subset and forward regression can be used, when computations are not problematic, even when $p > n$.
+-   Best subset and forward regression can be used when computations are not problematic, even when $p > n$.
 :::
 
 . . .
@@ -691,7 +691,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 :::
 
 ::: {.column width="70%"}
--   At this point we established that [many covariates = many
+-   At this point, we established that [many covariates = many
     problems]{.orange}.
 
 -   Instead of selecting the "best" variables, let us consider a
@@ -701,7 +701,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
     smaller dimension $k$ but retains most information.
 
 -   Intuitively, we want to [reduce the variance]{.orange} by finding a
-    good compression, without sacrificing too much bias.
+    good compression without sacrificing too much bias.
 
 -   The main statistical tool, unsurprisingly, will be the celebrated
     [principal components analysis]{.blue} (PCA).
@@ -714,8 +714,8 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 ## The intercept term
 
 ::: incremental
--   In principal component regression and in other related methods
-    (ridge, lasso and elastic-net), we do [not]{.orange} wish to
+-   In principal component regression and other related methods
+    (ridge, lasso, and elastic-net), we do [not]{.orange} wish to
     [compress]{.orange} the [intercept]{.orange} term $\beta_0$. We would like to "remove it".
 
 -   Let us consider a [reparametrization]{.blue} of the linear model, in
@@ -741,7 +741,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
     $y_i - \bar{y}$.
 :::
 
-## Centering the predictors
+## Centering the predictors I
 
 -   In principal components regression, we replace [original
     data]{.orange} $Y_i = f(\bm{x}_i) + \epsilon_i$ with their
@@ -752,7 +752,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 . . .
 
 -   In the end, we will make predictions in the [original scale]{.blue},
-    which requires a simple [final adjustment]{.orange}. One simply need
+    which requires a simple [final adjustment]{.orange}. One need
     to compute the intercept term $$
     \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta},
     $$ and then compute the predictions via the formula
@@ -761,7 +761,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 . . .
 
 -   [Remark]{.orange}. The centering operation is a mathematical trick
-    that facilitate the exposition, but is unconsequential from an
+    that facilitate the exposition but is unconsequential from an
     estimation point of view.
 
 ## Centering the predictors II
@@ -777,14 +777,14 @@ previously [centered]{.orange}: $$
 
 . . .
 
--   Using centered predictor means that we can focus on linear models
+-   Using centered predictors means that we can focus on linear models
     [without intercept]{.blue}: $$
     f(\bm{x}_{i}; \beta) = x_{i1}\beta_1 + \cdots + x_{ip}\beta_p = \bm{x}_{i}^T\beta.
     $$
 
 . . .
 
--   Under the centering assumption the [covariance matrix]{.orange} of
+-   Under the centering assumption, the [covariance matrix]{.orange} of
     the data is simply $$
     S = \frac{1}{n} \bm{X}^T\bm{X}.
     $$
@@ -851,7 +851,7 @@ previously [centered]{.orange}: $$
 
 ::: incremental
 -   Principal components form an orthogonal basis of $\bm{X}$, but they
-    are not a "random" choice and they do [not]{.orange} coincide with
+    are not a "random" choice, and they do [not]{.orange} coincide with
     them [Gram-Schmidt]{.orange} basis of [Unit
     A](un_A.html#the-qr-decomposition-i).
 
@@ -862,7 +862,7 @@ previously [centered]{.orange}: $$
 
 -   The [second principal component]{.blue} maximizes the variance under
     the additional constraint of being [orthogonal]{.orange} to the
-    former. And so on and so forth.
+    former. And so on.
 
 -   The values $d_1^2 \ge d_2^2 \ge \dots \ge d_p^2 > 0$ are the
     [eigenvalues]{.orange} of $\bm{X}^T\bm{X}$ and correspond to the
@@ -906,7 +906,7 @@ ggplot(data = data.frame(p = 1:p, vars = pr$sdev^2 / sum(pr$sdev^2)), aes(x = p,
     effectively [compressing the information]{.blue} contained in
     $\bm{X}$ using only $k \le p$ variables.
 
--   When $k = p$ we are simply rotating the original matrix
+-   When $k = p$, we are simply rotating the original matrix
     $\bm{X} = \bm{Z}\bm{V}$, i.e. performing [no compression]{.orange}.
     The predicted values coincide with OLS.
 
@@ -971,7 +971,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 ## Shrinkage effect of principal components I
 
 ::: incremental
--   A closer look to the PCR solution reveals some interesting aspects.
+-   A closer look at the PCR solution reveals some interesting aspects.
     Recall that: $$
     \tilde{\bm{z}}_j = \bm{X}\tilde{\bm{v}}_j = d_j \tilde{\bm{u}}_j,  \qquad j=1,\dots,p.
     $$
@@ -1007,8 +1007,8 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
     $$
 
 -   Thus, if a [multicollinearity]{.blue} exists, then it appears as a
-    principal component with very small variance, i.e. a small $d_j^2$.
-    Its removal therefore drastically [reduces]{.orange} the
+    principal component with very small variance, i.e., a small $d_j^2$.
+    Its removal, therefore, drastically [reduces]{.orange} the
     [variance]{.orange} of $\hat{\beta}_\text{pcr}$.
 
 -   Furthermore, the predicted values for the [centered data]{.orange}
@@ -1052,7 +1052,7 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 ::: callout-tip
 #### Pros
 
-- Principal components are a natural tool to [reduce the complexity]{.blue} of the data, especially in presence of [highly correlated]{.orange} variables.
+- Principal components are a natural tool to [reduce the complexity]{.blue} of the data, especially in the presence of [highly correlated]{.orange} variables.
 
 - If you transform back the coefficients, there is a [clean
     interpretation]{.blue} of the impact of the covariates on the
@@ -1090,7 +1090,7 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 - Shrinkage [regularizes]{.blue} the estimates, [constraining]{.blue} the [size]{.blue} of the regression coefficients.
 
-- This lead to [biased estimator]{.orange} with, hopefully, lower variance.
+- This leads to [biased estimator]{.orange} with, hopefully, lower variance.
 
 - As a byproduct, the induced regularization procedure enables estimation even when $p > n$.
 
@@ -1125,15 +1125,15 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 . . .
 
--   The intercept term $\beta_0$ is [not penalized]{.orange}, because
+-   The intercept term $\beta_0$ is [not penalized]{.orange} because
     there are no strong reasons to believe that the mean of $y_i$ equals
-    zero. However, as before, we would like to "remove the intercept".
+    zero. However, as before, we want to "remove the intercept".
 
 ## Centering and scaling the predictors I
 
 -   The ridge solutions are [not equivariant]{.orange} under [scalings
     of the input]{.orange}, so one normally [standardizes]{.blue} the
-    input to have unit variance, if they are not in the same scale.
+    input to have unit variance if they are not on the same scale.
 
 . . .
 
@@ -1143,12 +1143,12 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
         is equivalent to centering the predictors;
     -   The estimate for the centered intercept is
         $\hat{\alpha} = \bar{y}$;
-    -   The ridge estimate can be obtained considering a model without
+    -   The ridge estimate can be obtained by considering a model without
         intercept, using centered responses and predictors.
 
 . . .
 
--   Hence, in ridge regression we replace [original data]{.orange}
+-   Hence, in ridge regression, we replace [original data]{.orange}
     $Y_i = f(\bm{x}_i) + \epsilon_i$ with their [standardized]{.blue}
     version: $$ 
     \frac{x_{ij} - \bar{x}_j}{s_j}, \qquad y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
@@ -1167,7 +1167,7 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 . . .
 
 ::: callout-note
-For ridge problems we will assume the data have been previously
+For ridge problems, we will assume the data have been previously
 [standardized]{.orange}, namely $$
     \frac{1}{n}\sum_{i=1}^ny_{i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{i}^2 = 1\qquad j=1,\dots,p.
     $$
@@ -1359,13 +1359,13 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
     $\lambda / n > 0.1$ or so.
 
 -   The variable `lcavol` is arguably the most important, followed by
-    `lweight` and `svi`, being the one that receive less shrinkage
+    `lweight` and `svi`, which are those receiving less shrinkage
     compared to the others.
 
 . . .
 
--   The coefficient of `age`, `gleason` and `lcp`, is negative at the
-    beginning and then become positive for large values of $\lambda$.
+-   The coefficient of `age`, `gleason`, and `lcp`, is negative at the
+    beginning and then becomes positive for large values of $\lambda$.
 
 -   This indicate that their negative value in $\hat{\beta}_\text{ols}$
     was probably a consequence of their [correlation]{.orange} with
@@ -1483,7 +1483,7 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
     $$
 
 -   Notice that even if $d_p = 0$, i.e. the matrix $\bm{X}$ is
-    [singular]{.blue}, then condition number will be finite as long as
+    [singular]{.blue}, then the condition number will be finite as long as
     $\lambda > 0$.
 
 -   This technique is known as [Tikhonov regularization]{.orange}, after
@@ -1523,9 +1523,9 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
       $$ We need a careful definition of [degrees of freedom]{.blue}
     that is appropriate in this context.
 
--   The current definition of degrees of freedom, i.e. the number of
+-   The current definition of degrees of freedom, i.e., the number of
     [non-zero coefficients]{.orange}, is [not appropriate]{.orange} for
-    ridge regression, because it would be equal to $p$ for any value of
+    ridge regression because it would be equal to $p$ for any value of
     $\lambda$.
 
 ## Effective degrees of freedom I
@@ -1556,7 +1556,7 @@ $$
 -   The effective degrees of freedom of [ordinary least squares]{.blue}
     and [principal component regression]{.blue} are $$
     \text{df}_\text{ols} = p + 1, \qquad \text{df}_\text{pcr} = k + 1,
-    $$ where the additional term correspond to the [intercept]{.orange}.
+    $$ where the additional term corresponds to the [intercept]{.orange}.
 
 -   After some algebra, one finds that the effective degrees of freedom
     of [ridge regression]{.orange} are $$
@@ -1610,7 +1610,7 @@ ggplot(data = mse_ridge, aes(x = lambda_tilde_seq, y = Cp)) +
 
 ## Cross-validation for ridge regression I
 
--   Training / test strategies and [cross-validation]{.blue} are also
+- Training/test strategies and [cross-validation]{.blue} are also
     valid tools for selecting $\lambda$.
 
 -   Most statistical software packages use a slightly [different
@@ -1623,7 +1623,7 @@ ggplot(data = mse_ridge, aes(x = lambda_tilde_seq, y = Cp)) +
 -   This parametrization does not alter the estimate of
     $\hat{\beta}_\text{ridge}$ but is more amenable for
     [cross-validation]{.blue} as the values of $\tilde{\lambda}$ can be
-    compared across dataset with [different sample sizes]{.orange}.
+    compared across datasets with [different sample sizes]{.orange}.
 
 . . .
 
@@ -1783,8 +1783,8 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 -   For fixed values of $\lambda$, [efficient computations]{.blue} are
     available using QR and Cholesky decompositions.
-<!-- -   At the end of this unit we will describe a [general optimization -->
-<!--     strategy]{.blue} that recovers the entire "ridge path", i.e. the -->
+<!-- -   At the end of this unit, we will describe a [general optimization -->
+<!--     strategy]{.blue} that recovers the entire "ridge path," i.e., the -->
 <!--     estimate $\hat{\beta}_\text{ridge}$ for several values of $\lambda$. -->
 :::
 
@@ -1808,7 +1808,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 ::: {.column width="75%"}
 -   Signal [sparsity]{.orange} is the assumption that only a small
-    number of predictors have an effect, i.e. $$
+    number of predictors have an effect, i.e., $$
     \beta_j = 0, \qquad \text{for most} \qquad j \in \{1,\dots,p\}.$$
 -   In this case we would like our estimator $\hat{\beta}$ to be
     [sparse]{.blue}, meaning that $\hat{\beta}_j = 0$ for many
@@ -1816,8 +1816,8 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 -   Sparse estimators are desirable because:
     -   perform [variable selection]{.blue} and improve the
         [interpretability]{.orange} of the results;
-    -   Speed up the [computations]{.blue} of the predictions, because
-        less variables are needed.
+    -   Speed up the [computations]{.blue} of the predictions because
+        fewer variables are needed.
 -   Best subset selection is sparse (but computationally unfeasible),
     the ridge estimator is not.
 :::
@@ -1841,8 +1841,8 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 . . .
 
 -   The lasso is [deceptively similar]{.orange} to ridge. However, the
-    change from a quadratic penalty to the absolute value has crucial
-    [sparsity]{.blue} implications.
+    change from a quadratic penalty to an absolute value has a crucial
+    [sparsity]{.blue} implication.
 
 . . .
 
@@ -1892,7 +1892,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 . . .
 
 ::: callout-note
-For lasso problems we will assume the data have been previously
+For lasso problems, we will assume the data have been previously
 [standardized]{.orange}, namely $$
     \frac{1}{n}\sum_{i=1}^ny_{i} = 0, \qquad \frac{1}{n}\sum_{i=1}^nx_{ij} = 0, \qquad \frac{1}{n}\sum_{i=1}^n x_{i}^2 = 1\qquad j=1,\dots,p.
     $$
@@ -1911,7 +1911,7 @@ For lasso problems we will assume the data have been previously
 -   The lasso problem can be [equivalently expressed]{.blue} in its
     Lagrangian form, which is more amenable for computations.
 
--   Having remove the intercept, the lasso estimator
+-   Having removed the intercept, the lasso estimator
     $\hat{\beta}_\text{lasso}$ is the [minimizer]{.orange} of $$
       \underbrace{\textcolor{darkblue}{\frac{1}{2 n}}\sum_{i=1}^n(y_{i} - \bm{x}_i^T\beta)^2}_{\text{least squares}} + \underbrace{\lambda \sum_{j=1}^p|\beta_j|}_{\text{\textcolor{red}{lasso penalty}}}
       $$ where $\lambda > 0$ is a [complexity parameter]{.blue}
@@ -2025,17 +2025,17 @@ ggplot(data = data_plot, aes(x = x, y = value, col = Estimate)) +
 
 ## Soft-thresholding and lasso solution
 
--   The single predictor special cases provides further intuition of why
+-   The single predictor special case provides further intuition of why
     the lasso perform [variable selection]{.blue} and
     [shrinkage]{.orange}.
 
 . . .
 
--   Ridge regression induce shrinkage in a [multiplicative]{.orange}
-    fashion and the regression coefficients reach zero as
+-   Ridge regression induces shrinkage in a [multiplicative]{.orange}
+    fashion, and the regression coefficients reach zero as
     $\lambda \rightarrow \infty$.
 
--   Conversely, lasso shrink the ordinary least squares in an
+-   Conversely, the lasso shrinks the ordinary least squares in an
     [additive]{.blue} manner, [truncating]{.orange} them at
     [zero]{.orange} after a certain threshold.
 
@@ -2116,7 +2116,7 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
 <!-- -   As for ridge regression, the values of $\lambda$ are expressed in -->
 <!--     somewhat [arbitrary scale]{.orange}. -->
 
-<!-- -   There exist a [maximum value]{.blue} $\lambda_0$, after -->
+<!-- -   There exists a [maximum value]{.blue} $\lambda_0$, after -->
 <!--     which all the coefficients are zero: $$ -->
 <!--     \lambda_0 = \max_{j}\left| \text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \max_{j}\left| \frac{1}{n}\sum_{i=1}^n x_{ij} y_i\right|. -->
 <!--     $$ -->
@@ -2158,7 +2158,7 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
 
 -   LAR sheds light on important [statistical aspects]{.orange} of the
     lasso. A nice [LAR - lasso - boosting]{.blue} relationship is
-    established, which is computationally and conceptually useful.
+    established, which is computationally and conceptually sound.
 :::
 
 ## 
@@ -2285,9 +2285,9 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 
 . . .
 
-- Non-uniqueness may occur in presence of [discrete-valued]{.orange} data. It is of practical concern only whenever $p > n$ and if we are interested in interpreting the coefficients. 
+- Non-uniqueness may occur in the presence of [discrete-valued]{.orange} data. It is of practical concern only whenever $p > n$ and if we are interested in interpreting the coefficients. 
 
-- Much more [general]{.blue} sufficient conditions for the uniqueness of $\hat{\beta}_\text{lasso}$ are known, but they are quite technical and hard to check in practice.  
+- Much more [general]{.blue} sufficient conditions for the uniqueness of $\hat{\beta}_\text{lasso}$ are known, but they are quite technical and complex to check in practice.  
 
 
 ## The degrees of freedom of the lasso
@@ -2301,7 +2301,7 @@ which [coincide]{.orange} with the LAR solution if $s_j =  \text{sign}(\beta_j)$
 . . .
 
 :::callout-warning
-#### Degrees of freedom (Zhou, Hastie and Tibshirani, 2007, Tibshirani and Taylor, 2012)
+#### Degrees of freedom (Zhou, Hastie, and Tibshirani, 2007, Tibshirani and Taylor, 2012)
 
 - Suppose $\bm{X}$ has [full rank]{.orange} $\text{rk}(\bm{X}) = p$ and $\bm{y}$ follows a Gaussian law. Then:
 $$
@@ -2325,7 +2325,7 @@ sigma_sim <- 0.5
 
 set.seed(220)
 X_sim <- matrix(runif(n_sim * p_sim), n_sim, p_sim)
-# Here data are not related with any of the covariates
+# Here, data are not related to any of the covariates
 Y_sim <- matrix(rnorm(n_sim * R, mean = 4, sigma_sim), R, n_sim)
 
 pred_best_sim <- array(0, c(R, n_sim, p_sim + 1))
@@ -2474,7 +2474,7 @@ ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
 
 - As mentioned, under certain conditions the LAR algorithm can be seen as the limiting case of [boosting procedure]{.blue}, in which small corrections to predictions are iteratively performed. 
 
-- The [nonnegative garrote]{.orange} (Breiman, 1995) is a two-stage procedure, with a close relationship to the lasso. Breiman’s paper was the inspiration for Tibshirani (1996).
+- The [nonnegative garrote]{.orange} (Breiman, 1995) is a two-stage procedure with a close relationship to the lasso. Breiman’s paper was the inspiration for Tibshirani (1996).
 
 - There is a large body of theoretical work on the behavior of the lasso, focused on:
   - the mean-squared-error consistency of the lasso;
@@ -2556,7 +2556,7 @@ round(tab, digits = 3)
 
 - At the beginning of this unit, we split the data into [training]{.blue} set and [test]{.orange} set. Using the training, we selected $\lambda$ via cross-validation or the $C_p$ index.
 
-- Using final test set with $30$ observations, we will assess which model is [preferable]{.orange}.
+- Using the final test set with $30$ observations, we will assess which model is [preferable]{.orange}.
 
 . . .
 
@@ -2584,7 +2584,7 @@ knitr::kable(tab_results, digits = 3)
 
 . . .
 
-- All the approaches presented in this unit have better performance than ordinary least squares. 
+- All the approaches presented in this unit perform better than ordinary least squares. 
 
 - The [lasso]{.blue} is the approach with [lowest mean squared error]{.orange}. At the same time, it is also a [parsimonious]{.blue} choice. 
 
@@ -2594,7 +2594,7 @@ knitr::kable(tab_results, digits = 3)
 
 ## Elastic-net
 
-- The [elastic-net]{.blue} is a compromise between ridge and lasso. It selects variables like the lasso, and shrinks together the coefficients of correlated predictors like ridge.
+- The [elastic-net]{.blue} is a compromise between ridge and lasso. It selects variables like the lasso and shrinks together the coefficients of correlated predictors like ridge.
 
 . . .
 
@@ -2618,7 +2618,7 @@ where $0 < \alpha < 1$ and the [complexity parameter]{.orange} $\lambda > 0$.
 
 ## Convex optimization
 
-- The estimators OLS, ridge, lasso and elastic-net have a huge [computational advantage]{.orange} compared, e.g., to best subset: they are all [convex optimization problems]{.blue}.
+- The estimators OLS, ridge, lasso, and elastic-net have a huge [computational advantage]{.orange} compared, e.g., to best subset: they are all [convex optimization problems]{.blue}.
 
 . . .
 
@@ -2636,8 +2636,8 @@ Replacing $\le$ with $<$ for $t \in(0,1)$ gives the definition of [strict convex
 
 ::: callout-warning
 #### Properties of convex optimization
-- In a [convex]{.blue} optimization problem every local minimum is a [global minimum]{.blue};
-- In a [strictly convex]{.orange} optimization problem there exists a [unique]{.orange} global minimum.
+- In a [convex]{.blue} optimization problem, every local minimum is a [global minimum]{.blue};
+- In a [strictly convex]{.orange} optimization problem, there exists a [unique]{.orange} global minimum.
 :::
 
 ## Elastic-net with a single predictor
@@ -2725,7 +2725,7 @@ ggplot(data = df, aes(x = X, y = Y)) +
 
 ::: incremental
 
-- The coordinate descent, in a regression model with elastic-net penalty, is [theoretically guaranteed]{.orange} to reach global minimum.
+In a regression model with an elastic-net penalty, the coordinate descent is [theoretically guaranteed]{.orange} to reach the global minimum.
 
 - The coordinate descent algorithm is implemented in the `glmnet` package. It is, de facto, the default algorithm for penalized generalized linear models. 
 
@@ -2733,9 +2733,9 @@ ggplot(data = df, aes(x = X, y = Y)) +
   - The [warm start]{.blue}. The algorithm for $\lambda_k$ is initialized in the previously obtained solution using $\lambda_{k-1}$.
   - Partial residuals can be efficiently obtained [without re-computing]{.orange} the whole linear predictor.
   - The code is written in [Fortran]{.blue}.
-  - Many other additional tricks are employed: active set convergence, tools for sparse $\bm{X}$ matrices, etc. 
+  - Many other tricks are employed: active set convergence, tools for sparse $\bm{X}$ matrices, etc. 
 
-- The same algorithm can be used to fit ridge regression and lasso as well, which is often convenient even though alternatives would be available. 
+- The same algorithm can also be used to fit ridge regression and lasso, which is often convenient even though alternatives would be available. 
 :::
 
 # Generalized linear models
@@ -2749,9 +2749,9 @@ ggplot(data = df, aes(x = X, y = Y)) +
 ::: callout-note
 #### Best subset selection for GLMs
 
-- Best subset selection, together with its forward and backward greedy approximations, are conceptually straightforward to extend to GLMs (using log-likelihood and ML).
+- Best subset selection and its forward and backward greedy approximations are conceptually straightforward to extend to GLMs (using log-likelihood and ML).
 
-- The only difficulty is about computations, because leaps-and-bound approaches can not be applied here.
+- The only difficulty is computations because leaps-and-bound approaches can not be applied here.
 :::
 
 . . .
@@ -2759,15 +2759,15 @@ ggplot(data = df, aes(x = X, y = Y)) +
 ::: callout-tip
 #### Principal components for GLMs
 
-- Principal components can be applied to GLMs in a straightforward manner. 
+- Principal components can be straightforwardly applied to GLMs. 
 
-- The shrinkage effect and their ability to control the variance remain unaltered, but the theory (e.g. variance of the estimator) holds only in an approximate sense. 
+- The shrinkage effect and their ability to control the variance remain unaltered, but the theory (e.g., variance of the estimator) holds only in an approximate sense. 
 :::
 
 
 ## Shrinkage methods for GLMs
 
-- Shrinkage methods such as ridge and lasso can be also generalized to GLMs.
+- Shrinkage methods such as ridge and lasso can also be generalized to GLMs.
 
 - The elastic-net approach for [logistic regression]{.blue}, which covers ridge and lasso as special cases, becomes:
 $$
@@ -2777,7 +2777,7 @@ which is an instance of [penalized log-likelihood]{.orange}.
 
 - [Most of the properties]{.blue} (e.g. ridge = variance reduction and shrinkage, lasso = variable selection) and other high-level considerations we made so far are [still valid]{.blue}.
 
-- Computations are somewhat more cumbersome. The `glmnet` package provides the numerical routines for fitting this kind of model, using variants of [coordinate descent]{.blue}. 
+- Computations are somewhat more cumbersome. The `glmnet` package provides the numerical routines for fitting this model, using variants of [coordinate descent]{.blue}. 
 
 - The core idea is to obtain a [quadratic approximation]{.blue} of the log-likelihood, as for IWLS. Then, the approximated loss becomes a ([weighted]{.orange}) penalized regression problem. 
 
@@ -2790,14 +2790,14 @@ which is an instance of [penalized log-likelihood]{.orange}.
         Analysis and Data
         Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
         University Press.
-    - **Chapter 3 and 4** of Hastie, T., Tibshirani, R. and Friedman, J.
+    - **Chapters 3 and 4** of Hastie, T., Tibshirani, R. and Friedman, J.
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
     - **Chapter 16** of Efron, B. and Hastie, T. (2016), [*Computer Age Statistical
     Inference*](https://hastie.su.domains/CASI/), Cambridge University
     Press.
-    - **Chapter 2,3 and 5** of Hastie, T., Tibshirani, R. and Wainwright, M. (2015). [*Statistical Learning with Sparsity: The Lasso and Generalizations*](https://hastie.su.domains/StatLearnSparsity_files/SLS_corrected_1.4.16.pdf). CRC Press.
+    - **Chapters 2,3 and 5** of Hastie, T., Tibshirani, R. and Wainwright, M. (2015). [*Statistical Learning with Sparsity: The Lasso and Generalizations*](https://hastie.su.domains/StatLearnSparsity_files/SLS_corrected_1.4.16.pdf). CRC Press.
     
 - [Best subset selection]{.orange}
     - Hastie, T., Tibshirani, R., and Tibshirani, R.J. (2020). Best subset, forward stepwise or lasso? Analysis and recommendations based on extensive comparisons. *Statistical Science* **35**(4): 579--592.

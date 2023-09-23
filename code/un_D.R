@@ -12,7 +12,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
   ylab("Cholesterol Decrease")
 
 rm(list = ls())
-# The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
+# The dataset can also be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
 auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
 
 ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
