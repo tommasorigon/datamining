@@ -378,8 +378,8 @@
 <li><span class="orange">High-dimensional</span>, with large <span class="math inline">p</span>;</li>
 <li><span class="blue">Nonparametric</span>, placing no assumptions on <span class="math inline">f(\bm{x})</span>.</li>
 </ul></li>
-<li><p>The title of this unit, however, is not “<em>fully flexible high-dimensional models</em>”.</p></li>
-<li><p>Instead, it sounds like <span class="orange">bad news</span> are coming. Let us see why, unfortunately, this will be indeed the case.</p></li>
+<li><p>The title of this unit, however, is not “<em>fully flexible high-dimensional models</em>.”</p></li>
+<li><p>Instead, it sounds like <span class="orange">bad news</span> is coming. Let us see why, unfortunately, this will be indeed the case.</p></li>
 </ul>
 </div>
 </div>
@@ -419,7 +419,7 @@ w_i(\bm{x}) = \prod_{j=1}^p \frac{1}{h_j} w\left(\frac{x_{ij} - x_j}{h_j}\right)
 </div>
 <div class="fragment">
 <ul>
-<li>To put it another way: to get a local neighborhood with <span class="math inline">10</span> data points along each axis, then <span class="math inline">10^p</span> data points are needed in the corresponding <span class="math inline">p</span>-dimensional neighborhood.</li>
+<li>To put it another way, to get a local neighborhood with <span class="math inline">10</span> data points along each axis, <span class="math inline">10^p</span> data points are needed in the corresponding <span class="math inline">p</span>-dimensional neighborhood.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -432,7 +432,7 @@ w_i(\bm{x}) = \prod_{j=1}^p \frac{1}{h_j} w\left(\frac{x_{ij} - x_j}{h_j}\right)
 <h2>The curse of dimensionality II</h2>
 <div>
 <ul>
-<li class="fragment"><p>The following illustration may help in clarifying this notion of <span class="orange">sparsity</span>. Let us consider data points that are uniformaly distributed on <span class="math inline">(0, 1)^p</span>, that is <span class="math inline">\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)</span>.</p></li>
+<li class="fragment"><p>The following illustration may help clarify this notion of <span class="orange">sparsity</span>. Let us consider data points that are uniformaly distributed on <span class="math inline">(0, 1)^p</span>, that is <span class="math inline">\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)</span>.</p></li>
 <li class="fragment"><p>Then, the <span class="orange">median distance</span> from the origin <span class="math inline">(0,\dots,0)^T</span> to the <span class="blue">closest point</span> is: <span class="math display">
 \text{dist}(p, n) = \left\{1 - \left(\frac{1}{2}\right)^{1/n}\right\}^{1/p}.
 </span></p></li>
@@ -441,8 +441,8 @@ w_i(\bm{x}) = \prod_{j=1}^p \frac{1}{h_j} w\left(\frac{x_{ij} - x_j}{h_j}\right)
 </span></p></li>
 <li class="fragment"><p>Conversely, when the <span class="orange">dimension</span> <span class="math inline">p</span> <span class="orange">increases</span>, the <span class="blue">median distance</span> becomes: <span class="math display">
 \text{dist}(2, 100) = 0.083, \quad \text{dist}(10, 100) = 0.608, \quad \text{dist}(50, 100) = 0.905.
-</span> Note that even with a much larger sample size, we get <span class="math inline">\text{dist}(10, 1000) = 0.483</span>.</p></li>
-<li class="fragment"><p>The vast majority of points is <span class="blue">close to the boundary</span>, making predictions very hard.</p></li>
+</span> Note that we get <span class="math inline">\text{dist}(10, 1000) = 0.483</span> even with a much larger sample size.</p></li>
+<li class="fragment"><p>Most points are <span class="blue">close to the boundary</span>, making predictions very hard.</p></li>
 </ul>
 </div>
 </section>
@@ -450,12 +450,12 @@ w_i(\bm{x}) = \prod_{j=1}^p \frac{1}{h_j} w\left(\frac{x_{ij} - x_j}{h_j}\right)
 <h2>The curse of dimensionality III</h2>
 <div>
 <ul>
-<li class="fragment"><p>Another <span class="orange">intuition</span> of the curse of dimensionality is given by the following argument. Let us consider again <span class="blue">uniform</span> covariates <span class="math inline">\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)</span>.</p></li>
-<li class="fragment"><p>Let us consider a subcube which contains a fraction <span class="math inline">r \in (0, 1)</span> of the total number of observations <span class="math inline">n</span>. In the univeriate case (<span class="math inline">p = 1</span>), the side of this cube is simply <span class="math inline">r</span>.</p></li>
-<li class="fragment"><p>In the more general case, in can be shown that, on <span class="orange">average</span>, the <span class="blue">side</span> of the cube is <span class="math display">
+<li class="fragment"><p>The following argument gives another <span class="orange">intuition</span> of the curse of dimensionality. Let us consider again <span class="blue">uniform</span> covariates <span class="math inline">\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)</span>.</p></li>
+<li class="fragment"><p>Let us consider a subcube which contains a fraction <span class="math inline">r \in (0, 1)</span> of the total number of observations <span class="math inline">n</span>. In the univariate case (<span class="math inline">p = 1</span>), the side of this cube is <span class="math inline">r</span>.</p></li>
+<li class="fragment"><p>In the more general case, it can be shown that on <span class="orange">average</span>, the <span class="blue">side</span> of the cube is <span class="math display">
 \text{side}(r, p) = r^{1/p},
 </span> which is again exponentially decreasing in <span class="math inline">p</span>.</p></li>
-<li class="fragment"><p>Hence, when <span class="math inline">p = 1</span> the expected amount of points in the <span class="orange">local sub-interval</span> <span class="math inline">(0, 1/10)</span> is again <span class="math inline">1/10</span>.</p></li>
+<li class="fragment"><p>Hence, when <span class="math inline">p = 1</span>, the expected amount of points in the <span class="orange">local sub-interval</span> <span class="math inline">(0, 1/10)</span> is again <span class="math inline">1/10</span>.</p></li>
 <li class="fragment"><p>Instead, when <span class="math inline">p = 10</span> the amount of point is the <span class="blue">local subcube</span> <span class="math inline">(0, 1)^{10}</span> is <span class="math display">
 n \left(\frac{1}{10}\right)^{10} = \frac{n}{1.000.000.000}.
 </span></p></li>
@@ -492,8 +492,8 @@ n \left(\frac{1}{10}\right)^{10} = \frac{n}{1.000.000.000}.
 \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left\{(\bm{x}_i^T\beta - \bm{x}_i^T\hat{\beta})^2\right\} =  \sigma^2\frac{p}{n},
 </span> which is increasing <span class="blue">linearly</span> in <span class="math inline">p</span>, but <span class="orange">not exponentially</span>.</p></li>
 <li class="fragment"><p>Linear models make <span class="orange">assumptions</span> and impose a <span class="blue">structure</span>. If the assumptions are correct, the estimates exploit <span class="orange">global features</span> and are less affected by the local sparsity.</p></li>
-<li class="fragment"><p>Nature is not necessarily a linear model, this is why we explored the nonparametric case.</p></li>
-<li class="fragment"><p>Nonetheless, making (correct) <span class="orange">assumptions</span> and therefore imposing (appropriate) restrictions is <span class="blue">beneficial</span>, to the extent that is <span class="orange">unavoidable</span> in high-dimensions.</p></li>
+<li class="fragment"><p>Nature is not necessarily a linear model, so we explored the nonparametric case.</p></li>
+<li class="fragment"><p>Nonetheless, making (correct) <span class="orange">assumptions</span> and therefore imposing (appropriate) restrictions is <span class="blue">beneficial</span>, to the extent that it is <span class="orange">unavoidable</span> in high dimensions.</p></li>
 </ul>
 </div>
 </section>
@@ -504,13 +504,13 @@ n \left(\frac{1}{10}\right)^{10} = \frac{n}{1.000.000.000}.
 <li class="fragment"><p>The <span class="blue">multidimensional</span> methods you will study (GAM, trees, random forest, boosting, neural networks, etc.) deal with the curse of dimensionality by making (implicit) assumptions.</p></li>
 <li class="fragment"><p>These <span class="orange">assumptions</span> differentiate because of:</p>
 <ul>
-<li class="fragment">The particular <span class="grey">nature</span> of the knowledge the impose (e.g.&nbsp;no interactions, piecewise constant functions, etc.);</li>
+<li class="fragment">The particular <span class="grey">nature</span> of the knowledge they impose (e.g., no interactions, piecewise constant functions, etc.);</li>
 <li class="fragment">The <span class="orange">strength</span> of this assumption;</li>
-<li class="fragment">The <span class="blue">sensibility</span> of the methods to potential violation of the assumptions.</li>
+<li class="fragment">The <span class="blue">sensibility</span> of the methods to a potential violation of the assumptions.</li>
 </ul></li>
-<li class="fragment"><p>Thus, several alternative ideas and methods are needed; there is no single “best” algorithm.</p></li>
-<li class="fragment"><p>This is why having a well-trained statistician in the team is important, because she/he will be able to identify the method that best suit the specific applied example.</p></li>
-<li class="fragment"><p>…or at least, she/he will be aware of the <span class="orange">limitations</span> of the methods.</p></li>
+<li class="fragment"><p>Thus, several alternative ideas and methods are needed; no single “best” algorithm exists.</p></li>
+<li class="fragment"><p>This is why having a well-trained statistician on the team is important because they can identify the method that best suits the specific applied example.</p></li>
+<li class="fragment"><p>…or at least, they will be aware of the <span class="orange">limitations</span> of the methods.</p></li>
 </ul>
 </div>
 </section>
@@ -520,7 +520,7 @@ n \left(\frac{1}{10}\right)^{10} = \frac{n}{1.000.000.000}.
 <li><span class="orange">Main references</span>
 <ul>
 <li><strong>Section 4.3</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
-<li><strong>Section 2.5</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+<li><strong>Section 2.5</strong> of Hastie, T., Tibshirani, R., and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
 <li><strong>Sections 4.5 and 5.12</strong> of Wasserman, L. (2006), <a href="https://link.springer.com/book/10.1007/0-387-30623-4"><em>All of Nonparametric statistics</em></a>, Springer.</li>
 </ul></li>
 </ul>

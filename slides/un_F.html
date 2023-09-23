@@ -98,8 +98,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#an-example-of-reflected-pair-basis" id="toc-an-example-of-reflected-pair-basis" class="nav-link" data-scroll-target="#an-example-of-reflected-pair-basis">An example of reflected pair basis</a></li>
   <li><a href="#a-stepwise-construction" id="toc-a-stepwise-construction" class="nav-link" data-scroll-target="#a-stepwise-construction">A stepwise construction</a></li>
   <li><a href="#an-example-of-tensor-product-basis" id="toc-an-example-of-tensor-product-basis" class="nav-link" data-scroll-target="#an-example-of-tensor-product-basis">An example of tensor product basis</a></li>
-  <li><a href="#mars-algorithm-regression" id="toc-mars-algorithm-regression" class="nav-link" data-scroll-target="#mars-algorithm-regression">MARS algorithm (regression)</a></li>
-  <li><a href="#pruning-and-backward-regression" id="toc-pruning-and-backward-regression" class="nav-link" data-scroll-target="#pruning-and-backward-regression">Pruning and backward regression</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#basis-selection-and-backward-regression" id="toc-basis-selection-and-backward-regression" class="nav-link" data-scroll-target="#basis-selection-and-backward-regression">Basis selection and backward regression</a></li>
   <li><a href="#heuristics-behind-mars" id="toc-heuristics-behind-mars" class="nav-link" data-scroll-target="#heuristics-behind-mars">Heuristics behind MARS</a></li>
   <li><a href="#mars-modeling-of-trawl-data-i" id="toc-mars-modeling-of-trawl-data-i" class="nav-link" data-scroll-target="#mars-modeling-of-trawl-data-i">MARS modeling of <code>trawl</code> data I</a></li>
   <li><a href="#mars-modeling-of-trawl-data-ii" id="toc-mars-modeling-of-trawl-data-ii" class="nav-link" data-scroll-target="#mars-modeling-of-trawl-data-ii">MARS modeling of <code>trawl</code> data II</a></li>
@@ -790,8 +790,8 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 <li>The <span class="orange">product</span> function <span class="math inline">h(\bm{x}) = (x_1 - 0.5)_+ (x_2 - 0.75)_+</span> in the range <span class="math inline">(0, 1)^2</span>.</li>
 </ul>
 </section>
-<section id="mars-algorithm-regression" class="level2">
-<h2 class="anchored" data-anchor-id="mars-algorithm-regression">MARS algorithm (regression)</h2>
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -802,32 +802,127 @@ MARS algorithm (degree <span class="math inline">d</span>)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<ol type="1">
+<div class="incremental">
+<ol class="incremental" type="1">
 <li><p>Initialize <span class="math inline">f(\bm{x}; \beta) = \beta_0</span> and let <span class="math inline">K</span> be <span class="orange">maximum number of pairs</span>, so that <span class="math inline">M = 2K</span>.</p></li>
 <li><p>Identify the <span class="blue">initial pair</span> of basis functions <span class="math inline">h_1</span> and <span class="math inline">h_2</span> in <span class="math inline">\mathcal{C}</span> that minimize the mean squared error. Then, let <span class="math inline">h_0(\bm{x}) = 1</span> and set <span class="math inline">\mathcal{M}_1 = \{h_0, h_1, h_2\}</span>.</p></li>
 <li><p>For <span class="math inline">k = 1,\dots,K - 1</span>, do:</p>
-<ol type="i">
+<ol class="incremental" type="i">
 <li><p>Let <span class="math inline">\mathcal{M}_k = \{h_0, h_1,\dots,h_{2k}\}</span> be the basis functions already present in the model.</p></li>
-<li><p>Consider a <span class="blue">novel pair</span> of bases <span class="math inline">\tilde{h}_1,\tilde{h}_2 \in \mathcal{C} \setminus \mathcal{M}_k</span>. A <span class="orange">candidate pair</span> is obtained <span class="orange">multiplying</span> <span class="math inline">\tilde{h}_1,\tilde{h}_2</span> with one of the bases in <span class="math inline">\mathcal{M}_k</span>. Note that <span class="math inline">h_0 \in \mathcal{M}_k</span>.</p></li>
-<li><p>A <span class="orange">valid</span> candidate pair does not contain the same variable <span class="math inline">x_j</span> more than once in the product and the involves at most <span class="blue"><span class="math inline">d</span> product terms</span>.</p></li>
-<li><p>Identify the <span class="blue">optimal pair</span> among the candidates at step (ii-iii) that <span class="orange">reduces</span> the <span class="orange">mean squared error</span> the most. This results in a new pair of bases <span class="math inline">h_{2k+1}, h_{2k+2}</span>.</p></li>
+<li><p>Consider a <span class="blue">novel pair</span> of bases <span class="math inline">\tilde{h}_1,\tilde{h}_2 \in \mathcal{C} \setminus \mathcal{M}_k</span>. A <span class="orange">candidate pair</span> is obtained by <span class="orange">multiplying</span> <span class="math inline">\tilde{h}_1,\tilde{h}_2</span> with one of the bases in <span class="math inline">\mathcal{M}_k</span>. Note that <span class="math inline">h_0 \in \mathcal{M}_k</span>.</p></li>
+<li><p>A <span class="orange">valid</span> candidate basis does not contain the same variable <span class="math inline">x_j</span> more than once in the product, and it must involve at most <span class="blue"><span class="math inline">d</span> product terms</span>.</p></li>
+<li><p>Identify the <span class="blue">optimal pair</span> among the candidates at steps (ii)-(iii) that <span class="orange">reduces</span> the <span class="orange">mean squared error</span> the most. This results in a new pair of bases <span class="math inline">h_{2k+1}, h_{2k+2}</span>.</p></li>
 <li><p>Set <span class="math inline">\mathcal{M}_{k+1} \leftarrow \mathcal{M}_k \cup \{h_{2k+1}, h_{2k+2}\}</span>.</p></li>
 </ol></li>
+<li><p>Return the collection of models <span class="math inline">\mathcal{M}_1,\dots,\mathcal{M}_K</span>.</p></li>
 </ol>
 </div>
 </div>
+</div>
 </section>
-<section id="pruning-and-backward-regression" class="level2">
-<h2 class="anchored" data-anchor-id="pruning-and-backward-regression">Pruning and backward regression</h2>
+<section id="basis-selection-and-backward-regression" class="level2">
+<h2 class="anchored" data-anchor-id="basis-selection-and-backward-regression">Basis selection and backward regression</h2>
+<ul>
+<li>The <span class="orange">degree <span class="math inline">d</span></span> of the MARS algorithms allow to control the number order of interactions of the model. Note that when <span class="blue"><span class="math inline">d = 1</span></span> it corresponds to a GAM (<span class="blue">no interactions</span>).</li>
+</ul>
+<ul>
+<li><p>The final model with <span class="math inline">M</span> terms is very likely <span class="orange">overfitting</span> the data. Hence, it is common practice to remove some of the basis using <span class="blue">backward regression</span> or best subset.</p></li>
+<li><p>The <span class="orange">optimal reduced model</span> can be selected via cross-validation, but generalized cross-validation is often preferred due to computational reasons.</p></li>
+</ul>
+<ul>
+<li><p>Unfortunately, here it is not entirely clear what could be the appropriate number of <span class="orange">effective degrees of freedom</span> to be used in the <span class="math inline">\text{GCV}</span>.</p></li>
+<li><p>In MARS, however, we do not have any miraculous simple formula like in LAR or ridge.</p></li>
+<li><p>Simulation studies suggest that, for every knot placed, we should pay a <span class="orange">price</span> of about <span class="orange"><span class="math inline">3</span> degrees of freedom</span>. However, this result is quite <span class="blue">heuristic</span>.</p></li>
+</ul>
 </section>
 <section id="heuristics-behind-mars" class="level2">
 <h2 class="anchored" data-anchor-id="heuristics-behind-mars">Heuristics behind MARS</h2>
+<ul>
+<li><p>The basis functions used in MARS have the advantage of <span class="orange">operating locally</span>.</p></li>
+<li><p>When the basis functions in <span class="math inline">\mathcal{C}</span> are multiplied together, the result is nonzero only over the small part of the feature space where both component functions are nonzero.</p></li>
+</ul>
+<ul>
+<li><p>Hence, the estimated function is built up <span class="blue">parsimoniously</span>, by making <span class="orange">small local modifications</span> to the previous fit.</p></li>
+<li><p>This is important, since one should “spend” parameters carefully in high dimensions, to avoid incurring into the <span class="orange">curse of dimensionality</span>.</p></li>
+</ul>
+<ul>
+<li><p>The constructional logic of the model is <span class="orange">hierarchical</span>. We can multiply new basis functions that involve new variables only to the basis functions already in the model.</p></li>
+<li><p>Hence, an <span class="blue">interaction</span> of a <span class="blue">higher order</span> can only be introduced <span class="orange">when</span> interactions of a <span class="orange">lower order are present</span>.</p></li>
+<li><p>This constraint, introduced for computational reasons, does not necessarily reflect the real behavior of the data, but it often helps in <span class="blue">interpreting the results</span>.</p></li>
+</ul>
 </section>
 <section id="mars-modeling-of-trawl-data-i" class="level2">
 <h2 class="anchored" data-anchor-id="mars-modeling-of-trawl-data-i">MARS modeling of <code>trawl</code> data I</h2>
+<table class="table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 56%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Basis function</th>
+<th>Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">h_0(\bm{x})</span></td>
+<td><span class="math inline">1</span></td>
+<td>1.318</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">h_1(\bm{x})</span></td>
+<td><span class="math inline">(\texttt{Longitude} - 143.28)_+</span></td>
+<td>-5.388</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">h_2(\bm{x})</span></td>
+<td><span class="math inline">(\texttt{Longitude} - 143.58)_+</span></td>
+<td>4.172</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">h_3(\bm{x})</span></td>
+<td><span class="math inline">I(\texttt{Year} = \texttt{1993})(\texttt{Longitude} - 143.05)_+</span></td>
+<td>0.679</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">h_4(\bm{x})</span></td>
+<td><span class="math inline">[\texttt{Latitude} - (-11.72)]_+ (\texttt{Longitude} - 143.05)_+</span></td>
+<td>1.489</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="mars-modeling-of-trawl-data-ii" class="level2">
 <h2 class="anchored" data-anchor-id="mars-modeling-of-trawl-data-ii">MARS modeling of <code>trawl</code> data II</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Basis function</th>
+<th>Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">h_0(\bm{x})</span></td>
+<td><span class="math inline">1</span></td>
+<td>1.382</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">h_1(\bm{x})</span></td>
+<td><span class="math inline">(\texttt{Longitude} - 143.28)_+</span></td>
+<td>-4.275</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">h_2(\bm{x})</span></td>
+<td><span class="math inline">(\texttt{Longitude} - 143.58)_+</span></td>
+<td>3.984</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="partial-plots" class="level2">
 <h2 class="anchored" data-anchor-id="partial-plots">Partial plots</h2>
@@ -880,12 +975,6 @@ MARS algorithm (degree <span class="math inline">d</span>)
 </div>
 </div>
 </div>
-<!-- ## The `Hitters` dataset -->
-<!-- ```{r} -->
-<!-- library(pdp) -->
-<!-- gam_partial <- partial(m_gam_selected, pred.var = c("Years", "CHits"), grid.resolution = 40) -->
-<!-- autoplot(gam_partial) + theme_light() -->
-<!-- ``` -->
 </section>
 <section id="final-results" class="level2">
 <h2 class="anchored" data-anchor-id="final-results">Final results</h2>

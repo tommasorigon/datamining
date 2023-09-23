@@ -90,7 +90,7 @@ m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth,
   data = trawl_train, degree = 2,
   pmethod = "exhaustive", penalty = 3, trace = TRUE, nk = 15
 )
-summary(m_mars_deg2, style = "pmax")
+summary(m_mars_deg2)
 # plotmo(m_mars_deg2)
 
 library(pdp)

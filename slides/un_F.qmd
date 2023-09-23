@@ -176,12 +176,12 @@ knitr::kable(tidy(summary(m_linear)), digits = 3)
 ::: {style="font-size: 75%;"}
 | term          | estimate | std.error | statistic | p.value |
 |:--------------|---------:|----------:|----------:|--------:|
-|`(Intercept)` |  297.690|    26.821|    11.099|   0.000|
-|`Latitude`    |    0.256|     0.222|     1.151|   0.252|
-|`Longitude`   |   -2.054|     0.187|   -10.955|   0.000|
-|`Depth`       |    0.020|     0.007|     3.003|   0.003|
-|`Zone_Closed`  |   -0.116|     0.102|    -1.143|   0.255|
-|`Year_1993`    |    0.127|     0.103|     1.242|   0.217|
+| `(Intercept)` |  297.690 |    26.821 |    11.099 |   0.000 |
+| `Latitude`    |    0.256 |     0.222 |     1.151 |   0.252 |
+| `Longitude`   |   -2.054 |     0.187 |   -10.955 |   0.000 |
+| `Depth`       |    0.020 |     0.007 |     3.003 |   0.003 |
+| `Zone_Closed` |   -0.116 |     0.102 |    -1.143 |   0.255 |
+| `Year_1993`   |    0.127 |     0.103 |     1.242 |   0.217 |
 :::
 
 ## Scatterplot with `loess` estimate
@@ -534,11 +534,11 @@ knitr::kable(tidy(m_gam, parametric = FALSE), digits = 3)
 
 | term           | estimate | std.error |    df |
 |:---------------|---------:|----------:|------:|
-| `(Intercept)`  |    0.849|     0.088  |     1 |
-| `Zone_Closed`  |   -0.075|       0.099|     1 |
-| `Year_1993`    |    0.149|       0.093|     1 |
+| `(Intercept)`  |    0.849 |     0.088 |     1 |
+| `Zone_Closed`  |   -0.075 |     0.099 |     1 |
+| `Year_1993`    |    0.149 |     0.093 |     1 |
 | `s(Longitude)` |       \- |        \- | 4.694 |
-| `s(Latitude)`  |       \- |        \- | 1     |
+| `s(Latitude)`  |       \- |        \- |     1 |
 | `s(Depth)`     |       \- |        \- | 2.447 |
 :::
 
@@ -596,37 +596,49 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 
 ## Comments and criticism (`trawl` data)
 
-- The fitted GAM model highlights some interesting aspects of the `trawl` data. 
+-   The fitted GAM model highlights some interesting aspects of the
+    `trawl` data.
 
 . . .
 
-- In the first place, it seems confirmed that the `Longitude` has a [marked non-linear]{.orange} impact on the [catch score]{.blue}, as the initial analysis was suggesting.
+-   In the first place, it seems confirmed that the `Longitude` has a
+    [marked non-linear]{.orange} impact on the [catch score]{.blue}, as
+    the initial analysis was suggesting.
 
-- In particular, the catch score is high when the sampling location is close to the coast (but not too close!), and then it suddenly decreases.
-
-. . .
-
-- The effective degrees of freedom of `Latitude` is $\text{df}_2 = 1$, meaning that the estimated $\hat{f}_2$ [collapsed]{.blue} to a [linear term]{.blue}. The corresponding shrinkage parameter $\lambda_2$ is very high. 
-
-- Overall, the effect due to the `Latitude` looks [small]{.orange} or [not present]{.orange} at all. 
+-   In particular, the catch score is high when the sampling location is
+    close to the coast (but not too close!), and then it suddenly
+    decreases.
 
 . . .
 
-- The `Depth` seems to have a [relevant effect]{.orange} on the `Score`, but this is likely due to a few [leverage points]{.blue} at the right extreme of the `Depth` range.  
+-   The effective degrees of freedom of `Latitude` is $\text{df}_2 = 1$,
+    meaning that the estimated $\hat{f}_2$ [collapsed]{.blue} to a
+    [linear term]{.blue}. The corresponding shrinkage parameter
+    $\lambda_2$ is very high.
+
+-   Overall, the effect due to the `Latitude` looks [small]{.orange} or
+    [not present]{.orange} at all.
 
 . . .
 
-- Finally, we note that both `Zone` and `Year` seem to have a minor effect.
+-   The `Depth` seems to have a [relevant effect]{.orange} on the
+    `Score`, but this is likely due to a few [leverage points]{.blue} at
+    the right extreme of the `Depth` range.
+
+. . .
+
+-   Finally, we note that both `Zone` and `Year` seem to have a minor
+    effect.
 
 ## ☠️ - Naïve Bayes classifier and GAMs
 
--   The [naïve Bayes classifier]{.orange} expresses the [binary]{.blue} classification
-    probability $\text{pr}(y = 1 \mid \bm{x})$ as $$
+-   The [naïve Bayes classifier]{.orange} expresses the [binary]{.blue}
+    classification probability $\text{pr}(y = 1 \mid \bm{x})$ as $$
     \text{pr}(y = 1 \mid \bm{x}) = \frac{\pi_1 \prod_{j=1}^p p_{j1}(x_j)}{\pi_0\prod_{j=1}^p p_{j0}(x_j) + \pi_1\prod_{j=1}^p p_{j1}(x_j)} = \frac{\pi_1\prod_{j=1}^p p_{j1}(x_j)}{p(\bm{x})}.
     $$
 
--   Hence, using class $0$ as a [baseline]{.orange}, we can derive the following
-    expression:$$
+-   Hence, using class $0$ as a [baseline]{.orange}, we can derive the
+    following expression:$$
     \log\frac{\text{pr}(y = 1 \mid \bm{x})}{\text{pr}(y = 0 \mid \bm{x})} = \log\frac{\pi_1\prod_{j=1}^p p_{j1}(x_j)}{\pi_0\prod_{j=1}^p p_{j0}(x_j)} = \log\frac{\pi_1}{\pi_0} + \sum_{j=1}^p\log\frac{p_{j1}(x_j)}{p_{j0}(x_j)} = \beta_0 + \sum_{j=1}^pf_j(x_j).
     $$
 
@@ -636,7 +648,10 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
     different way, there is a [tight connection]{.orange} among the two
     methods.
 
--   Naïve Bayes has a [generalized additive model structure]{.blue}. This also suggests that the "[additive assumption]{.orange}" is linked to the notion of [independence]{.orange} among the covariates. 
+-   Naïve Bayes has a [generalized additive model structure]{.blue}.
+    This also suggests that the "[additive assumption]{.orange}" is
+    linked to the notion of [independence]{.orange} among the
+    covariates.
 
 ## ☠️ - The `mgcv` **R** package
 
@@ -647,17 +662,25 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 
 ::: {.column width="65%"}
 ::: incremental
-- GAMs were [invented]{.orange} by Hastie and Tibshirani in 1986, including the backfitting algorithm.
+-   GAMs were [invented]{.orange} by Hastie and Tibshirani in 1986,
+    including the backfitting algorithm.
 
-- Simon Wood (2003) described [thin-plate regression splines]{.blue} and their estimation (no backfitting).
+-   Simon Wood (2003) described [thin-plate regression splines]{.blue}
+    and their estimation (no backfitting).
 
-- Simon Wood (2004, 2011) invented methods for estimating $\lambda_1,\dots,\lambda_p$ in an [efficient]{.orange} and [stable]{.orange} manner.
+-   Simon Wood (2004, 2011) invented methods for estimating
+    $\lambda_1,\dots,\lambda_p$ in an [efficient]{.orange} and
+    [stable]{.orange} manner.
 
-- Marra and Wood (2011) discussed many methods for practical [variable selection]{.orange} for GAMs.
+-   Marra and Wood (2011) discussed many methods for practical [variable
+    selection]{.orange} for GAMs.
 
-- For further details, there is a [recent and advanced book]{.blue} by Simon Wood (2017) entitled "*Generalized Additive Models: An Introduction with R*". 
+-   For further details, there is a [recent and advanced book]{.blue} by
+    Simon Wood (2017) entitled "*Generalized Additive Models: An
+    Introduction with R*".
 
-- The `mgcv` package  in **R** (by Simon Wood) implements everything mentioned here.
+-   The `mgcv` package in **R** (by Simon Wood) implements everything
+    mentioned here.
 :::
 :::
 :::
@@ -667,13 +690,20 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 ::: callout-tip
 #### Pros
 
-- GAMs can automatically model [non-linear]{.orange} relationships. This can potentially make more accurate predictions for the response.
+-   GAMs can automatically model [non-linear]{.orange} relationships.
+    This can potentially make more accurate predictions for the
+    response.
 
--   GAMs, as linear models, are [interpretable]{.blue}: the variation of the fitted response, holding all but one predictor fixed, [does not depend]{.orange} on the values of the [other predictors]{.orange}. 
+-   GAMs, as linear models, are [interpretable]{.blue}: the variation of
+    the fitted response, holding all but one predictor fixed, [does not
+    depend]{.orange} on the values of the [other predictors]{.orange}.
 
-- In practice, this means that we can [plot]{.orange} the [fitted functions]{.orange} $\hat{f}_j$ separately to examine the roles of the predictors in modelling the response.
+-   In practice, this means that we can [plot]{.orange} the [fitted
+    functions]{.orange} $\hat{f}_j$ separately to examine the roles of
+    the predictors in modelling the response.
 
-- Additive assumption is quite strong, but it is still possible to [manually add interactions]{.blue} as in the linear regression case.
+-   Additive assumption is quite strong, but it is still possible to
+    [manually add interactions]{.blue} as in the linear regression case.
 :::
 
 . . .
@@ -681,7 +711,10 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 ::: callout-warning
 #### Cons
 
--   Especially when $p$ is large, it is almost impossible to manually model all the [interactions]{.orange} among covariates. GAMs do [not]{.orange} take [second-order]{.orange} effects (or higher) into account. 
+-   Especially when $p$ is large, it is almost impossible to manually
+    model all the [interactions]{.orange} among covariates. GAMs do
+    [not]{.orange} take [second-order]{.orange} effects (or higher) into
+    account.
 :::
 
 # MARS
@@ -691,75 +724,99 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 ::: columns
 ::: {.column width="40%"}
 ![](img/mars.png)
-
 :::
 
 ::: {.column width="60%"}
-- MARS are a generalization of GAMs that avoid the [additivity assumption]{.orange}.
+-   MARS are a generalization of GAMs that avoid the [additivity
+    assumption]{.orange}.
 
-- MARS allow modeling of [non–linear interactions]{.blue} and not just non–linear marginal effects.
+-   MARS allow modeling of [non--linear interactions]{.blue} and not
+    just non--linear marginal effects.
 
-- MARS are a the same time: 
-  - A generalization of [stepwise regression]{.blue};
-  - A method based on multi-dimensional [tensor splines]{.orange};
-  - A modification of [classification and regression trees]{.blue} (CART).
-  
-- MARS combine many of the techniques we have seen into a single sophisticated algorithm.
+-   MARS are a the same time:
+
+    -   A generalization of [stepwise regression]{.blue};
+    -   A method based on multi-dimensional [tensor splines]{.orange};
+    -   A modification of [classification and regression trees]{.blue}
+        (CART).
+
+-   MARS combine many of the techniques we have seen into a single
+    sophisticated algorithm.
 :::
-
 :::
 
 <!-- ```{r} -->
+
 <!-- #| fig-width: 7.8 -->
+
 <!-- #| fig-height: 4 -->
+
 <!-- #| fig-align: center -->
+
 <!-- x <- y <- seq(from = 0, to = 1, length = 50) -->
+
 <!-- xy_seq <- expand.grid(x, y) -->
 
 <!-- z <- matrix(apply(xy_seq, 1, function(x) pmax(0, x[1] - 0.5) * pmax(0, 0.75 - x[2])), nrow = length(x)) -->
+
 <!-- persp(x, y, z, theta = -60, phi = 20, col = "#fc7d0b", shade = 0.5, xlab = "x1", ylab = "x2", zlab = "h(x)", ) -->
+
 <!-- ``` -->
 
 ## MARS additive representation
 
-- MARS is an [additive model]{.blue} of the form:
-$$
-f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^M \beta_m h_m(\bm{x}),
-$$
-where $h_m(\bm{x})$ are [basis functions]{.orange} and $\beta = (\beta_1,\dots,\beta_M)^T$ are regression coefficients. 
+-   MARS is an [additive model]{.blue} of the form: $$
+    f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^M \beta_m h_m(\bm{x}),
+    $$ where $h_m(\bm{x})$ are [basis functions]{.orange} and
+    $\beta = (\beta_1,\dots,\beta_M)^T$ are regression coefficients.
 
 . . .
 
-- Once the basis functions are specified, the estimate for $\hat{\beta}$ is straightforward, using for example [least squares]{.blue} or the IWLS algorithm in the classification case.
+-   Once the basis functions are specified, the estimate for
+    $\hat{\beta}$ is straightforward, using for example [least
+    squares]{.blue} or the IWLS algorithm in the classification case.
 
-- The main distinction with GAMs is that in MARS the basis functions are [estimated]{.orange} from the [data]{.orange} and therefore they are not pre-specified in advance. 
+-   The main distinction with GAMs is that in MARS the basis functions
+    are [estimated]{.orange} from the [data]{.orange} and therefore they
+    are not pre-specified in advance.
 
 . . .
 
-- MARS is essentially a smart [heuristic algorithm]{.blue} for selecting a collection of basis functions $h_1(\bm{x}),\dots, h_M(\bm{x})$ that hopefully does not incur in the [curse of dimensionality]{.orange}.
-
+-   MARS is essentially a smart [heuristic algorithm]{.blue} for
+    selecting a collection of basis functions
+    $h_1(\bm{x}),\dots, h_M(\bm{x})$ that hopefully does not incur in
+    the [curse of dimensionality]{.orange}.
 
 ## Basis functions for MARS (reflected pairs)
 
-- The MARS algorithm begins by including just the [intercept term]{.blue}, i.e. $f(\bm{x}; \beta) = \beta_0$. Then, we proceed by [iteratively]{.orange} adding basis functions. 
+-   The MARS algorithm begins by including just the [intercept
+    term]{.blue}, i.e. $f(\bm{x}; \beta) = \beta_0$. Then, we proceed by
+    [iteratively]{.orange} adding basis functions.
 
 . . .
 
-- In MARS the basis functions are always [coupled]{.orange} (or [reflected]{.orange}), meaning that we always add them in pairs to the additive specification.
+-   In MARS the basis functions are always [coupled]{.orange} (or
+    [reflected]{.orange}), meaning that we always add them in pairs to
+    the additive specification.
 
 . . .
 
-- Let us consider the following set of [pairs]{.blue} of [basis functions]{.blue} (linear splines):
-$$
-\mathcal{C} = \{(x_j - \xi)_+,  (\xi - x_j)_+ : \xi \in \{x_{1j},\dots,x_{nj}\}, \ j=1,\dots,p \}.
-$$
-For example, two basis functions could be $h_1(\bm{x}) = (x_1 - 0.5)_+$ and $h_2(\bm{x}) = (0.5 - x_1)_+$. 
+-   Let us consider the following set of [pairs]{.blue} of [basis
+    functions]{.blue} (linear splines): $$
+    \mathcal{C} = \{(x_j - \xi)_+,  (\xi - x_j)_+ : \xi \in \{x_{1j},\dots,x_{nj}\}, \ j=1,\dots,p \}.
+    $$ For example, two basis functions could be
+    $h_1(\bm{x}) = (x_1 - 0.5)_+$ and $h_2(\bm{x}) = (0.5 - x_1)_+$.
 
-- The knots are placed in correspondence of the observed data. Hence, there are in [total]{.orange} $2 n p$ [possible basis functions]{.orange} among which we can choose. 
+-   The knots are placed in correspondence of the observed data. Hence,
+    there are in [total]{.orange} $2 n p$ [possible basis
+    functions]{.orange} among which we can choose.
 
 . . .
 
-- In the [first step]{.blue} of the MARS algorithm, we identify the pair $h_1(\bm{x}) = (x_j - \xi)_+$ and $h_2(\bm{x}) = (\xi - x_j)_+$ that, together with the [intercept]{.blue}, [minimize]{.orange} the [mean squared error]{.orange}.
+-   In the [first step]{.blue} of the MARS algorithm, we identify the
+    pair $h_1(\bm{x}) = (x_j - \xi)_+$ and $h_2(\bm{x}) = (\xi - x_j)_+$
+    that, together with the [intercept]{.blue}, [minimize]{.orange} the
+    [mean squared error]{.orange}.
 
 ## An example of reflected pair basis
 
@@ -783,64 +840,145 @@ ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
   ylab("Basis function")
 ```
 
-- The function $h_1(x) = (x - 0.5)_+$ ([blue]{.blue}) and its reflection $h_2(x) = (0.5 - x)_+$ ([orange]{.orange}). 
+-   The function $h_1(x) = (x - 0.5)_+$ ([blue]{.blue}) and its
+    reflection $h_2(x) = (0.5 - x)_+$ ([orange]{.orange}).
 
 ## A stepwise construction
 
 ::: incremental
+-   Hence, [after]{.orange} the [first step]{.orange} of the MARS
+    algorithm, our model for example could be $$
+    f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1 (x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+.
+    $$
 
-- Hence, [after]{.orange} the [first step]{.orange} of the MARS algorithm, our model for example could be
-$$
-f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1 (x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+.
-$$
-- In the subsequent step, we consider a [new pair]{.blue} of basis functions $(x_j - \xi)_+,  (\xi - x_j)_+$ in $\mathcal{C}$, but this time we are allowed to perform two kind of operations:
-     
-     i. We can include the new pair to the predictor in an [additive]{.orange} way, obtaining for example $$
-     f(\bm{x}; \beta) =  \beta_0 + \beta_1(x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+ + \beta_3\textcolor{red}{ (x_2 - 0.75)_+} + \beta_4\textcolor{red}{(0.75 - x_2)_+}.
-     $$
-     ii. We can include the new pair in a [multiplicative]{.orange} way, by considering the products between the [new basis]{.blue} and one of the [old basis]{.blue} of the model, obtaining for instance
-     $$
-     \begin{aligned}
-     f(\bm{x}; \beta) =  \beta_0 &+ \beta_1\textcolor{darkblue}{(x_1 - 0.5)_+} + \beta_2(0.5 - x_1)_+ \\
-     &+ \beta_3 \textcolor{red}{(x_1 - 0.5)_+(x_2 - 0.75)_+} + \beta_4 \textcolor{red}{(x_1 - 0.5)_+(0.75 - x_2)_+}.
-     \end{aligned}
-     $$
+-   In the subsequent step, we consider a [new pair]{.blue} of basis
+    functions $(x_j - \xi)_+, (\xi - x_j)_+$ in $\mathcal{C}$, but this
+    time we are allowed to perform two kind of operations:
+
+    i.  We can include the new pair to the predictor in an
+        [additive]{.orange} way, obtaining for example $$
+           f(\bm{x}; \beta) =  \beta_0 + \beta_1(x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+ + \beta_3\textcolor{red}{ (x_2 - 0.75)_+} + \beta_4\textcolor{red}{(0.75 - x_2)_+}.
+           $$
+    ii. We can include the new pair in a [multiplicative]{.orange} way,
+        by considering the products between the [new basis]{.blue} and
+        one of the [old basis]{.blue} of the model, obtaining for
+        instance $$
+           \begin{aligned}
+           f(\bm{x}; \beta) =  \beta_0 &+ \beta_1\textcolor{darkblue}{(x_1 - 0.5)_+} + \beta_2(0.5 - x_1)_+ \\
+           &+ \beta_3 \textcolor{red}{(x_1 - 0.5)_+(x_2 - 0.75)_+} + \beta_4 \textcolor{red}{(x_1 - 0.5)_+(0.75 - x_2)_+}.
+           \end{aligned}
+           $$
 :::
 
 ## An example of tensor product basis
 
-![](img/mars.png){width=50% fig-align="center"}
+![](img/mars.png){width="50%" fig-align="center"}
 
-- The [product]{.orange} function $h(\bm{x}) = (x_1 - 0.5)_+ (x_2 - 0.75)_+$ in the range $(0, 1)^2$. 
+-   The [product]{.orange} function
+    $h(\bm{x}) = (x_1 - 0.5)_+ (x_2 - 0.75)_+$ in the range $(0, 1)^2$.
 
+## 
 
-## MARS algorithm (regression)
 
 ::: callout-note
+
 #### MARS algorithm (degree $d$)
 
-1. Initialize $f(\bm{x}; \beta) = \beta_0$ and let $K$ be [maximum number of pairs]{.orange}, so that $M = 2K$.
+::: incremental
 
-2. Identify the [initial pair]{.blue} of basis functions $h_1$ and $h_2$ in $\mathcal{C}$ that minimize the mean squared error. Then, let $h_0(\bm{x}) = 1$ and set $\mathcal{M}_1 = \{h_0, h_1, h_2\}$.
+1.  Initialize $f(\bm{x}; \beta) = \beta_0$ and let $K$ be [maximum
+    number of pairs]{.orange}, so that $M = 2K$.
+
+2.  Identify the [initial pair]{.blue} of basis functions $h_1$ and
+    $h_2$ in $\mathcal{C}$ that minimize the mean squared error. Then,
+    let $h_0(\bm{x}) = 1$ and set $\mathcal{M}_1 = \{h_0, h_1, h_2\}$.
 
 3.  For $k = 1,\dots,K - 1$, do:
 
-    i.  Let $\mathcal{M}_k = \{h_0, h_1,\dots,h_{2k}\}$ be the basis functions already present in the model.
+    i.  Let $\mathcal{M}_k = \{h_0, h_1,\dots,h_{2k}\}$ be the basis
+        functions already present in the model.
 
-    ii. Consider a [novel pair]{.blue} of bases $\tilde{h}_1,\tilde{h}_2 \in \mathcal{C} \setminus \mathcal{M}_k$. A [candidate pair]{.orange} is obtained [multiplying]{.orange} $\tilde{h}_1,\tilde{h}_2$ with one of the bases in $\mathcal{M}_k$. Note that $h_0 \in \mathcal{M}_k$.
-    
-    iii. A [valid]{.orange} candidate pair does not contain the same variable $x_j$ more than once in the product and the involves at most [$d$ product terms]{.blue}. 
-    
-    iv. Identify the [optimal pair]{.blue} among the candidates at step (ii-iii) that [reduces]{.orange} the [mean squared error]{.orange} the most. This results in a new pair of bases $h_{2k+1}, h_{2k+2}$.
-    
-    v. Set $\mathcal{M}_{k+1} \leftarrow \mathcal{M}_k \cup \{h_{2k+1}, h_{2k+2}\}$.
+    ii. Consider a [novel pair]{.blue} of bases
+        $\tilde{h}_1,\tilde{h}_2 \in \mathcal{C} \setminus \mathcal{M}_k$.
+        A [candidate pair]{.orange} is obtained by
+        [multiplying]{.orange} $\tilde{h}_1,\tilde{h}_2$ with one of the
+        bases in $\mathcal{M}_k$. Note that $h_0 \in \mathcal{M}_k$.
 
+    iii. A [valid]{.orange} candidate basis does not contain the same
+         variable $x_j$ more than once in the product, and it must
+         involve at most [$d$ product terms]{.blue}.
+
+    iv. Identify the [optimal pair]{.blue} among the candidates at steps
+        (ii)-(iii) that [reduces]{.orange} the [mean squared
+        error]{.orange} the most. This results in a new pair of bases
+        $h_{2k+1}, h_{2k+2}$.
+
+    v.  Set
+        $\mathcal{M}_{k+1} \leftarrow \mathcal{M}_k \cup \{h_{2k+1}, h_{2k+2}\}$.
+4. Return the collection of models $\mathcal{M}_1,\dots,\mathcal{M}_K$.
+:::
 :::
 
+## Basis selection and backward regression
 
-## Pruning and backward regression
+-   The [degree $d$]{.orange} of the MARS algorithms allow to control
+    the number order of interactions of the model. Note that when
+    [$d = 1$]{.blue} it corresponds to a GAM ([no interactions]{.blue}).
+
+. . .
+
+-   The final model with $M$ terms is very likely [overfitting]{.orange}
+    the data. Hence, it is common practice to remove some of the basis
+    using [backward regression]{.blue} or best subset.
+
+-   The [optimal reduced model]{.orange} can be selected via
+    cross-validation, but generalized cross-validation is often
+    preferred due to computational reasons.
+
+. . .
+
+-   Unfortunately, here it is not entirely clear what could be the
+    appropriate number of [effective degrees of freedom]{.orange} to be
+    used in the $\text{GCV}$.
+
+-   In MARS, however, we do not have any miraculous simple formula like
+    in LAR or ridge.
+
+-   Simulation studies suggest that, for every knot placed, we should
+    pay a [price]{.orange} of about [$3$ degrees of freedom]{.orange}.
+    However, this result is quite [heuristic]{.blue}.
 
 ## Heuristics behind MARS
+
+-   The basis functions used in MARS have the advantage of [operating
+    locally]{.orange}.
+
+-   When the basis functions in $\mathcal{C}$ are multiplied together,
+    the result is nonzero only over the small part of the feature space
+    where both component functions are nonzero.
+
+. . .
+
+-   Hence, the estimated function is built up [parsimoniously]{.blue},
+    by making [small local modifications]{.orange} to the previous fit.
+
+-   This is important, since one should "spend" parameters carefully in
+    high dimensions, to avoid incurring into the [curse of
+    dimensionality]{.orange}.
+
+. . .
+
+-   The constructional logic of the model is [hierarchical]{.orange}. We
+    can multiply new basis functions that involve new variables only to
+    the basis functions already in the model.
+
+-   Hence, an [interaction]{.blue} of a [higher order]{.blue} can only
+    be introduced [when]{.orange} interactions of a [lower order are
+    present]{.orange}.
+
+-   This constraint, introduced for computational reasons, does not
+    necessarily reflect the real behavior of the data, but it often
+    helps in [interpreting the results]{.blue}.
 
 ## MARS modeling of `trawl` data I
 
@@ -853,6 +991,14 @@ summary(m_mars_deg1, style = "pmax")
 # plotmo(m_mars_deg1)
 ```
 
+| Term          | Basis function                                                     | Coefficient |
+|----------|----------------------------------------------|-------------------------|
+| $h_0(\bm{x})$ | $1$                                                                | 1.318       |
+| $h_1(\bm{x})$ | $(\texttt{Longitude} - 143.28)_+$                                  | -5.388      |
+| $h_2(\bm{x})$ | $(\texttt{Longitude} - 143.58)_+$                                  | 4.172       |
+| $h_3(\bm{x})$ | $I(\texttt{Year} = \texttt{1993})(\texttt{Longitude} - 143.05)_+$           | 0.679       |
+| $h_4(\bm{x})$ | $[\texttt{Latitude} - (-11.72)]_+ (\texttt{Longitude} - 143.05)_+$ | 1.489       |
+
 ## MARS modeling of `trawl` data II
 
 ```{r}
@@ -861,9 +1007,15 @@ m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth,
   data = trawl_train, degree = 2,
   pmethod = "exhaustive", penalty = 3, trace = TRUE, nk = 15
 )
-summary(m_mars_deg2, style = "pmax")
+summary(m_mars_deg2)
 # plotmo(m_mars_deg2)
 ```
+
+| Term          | Basis function                    | Coefficient |
+|---------------|-----------------------------------|-------------|
+| $h_0(\bm{x})$ | $1$                               | 1.382       |
+| $h_1(\bm{x})$ | $(\texttt{Longitude} - 143.28)_+$ | -4.275      |
+| $h_2(\bm{x})$ | $(\texttt{Longitude} - 143.58)_+$ | 3.984       |
 
 ## Partial plots
 
@@ -948,18 +1100,6 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   ylab("Catch score")
 ```
 :::
-
-<!-- ## The `Hitters` dataset -->
-
-<!-- ```{r} -->
-
-<!-- library(pdp) -->
-
-<!-- gam_partial <- partial(m_gam_selected, pred.var = c("Years", "CHits"), grid.resolution = 40) -->
-
-<!-- autoplot(gam_partial) + theme_light() -->
-
-<!-- ``` -->
 
 ## Final results
 

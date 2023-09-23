@@ -58,7 +58,9 @@ styler:::style_file("../code/un_A.R")
 ::: columns
 ::: {.column width="40%"}
 ![](img/ABC.png) *"Everything should be made as simple as possible, but
-not simpler"* Attributed to Albert Einstein
+not simpler"* 
+
+Attributed to [Albert Einstein]{.grey}
 :::
 
 ::: {.column width="60%"}
