@@ -6,7 +6,7 @@ library(GGally)
 library(ggthemes)
 
 rm(list = ls())
-# The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
+# The dataset can also be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
 auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
 
 p0 <- ggpairs(auto,
@@ -96,7 +96,7 @@ r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m3)))^2)) /
 kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)]))
 
 rm(list = ls())
-# The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/heart.txt
+# The dataset can also be downloaded here: https://tommasorigon.github.io/datamining/data/heart.txt
 heart <- read.table("../data/heart.txt", header = TRUE, sep = ",", row.names = 1) %>% select(-c(adiposity, typea))
 heart$chd <- factor(heart$chd)
 

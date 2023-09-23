@@ -181,9 +181,9 @@ ul.task-list li input[type="checkbox"] {
 <p><img src="img/ABC.png" class="img-fluid"> <em>“Everything should be made as simple as possible, but not simpler”</em> Attributed to Albert Einstein</p>
 </div><div class="column" style="width:60%;">
 <ul>
-<li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
+<li><p>This unit will cover the following <span class="orange">topics</span>:</p>
 <ul>
-<li>Linear models and the modelling process</li>
+<li>Linear models and the modeling process</li>
 <li>Cholesky factorization</li>
 <li>Orthogonalization and QR decomposition</li>
 <li>Iterative methods</li>
@@ -209,7 +209,7 @@ ul.task-list li input[type="checkbox"] {
 </div><div class="column" style="width:50%;">
 <ul>
 <li>We consider data for <span class="math inline">n = 203</span> models of cars in circulation in 1985 in the USA.</li>
-<li>We want to <span class="blue">predict</span> the distance per unit of fuel, as a function of the vehicle features.</li>
+<li>We want to <span class="blue">predict</span> the distance per unit of fuel as a function of the vehicle features.</li>
 <li>We consider the following <span class="orange">variables</span>:
 <ul>
 <li>The city distance per unit of fuel (km/L, <code>city.distance</code>)</li>
@@ -237,8 +237,8 @@ ul.task-list li input[type="checkbox"] {
 <li><p>A <span class="blue">simple linear regression</span> <span class="math display">
 Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 </span> could be easily fit by least squares…</p></li>
-<li><p>… but the plot clearly suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
-<li><p>… and also that <code>fuel</code> has an non-negligible effect on the response.</p></li>
+<li><p>… but the plot suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
+<li><p>… and also that <code>fuel</code> has a non-negligible effect on the response.</p></li>
 </ul>
 </div>
 </div>
@@ -311,7 +311,7 @@ x_{n1} &amp; \cdots &amp; x_{np}
 <ul>
 <li>The optimal set of coefficients <span class="math inline">\hat{\beta}</span> is the minimizer of the <span class="orange">least squared criterion</span> <span class="math display">
 D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
-</span> known also as <span class="orange">residual sum of squares (RSS)</span>, where <span class="math display">
+</span> also known as <span class="orange">residual sum of squares (RSS)</span>, where <span class="math display">
 ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2},</span> denotes the <span class="blue">Euclidean norm</span>.</li>
 </ul>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
@@ -324,7 +324,7 @@ Least square estimate (OLS)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>If the design matrix has <span class="blue">full rank</span>, that is if <span class="math inline">\text{rk}(\bm{X}^T\bm{X}) = p</span>, then the <span class="orange">least square estimate</span> has an explicit solution: <span class="math display">
+<p>If the design matrix has <span class="blue">full rank</span>, that is, if <span class="math inline">\text{rk}(\bm{X}^T\bm{X}) = p</span>, then the <span class="orange">least square estimate</span> has an explicit solution: <span class="math display">
     \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y}.
     </span></p>
 </div>
@@ -487,10 +487,10 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul class="incremental">
 <li><p>Is this a good model?</p></li>
 <li><p>The overall fit <span class="blue">seems satisfactory</span> at first glance, especially if we aim at predicting the urban distance of cars when average engine size (i.e., between <span class="math inline">1.5L</span> and <span class="math inline">3L</span>).</p></li>
-<li><p>However, the plot of the <span class="orange">residuals</span> <span class="math inline">r_i = y_i - \hat{y}_i</span> suggests that there the homoschedasticity assumption, i.e.&nbsp;<span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>, might be violated.</p></li>
-<li><p>Also, this model in not suitable for <span class="orange">extrapolation</span>. Indeed:</p>
+<li><p>However, the plot of the <span class="orange">residuals</span> <span class="math inline">r_i = y_i - \hat{y}_i</span> suggests that there the homoscedasticity assumption, i.e.&nbsp;<span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>, might be violated.</p></li>
+<li><p>Also, this model is unsuitable for <span class="orange">extrapolation</span>. Indeed:</p>
 <ul class="incremental">
-<li>It has no grounding in physics or engineering, which leads to difficulties in the interpretation of the trend and/or paradoxical situations.</li>
+<li>It has no grounding in physics or engineering, leading to difficulties when interpreting the trend and to paradoxical situations.</li>
 <li>For example, the curve of the set of gasoline cars shows a local minimum around <span class="math inline">4.6 L</span> and then rises again!</li>
 </ul></li>
 <li><p>It is plausible that we can find a better one, so what’s next?</p></li>
@@ -500,10 +500,10 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <section id="linear-models-and-non-linear-patterns" class="level2">
 <h2 class="anchored" data-anchor-id="linear-models-and-non-linear-patterns">Linear models and non-linear patterns</h2>
 <ul>
-<li>A major advantage of linear models is that they can describe non-linear relationship via <span class="blue">variable transformations</span> such as polynomials, logarithms, etc.</li>
+<li>A significant advantage of linear models is that they can describe non-linear relationships via <span class="blue">variable transformations</span> such as polynomials, logarithms, etc.</li>
 </ul>
 <ul>
-<li>This gives the statistician a lot of modelling flexibility. For instance we could let: <span class="math display">
+<li>This gives the statistician a lot of modeling flexibility. For instance, we could let: <span class="math display">
 \log{Y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
 </span></li>
 </ul>
@@ -600,16 +600,16 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <li>Do not mix <span class="blue">apple</span> and <span class="orange">oranges</span>! Compare <span class="math inline">R^2</span>s only if they refer to the same scale!</li>
 </ul>
 <ul>
-<li><p>This second model is <span class="blue">more parsimonious</span> and yet it reaches satisfactory predictive performance.</p></li>
-<li><p>It is also more coherent with the nature of the data: the predictions cannot be negative and the relationship between engine size and the consumption is monotone.</p></li>
-<li><p>Yet, there is still some heteroschedasticity in the residuals — is this due to a missing covariate that has not been included into the model?</p></li>
+<li><p>This second model is <span class="blue">more parsimonious</span>, and yet it reaches satisfactory predictive performance.</p></li>
+<li><p>It is also more coherent with the nature of the data: the predictions cannot be negative, and the relationship between engine size and the consumption is monotone.</p></li>
+<li><p>Yet, there is still some heteroscedasticity in the residuals — is this is due to a missing covariate that has not been included in the model?</p></li>
 </ul>
 </section>
 <section id="a-third-model-additional-variables" class="level2">
 <h2 class="anchored" data-anchor-id="a-third-model-additional-variables">A third model: additional variables</h2>
 <ul>
 <li><p>Let us consider <span class="blue">two additional variables</span>: <code>curb.weight</code> (<span class="math inline">w</span>) and <code>n.cylinders</code> (<span class="math inline">v</span>).</p></li>
-<li><p>A richer model therefore could be: <span class="math display">
+<li><p>A richer model, therefore, could be: <span class="math display">
 \log{Y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
   </span> for <span class="math inline">i=1,\dots,n</span>. The estimates are:</p></li>
 </ul>
@@ -702,9 +702,9 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 <ul>
-<li><p>In this third model, we took care of the <span class="orange">outliers</span> appearing in the residual plots, which it turns out are identified by the group of cars having 2 cylinders.</p></li>
+<li><p>In this third model, we handled the <span class="orange">outliers</span> appearing in the residual plots, which it turns out are identified by the group of cars having 2 cylinders.</p></li>
 <li><p>The diagnostic plots are also very much improved, although still not perfect.</p></li>
-<li><p>The estimates are coherent with our expectations, based on common knowledge. Have a look at the textbook (A&amp;S) for a detailed explanation about <span class="math inline">\beta_4</span>!</p></li>
+<li><p>The estimates are coherent with our expectations, based on common knowledge. Have a look at the textbook (A&amp;S) for a detailed explanation of <span class="math inline">\beta_4</span>!</p></li>
 <li><p>The car dataset is available from the textbook (A&amp;S) website:</p>
 <ul>
 <li>Dataset <a href="http://azzalini.stat.unipd.it/Book-DM/auto.dat" class="uri">http://azzalini.stat.unipd.it/Book-DM/auto.dat</a></li>
@@ -716,11 +716,11 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <h2 class="anchored" data-anchor-id="a-tour-inside-old-fashioned-statistics">A tour inside old-fashioned statistics</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>The first part of the unit is a tour in the “old style” data modelling, the kind of culture that Leo Breiman so <span class="orange">heavily criticized</span> in his 2001 <em>Statistical Science</em> paper.</p></li>
-<li><p>However, this dataset was sufficiently small, meaning that it could be “manually” analyzed and modeled. We gained a lot of <span class="blue">understanding</span> by doing so.</p></li>
-<li><p>Hence, these old tools are should not be simply disregarded as useless nor irrelevant.</p></li>
+<li><p>The first part of the unit is a tour in the “old style” data modeling, the kind of culture that Leo Breiman so <span class="orange">heavily criticized</span> in his 2001 <em>Statistical Science</em> paper.</p></li>
+<li><p>However, this dataset was sufficiently small, meaning it could be “manually” analyzed and modeled. We gained much <span class="blue">understanding</span> by doing so.</p></li>
+<li><p>Hence, these old tools should not be considered useless or irrelevant.</p></li>
 <li><p>The second half of the unit will have an entirely different flavor, though.</p></li>
-<li><p>Given the huge amount of data we now have, it makes a lot of sense to focus on <span class="orange">computations</span> for fitting linear models.</p></li>
+<li><p>Given the vast amount of data we now have, it makes sense to focus on <span class="orange">computations</span> for fitting linear models.</p></li>
 <li><p>As we will see, the mathematical simplicity of linear models leads to extremely <span class="blue">fast computations</span>, an important advantage in the era of big data.</p></li>
 </ul>
 </div>
@@ -731,13 +731,13 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <section id="how-to-obtain-the-least-squares-estimate" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-obtain-the-least-squares-estimate">How to obtain the least squares estimate?</h2>
 <ul>
-<li><p>In B.Sc. courses it is often suggested that the least square estimate should be computed using the formula <span class="math display">
+<li><p>In B.Sc. courses, it is often suggested that the least square estimate should be computed using the formula <span class="math display">
 \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y},
 </span> that is, using the R code <code>solve(t(X) %*% X) %*% t(X) %*% y</code>.</p></li>
 <li><p>This approach works reasonably well in many <span class="blue">simple cases</span>.</p></li>
 </ul>
 <ul>
-<li>Unfortunately, in more challenging scenarios, e.g.&nbsp;when we have a lot of data (large <span class="math inline">n</span>) and correlated variables, the above code is
+<li>Unfortunately, in more challenging scenarios, e.g., when we have a lot of data (large <span class="math inline">n</span>) and correlated variables, the above code is
 <ul>
 <li><span class="orange">computationally inefficient</span></li>
 <li><span class="blue">numerically inaccurate</span></li>
@@ -752,10 +752,10 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 \bm{X}^T\bm{X} \beta = \bm{X}^T \bm{y}.
 </span></p></li>
 <li><p>This system could be solved using <code>solve(crossprod(X), crossprod(X, y))</code>.</p></li>
-<li><p>This avoids the explicit computation of <span class="math inline">(\bm{X}^T\bm{X})^{-1}</span> and it is preferable compared to the “direct solution”. However, it does not exploit the properties of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>.</p></li>
+<li><p>This avoids the explicit computation of <span class="math inline">(\bm{X}^T\bm{X})^{-1}</span> and it is preferable compared to the “direct solution.” However, it does not exploit the properties of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>.</p></li>
 </ul>
 <ul>
-<li>Recall (from your favorite linear algebra textbook) that a <span class="blue">symmetric</span> matrix <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> is <span class="orange">positive definite</span> if and only if one the following properties is satisfied
+<li>Recall (from your favorite linear algebra textbook) that a <span class="blue">symmetric</span> matrix <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> is <span class="orange">positive definite</span> if and only if one of the following properties is satisfied
 <ul>
 <li>The quadratic form <span class="math inline">\tilde{\bm{x}}^T \bm{A} \tilde{\bm{x}} &gt; 0</span> for all <span class="math inline">\tilde{\bm{x}} \in \mathbb{R}^p</span> such that <span class="math inline">\tilde{\bm{x}} \neq 0</span>.</li>
 <li>The eigenvalues <span class="math inline">\lambda_1,\dots,\lambda_p</span> of <span class="math inline">\bm{A}</span> are all strictly positive.</li>
@@ -831,7 +831,7 @@ b_1 \\ b_2 \\ b_3
 <li><p>The solution for <span class="math inline">x_1,x_2,x_3</span> can be found sequentially: <span class="math display">
 x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x_3 = \frac{b_3 - l_{31}x_1 - l_{32}x_2}{l_{33}}.
 </span></p></li>
-<li><p>Finding the <span class="orange">inverse</span> <span class="math inline">\bm{R}^{-1}</span> is simple, again because <span class="math inline">\bm{R}</span> is upper triangular. Also note that <span class="math display">
+<li><p>Finding the <span class="orange">inverse</span> <span class="math inline">\bm{R}^{-1}</span> is simple, again because <span class="math inline">\bm{R}</span> is upper triangular. Also, note that <span class="math display">
 (\bm{X}^T \bm{X})^{-1} = (\bm{R}^T \bm{R})^{-1} = \bm{R}^{-1} (\bm{R}^{-1})^T.
 </span></p></li>
 </ul>
@@ -859,7 +859,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <div class="incremental">
 <ul class="incremental">
 <li><p>The normal equations method is typically <span class="blue">quicker</span> than other algorithms, as it removes the dependency on <span class="math inline">n</span>, but it is in general numerically more <span class="orange">unstable</span>.</p></li>
-<li><p>Consider for example the following matrix: <span class="math display">
+<li><p>Consider, for example, the following matrix: <span class="math display">
 \bm{X} = \begin{bmatrix}1 &amp; 1 \\
 \epsilon &amp; 0 \\
 0 &amp; \epsilon \end{bmatrix},
@@ -881,7 +881,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 <li><p>The condition number determines how accurately we can solve linear systems.</p></li>
 <li><p>An important fact is: <span class="math display">
 \kappa(\bm{X}^T\bm{X}) = \kappa(\bm{X})^2,
-</span> implying that there is a clear loss of numerical accuracy when using normal equations.</p></li>
+</span> implying that there is an evident loss of numerical accuracy when using normal equations.</p></li>
 </ul>
 </div>
 </section>
@@ -920,7 +920,7 @@ Proposition A.2. OLS with orthogonal predictors
 <div class="incremental">
 <ul class="incremental">
 <li><p>Clearly, the predictors of <span class="math inline">\bm{X}</span> are generally not orthogonal. Hence, we want to find a suitable transformation <span class="math inline">\bm{Z} = \bm{X} \bm{\Gamma}^{-1}</span> that <span class="blue">orthogonalize</span> the <span class="orange">predictors</span>.</p></li>
-<li><p>Suppose for example that <span class="math inline">p = 2</span>. We set <span class="orange">first orthogonal predictor</span> <span class="math inline">\tilde{\bm{z}}_1 = \tilde{\bm{x}}_1</span>.</p></li>
+<li><p>Suppose, for example, that <span class="math inline">p = 2</span>. We set <span class="orange">first orthogonal predictor</span> <span class="math inline">\tilde{\bm{z}}_1 = \tilde{\bm{x}}_1</span>.</p></li>
 <li><p>We then consider the following <span class="blue">univariate</span> regression problem <span class="math display">
 \tilde{\bm{x}}_2 = \gamma \tilde{\bm{z}}_1 + \bm{\epsilon}, \qquad \text{which leads} \qquad \hat{\gamma} = \frac{\tilde{\bm{z}}_1^T\tilde{\bm{x}}_2}{\tilde{\bm{z}}_1^T\tilde{\bm{z}}_1}.
 </span></p></li>
@@ -1013,7 +1013,7 @@ Corollary (QR factorization)
 <li><p>Hence, the least square estimate is obtained as the solution of the <span class="blue">triangular system</span> <span class="math display">
 \bm{R}\beta = \bm{Q}^T\bm{y},
 </span> which can be easily solved via <span class="orange">backward substitution</span>.</p></li>
-<li><p>As a special case of the above equation, one gets <span class="math inline">\hat{\beta}_p = (\tilde{\bm{z}}_p^T\bm{y}) / (\tilde{\bm{z}}_p^T \tilde{\bm{z}}_p)</span>.</p></li>
+<li><p>As a particular case of the above equation, one gets <span class="math inline">\hat{\beta}_p = (\tilde{\bm{z}}_p^T\bm{y}) / (\tilde{\bm{z}}_p^T \tilde{\bm{z}}_p)</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -1040,9 +1040,9 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <li><p>The solution via QR factorization is <span class="orange">numerically reliable</span> and it facilitates the computation of other quantities of interest.</p></li>
 <li><p>In practice, the QR is computed via a <span class="blue">modified Gram-Schmidt</span>, that fixes the instabilities of the naïve Gram-Schmidt algorithm, or via <span class="orange">Householder reflections</span>.</p></li>
 <li><p>The expensive step is the QR factorization. The overall computational complexity is <span class="math display">
-\sim 2 n p^2</span> which is about twice that of the Cholesky, when <span class="math inline">n</span> is much larger than <span class="math inline">p</span>, and about the same when <span class="math inline">p \approx n</span>.</p></li>
-<li><p>Depending on the context, and assuming we only care about <span class="math inline">\hat{\beta}</span>, we may prefer the Cholesky (<span class="blue">fast</span> but <span class="orange">imprecise</span>) or the QR (<span class="orange">slower</span> but more <span class="blue">reliable</span>).</p></li>
-<li><p>The default approach in R, i.e.&nbsp;the one implemented in the <code>lm</code> function, is the QR factorization, because one typically also needs to compute <span class="math inline">\bm{H}</span>, or the leverages.</p></li>
+\sim 2 n p^2</span>, which is about twice that of the Cholesky, when <span class="math inline">n</span> is much larger than <span class="math inline">p</span>, and about the same when <span class="math inline">p \approx n</span>.</p></li>
+<li><p>Depending on the context and assuming we only care about <span class="math inline">\hat{\beta}</span>, we may prefer the Cholesky (<span class="blue">fast</span> but <span class="orange">imprecise</span>) or the QR (<span class="orange">slower</span> but more <span class="blue">reliable</span>).</p></li>
+<li><p>The default approach in R, i.e., the one implemented in the <code>lm</code> function is the QR factorization because one typically also needs to compute <span class="math inline">\bm{H}</span>, or the leverages.</p></li>
 </ul>
 </div>
 </section>
@@ -1050,12 +1050,12 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <h2 class="anchored" data-anchor-id="pivoting-and-rank-deficiencies">☠️ - Pivoting and rank deficiencies</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>If <span class="math inline">\text{rk}(\bm{X}) = k &lt; p</span> (<span class="orange">rank deficiency</span>) then it is still possibile to obtain a “QR” factorization of the form <span class="math display">
+<li><p>If <span class="math inline">\text{rk}(\bm{X}) = k &lt; p</span> (<span class="orange">rank deficiency</span>) then it is still possible to obtain a “QR” factorization of the form <span class="math display">
 \bm{X}\bm{P} = \bm{Q}\begin{bmatrix}\bm{R}_{11} &amp; \bm{R}_{12} \\
 0 &amp; 0\end{bmatrix},
 </span> where <span class="math inline">\bm{P}</span> is a <span class="math inline">p × p</span> permutation matrix and <span class="math inline">\bm{R}_{11}</span> is an <span class="math inline">k \times k</span> upper triangular and non-singular matrix.</p></li>
-<li><p>This operation is sometimes called <span class="blue">pivoting</span> and it is particularly important even when <span class="math inline">\text{rk}(\bm{X}) = p</span> to prevent numerical issues when the condition number <span class="math inline">\kappa(\bm{X})</span> is high.</p></li>
-<li><p>In presence of perfect collinarity, the implementation of the QR decomposition in R (<code>qr</code>) relies on pivoting. This is why the <code>lm</code> function is able to automatically “omit” a predictor.</p></li>
+<li><p>This operation is sometimes called <span class="blue">pivoting</span>, and it is particularly important even when <span class="math inline">\text{rk}(\bm{X}) = p</span> to prevent numerical issues when the condition number <span class="math inline">\kappa(\bm{X})</span> is high.</p></li>
+<li><p>In the presence of perfect collinearity, the implementation of the QR decomposition in R (<code>qr</code>) relies on pivoting. This is why the <code>lm</code> function can automatically “omit” a predictor.</p></li>
 </ul>
 </div>
 </section>
@@ -1095,7 +1095,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <h2 class="anchored" data-anchor-id="recursive-estimates">Recursive estimates</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>In many occasions, the data flow continuously, meaning that we get a new pair of observations <span class="math inline">(\bm{x}_{n+1}, y_{n+1})</span> every minute, or even every second.</p></li>
+<li><p>In many occasions, the data flows continuously, meaning that we get a new pair of observations <span class="math inline">(\bm{x}_{n+1}, y_{n+1})</span> every minute, or even every second.</p></li>
 <li><p>In these cases, we would like to <span class="orange">update</span> the current least square estimate <span class="math inline">\hat{\beta}_{(n)}</span> with the new information <span class="math inline">(\bm{x}_{n+1}, y_{n+1})</span>, but ideally without re-doing all the calculations.</p></li>
 <li><p>The <span class="blue">recursive data import</span> of the <a href="#recursive-data-import">previous slide</a> is partially unsatisfactory, because one would need to invert (or factorize) a <span class="math inline">p \times p</span> matrix every time, which could be costly.</p></li>
 <li><p>Let us define some useful quantity: <span class="math display">
@@ -1151,7 +1151,7 @@ Sherman-Morrison formula
 <ul>
 <li><p>The recursive estimation <span class="math inline">\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + k_n e_{n+1}</span> takes the form of a <span class="orange">linear filter</span>, in which the new estimate <span class="math inline">\hat{\beta}_{(n+1)}</span> is obtained by modifying the old one <span class="math inline">\hat{\beta}_{(n+1)}</span>.</p></li>
 <li><p>This is performed according to the <span class="blue">prediction error</span> <span class="math inline">\epsilon_{n+1}</span> and the <span class="orange">gain</span> <span class="math inline">k_n</span> of the filter.</p></li>
-<li><p>Using a terminology typical of the machine learning field, we say that the estimator “learns from its errors”.</p></li>
+<li><p>Using a terminology typical of the machine learning field, we say that the estimator “learns from its errors.”</p></li>
 <li><p>If <span class="math inline">n</span> is sufficiently high, it is also possible to get an <span class="orange">approximate</span> solution by initializing the algorithm by setting <span class="math inline">\bm{V}_{(0)} = I_p</span>, to avoid any matrix inversion / factorization.</p></li>
 </ul>
 <ul>
@@ -1161,7 +1161,7 @@ Sherman-Morrison formula
 ||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n + 1)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2.
 </span></p>
 <ul>
-<li>The full algorithm is provided in A&amp;S, Algorithm 2.2.</li>
+<li>The complete algorithm is provided in A&amp;S, Algorithm 2.2.</li>
 </ul>
 </section>
 </section>
@@ -1179,10 +1179,10 @@ Sherman-Morrison formula
 </div><div class="column" style="width:60%;">
 <ul>
 <li><p>Let us consider the South African <code>heart</code> <a href="https://hastie.su.domains/ElemStatLearn/datasets/SAheart.data">dataset</a>, described is <span class="blue">Section 4.4.2</span> of HTF (2009).</p></li>
-<li><p>We want to <span class="blue">predict</span> the insurgence of <span class="orange">coronary heart disease</span> (<code>chd</code>) as function of known risks factors:</p>
+<li><p>We want to <span class="blue">predict</span> the insurgence of <span class="orange">coronary heart disease</span> (<code>chd</code>) as a function of known risk factors:</p>
 <ul>
-<li>Colesterol level (<code>ldl</code>) and obesity (<code>obesity</code>)</li>
-<li>Consumption of tobacco (<code>tobacco</code>) and alcool (<code>alcool</code>)</li>
+<li>Cholesterol level (<code>ldl</code>) and obesity (<code>obesity</code>)</li>
+<li>Consumption of tobacco (<code>tobacco</code>) and alcohol (<code>alcool</code>)</li>
 <li>Systolic blood pressure (<code>sbp</code>)</li>
 <li>Age (<code>age</code>) and family history ( <code>famhist</code>)</li>
 </ul></li>
@@ -1206,7 +1206,7 @@ Sherman-Morrison formula
 <section id="generalized-linear-models-1" class="level2">
 <h2 class="anchored" data-anchor-id="generalized-linear-models-1">Generalized linear models</h2>
 <ul>
-<li><p>If the outcome is binary, a count, or if the errors are heteroschedastic, then the Gaussian linear regression model might be inappropriate.</p></li>
+<li><p>If the outcome is binary, a count, or if the errors are heteroscedastic, then the Gaussian linear regression model might be inappropriate.</p></li>
 <li><p>We let <span class="math inline">Y_i</span> be iid draws from an <span class="blue">exponentialy dispersion family</span>, which includes the Binomial, the Poisson, and the Gaussian distribution as special cases.</p></li>
 <li><p>The canonical statistical solution are <span class="orange">generalized linear models</span>, which are usually taught in undergraduate courses (e.g.&nbsp;Statistica III). This is just a <span class="orange">short recap</span>.</p></li>
 </ul>
@@ -1220,7 +1220,7 @@ Generalized linear model (GLMs)
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In a <span class="blue">generalized linear model</span> the response variable is related to the covariates through: <span class="math display">
+<p>In a <span class="blue">generalized linear model</span>, the response variable is related to the covariates through: <span class="math display">
 \mathbb{E}(Y_i) = g\{f(\bm{x}_i; \beta)\} = g(\beta_1 x_{i1} + \cdots + \beta_p x_{ip}) = g(\bm{x}_i^T\beta),
 </span> where <span class="math inline">g^{-1}(\cdot)</span> is the so-called <span class="orange">link function</span>, which is known and invertible.</p>
 </div>
@@ -1237,7 +1237,7 @@ Generalized linear model (GLMs)
 <li><p>The <span class="orange">maximum likelihood estimate</span> for the regression coefficients <span class="math inline">\beta</span> is <span class="math display">
 \hat{\theta} = \arg\max_\theta \ell(\theta).
 </span></p></li>
-<li><p>Standard errors, tests and confidence intervals can be easily obtained from (derivatives of) the log-likelihood, as you have seen in undergraduate courses (e.g.&nbsp;Statistica II and III).</p></li>
+<li><p>Standard errors, tests, and confidence intervals can be easily obtained from (derivatives of) the log-likelihood, as you have seen in undergraduate courses (e.g., Statistica II and III).</p></li>
 <li><p>The aforementioned inferential results are often grounded on <span class="orange">asymptotic theory</span> and <span class="blue">quadratic approximations</span> of the log-likelihood.</p></li>
 </ul>
 </div>
@@ -1317,9 +1317,9 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
 <li><p>Each <span class="orange">step</span> of the IRLS algorithm finds the solution of the likelihood equations <span class="math display">
 (\bm{X}^T\bm{W}\bm{X})\beta = \bm{X}^T\bm{W}\bm{z}.
 </span></p></li>
-<li><p>Once again the Cholesky and the QR decomposition can be exploited to speed up computations. See Section 5.4 of Arnold et al.&nbsp;(2019) for further details.</p></li>
+<li><p>Once again, the Cholesky and the QR decomposition can be exploited to speed up computations. See Section 5.4 of Arnold et al.&nbsp;(2019) for further details.</p></li>
 <li><p>It can be shown that <span class="math inline">\beta = (0,\dots,0)^T</span> is a good starting point for the initialization.</p></li>
-<li><p>Unfortunately, the IRLS is <span class="orange">not</span> garanteed to <span class="orange">converge</span> nor to increase the log-likelihood at every step, but there are easy fixes.</p></li>
+<li><p>Unfortunately, the IRLS is <span class="orange">not</span> guaranteed to <span class="orange">converge</span> nor to increase the log-likelihood at every step, but there are easy fixes.</p></li>
 <li><p>See this <a href="https://github.com/tommasorigon/logisticVB/blob/master/em_logistic_tutorial.md">tutorial</a> for an example of the <span class="orange">failure</span> of IRLS.</p></li>
 <li><p>These considerations and the IRLS algorithm can be easily generalized to all GLMs.</p></li>
 </ul>
@@ -1509,12 +1509,12 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
 <section id="other-topics" class="level2">
 <h2 class="anchored" data-anchor-id="other-topics">Other topics</h2>
 <ul>
-<li><p>When the number of responses labels <span class="math inline">K &gt; 2</span> we cannot use anymore logistic regression.</p></li>
+<li><p>When the number of responses labels <span class="math inline">K &gt; 2</span>, we cannot use any more logistic regression.</p></li>
 <li><p>The natural extension is called <span class="orange">multinomial regression</span>, in which we model the probabilities <span class="math display">
 \mathbb{P}(Y_i = k) = p_k(\bm{x}_i,\beta), \qquad k=1,\dots,K,
-</span> for example using <span class="orange">multinomial logit</span>. The ideas of GLMs can be easily borrowed.</p></li>
-<li><p>An alternative and simple approach is <span class="blue">linear discriminant analysis</span>, which is based on Bayes theorem.</p></li>
-<li><p>You can find these topics in the textbook A&amp;S (2011), although it is likely you have already seen these models in the previous courses.</p></li>
+</span> for example, using <span class="orange">multinomial logit</span>. The ideas of GLMs can be easily borrowed.</p></li>
+<li><p>An alternative and straightforward approach is <span class="blue">linear discriminant analysis</span>, which is based on Bayes theorem.</p></li>
+<li><p>You can find these topics in the textbook A&amp;S (2011), although you have likely seen these models in the previous courses.</p></li>
 </ul>
 </section>
 <section id="references" class="level2">

@@ -62,9 +62,9 @@ not simpler"* Attributed to Albert Einstein
 :::
 
 ::: {.column width="60%"}
--   In this unit we will cover the following [topics]{.orange}:
+- This unit will cover the following [topics]{.orange}:
 
-    -   Linear models and the modelling process
+    -   Linear models and the modeling process
     -   Cholesky factorization
     -   Orthogonalization and QR decomposition
     -   Iterative methods
@@ -97,7 +97,7 @@ library(GGally)
 library(ggthemes)
 
 rm(list = ls())
-# The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
+# The dataset can also be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
 auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, engine.size, n.cylinders, curb.weight, fuel)
 
 p0 <- ggpairs(auto,
@@ -117,7 +117,7 @@ p0
 ::: {.column width="50%"}
 -   We consider data for $n = 203$ models of cars in circulation in 1985
     in the USA.
--   We want to [predict]{.blue} the distance per unit of fuel, as a
+-   We want to [predict]{.blue} the distance per unit of fuel as a
     function of the vehicle features.
 -   We consider the following [variables]{.orange}:
     -   The city distance per unit of fuel (km/L, `city.distance`)
@@ -153,11 +153,11 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
     Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
     $$ could be easily fit by least squares...
 
--   ... but the plot clearly suggests that the relationship between
+-   ... but the plot suggests that the relationship between
     `city.distance` and `engine.size` is [not]{.orange} well
     approximated by a [linear]{.orange} function.
 
--   ... and also that `fuel` has an non-negligible effect on the
+-   ... and also that `fuel` has a non-negligible effect on the
     response.
 :::
 :::
@@ -249,7 +249,7 @@ corresponding vector of [coefficients]{.orange}.
 -   The optimal set of coefficients $\hat{\beta}$ is the minimizer of
     the [least squared criterion]{.orange} $$
     D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
-    $$ known also as [residual sum of squares (RSS)]{.orange}, where $$
+    $$ also known as [residual sum of squares (RSS)]{.orange}, where $$
     ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2},$$ denotes the [Euclidean
     norm]{.blue}.
 
@@ -258,7 +258,7 @@ corresponding vector of [coefficients]{.orange}.
 ::: callout-note
 #### Least square estimate (OLS)
 
-If the design matrix has [full rank]{.blue}, that is if
+If the design matrix has [full rank]{.blue}, that is, if
 $\text{rk}(\bm{X}^T\bm{X}) = p$, then the [least square
 estimate]{.orange} has an explicit solution: $$
     \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y}.
@@ -405,15 +405,15 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
     average engine size (i.e., between $1.5L$ and $3L$).
 
 -   However, the plot of the [residuals]{.orange}
-    $r_i = y_i - \hat{y}_i$ suggests that there the homoschedasticity
+    $r_i = y_i - \hat{y}_i$ suggests that there the homoscedasticity
     assumption, i.e. $\text{var}(\epsilon_i) = \sigma^2$, might be
     violated.
 
--   Also, this model in not suitable for [extrapolation]{.orange}.
+-   Also, this model is unsuitable for [extrapolation]{.orange}.
     Indeed:
 
-    -   It has no grounding in physics or engineering, which leads to
-        difficulties in the interpretation of the trend and/or
+    -   It has no grounding in physics or engineering, leading to
+        difficulties when interpreting the trend and to
         paradoxical situations.
     -   For example, the curve of the set of gasoline cars shows a local
         minimum around $4.6 L$ and then rises again!
@@ -423,14 +423,14 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
 
 ## Linear models and non-linear patterns
 
--   A major advantage of linear models is that they can describe
-    non-linear relationship via [variable transformations]{.blue} such
+-   A significant advantage of linear models is that they can describe
+    non-linear relationships via [variable transformations]{.blue} such
     as polynomials, logarithms, etc.
 
 . . .
 
--   This gives the statistician a lot of modelling flexibility. For
-    instance we could let: $$
+-   This gives the statistician a lot of modeling flexibility. For
+    instance, we could let: $$
     \log{Y_i} = \beta_1 + \beta_2 \log{x_i} + \beta_3 I(z_i = \texttt{gas}) + \epsilon_i, \qquad i=1,\dots,n.
     $$
 
@@ -501,15 +501,15 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m2)[c(1, 3, 10)
 
 . . .
 
--   This second model is [more parsimonious]{.blue} and yet it reaches
+-   This second model is [more parsimonious]{.blue}, and yet it reaches
     satisfactory predictive performance.
 
 -   It is also more coherent with the nature of the data: the
-    predictions cannot be negative and the relationship between engine
+    predictions cannot be negative, and the relationship between engine
     size and the consumption is monotone.
 
--   Yet, there is still some heteroschedasticity in the residuals --- is
-    this due to a missing covariate that has not been included into the
+-   Yet, there is still some heteroscedasticity in the residuals --- is
+    this is due to a missing covariate that has not been included in the
     model?
 
 ## A third model: additional variables
@@ -517,7 +517,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m2)[c(1, 3, 10)
 -   Let us consider [two additional variables]{.blue}: `curb.weight`
     ($w$) and `n.cylinders` ($v$).
 
--   A richer model therefore could be: $$
+-   A richer model, therefore, could be: $$
     \log{Y_i} = \beta_1 + \beta_2 \log{x_i} +  \beta_3 \log{w_i} + \beta_4 I(z_i = \texttt{gas}) + \beta_5 I(v_i = 2) + \epsilon_i,
       $$ for $i=1,\dots,n$. The estimates are:
 
@@ -564,7 +564,7 @@ r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m3)))^2)) /
 kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)]))
 ```
 
--   In this third model, we took care of the [outliers]{.orange}
+-   In this third model, we handled the [outliers]{.orange}
     appearing in the residual plots, which it turns out are identified
     by the group of cars having 2 cylinders.
 
@@ -573,7 +573,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 
 -   The estimates are coherent with our expectations, based on common
     knowledge. Have a look at the textbook (A&S) for a detailed
-    explanation about $\beta_4$!
+    explanation of $\beta_4$!
 
 -   The car dataset is available from the textbook (A&S) website:
 
@@ -585,15 +585,15 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 
 ::: incremental
 
-- The first part of the unit is a tour in the "old style" data modelling, the kind of culture that Leo Breiman so [heavily criticized]{.orange} in his 2001 *Statistical Science* paper.
+- The first part of the unit is a tour in the "old style" data modeling, the kind of culture that Leo Breiman so [heavily criticized]{.orange} in his 2001 *Statistical Science* paper.
 
-- However, this dataset was sufficiently small, meaning that it could be "manually" analyzed and modeled. We gained a lot of [understanding]{.blue} by doing so. 
+- However, this dataset was sufficiently small, meaning it could be "manually" analyzed and modeled. We gained much [understanding]{.blue} by doing so. 
 
-- Hence, these old tools are should not be simply disregarded as useless nor irrelevant. 
+- Hence, these old tools should not be considered useless or irrelevant. 
 
 - The second half of the unit will have an entirely different flavor, though. 
 
-- Given the huge amount of data we now have, it makes a lot of sense to focus on [computations]{.orange} for fitting linear models.
+- Given the vast amount of data we now have, it makes sense to focus on [computations]{.orange} for fitting linear models.
 
 - As we will see, the mathematical simplicity of linear models leads to extremely [fast computations]{.blue}, an important advantage in the era of big data. 
 
@@ -603,7 +603,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 
 ## How to obtain the least squares estimate?
 
--   In B.Sc. courses it is often suggested that the least square
+-   In B.Sc. courses, it is often suggested that the least square
     estimate should be computed using the formula $$
     \hat{\beta} = (\bm{X}^T\bm{X})^{-1}\bm{X}^T \bm{y},
     $$ that is, using the R code `solve(t(X) %*% X) %*% t(X) %*% y`.
@@ -612,7 +612,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 
 . . .
 
--   Unfortunately, in more challenging scenarios, e.g. when we have a
+-   Unfortunately, in more challenging scenarios, e.g., when we have a
     lot of data (large $n$) and correlated variables, the above code is
     -   [computationally inefficient]{.orange}
     -   [numerically inaccurate]{.blue}
@@ -631,7 +631,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
     `solve(crossprod(X), crossprod(X, y))`.
 
 -   This avoids the explicit computation of $(\bm{X}^T\bm{X})^{-1}$ and
-    it is preferable compared to the "direct solution". However, it does
+    it is preferable compared to the "direct solution." However, it does
     not exploit the properties of the matrix $\bm{X}^T\bm{X}$.
 
 . . .
@@ -640,7 +640,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 
 -   Recall (from your favorite linear algebra textbook) that a
     [symmetric]{.blue} matrix $\bm{A} \in \mathbb{R}^{p \times p}$ is
-    [positive definite]{.orange} if and only if one the following
+    [positive definite]{.orange} if and only if one of the following
     properties is satisfied
     -   The quadratic form $\tilde{\bm{x}}^T \bm{A} \tilde{\bm{x}} > 0$
         for all $\tilde{\bm{x}} \in \mathbb{R}^p$ such that
@@ -722,7 +722,7 @@ $$
     $$
 
 -   Finding the [inverse]{.orange} $\bm{R}^{-1}$ is simple, again
-    because $\bm{R}$ is upper triangular. Also note that $$
+    because $\bm{R}$ is upper triangular. Also, note that $$
     (\bm{X}^T \bm{X})^{-1} = (\bm{R}^T \bm{R})^{-1} = \bm{R}^{-1} (\bm{R}^{-1})^T.
     $$
 :::
@@ -756,7 +756,7 @@ $$
     algorithms, as it removes the dependency on $n$, but it is in
     general numerically more [unstable]{.orange}.
 
--   Consider for example the following matrix: $$
+-   Consider, for example, the following matrix: $$
     \bm{X} = \begin{bmatrix}1 & 1 \\
     \epsilon & 0 \\
     0 & \epsilon \end{bmatrix},
@@ -789,7 +789,7 @@ $$
 
 -   An important fact is: $$
     \kappa(\bm{X}^T\bm{X}) = \kappa(\bm{X})^2, 
-    $$ implying that there is a clear loss of numerical accuracy when
+    $$ implying that there is an evident loss of numerical accuracy when
     using normal equations.
 :::
 
@@ -831,7 +831,7 @@ $$
     $\bm{Z} = \bm{X} \bm{\Gamma}^{-1}$ that [orthogonalize]{.blue} the
     [predictors]{.orange}.
 
--   Suppose for example that $p = 2$. We set [first orthogonal
+-   Suppose, for example, that $p = 2$. We set [first orthogonal
     predictor]{.orange} $\tilde{\bm{z}}_1 = \tilde{\bm{x}}_1$.
 
 -   We then consider the following [univariate]{.blue} regression
@@ -942,7 +942,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     \bm{R}\beta = \bm{Q}^T\bm{y},
     $$ which can be easily solved via [backward substitution]{.orange}.
 
--   As a special case of the above equation, one gets
+-   As a particular case of the above equation, one gets
     $\hat{\beta}_p = (\tilde{\bm{z}}_p^T\bm{y}) / (\tilde{\bm{z}}_p^T \tilde{\bm{z}}_p)$.
 :::
 
@@ -979,16 +979,16 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 
 -   The expensive step is the QR factorization. The overall
     computational complexity is $$
-    \sim 2 n p^2$$ which is about twice that of the Cholesky, when $n$
+    \sim 2 n p^2$$, which is about twice that of the Cholesky, when $n$
     is much larger than $p$, and about the same when $p \approx n$.
 
--   Depending on the context, and assuming we only care about
+-   Depending on the context and assuming we only care about
     $\hat{\beta}$, we may prefer the Cholesky ([fast]{.blue} but
     [imprecise]{.orange}) or the QR ([slower]{.orange} but more
     [reliable]{.blue}).
 
--   The default approach in R, i.e. the one implemented in the `lm`
-    function, is the QR factorization, because one typically also needs
+-   The default approach in R, i.e., the one implemented in the `lm`
+    function is the QR factorization because one typically also needs
     to compute $\bm{H}$, or the leverages.
 :::
 
@@ -996,19 +996,19 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 
 ::: incremental
 -   If $\text{rk}(\bm{X}) = k < p$ ([rank deficiency]{.orange}) then it
-    is still possibile to obtain a "QR" factorization of the form $$
+    is still possible to obtain a "QR" factorization of the form $$
     \bm{X}\bm{P} = \bm{Q}\begin{bmatrix}\bm{R}_{11} & \bm{R}_{12} \\
     0 & 0\end{bmatrix},
     $$ where $\bm{P}$ is a $p × p$ permutation matrix and $\bm{R}_{11}$
     is an $k \times k$ upper triangular and non-singular matrix.
 
--   This operation is sometimes called [pivoting]{.blue} and it is
+-   This operation is sometimes called [pivoting]{.blue}, and it is
     particularly important even when $\text{rk}(\bm{X}) = p$ to prevent
     numerical issues when the condition number $\kappa(\bm{X})$ is high.
 
--   In presence of perfect collinarity, the implementation of the QR
+-   In the presence of perfect collinearity, the implementation of the QR
     decomposition in R (`qr`) relies on pivoting. This is why the `lm`
-    function is able to automatically "omit" a predictor.
+    function can automatically "omit" a predictor.
 :::
 
 # Iterative methods
@@ -1061,7 +1061,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 ## Recursive estimates
 
 ::: incremental
--   In many occasions, the data flow continuously, meaning that we get a
+-   In many occasions, the data flows continuously, meaning that we get a
     new pair of observations $(\bm{x}_{n+1}, y_{n+1})$ every minute, or
     even every second.
 
@@ -1136,7 +1136,7 @@ $$
     $\epsilon_{n+1}$ and the [gain]{.orange} $k_n$ of the filter.
 
 -   Using a terminology typical of the machine learning field, we say
-    that the estimator "learns from its errors".
+    that the estimator "learns from its errors."
 
 -   If $n$ is sufficiently high, it is also possible to get an
     [approximate]{.orange} solution by initializing the algorithm by
@@ -1152,7 +1152,7 @@ $$
 ||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n + 1)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2.
 $$
 
--   The full algorithm is provided in A&S, Algorithm 2.2.
+-   The complete algorithm is provided in A&S, Algorithm 2.2.
 
 # Generalized linear models
 
@@ -1164,7 +1164,7 @@ $$
 #| fig-width: 5
 #| fig-height: 4.7
 rm(list = ls())
-# The dataset can be also downloaded here: https://tommasorigon.github.io/datamining/data/heart.txt
+# The dataset can also be downloaded here: https://tommasorigon.github.io/datamining/data/heart.txt
 heart <- read.table("../data/heart.txt", header = TRUE, sep = ",", row.names = 1) %>% select(-c(adiposity, typea))
 heart$chd <- factor(heart$chd)
 
@@ -1184,10 +1184,10 @@ ggplot(data = heart, aes(x = ldl, y = age, col = chd)) +
     described is [Section 4.4.2]{.blue} of HTF (2009).
 
 -   We want to [predict]{.blue} the insurgence of [coronary heart
-    disease]{.orange} (`chd`) as function of known risks factors:
+    disease]{.orange} (`chd`) as a function of known risk factors:
 
-    -   Colesterol level (`ldl`) and obesity (`obesity`)
-    -   Consumption of tobacco (`tobacco`) and alcool (`alcool`)
+    -   Cholesterol level (`ldl`) and obesity (`obesity`)
+    -   Consumption of tobacco (`tobacco`) and alcohol (`alcool`)
     -   Systolic blood pressure (`sbp`)
     -   Age (`age`) and family history ( `famhist`)
 
@@ -1221,7 +1221,7 @@ p0
 ## Generalized linear models
 
 -   If the outcome is binary, a count, or if the errors are
-    heteroschedastic, then the Gaussian linear regression model might be
+    heteroscedastic, then the Gaussian linear regression model might be
     inappropriate.
 
 -   We let $Y_i$ be iid draws from an [exponentialy dispersion
@@ -1237,7 +1237,7 @@ p0
 ::: callout-note
 #### Generalized linear model (GLMs)
 
-In a [generalized linear model]{.blue} the response variable is related
+In a [generalized linear model]{.blue}, the response variable is related
 to the covariates through: $$
 \mathbb{E}(Y_i) = g\{f(\bm{x}_i; \beta)\} = g(\beta_1 x_{i1} + \cdots + \beta_p x_{ip}) = g(\bm{x}_i^T\beta),
 $$ where $g^{-1}(\cdot)$ is the so-called [link function]{.orange}, which is
@@ -1259,9 +1259,9 @@ known and invertible.
     \hat{\theta} = \arg\max_\theta \ell(\theta).
     $$
 
--   Standard errors, tests and confidence intervals can be easily
+-   Standard errors, tests, and confidence intervals can be easily
     obtained from (derivatives of) the log-likelihood, as you have seen
-    in undergraduate courses (e.g. Statistica II and III).
+    in undergraduate courses (e.g., Statistica II and III).
 
 -   The aforementioned inferential results are often grounded on
     [asymptotic theory]{.orange} and [quadratic approximations]{.blue}
@@ -1370,14 +1370,14 @@ known and invertible.
     (\bm{X}^T\bm{W}\bm{X})\beta = \bm{X}^T\bm{W}\bm{z}.
     $$
 
--   Once again the Cholesky and the QR decomposition can be exploited to
+-   Once again, the Cholesky and the QR decomposition can be exploited to
     speed up computations. See Section 5.4 of Arnold et al. (2019) for
     further details.
 
 -   It can be shown that $\beta = (0,\dots,0)^T$ is a good starting
     point for the initialization.
 
--   Unfortunately, the IRLS is [not]{.orange} garanteed to
+-   Unfortunately, the IRLS is [not]{.orange} guaranteed to
     [converge]{.orange} nor to increase the log-likelihood at every
     step, but there are easy fixes.
 
@@ -1477,17 +1477,17 @@ p
 
 ## Other topics
 
-- When the number of responses labels $K > 2$ we cannot use anymore logistic regression.
+- When the number of responses labels $K > 2$, we cannot use any more logistic regression.
 
 - The natural extension is called [multinomial regression]{.orange}, in which we model the probabilities
 $$
 \mathbb{P}(Y_i = k) = p_k(\bm{x}_i,\beta), \qquad k=1,\dots,K,
 $$
-for example using [multinomial logit]{.orange}. The ideas of GLMs can be easily borrowed.
+for example, using [multinomial logit]{.orange}. The ideas of GLMs can be easily borrowed.
 
-- An alternative and simple approach is [linear discriminant analysis]{.blue}, which is based on Bayes theorem. 
+- An alternative and straightforward approach is [linear discriminant analysis]{.blue}, which is based on Bayes theorem. 
 
-- You can find these topics in the textbook A&S (2011), although it is likely you have already seen these models in the previous courses. 
+- You can find these topics in the textbook A&S (2011), although you have likely seen these models in the previous courses. 
 
 ## References
 
