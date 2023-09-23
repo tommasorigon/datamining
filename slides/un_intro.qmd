@@ -58,7 +58,7 @@ editor_options:
 
 ::: {.column width="75%"}
 ::: incremental
--   Nowadays [predictive algorithms]{.blue} have become
+-   Nowadays, [predictive algorithms]{.blue} have become
     [mainstream]{.orange} in the [popular culture]{.orange} due to some
     spectacular successes:
 
@@ -76,7 +76,7 @@ editor_options:
     statistics, machine learning, statistical learning, and data
     science?
 
--   What kind of applied problems cannot be solved with [classical
+-   What applied problems cannot be solved with [classical
     statistical]{.orange} tools? Why?
 
 -   Let us consider some real [case studies]{.blue}...
@@ -107,11 +107,11 @@ editor_options:
 
     -   predicting the company's budget;
     -   early identification of possible dissatisfaction;
-    -   finding issues in the main services of the company;
+    -   finding issues in the primary services of the company;
     -   spotting fraudulent situations.
 
 -   The dataset has $n = 30.619$ customers and $p = 99$
-    [covariates]{.blue}, i.e. the customer activity in [previous
+    [covariates]{.blue}, i.e., the customer activity in [previous
     months]{.orange}.
 :::
 :::
@@ -125,10 +125,10 @@ editor_options:
 . . .
 
 -   Observational data: data have been collected for other purposes, not
-    for their analysis. Data simply "exists", there is [no sampling
+    for their analysis. Data "exists," there is [no sampling
     design]{.orange}.
 
--   Data are [dirty]{.orange} and often stored in big datawarehouse
+-   Data are [dirty]{.orange} and often stored in big data warehouse
     (DWH).
 
 . . .
@@ -138,12 +138,12 @@ editor_options:
 
     -   All [p-values]{.orange} are [ultra-significant]{.orange} and not
         very informative in this setting;
-    -   [Computations]{.blue} are a crucial aspect of the analysis.
+    -   [Computations]{.blue} are a crucial analysis aspect.
 
 . . .
 
 -   The relationship between covariates and the response is complex,
-    thus it is hard to believe that any of our models will be "true".
+    thus, it is hard to believe our models will be "true."
     They are [all wrong]{.orange}!
 
 -   However, having a lot of data means we can [split]{.blue} them,
@@ -163,8 +163,7 @@ editor_options:
 
 -   100 randomly chosen rows are shown
 
--   The picture is a [heatmap]{.blue}, ranging from bright green (under
-    expressed) to bright red (over expressed).
+-   The picture is a [heatmap]{.blue}, ranging from bright green (under-expressed) to bright red (overexpressed).
 
 -   [Missing values]{.grey} are gray. The rows and columns are displayed
     in a randomly chosen order.
@@ -173,7 +172,7 @@ editor_options:
 
 -   The main [statistical difficulty]{.orange} here is that $p > n$!
 
--   Logistic regression and discriminant analysis wouldn't work, the
+-   Logistic regression and discriminant analysis wouldn't work; the
     estimates do not exist.
 
 -   Is it even possible to fit a model in this context?
@@ -181,36 +180,36 @@ editor_options:
 :::
 :::
 
-## The pitfalls of the old fashioned way
+## The pitfalls of the old-fashioned way
 
 ::: incremental
 -   All the previous case studies cannot be solved using traditional
-    tools, in fact:
+    tools; in fact:
 
     -   there are [tons of variables]{.orange}, sometimes even with
-        $p > n$, and most of them are irrelevant. It is not clear how to
+        $p > n$ and most of them are irrelevant. It is not clear how to
         select the most useful ones.
     -   [p-values]{.blue} are always [ultra-significant]{.blue} and
         potentially meaningless.
     -   there are [no true models]{.orange} in these contexts. There is
         little hope that reality follows a linear specification.
 
--   The objective is [predicting]{.blue} a response variable, in the
-    most accurate way. Classical statistics has [broaders
-    goals]{.orange} including, but not limiting to, prediction.
+-   The objective is [predicting]{.blue} a response variable in the
+    most accurate way. Classical statistics has [broader
+    goals]{.orange} including, but not limited to, prediction.
 
--   To address the above issues, we need a [paradigm shift]{.orange}.
+- We need a [paradigm shift]{.orange} to address the above issues.
 
--   For instance, if reality is non-linear, what about going [nonparametric]{.blue}? We could let the data speak, without making any assumption about the relationship between $y$ and $\bm{x}$.
+-   For instance, if reality is non-linear, what about going [nonparametric]{.blue}? We could let the data speak without making any assumption about the relationship between $y$ and $\bm{x}$.
 
--   Moreover, if p-values and residuals plots are no longer informative in this context, how do we [validate]{.orange} our predictions?
+-   Moreover, if p-values and residual plots are no longer informative in this context, how do we [validate]{.orange} our predictions?
 :::
 
 ## A highly influential paper (Breiman, 2001)
 
 ![](img/breiman1.png){fig-align="center"}
 
-## Data models vs algorithmic models
+## Data models vs. algorithmic models
 
 ![](img/breiman2.png){fig-align="center"}
 
@@ -232,7 +231,7 @@ editor_options:
 
 -   Breiman joined the UC Berkeley [Statistics]{.blue} Department in 1980. 
 
--   Leo Breiman died in 2005, at the age of 77. He [invented]{.orange}
+-   Leo Breiman died in 2005 at the age of 77. He [invented]{.orange}
     many of the mainstream predictive tools: CART, bagging, random
     forests, stacking.
 
@@ -256,7 +255,7 @@ editor_options:
     raised several critical points.
 
 -   It is [premature]{.orange} to delve into those criticisms. We will
-    get back to them at the end of the course, once you will have enough
+    get back to them at the end of the course once you have enough
     knowledge to understand them.
 :::
 
@@ -284,7 +283,7 @@ editor_options:
         on;
 
     -  You may have attended a course named "data mining" before, and
-        studied basic tools like linear discriminant analysis, $k$-nearest neighbors...
+        studied essential tools like linear discriminant analysis, $k$-nearest neighbors...
 :::
 
 . . .
@@ -296,7 +295,7 @@ editor_options:
 
 | [Unit]{.orange}                    | [Description]{.blue}                                                                                  |
 |------------------------------|----------------------------------------------|
-| A-B-C                              | Linear models. Data modelling, the old fashion way. Advanced computations.                             |
+| A-B-C                              | Linear models. Data modeling, the old-fashioned way. Advanced computations.                             |
 | Optimism, conflicts and trade-offs | Bias-variance trade-off. Training and test paradigm, cross-validation. Information criteria, optimism |
 | Shrinkage and variable selection   | Best subset selection, principal component regression. Ridge regression. Lasso and LARS. Elastic net. |
 | Nonparametric estimation           | Local linear regression. Regression and smoothing splines.                                            |
@@ -325,9 +324,9 @@ editor_options:
 
 ::: incremental
 
-- Predictive [interpretability]{.blue} means transparent understanding the [driving factors]{.blue} of the predictions. An example are linear models with few (highly relevant) variables. 
+- Predictive [interpretability]{.blue} means transparent understanding the [driving factors]{.blue} of the predictions. An example is linear models with few (highly relevant) variables. 
 
-- For example, if I change the value of a set covariates, what is the impact on predictions?
+- For example, if I change the value of a set of covariates, what is the impact on predictions?
 
 - This is [useful]{.blue}, especially within the context of [ethical]{.orange} AI and machine learning.
 
@@ -359,9 +358,9 @@ The most fundamental difference between classical statistical applications and d
 ::: incremental
 - At this point, it may sound natural to ask yourself: what is [statistics]{.orange}? 
 
-- Statistics was there before data mining, machine learning, data science and before all these fancy new names. 
+- Statistics existed before data mining, machine learning, data science, and all these fancy new names. 
 
-- Statistical regression methods go back to Gauss and Legendre in the early 1800s. Their goal was indeed [prediction]{.blue}!
+- Statistical regression methods trace back to Gauss and Legendre in the early 1800s. Their goal was indeed [prediction]{.blue}!
 :::
 
 . . .
@@ -411,9 +410,9 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
 - [Modern statistics]{.blue} encompasses [also]{.orange}:
   - Data gathering and representation;
   - Computational aspects;
-  - Algorithmic and modelling culture to prediction.
+  - Algorithmic and modeling culture to prediction.
 
-- Feel free to call it "data science", if you like the bright shiny new term. 
+- Feel free to call it "data science" if you like the bright, shiny new term. 
 :::
 :::
 :::
@@ -461,7 +460,7 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
   - choosing the most suitable method;
   - interpreting the results.
 
-- Competence in [computational aspects]{.blue} is helpful to better evaluate the output of the computer, e.g. in terms of its [reliability]{.orange}.
+- Competence in [computational aspects]{.blue} is helpful to evaluate better the output of the computer, e.g., in terms of its [reliability]{.orange}.
 
 - If you are not making the choices, somebody else is!
 :::
@@ -514,12 +513,12 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
 - (20 / 30) [Written examination]{.blue}: a pen-and-paper exam about the theoretical aspects of the course.
 
 - (10 / 30) [Individual assignment]{.blue}: a data challenge. 
-   - You will be given a prediction task and you will need to submit your [predictions]{.orange} and produce a [report]{.orange} of about 4-5 pages;
+   - You will be given a prediction task, and you will need to submit your [predictions]{.orange} and produce a [report]{.orange} of about 4-5 pages;
    - You will make use of the [Kaggle](https://www.kaggle.com) platform;
    - The data challenge will be announced in the second half of the course.
    - Further info will be provided in due time.
   
-- Both parts are [mandatory]{.orange} and you need to submit the assignment [before]{.orange} attempting the written part. The report expires after one year from the end of the course.
+- Both parts are [mandatory]{.orange}, and you need to submit the assignment [before]{.orange} attempting the written part. The report expires after one year from the end of the course.
 
 - The final grade is obtained as the [sum]{.blue} of the above scores. 
 

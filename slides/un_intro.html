@@ -67,9 +67,9 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#traffic-prediction-in-telecommunications" id="toc-traffic-prediction-in-telecommunications" class="nav-link" data-scroll-target="#traffic-prediction-in-telecommunications">Traffic prediction in telecommunications</a></li>
   <li><a href="#traffic-prediction-in-telecommunications-ii" id="toc-traffic-prediction-in-telecommunications-ii" class="nav-link" data-scroll-target="#traffic-prediction-in-telecommunications-ii">Traffic prediction in telecommunications II</a></li>
   <li><a href="#microarray-cancer-data" id="toc-microarray-cancer-data" class="nav-link" data-scroll-target="#microarray-cancer-data">Microarray cancer data</a></li>
-  <li><a href="#the-pitfalls-of-the-old-fashioned-way" id="toc-the-pitfalls-of-the-old-fashioned-way" class="nav-link" data-scroll-target="#the-pitfalls-of-the-old-fashioned-way">The pitfalls of the old fashioned way</a></li>
+  <li><a href="#the-pitfalls-of-the-old-fashioned-way" id="toc-the-pitfalls-of-the-old-fashioned-way" class="nav-link" data-scroll-target="#the-pitfalls-of-the-old-fashioned-way">The pitfalls of the old-fashioned way</a></li>
   <li><a href="#a-highly-influential-paper-breiman-2001" id="toc-a-highly-influential-paper-breiman-2001" class="nav-link" data-scroll-target="#a-highly-influential-paper-breiman-2001">A highly influential paper (Breiman, 2001)</a></li>
-  <li><a href="#data-models-vs-algorithmic-models" id="toc-data-models-vs-algorithmic-models" class="nav-link" data-scroll-target="#data-models-vs-algorithmic-models">Data models vs algorithmic models</a></li>
+  <li><a href="#data-models-vs.-algorithmic-models" id="toc-data-models-vs.-algorithmic-models" class="nav-link" data-scroll-target="#data-models-vs.-algorithmic-models">Data models vs.&nbsp;algorithmic models</a></li>
   <li><a href="#focus-on-predictive-accuracy-business-solutions" id="toc-focus-on-predictive-accuracy-business-solutions" class="nav-link" data-scroll-target="#focus-on-predictive-accuracy-business-solutions">Focus on predictive accuracy &amp; business solutions</a></li>
   <li><a href="#statistical-modeling-the-two-cultures" id="toc-statistical-modeling-the-two-cultures" class="nav-link" data-scroll-target="#statistical-modeling-the-two-cultures">Statistical modeling: the two cultures</a></li>
   <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a></li>
@@ -135,7 +135,7 @@ ul.task-list li input[type="checkbox"] {
 </div><div class="column" style="width:75%;">
 <div class="incremental">
 <ul class="incremental">
-<li><p>Nowadays <span class="blue">predictive algorithms</span> have become <span class="orange">mainstream</span> in the <span class="orange">popular culture</span> due to some spectacular successes:</p>
+<li><p>Nowadays, <span class="blue">predictive algorithms</span> have become <span class="orange">mainstream</span> in the <span class="orange">popular culture</span> due to some spectacular successes:</p>
 <ul class="incremental">
 <li>iPhone’s Siri;</li>
 <li>Google translate;</li>
@@ -145,7 +145,7 @@ ul.task-list li input[type="checkbox"] {
 </ul></li>
 <li><p>And yet, there is a lot of <span class="orange">confusion</span> about the <span class="blue">history</span> and the <span class="blue">boundaries</span> of the field. For instance, what is “data mining”?</p></li>
 <li><p>And what are then the differences, <span class="orange">if any</span>, with statistics, machine learning, statistical learning, and data science?</p></li>
-<li><p>What kind of applied problems cannot be solved with <span class="orange">classical statistical</span> tools? Why?</p></li>
+<li><p>What applied problems cannot be solved with <span class="orange">classical statistical</span> tools? Why?</p></li>
 <li><p>Let us consider some real <span class="blue">case studies</span>…</p></li>
 </ul>
 </div>
@@ -171,10 +171,10 @@ ul.task-list li input[type="checkbox"] {
 <ul class="incremental">
 <li>predicting the company’s budget;</li>
 <li>early identification of possible dissatisfaction;</li>
-<li>finding issues in the main services of the company;</li>
+<li>finding issues in the primary services of the company;</li>
 <li>spotting fraudulent situations.</li>
 </ul></li>
-<li><p>The dataset has <span class="math inline">n = 30.619</span> customers and <span class="math inline">p = 99</span> <span class="blue">covariates</span>, i.e.&nbsp;the customer activity in <span class="orange">previous months</span>.</p></li>
+<li><p>The dataset has <span class="math inline">n = 30.619</span> customers and <span class="math inline">p = 99</span> <span class="blue">covariates</span>, i.e., the customer activity in <span class="orange">previous months</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -186,18 +186,18 @@ ul.task-list li input[type="checkbox"] {
 <li>The focus is on <span class="blue">prediction</span> and on <span class="orange">learning something useful</span> from the data, not much on hypothesis testing.</li>
 </ul>
 <ul>
-<li><p>Observational data: data have been collected for other purposes, not for their analysis. Data simply “exists”, there is <span class="orange">no sampling design</span>.</p></li>
-<li><p>Data are <span class="orange">dirty</span> and often stored in big datawarehouse (DWH).</p></li>
+<li><p>Observational data: data have been collected for other purposes, not for their analysis. Data “exists,” there is <span class="orange">no sampling design</span>.</p></li>
+<li><p>Data are <span class="orange">dirty</span> and often stored in big data warehouse (DWH).</p></li>
 </ul>
 <ul>
 <li><p>The <span class="blue">dimension of the data</span> is <span class="orange">large</span> in both directions: large <span class="math inline">n</span> and large <span class="math inline">p</span>. Hence:</p>
 <ul>
 <li>All <span class="orange">p-values</span> are <span class="orange">ultra-significant</span> and not very informative in this setting;</li>
-<li><span class="blue">Computations</span> are a crucial aspect of the analysis.</li>
+<li><span class="blue">Computations</span> are a crucial analysis aspect.</li>
 </ul></li>
 </ul>
 <ul>
-<li><p>The relationship between covariates and the response is complex, thus it is hard to believe that any of our models will be “true”. They are <span class="orange">all wrong</span>!</p></li>
+<li><p>The relationship between covariates and the response is complex, thus, it is hard to believe our models will be “true.” They are <span class="orange">all wrong</span>!</p></li>
 <li><p>However, having a lot of data means we can <span class="blue">split</span> them, using the first half for estimation and the other half for testing.</p></li>
 </ul>
 </section>
@@ -215,11 +215,11 @@ ul.task-list li input[type="checkbox"] {
 <ul class="incremental">
 <li><p><span class="orange">Expression matrix</span> of <span class="math inline">p = 6830</span> genes (rows) and <span class="math inline">n = 64</span> samples (columns), for the <span class="blue">human tumor data</span>.</p></li>
 <li><p>100 randomly chosen rows are shown</p></li>
-<li><p>The picture is a <span class="blue">heatmap</span>, ranging from bright green (under expressed) to bright red (over expressed).</p></li>
+<li><p>The picture is a <span class="blue">heatmap</span>, ranging from bright green (under-expressed) to bright red (overexpressed).</p></li>
 <li><p><span class="grey">Missing values</span> are gray. The rows and columns are displayed in a randomly chosen order.</p></li>
 <li><p>Goal: <span class="blue">predict</span> cancer class based on expression values.</p></li>
 <li><p>The main <span class="orange">statistical difficulty</span> here is that <span class="math inline">p &gt; n</span>!</p></li>
-<li><p>Logistic regression and discriminant analysis wouldn’t work, the estimates do not exist.</p></li>
+<li><p>Logistic regression and discriminant analysis wouldn’t work; the estimates do not exist.</p></li>
 <li><p>Is it even possible to fit a model in this context?</p></li>
 </ul>
 </div>
@@ -227,19 +227,19 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </section>
 <section id="the-pitfalls-of-the-old-fashioned-way" class="level2">
-<h2 class="anchored" data-anchor-id="the-pitfalls-of-the-old-fashioned-way">The pitfalls of the old fashioned way</h2>
+<h2 class="anchored" data-anchor-id="the-pitfalls-of-the-old-fashioned-way">The pitfalls of the old-fashioned way</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>All the previous case studies cannot be solved using traditional tools, in fact:</p>
+<li><p>All the previous case studies cannot be solved using traditional tools; in fact:</p>
 <ul class="incremental">
-<li>there are <span class="orange">tons of variables</span>, sometimes even with <span class="math inline">p &gt; n</span>, and most of them are irrelevant. It is not clear how to select the most useful ones.</li>
+<li>there are <span class="orange">tons of variables</span>, sometimes even with <span class="math inline">p &gt; n</span> and most of them are irrelevant. It is not clear how to select the most useful ones.</li>
 <li><span class="blue">p-values</span> are always <span class="blue">ultra-significant</span> and potentially meaningless.</li>
 <li>there are <span class="orange">no true models</span> in these contexts. There is little hope that reality follows a linear specification.</li>
 </ul></li>
-<li><p>The objective is <span class="blue">predicting</span> a response variable, in the most accurate way. Classical statistics has <span class="orange">broaders goals</span> including, but not limiting to, prediction.</p></li>
-<li><p>To address the above issues, we need a <span class="orange">paradigm shift</span>.</p></li>
-<li><p>For instance, if reality is non-linear, what about going <span class="blue">nonparametric</span>? We could let the data speak, without making any assumption about the relationship between <span class="math inline">y</span> and <span class="math inline">\bm{x}</span>.</p></li>
-<li><p>Moreover, if p-values and residuals plots are no longer informative in this context, how do we <span class="orange">validate</span> our predictions?</p></li>
+<li><p>The objective is <span class="blue">predicting</span> a response variable in the most accurate way. Classical statistics has <span class="orange">broader goals</span> including, but not limited to, prediction.</p></li>
+<li><p>We need a <span class="orange">paradigm shift</span> to address the above issues.</p></li>
+<li><p>For instance, if reality is non-linear, what about going <span class="blue">nonparametric</span>? We could let the data speak without making any assumption about the relationship between <span class="math inline">y</span> and <span class="math inline">\bm{x}</span>.</p></li>
+<li><p>Moreover, if p-values and residual plots are no longer informative in this context, how do we <span class="orange">validate</span> our predictions?</p></li>
 </ul>
 </div>
 </section>
@@ -251,8 +251,8 @@ ul.task-list li input[type="checkbox"] {
 </figure>
 </div>
 </section>
-<section id="data-models-vs-algorithmic-models" class="level2">
-<h2 class="anchored" data-anchor-id="data-models-vs-algorithmic-models">Data models vs algorithmic models</h2>
+<section id="data-models-vs.-algorithmic-models" class="level2">
+<h2 class="anchored" data-anchor-id="data-models-vs.-algorithmic-models">Data models vs.&nbsp;algorithmic models</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="img/breiman2.png" class="img-fluid figure-img"></p>
@@ -280,7 +280,7 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li><p>After the Ph.D., Breiman resigned and went into full-time <span class="orange">free-lance consulting</span>, and it worked as a consultant for thirteen years.</p></li>
 <li><p>Breiman joined the UC Berkeley <span class="blue">Statistics</span> Department in 1980.</p></li>
-<li><p>Leo Breiman died in 2005, at the age of 77. He <span class="orange">invented</span> many of the mainstream predictive tools: CART, bagging, random forests, stacking.</p></li>
+<li><p>Leo Breiman died in 2005 at the age of 77. He <span class="orange">invented</span> many of the mainstream predictive tools: CART, bagging, random forests, stacking.</p></li>
 </ul>
 </section>
 <section id="statistical-modeling-the-two-cultures" class="level2">
@@ -292,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 <li><p>In some cases, the paper may sound exaggerated and at times <span class="orange">confrontational</span>. These were different times.</p></li>
 <li><p>It was also a <span class="blue">discussion paper</span>!</p></li>
 <li><p>Two other giants of the discipline, <span class="blue">Sir David Cox</span> (died in 2022) and <span class="orange">Bradley Efron</span> were among the discussants and raised several critical points.</p></li>
-<li><p>It is <span class="orange">premature</span> to delve into those criticisms. We will get back to them at the end of the course, once you will have enough knowledge to understand them.</p></li>
+<li><p>It is <span class="orange">premature</span> to delve into those criticisms. We will get back to them at the end of the course once you have enough knowledge to understand them.</p></li>
 </ul>
 </div>
 </section>
@@ -306,7 +306,7 @@ ul.task-list li input[type="checkbox"] {
 <li><p>You know how to <span class="blue">estimate the parameters</span> of a statistical model, to construct and interpret confidence intervals, p-values, etc. You know the <span class="orange">principles</span> of <span class="orange">inference</span>;</p></li>
 <li><p>You know how to <span class="orange">explore data</span> using the <strong>R</strong> statistical software and other tools (SAS, python, etc.). You know <span class="blue">principal component analysis</span> and perhaps even factor models;</p></li>
 <li><p>You know how to fit <span class="blue">linear models</span> and how to interpret the associated empirical findings. You are familiar with <span class="math inline">R^2</span>s, likelihood ratio tests, <span class="orange">logistic regression</span>, and so on;</p></li>
-<li><p>You may have attended a course named “data mining” before, and studied basic tools like linear discriminant analysis, <span class="math inline">k</span>-nearest neighbors…</p></li>
+<li><p>You may have attended a course named “data mining” before, and studied essential tools like linear discriminant analysis, <span class="math inline">k</span>-nearest neighbors…</p></li>
 </ul></li>
 </ul>
 </div>
@@ -330,7 +330,7 @@ ul.task-list li input[type="checkbox"] {
 <tbody>
 <tr class="odd">
 <td>A-B-C</td>
-<td>Linear models. Data modelling, the old fashion way. Advanced computations.</td>
+<td>Linear models. Data modeling, the old-fashioned way. Advanced computations.</td>
 </tr>
 <tr class="even">
 <td>Optimism, conflicts and trade-offs</td>
@@ -373,8 +373,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div class="incremental">
 <ul class="incremental">
-<li><p>Predictive <span class="blue">interpretability</span> means transparent understanding the <span class="blue">driving factors</span> of the predictions. An example are linear models with few (highly relevant) variables.</p></li>
-<li><p>For example, if I change the value of a set covariates, what is the impact on predictions?</p></li>
+<li><p>Predictive <span class="blue">interpretability</span> means transparent understanding the <span class="blue">driving factors</span> of the predictions. An example is linear models with few (highly relevant) variables.</p></li>
+<li><p>For example, if I change the value of a set of covariates, what is the impact on predictions?</p></li>
 <li><p>This is <span class="blue">useful</span>, especially within the context of <span class="orange">ethical</span> AI and machine learning.</p></li>
 <li><p>However, the <span class="blue">predictive relevance</span> of a variable does <span class="orange">not</span> imply a <span class="orange">causal effect</span> on the response.</p></li>
 <li><p>Finding causal relationship requires <span class="orange">careful thinking</span>, a suitable <span class="blue">sampling design</span>, or both.</p></li>
@@ -417,8 +417,8 @@ Hand et al.&nbsp;(2001)
 <div class="incremental">
 <ul class="incremental">
 <li><p>At this point, it may sound natural to ask yourself: what is <span class="orange">statistics</span>?</p></li>
-<li><p>Statistics was there before data mining, machine learning, data science and before all these fancy new names.</p></li>
-<li><p>Statistical regression methods go back to Gauss and Legendre in the early 1800s. Their goal was indeed <span class="blue">prediction</span>!</p></li>
+<li><p>Statistics existed before data mining, machine learning, data science, and all these fancy new names.</p></li>
+<li><p>Statistical regression methods trace back to Gauss and Legendre in the early 1800s. Their goal was indeed <span class="blue">prediction</span>!</p></li>
 </ul>
 </div>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
@@ -485,9 +485,9 @@ Hand (2011)
 <ul class="incremental">
 <li>Data gathering and representation;</li>
 <li>Computational aspects;</li>
-<li>Algorithmic and modelling culture to prediction.</li>
+<li>Algorithmic and modeling culture to prediction.</li>
 </ul></li>
-<li><p>Feel free to call it “data science”, if you like the bright shiny new term.</p></li>
+<li><p>Feel free to call it “data science” if you like the bright, shiny new term.</p></li>
 </ul>
 </div>
 </div>
@@ -567,7 +567,7 @@ Hand (2011)
 <li>choosing the most suitable method;</li>
 <li>interpreting the results.</li>
 </ul></li>
-<li><p>Competence in <span class="blue">computational aspects</span> is helpful to better evaluate the output of the computer, e.g.&nbsp;in terms of its <span class="orange">reliability</span>.</p></li>
+<li><p>Competence in <span class="blue">computational aspects</span> is helpful to evaluate better the output of the computer, e.g., in terms of its <span class="orange">reliability</span>.</p></li>
 <li><p>If you are not making the choices, somebody else is!</p></li>
 </ul>
 </div>
@@ -621,12 +621,12 @@ Hand (2011)
 <li><p>(20 / 30) <span class="blue">Written examination</span>: a pen-and-paper exam about the theoretical aspects of the course.</p></li>
 <li><p>(10 / 30) <span class="blue">Individual assignment</span>: a data challenge.</p>
 <ul>
-<li>You will be given a prediction task and you will need to submit your <span class="orange">predictions</span> and produce a <span class="orange">report</span> of about 4-5 pages;</li>
+<li>You will be given a prediction task, and you will need to submit your <span class="orange">predictions</span> and produce a <span class="orange">report</span> of about 4-5 pages;</li>
 <li>You will make use of the <a href="https://www.kaggle.com">Kaggle</a> platform;</li>
 <li>The data challenge will be announced in the second half of the course.</li>
 <li>Further info will be provided in due time.</li>
 </ul></li>
-<li><p>Both parts are <span class="orange">mandatory</span> and you need to submit the assignment <span class="orange">before</span> attempting the written part. The report expires after one year from the end of the course.</p></li>
+<li><p>Both parts are <span class="orange">mandatory</span>, and you need to submit the assignment <span class="orange">before</span> attempting the written part. The report expires after one year from the end of the course.</p></li>
 <li><p>The final grade is obtained as the <span class="blue">sum</span> of the above scores.</p></li>
 </ul>
 </section>
