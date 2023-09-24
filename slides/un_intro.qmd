@@ -504,6 +504,10 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
+        
+## Data mining people
+
+<div class="flourish-embed flourish-cards" data-src="visualisation/15126433"><script src="https://public.flourish.studio/resources/embed.js"></script></div>
 
 ## Exam
 
