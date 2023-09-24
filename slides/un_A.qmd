@@ -1494,11 +1494,11 @@ for example, using [multinomial logit]{.orange}. The ideas of GLMs can be easily
 ## References
 
 -   [Main references (M.Sc. level)]{.blue}
-    -   **Chapter 2** of Azzalini, A. and Scarpa, B. (2011), [*Data
+    -   **Chapters 2 and 5** of Azzalini, A. and Scarpa, B. (2011), [*Data
         Analysis and Data
         Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
         University Press.
-    -   **Chapter 3** of Hastie, T., Tibshirani, R. and Friedman, J.
+    -   **Chapters 3 and 4** of Hastie, T., Tibshirani, R. and Friedman, J.
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.

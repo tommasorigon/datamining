@@ -1460,7 +1460,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
         (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
--   [Advanced references]{.orange}
+-   [Specialized references]{.orange}
     -   Rosset, S., and R. J. Tibshirani (2020). "[From fixed-X to
         random-X regression: bias-variance decompositions, covariance
         penalties, and prediction error

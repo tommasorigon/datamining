@@ -1752,5 +1752,5 @@ The minimization of the above loss has a simple [finite-dimensional]{.orange} so
     - **Chapter 5** of Wand, M. P., and Jones, M.C. (1995). *Kernel Smoothing*. Chapman and Hall.
     - **Chapters 2, 3, and 4** of Fan, J., and Gijbels, I. (1996). *Local Polynomial Modelling and Its Applications*. Chapman and Hall.
 
-- [Smoothing splines]{.grey}
+- [Smoothing splines]{.orange}
     - Green, P. J., and Silverman, B. W. (1994). *Nonparametric Regression and Generalized Linear Models: A Roughness Penalty Approach*. Springer.

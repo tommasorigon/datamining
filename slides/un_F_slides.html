@@ -912,13 +912,13 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 <ul>
 <li><p>MARS are a generalization of GAMs that avoid the <span class="orange">additivity assumption</span>.</p></li>
 <li><p>MARS allow modeling of <span class="blue">non–linear interactions</span> and not just non–linear marginal effects.</p></li>
-<li><p>MARS are a the same time:</p>
+<li><p>MARS are at the same time:</p>
 <ul>
 <li>A generalization of <span class="blue">stepwise regression</span>;</li>
 <li>A method based on multi-dimensional <span class="orange">tensor splines</span>;</li>
 <li>A modification of <span class="blue">classification and regression trees</span> (CART).</li>
 </ul></li>
-<li><p>MARS combine many of the techniques we have seen into a single sophisticated algorithm.</p></li>
+<li><p>MARS combine many of the techniques we have seen in this course into a single sophisticated algorithm.</p></li>
 </ul>
 </div>
 </div>
@@ -942,7 +942,7 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^M \beta_m h_m(\bm{x}),
 <div class="fragment">
 <ul>
 <li><p>Once the basis functions are specified, the estimate for <span class="math inline">\hat{\beta}</span> is straightforward, using for example <span class="blue">least squares</span> or the IWLS algorithm in the classification case.</p></li>
-<li><p>The main distinction with GAMs is that in MARS the basis functions are <span class="orange">estimated</span> from the <span class="orange">data</span> and therefore they are not pre-specified in advance.</p></li>
+<li><p>The main distinction with GAMs is that in MARS the basis functions are <span class="orange">estimated</span> from the <span class="orange">data</span> and therefore they are <span class="orange">not pre-specified</span> in advance.</p></li>
 </ul>
 </div>
 <div class="fragment">
@@ -966,12 +966,12 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^M \beta_m h_m(\bm{x}),
 <li><p>Let us consider the following set of <span class="blue">pairs</span> of <span class="blue">basis functions</span> (linear splines): <span class="math display">
 \mathcal{C} = \{(x_j - \xi)_+,  (\xi - x_j)_+ : \xi \in \{x_{1j},\dots,x_{nj}\}, \ j=1,\dots,p \}.
 </span> For example, two basis functions could be <span class="math inline">h_1(\bm{x}) = (x_1 - 0.5)_+</span> and <span class="math inline">h_2(\bm{x}) = (0.5 - x_1)_+</span>.</p></li>
-<li><p>The knots are placed in correspondence of the observed data. Hence, there are in <span class="orange">total</span> <span class="math inline">2 n p</span> <span class="orange">possible basis functions</span> among which we can choose.</p></li>
+<li><p>The <span class="blue">knots</span> are placed in correspondence of the <span class="blue">observed data</span>. Hence, there are in <span class="orange">total</span> <span class="math inline">2 n p</span> <span class="orange">possible basis functions</span> among which we can choose.</p></li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li>In the <span class="blue">first step</span> of the MARS algorithm, we identify the pair <span class="math inline">h_1(\bm{x}) = (x_j - \xi)_+</span> and <span class="math inline">h_2(\bm{x}) = (\xi - x_j)_+</span> that, together with the <span class="blue">intercept</span>, <span class="orange">minimize</span> the <span class="orange">mean squared error</span>.</li>
+<li>In the <span class="blue">first step</span> of the MARS algorithm, we identify the pair <span class="math inline">h_1(\bm{x}) = (x_j - \xi)_+</span> and <span class="math inline">h_2(\bm{x}) = (\xi - x_j)_+</span> that, together with the <span class="blue">intercept</span>, <span class="orange">minimize</span> the <span class="orange">loss function</span>.</li>
 </ul>
 </div>
 </section>
@@ -994,7 +994,7 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 <li class="fragment">We can include the new pair to the predictor in an <span class="orange">additive</span> way, obtaining for example <span class="math display">
    f(\bm{x}; \beta) =  \beta_0 + \beta_1(x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+ + \beta_3\textcolor{red}{ (x_2 - 0.75)_+} + \beta_4\textcolor{red}{(0.75 - x_2)_+}.
    </span></li>
-<li class="fragment">We can include the new pair in a <span class="orange">multiplicative</span> way, by considering the products between the <span class="blue">new basis</span> and one of the <span class="blue">old basis</span> of the model, obtaining for instance <span class="math display">
+<li class="fragment">We can include the new pair in a <span class="orange">multiplicative</span> way, by considering the products between the <span class="blue">new basis</span> and one of the <span class="blue">old bases</span> of the model, obtaining for instance <span class="math display">
    \begin{aligned}
    f(\bm{x}; \beta) =  \beta_0 &amp;+ \beta_1\textcolor{darkblue}{(x_1 - 0.5)_+} + \beta_2(0.5 - x_1)_+ \\
    &amp;+ \beta_3 \textcolor{red}{(x_1 - 0.5)_+(x_2 - 0.75)_+} + \beta_4 \textcolor{red}{(x_1 - 0.5)_+(0.75 - x_2)_+}.
@@ -1022,13 +1022,13 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 <div>
 <ol type="1">
 <li class="fragment"><p>Initialize <span class="math inline">f(\bm{x}; \beta) = \beta_0</span> and let <span class="math inline">K</span> be <span class="orange">maximum number of pairs</span>, so that <span class="math inline">M = 2K</span>.</p></li>
-<li class="fragment"><p>Identify the <span class="blue">initial pair</span> of basis functions <span class="math inline">h_1</span> and <span class="math inline">h_2</span> in <span class="math inline">\mathcal{C}</span> that minimize the mean squared error. Then, let <span class="math inline">h_0(\bm{x}) = 1</span> and set <span class="math inline">\mathcal{M}_1 = \{h_0, h_1, h_2\}</span>.</p></li>
+<li class="fragment"><p>Identify the <span class="blue">initial pair</span> of basis functions <span class="math inline">h_1</span> and <span class="math inline">h_2</span> in <span class="math inline">\mathcal{C}</span> that minimize the loss function. Then, let <span class="math inline">h_0(\bm{x}) = 1</span> and set <span class="math inline">\mathcal{M}_1 = \{h_0, h_1, h_2\}</span>.</p></li>
 <li class="fragment"><p>For <span class="math inline">k = 1,\dots,K - 1</span>, do:</p>
 <ol type="i">
 <li class="fragment"><p>Let <span class="math inline">\mathcal{M}_k = \{h_0, h_1,\dots,h_{2k}\}</span> be the basis functions already present in the model.</p></li>
 <li class="fragment"><p>Consider a <span class="blue">novel pair</span> of bases <span class="math inline">\tilde{h}_1,\tilde{h}_2 \in \mathcal{C} \setminus \mathcal{M}_k</span>. A <span class="orange">candidate pair</span> is obtained by <span class="orange">multiplying</span> <span class="math inline">\tilde{h}_1,\tilde{h}_2</span> with one of the bases in <span class="math inline">\mathcal{M}_k</span>. Note that <span class="math inline">h_0 \in \mathcal{M}_k</span>.</p></li>
 <li class="fragment"><p>A <span class="orange">valid</span> candidate basis does not contain the same variable <span class="math inline">x_j</span> more than once in the product, and it must involve at most <span class="blue"><span class="math inline">d</span> product terms</span>.</p></li>
-<li class="fragment"><p>Identify the <span class="blue">optimal pair</span> among the candidates at steps (ii)-(iii) that <span class="orange">reduces</span> the <span class="orange">mean squared error</span> the most. This results in a new pair of bases <span class="math inline">h_{2k+1}, h_{2k+2}</span>.</p></li>
+<li class="fragment"><p>Identify the <span class="blue">optimal pair</span> among the candidates at steps (ii)-(iii) that <span class="orange">reduces</span> the <span class="orange">loss function</span> the most. This results in a new pair of bases <span class="math inline">h_{2k+1}, h_{2k+2}</span>.</p></li>
 <li class="fragment"><p>Set <span class="math inline">\mathcal{M}_{k+1} \leftarrow \mathcal{M}_k \cup \{h_{2k+1}, h_{2k+2}\}</span>.</p></li>
 </ol></li>
 <li class="fragment"><p>Return the collection of models <span class="math inline">\mathcal{M}_1,\dots,\mathcal{M}_K</span>.</p></li>
@@ -1045,13 +1045,13 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 </ul>
 <div class="fragment">
 <ul>
-<li><p>The final model with <span class="math inline">M</span> terms is very likely <span class="orange">overfitting</span> the data. Hence, it is common practice to remove some of the basis using <span class="blue">backward regression</span> or best subset.</p></li>
+<li><p>The final model with <span class="math inline">M</span> terms is very likely <span class="orange">overfitting</span> the data. Hence, it is important to remove some of the bases using <span class="blue">backward regression</span> or best subset.</p></li>
 <li><p>The <span class="orange">optimal reduced model</span> can be selected via cross-validation, but generalized cross-validation is often preferred due to computational reasons.</p></li>
 </ul>
 </div>
 <div class="fragment">
 <ul>
-<li><p>Unfortunately, here it is not entirely clear what could be the appropriate number of <span class="orange">effective degrees of freedom</span> to be used in the <span class="math inline">\text{GCV}</span>.</p></li>
+<li><p>Unfortunately, it is not clear how to compute the <span class="orange">effective degrees of freedom</span> that are needed in the <span class="math inline">\text{GCV}</span> formula.</p></li>
 <li><p>In MARS, however, we do not have any miraculous simple formula like in LAR or ridge.</p></li>
 <li><p>Simulation studies suggest that, for every knot placed, we should pay a <span class="orange">price</span> of about <span class="orange"><span class="math inline">3</span> degrees of freedom</span>. However, this result is quite <span class="blue">heuristic</span>.</p></li>
 </ul>
@@ -1061,12 +1061,12 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 <h2>Heuristics behind MARS</h2>
 <ul>
 <li><p>The basis functions used in MARS have the advantage of <span class="orange">operating locally</span>.</p></li>
-<li><p>When the basis functions in <span class="math inline">\mathcal{C}</span> are multiplied together, the result is nonzero only over the small part of the feature space where both component functions are nonzero.</p></li>
+<li><p>When the basis functions in <span class="math inline">\mathcal{C}</span> are multiplied together, the result is <span class="orange">nonzero</span> only over the small part of the feature space where <span class="blue">both component</span> functions are <span class="blue">nonzero</span>.</p></li>
 </ul>
 <div class="fragment">
 <ul>
-<li><p>Hence, the estimated function is built up <span class="blue">parsimoniously</span>, by making <span class="orange">small local modifications</span> to the previous fit.</p></li>
-<li><p>This is important, since one should “spend” parameters carefully in high dimensions, to avoid incurring into the <span class="orange">curse of dimensionality</span>.</p></li>
+<li><p>Hence, the estimated function is built up <span class="blue">parsimoniously</span>, by making <span class="orange">small local modifications</span> to the fit obtained at the previous step.</p></li>
+<li><p>This is important, since one should “spend” degrees of freedom carefully in high dimensions, to avoid incurring into the <span class="orange">curse of dimensionality</span>.</p></li>
 </ul>
 </div>
 <div class="fragment">
@@ -1077,8 +1077,56 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 </ul>
 </div>
 </section>
-<section id="mars-modeling-of-trawl-data-i" class="slide level2 center">
-<h2>MARS modeling of <code>trawl</code> data I</h2>
+<section id="mars-modeling-of-trawl-data-d-1" class="slide level2 center">
+<h2>MARS modeling of <code>trawl</code> data (<span class="math inline">d = 1</span>)</h2>
+<ul>
+<li>We fit a MARS model with <span class="math inline">d = 1</span> (<span class="orange">no interactions</span>), using <span class="math inline">M = 20</span>. Then, the model was simplified using <span class="blue">best subset selection</span> and <span class="math inline">\text{GCV}</span>. The results are:</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Term</th>
+<th>Basis function</th>
+<th>Coefficient</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">h_0(\bm{x})</span></td>
+<td><span class="math inline">1</span></td>
+<td>1.382</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">h_1(\bm{x})</span></td>
+<td><span class="math inline">(\texttt{Longitude} - 143.28)_+</span></td>
+<td>-4.275</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">h_2(\bm{x})</span></td>
+<td><span class="math inline">(\texttt{Longitude} - 143.58)_+</span></td>
+<td>3.984</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li>To clarify, this specification corresponds to the following <span class="blue">estimated</span> regression <span class="blue">function</span>: <span class="math display">
+f(\bm{x}_i; \hat{\beta}) = 1.382 - 4.275(\texttt{Longitude}_i - 143.28)_+ + 3.984 (\texttt{Longitude}_i - 143.58)_+,
+</span> which has the structure of a GAM. However, the <span class="orange">estimation procedure</span> is <span class="orange">different</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>The estimated function <span class="math inline">f(\bm{x}_i; \hat{\beta})</span> is <span class="blue">remarkably simple</span> and it involves only the <code>Longitude</code>. Moreover, the relationship between <code>Score</code> and <code>Longitude</code> is non-linear.</p></li>
+<li><p>Both these considerations are consistent with the previous findings, obtained using GAMs.</p></li>
+</ul>
+</div>
+</section>
+<section id="mars-modeling-of-trawl-data-d-2" class="slide level2 center">
+<h2>MARS modeling of <code>trawl</code> data (<span class="math inline">d = 2</span>)</h2>
+<ul>
+<li>We fit a MARS model with <span class="math inline">d = 2</span> (<span class="orange">first order interactions</span>), using <span class="math inline">M = 20</span>. As before, the model was simplified using <span class="blue">best subset selection</span> and <span class="math inline">\text{GCV}</span>. The results are:</li>
+</ul>
 <table>
 <colgroup>
 <col style="width: 12%">
@@ -1120,38 +1168,15 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 </tr>
 </tbody>
 </table>
+<div class="fragment">
+<ul>
+<li><p>As expected, a degree <span class="math inline">2</span> MARS lead to a more sophisticated fit involving <span class="blue">interactions</span> between <code>Year</code> and <code>Longitude</code> as well as between <code>Latitude</code> and <code>Longitude</code>.</p></li>
+<li><p>We can explore these effects using <span class="orange">partial plots</span>.</p></li>
+</ul>
+</div>
 </section>
-<section id="mars-modeling-of-trawl-data-ii" class="slide level2 center">
-<h2>MARS modeling of <code>trawl</code> data II</h2>
-<table>
-<thead>
-<tr class="header">
-<th>Term</th>
-<th>Basis function</th>
-<th>Coefficient</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">h_0(\bm{x})</span></td>
-<td><span class="math inline">1</span></td>
-<td>1.382</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">h_1(\bm{x})</span></td>
-<td><span class="math inline">(\texttt{Longitude} - 143.28)_+</span></td>
-<td>-4.275</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">h_2(\bm{x})</span></td>
-<td><span class="math inline">(\texttt{Longitude} - 143.58)_+</span></td>
-<td>3.984</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="partial-plots" class="slide level2 center">
-<h2>Partial plots</h2>
+<section id="partial-effects" class="slide level2 center">
+<h2>Partial effects</h2>
 <div class="panel-tabset">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Linear model</a></li><li><a href="#tabset-1-2">GAM model</a></li><li><a href="#tabset-1-3">MARS (degree 1)</a></li><li><a href="#tabset-1-4">MARS (degree 2)</a></li></ul>
 <div class="tab-content">
@@ -1202,8 +1227,12 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 </div>
 </div>
 </section>
-<section id="final-results" class="slide level2 center">
-<h2>Final results</h2>
+<section id="results-on-the-test-set" class="slide level2 center">
+<h2>Results on the test set</h2>
+<ul>
+<li>We can now check the predictive performance on the <span class="orange">test set</span>, to see which is model scored the best in terms of MAE and RMSE.</li>
+</ul>
+<div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
 <table>
@@ -1246,6 +1275,18 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 </table>
 </div>
 </div>
+</div>
+<div class="fragment">
+<ul>
+<li>It is quite clear that including a <span class="blue">non-linear</span> specification for the <code>Longitude</code> was indeed a good idea that improved the predictive performance.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Somewhat surprisingly, the <span class="blue">best model</span> is the extremely simple (yet effective) <span class="orange">MARS of degree <span class="math inline">1</span></span>.</p></li>
+<li><p>The weak interactions effects captured by the MARS of degree <span class="math inline">2</span> led an increased variance of the estimates, slightly deteriorating the fit.</p></li>
+</ul>
+</div>
 </section>
 <section id="pros-and-cons-of-mars" class="slide level2 center">
 <h2>Pros and cons of MARS</h2>
@@ -1256,7 +1297,10 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 </div>
 <div class="callout-content">
 <ul>
-<li>asd</li>
+<li>MARS constructs a sophisticated model by <span class="blue">sequentially refining</span> the previous fit.</li>
+<li>MARS can capture <span class="orange">interaction</span> effects.</li>
+<li>The MARS algorithm can be employed for both regression and classification problems.</li>
+<li>The final model is often interpretable. The order of the interactions can be controlled by fixing <span class="math inline">d</span>.</li>
 </ul>
 </div>
 </div>
@@ -1269,17 +1313,45 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 </div>
 <div class="callout-content">
 <ul>
-<li>asd</li>
+<li><p>MARS can quickly <span class="orange">overfit</span> the data if the model complexity is not kept under control.</p></li>
+<li><p>Unfortunately, this is not always easy to do as there is <span class="orange">limited theoretical support</span> that guides us in the choice of the effective degree of freedom.</p></li>
 </ul>
 </div>
 </div>
 </div>
 </div>
+</section></section>
+<section>
+<section id="references" class="title-slide slide level1 center">
+<h1>References</h1>
+
 </section>
-<section id="references" class="slide level2 center">
-<h2>References</h2>
+<section id="references-i" class="slide level2 center">
+<h2>References I</h2>
 <ul>
-<li></li>
+<li><span class="blue">Main references</span>
+<ul>
+<li><strong>Chapters 4 and 5</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
+<li><strong>Chapter 9</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
+</ul></li>
+<li><span class="orange">Historical references</span>
+<ul>
+<li>Hastie, T., and Tibshirani, R. (1986). <a href="https://projecteuclid.org/journals/statistical-science/volume-1/issue-3/Generalized-Additive-Models/10.1214/ss/1177013604.full">Generalized Additive Models</a>. <em>Statistical Science</em> <strong>1</strong>(3), 209-318.</li>
+<li>Friedman, Jerome H. 1991. <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-19/issue-1/Multivariate-Adaptive-Regression-Splines/10.1214/aos/1176347963.full">Multivariate Adaptive Regression Splines</a>. <em>Annals of Statistics</em> <strong>19</strong>(1), 1-141.</li>
+</ul></li>
+</ul>
+</section>
+<section id="specialized-references-i" class="slide level2 center">
+<h2>Specialized references I</h2>
+<ul>
+<li><span class="orange">Simon Wood’s contributions</span>
+<ul>
+<li>Wood, S. N. (2003). Thin plate regression splines. <em>Journal of the Royal Statistical Society. Series B: Statistical Methodology</em> <strong>65</strong>, 95-114.</li>
+<li>Wood, S. N. (2004). Stable and efficient multiple smoothing parameter estimation for generalized additive models. <em>Journal of the American Statistical Association</em> <strong>99</strong>, 673-86.</li>
+<li>Wood, S. N. (2011). Fast stable restricted maximum likelihood and marginal likelihood estimation of semiparametric generalized linear models. <em>Journal of the Royal Statistical Society. Series B: Statistical Methodology</em> <strong>73</strong>(1), 3-36.</li>
+<li>Marra, G. and Wood, S. N. (2011). Practical variable selection for generalized additive models. <em>Computational Statistics and Data Analysis</em> <strong>55</strong>(7), 2372–87.</li>
+<li>Wood, S. N. (2017). <em>Generalized Additive Models: An Introduction with R</em>. CRC Press.</li>
+</ul></li>
 </ul>
 
 <img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">

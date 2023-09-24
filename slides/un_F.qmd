@@ -733,14 +733,14 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 -   MARS allow modeling of [non--linear interactions]{.blue} and not
     just non--linear marginal effects.
 
--   MARS are a the same time:
+-   MARS are at the same time:
 
     -   A generalization of [stepwise regression]{.blue};
     -   A method based on multi-dimensional [tensor splines]{.orange};
     -   A modification of [classification and regression trees]{.blue}
         (CART).
 
--   MARS combine many of the techniques we have seen into a single
+-   MARS combine many of the techniques we have seen in this course into a single
     sophisticated algorithm.
 :::
 :::
@@ -778,7 +778,7 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 
 -   The main distinction with GAMs is that in MARS the basis functions
     are [estimated]{.orange} from the [data]{.orange} and therefore they
-    are not pre-specified in advance.
+    are [not pre-specified]{.orange} in advance.
 
 . . .
 
@@ -807,7 +807,7 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
     $$ For example, two basis functions could be
     $h_1(\bm{x}) = (x_1 - 0.5)_+$ and $h_2(\bm{x}) = (0.5 - x_1)_+$.
 
--   The knots are placed in correspondence of the observed data. Hence,
+-   The [knots]{.blue} are placed in correspondence of the [observed data]{.blue}. Hence,
     there are in [total]{.orange} $2 n p$ [possible basis
     functions]{.orange} among which we can choose.
 
@@ -816,7 +816,7 @@ ggplot(data = data_plot, aes(x = Depth, y = est)) +
 -   In the [first step]{.blue} of the MARS algorithm, we identify the
     pair $h_1(\bm{x}) = (x_j - \xi)_+$ and $h_2(\bm{x}) = (\xi - x_j)_+$
     that, together with the [intercept]{.blue}, [minimize]{.orange} the
-    [mean squared error]{.orange}.
+    [loss function]{.orange}.
 
 ## An example of reflected pair basis
 
@@ -861,7 +861,7 @@ ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
            $$
     ii. We can include the new pair in a [multiplicative]{.orange} way,
         by considering the products between the [new basis]{.blue} and
-        one of the [old basis]{.blue} of the model, obtaining for
+        one of the [old bases]{.blue} of the model, obtaining for
         instance $$
            \begin{aligned}
            f(\bm{x}; \beta) =  \beta_0 &+ \beta_1\textcolor{darkblue}{(x_1 - 0.5)_+} + \beta_2(0.5 - x_1)_+ \\
@@ -890,7 +890,7 @@ ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
     number of pairs]{.orange}, so that $M = 2K$.
 
 2.  Identify the [initial pair]{.blue} of basis functions $h_1$ and
-    $h_2$ in $\mathcal{C}$ that minimize the mean squared error. Then,
+    $h_2$ in $\mathcal{C}$ that minimize the loss function. Then,
     let $h_0(\bm{x}) = 1$ and set $\mathcal{M}_1 = \{h_0, h_1, h_2\}$.
 
 3.  For $k = 1,\dots,K - 1$, do:
@@ -909,8 +909,7 @@ ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
          involve at most [$d$ product terms]{.blue}.
 
     iv. Identify the [optimal pair]{.blue} among the candidates at steps
-        (ii)-(iii) that [reduces]{.orange} the [mean squared
-        error]{.orange} the most. This results in a new pair of bases
+        (ii)-(iii) that [reduces]{.orange} the [loss function]{.orange} the most. This results in a new pair of bases
         $h_{2k+1}, h_{2k+2}$.
 
     v.  Set
@@ -928,7 +927,7 @@ ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
 . . .
 
 -   The final model with $M$ terms is very likely [overfitting]{.orange}
-    the data. Hence, it is common practice to remove some of the basis
+    the data. Hence, it is important to remove some of the bases
     using [backward regression]{.blue} or best subset.
 
 -   The [optimal reduced model]{.orange} can be selected via
@@ -937,9 +936,7 @@ ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
 
 . . .
 
--   Unfortunately, here it is not entirely clear what could be the
-    appropriate number of [effective degrees of freedom]{.orange} to be
-    used in the $\text{GCV}$.
+-   Unfortunately, it is not clear how to compute the [effective degrees of freedom]{.orange} that are needed in the $\text{GCV}$ formula.
 
 -   In MARS, however, we do not have any miraculous simple formula like
     in LAR or ridge.
@@ -954,17 +951,15 @@ ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
     locally]{.orange}.
 
 -   When the basis functions in $\mathcal{C}$ are multiplied together,
-    the result is nonzero only over the small part of the feature space
-    where both component functions are nonzero.
+    the result is [nonzero]{.orange} only over the small part of the feature space
+    where [both component]{.blue} functions are [nonzero]{.blue}.
 
 . . .
 
 -   Hence, the estimated function is built up [parsimoniously]{.blue},
-    by making [small local modifications]{.orange} to the previous fit.
+    by making [small local modifications]{.orange} to the fit obtained at the previous step.
 
--   This is important, since one should "spend" parameters carefully in
-    high dimensions, to avoid incurring into the [curse of
-    dimensionality]{.orange}.
+-   This is important, since one should "spend" degrees of freedom carefully in high dimensions, to avoid incurring into the [curse of dimensionality]{.orange}.
 
 . . .
 
@@ -980,16 +975,55 @@ ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
     necessarily reflect the real behavior of the data, but it often
     helps in [interpreting the results]{.blue}.
 
-## MARS modeling of `trawl` data I
+## MARS modeling of `trawl` data ($d = 1$)
 
 ```{r}
 #| message: false
 #| output: false
 library(earth)
-m_mars_deg1 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 1, pmethod = "exhaustive", penalty = 3, nk = 15)
+m_mars_deg1 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth, data = trawl_train, degree = 1, pmethod = "exhaustive", penalty = 3, nk = 21)
 summary(m_mars_deg1, style = "pmax")
 # plotmo(m_mars_deg1)
 ```
+
+- We fit a MARS model with $d = 1$ ([no interactions]{.orange}), using $M = 20$. Then, the model was simplified using [best subset selection]{.blue} and $\text{GCV}$. The results are:
+
+
+| Term          | Basis function                    | Coefficient |
+|---------------|-----------------------------------|-------------|
+| $h_0(\bm{x})$ | $1$                               | 1.382       |
+| $h_1(\bm{x})$ | $(\texttt{Longitude} - 143.28)_+$ | -4.275      |
+| $h_2(\bm{x})$ | $(\texttt{Longitude} - 143.58)_+$ | 3.984       |
+
+. . .
+
+- To clarify, this specification corresponds to the following [estimated]{.blue} regression [function]{.blue}:
+$$
+f(\bm{x}_i; \hat{\beta}) = 1.382 - 4.275(\texttt{Longitude}_i - 143.28)_+ + 3.984 (\texttt{Longitude}_i - 143.58)_+,
+$$
+which has the structure of a GAM. However, the [estimation procedure]{.orange} is [different]{.orange}. 
+
+. . .
+
+- The estimated function $f(\bm{x}_i; \hat{\beta})$ is [remarkably simple]{.blue} and it involves only the `Longitude`. Moreover, the relationship between `Score` and `Longitude` is non-linear.
+
+- Both these considerations are consistent with the previous findings, obtained using GAMs. 
+
+## MARS modeling of `trawl` data ($d = 2$)
+
+- We fit a MARS model with $d = 2$ ([first order interactions]{.orange}), using $M = 20$. As before, the model was simplified using [best subset selection]{.blue} and $\text{GCV}$. The results are:
+
+
+```{r}
+#| output: false
+m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth,
+  data = trawl_train, degree = 2,
+  pmethod = "exhaustive", penalty = 4, trace = TRUE, nk = 21
+)
+summary(m_mars_deg2)
+# plotmo(m_mars_deg2)
+```
+
 
 | Term          | Basis function                                                     | Coefficient |
 |----------|----------------------------------------------|-------------------------|
@@ -999,25 +1033,13 @@ summary(m_mars_deg1, style = "pmax")
 | $h_3(\bm{x})$ | $I(\texttt{Year} = \texttt{1993})(\texttt{Longitude} - 143.05)_+$           | 0.679       |
 | $h_4(\bm{x})$ | $[\texttt{Latitude} - (-11.72)]_+ (\texttt{Longitude} - 143.05)_+$ | 1.489       |
 
-## MARS modeling of `trawl` data II
+. . .
 
-```{r}
-#| output: false
-m_mars_deg2 <- earth(Score1 ~ Zone + Year + Latitude + Longitude + Depth,
-  data = trawl_train, degree = 2,
-  pmethod = "exhaustive", penalty = 3, trace = TRUE, nk = 15
-)
-summary(m_mars_deg2)
-# plotmo(m_mars_deg2)
-```
+- As expected, a degree $2$ MARS lead to a more sophisticated fit involving [interactions]{.blue} between `Year` and `Longitude` as well as between `Latitude` and `Longitude`.
 
-| Term          | Basis function                    | Coefficient |
-|---------------|-----------------------------------|-------------|
-| $h_0(\bm{x})$ | $1$                               | 1.382       |
-| $h_1(\bm{x})$ | $(\texttt{Longitude} - 143.28)_+$ | -4.275      |
-| $h_2(\bm{x})$ | $(\texttt{Longitude} - 143.58)_+$ | 3.984       |
+- We can explore these effects using [partial plots]{.orange}. 
 
-## Partial plots
+## Partial effects
 
 ```{r}
 library(pdp)
@@ -1101,7 +1123,11 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
 ```
 :::
 
-## Final results
+## Results on the test set
+
+- We can now check the predictive performance on the [test set]{.orange}, to see which is model scored the best in terms of MAE and RMSE.
+
+. . .
 
 ```{r}
 y_test <- trawl_test$Score1
@@ -1133,12 +1159,25 @@ rownames(tab_results) <- c("MAE", "RMSE")
 knitr::kable(tab_results, digits = 3)
 ```
 
+. . .
+
+- It is quite clear that including a [non-linear]{.blue} specification for the `Longitude` was indeed a good idea that improved the predictive performance. 
+
+. . .
+
+- Somewhat surprisingly, the [best model]{.blue} is the extremely simple (yet effective) [MARS of degree $1$]{.orange}.
+
+- The weak interactions effects captured by the MARS of degree $2$ led an increased variance of the estimates, slightly deteriorating the fit. 
+
 ## Pros and cons of MARS
 
 ::: callout-tip
 #### Pros
 
--   asd
+- MARS constructs a sophisticated model by [sequentially refining]{.blue} the previous fit.
+- MARS can capture [interaction]{.orange} effects.
+- The MARS algorithm can be employed for both regression and classification problems.
+- The final model is often interpretable. The order of the interactions can be controlled by fixing $d$.
 :::
 
 . . .
@@ -1146,9 +1185,36 @@ knitr::kable(tab_results, digits = 3)
 ::: callout-warning
 #### Cons
 
--   asd
+- MARS can quickly [overfit]{.orange} the data if the model complexity is not kept under control.
+
+- Unfortunately, this is not always easy to do as there is [limited theoretical support]{.orange} that guides us in the choice of the effective degree of freedom. 
 :::
 
-## References
+# References
 
--   
+## References I
+
+-   [Main references]{.blue}
+    - **Chapters 4 and 5** of Azzalini, A. and Scarpa, B. (2011), [*Data
+        Analysis and Data
+        Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
+        University Press.
+    - **Chapter 9** of Hastie, T., Tibshirani, R. and Friedman, J.
+        (2009), [*The Elements of Statistical
+        Learning*](https://hastie.su.domains/ElemStatLearn/), Second
+        Edition, Springer.
+    
+- [Historical references]{.orange}
+    - Hastie, T., and Tibshirani, R. (1986). [Generalized Additive Models](https://projecteuclid.org/journals/statistical-science/volume-1/issue-3/Generalized-Additive-Models/10.1214/ss/1177013604.full). *Statistical Science* **1**(3), 209-318.
+  - Friedman, Jerome H. 1991. [Multivariate Adaptive Regression Splines](https://projecteuclid.org/journals/annals-of-statistics/volume-19/issue-1/Multivariate-Adaptive-Regression-Splines/10.1214/aos/1176347963.full). *Annals of Statistics* **19**(1), 1-141.
+
+
+## Specialized references I
+
+-   [Simon Wood's contributions]{.orange}
+    - Wood, S. N. (2003). Thin plate regression splines. *Journal of the Royal Statistical Society. Series B: Statistical Methodology* **65**, 95-114.
+    - Wood, S. N. (2004). Stable and efficient multiple smoothing parameter estimation for generalized additive models. *Journal of the American Statistical Association* **99**, 673-86. 
+    - Wood, S. N. (2011). Fast stable restricted maximum likelihood and marginal likelihood estimation of semiparametric generalized linear models. *Journal of the Royal Statistical Society. Series B: Statistical Methodology* **73**(1), 3-36. 
+    - Marra, G. and Wood, S. N. (2011). Practical variable selection for generalized additive models. *Computational Statistics and Data Analysis* **55**(7), 2372–87. 
+    - Wood, S. N. (2017). *Generalized Additive Models: An Introduction with R*. CRC Press.
+

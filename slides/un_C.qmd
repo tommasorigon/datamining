@@ -2807,7 +2807,7 @@ which is an instance of [penalized log-likelihood]{.orange}.
 ## References II
 
 
--   [Ridge regression]{.blue}
+-   [Ridge regression]{.orange}
     - Hoerl, A. E., and Kennard, R. W. (1970). Ridge regression: biased estimation for nonorthogonal problems. *Technometrics* **12**(1), 55–67. 
     - Hastie, T. (2020). Ridge regularization: an essential concept in
         data science. *Technometrics*, **62**(4), 426-433.
@@ -2819,7 +2819,7 @@ which is an instance of [penalized log-likelihood]{.orange}.
     - Tibshirani, R. J. (2013). The lasso problem and uniqueness. *Electronic Journal of Statistics* **7**(1), 1456-1490. 
     
 ## References III
--   [Elastic-net]{.blue}
+-   [Elastic-net]{.orange}
     - Zou, H. and Hastie, T. (2005). Regularization and variable selection via the elastic net. *Journal of the Royal Statistical Society. Series B: Statistical Methodology* **67**(2), 301-320.
     
 - [Computations for penalized methods]{.orange}
