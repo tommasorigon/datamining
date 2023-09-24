@@ -1503,7 +1503,7 @@ for example, using [multinomial logit]{.orange}. The ideas of GLMs can be easily
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
 -   [Basic references (B.Sc. level)]{.grey}
-    -   **Chapters 5 and 6** of A. Azzalini (2000), [*Inferenza
+    -   **Chapters 5 and 6** of Azzalini, A. (2000), [*Inferenza
         Statistica. Una presentazione basata sul concetto di
         verosimiglianza*](http://azzalini.stat.unipd.it/Book_inference/copertina2000.jpg),
         Springer.
