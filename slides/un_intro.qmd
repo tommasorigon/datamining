@@ -545,7 +545,7 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
         *Journal of Computational and Graphical Statistics*, **26**,
         745-766
 -   [Specialized references]{.orange}
-    - Efron, B. (2020). [Prediction, Estimation, and Attribution](https://doi.org/10.1080/01621459.2020.1762613). *Journal of the American Statistical Association* **115** (530), 636–55.
+    - Efron, B. (2020). [Prediction, Estimation, and Attribution](https://doi.org/10.1080/01621459.2020.1762613). *Journal of the American Statistical Association*, **115** (530), 636–55.
     -   Tukey, J. W. (1962). [The future of data
         analysis](https://doi.org/10.1162/99608f92.f09d7aa3). *Annals of
         Mathematical Statistics*, **33**, 1--67.
