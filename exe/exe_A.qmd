@@ -49,13 +49,13 @@ $$
 
 Moreover, obtain the covariance matrix of $\hat{\beta}$ and conclude that the estimators $\hat{\beta}_j$ and $\hat{\beta}_{j'}$ are independent, assuming Gaussian errors.
 
-#### A.4 - Last step of the Gram-Schidmt algorithm
+#### A.4 - Final step of the Gram-Schidmt algorithm
 
 Consider the last equation of [this slide](../slides/un_A.html#the-qr-decomposition-and-least-squares), that is
 $$
 \hat{\beta}_p = (\tilde{\bm{z}}_p^T\bm{y}) / (\tilde{\bm{z}}_p^T \tilde{\bm{z}}_p).
 $$
-Show that this estimate can be obtained as a [final step]{.orange} of the [Gram-Schmidt]{.blue} algorithm
+Realize that this estimate can be regarded as the [final]{.orange} (additional) [step]{.orange} of the [Gram-Schmidt]{.blue} algorithm, as mentioned in Algorithm 2.1 of the textbook Azzalini \& Scarpa (2011).
 
 #### A.5 - Recursive least squares
 
