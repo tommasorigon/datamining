@@ -43,11 +43,11 @@ editor_options:
 
 #### Exercise C.6 - Ridge data-augmentation (3.12 HTF)
 
-#### Exercise C.7 - Ridge regression with identical variables
+#### Exercise C.7 - Ridge regression with identical variables (3.29 HTF)
 
-#### Exercise C.7 - Degrees of freedom of ridge regression
+#### Exercise C.8 - Degrees of freedom of ridge regression
 
-#### Exercise C.8 - Lasso solution with a single predictor
+#### Exercise C.9 - Lasso and elastic-net solution with a single predictor
 
 ## Practical exercises
 

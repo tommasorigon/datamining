@@ -1,0 +1,39 @@
+---
+title: "Exercises D"
+subtitle: "Data mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+lang: en
+execute:
+  cache: true
+format:
+  html:
+    html-math-method: katex
+    echo: true
+    callout-appearance: minimal
+    theme: [cosmo, ../template.css]
+    toc: true
+    toc-title: Table of contents
+    embed-resources: true
+    code-line-numbers: true
+    smooth-scroll: true
+    fig-dpi: 250
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+# [Homepage](../index.html)
+
+## Theoretical exercises
+
+#### Exercise D.1 - Local linear regression
+
+Prove the statement
+
+#### Exercise D.2 - 
+
+## Practical exercises
+
