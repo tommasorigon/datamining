@@ -46,6 +46,10 @@ Refer also Exercise 3.3 of the textbook A&S (2011), which is implicitly computin
 
 #### B.3 - Leave-one-out
 
-[Prove]{.orange} the leave-one-out formula for linear models stated in [this slide](../slides/un_B.html#leave-one-out-cross-validation). [Hint]{.blue}: most of the steps are similar to those needed for computing recursive least squares.
+[Prove]{.orange} the leave-one-out formula for linear models stated in [this slide](../slides/un_B.html#leave-one-out-cross-validation). [Hint]{.blue}: many steps are similar to those needed for obtaining [recursive least squares]{.blue}.
 
+## Practical exercises
 
+#### B.4 - The `trawl` dataset
+
+Consider the dataset `trawl` contained in the `sm` library. Implement a function that fit a [polynomial regression]{.blue} using `Score1` as response variable ($y$) and `Longitude` as input variable ($x$). Implement a procedure that selects the [optimal degree]{.orange} of the polynomial based on leave-one-out cross-validation. 
