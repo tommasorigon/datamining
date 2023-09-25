@@ -51,11 +51,11 @@ Moreover, obtain the covariance matrix of $\hat{\beta}$ and conclude that the es
 
 #### A.4 - Last step of the Gram-Schidmt algorithm
 
-Show that the last statement of [this slide](../slides/un_A.html#the-qr-decomposition-and-least-squares) is correct, namely that the [last step]{.orange} of the [Gram-Schmidt]{.blue} algorithm
+Consider the last equation of [this slide](../slides/un_A.html#the-qr-decomposition-and-least-squares), that is
 $$
 \hat{\beta}_p = (\tilde{\bm{z}}_p^T\bm{y}) / (\tilde{\bm{z}}_p^T \tilde{\bm{z}}_p).
 $$
-coincides with the OLS estimate of the $p$th coefficient. 
+Show that this estimate can be obtained as a [final step]{.orange} of the [Gram-Schmidt]{.blue} algorithm
 
 #### A.5 - Recursive least squares
 
