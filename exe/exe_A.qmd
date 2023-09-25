@@ -82,4 +82,4 @@ Verify that the output of `logistic_mle` and the built-in `glm` function coincid
 
 #### A.8 - Additional exercises
 
-Solve the exercises 2.1 - 2.8 of the [textbook]{.orange} Azzalini \& Scarpa (2011).
+Solve the exercises 2.1 - 2.7 of the [textbook]{.orange} Azzalini \& Scarpa (2011).
