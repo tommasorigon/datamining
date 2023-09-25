@@ -3093,9 +3093,10 @@ vertical-align: -.125em;
 </section>
 <section id="a.5---recursive-least-squares" class="level4">
 <h4 class="anchored" data-anchor-id="a.5---recursive-least-squares">A.5 - Recursive least squares</h4>
-<p><span class="orange">Verify</span> the correctness of the <span class="blue">recursive least square</span> equations described in <a href="../slides/un_A.html#the-recursive-least-squares-algorithm-i">this slide</a>. You can (and should) use the Sherman-Morrison lemma. Moreover, verify the correctness for the deviance formula: <span class="math display">
+<p><span class="orange">Verify</span> the correctness of the <span class="blue">recursive least square</span> equations described in <a href="../slides/un_A.html#the-recursive-least-squares-algorithm-i">this slide</a>. The proof is already concisely written in the slides, you just need to convince yourself of the correctness of every step.</p>
+<p>Moreover, check the correctness for the deviance formula: <span class="math display">
 ||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n + 1)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2,
-</span> which is mentioned <a href="../slides/un_A.html#the-recursive-least-squares-algorithm-ii">here</a>.</p>
+</span> which is mentioned <a href="../slides/un_A.html#the-recursive-least-squares-algorithm-ii">here</a> without proof.</p>
 </section>
 </section>
 <section id="practical-exercises" class="level2">
