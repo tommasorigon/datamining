@@ -1117,8 +1117,8 @@ $$
 -   The [updated least square estimate]{.orange} therefore becomes $$
     \begin{aligned}
     \hat{\beta}_{(n+1)} &= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \bm{x}_{(n + 1)} y_{n+1}) \\
-    &=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\bm{x}_{(n + 1)}}_{k_n}\underbrace{(y_{n+1} - \bm{x}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
-    &= \hat{\beta}_{(n)} + k_n e_{n+1}.
+    &=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\bm{x}_{(n + 1)}}_{\bm{k}_n}\underbrace{(y_{n+1} - \bm{x}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
+    &= \hat{\beta}_{(n)} + \bm{k}_n e_{n+1}.
     \end{aligned}
     $$
 
@@ -1129,7 +1129,7 @@ $$
 ## The recursive least squares algorithm II
 
 -   The recursive estimation
-    $\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + k_n e_{n+1}$ takes the
+    $\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + \bm{k}_n e_{n+1}$ takes the
     form of a [linear filter]{.orange}, in which the new estimate
     $\hat{\beta}_{(n+1)}$ is obtained by modifying the old one
     $\hat{\beta}_{(n+1)}$.
@@ -1151,7 +1151,7 @@ $$
     formula]{.blue} for the [deviance]{.blue}
 
 $$
-||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n + 1)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2.
+||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2.
 $$
 
 -   The complete algorithm is provided in A&S, Algorithm 2.2.

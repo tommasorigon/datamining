@@ -1139,8 +1139,8 @@ Sherman-Morrison formula
 <li><p>The <span class="orange">updated least square estimate</span> therefore becomes <span class="math display">
 \begin{aligned}
 \hat{\beta}_{(n+1)} &amp;= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \bm{x}_{(n + 1)} y_{n+1}) \\
-&amp;=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\bm{x}_{(n + 1)}}_{k_n}\underbrace{(y_{n+1} - \bm{x}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
-&amp;= \hat{\beta}_{(n)} + k_n e_{n+1}.
+&amp;=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\bm{x}_{(n + 1)}}_{\bm{k}_n}\underbrace{(y_{n+1} - \bm{x}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
+&amp;= \hat{\beta}_{(n)} + \bm{k}_n e_{n+1}.
 \end{aligned}
 </span></p></li>
 <li><p>The quantity <span class="math inline">e_{n+1}</span> is the <span class="blue">prediction error</span> of <span class="math inline">y_{n+1}</span> based on the previous estimate <span class="math inline">\hat{\beta}_{(n)}</span>.</p></li>
@@ -1150,7 +1150,7 @@ Sherman-Morrison formula
 <section id="the-recursive-least-squares-algorithm-ii" class="level2">
 <h2 class="anchored" data-anchor-id="the-recursive-least-squares-algorithm-ii">The recursive least squares algorithm II</h2>
 <ul>
-<li><p>The recursive estimation <span class="math inline">\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + k_n e_{n+1}</span> takes the form of a <span class="orange">linear filter</span>, in which the new estimate <span class="math inline">\hat{\beta}_{(n+1)}</span> is obtained by modifying the old one <span class="math inline">\hat{\beta}_{(n+1)}</span>.</p></li>
+<li><p>The recursive estimation <span class="math inline">\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + \bm{k}_n e_{n+1}</span> takes the form of a <span class="orange">linear filter</span>, in which the new estimate <span class="math inline">\hat{\beta}_{(n+1)}</span> is obtained by modifying the old one <span class="math inline">\hat{\beta}_{(n+1)}</span>.</p></li>
 <li><p>This is performed according to the <span class="blue">prediction error</span> <span class="math inline">\epsilon_{n+1}</span> and the <span class="orange">gain</span> <span class="math inline">k_n</span> of the filter.</p></li>
 <li><p>Using a terminology typical of the machine learning field, we say that the estimator “learns from its errors.”</p></li>
 <li><p>If <span class="math inline">n</span> is sufficiently high, it is also possible to get an <span class="orange">approximate</span> solution by initializing the algorithm by setting <span class="math inline">\bm{V}_{(0)} = I_p</span>, to avoid any matrix inversion / factorization.</p></li>
@@ -1159,7 +1159,7 @@ Sherman-Morrison formula
 <li>With further algebraic steps, we also obtain a <span class="blue">recursive formula</span> for the <span class="blue">deviance</span></li>
 </ul>
 <p><span class="math display">
-||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n + 1)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2.
+||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2.
 </span></p>
 <ul>
 <li>The complete algorithm is provided in A&amp;S, Algorithm 2.2.</li>
