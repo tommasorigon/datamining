@@ -11,8 +11,8 @@ auto <- read.table("../data/auto.txt", header = TRUE) %>% select(city.distance, 
 
 p0 <- ggpairs(auto,
   columns = 1:4, aes(colour = fuel),
-  lower = list(continuous = wrap("points", size = 0.9)),
-  upper = list(continuous = wrap("points", size = 0.9)),
+  lower = list(continuous = wrap("points", size = 0.5)),
+  upper = list(continuous = wrap("points", size = 0.5)),
   diag = "blank"
 ) +
   theme_light() +
