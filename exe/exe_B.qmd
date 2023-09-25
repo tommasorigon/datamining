@@ -30,12 +30,22 @@ editor_options:
 
 ## Theoretical exercises
 
-#### B.1 - Bias-variance trade-off
+#### B.1 - Bias-variance decomposition
+
+[Prove]{.orange} the bias-variance decomposition stated in [this slide](../slides/un_B.html#bias-variance-trade-off).
 
 #### B.2 - Optimism
 
-(Also see exercise 3.3 of AS, related to this)
+[Prove]{.orange} that, as stated in [this slide](../slides/un_B.html#optimism-ii), the optimism, defined as $$
+    \text{Opt} = \mathbb{E}(\text{MSE}_\text{test}) - \mathbb{E}(\text{MSE}_\text{train}),
+    $$
+    can be equivalently expressed as $$
+    \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)).
+    $$
+Refer also Exercise 3.3 of the textbook A&S (2011), which is implicitly computing similar quantities.
 
 #### B.3 - Leave-one-out
 
-## Practical exercises
+[Prove]{.orange} the leave-one-out formula for linear models stated in [this slide](../slides/un_B.html#leave-one-out-cross-validation). [Hint]{.blue}: most of the steps are similar to those needed for computing recursive least squares.
+
+

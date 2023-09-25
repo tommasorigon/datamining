@@ -62,7 +62,7 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | Lab 1 (Computations for linear models) |                                      |                                                    | [Code Lab 1](code/lab1.R) |
 | *Exercises*                            | [Exercises A](exe/exe_A.html)                      |                                                    |                           |
 | **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)           | [Slides Unit B](slides/un_B_slides.html)           | [Code B](code/un_B.R)     |
-| *Exercises*                            | \[Exercises B\]                      |                                                    |                           |
+| *Exercises*                            | [Exercises B](exe/exe_B.html)                      |                                                    |                           |
 | Lab 2 (Ames housing)                   |                                      |                                                    | [Code Lab 2](code/lab2.R) |
 | **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html)           | [Code C](code/un_C.R)     |
 | *Exercises*                            | \[Exercises C\]                      |                                                    |                           |
