@@ -124,7 +124,7 @@ editor_options:
 
 . . .
 
--   Observational data: data have been collected for other purposes, not
+-   These are [observational data]{.blue}, which have been collected for other purposes, not
     for their analysis. Data "exists," there is [no sampling
     design]{.orange}.
 
