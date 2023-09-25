@@ -65,7 +65,7 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | *Exercises*                            | [Exercises B](exe/exe_B.html)                      |                                                    |                           |
 | Lab 2 (Ames housing)                   |                                      |                                                    | [Code Lab 2](code/lab2.R) |
 | **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html)           | [Code C](code/un_C.R)     |
-| *Exercises*                            | \[Exercises C\]                      |                                                    |                           |
+| *Exercises*                            | [Exercises C](exe/exe_C.html)                      |                                                    |                           |
 | Lab 3 (Ames housing)                   |                                      |                                                    | [Code Lab 3](code/lab3.R) |
 | Lab 4 (Telecommunications)                                 |                                      |                                                    | \[Code Lab 4\]            |
 | **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)           | [Code D](code/un_D.R)     |
