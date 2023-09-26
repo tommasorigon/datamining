@@ -473,10 +473,9 @@ f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z =
 </section>
 <section id="matrix-notation" class="slide level2 center">
 <h2>Matrix notation</h2>
-<div>
 <ul>
-<li class="fragment"><p>The <span class="orange">response random variables</span> are collected in the random vector <span class="math inline">\bm{Y} = (Y_1,\dots,Y_n)^T</span>, whose <span class="blue">observed realization</span> is <span class="math inline">\bm{y} = (y_1,\dots,y_n)^T</span>.</p></li>
-<li class="fragment"><p>The <span class="blue">design matrix</span> is a <span class="math inline">n \times p</span> matrix, comprising the covariate’s values, defined by <span class="math display">
+<li><p>The <span class="orange">response random variables</span> are collected in the random vector <span class="math inline">\bm{Y} = (Y_1,\dots,Y_n)^T</span>, whose <span class="blue">observed realization</span> is <span class="math inline">\bm{y} = (y_1,\dots,y_n)^T</span>.</p></li>
+<li><p>The <span class="blue">design matrix</span> is a <span class="math inline">n \times p</span> matrix, comprising the covariate’s values, defined by <span class="math display">
 \bm{X} =
 \begin{bmatrix}
 x_{11} &amp; \cdots &amp; x_{1p}\\
@@ -484,12 +483,19 @@ x_{11} &amp; \cdots &amp; x_{1p}\\
 x_{n1} &amp; \cdots &amp; x_{np}
 \end{bmatrix}.
 </span></p></li>
-<li class="fragment"><p>Then, a <span class="blue">linear model</span> can be written using the <span class="orange">compact notation</span>: <span class="math display">
-\bm{Y} = \bm{X}\beta + \bm{\epsilon},
-</span> where <span class="math inline">\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T</span> is a vector of iid error terms with zero mean and variance <span class="math inline">\sigma^2</span>.</p></li>
-<li class="fragment"><p>The <span class="math inline">j</span>th variable (column) is denoted with <span class="math inline">\tilde{\bm{x}}_j</span>, whereas the <span class="math inline">i</span>th observation (row) is <span class="math inline">\bm{x}_i</span>: <span class="math display">
+</ul>
+<div class="fragment">
+<ul>
+<li>The <span class="math inline">j</span>th variable (column) is denoted with <span class="math inline">\tilde{\bm{x}}_j</span>, whereas the <span class="math inline">i</span>th observation (row) is <span class="math inline">\bm{x}_i</span>: <span class="math display">
 \bm{X} = (\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p) = (\bm{x}_1, \dots,\bm{x}_n)^T.
-</span></p></li>
+</span></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Then, a <span class="blue">linear model</span> can be written using the <span class="orange">compact notation</span>: <span class="math display">
+\bm{Y} = \bm{X}\beta + \bm{\epsilon},
+</span> where <span class="math inline">\bm{\epsilon} = (\epsilon_1,\dots,\epsilon_n)^T</span> is a vector of iid error terms with zero mean and variance <span class="math inline">\sigma^2</span>.</li>
 </ul>
 </div>
 </section>
@@ -518,17 +524,19 @@ D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\be
 </section>
 <section id="linear-regression-estimation-ii" class="slide level2 center">
 <h2>Linear regression: estimation II</h2>
-<div>
 <ul>
-<li class="fragment"><p>In matrix notation, the predicted values can be obtained as <span class="math display">
+<li><p>In matrix notation, the predicted values can be obtained as <span class="math display">
 \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{H}\bm{y}, \qquad \bm{H} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
 </span></p></li>
-<li class="fragment"><p><span class="math inline">\bm{H}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>.</p></li>
-<li class="fragment"><p>It can be shown that <span class="math inline">\text{tr}(\bm{H}) = \text{rk}(\bm{H}) = p</span>. Moreover, it holds <span class="math inline">\bm{H} = \bm{H}^T</span> and <span class="math inline">\bm{H}^2 = \bm{H}</span>.</p></li>
-<li class="fragment"><p>The quantity <span class="math inline">D(\hat{\beta})</span> is the so-called <span class="blue">deviance</span>, which is equal to <span class="math display">
+<li><p><span class="math inline">\bm{H}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>.</p></li>
+<li><p>It can be shown that <span class="math inline">\text{tr}(\bm{H}) = \text{rk}(\bm{H}) = p</span>. Moreover, it holds <span class="math inline">\bm{H} = \bm{H}^T</span> and <span class="math inline">\bm{H}^2 = \bm{H}</span>.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>The quantity <span class="math inline">D(\hat{\beta})</span> is the so-called <span class="blue">deviance</span>, which is equal to <span class="math display">
 D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{H})\bm{y}.
 </span></p></li>
-<li class="fragment"><p>A typical estimate for the <span class="orange">residual variance</span> <span class="math inline">\sigma^2</span> is <span class="math display">
+<li><p>Moreover, a typical estimate for the <span class="orange">residual variance</span> <span class="math inline">\sigma^2</span> is obtained as follows: <span class="math display">
 s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
 </span></p></li>
 </ul>
@@ -536,33 +544,41 @@ s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\
 </section>
 <section id="linear-regression-inference" class="slide level2 center">
 <h2>Linear regression: inference</h2>
-<div>
 <ul>
-<li class="fragment"><p>Let us additionally assume that the errors follow a Gaussian distribution: <span class="math inline">\epsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)</span>.</p></li>
-<li class="fragment"><p>This implies that the <span class="orange">distribution</span> of the <span class="orange">estimator</span> <span class="math inline">\hat{\beta}</span> is <span class="math display">
+<li><p>Let us additionally assume that the errors follow a Gaussian distribution: <span class="math inline">\epsilon_i \overset{\text{iid}}{\sim} N(0, \sigma^2)</span>.</p></li>
+<li><p>This implies that the <span class="orange">distribution</span> of the <span class="orange">estimator</span> <span class="math inline">\hat{\beta}</span> is <span class="math display">
 \hat{\beta} \sim N_p(\beta, \sigma^2 (\bm{X}^T\bm{X})^{-1}).
 </span></p></li>
-<li class="fragment"><p>Hence, the estimator <span class="math inline">\hat{\beta}</span> is <span class="orange">unbiased</span> and its <span class="blue">variance</span> can be estimated by <span class="math display">
+<li><p>Hence, the estimator <span class="math inline">\hat{\beta}</span> is <span class="orange">unbiased</span> and its <span class="blue">variance</span> can be estimated by <span class="math display">
 \widehat{\text{var}}(\hat{\beta}) = s^2 (\bm{X}^T\bm{X})^{-1}.
 </span></p></li>
-<li class="fragment"><p>The <span class="orange">standard errors</span> of the components of beta correspond to the square root of the diagonal of the above covariance matrix.</p></li>
-<li class="fragment"><p>Confidence interval and Wald’s tests can be obtained through classical inferential theory.</p></li>
-<li class="fragment"><p>Ok, we are ready to get back to the original problem…</p></li>
+<li><p>The <span class="orange">standard errors</span> of the components of <span class="math inline">\hat{\beta}</span> correspond to the square root of the diagonal of the above covariance matrix.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Confidence interval and Wald’s tests can be obtained through classical inferential theory.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Ok, we are ready to get back to the original problem…</li>
 </ul>
 </div>
 </section>
 <section id="car-data-a-first-model" class="slide level2 center">
 <h2>Car data, a first model</h2>
-<div>
 <ul>
-<li class="fragment"><p>Our first attempt for predicting <code>city.distance</code> (<span class="math inline">y</span>) via <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>) is: <span class="math display">
+<li><p>Our first attempt for predicting <code>city.distance</code> (<span class="math inline">y</span>) via <code>engine.size</code> (<span class="math inline">x</span>) and <code>fuel</code> (<span class="math inline">z</span>) is: <span class="math display">
   f(x, z; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \beta_4 x^3 + \beta_5 I(z = \texttt{gas}).
   </span></p></li>
-<li class="fragment"><p>Indeed, by looking at the plot of the data, it is plausible that we need a <span class="orange">polynomial</span> of degree <span class="math inline">3</span> or <span class="math inline">4</span></p></li>
-<li class="fragment"><p>It is also clear from the plot that <code>fuel</code> is a relevant variable. Categorical variables are <span class="orange">encoded</span> using <span class="blue">indicator variables</span>.</p></li>
-<li class="fragment"><p>To evaluate the goodness of fit, we can calculate the <span class="orange">coefficient of determination</span>: <span class="math display">
+<li><p>Indeed, by looking at the plot of the data, it is plausible that we need a <span class="orange">polynomial</span> of degree <span class="math inline">3</span> or <span class="math inline">4</span></p></li>
+<li><p>It is also clear from the plot that <code>fuel</code> is a relevant variable. Categorical variables are <span class="orange">encoded</span> using <span class="blue">indicator variables</span>.</p></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>To evaluate the goodness of fit, we can calculate the <span class="orange">coefficient of determination</span>: <span class="math display">
 R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\sum_{i=1}^n(y_i - \bar{y})^2}.
-</span></p></li>
+</span></li>
 </ul>
 </div>
 </section>
@@ -653,17 +669,23 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <img data-src="un_A_files/figure-revealjs/unnamed-chunk-7-1.png" width="1170" class="r-stretch quarto-figure-center"></section>
 <section id="comments-and-criticisms" class="slide level2 center">
 <h2>Comments and criticisms</h2>
-<div>
 <ul>
-<li class="fragment"><p>Is this a good model?</p></li>
-<li class="fragment"><p>The overall fit <span class="blue">seems satisfactory</span> at first glance, especially if we aim at predicting the urban distance of cars when average engine size (i.e., between <span class="math inline">1.5L</span> and <span class="math inline">3L</span>).</p></li>
-<li class="fragment"><p>However, the plot of the <span class="orange">residuals</span> <span class="math inline">r_i = y_i - \hat{y}_i</span> suggests that the homoscedasticity assumption, i.e.&nbsp;<span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>, might be violated.</p></li>
-<li class="fragment"><p>Also, this model is unsuitable for <span class="orange">extrapolation</span>. Indeed:</p>
+<li><p>Is this a good model?</p></li>
+<li><p>The overall fit <span class="blue">seems satisfactory</span> at first glance, especially if we aim at predicting the urban distance of cars when average engine size (i.e., between <span class="math inline">1.5L</span> and <span class="math inline">3L</span>).</p></li>
+</ul>
+<div class="fragment">
 <ul>
-<li class="fragment">It has no grounding in physics or engineering, leading to difficulties when interpreting the trend and to paradoxical situations.</li>
-<li class="fragment">For example, the curve of the set of gasoline cars shows a local minimum around <span class="math inline">4.6 L</span> and then rises again!</li>
+<li>However, the plot of the <span class="orange">residuals</span> <span class="math inline">r_i = y_i - \hat{y}_i</span> suggests that the homoscedasticity assumption, i.e.&nbsp;<span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>, might be violated.</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Also, this model is unsuitable for <span class="orange">extrapolation</span>. Indeed:</p>
+<ul>
+<li>It has no grounding in physics or engineering, leading to difficulties when interpreting the trend and to paradoxical situations.</li>
+<li>For example, the curve of the set of gasoline cars shows a local minimum around <span class="math inline">4.6 L</span> and then rises again!</li>
 </ul></li>
-<li class="fragment"><p>It is plausible that we can find a better one, so what’s next?</p></li>
+<li><p>It is plausible that we can find a better one, so what’s next?</p></li>
 </ul>
 </div>
 </section>
@@ -870,14 +892,20 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </section>
 <section id="a-tour-inside-old-fashioned-statistics" class="slide level2 center">
 <h2>A tour inside old-fashioned statistics</h2>
-<div>
 <ul>
-<li class="fragment"><p>The first part of the unit is a tour in the “old style” data modeling, the kind of culture that Leo Breiman so <span class="orange">heavily criticized</span> in his 2001 <em>Statistical Science</em> paper.</p></li>
-<li class="fragment"><p>However, this dataset was sufficiently small, meaning it could be “manually” analyzed and modeled. We gained much <span class="blue">understanding</span> by doing so.</p></li>
-<li class="fragment"><p>Hence, these old tools should not be considered useless or irrelevant.</p></li>
-<li class="fragment"><p>The second half of the unit will have an entirely different flavor, though.</p></li>
-<li class="fragment"><p>Given the vast amount of data we now have, it makes sense to focus on <span class="orange">computations</span> for fitting linear models.</p></li>
-<li class="fragment"><p>As we will see, the mathematical simplicity of linear models leads to extremely <span class="blue">fast computations</span>, an important advantage in the era of big data.</p></li>
+<li>The first part of the unit is a tour in the “old style” data modeling, the kind of culture that Leo Breiman so <span class="orange">heavily criticized</span> in his 2001 <em>Statistical Science</em> paper.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li><p>However, this dataset was sufficiently small, meaning it could be “manually” analyzed and modeled. We gained much <span class="blue">understanding</span> by doing so.</p></li>
+<li><p>Hence, these old tools should not be considered useless or irrelevant.</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>The second half of the unit will have an entirely different flavor, though.</p></li>
+<li><p>Given the vast amount of data we now have, it makes sense to focus on <span class="orange">computations</span> for fitting linear models.</p></li>
+<li><p>As we will see, the mathematical simplicity of linear models leads to extremely <span class="blue">fast computations</span>, an important advantage in the era of big data.</p></li>
 </ul>
 </div>
 </section></section>
