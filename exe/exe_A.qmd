@@ -63,11 +63,11 @@ Realize that this estimate can be regarded as the [final]{.orange} (additional) 
 
 The proof is already concisely written in the slides, you just need to convince yourself of the correctness of every step and add the [missing details]{.orange}. 
 
-<!-- Moreover, check the correctness for the deviance formula: -->
-<!-- $$ -->
-<!-- ||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2, -->
-<!-- $$ -->
-<!-- which is mentioned [here](../slides/un_A.html#the-recursive-least-squares-algorithm-ii) without proof.  -->
+The second part of this exercise is quite [hard]{.blue} and [optional]{.blue}, because it involves a lot of algebraic steps. Check the correctness of the deviance formula:
+$$
+||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2,
+$$
+which is mentioned [here](../slides/un_A.html#the-recursive-least-squares-algorithm-ii) without proof.
 
 
 ## Practical exercises

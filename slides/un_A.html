@@ -1109,7 +1109,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <h2 class="anchored" data-anchor-id="sherman-morrison-formula">Sherman-Morrison formula</h2>
 <ul>
 <li><p>When the new data points arrive, we can write the updated quantities <span class="math display">
-\bm{X}_{(n+1)} = (\bm{X}_{(n)}, \bm{x}_{(n + 1)})^T, \quad \bm{W}_{(n + 1)} = (\bm{X}_{(n+1)}^T\bm{X}_{(n + 1)}) = (\bm{X}_{(n)}^T\bm{X}_{(n)} +  \bm{x}_{(n + 1)} \bm{x}_{(n + 1)}^T).
+\bm{X}_{(n+1)} = (\bm{X}_{(n)}, \bm{x}_{n + 1})^T, \quad \bm{W}_{(n + 1)} = (\bm{X}_{(n+1)}^T\bm{X}_{(n + 1)}) = (\bm{X}_{(n)}^T\bm{X}_{(n)} +  \bm{x}_{n + 1} \bm{x}_{n + 1}^T).
 </span></p></li>
 <li><p>The difficult part is to <span class="orange">efficiently</span> compute <span class="math inline">\bm{V}_{(n+1)} = \bm{W}_{(n + 1)}^{-1}</span>. The following result of linear algebra is of incredible help in this regard.</p></li>
 </ul>
@@ -1134,12 +1134,12 @@ Sherman-Morrison formula
 <div class="incremental">
 <ul class="incremental">
 <li><p>Using the Sherman-Morrison formula, then we can express the new matrix <span class="math inline">\bm{V}_{(n + 1)}</span> as a function of previously computed quantities: <span class="math display">
-\bm{V}_{(n + 1)} = \bm{V}_{(n)} - v_{(n)}\bm{V}_{(n)} \bm{x}_{(n + 1)}\bm{x}_{(n + 1)}^T \bm{V}_{(n)}, \quad v_{(n)} = \frac{1}{(1 + \bm{x}_{(n + 1)}^T \bm{V}_{(n)}\bm{x}_{(n + 1)})}.
+\bm{V}_{(n + 1)} = \bm{V}_{(n)} - v_n\bm{V}_{(n)} \bm{x}_{n + 1}\bm{x}_{n + 1}^T \bm{V}_{(n)}, \quad v_n = \frac{1}{(1 + \bm{x}_{n + 1}^T \bm{V}_{(n)}\bm{x}_{n + 1})}.
 </span></p></li>
 <li><p>The <span class="orange">updated least square estimate</span> therefore becomes <span class="math display">
 \begin{aligned}
-\hat{\beta}_{(n+1)} &amp;= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \bm{x}_{(n + 1)} y_{n+1}) \\
-&amp;=\hat{\beta}_{(n)} +  \underbrace{v_{(n)} \bm{V}_{(n)}\bm{x}_{(n + 1)}}_{\bm{k}_n}\underbrace{(y_{n+1} - \bm{x}_{(n + 1)}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
+\hat{\beta}_{(n+1)} &amp;= \bm{V}_{(n + 1)}(\bm{X}_{(n)}^T\bm{y}_{(n)} +  \bm{x}_{n + 1} y_{n+1}) \\
+&amp;=\hat{\beta}_{(n)} +  \underbrace{v_n \bm{V}_{(n)}\bm{x}_{n + 1}}_{\bm{k}_n}\underbrace{(y_{n+1} - \bm{x}_{n + 1}^T\hat{\beta}_{(n)})}_{e_{n + 1}} \\
 &amp;= \hat{\beta}_{(n)} + \bm{k}_n e_{n+1}.
 \end{aligned}
 </span></p></li>
@@ -1159,7 +1159,7 @@ Sherman-Morrison formula
 <li>With further algebraic steps, we also obtain a <span class="blue">recursive formula</span> for the <span class="blue">deviance</span></li>
 </ul>
 <p><span class="math display">
-||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2.
+||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_n e_{n+1}^2.
 </span></p>
 <ul>
 <li>The complete algorithm is provided in A&amp;S, Algorithm 2.2.</li>
