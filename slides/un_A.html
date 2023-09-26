@@ -254,7 +254,7 @@ Y_i = f(\bm{x}_i; \beta) + \epsilon_i, \qquad i=1,\dots,n,
 <li><p>To estimate the unknown parameters <span class="math inline">\beta</span>, a possibility is to rely on the <span class="blue">least squares criterion</span>: we seek the <span class="orange">minimum</span> of the objective function <span class="math display">
 D(\beta) = \sum_{i=1}^n\{y_i - f(\bm{x}_i; \beta)\}^2,
 </span> using <span class="math inline">n</span> pairs of covariates <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> and the observed realizations <span class="math inline">y_i</span> of the random variables <span class="math inline">Y_i</span>, for <span class="math inline">i = 1,\dots,n</span>. The <span class="orange">optimal value</span> is denoted by <span class="math inline">\hat{\beta}</span>.</p></li>
-<li><p>The <span class="blue">predicted values</span> <span class="math inline">\hat{y}_i</span> are <span class="math inline">\hat{y}_i = \mathbb{E}(Y_i) = f(\bm{x}_i; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></p></li>
+<li><p>The <span class="blue">predicted values</span> are <span class="math inline">\hat{y}_i = \mathbb{E}(Y_i) = f(\bm{x}_i; \hat{\beta})</span>, for <span class="math inline">i=1,\dots,n.</span></p></li>
 </ul>
 </div>
 </section>
@@ -758,7 +758,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>Recall (from your favorite linear algebra textbook) that a <span class="blue">symmetric</span> matrix <span class="math inline">\bm{A} \in \mathbb{R}^{p \times p}</span> is <span class="orange">positive definite</span> if and only if one of the following properties is satisfied
 <ul>
-<li>The quadratic form <span class="math inline">\tilde{\bm{x}}^T \bm{A} \tilde{\bm{x}} &gt; 0</span> for all <span class="math inline">\tilde{\bm{x}} \in \mathbb{R}^p</span> such that <span class="math inline">\tilde{\bm{x}} \neq 0</span>.</li>
+<li>The quadratic form <span class="math inline">\bm{x}^T \bm{A} \bm{x} &gt; 0</span> for all <span class="math inline">\bm{x} \in \mathbb{R}^p</span> such that <span class="math inline">\bm{x} \neq 0</span>.</li>
 <li>The eigenvalues <span class="math inline">\lambda_1,\dots,\lambda_p</span> of <span class="math inline">\bm{A}</span> are all strictly positive.</li>
 </ul></li>
 <li>We now describe a strategy to compute <span class="math inline">\hat{\beta}</span> that exploits the fact that <span class="math inline">\bm{X}^T\bm{X}</span> is <span class="orange">positive definite</span>, resulting in more <span class="blue">efficient computations</span>.</li>

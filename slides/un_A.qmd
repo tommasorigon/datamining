@@ -185,7 +185,7 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
     $y_i$ of the random variables $Y_i$, for $i = 1,\dots,n$. The
     [optimal value]{.orange} is denoted by $\hat{\beta}$.
 
--   The [predicted values]{.blue} $\hat{y}_i$ are
+-   The [predicted values]{.blue} are
     $\hat{y}_i = \mathbb{E}(Y_i) = f(\bm{x}_i; \hat{\beta})$, for
     $i=1,\dots,n.$
 :::
@@ -644,9 +644,9 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
     [symmetric]{.blue} matrix $\bm{A} \in \mathbb{R}^{p \times p}$ is
     [positive definite]{.orange} if and only if one of the following
     properties is satisfied
-    -   The quadratic form $\tilde{\bm{x}}^T \bm{A} \tilde{\bm{x}} > 0$
-        for all $\tilde{\bm{x}} \in \mathbb{R}^p$ such that
-        $\tilde{\bm{x}} \neq 0$.
+    -   The quadratic form $\bm{x}^T \bm{A} \bm{x} > 0$
+        for all $\bm{x} \in \mathbb{R}^p$ such that
+        $\bm{x} \neq 0$.
     -   The eigenvalues $\lambda_1,\dots,\lambda_p$ of $\bm{A}$ are all
         strictly positive.
 -   We now describe a strategy to compute $\hat{\beta}$ that exploits
