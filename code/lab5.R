@@ -1,3 +1,7 @@
+# LAB 5 (Auto) -------------------------------------------------------------------
+# Course: Data Mining
+# Author: Tommaso Rigon
+
 rm(list = ls()) # Clean the environment
 
 # The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
@@ -40,7 +44,7 @@ plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex
 sm.regression(x, y, h = 10, add = TRUE, ngrid = 200)
 
 # Proviamo dei valori di "h" alternativi
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance  (mpg)", pch = 16, pch = 16, cex = 0.7)
 sm.regression(x, y, h = 30, add = T, ngrid = 200)
 sm.regression(x, y, h = 100, add = T, ngrid = 200)
 sm.regression(x, y, h = 5, add = T, ngrid = 200)

@@ -121,6 +121,10 @@ Consider thea lasso problem with a    [single-predictor]{.blue} $$
 [Show]{.orange} in addition that $$
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
     $$
+    
+## Practical exercises
+
+#### Exercise C.7 - The `Hitters` dataset
 
 <!-- #### Exercise P.1 -->
 

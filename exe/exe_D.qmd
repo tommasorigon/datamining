@@ -45,4 +45,8 @@ Every nonparametric regression model involves a smoothing parameter. For example
 
 ## Practical exercises
 
-#### Exercise D.6 - The `asd` dataset
+#### Exercise D.6 - Implementation of local linear regression
+
+#### Exercise D.7 - Implementation of leave-one-out cross-validation
+
+#### Exercise D.7 - The `asd` dataset
