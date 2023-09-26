@@ -29,25 +29,19 @@ editor_options:
 
 ## Theoretical exercises
 
+#### Exercise C.1 - Equivalence between PCR and OLS when $k = p$ (3.13 HTF)
 
+#### Exercise C.2 - Centering and scaling the predictors
 
-#### Exercise C.1 - Forward regression (3.9 HTF)
+#### Exercise C.3 - Ridge estimator
 
-#### Exercise C.2 - Backward regression (3.10 HTF)
+#### Exercise C.4 - Ridge data-augmentation (3.12 HTF)
 
-#### Exercise C.3 - Equivalence between PCR and OLS when $k = p$ (3.13 HTF)
+#### Exercise C.5 - Ridge regression with identical variables (3.29 HTF)
 
-#### Exercise C.4 - Centering and scaling the predictors
+#### Exercise C.6 - Degrees of freedom of ridge regression
 
-#### Exercise C.5 - Ridge estimator
-
-#### Exercise C.6 - Ridge data-augmentation (3.12 HTF)
-
-#### Exercise C.7 - Ridge regression with identical variables (3.29 HTF)
-
-#### Exercise C.8 - Degrees of freedom of ridge regression
-
-#### Exercise C.9 - Lasso and elastic-net solution with a single predictor
+#### Exercise C.7 - Lasso and elastic-net solution with a single predictor
 
 ## Practical exercises
 

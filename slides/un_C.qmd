@@ -580,8 +580,8 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 . . .
 
 -   It can be shown that the identification of the [optimal new
-    predictor]{.blue} can be efficiently computed using the [QR
-    decomposition]{.orange} (see Exercises).
+    predictor]{.blue} can be efficiently computed e.g. using the [QR
+    decomposition]{.orange}.
 
 ## Backward regression
 
@@ -611,7 +611,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 
 -   It can be shown that the [dropped predictor]{.blue} is the one with
     the lowest absolute $Z$-score or, equivalently, the [highest
-    p-value]{.orange} (see Exercises).
+    p-value]{.orange}.
 
 ## Forward, backward and best subset
 
