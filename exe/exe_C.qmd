@@ -112,18 +112,15 @@ Suppose we run a ridge regression with parameter $\lambda$ on a single variable 
 Consider thea lasso problem with a    [single-predictor]{.blue} $$
      \hat{\beta}_\text{lasso} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
       $$
-Show that $\hat{\beta}_\text{lasso} $ has an [explicit expression]{.orange}, which is $$
+[Show]{.orange} that $\hat{\beta}_\text{lasso}$ has an [explicit expression]{.orange}, which is $$
     \hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &\text{if} \quad \text{cov}(x,y) > \lambda \\
     0 \qquad &\text{if} \quad \text{cov}(x,y) \le \lambda\\
     \text{cov}(x,y) + \lambda, \qquad &\text{if} \quad \text{cov}(x,y) < -\lambda \\
     \end{cases}
     $$
-Show in addition that $$
+[Show]{.orange} in addition that $$
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
     $$
-
-
-## Practical exercises
 
 <!-- #### Exercise P.1 -->
 

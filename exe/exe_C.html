@@ -3026,7 +3026,6 @@ vertical-align: -.125em;
   <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a>
   <ul class="collapse">
   <li><a href="#theoretical-exercises" id="toc-theoretical-exercises" class="nav-link" data-scroll-target="#theoretical-exercises">Theoretical exercises</a></li>
-  <li><a href="#practical-exercises" id="toc-practical-exercises" class="nav-link" data-scroll-target="#practical-exercises">Practical exercises</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -3123,18 +3122,14 @@ vertical-align: -.125em;
 <h4 class="anchored" data-anchor-id="exercise-c.6---lasso-solution-with-a-single-predictor">Exercise C.6 - Lasso solution with a single predictor</h4>
 <p>Consider thea lasso problem with a <span class="blue">single-predictor</span> <span class="math display">
      \hat{\beta}_\text{lasso} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
-      </span> Show that $_ $ has an <span class="orange">explicit expression</span>, which is <span class="math display">
+      </span> <span class="orange">Show</span> that <span class="math inline">\hat{\beta}_\text{lasso}</span> has an <span class="orange">explicit expression</span>, which is <span class="math display">
     \hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &gt; \lambda \\
     0 \qquad &amp;\text{if} \quad \text{cov}(x,y) \le \lambda\\
     \text{cov}(x,y) + \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &lt; -\lambda \\
     \end{cases}
-    </span> Show in addition that <span class="math display">
+    </span> <span class="orange">Show</span> in addition that <span class="math display">
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
     </span></p>
-</section>
-</section>
-<section id="practical-exercises" class="level2">
-<h2 class="anchored" data-anchor-id="practical-exercises">Practical exercises</h2>
 <!-- #### Exercise P.1 -->
 <!-- ```{r} -->
 <!-- set.seed(123) -->
@@ -3165,6 +3160,7 @@ vertical-align: -.125em;
 <!-- #| echo: true -->
 <!-- coef(lm(y ~ 0 + x_center)) -->
 <!-- ``` -->
+</section>
 </section>
 </section>
 
