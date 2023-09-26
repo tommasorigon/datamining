@@ -29,11 +29,31 @@ editor_options:
 
 ## Theoretical exercises
 
-#### Exercise C.1 - Equivalence between PCR and OLS when $k = p$ (3.13 HTF)
+#### Exercise C.1 - Equivalence between PCR and OLS when $k = p$
+
+[Show]{.orange} that when the number of principal components $k = p$, then the predicted values of PCR and ordinary least squares coincide, namely
+$$
+\bm{X}\hat{\beta}_\text{ols} = \bm{Z}\hat{\gamma}_\text{pcr},
+$$
+where the definition of $\bm{Z}$ and $\hat{\gamma} = (\hat{\gamma}_1,\dots, \hat{\gamma}_p)$ is given in [this slide](../slides/un_C.html#principal-components-regression-pcr). Moreover, show that when $k = p$
+$$
+\hat{\beta}_\text{ols} = \hat{\beta}_\text{pcr},
+$$
+where $\hat{\beta}_\text{pcr}$ has been defined in [this slide](https://tommasorigon.github.io/datamining/slides/un_C.html#shrinkage-effect-of-principal-components-i).
 
 #### Exercise C.2 - Centering and scaling the predictors
 
 #### Exercise C.3 - Ridge estimator
+
+[Verify]{.orange} the correctness of the statement of [this slide](../slides/un_C.html#lagrange-multipliers-and-ridge-solution), namely that the [ridge estimator]{.blue}
+$$
+\hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y}.
+$$
+is the [minimizer]{.orange} of the penalized loss function
+$$
+\sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2.
+$$
+[Hint]{.blue}: the proof is a simple adaptation of the one for ordinary least squares. 
 
 #### Exercise C.4 - Ridge data-augmentation (3.12 HTF)
 

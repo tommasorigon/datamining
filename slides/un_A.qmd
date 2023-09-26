@@ -981,7 +981,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 
 -   The expensive step is the QR factorization. The overall
     computational complexity is $$
-    \sim 2 n p^2$$, which is about twice that of the Cholesky, when $n$
+    \sim 2 n p^2,$$ which is about twice that of the Cholesky, when $n$
     is much larger than $p$, and about the same when $p \approx n$.
 
 -   Depending on the context and assuming we only care about
@@ -1191,7 +1191,7 @@ ggplot(data = heart, aes(x = ldl, y = age, col = chd)) +
     -   Cholesterol level (`ldl`) and obesity (`obesity`)
     -   Consumption of tobacco (`tobacco`) and alcohol (`alcool`)
     -   Systolic blood pressure (`sbp`)
-    -   Age (`age`) and family history ( `famhist`)
+    -   Age (`age`) and family history (`famhist`)
 
 -   The response variable is [binary]{.orange}: we cannot rely on linear
     regression models.
