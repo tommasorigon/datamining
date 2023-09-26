@@ -69,13 +69,30 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | Lab 3 (Ames housing)                   |                                      |                                                    | [Code Lab 3](code/lab3.R) |
 | Lab 4 (Telecommunications)                                 |                                      |                                                    | \[Code Lab 4\]            |
 | **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)           | [Code D](code/un_D.R)     |
-| *Exercises*                            | \[Exercises D\]                      |                                                    |                           |
+| *Exercises*                            | [Exercises D](exe/exe_D.html)                      |                                                    |                           |
 | Lab 5 (Auto)                                 |                                      |                                                    | \[Code Lab 5\]            |
 | **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html)           |                           |
 | **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html)           | [Code F](code/un_F.R)     |
-| *Exercises*                            | \[Exercises F\]                      |                                                    |                           |
+| *Exercises*                            | [Exercises F](exe/exe_F.html)                      |                                                    |                           |
 | Lab 6 (Telecommunications)                                  |                                      |                                                    | \[Code Lab 6\]            |
-| **The scientific culture**             | \[Unit G\]                           | \[Slides Unit G\]                                  |                           |
+<!-- | **The scientific culture**             | \[Unit G\]                           | \[Slides Unit G\]                                  |                           | -->
+
+## Exam
+
+- The exam is made of [two parts]{.orange}:
+
+- (20 / 30) [Written examination]{.blue}: a pen-and-paper exam about the theoretical aspects of the course.
+
+- (10 / 30) [Individual assignment]{.blue}: a data challenge. 
+   - You will be given a prediction task, and you will need to submit your [predictions]{.orange} and produce a [report]{.orange} of about 4-5 pages;
+   - You will make use of the [Kaggle](https://www.kaggle.com) platform ([optional]{.blue});
+   - The data challenge will be announced in the second half of the course.
+   - Further info will be provided in due time.
+  
+- Both parts are [mandatory]{.orange}, and you need to submit the assignment [before]{.orange} attempting the written part. The report expires after one year from the end of the course.
+
+- The final grade is obtained as the [sum]{.blue} of the above scores. 
+
 
 ## Prerequisites
 

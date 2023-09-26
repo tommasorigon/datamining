@@ -29,11 +29,20 @@ editor_options:
 
 ## Theoretical exercises
 
-#### Exercise D.1 - Local linear regression
+#### Exercise D.1 - Differentiability of Nadaraya-Watson (HTF 6.1)
+
+#### Exercise D.2 - Local linear regression
 
 Prove the statement
 
-#### Exercise D.2 - 
+#### Exercise D.3 - Preservation of linearity
+
+#### Exercise D.4 - Conceptual exercise
+
+Every nonparametric regression model involves a smoothing parameter. For example, consider the parameter $\lambda$ of smoothing splines or $h$ of local linear regression. Can we estimate $h$ and $\lambda$ using a standard method such as maximum likelihood?
+
+#### Exercise D.5 - Leave-one-out cross-validation
 
 ## Practical exercises
 
+#### Exercise D.6 - The `asd` dataset
