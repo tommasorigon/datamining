@@ -488,7 +488,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul class="incremental">
 <li><p>Is this a good model?</p></li>
 <li><p>The overall fit <span class="blue">seems satisfactory</span> at first glance, especially if we aim at predicting the urban distance of cars when average engine size (i.e., between <span class="math inline">1.5L</span> and <span class="math inline">3L</span>).</p></li>
-<li><p>However, the plot of the <span class="orange">residuals</span> <span class="math inline">r_i = y_i - \hat{y}_i</span> suggests that there the homoscedasticity assumption, i.e.&nbsp;<span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>, might be violated.</p></li>
+<li><p>However, the plot of the <span class="orange">residuals</span> <span class="math inline">r_i = y_i - \hat{y}_i</span> suggests that the homoscedasticity assumption, i.e.&nbsp;<span class="math inline">\text{var}(\epsilon_i) = \sigma^2</span>, might be violated.</p></li>
 <li><p>Also, this model is unsuitable for <span class="orange">extrapolation</span>. Indeed:</p>
 <ul class="incremental">
 <li>It has no grounding in physics or engineering, leading to difficulties when interpreting the trend and to paradoxical situations.</li>
@@ -1041,7 +1041,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <li><p>The solution via QR factorization is <span class="orange">numerically reliable</span> and it facilitates the computation of other quantities of interest.</p></li>
 <li><p>In practice, the QR is computed via a <span class="blue">modified Gram-Schmidt</span>, that fixes the instabilities of the naïve Gram-Schmidt algorithm, or via <span class="orange">Householder reflections</span>.</p></li>
 <li><p>The expensive step is the QR factorization. The overall computational complexity is <span class="math display">
-\sim 2 n p^2</span>, which is about twice that of the Cholesky, when <span class="math inline">n</span> is much larger than <span class="math inline">p</span>, and about the same when <span class="math inline">p \approx n</span>.</p></li>
+\sim 2 n p^2,</span> which is about twice that of the Cholesky, when <span class="math inline">n</span> is much larger than <span class="math inline">p</span>, and about the same when <span class="math inline">p \approx n</span>.</p></li>
 <li><p>Depending on the context and assuming we only care about <span class="math inline">\hat{\beta}</span>, we may prefer the Cholesky (<span class="blue">fast</span> but <span class="orange">imprecise</span>) or the QR (<span class="orange">slower</span> but more <span class="blue">reliable</span>).</p></li>
 <li><p>The default approach in R, i.e., the one implemented in the <code>lm</code> function is the QR factorization because one typically also needs to compute <span class="math inline">\bm{H}</span>, or the leverages.</p></li>
 </ul>

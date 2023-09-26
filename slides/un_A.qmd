@@ -407,7 +407,7 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
     average engine size (i.e., between $1.5L$ and $3L$).
 
 -   However, the plot of the [residuals]{.orange}
-    $r_i = y_i - \hat{y}_i$ suggests that there the homoscedasticity
+    $r_i = y_i - \hat{y}_i$ suggests that the homoscedasticity
     assumption, i.e. $\text{var}(\epsilon_i) = \sigma^2$, might be
     violated.
 
