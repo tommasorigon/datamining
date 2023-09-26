@@ -211,6 +211,9 @@ print(manual, digits = 12)
 # Created:	20 February 2022, 18:21 (UTC+01:00)
 # Temporal extension (end)	31 December 2019
 
+# DATASET DOWNLOAD (~200MB)
+# The dataset "drives2.csv" can be downloaded here: https://drive.google.com/file/d/1-11n70zxl7Wb-_zQNkxprU6FhCFqH2jU/view?usp=sharing
+
 library(readr)
 drivers <- read_csv("../data/drivers2.csv", n_max = 10000)
 
