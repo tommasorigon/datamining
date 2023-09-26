@@ -126,6 +126,8 @@ Consider thea lasso problem with a    [single-predictor]{.blue} $$
 
 #### Exercise C.7 - The `Hitters` dataset
 
+#### Exercise C.8 - Implementation of pathwise coordinate optimization
+
 <!-- #### Exercise P.1 -->
 
 <!-- ```{r} -->
