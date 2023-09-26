@@ -1159,7 +1159,7 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 
 -   It is easy to show (see Exercises) that the [coefficients]{.orange}
     expressed in the [original scale]{.blue} are $$
-    \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
+    \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{scaled-ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
     $$ Thus, the [predictions]{.orange} on the [original scale]{.blue}
     are
     $\hat{\beta}_0 + \bm{x}_i^T\hat{\beta}_\text{scaled-ridge} = \bar{y} + \bm{x}_{i}^T\hat{\beta}_\text{ridge}$.

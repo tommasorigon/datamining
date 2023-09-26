@@ -35,7 +35,9 @@ Suppose the $n\times p$ design matrix $\bm{X}$ has [full rank]{.blue}, that is $
 $$
 \text{rk}(\bm{H}) = \text{tr}(\bm{H}) = p.
 $$
-Moreover, show that $\bm{H}^2 = \bm{H}$. You may want to look for the properties of [projection matrices]{.orange} on your favorite linear algebra textbook, otherwise this exercise becomes quite hard. 
+Moreover, show that $\bm{H} = \bm{H}^T$ and that $\bm{H}^2 = \bm{H}$. 
+
+[Hint]{.blue}. You may want to look for the properties of [projection matrices]{.orange} on your favorite linear algebra textbook, otherwise this exercise becomes quite hard. 
 
 #### A.2 - Positive definiveness of $\bm{X}^T\bm{X}$
 

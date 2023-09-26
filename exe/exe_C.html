@@ -3078,26 +3078,59 @@ vertical-align: -.125em;
 </section>
 <section id="exercise-c.2---centering-and-scaling-the-predictors" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-c.2---centering-and-scaling-the-predictors">Exercise C.2 - Centering and scaling the predictors</h4>
+<p><strong>Part I</strong></p>
+<p>Suppose the covariates <span class="math inline">\tilde{\bm{x}}_j</span> were <span class="blue">scaled</span> (same variance) but <span class="orange">not centered</span> (different means). Moreover, suppose the response <span class="math inline">y</span> was <span class="orange">not centered</span>. Consider the following estimator <span class="math display">
+(\hat{\beta}_0, \hat{\beta}_\text{ridge}) = \arg\min_{\beta_0,\beta} \sum_{i=1}^n(y_{i} - \beta_0 - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2.
+</span> <span class="orange">Show</span> that <span class="math inline">\hat{\beta}_\text{ridge}</span> can be equivalently obtained using the centered data, that is <span class="math display">
+\hat{\beta}_\text{ridge} = \arg\min_{\beta} \sum_{i=1}^n\{(y_{i} - \bar{y}) - (\bm{x}_{i} - \bar{\bm{x}})^T\beta\}^2 + \lambda \sum_{j=1}^p\beta_j^2.
+</span> and that <span class="math inline">\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{ridge}</span>.</p>
+<p><strong>Part II</strong></p>
+<p>Suppose the covariates <span class="math inline">\tilde{\bm{x}}_j</span> were <span class="orange">not scaled</span> (different variances <span class="math inline">s_j</span>) and <span class="orange">not centered</span> (different means). Moreover, suppose the response <span class="math inline">y</span> was <span class="orange">not centered</span>. Consider the following <span class="blue">scaled-ridge estimator</span> <span class="math display">
+(\hat{\beta}_0, \hat{\beta}_\text{scaled-ridge}) = \arg\min_{\beta_0,\beta} \sum_{i=1}^n\left(y_{i} - \beta_0 - \bm{x}_i^T\beta\right)^2 + \lambda \sum_{j=1}^p s^2_j \beta_j^2.
+</span> Consider now the following estimator <span class="math display">
+\hat{\beta}_\text{ridge} = \arg\min_{\beta} \sum_{i=1}^n\left\{(y_{i} - \bar{y}) - \sum_{j=1}^p\left(\frac{x_{ij} - \bar{x}_j}{s_j}\right)\beta_j\right\}^2 + \lambda \sum_{j=1}^p\beta_j^2.
+</span></p>
+<p>As mentioned in <a href="https://tommasorigon.github.io/datamining/slides/un_C.html#centering-and-scaling-the-predictors-ii">this slide</a>, <span class="orange">show</span> that the coefficients of <span class="orange">ridge regression</span>, expressed in the <span class="blue">original scale</span>, are <span class="math display">
+    \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{scaled-ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
+    </span></p>
 </section>
 <section id="exercise-c.3---ridge-estimator" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-c.3---ridge-estimator">Exercise C.3 - Ridge estimator</h4>
-<p><span class="orange">Verify</span> the correctness of the statement of <a href="../slides/un_C.html#lagrange-multipliers-and-ridge-solution">this slide</a>, namely that the <span class="blue">ridge estimator</span> <span class="math display">
-\hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y}.
+<p><span class="orange">Verify</span> the correctness of the statement of <a href="../slides/un_C.html#lagrange-multipliers-and-ridge-solution">this slide</a>. In other words, show that the <span class="blue">ridge estimator</span>, under standard centering and scaling assumptions and defined as <span class="math display">
+\hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y},
 </span> is the <span class="orange">minimizer</span> of the penalized loss function <span class="math display">
 \sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2.
 </span> <span class="blue">Hint</span>: the proof is a simple adaptation of the one for ordinary least squares.</p>
 </section>
-<section id="exercise-c.4---ridge-data-augmentation-3.12-htf" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-c.4---ridge-data-augmentation-3.12-htf">Exercise C.4 - Ridge data-augmentation (3.12 HTF)</h4>
+<section id="exercise-c.4---ridge-data-augmentation" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-c.4---ridge-data-augmentation">Exercise C.4 - Ridge data-augmentation</h4>
+<p>Show that the ridge regression estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> can be obtained by <span class="blue">ordinary least squares</span> regression on an <span class="orange">augmented data set</span>.</p>
+<p>We augment the centered matrix <span class="math inline">\bm{X}</span> with <span class="math inline">p</span> additional rows <span class="math inline">\sqrt{\lambda} I_p</span> and augment <span class="math inline">\bm{y}</span> with <span class="math inline">p</span> zeros, namely we consider the augmented dataset <span class="math display">
+\tilde{\bm{X}} = \begin{pmatrix}
+\bm{X}\\
+\sqrt{\lambda}I_p\\
+\end{pmatrix}, \qquad \tilde{\bm{y}} = \begin{pmatrix}\bm{y} \\ 0_p\end{pmatrix}.
+</span> By introducing artificial data having response value zero, the fitting procedure is forced to shrink the coefficients towards zero. <span class="orange">Show</span> that <span class="math display">
+\hat{\beta}_\text{ridge} = (\tilde{\bm{X}}^T\tilde{\bm{X}})^{-1} \tilde{\bm{X}}^T\tilde{\bm{y}}.
+</span></p>
 </section>
-<section id="exercise-c.5---ridge-regression-with-identical-variables-3.29-htf" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-c.5---ridge-regression-with-identical-variables-3.29-htf">Exercise C.5 - Ridge regression with identical variables (3.29 HTF)</h4>
+<section id="exercise-c.5---ridge-regression-with-identical-variables" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-c.5---ridge-regression-with-identical-variables">Exercise C.5 - Ridge regression with identical variables</h4>
+<p>Suppose we run a ridge regression with parameter <span class="math inline">\lambda</span> on a single variable <span class="math inline">\tilde{\bm{x}}_1</span> (centered and scaled) and get a coefficient <span class="math inline">\hat{\beta}_1</span>. We now include an exact copy <span class="math inline">\tilde{\bm{x}}_2 = \tilde{\bm{x}}_1</span> and refit our ridge regression.</p>
+<p><span class="orange">Show</span> that both coefficients are identical and derive their value.</p>
 </section>
-<section id="exercise-c.6---degrees-of-freedom-of-ridge-regression" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-c.6---degrees-of-freedom-of-ridge-regression">Exercise C.6 - Degrees of freedom of ridge regression</h4>
-</section>
-<section id="exercise-c.7---lasso-and-elastic-net-solution-with-a-single-predictor" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-c.7---lasso-and-elastic-net-solution-with-a-single-predictor">Exercise C.7 - Lasso and elastic-net solution with a single predictor</h4>
+<section id="exercise-c.6---lasso-solution-with-a-single-predictor" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-c.6---lasso-solution-with-a-single-predictor">Exercise C.6 - Lasso solution with a single predictor</h4>
+<p>Consider thea lasso problem with a <span class="blue">single-predictor</span> <span class="math display">
+     \hat{\beta}_\text{lasso} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
+      </span> Show that $_ $ has an <span class="orange">explicit expression</span>, which is <span class="math display">
+    \hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &gt; \lambda \\
+    0 \qquad &amp;\text{if} \quad \text{cov}(x,y) \le \lambda\\
+    \text{cov}(x,y) + \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &lt; -\lambda \\
+    \end{cases}
+    </span> Show in addition that <span class="math display">
+    \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
+    </span></p>
 </section>
 </section>
 <section id="practical-exercises" class="level2">

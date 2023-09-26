@@ -43,11 +43,40 @@ where $\hat{\beta}_\text{pcr}$ has been defined in [this slide](https://tommasor
 
 #### Exercise C.2 - Centering and scaling the predictors
 
+**Part I**
+
+Suppose the covariates $\tilde{\bm{x}}_j$ were [scaled]{.blue} (same variance) but [not centered]{.orange} (different means). Moreover, suppose the response $y$ was [not centered]{.orange}. Consider the following estimator
+$$
+(\hat{\beta}_0, \hat{\beta}_\text{ridge}) = \arg\min_{\beta_0,\beta} \sum_{i=1}^n(y_{i} - \beta_0 - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2.
+$$
+[Show]{.orange} that $\hat{\beta}_\text{ridge}$ can be equivalently obtained using the centered data, that is
+$$
+\hat{\beta}_\text{ridge} = \arg\min_{\beta} \sum_{i=1}^n\{(y_{i} - \bar{y}) - (\bm{x}_{i} - \bar{\bm{x}})^T\beta\}^2 + \lambda \sum_{j=1}^p\beta_j^2.
+$$
+and that $\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{ridge}$. 
+
+
+
+**Part II**
+
+Suppose the covariates $\tilde{\bm{x}}_j$ were [not scaled]{.orange} (different variances $s_j$) and [not centered]{.orange} (different means). Moreover, suppose the response $y$ was [not centered]{.orange}. Consider the following [scaled-ridge estimator]{.blue}
+$$
+(\hat{\beta}_0, \hat{\beta}_\text{scaled-ridge}) = \arg\min_{\beta_0,\beta} \sum_{i=1}^n\left(y_{i} - \beta_0 - \bm{x}_i^T\beta\right)^2 + \lambda \sum_{j=1}^p s^2_j \beta_j^2.
+$$
+Consider now the following estimator
+$$
+\hat{\beta}_\text{ridge} = \arg\min_{\beta} \sum_{i=1}^n\left\{(y_{i} - \bar{y}) - \sum_{j=1}^p\left(\frac{x_{ij} - \bar{x}_j}{s_j}\right)\beta_j\right\}^2 + \lambda \sum_{j=1}^p\beta_j^2.
+$$
+
+As mentioned in [this slide](https://tommasorigon.github.io/datamining/slides/un_C.html#centering-and-scaling-the-predictors-ii), [show]{.orange} that the coefficients of [ridge regression]{.orange}, expressed in the [original scale]{.blue}, are $$
+    \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{scaled-ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
+    $$ 
+
 #### Exercise C.3 - Ridge estimator
 
-[Verify]{.orange} the correctness of the statement of [this slide](../slides/un_C.html#lagrange-multipliers-and-ridge-solution), namely that the [ridge estimator]{.blue}
+[Verify]{.orange} the correctness of the statement of [this slide](../slides/un_C.html#lagrange-multipliers-and-ridge-solution). In other words, show that the [ridge estimator]{.blue}, under standard centering and scaling assumptions and defined as
 $$
-\hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y}.
+\hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y},
 $$
 is the [minimizer]{.orange} of the penalized loss function
 $$
@@ -55,13 +84,44 @@ $$
 $$
 [Hint]{.blue}: the proof is a simple adaptation of the one for ordinary least squares. 
 
-#### Exercise C.4 - Ridge data-augmentation (3.12 HTF)
+#### Exercise C.4 - Ridge data-augmentation
 
-#### Exercise C.5 - Ridge regression with identical variables (3.29 HTF)
+Show that the ridge regression estimator $\hat{\beta}_\text{ridge}$ can be obtained by [ordinary least squares]{.blue} regression on an [augmented data set]{.orange}. 
 
-#### Exercise C.6 - Degrees of freedom of ridge regression
+We augment the centered matrix $\bm{X}$ with $p$ additional rows $\sqrt{\lambda} I_p$ and augment $\bm{y}$ with $p$ zeros, namely we consider the augmented dataset
+$$
+\tilde{\bm{X}} = \begin{pmatrix}
+\bm{X}\\
+\sqrt{\lambda}I_p\\
+\end{pmatrix}, \qquad \tilde{\bm{y}} = \begin{pmatrix}\bm{y} \\ 0_p\end{pmatrix}.
+$$
+By introducing artificial data having response value zero, the fitting procedure is forced to shrink the coefficients towards zero. [Show]{.orange} that 
+$$
+\hat{\beta}_\text{ridge} = (\tilde{\bm{X}}^T\tilde{\bm{X}})^{-1} \tilde{\bm{X}}^T\tilde{\bm{y}}.
+$$
 
-#### Exercise C.7 - Lasso and elastic-net solution with a single predictor
+#### Exercise C.5 - Ridge regression with identical variables
+
+Suppose we run a ridge regression with parameter $\lambda$ on a single variable $\tilde{\bm{x}}_1$ (centered and scaled) and get a coefficient $\hat{\beta}_1$. We now include an exact copy $\tilde{\bm{x}}_2 = \tilde{\bm{x}}_1$ and refit our ridge regression. 
+
+[Show]{.orange} that both coefficients are identical and derive their value. 
+
+#### Exercise C.6 - Lasso solution with a single predictor
+
+
+Consider thea lasso problem with a    [single-predictor]{.blue} $$
+     \hat{\beta}_\text{lasso} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
+      $$
+Show that $\hat{\beta}_\text{lasso} $ has an [explicit expression]{.orange}, which is $$
+    \hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &\text{if} \quad \text{cov}(x,y) > \lambda \\
+    0 \qquad &\text{if} \quad \text{cov}(x,y) \le \lambda\\
+    \text{cov}(x,y) + \lambda, \qquad &\text{if} \quad \text{cov}(x,y) < -\lambda \\
+    \end{cases}
+    $$
+Show in addition that $$
+    \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
+    $$
+
 
 ## Practical exercises
 
