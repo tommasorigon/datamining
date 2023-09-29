@@ -43,27 +43,24 @@ plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex
 ? sm.regression
 sm.regression(x, y, h = 10, add = TRUE, ngrid = 200)
 
-# Proviamo dei valori di "h" alternativi
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance  (mpg)", pch = 16, pch = 16, cex = 0.7)
-sm.regression(x, y, h = 30, add = T, ngrid = 200)
-sm.regression(x, y, h = 100, add = T, ngrid = 200)
-sm.regression(x, y, h = 5, add = T, ngrid = 200)
-
-# ESERCIZIO PER CASA:
-# Implementare regressione lineare locale (equazione (4.3) del libro A&S) e selezionare il parametro h tramite convalida incrociata. Si noti che nel caso della leave-one-out è possibile adattare equazione (3.4) in questo contesto.
+# Let us try some alternative values of "h"
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance  (mpg)", pch = 16, cex = 0.7)
+sm.regression(x, y, h = 10, add = T, ngrid = 200)
+sm.regression(x, y, h = 0.2, add = T, ngrid = 200)
+sm.regression(x, y, h = 1, add = T, ngrid = 200)
 
 h.select(x, y, method = "cv")
 h.select(x, y, method = "aicc")
 
 # Aggiunta delle bande di variabilità
-sm.regression(x, y, h = 30, ngrid = 200, display = "se")
+sm.regression(x, y, h = 1.2, ngrid = 200, display = "se")
 
 # Regressione polinomiale locale (KernSmooth)---------------------------------------
 
 # install.packages(KernSmooth)
 library(KernSmooth)
 
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
+plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16, cex = 0.7)
 
 # Otteniamo regressione lineare locale
 a1 <- locpoly(x, y, degree = 1, bandwidth = 30, kernel = "normal", gridsize = 200)
@@ -79,7 +76,7 @@ lines(a2, col = 2)
 a3 <- locpoly(x, y, degree = 3, bandwidth = 30, kernel = "normal", gridsize = 200)
 lines(a3, col = 3)
 
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
+plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16, cex = 0.7)
 
 # Stimo un modello di tipo loess
 lo1 <- loess.smooth(x, y, span = 0.4, degree = 1)

@@ -126,7 +126,13 @@ Consider thea lasso problem with a    [single-predictor]{.blue} $$
 
 #### Exercise C.7 - The `Hitters` dataset
 
+Consider the `Hitters` dataset which is available in the `ISLR` R library. Having removed the missing values, consider a regression models to predict the `Salary` as a function of the available covariates.
+
+Use best subset, principal components, ridge regression, and lasso to identify the handle the presence of potentially irrelevant variables. 
+
 #### Exercise C.8 - Implementation of pathwise coordinate optimization
+
+Implement the pathwise coordinate optimization algorithm that is described in [this slide](../slides/un_C.html#coordinate-descent). Use to predict the `Salary` of the baseball players on the `Hitters` dataset.
 
 <!-- #### Exercise P.1 -->
 
