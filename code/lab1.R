@@ -2,7 +2,6 @@
 # Course: Data Mining
 # Author: Tommaso Rigon
 
-
 rm(list = ls())
 
 # The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
