@@ -3102,16 +3102,16 @@ vertical-align: -.125em;
 </section>
 <section id="a.6---standardization-of-the-input-variables" class="level4">
 <h4 class="anchored" data-anchor-id="a.6---standardization-of-the-input-variables">A.6 - Standardization of the input variables</h4>
-<p>I have read, on a popular social media, a confusing sentence about standardization, that can be loosely translated as follows:</p>
+<p>I have read, on a popular social media, a sentence about standardization, that can be loosely translated as follows:</p>
 <p><em>“Standardization should be used when the data follow a Gaussian distribution and the algorithm presumes that the data comes from a Gaussian law, as in linear regression.”</em></p>
-<p>There are multiple mistakes within this single sentence. For instance, linear models do <span class="orange">not</span> assume the Gaussianity of the input variables <span class="math inline">x_{ij}</span>. Sometimes (but not necessarily!) the errors <span class="math inline">\epsilon_1,\dots,\epsilon_n</span> are assumed to be Gaussian.</p>
+<p>There are multiple confusing statements. For instance, linear models do <span class="orange">not</span> assume the Gaussianity of the input variables <span class="math inline">x_{ij}</span>. Sometimes (but not necessarily!) the errors <span class="math inline">\epsilon_1,\dots,\epsilon_n</span> are assumed to be Gaussian.</p>
 <p>But there is an even more striking mistake. Suppose the original input values <span class="math inline">x_{ij}</span> are standardized, namely the transformed variables <span class="math inline">z_{ij}</span> are such that <span class="math display">
 z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j},
 </span> where <span class="math inline">\bar{x}_j</span> and <span class="math inline">s_j</span> are the mean and the standard deviation of the <span class="math inline">j</span>th variable. We denote with <span class="math inline">\hat{\beta}</span> the OLS estimate based on the original data and with <span class="math inline">\hat{\gamma}</span> the OLS estimate based on the standardized data.</p>
 <p>As an exercise, <span class="orange">prove</span> that the predicted values coincide, that is: <span class="math display">
 \hat{y}_i = \bm{x}_i^T\hat{\beta} = \bm{z}_i^T\hat{\gamma}, \qquad i=1,\dots,n,
 </span> where <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> and <span class="math inline">\bm{z}_i = (z_{i1},\dots,z_{ip})^T</span>. Hence, standardization of the inputs in ordinary least squares has <span class="blue">no effect</span> on the <span class="orange">predictions</span>. Similar linear operations on the inputs, such as <span class="blue">normalization</span>, would lead to the same conclusion.</p>
-<p>There are good reasons to standardize the variables, for instance, in ridge/lasso regression models. Moreover, centering the predictors may be helpful to get a design matrix which is better conditioned… But these motivations are not related to Gaussianity nor mentioned in the original post.</p>
+<p>There are good reasons to standardize the variables, for instance, in ridge/lasso regression models. Moreover, centering the predictors may be helpful to get a design matrix which is better conditioned… But these motivations are not related to Gaussianity.</p>
 <p>This is, unfortunately, a clear example of the <a href="../slides/un_intro.html#press-the-button">button pressing</a> culture.</p>
 </section>
 </section>
