@@ -79,19 +79,23 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 
 ## Exam
 
+#### Rules
+
 - The exam is made of [two parts]{.orange}:
 
 - (20 / 30) [Written examination]{.blue}: a pen-and-paper exam about the theoretical aspects of the course.
 
 - (10 / 30) [Individual assignment]{.blue}: a data challenge. 
-   - You will be given a prediction task, and you will need to submit your [predictions]{.orange} and produce a [report]{.orange} of about 4-5 pages;
+   - You will be given a prediction task, and you will need to submit your [predictions]{.orange} and produce a [report]{.orange} of maximum 4 pages;
    - You will make use of the [Kaggle](https://www.kaggle.com) platform ([optional]{.blue});
-   - The data challenge will be announced in the second half of the course.
    - Further info will be provided in due time.
   
 - Both parts are [mandatory]{.orange}, and you need to submit the assignment [before]{.orange} attempting the written part. The report expires after one year from the end of the course.
 
 - The final grade is obtained as the [sum]{.blue} of the above scores. 
+
+#### A mock exam
+
 
 
 ## Prerequisites
