@@ -3067,17 +3067,17 @@ vertical-align: -.125em;
 <h1><a href="../index.html">Homepage</a></h1>
 <section id="mock-exam" class="level2">
 <h2 class="anchored" data-anchor-id="mock-exam">Mock exam</h2>
-<p>This a mock exam of the course Data Mining. The real exam will have a similar structure (4 questions). The candidate has <strong>3 hours</strong> to complete the exam.</p>
+<p>This a mock exam of the course Data Mining. The actual exam will have a similar structure. The candidate has <strong>3 hours</strong> to complete the exam.</p>
 <section id="question-1" class="level4">
 <h4 class="anchored" data-anchor-id="question-1">Question 1</h4>
 <p>The Sherman-Morrison lemma is provided below. Let <span class="math inline">\bm{A} \in \mathbb{R}^{p\times p}</span> be an invertible matrix and let <span class="math inline">\bm{b},\bm{d}</span> be <span class="math inline">p</span>-dimensional vectors. Then <span class="math display">
 (\bm{A} + \bm{b} \bm{d}^T)^{-1} = \bm{A}^{-1} - \frac{1}{1 + \bm{d}^T \bm{A}^{-1}\bm{b}}\bm{A}^{-1}\bm{b}\bm{d}^T\bm{A}^{-1}.
 </span></p>
-<p>Answer to the following questions:</p>
+<p>Answer the following questions:</p>
 <ol type="1">
 <li>Express the least squares estimate <span class="math inline">\hat{\beta}_{(n+1)}</span> as a function of the new data point <span class="math inline">(x_{n+1}, y_{n+1})</span> and the previous estimate <span class="math inline">\hat{\beta}_{(n)}</span>.</li>
-<li><span class="orange">Prove</span> the recursive least squares formula you presented at the previous point, including all the necessary details; you may use the above Sherman-Morrison lemma, if appropriate.</li>
-<li>In which circumstances such a recursive least square formula is useful? Discuss.</li>
+<li><span class="orange">Prove</span> the correctness of the recursive least squares formula you presented at the previous point, including all the necessary details; you may use the above Sherman-Morrison lemma, if appropriate.</li>
+<li>In which circumstances such a recursive least square formula is beneficial? Discuss.</li>
 </ol>
 <p><span class="blue">Optional question (laude)</span>:</p>
 <ol start="4" type="1">
@@ -3089,7 +3089,7 @@ vertical-align: -.125em;
 <p>The ridge estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> is the <span class="orange">minimizer</span> of <span class="math display">
     \sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = ||\bm{y} - \bm{X}\beta||^2 + \lambda ||\beta||^2,
     </span> where <span class="math inline">\lambda &gt; 0</span>.</p>
-<p>Answer to the following questions:</p>
+<p>Answer the following questions:</p>
 <ol type="1">
 <li>Present an analytic expression for <span class="math inline">\hat{\beta}_\text{ridge}</span>.</li>
 <li><span class="orange">Prove</span> that such an analytic expression for <span class="math inline">\hat{\beta}_\text{ridge}</span> is indeed the minimizer of the above penalized loss function. Is it unique?</li>
@@ -3102,7 +3102,7 @@ vertical-align: -.125em;
 <ol type="1">
 <li>Prove that <span class="math inline">\text{Opt} = (2 / n)\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i))</span>.</li>
 <li>Specialize the previous formula of the optimism for linear models and linear smoothers. Include all the intermediate steps.</li>
-<li>Discuss usefulness of such formulas within the context of nonparametric regression.</li>
+<li>Discuss the usefulness of such formulas in nonparametric regression.</li>
 </ol>
 </section>
 <section id="question-4" class="level4">

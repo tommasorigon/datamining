@@ -29,7 +29,7 @@ editor_options:
 
 ## Mock exam
 
-This a mock exam of the course Data Mining. The real exam will have a similar structure (4 questions). The candidate has **3 hours** to complete the exam.
+This a mock exam of the course Data Mining. The actual exam will have a similar structure. The candidate has **3 hours** to complete the exam.
 
 #### Question 1
 
@@ -38,11 +38,11 @@ $\bm{b},\bm{d}$ be $p$-dimensional vectors. Then $$
 (\bm{A} + \bm{b} \bm{d}^T)^{-1} = \bm{A}^{-1} - \frac{1}{1 + \bm{d}^T \bm{A}^{-1}\bm{b}}\bm{A}^{-1}\bm{b}\bm{d}^T\bm{A}^{-1}.
 $$
 
-Answer to the following questions:
+Answer the following questions:
 
 1. Express the least squares estimate $\hat{\beta}_{(n+1)}$ as a function of the new data point $(x_{n+1}, y_{n+1})$ and the previous estimate $\hat{\beta}_{(n)}$. 
-2. [Prove]{.orange} the recursive least squares formula you presented at the previous point, including all the necessary details; you may use the above Sherman-Morrison lemma, if appropriate.
-3. In which circumstances such a recursive least square formula is useful? Discuss.
+2. [Prove]{.orange} the correctness of the recursive least squares formula you presented at the previous point, including all the necessary details; you may use the above Sherman-Morrison lemma, if appropriate.
+3. In which circumstances such a recursive least square formula is beneficial? Discuss.
 
 [Optional question (laude)]{.blue}:
 
@@ -55,7 +55,7 @@ The ridge estimator $\hat{\beta}_\text{ridge}$ is the [minimizer]{.orange} of $$
     \sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = ||\bm{y} - \bm{X}\beta||^2 + \lambda ||\beta||^2,
     $$ where $\lambda > 0$.
 
-Answer to the following questions:
+Answer the following questions:
 
 1. Present an analytic expression for $\hat{\beta}_\text{ridge}$. 
 2. [Prove]{.orange} that such an analytic expression for $\hat{\beta}_\text{ridge}$ is indeed the minimizer of the above penalized loss function. Is it unique?
@@ -68,7 +68,7 @@ The optimism is defined as $\text{Opt} = \mathbb{E}(\text{MSE}_\text{test}) - \m
 
 1. Prove that $\text{Opt} = (2 / n)\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i))$. 
 2. Specialize the previous formula of the optimism for linear models and linear smoothers. Include all the intermediate steps. 
-3. Discuss usefulness of such formulas within the context of nonparametric regression. 
+3. Discuss the usefulness of such formulas in nonparametric regression. 
 
 #### Question 4
 
