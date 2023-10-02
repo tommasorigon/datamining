@@ -73,7 +73,7 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html)           |                           |
 | **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html)           | [Code F](code/un_F.R)     |
 | *Exercises*                            | [Exercises F](exe/exe_F.html)                      |                                                    |                           |
-| Lab 6 (Ames housing)                                  |                                      |                                                    | \[Code Lab 6\]            |
+| Lab 6 (Ames housing)                                  |                                      |                                                    | [Code Lab 6](code/lab6.R)            |
 <!-- | **The scientific culture**             | \[Unit G\]                           | \[Slides Unit G\]                                  |                           | -->
 
 ## Exam
@@ -93,8 +93,9 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 
 - The final grade is obtained as the [sum]{.blue} of the above scores. 
 
-#### A mock exam
+#### Mock exam
 
+An example of written examination is provided at [this link](exe/exe_exam.html). 
 
 ## Prerequisites
 

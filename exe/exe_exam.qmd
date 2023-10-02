@@ -29,20 +29,47 @@ editor_options:
 
 ## Mock exam
 
-This a mock exam of the course Data Mining. The candidate has **3 hours** to complete the exam.
+This a mock exam of the course Data Mining. The real exam will have a similar structure (4 questions). The candidate has **3 hours** to complete the exam.
 
-#### Question 1 (max 15 lines)
+#### Question 1
 
-Recall the Sherman-Morrison lemma. Obtain a formula for recursive least squares. 
+The Sherman-Morrison lemma is provided below. Let $\bm{A} \in \mathbb{R}^{p\times p}$ be an invertible matrix and let
+$\bm{b},\bm{d}$ be $p$-dimensional vectors. Then $$
+(\bm{A} + \bm{b} \bm{d}^T)^{-1} = \bm{A}^{-1} - \frac{1}{1 + \bm{d}^T \bm{A}^{-1}\bm{b}}\bm{A}^{-1}\bm{b}\bm{d}^T\bm{A}^{-1}.
+$$
 
-#### Question 2 (max 15 lines)
+Answer to the following questions:
 
-Derivation of the ridge estimator. Then, discuss the role of $\lambda$; in particular what does it happen when $\lambda = 0$?
+1. Express the least squares estimate $\hat{\beta}_{(n+1)}$ as a function of the new data point $(x_{n+1}, y_{n+1})$ and the previous estimate $\hat{\beta}_{(n)}$. 
+2. [Prove]{.orange} the recursive least squares formula you presented at the previous point, including all the necessary details; you may use the above Sherman-Morrison lemma, if appropriate.
+3. In which circumstances such a recursive least square formula is useful? Discuss.
 
-#### Question 3 (max 15 lines)
+[Optional question (laude)]{.blue}:
 
-Prove that Optimism =. Specialize the results for linear models and linear smoother. Discuss the connection and between optimism and effective degrees of freedoms in linear smoothers. 
+4. Find a similar recursive formula for the ridge estimator.
 
-#### Question 4 (max 15 lines)
+
+#### Question 2
+
+The ridge estimator $\hat{\beta}_\text{ridge}$ is the [minimizer]{.orange} of $$
+    \sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = ||\bm{y} - \bm{X}\beta||^2 + \lambda ||\beta||^2,
+    $$ where $\lambda > 0$.
+
+Answer to the following questions:
+
+1. Present an analytic expression for $\hat{\beta}_\text{ridge}$. 
+2. [Prove]{.orange} that such an analytic expression for $\hat{\beta}_\text{ridge}$ is indeed the minimizer of the above penalized loss function. Is it unique?
+3. Discuss the role of $\lambda$. What does it happen when $\lambda \rightarrow 0$?
+
+
+#### Question 3
+
+The optimism is defined as $\text{Opt} = \mathbb{E}(\text{MSE}_\text{test}) - \mathbb{E}(\text{MSE}_\text{train})$. Answer to the following questions:
+
+1. Prove that $\text{Opt} = (2 / n)\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i))$. 
+2. Specialize the previous formula of the optimism for linear models and linear smoothers. Include all the intermediate steps. 
+3. Discuss usefulness of such formulas within the context of nonparametric regression. 
+
+#### Question 4
 
 Discuss differences and similarities between regression splines and smoothing splines.
