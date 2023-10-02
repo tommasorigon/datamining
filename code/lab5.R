@@ -17,190 +17,194 @@ x <- auto$engine.size # And engine size (L)
 plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
 
 # Set of points at which the curve is evaluated
-newx <- data.frame(x = seq(min(x), max(x), length = 200))
+newx <- data.frame(x = seq(min(x), max(x), length = 1000))
 
 # p = 1 (linear regression)
 lines(newx$x, predict(lm(y ~ x), newdata = newx), lty = 1, col = "black")
 
 # p = 2 (parabolic regression)
-lines(newx$x, predict(lm(y ~ x + I(x^2)), newdata = newx), lty = 1, col = "#fc7d0b")
+lines(newx$x, predict(lm(y ~ x + I(x^2)), newdata = newx), lty = 2, col = "darkorange")
 
 # p = 3 (cubic regression)
 # Here I am using the more convenient syntax "poly"
-lines(newx$x, predict(lm(y ~ poly(x, degree = 3)), newdata = newx), lty = 1, col = "#1170aa")
+lines(newx$x, predict(lm(y ~ poly(x, degree = 3)), newdata = newx), lty = 3, col = "darkblue")
 
 # If I use an extreme value for the degree, it does not work well anymore
 lines(newx$x, predict(lm(y ~ poly(x, degree = 10)), newdata = newx), lty = 6)
 
-? ksmooth
+# Nadaraya-Watson estimator ---------------------------------------------
 
-# install.packages("sm")
-library(sm)
+# Notice the bandwidth parametrization and the kernel used
+? ksmooth
 
 plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
 
-# Local linear regression
-? sm.regression
-sm.regression(x, y, h = 10, add = TRUE, ngrid = 200)
+h_param <- 1 # Let us try a few parameters here
+band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
+m_nw1 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
+lines(m_nw1)
 
-# Let us try some alternative values of "h"
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance  (mpg)", pch = 16, cex = 0.7)
-sm.regression(x, y, h = 10, add = T, ngrid = 200)
-sm.regression(x, y, h = 0.2, add = T, ngrid = 200)
-sm.regression(x, y, h = 1, add = T, ngrid = 200)
+h_param <- 0.2 # Let us try a few parameters here
+band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
+m_nw2 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
+lines(m_nw2, col = "darkorange")
 
-h.select(x, y, method = "cv")
-h.select(x, y, method = "aicc")
+h_param <- 0.1 # Let us try a few parameters here
+band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
+m_nw3 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
+lines(m_nw3, col = "darkblue")
 
-# Aggiunta delle bande di variabilità
-sm.regression(x, y, h = 1.2, ngrid = 200, display = "se")
-
-# Regressione polinomiale locale (KernSmooth)---------------------------------------
+# Local polynomial regression (KernSmooth)---------------------------------------
 
 # install.packages(KernSmooth)
 library(KernSmooth)
 
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16, cex = 0.7)
+? locpoly
 
-# Otteniamo regressione lineare locale
-a1 <- locpoly(x, y, degree = 1, bandwidth = 30, kernel = "normal", gridsize = 200)
-lines(a1)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
 
-# Polinomi locali di grado superiore al primo
+# Local linear regression (with a given bandwidith)
+m_local_linear <- locpoly(x, y, degree = 1, bandwidth = 0.5, kernel = "normal", gridsize = 500)
+lines(m_local_linear)
 
-# Parabola locale
-a2 <- locpoly(x, y, degree = 2, bandwidth = 30, kernel = "normal", gridsize = 200)
-lines(a2, col = 2)
+# Local quadratic regression
+m_local_quadratic <- locpoly(x, y, degree = 2, bandwidth = 0.5, kernel = "normal", gridsize = 500)
+lines(m_local_quadratic, lty = 2, col = "darkorange")
 
-# Funzione cubica locale
-a3 <- locpoly(x, y, degree = 3, bandwidth = 30, kernel = "normal", gridsize = 200)
-lines(a3, col = 3)
+# Local cubic regression
+m_local_cubic <- locpoly(x, y, degree = 3, bandwidth = 0.5, kernel = "normal", gridsize = 500)
+lines(m_local_cubic, lty = 2, col = "darkblue")
 
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16, cex = 0.7)
+# Local polynomial regression (sm package) ------------------------------------------
 
-# Stimo un modello di tipo loess
-lo1 <- loess.smooth(x, y, span = 0.4, degree = 1)
-lines(lo1)
+# install.packages(sm)
+library(sm)
 
-# Stimo un modello di tipo loess
-lo1bis <- loess(y ~ x, span = 0.4, family = "gaussian", degree = 1)
-lines(newx$x, predict(lo1bis, newdata = newx), col = "red")
+? sm.regression
 
-# Si provano altri parametri di lisciamento, chiamati "span" in questo contesto
-lo1 <- loess.smooth(x, y, span = 0.9)
-lines(lo1, col = 2)
+sm.regression(x, y, h = 2, pch = 16, cex = 0.6)
+sm.regression(x, y, h = 0.5, pch = 16, cex = 0.6, lty = 2, col = "darkorange")
+sm.regression(x, y, h = 0.1, pch = 16, cex = 0.6, lty = 3, col = "darkblue")
 
-lo1 <- loess.smooth(x, y, span = 0.4)
-lines(lo1, col = 3)
+? h.select
+h.select(x, y, method = "cv", hstart = 0.05, hend = 3, ngrid = 50) # Cross-validation
+h.select(x, y, method = "aicc") # Corrected AIC
 
-lo1 <- loess.smooth(x, y, span = 0.2)
-lines(lo1, col = 4)
+hcv(x, y, display = "lines", hstart = 0.05, hend = 3, ngrid = 50)
 
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
-lo1 <- loess.smooth(x, y, span = 0.2, evaluation = 500) # Necessario aumentare il numero di punti
-lines(lo1, col = 4)
+# From the documentation:
+# As from version 2.1 of the package, a similar effect can be obtained with the new function h.select, via h.select(x, method="cv"). Users are encouraged to adopt this route, since hcv might be not accessible directly in future releases of the package. When the sample size is large hcv uses the raw data while h.select(x, method="cv") uses binning. The latter is likely to produce a more stable choice for h.
 
-# Splines di regressione---------------------------------------------------
+sm.regression(x, y, h = 0.42, pch = 16, cex = 0.6, lty = 2)
+
+# Loess -----------------------------------------------------------------------------
+
+? loess.smooth
+? loess
+
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+
+# Estimate a loess model
+m_loess1 <- loess.smooth(x, y, span = 0.5, degree = 1, evaluation = 1000, family = "symmetric")
+lines(m_loess1)
+
+# Over-smoothing
+m_loess2 <- loess.smooth(x, y, span = 0.8, degree = 1, evaluation = 1000, family = "symmetric")
+lines(m_loess2, col = "darkorange")
+
+# Under-smoothing
+m_loess3 <- loess.smooth(x, y, span = 0.33, degree = 1, evaluation = 1000, family = "symmetric")
+lines(m_loess3, col = "darkblue")
+
+# Regression splines ---------------------------------------------------
 
 # install.packages("splines")
 library(splines)
 
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
+# Knots selection
+xi <- seq(min(x), max(x), length = 4) # I select 4 knots in total, equally spaced
+xi_int <- xi[2:(length(xi) - 1)] # There are actually K = 2 INTERNAL knots
 
-# Selezione dei nodi
+# The new data points are based on the sequence points + the internal knots
+newx <- data.frame(x = sort(c(seq(min(x), max(x), length = 1000), xi_int)))
 
-xi <- seq(min(x), max(x), length = 4) # Seleziono in totale 4 nodi, basandomi sui dati
-xi_int <- xi[2:(length(xi) - 1)] # Selezione in totale K = 2 nodi INTERNI
+# The intercept has been excluded, therefore there are K + 3 components (and not K + 4)
+B <- bs(x, knots = xi_int, degree = 3, intercept = F)
 
-# Per questioni grafiche, decido di mostrare la previsione per tutti i valori di + i valori dei nodi interni
-newx <- data.frame(x = sort(c(x, xi_int)))
-
-B <- bs(x, knots = xi_int, degree = 3, intercept = F) # Si noti che è esclusa l'intercetta, per un totale di K + 3 componenti
 dim(B)
+head(B)
 
-spl1 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = F))
-fit1 <- predict(spl1, newx)
-lines(newx$x, fit1, col = 2)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
 
-# Disegno delle linee verticali in corrispondenza dei nodi
+# Spline regression is just a linear model!
+m_spl1 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = F))
+lines(newx$x, predict(m_spl1, newx), lty = 2, col = "darkorange")
+
+# Vertical lines where the knots are placed
 abline(v = xi[2], lty = 3)
 abline(v = xi[3], lty = 3)
 
-# Ci delle parti non molto lisciate, per cui amplio la griglia delle osservazioni
-newx <- data.frame(x = seq(min(x), max(x), length = 200))
-
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
-fit1 <- predict(spl1, newx)
-lines(newx$x, fit1, col = 2)
-
-abline(v = xi[2], lty = 3)
-abline(v = xi[3], lty = 3)
-
-# Splines di regressione - Nodi tramite quantili ----------------------
+# Regression splines - Nodes on the quantiles ----------------------
 
 xi <- quantile(x, c(0, 0.333, 0.666, 1))
-xi_int <- xi[2:(length(xi) - 1)] # Selezione in totale K = 2 nodi INTERNI
+xi_int <- xi[2:(length(xi) - 1)] # There are K = 2 INTERNAL knots
 
 # unisco alle x i due punti in cui ho scelto di mettere i nodi
-spl2 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = F))
+m_spl2 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = F))
 
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
-fit2 <- predict(spl2, newx)
-lines(newx$x, fit2, col = 2)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+lines(newx$x, predict(m_spl2, newx), lty = 2, col = "darkblue")
 
 # Disegno delle linee verticali in corrispondenza dei nodi
 abline(v = xi[2], lty = 3)
 abline(v = xi[3], lty = 3)
 
-# Splines di regressione - Utilizzo dei gradi di libertà ---------------
+# Regression splines - Degrees of freeedom specification ---------------
 
-# Funzioni di base B-spline per una spline cubica (degree = 3)
-# Vale la relazione: df = length(knots) + degree
-# I nodi vengono scelti usando i quantili della distribuzione delle x
+# Basis function of a B-spline (degree = 3, cubic splines)
+# The following relationship holds: df = length(knots) + degree
+# Knots are chosen using quantiles of the x distribution
 
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
 
-# Equivalente al comando precedente
-spl2 <- lm(y ~ bs(x, df = 5, degree = 3, intercept = F))
-fit2 <- predict(spl2, newx)
-lines(newx$x, fit2, col = 2)
+# This is equivalent to the previous command
+m_spl2 <- lm(y ~ bs(x, df = 5, degree = 3, intercept = F))
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+lines(newx$x, predict(m_spl2, newx), lty = 1, col = "black")
 
-# Faccio variare i gradi di libertà
-spl3 <- lm(y ~ bs(x, df = 10, degree = 3, intercept = F))
-fit3 <- predict(spl3, newx)
-lines(newx$x, fit3, col = 3)
+# Let us change a bit the degrees of freedom
+m_spl3 <- lm(y ~ bs(x, df = 10, degree = 3, intercept = F))
+lines(newx$x, predict(m_spl3, newx), lty = 2, col = "darkorange")
 
-spl4 <- lm(y ~ bs(x, df = 15, degree = 3, intercept = F))
-fit4 <- predict(spl4, newx)
-lines(newx$x, fit4, col = 4)
+# This is, equite evidently, overfitting the data
+m_spl4 <- lm(y ~ bs(x, df = 15, degree = 3, intercept = F))
+lines(newx$x, predict(m_spl4, newx), lty = 3, col = "darkblue")
+
 
 # Smoothing Splines ------------------------------------------------
 
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
 
-s1 <- smooth.spline(x, y)
-lines(s1) # Decisamente qualcosa è andato storto
+? smooth.spline
+m_smooth <- smooth.spline(x, y)
+m_smooth
 
-# Provo qualche parametro alternativo
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
+lines(m_smooth) # Ok, the default did not work!
 
-s1 <- smooth.spline(x, y, lambda = 0.0001)
-p1 <- predict(s1, x = newx$x)
-lines(p1, col = 2)
+# Let us try some alternative values
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
 
-s1 <- smooth.spline(x, y, lambda = 0.00001)
-p1 <- predict(s1, x = newx$x)
-lines(p1, col = 3)
+m_smooth1 <- smooth.spline(x, y, lambda = 0.0001)
+lines(predict(m_smooth1, x = newx$x), lty = 1, col = "black")
 
-s1 <- smooth.spline(x, y, lambda = 0.01)
-p1 <- predict(s1, x = newx$x)
-lines(p1, col = 4)
+m_smooth2 <- smooth.spline(x, y, lambda = 0.001)
+lines(predict(m_smooth2, x = newx$x), lty = 2, col = "darkorange")
 
-# Utilizzo spar al posto di lambda
-plot(x, y, xlab = "Cilindrata", ylab = "Percorrenza urbana (mpg)", pch = 16)
+m_smooth3 <- smooth.spline(x, y, lambda = 0.01)
+lines(predict(m_smooth3, x = newx$x), lty = 2, col = "darkblue")
 
-s1 <- smooth.spline(x, y, spar = 0.8)
-p1 <- predict(s1, x = newx$x)
-lines(p1, col = 4)
+# Let us use "spar" instead of lambda
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
 
-# ESERCIZIO: provare tutto con i "dati di ieri e di domani" (vd. libro) selezionando il parametro di lisciamento sia tramite convalida incrociata sia tramite insieme di stima e verifica
+m_smooth <- smooth.spline(x, y, spar = 0.8)
+lines(predict(m_smooth, x = newx$x))

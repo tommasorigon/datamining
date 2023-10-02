@@ -70,7 +70,7 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | Lab 4 (Telecommunications)                                 |                                      |                                                    | \[Code Lab 4\]            |
 | **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)           | [Code D](code/un_D.R)     |
 | *Exercises*                            | [Exercises D](exe/exe_D.html)                      |                                                    |                           |
-| Lab 5 (Auto)                                 |                                      |                                                    | \[Code Lab 5\]            |
+| Lab 5 (Auto)                                 |                                      |                                                    | [Code Lab 5](code/lab5.R)            |
 | **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html)           |                           |
 | **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html)           | [Code F](code/un_F.R)     |
 | *Exercises*                            | [Exercises F](exe/exe_F.html)                      |                                                    |                           |

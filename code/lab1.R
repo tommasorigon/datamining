@@ -1,7 +1,12 @@
-# LAB 1 (Computations for linear models) -------------------------------------------------------------------
-# Course: Data Mining
-# Author: Tommaso Rigon
+#' ---
+#' title: "LAB 1 (Computations for linear models)"
+#' author: "Tommaso Rigon"
+#' ---
+#' 
+#+ setup, include=FALSE
+knitr::opts_chunk$set(collapse = TRUE)
 
+#+ lab, include=TRUE, echo = TRUE, results = FALSE
 rm(list = ls())
 
 # The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
