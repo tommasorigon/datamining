@@ -3100,18 +3100,19 @@ vertical-align: -.125em;
 ||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2,
 </span> which is mentioned <a href="../slides/un_A.html#the-recursive-least-squares-algorithm-ii">here</a> without proof.</p>
 </section>
-<section id="a.6---standardization-and-normalization" class="level4">
-<h4 class="anchored" data-anchor-id="a.6---standardization-and-normalization">A.6 - Standardization and normalization</h4>
+<section id="a.6---standardization-of-the-input-variables" class="level4">
+<h4 class="anchored" data-anchor-id="a.6---standardization-of-the-input-variables">A.6 - Standardization of the input variables</h4>
 <p>I have read, on LinkedIn, a sentence about standardization, that can be loosely translated as follows:</p>
-<p><em>“Standardization should be used when the data follows a Gaussian distribution and the algorithm presumes that the data comes from a Gaussian law, as in linear regression.”</em></p>
-<p>Unfortunately, there multiple mistakes within this single sentence. For instance, linear models do <span class="orange">not</span> assume the Gaussianity of the input variables <span class="math inline">\bm{x}_1,\dots,\bm{x}_n</span>. Sometimes (but not necessarily!) the errors <span class="math inline">\epsilon_1,\dots,\epsilon_n</span> are assumed to be Gaussian.</p>
+<p><em>“Standardization should be used when the data follow a Gaussian distribution and the algorithm presumes that the data comes from a Gaussian law, as in linear regression.”</em></p>
+<p>Unfortunately, there are multiple mistakes within this single sentence. For instance, linear models do <span class="orange">not</span> assume the Gaussianity of the input variables <span class="math inline">\bm{x}_1,\dots,\bm{x}_n</span>. Sometimes (but not necessarily!) the errors <span class="math inline">\epsilon_1,\dots,\epsilon_n</span> are assumed to be Gaussian.</p>
 <p>But there is an even more striking mistake. Suppose the original input values <span class="math inline">x_{ij}</span> are standardized, namely the transformed variables are such that <span class="math inline">z_{ij}</span> <span class="math display">
 z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j},
 </span> where <span class="math inline">\bar{x}_j</span> and <span class="math inline">s_j</span> are the mean and the standard deviation of the <span class="math inline">j</span>th variable. We denote with <span class="math inline">\hat{\beta}</span> the OLS estimate based on the original data and with <span class="math inline">\hat{\gamma}</span> the OLS estimate based on the standardized data.</p>
 <p>As an exercise, <span class="orange">prove</span> that the predicted values coincide, that is: <span class="math display">
-\hat{y}_i = \bm{x}_i^T\hat{\beta} = \bm{z}_i^T\hat{\gamma}.
-</span> Hence, standardization for ordinary least squares has <span class="blue">no effect</span> on the <span class="orange">predictions</span>. Similar linear operations, such as normalization, would also lead to the same conclusion.</p>
-<p>There are good reasons to standardize the variables, for instance, in ridge/lasso regression moedls. But the motivation are not related to Gaussianity, as we shall see in Unit C.</p>
+\hat{y}_i = \bm{x}_i^T\hat{\beta} = \bm{z}_i^T\hat{\gamma}, \qquad i=1,\dots,n.
+</span> Hence, standardization of the inputs in ordinary least squares has <span class="blue">no effect</span> on the <span class="orange">predictions</span>. Similar linear operations, such as normalization, would also lead to the same conclusion.</p>
+<p>There are good reasons to standardize the variables, for instance, in ridge/lasso regression models. Moreover, centering the predictors may be helpful to get a matrix which is better conditioned… But these motivations are not related to Gaussianity nor mentioned in the post.</p>
+<p>This is, unfortunately, a clear example of the <a href="../slides/un_intro.html#press-the-button">button pressing</a> culture.</p>
 </section>
 </section>
 <section id="practical-exercises" class="level2">

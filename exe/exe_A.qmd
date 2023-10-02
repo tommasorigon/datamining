@@ -71,13 +71,13 @@ $$
 $$
 which is mentioned [here](../slides/un_A.html#the-recursive-least-squares-algorithm-ii) without proof.
 
-#### A.6 - Standardization and normalization
+#### A.6 - Standardization of the input variables
 
 I have read, on LinkedIn, a sentence about standardization, that can be loosely translated as follows:
 
-  *"Standardization should be used when the data follows a Gaussian distribution and the algorithm presumes that the data comes from a Gaussian law, as in linear regression."*
+  *"Standardization should be used when the data follow a Gaussian distribution and the algorithm presumes that the data comes from a Gaussian law, as in linear regression."*
     
-Unfortunately, there multiple mistakes within this single sentence. For instance, linear models do [not]{.orange} assume the Gaussianity of the input variables $\bm{x}_1,\dots,\bm{x}_n$. Sometimes (but not necessarily!) the errors $\epsilon_1,\dots,\epsilon_n$ are assumed to be Gaussian. 
+Unfortunately, there are multiple mistakes within this single sentence. For instance, linear models do [not]{.orange} assume the Gaussianity of the input variables $\bm{x}_1,\dots,\bm{x}_n$. Sometimes (but not necessarily!) the errors $\epsilon_1,\dots,\epsilon_n$ are assumed to be Gaussian.
 
 But there is an even more striking mistake. Suppose the original input values $x_{ij}$ are standardized, namely the transformed variables are such that $z_{ij}$
 $$
@@ -87,13 +87,13 @@ where $\bar{x}_j$ and $s_j$ are the mean and the standard deviation of the $j$th
 
 As an exercise, [prove]{.orange} that the predicted values coincide, that is:
 $$
-\hat{y}_i = \bm{x}_i^T\hat{\beta} = \bm{z}_i^T\hat{\gamma}. 
+\hat{y}_i = \bm{x}_i^T\hat{\beta} = \bm{z}_i^T\hat{\gamma}, \qquad i=1,\dots,n.
 $$
-Hence, standardization for ordinary least squares has [no effect]{.blue} on the [predictions]{.orange}. Similar linear operations, such as normalization, would also lead to the same conclusion. 
+Hence, standardization of the inputs in ordinary least squares has [no effect]{.blue} on the [predictions]{.orange}. Similar linear operations, such as normalization, would also lead to the same conclusion. 
 
-There are good reasons to standardize the variables, for instance, in ridge/lasso regression moedls. But the motivation are not related to Gaussianity, as we shall see in Unit C. 
+There are good reasons to standardize the variables, for instance, in ridge/lasso regression models. Moreover, centering the predictors may be helpful to get a matrix which is better conditioned... But these motivations are not related to Gaussianity nor mentioned in the post. 
 
-
+This is, unfortunately, a clear example of the [button pressing](../slides/un_intro.html#press-the-button) culture. 
 
 ## Practical exercises
 
