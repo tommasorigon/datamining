@@ -66,15 +66,14 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | Lab 2 (Ames housing)                   |                                      |                                                    | [Code Lab 2](code/lab2.R) |
 | **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html)           | [Code C](code/un_C.R)     |
 | *Exercises*                            | [Exercises C](exe/exe_C.html)                      |                                                    |                           |
-| Lab 3 (Ames housing)                   |                                      |                                                    | [Code Lab 3](code/lab3.R) |
-| Lab 4 (Telecommunications)                                 |                                      |                                                    | \[Code Lab 4\]            |
+| Lab 3-4 (Ames housing)                   |                                      |                                                    | [Code Lab 3-4](code/lab3-4.R) |
 | **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)           | [Code D](code/un_D.R)     |
 | *Exercises*                            | [Exercises D](exe/exe_D.html)                      |                                                    |                           |
 | Lab 5 (Auto)                                 |                                      |                                                    | [Code Lab 5](code/lab5.R)            |
 | **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html)           |                           |
 | **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html)           | [Code F](code/un_F.R)     |
 | *Exercises*                            | [Exercises F](exe/exe_F.html)                      |                                                    |                           |
-| Lab 6 (Telecommunications)                                  |                                      |                                                    | \[Code Lab 6\]            |
+| Lab 6 (Ames housing)                                  |                                      |                                                    | \[Code Lab 6\]            |
 <!-- | **The scientific culture**             | \[Unit G\]                           | \[Slides Unit G\]                                  |                           | -->
 
 ## Exam
@@ -95,7 +94,6 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 - The final grade is obtained as the [sum]{.blue} of the above scores. 
 
 #### A mock exam
-
 
 
 ## Prerequisites

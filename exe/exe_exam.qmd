@@ -1,0 +1,48 @@
+---
+title: "Mock exam"
+subtitle: "Data mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+lang: en
+execute:
+  cache: true
+format:
+  html:
+    html-math-method: katex
+    echo: true
+    callout-appearance: minimal
+    theme: [cosmo, ../template.css]
+    toc: true
+    toc-title: Table of contents
+    embed-resources: true
+    code-line-numbers: true
+    smooth-scroll: true
+    fig-dpi: 250
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+# [Homepage](../index.html)
+
+## Mock exam
+
+This a mock exam of the course Data Mining. The candidate has **3 hours** to complete the exam.
+
+#### Question 1 (max 15 lines)
+
+Recall the Sherman-Morrison lemma. Obtain a formula for recursive least squares. 
+
+#### Question 2 (max 15 lines)
+
+Derivation of the ridge estimator. Then, discuss the role of $\lambda$; in particular what does it happen when $\lambda = 0$?
+
+#### Question 3 (max 15 lines)
+
+Prove that Optimism =. Specialize the results for linear models and linear smoother. Discuss the connection and between optimism and effective degrees of freedoms in linear smoothers. 
+
+#### Question 4 (max 15 lines)
+
+Discuss differences and similarities between regression splines and smoothing splines.
