@@ -79,7 +79,7 @@ I have read, on LinkedIn, a sentence about standardization, that can be loosely 
     
 Unfortunately, there are multiple mistakes within this single sentence. For instance, linear models do [not]{.orange} assume the Gaussianity of the input variables $\bm{x}_1,\dots,\bm{x}_n$. Sometimes (but not necessarily!) the errors $\epsilon_1,\dots,\epsilon_n$ are assumed to be Gaussian.
 
-But there is an even more striking mistake. Suppose the original input values $x_{ij}$ are standardized, namely the transformed variables are such that $z_{ij}$
+But there is an even more striking mistake. Suppose the original input values $x_{ij}$ are standardized, namely the transformed variables $z_{ij}$ are such that 
 $$
 z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j},
 $$
