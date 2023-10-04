@@ -91,10 +91,12 @@ Conclude that $f(x)$ [is]{.blue} indeed a [cubic spline]{.blue}.
 
 #### Exercise D.6 - Implementation of local linear regression
 
-Write a function called `loclin(x, y)` that implements local linear regression using the formula of [this slide](../slides/un_D.html#local-linear-regression-ii). You can use any kernel function of your choice.
+Write a function called `loclin(x, y, h)` that implements local linear regression using the formula of [this slide](../slides/un_D.html#local-linear-regression-ii). You can use any kernel function of your choice.
 
-Compare the results of your function `loclin` on the `auto` dataset with those of the libraries `KernSmooth` and `sm`.
+Compare the results of your function `loclin` on the `auto` dataset with those of the libraries `KernSmooth` and `sm`, along the lines of what has been done in class. 
  
 #### Exercise D.7 - Implementation of leave-one-out cross-validation
 
-#### Exercise D.8 - The `trawl` dataset
+Write a function called `loo_cv(X, y, h)` that computes the leave-one-out cross-validation for the `loclin(x, y, h)` function, using the result of [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii).
+
+Identify the optimal bandwidth for the `loclin` local linear regression, using the `auto` dataset.
