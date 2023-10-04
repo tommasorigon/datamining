@@ -3068,15 +3068,21 @@ vertical-align: -.125em;
 <h1><a href="../index.html">Homepage</a></h1>
 <section id="theoretical-exercises" class="level2">
 <h2 class="anchored" data-anchor-id="theoretical-exercises">Theoretical exercises</h2>
-<section id="exercise-d.1---differentiability-of-nadaraya-watson-htf-6.1" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.1---differentiability-of-nadaraya-watson-htf-6.1">Exercise D.1 - Differentiability of Nadaraya-Watson (HTF 6.1)</h4>
+<section id="exercise-d.1---differentiability-of-nadaraya-watson" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.1---differentiability-of-nadaraya-watson">Exercise D.1 - Differentiability of Nadaraya-Watson</h4>
+<p><span class="orange">Show</span> that the Nadaraya-Watson estimator with fixed bandwidth <span class="math inline">h</span> and a Gaussian kernel is <span class="blue">differentiable</span>.</p>
+<p>What can be said about the Epanechnikov kernel? What can be said for the Epanechnikov kernel with an adaptive nearest-neighbor bandwidth <span class="math inline">h(x)</span>?</p>
 </section>
 <section id="exercise-d.2---local-linear-regression" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.2---local-linear-regression">Exercise D.2 - Local linear regression</h4>
-<p>Prove the statement</p>
+<p>Prove the Theorem of <a href="../slides/un_D.html#local-linear-regression-ii">this slide</a> about the computationally efficient formula for local linear regression.</p>
 </section>
 <section id="exercise-d.3---preservation-of-linearity" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.3---preservation-of-linearity">Exercise D.3 - Preservation of linearity</h4>
+<p><span class="orange">Show</span> that local linear regression applied to <span class="math inline">(x_i, y_i)</span> <span class="orange">preserves</span> the <span class="blue">linear part of the fit</span>. In other words, let us decompose <span class="math inline">y_i = \hat{y}_{i,\text{ols}} + r_i</span>, where <span class="math inline">\hat{y}_{i,\text{ols}} = \hat{\beta}_0 + \hat{\beta}_1 x_i</span> represents the linear regression estimate, and <span class="math inline">\bm{S}</span> is the smoothing matrix, then <span class="math display">
+\bm{S}\bm{y} = \bm{S}\hat{\bm{y}}_\text{ols} + \bm{S}\bm{r} = \hat{\bm{y}}_\text{ols} + \bm{S}\bm{r}.
+</span> Conclude that if the points <span class="math inline">(x_i, y_i)</span> belong to a line, then the fitted values of a local linear regression coincide with <span class="math inline">y_i</span>.</p>
+<p>Does the same property hold for the Nadaraya-Watson estimator? If yes, prove it. If not, show a counterexample.</p>
 </section>
 <section id="exercise-d.4---conceptual-exercise" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.4---conceptual-exercise">Exercise D.4 - Conceptual exercise</h4>
@@ -3084,21 +3090,40 @@ vertical-align: -.125em;
 </section>
 <section id="exercise-d.5---leave-one-out-cross-validation" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.5---leave-one-out-cross-validation">Exercise D.5 - Leave-one-out cross-validation</h4>
+<p><span class="orange">Prove</span> the Theorem of <a href="../slides/un_D.html#choice-of-the-bandwidth-ii">this slide</a>, about the leave-one-out cross validation for linear smoothers.</p>
 </section>
-<section id="exercise-d.6---truncated-power-basis-isl-7.9" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.6---truncated-power-basis-isl-7.9">Exercise D.6 - Truncated power basis (ISL 7.9)</h4>
+<section id="exercise-d.6---truncated-power-basis" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.6---truncated-power-basis">Exercise D.6 - Truncated power basis</h4>
+<p>A cubic spline with one knots <span class="math inline">\xi</span> can be obtained using a basis of the form <span class="math inline">x</span>, <span class="math inline">x^2</span>, <span class="math inline">x^3</span> and (<span class="math inline">x - \xi)_+</span>, as a consequence of the truncated power basis Theorem of <a href="../slides/un_D.html#truncated-power-basis">this slide</a>.</p>
+<p>In this exercise we will show that a function <span class="math display">
+f(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 (x - \xi)_+^3
+</span> is a cubic spline, regardless of the values of <span class="math inline">\beta_0,\dots,\beta_4</span>.</p>
+<ol type="i">
+<li><p>Find a cubic polynomial <span class="math display">
+f_1(x) = a_1 + b_1 x + c_1 x^2 + d_1 x^3,
+</span> such that <span class="math inline">f(x) = f_1(x)</span> for all <span class="math inline">x \le \xi</span>. Express <span class="math inline">a_1, b_1, c_1, d_1</span> in terms of <span class="math inline">\beta_0,\dots,\beta_4</span>.</p></li>
+<li><p>Find another cubic polynomial <span class="math display">
+f_2(x) = a_2 + b_2 x + c_2 x^2 + d_3 x^3,
+</span> such that <span class="math inline">f(x) = f_2(x)</span> for all <span class="math inline">x &gt; \xi</span>. Express <span class="math inline">a_2, b_2, c_2, d_2</span> in terms of <span class="math inline">\beta_0,\dots,\beta_4</span>. This establishes that <span class="math inline">f(x)</span> is piecewise polynomial.</p></li>
+<li><p>Show that <span class="math inline">f_1(\xi) = f_2(\xi)</span>. That is, <span class="math inline">f(x)</span> is continuous at <span class="math inline">\xi</span>.</p></li>
+<li><p>Show that <span class="math inline">f&#39;_1(\xi) = f&#39;_2(\xi)</span>. That is, the first derivative <span class="math inline">f&#39;(x)</span> is continuous at <span class="math inline">\xi</span>.</p></li>
+<li><p>Show that <span class="math inline">f&#39;&#39;_1(\xi) = f&#39;&#39;_2(\xi)</span>. That is, the second derivative <span class="math inline">f&#39;&#39;(x)</span> is continuous at <span class="math inline">\xi</span>.</p></li>
+</ol>
+<p>Conclude that <span class="math inline">f(x)</span> <span class="blue">is</span> indeed a <span class="blue">cubic spline</span>.</p>
 </section>
 </section>
 <section id="practical-exercises" class="level2">
 <h2 class="anchored" data-anchor-id="practical-exercises">Practical exercises</h2>
 <section id="exercise-d.6---implementation-of-local-linear-regression" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.6---implementation-of-local-linear-regression">Exercise D.6 - Implementation of local linear regression</h4>
+<p>Write a function called <code>loclin(x, y)</code> that implements local linear regression using the formula of <a href="../slides/un_D.html#local-linear-regression-ii">this slide</a>. You can use any kernel function of your choice.</p>
+<p>Compare the results of your function <code>loclin</code> on the <code>auto</code> dataset with those of the libraries <code>KernSmooth</code> and <code>sm</code>.</p>
 </section>
 <section id="exercise-d.7---implementation-of-leave-one-out-cross-validation" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.7---implementation-of-leave-one-out-cross-validation">Exercise D.7 - Implementation of leave-one-out cross-validation</h4>
 </section>
-<section id="exercise-d.8---the-asd-dataset" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.8---the-asd-dataset">Exercise D.8 - The <code>asd</code> dataset</h4>
+<section id="exercise-d.8---the-trawl-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.8---the-trawl-dataset">Exercise D.8 - The <code>trawl</code> dataset</h4>
 </section>
 </section>
 </section>

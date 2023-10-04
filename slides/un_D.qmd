@@ -871,7 +871,7 @@ $$
 . . .
 
 ::: callout-note
-#### LOO-CV (Linear smoothers)
+#### Theorem (LOO-CV for linear smoothers)
 
 Let $\hat{y}_{-i} = \hat{f}_{-i}(x_i)$ be the leave-one-out predictions
 of a [linear smoother]{.blue} and let $\hat{\bm{y}} = \bm{S}\bm{y}$ be
