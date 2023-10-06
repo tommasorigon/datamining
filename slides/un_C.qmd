@@ -535,7 +535,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 
 -   Best subset selection is conceptually appealing, but it has a [major
     limitation]{.orange}. There are $$
-    \sum_{k=1}^p \binom{n}{k} = 2^p
+    \sum_{k=1}^p \binom{p}{k} = 2^p
     $$ models to consider, which is [computationally
     prohibitive]{.orange}!
 

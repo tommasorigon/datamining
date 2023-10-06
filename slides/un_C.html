@@ -720,7 +720,7 @@ Best subset procedure
 <ul class="incremental">
 <li><p>The correct way of doing cross-validation requires that the <span class="blue">best subset selection</span> is performed on <span class="orange">every fold</span>, possibly obtaining different “best” models with the same size.</p></li>
 <li><p>Best subset selection is conceptually appealing, but it has a <span class="orange">major limitation</span>. There are <span class="math display">
-\sum_{k=1}^p \binom{n}{k} = 2^p
+\sum_{k=1}^p \binom{p}{k} = 2^p
 </span> models to consider, which is <span class="orange">computationally prohibitive</span>!</p></li>
 <li><p>There exist algorithms (i.e.&nbsp;<span class="blue">leaps and bounds</span>) that make this feasible for <span class="math inline">p \approx 30</span>.</p></li>
 <li><p>Recently, <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-44/issue-2/Best-subset-selection-via-a-modern-optimization-lens/10.1214/15-AOS1388.full">Bertsimas et al., 2016</a> proposed the usage of a mixed integer optimization formulation, allowing <span class="math inline">p</span> to be in the order of hundreds.</p></li>
