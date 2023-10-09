@@ -1,10 +1,14 @@
-# LAB 3-4 (Ames Housing) --------------------------------------------------------------------------
-# Course: Data Mining
-# Author: Tommaso Rigon
+#' ---
+#' title: "LAB 3-4 (Ames Housing)"
+#' author: "Tommaso Rigon"
+#' ---
+#' 
+#+ setup, include=FALSE
+knitr::opts_chunk$set(collapse = TRUE)
 
-# Predictive analysis ----------------------------------------------------------------------------
-
+#+ lab, include=TRUE, echo = TRUE, results = FALSE
 rm(list = ls())
+
 ames <- read.table("../data/ames.csv", header = TRUE, sep = ",", stringsAsFactors = TRUE)
 
 # Training, validation and test set ----------------------------------------------------------------------------
@@ -388,6 +392,8 @@ MSLE(ames_validation$SalePrice, y_hat_en)
 
 ## Cross-validation for elastic-net
 en_cv <- cv.glmnet(X_shrinkage, log(y_shrinkage), alpha = 0.5, lambda = lambda_en_grid)
+
+par(mfrow = c(1, 1))
 plot(en_cv)
 
 en_cv$lambda.min

@@ -1,7 +1,12 @@
-# LAB 2 (Ames Housing) -------------------------------------------------------------------
-# Course: Data Mining
-# Author: Tommaso Rigon
+#' ---
+#' title: "LAB 2 (Ames Housing)"
+#' author: "Tommaso Rigon"
+#' ---
+#' 
+#+ setup, include=FALSE
+knitr::opts_chunk$set(collapse = TRUE)
 
+#+ lab, include=TRUE, echo = TRUE, results = TRUE
 rm(list = ls())
 
 # The dataset can be also found online here: https://tommasorigon.github.io/datamining/data/AmesHousing.csv
@@ -172,7 +177,7 @@ ames$Heating.QC <- forcats::fct_lump_lowfreq(ames$Heating.QC)
 ames$MS.SubClass <- forcats::fct_lump_lowfreq(ames$MS.SubClass)
 
 # Even better, we can do it (after carefully checking this), on every single character column (dplyr needs to be installed)
-ames <- dplyr::mutate(ames, dplyr::across(is.character, function(x) forcats::fct_lump_min(x, 20)))
+ames <- dplyr::mutate(ames, dplyr::across(where(is.character), function(x) forcats::fct_lump_min(x, 20)))
 
 # Feature engineering -----------------------------------------------------------------------------------------
 
