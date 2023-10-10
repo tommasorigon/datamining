@@ -11,7 +11,7 @@ rm(list = ls())
 
 ames <- read.table("../data/ames.csv", header = TRUE, sep = ",", stringsAsFactors = TRUE)
 
-# Training, validation and test set ----------------------------------------------------------------------------
+# Training, validation and test set ----------------------------------------------------------------------
 
 # Manual subdivision in training / test
 set.seed(123)
@@ -30,7 +30,7 @@ ames_test <- ames[id_test, ]
 
 skimr::skim(ames_train)
 
-# Some initial plots ----------------------------------------------------------------------------------------------
+# Some initial plots ------------------------------------------------------------------------------------
 
 par(mfrow = c(1, 1))
 plot(ames_train$Gr.Liv.Area, ames_train$SalePrice,

@@ -1812,17 +1812,7 @@ ames$Heating.QC &lt;- forcats::fct_lump_lowfreq(ames$Heating.QC)
 ames$MS.SubClass &lt;- forcats::fct_lump_lowfreq(ames$MS.SubClass)
 
 # Even better, we can do it (after carefully checking this), on every single character column (dplyr needs to be installed)
-ames &lt;- dplyr::mutate(ames, dplyr::across(is.character, function(x) forcats::fct_lump_min(x, 20)))
-## Warning: There was 1 warning in `dplyr::mutate()`.
-## ℹ In argument: `dplyr::across(...)`.
-## Caused by warning:
-## ! Use of bare predicate functions was deprecated in tidyselect 1.1.0.
-## ℹ Please use wrap predicates in `where()` instead.
-##   # Was:
-##   data %&gt;% select(is.character)
-## 
-##   # Now:
-##   data %&gt;% select(where(is.character))
+ames &lt;- dplyr::mutate(ames, dplyr::across(where(is.character), function(x) forcats::fct_lump_min(x, 20)))
 
 # Feature engineering -----------------------------------------------------------------------------------------
 

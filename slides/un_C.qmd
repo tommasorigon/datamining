@@ -978,7 +978,7 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
 
 -   The [predicted values]{.orange} for the [centered responses]{.blue}
     $\bm{y}$ of the PCR with $k$ components are: $$
-    \bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j, \qquad \text{ where } \qquad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
+    \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \bm{X} \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j = \bm{X}\hat{\beta}_\text{pcr}, \qquad \text{ where } \qquad \hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{v}}_j \hat{\gamma}_j.
     $$
 
 -   This representation highlights two important aspects:
