@@ -7,8 +7,13 @@ glimpse(prostate)
 # They have, however, the same mean and variance
 library(mvtnorm)
 
-set.seed(1000)
-prostate[, 1:8] <- rmvnorm(97, mean = colMeans(prostate[, 1:8]), sigma = var(prostate[, 1:8]))
+set.seed(1234)
+vars <- colnames(prostate)
+n <- 100
+prostate <- data.frame(rmvnorm(n, mean = colMeans(prostate[, 1:8]), sigma = var(prostate[, 1:8])), 
+                  rnorm(n, 2.5), 
+                  sample(c(TRUE,FALSE), n, replace = TRUE))
+colnames(prostate) <- vars
 
 # Standardize the predictors, as in Tibshirani (1996)
 which_vars <- which(colnames(prostate) %in% c("lpsa", "train"))

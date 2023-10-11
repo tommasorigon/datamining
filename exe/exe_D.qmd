@@ -33,25 +33,30 @@ editor_options:
 
 [Show]{.orange} that the Nadaraya-Watson estimator with fixed bandwidth $h$ and a Gaussian kernel is [differentiable]{.blue}. 
 
-What can be said about the Epanechnikov kernel? What can be said for the Epanechnikov kernel with an adaptive nearest-neighbor bandwidth $h(x)$?
+What can be said about the Epanechnikov kernel? 
 
-#### Exercise D.2 - Local linear regression
+#### Exercise D.2 - Local linear regression (explicit formula)
 
-Prove the Theorem of [this slide](../slides/un_D.html#local-linear-regression-ii) about the computationally efficient formula for local linear regression. 
+Prove the Theorem that is stated in [this slide](../slides/un_D.html#local-linear-regression-ii) about the explicit formula for [local linear regression estimator]{.blue}. 
 
-#### Exercise D.3 - Preservation of linearity
+#### Exercise D.3 - Preservation of linear trends
 
 [Show]{.orange} that local linear regression applied to $(x_i, y_i)$ [preserves]{.orange} the [linear part of the fit]{.blue}. In other words, let us decompose $y_i = \hat{y}_{i,\text{ols}} + r_i$, where $\hat{y}_{i,\text{ols}} = \hat{\beta}_0 + \hat{\beta}_1 x_i$ represents the linear regression estimate, and $\bm{S}$ is the smoothing matrix, then
 $$
 \bm{S}\bm{y} = \bm{S}\hat{\bm{y}}_\text{ols} + \bm{S}\bm{r} = \hat{\bm{y}}_\text{ols} + \bm{S}\bm{r}.
 $$
-Conclude that if the points $(x_i, y_i)$ belong to a line, then the fitted values of a local linear regression coincide with $y_i$. 
+Another way of looking at this property is the following: if the points $(x_i, y_i)$ [belong to a line]{.blue}, then the fitted values of a local linear regression coincide with $y_i$. More formally, [show]{.orange} that if $y_i = \alpha + \beta x_i$, then
+$$
+\hat{f}(x) = \sum_{i=1}^ns_i(x)y_i = \alpha + \beta x.
+$$
 
-Does the same property hold for the Nadaraya-Watson estimator? If yes, prove it. If not, show a counterexample.
+Does the same property hold for the Nadaraya-Watson estimator? 
 
 #### Exercise D.4 - Conceptual exercise
 
-Every nonparametric regression model involves a smoothing parameter. For example, consider the parameter $\lambda$ of smoothing splines or $h$ of local linear regression. Can we estimate $h$ and $\lambda$ using a standard method such as maximum likelihood?
+Every nonparametric regression model involves a [smoothing parameter]{.blue}. For example, consider the parameter $\lambda$ of smoothing splines or $h$ of local linear regression. 
+
+Can we estimate $h$ and $\lambda$ using a standard method such as the [maximum likelihood]{.orange}?
 
 #### Exercise D.5 - Leave-one-out cross-validation
 

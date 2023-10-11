@@ -3071,22 +3071,25 @@ vertical-align: -.125em;
 <section id="exercise-d.1---differentiability-of-nadaraya-watson" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.1---differentiability-of-nadaraya-watson">Exercise D.1 - Differentiability of Nadaraya-Watson</h4>
 <p><span class="orange">Show</span> that the Nadaraya-Watson estimator with fixed bandwidth <span class="math inline">h</span> and a Gaussian kernel is <span class="blue">differentiable</span>.</p>
-<p>What can be said about the Epanechnikov kernel? What can be said for the Epanechnikov kernel with an adaptive nearest-neighbor bandwidth <span class="math inline">h(x)</span>?</p>
+<p>What can be said about the Epanechnikov kernel?</p>
 </section>
-<section id="exercise-d.2---local-linear-regression" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.2---local-linear-regression">Exercise D.2 - Local linear regression</h4>
-<p>Prove the Theorem of <a href="../slides/un_D.html#local-linear-regression-ii">this slide</a> about the computationally efficient formula for local linear regression.</p>
+<section id="exercise-d.2---local-linear-regression-explicit-formula" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.2---local-linear-regression-explicit-formula">Exercise D.2 - Local linear regression (explicit formula)</h4>
+<p>Prove the Theorem that is stated in <a href="../slides/un_D.html#local-linear-regression-ii">this slide</a> about the explicit formula for <span class="blue">local linear regression estimator</span>.</p>
 </section>
-<section id="exercise-d.3---preservation-of-linearity" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.3---preservation-of-linearity">Exercise D.3 - Preservation of linearity</h4>
+<section id="exercise-d.3---preservation-of-linear-trends" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.3---preservation-of-linear-trends">Exercise D.3 - Preservation of linear trends</h4>
 <p><span class="orange">Show</span> that local linear regression applied to <span class="math inline">(x_i, y_i)</span> <span class="orange">preserves</span> the <span class="blue">linear part of the fit</span>. In other words, let us decompose <span class="math inline">y_i = \hat{y}_{i,\text{ols}} + r_i</span>, where <span class="math inline">\hat{y}_{i,\text{ols}} = \hat{\beta}_0 + \hat{\beta}_1 x_i</span> represents the linear regression estimate, and <span class="math inline">\bm{S}</span> is the smoothing matrix, then <span class="math display">
 \bm{S}\bm{y} = \bm{S}\hat{\bm{y}}_\text{ols} + \bm{S}\bm{r} = \hat{\bm{y}}_\text{ols} + \bm{S}\bm{r}.
-</span> Conclude that if the points <span class="math inline">(x_i, y_i)</span> belong to a line, then the fitted values of a local linear regression coincide with <span class="math inline">y_i</span>.</p>
-<p>Does the same property hold for the Nadaraya-Watson estimator? If yes, prove it. If not, show a counterexample.</p>
+</span> Another way of looking at this property is the following: if the points <span class="math inline">(x_i, y_i)</span> <span class="blue">belong to a line</span>, then the fitted values of a local linear regression coincide with <span class="math inline">y_i</span>. More formally, <span class="orange">show</span> that if <span class="math inline">y_i = \alpha + \beta x_i</span>, then <span class="math display">
+\hat{f}(x) = \sum_{i=1}^ns_i(x)y_i = \alpha + \beta x.
+</span></p>
+<p>Does the same property hold for the Nadaraya-Watson estimator?</p>
 </section>
 <section id="exercise-d.4---conceptual-exercise" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.4---conceptual-exercise">Exercise D.4 - Conceptual exercise</h4>
-<p>Every nonparametric regression model involves a smoothing parameter. For example, consider the parameter <span class="math inline">\lambda</span> of smoothing splines or <span class="math inline">h</span> of local linear regression. Can we estimate <span class="math inline">h</span> and <span class="math inline">\lambda</span> using a standard method such as maximum likelihood?</p>
+<p>Every nonparametric regression model involves a <span class="blue">smoothing parameter</span>. For example, consider the parameter <span class="math inline">\lambda</span> of smoothing splines or <span class="math inline">h</span> of local linear regression.</p>
+<p>Can we estimate <span class="math inline">h</span> and <span class="math inline">\lambda</span> using a standard method such as the <span class="orange">maximum likelihood</span>?</p>
 </section>
 <section id="exercise-d.5---leave-one-out-cross-validation" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.5---leave-one-out-cross-validation">Exercise D.5 - Leave-one-out cross-validation</h4>
