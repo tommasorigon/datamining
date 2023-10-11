@@ -1421,6 +1421,8 @@ kable(tidy(m1, conf.int = FALSE), digits = 3)
 
 -   Results of the IRLS algorithm applied to the logistic regression
     model using `heart` data.
+  
+- The coefficient of the variable `obesity` is [negative]{.orange}. Why do you think this is the case?
 
 ## Prediction and model assessment I
 

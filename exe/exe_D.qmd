@@ -55,7 +55,9 @@ Every nonparametric regression model involves a smoothing parameter. For example
 
 #### Exercise D.5 - Leave-one-out cross-validation
 
-[Prove]{.orange} the Theorem of [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii), about the leave-one-out cross validation for linear smoothers. 
+[Prove]{.orange} the Theorem of [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii), about the leave-one-out cross validation for projective linear smoothers. 
+
+Show in particular that the Theorem is correct for the: i. Nadaraya-Watson estimator, ii. local linear regression, iii. regression splines, iv. smoothing splines. 
 
 #### Exercise D.6 - Truncated power basis
 

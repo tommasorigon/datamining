@@ -864,17 +864,29 @@ $$
 
 ## Choice of the bandwidth II
 
--   Cross-validation is another option for selecting the bandwidth $h$.
-    In [linear smoothers]{.blue} there is a brilliant [computational
-    shortcut]{.orange} for the leave-one-out case.
+- Cross-validation is another option for selecting the bandwidth $h$. For [most]{.orange} [linear smoothers]{.blue} there is a brilliant [computational shortcut]{.orange} for the leave-one-out case.
 
 . . .
+
+- Any reasonable linear smoother is constant preserving, that is $\sum_{j=1}^ns_j(x) = 1$ for all $x$. Moreover, for most linear smoothers the following property holds: 
+$$
+\hat{y}_{-i} = \frac{1}{1 - s_i(x_i)}\sum_{j \neq i} s_j(x_i) y_j.
+$$
+- In other words, the [leave-one-out predictions]{.orange} can be obtained by [excluding]{.orange} the $i$th observation and [re-normalizing]{.blue} the weights.
+
+. . .
+
+- A linear smoother is called [projective]{.orange} if it has the above property. 
+
+- [All]{.orange} the [linear smoothers]{.orange} presented in this unit (Nadaraya-Watson, local linear regression, regression an smoothing splines) are projective (see Exercises).
+
+## Choice of the bandwidth III
 
 ::: callout-note
 #### Theorem (LOO-CV for linear smoothers)
 
 Let $\hat{y}_{-i} = \hat{f}_{-i}(x_i)$ be the leave-one-out predictions
-of a [linear smoother]{.blue} and let $\hat{\bm{y}} = \bm{S}\bm{y}$ be
+of a [projective linear smoother]{.blue} and let $\hat{\bm{y}} = \bm{S}\bm{y}$ be
 the predictions of the full model. Then: $$
 y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots,n.
 $$ Therefore, the leave-one-out mean squared error is
