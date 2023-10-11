@@ -37,7 +37,7 @@ What can be said about the Epanechnikov kernel?
 
 #### Exercise D.2 - Local linear regression (explicit formula)
 
-Prove the Theorem that is stated in [this slide](../slides/un_D.html#local-linear-regression-ii) about the explicit formula for [local linear regression estimator]{.blue}. 
+Prove the Theorem about the explicit formula for [local linear regression estimator]{.blue} that is stated in [this slide](../slides/un_D.html#local-linear-regression-ii). 
 
 #### Exercise D.3 - Preservation of linear trends
 
@@ -60,7 +60,7 @@ Can we estimate $h$ and $\lambda$ using a standard method such as the [maximum l
 
 #### Exercise D.5 - Leave-one-out cross-validation
 
-[Prove]{.orange} the Theorem of [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii), about the leave-one-out cross validation for projective linear smoothers. 
+[Prove]{.orange} the Theorem about the leave-one-out cross validation for "projective" linear smoothers, described in [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii). 
 
 Show in particular that the Theorem is correct for the: i. Nadaraya-Watson estimator, ii. local linear regression, iii. regression splines, iv. smoothing splines. 
 

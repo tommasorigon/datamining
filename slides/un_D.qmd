@@ -893,7 +893,7 @@ $$ Therefore, the leave-one-out mean squared error is
 $$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}\right)^2.$$
 :::
 
-## Choice of the bandwidth III
+## Choice of the bandwidth IV
 
 
 ```{r}
