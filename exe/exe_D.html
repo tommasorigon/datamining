@@ -3075,7 +3075,7 @@ vertical-align: -.125em;
 </section>
 <section id="exercise-d.2---local-linear-regression-explicit-formula" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.2---local-linear-regression-explicit-formula">Exercise D.2 - Local linear regression (explicit formula)</h4>
-<p>Prove the Theorem about the explicit formula for <span class="blue">local linear regression estimator</span> that is stated in <a href="../slides/un_D.html#local-linear-regression-ii">this slide</a>.</p>
+<p>Prove the theorem about the explicit formula for <span class="blue">local linear regression estimator</span> that is stated in <a href="../slides/un_D.html#local-linear-regression-ii">this slide</a>.</p>
 </section>
 <section id="exercise-d.3---preservation-of-linear-trends" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.3---preservation-of-linear-trends">Exercise D.3 - Preservation of linear trends</h4>
@@ -3085,6 +3085,7 @@ vertical-align: -.125em;
 \hat{f}(x) = \sum_{i=1}^ns_i(x)y_i = \alpha + \beta x.
 </span></p>
 <p>Does the same property hold for the Nadaraya-Watson estimator?</p>
+<p><span class="blue">Hint</span>. Start by showing that <span class="math inline">\sum_{i=1}^ns_i(x) = 1</span> and that <span class="math inline">\sum_{i=1}^ns_i(x)(x_i - x) = 0</span>. Exploit these properties to obtain the proof.</p>
 </section>
 <section id="exercise-d.4---conceptual-exercise" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.4---conceptual-exercise">Exercise D.4 - Conceptual exercise</h4>
@@ -3093,8 +3094,14 @@ vertical-align: -.125em;
 </section>
 <section id="exercise-d.5---leave-one-out-cross-validation" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.5---leave-one-out-cross-validation">Exercise D.5 - Leave-one-out cross-validation</h4>
-<p><span class="orange">Prove</span> the Theorem about the leave-one-out cross validation for “projective” linear smoothers, described in <a href="../slides/un_D.html#choice-of-the-bandwidth-ii">this slide</a>.</p>
-<p>Show in particular that the Theorem is correct for the: i. Nadaraya-Watson estimator, ii. local linear regression, iii. regression splines, iv. smoothing splines.</p>
+<p><span class="orange">Prove</span> the theorem about the <span class="blue">leave-one-out cross validation</span> for “projective” linear smoothers, described in <a href="../slides/un_D.html#choice-of-the-bandwidth-ii">this slide</a>.</p>
+<p>Then, show that the theorem is valid for the following estimators:</p>
+<ol type="i">
+<li>Nadaraya-Watson estimator. <span class="blue">Hint</span>: sse the fact that Nadaraya-Watson is “projective” almost by definition.</li>
+<li>Local linear regression. <span class="blue">Hint</span>: prove that local linear regression is “projective”.</li>
+<li>Regression splines. <span class="blue">Hint</span>: this is a special instance of linear model, so…</li>
+<li>Smoothing splines. <span class="blue">Hint</span>: you may want to use a generalization of the Sherman-Morrison formula, called <a href="https://en.wikipedia.org/wiki/Woodbury_matrix_identity">Sherman–Morrison–Woodbury identity</a>.</li>
+</ol>
 </section>
 <section id="exercise-d.6---truncated-power-basis" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.6---truncated-power-basis">Exercise D.6 - Truncated power basis</h4>

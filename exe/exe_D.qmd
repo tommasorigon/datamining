@@ -37,7 +37,7 @@ What can be said about the Epanechnikov kernel?
 
 #### Exercise D.2 - Local linear regression (explicit formula)
 
-Prove the Theorem about the explicit formula for [local linear regression estimator]{.blue} that is stated in [this slide](../slides/un_D.html#local-linear-regression-ii). 
+Prove the theorem about the explicit formula for [local linear regression estimator]{.blue} that is stated in [this slide](../slides/un_D.html#local-linear-regression-ii). 
 
 #### Exercise D.3 - Preservation of linear trends
 
@@ -52,6 +52,8 @@ $$
 
 Does the same property hold for the Nadaraya-Watson estimator? 
 
+[Hint]{.blue}. Start by showing that $\sum_{i=1}^ns_i(x) = 1$ and that $\sum_{i=1}^ns_i(x)(x_i - x) = 0$. Exploit these properties to obtain the proof. 
+
 #### Exercise D.4 - Conceptual exercise
 
 Every nonparametric regression model involves a [smoothing parameter]{.blue}. For example, consider the parameter $\lambda$ of smoothing splines or $h$ of local linear regression. 
@@ -60,9 +62,14 @@ Can we estimate $h$ and $\lambda$ using a standard method such as the [maximum l
 
 #### Exercise D.5 - Leave-one-out cross-validation
 
-[Prove]{.orange} the Theorem about the leave-one-out cross validation for "projective" linear smoothers, described in [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii). 
+[Prove]{.orange} the theorem about the [leave-one-out cross validation]{.blue} for "projective" linear smoothers, described in [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii). 
 
-Show in particular that the Theorem is correct for the: i. Nadaraya-Watson estimator, ii. local linear regression, iii. regression splines, iv. smoothing splines. 
+Then, show that the theorem is valid for the following estimators: 
+
+  i. Nadaraya-Watson estimator. [Hint]{.blue}: sse the fact that Nadaraya-Watson is "projective" almost by definition.
+  ii. Local linear regression. [Hint]{.blue}: prove that local linear regression is "projective".
+  iii. Regression splines. [Hint]{.blue}: this is a special instance of linear model, so...
+  iv. Smoothing splines. [Hint]{.blue}: you may want to use a generalization of the Sherman-Morrison formula, called [Sherman–Morrison–Woodbury identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity). 
 
 #### Exercise D.6 - Truncated power basis
 

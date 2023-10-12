@@ -2472,7 +2472,7 @@ ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
 
 - [Bayesian interpretation]{.orange}: the penalty can be interpreted as a Laplace prior on $\beta$.
 
-- As mentioned, under certain conditions the LAR algorithm can be seen as the limiting case of [boosting procedure]{.blue}, in which small corrections to predictions are iteratively performed. 
+- As mentioned, under certain conditions the LAR algorithm can be seen as the limiting case of a [boosting procedure]{.blue}, in which small corrections to predictions are iteratively performed. 
 
 - The [nonnegative garrote]{.orange} (Breiman, 1995) is a two-stage procedure with a close relationship to the lasso. Breiman’s paper was the inspiration for Tibshirani (1996).
 
