@@ -103,6 +103,10 @@ v. Show that $f''_1(\xi) = f''_2(\xi)$. That is, the second derivative $f''(x)$ 
 
 Conclude that $f(x)$ [is]{.blue} indeed a [cubic spline]{.blue}. 
 
+#### Exercise D.7 - Smoothing splines estimator
+
+[Derive]{.orange} the smoothing spline estimator $\hat{\beta} = (\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T\bm{y}$.
+
 ## Practical exercises
 
 #### Exercise D.6 - Implementation of local linear regression
