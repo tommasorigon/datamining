@@ -3097,11 +3097,12 @@ vertical-align: -.125em;
 <p><span class="orange">Prove</span> the theorem about the <span class="blue">leave-one-out cross validation</span> for “projective” linear smoothers, described in <a href="../slides/un_D.html#choice-of-the-bandwidth-ii">this slide</a>.</p>
 <p>Then, show that the theorem is valid for the following estimators:</p>
 <ol type="i">
-<li>Nadaraya-Watson estimator. <span class="blue">Hint</span>: sse the fact that Nadaraya-Watson is “projective” almost by definition.</li>
+<li>Nadaraya-Watson estimator. <span class="blue">Hint</span>: use the fact that Nadaraya-Watson is “projective” almost by definition.</li>
 <li>Local linear regression. <span class="blue">Hint</span>: prove that local linear regression is “projective”.</li>
 <li>Regression splines. <span class="blue">Hint</span>: this is a special instance of linear model, so…</li>
-<li>Smoothing splines. <span class="blue">Hint</span>: you may want to use a generalization of the Sherman-Morrison formula, called <a href="https://en.wikipedia.org/wiki/Woodbury_matrix_identity">Sherman–Morrison–Woodbury identity</a>.</li>
+<li>Smoothing splines. <span class="blue">Hint</span>: you may want to use again the Sherman-Morrison formula.</li>
 </ol>
+<p>Finally, <span class="orange">prove</span> that in all the above cases <span class="math inline">|y_i - \hat{y}_{-i}| \ge |y_i - \hat{y}_i|</span>. That is, the leave-one-out residuals are always bigger than the regular residuals.</p>
 </section>
 <section id="exercise-d.6---truncated-power-basis" class="level4">
 <h4 class="anchored" data-anchor-id="exercise-d.6---truncated-power-basis">Exercise D.6 - Truncated power basis</h4>

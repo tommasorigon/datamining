@@ -64,11 +64,14 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a></li>
+  <li><a href="#an-ecological-application" id="toc-an-ecological-application" class="nav-link" data-scroll-target="#an-ecological-application">An ecological application</a>
+  <ul class="collapse">
   <li><a href="#the-trawl-dataset" id="toc-the-trawl-dataset" class="nav-link" data-scroll-target="#the-trawl-dataset">The <code>trawl</code> dataset</a></li>
   <li><a href="#the-trawl-dataset-1" id="toc-the-trawl-dataset-1" class="nav-link" data-scroll-target="#the-trawl-dataset-1">The <code>trawl</code> dataset</a></li>
   <li><a href="#getting-started-linear-models" id="toc-getting-started-linear-models" class="nav-link" data-scroll-target="#getting-started-linear-models">Getting started: linear models</a></li>
   <li><a href="#scatterplot-with-loess-estimate" id="toc-scatterplot-with-loess-estimate" class="nav-link" data-scroll-target="#scatterplot-with-loess-estimate">Scatterplot with <code>loess</code> estimate</a></li>
   <li><a href="#comments-and-cricism-of-linear-models" id="toc-comments-and-cricism-of-linear-models" class="nav-link" data-scroll-target="#comments-and-cricism-of-linear-models">Comments and cricism of linear models</a></li>
+  </ul></li>
   <li><a href="#generalized-additive-models-gam" id="toc-generalized-additive-models-gam" class="nav-link" data-scroll-target="#generalized-additive-models-gam">Generalized additive models (GAM)</a>
   <ul class="collapse">
   <li><a href="#the-anova-decomposition-of-a-function" id="toc-the-anova-decomposition-of-a-function" class="nav-link" data-scroll-target="#the-anova-decomposition-of-a-function">The ANOVA decomposition of a function</a></li>
@@ -178,6 +181,8 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
+<section id="an-ecological-application" class="level1">
+<h1>An ecological application</h1>
 <section id="the-trawl-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="the-trawl-dataset">The <code>trawl</code> dataset</h2>
 <div class="incremental">
@@ -302,6 +307,7 @@ y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
 <li><p>However, the number of covariates is <span class="math inline">p = 5</span> and therefore a fully nonparametric estimation would <span class="orange">not</span> be <span class="orange">feasible</span>, because of the curse of dimensionality.</p></li>
 <li><p>We need a simplified modelling strategy, that accounts for non-linearities but at the same time is not fully flexible.</p></li>
 </ul>
+</section>
 </section>
 <section id="generalized-additive-models-gam" class="level1">
 <h1>Generalized additive models (GAM)</h1>

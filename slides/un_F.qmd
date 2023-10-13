@@ -88,6 +88,8 @@ Reef](https://en.wikipedia.org/wiki/Great_Barrier_Reef)
 :::
 :::
 
+# An ecological application
+
 ## The `trawl` dataset
 
 ```{r}

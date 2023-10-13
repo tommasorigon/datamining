@@ -66,10 +66,12 @@ Can we estimate $h$ and $\lambda$ using a standard method such as the [maximum l
 
 Then, show that the theorem is valid for the following estimators: 
 
-  i. Nadaraya-Watson estimator. [Hint]{.blue}: sse the fact that Nadaraya-Watson is "projective" almost by definition.
+  i. Nadaraya-Watson estimator. [Hint]{.blue}: use the fact that Nadaraya-Watson is "projective" almost by definition.
   ii. Local linear regression. [Hint]{.blue}: prove that local linear regression is "projective".
   iii. Regression splines. [Hint]{.blue}: this is a special instance of linear model, so...
-  iv. Smoothing splines. [Hint]{.blue}: you may want to use a generalization of the Sherman-Morrison formula, called [Sherman–Morrison–Woodbury identity](https://en.wikipedia.org/wiki/Woodbury_matrix_identity). 
+  iv. Smoothing splines. [Hint]{.blue}: you may want to use again the Sherman-Morrison formula. 
+  
+Finally, [prove]{.orange} that in all the above cases $|y_i - \hat{y}_{-i}| \ge |y_i - \hat{y}_i|$. That is, the leave-one-out residuals are always bigger than the regular residuals. 
 
 #### Exercise D.6 - Truncated power basis
 
