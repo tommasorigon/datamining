@@ -3132,16 +3132,26 @@ vertical-align: -.125em;
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
     </span></p>
 </section>
+<section id="exercise-c.7---the-tied-covariances-in-lar" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-c.7---the-tied-covariances-in-lar">Exercise C.7 - The tied covariances in LAR</h4>
+<p>Consider a regression problem with <span class="math inline">k</span> variables having mean zero and standard deviation one. The response is also centered. Suppose also that each variable has <span class="blue">identical absolute covariance</span> with the response: <span class="math display">
+\text{cov}(\tilde{\bm{x}}_j, \bm{y}) = \frac{1}{n}\sum_{j=1}^k x_{ij} y_i= \lambda_{k-1}, \qquad j=1,\dots,k.
+</span> Let <span class="math inline">\hat{\beta}</span> be the <span class="blue">least squares</span> estimate and let us denote with <span class="math inline">r_i(\alpha) = y_i - \alpha x_i^T\hat{\beta}</span> the residuals from a fraction of the predictions, with <span class="math inline">\alpha \in [0, 1]</span>.</p>
+<p><span class="orange">Prove</span> that the following relationship holds: <span class="math display">
+\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha)) = \frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - r_i(\alpha)\} = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
+</span> implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit <span class="math inline">x_i^T\hat{\beta}</span>.</p>
+<p><span class="orange">Realize</span> that such a property implies that the <span class="orange">covariances</span> with the residuals in the <span class="blue">LAR algorithm</span> are <span class="orange">tied</span>, having set <span class="math inline">\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}</span> and <span class="math inline">0 \le \lambda \le \lambda_k</span>.</p>
+</section>
 </section>
 <section id="practical-exercises" class="level2">
 <h2 class="anchored" data-anchor-id="practical-exercises">Practical exercises</h2>
-<section id="exercise-c.7---the-hitters-dataset" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-c.7---the-hitters-dataset">Exercise C.7 - The <code>Hitters</code> dataset</h4>
+<section id="exercise-c.8---the-hitters-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-c.8---the-hitters-dataset">Exercise C.8 - The <code>Hitters</code> dataset</h4>
 <p>Consider the <code>Hitters</code> dataset which is available in the <code>ISLR</code> R library. Having removed the missing values, consider a regression models to predict the <code>Salary</code> as a function of the available covariates.</p>
 <p>Use best subset, principal components, ridge regression, and lasso to identify the handle the presence of potentially irrelevant variables.</p>
 </section>
-<section id="exercise-c.8---implementation-of-pathwise-coordinate-optimization" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-c.8---implementation-of-pathwise-coordinate-optimization">Exercise C.8 - Implementation of pathwise coordinate optimization</h4>
+<section id="exercise-c.9---implementation-of-pathwise-coordinate-optimization" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-c.9---implementation-of-pathwise-coordinate-optimization">Exercise C.9 - Implementation of pathwise coordinate optimization</h4>
 <p>Implement the pathwise coordinate optimization algorithm that is described in <a href="../slides/un_C.html#coordinate-descent">this slide</a>. Use to predict the <code>Salary</code> of the baseball players on the <code>Hitters</code> dataset.</p>
 <!-- #### Exercise P.1 -->
 <!-- ```{r} -->

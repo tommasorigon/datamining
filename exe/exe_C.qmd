@@ -122,15 +122,31 @@ Consider thea lasso problem with a    [single-predictor]{.blue} $$
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
     $$
     
+#### Exercise C.7 - The tied covariances in LAR
+
+Consider a regression problem with $k$ variables having mean zero and standard deviation one. The response is also centered. Suppose also that each variable has [identical absolute covariance]{.blue} with the response:
+$$
+\text{cov}(\tilde{\bm{x}}_j, \bm{y}) = \frac{1}{n}\sum_{j=1}^k x_{ij} y_i= \lambda_{k-1}, \qquad j=1,\dots,k.
+$$
+Let $\hat{\beta}$ be the [least squares]{.blue} estimate and let us denote with $r_i(\alpha) = y_i - \alpha x_i^T\hat{\beta}$ the residuals from a fraction of the predictions, with $\alpha \in [0, 1]$.
+
+[Prove]{.orange} that the following relationship holds:
+$$
+\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha)) = \frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - r_i(\alpha)\} = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
+$$
+implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit $x_i^T\hat{\beta}$.
+
+[Realize]{.orange} that such a property implies that the [covariances]{.orange} with the residuals in the [LAR algorithm]{.blue} are [tied]{.orange}, having set $\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}$ and $0 \le \lambda \le \lambda_k$. 
+
 ## Practical exercises
 
-#### Exercise C.7 - The `Hitters` dataset
+#### Exercise C.8 - The `Hitters` dataset
 
 Consider the `Hitters` dataset which is available in the `ISLR` R library. Having removed the missing values, consider a regression models to predict the `Salary` as a function of the available covariates.
 
 Use best subset, principal components, ridge regression, and lasso to identify the handle the presence of potentially irrelevant variables. 
 
-#### Exercise C.8 - Implementation of pathwise coordinate optimization
+#### Exercise C.9 - Implementation of pathwise coordinate optimization
 
 Implement the pathwise coordinate optimization algorithm that is described in [this slide](../slides/un_C.html#coordinate-descent). Use to predict the `Salary` of the baseball players on the `Hitters` dataset.
 
