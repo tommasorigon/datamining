@@ -1065,7 +1065,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   Let us define cross-validated "[residuals]{.orange}" of our
     procedure as follows $$
     r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
-    $$ so that $\widehat{\text{Err}} = \bar{r}$.
+    $$ so that $\widehat{\text{Err}} = \bar{r}$. Does it coincide with the estimate $\widehat{\text{Err}}$ presented in the previous slide? Recall that $V_k \approx n / K$...
 
 -   Then, a simple estimate for the standard error of
     $\widehat{\text{Err}}$ is $$

@@ -772,7 +772,7 @@ Bias-variance decomposition
 <li><p>An advantage of CV is that <span class="blue">variance</span> of the Monte Carlo estimate <span class="math inline">\widehat{\mathrm{Err}}</span> can be quantified.</p></li>
 <li><p>Let us define cross-validated “<span class="orange">residuals</span>” of our procedure as follows <span class="math display">
 r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
-</span> so that <span class="math inline">\widehat{\text{Err}} = \bar{r}</span>.</p></li>
+</span> so that <span class="math inline">\widehat{\text{Err}} = \bar{r}</span>. Does it coincide with the estimate <span class="math inline">\widehat{\text{Err}}</span> presented in the previous slide? Recall that <span class="math inline">V_k \approx n / K</span>…</p></li>
 <li><p>Then, a simple estimate for the standard error of <span class="math inline">\widehat{\text{Err}}</span> is <span class="math display">
 \widehat{\text{se}} = \frac{1}{\sqrt{n}} \text{sd}(r) = \frac{1}{\sqrt{n}} \sqrt{\frac{1}{n-1}\sum_{i=1}^n (r_i - \bar{r})^2}.
 </span></p></li>
