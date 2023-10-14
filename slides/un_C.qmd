@@ -2751,7 +2751,7 @@ In a regression model with an elastic-net penalty, the coordinate descent is [th
 
 - Best subset selection and its forward and backward greedy approximations are conceptually straightforward to extend to GLMs (using log-likelihood and ML).
 
-- The only difficulty is computations because leaps-and-bound approaches can not be applied here.
+- However, computations are much harder: leaps-and-bound approaches can not be applied.
 :::
 
 . . .
