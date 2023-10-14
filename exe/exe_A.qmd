@@ -35,7 +35,10 @@ Suppose the $n\times p$ design matrix $\bm{X}$ has [full rank]{.blue}, that is $
 $$
 \text{rk}(\bm{H}) = \text{tr}(\bm{H}) = p.
 $$
-Moreover, show that $\bm{H} = \bm{H}^T$ and that $\bm{H}^2 = \bm{H}$. 
+Moreover, show that $\bm{H} = \bm{H}^T$ and that $\bm{H}^2 = \bm{H}$. Finally, show that if the [intercept]{.blue} is included into the model, then the sum of the elements of each row of $\bm{H}$ (and hence each column, because of symmetry) equals 1, that is
+$$
+\sum_{j=1}^n[\bm{H}]_{ij} = 1, \qquad i=1,\dots,n.
+$$
 
 [Hint]{.blue}. You may want to look for the properties of [projection matrices]{.orange} on your favorite linear algebra textbook, otherwise this exercise becomes quite hard. 
 
@@ -49,7 +52,7 @@ Moreover, show that $\bm{H} = \bm{H}^T$ and that $\bm{H}^2 = \bm{H}$.
 \hat{\beta}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j}, \qquad j=1,\dots,p.
 $$
 
-Moreover, obtain the covariance matrix of $\hat{\beta}$ and conclude that the estimators $\hat{\beta}_j$ and $\hat{\beta}_{j'}$ are independent, assuming Gaussian errors.
+Assume, in addition, that $\bm{Y} = \bm{Z}\beta + \bm{\epsilon}$ and that the errors $\epsilon_i \overset{\text{iid}}{\sim} \text{N}(0, \sigma^2)$. Then, obtain the covariance matrix of $\hat{\beta}$ and conclude that the estimators $\hat{\beta}_j$ and $\hat{\beta}_{j'}$ are independent, .
 
 #### A.4 - Final step of the Gram-Schidmt algorithm
 

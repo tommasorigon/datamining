@@ -3072,7 +3072,9 @@ vertical-align: -.125em;
 <h4 class="anchored" data-anchor-id="a.1---properties-of-the-projection-matrix-bmh">A.1 - Properties of the projection matrix <span class="math inline">\bm{H}</span></h4>
 <p>Suppose the <span class="math inline">n\times p</span> design matrix <span class="math inline">\bm{X}</span> has <span class="blue">full rank</span>, that is <span class="math inline">\text{rk}(\bm{X}) = p</span>, with <span class="math inline">p &lt; n</span>. <span class="orange">Prove</span> that <span class="math display">
 \text{rk}(\bm{H}) = \text{tr}(\bm{H}) = p.
-</span> Moreover, show that <span class="math inline">\bm{H} = \bm{H}^T</span> and that <span class="math inline">\bm{H}^2 = \bm{H}</span>.</p>
+</span> Moreover, show that <span class="math inline">\bm{H} = \bm{H}^T</span> and that <span class="math inline">\bm{H}^2 = \bm{H}</span>. Finally, show that if the <span class="blue">intercept</span> is included into the model, then the sum of the elements of each row of <span class="math inline">\bm{H}</span> (and hence each column, because of symmetry) equals 1, that is <span class="math display">
+\sum_{j=1}^n[\bm{H}]_{ij} = 1, \qquad i=1,\dots,n.
+</span></p>
 <p><span class="blue">Hint</span>. You may want to look for the properties of <span class="orange">projection matrices</span> on your favorite linear algebra textbook, otherwise this exercise becomes quite hard.</p>
 </section>
 <section id="a.2---positive-definiveness-of-bmxtbmx" class="level4">
@@ -3084,7 +3086,7 @@ vertical-align: -.125em;
 <p><span class="orange">Prove</span> the statement of <a href="../slides/un_A.html#orthogonal-predictors">Proposition A.2</a>. In other words, show that when the predictors are orthogonal the least square estimate is <span class="math display">
 \hat{\beta}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j}, \qquad j=1,\dots,p.
 </span></p>
-<p>Moreover, obtain the covariance matrix of <span class="math inline">\hat{\beta}</span> and conclude that the estimators <span class="math inline">\hat{\beta}_j</span> and <span class="math inline">\hat{\beta}_{j&#39;}</span> are independent, assuming Gaussian errors.</p>
+<p>Assume, in addition, that <span class="math inline">\bm{Y} = \bm{Z}\beta + \bm{\epsilon}</span> and that the errors <span class="math inline">\epsilon_i \overset{\text{iid}}{\sim} \text{N}(0, \sigma^2)</span>. Then, obtain the covariance matrix of <span class="math inline">\hat{\beta}</span> and conclude that the estimators <span class="math inline">\hat{\beta}_j</span> and <span class="math inline">\hat{\beta}_{j&#39;}</span> are independent, .</p>
 </section>
 <section id="a.4---final-step-of-the-gram-schidmt-algorithm" class="level4">
 <h4 class="anchored" data-anchor-id="a.4---final-step-of-the-gram-schidmt-algorithm">A.4 - Final step of the Gram-Schidmt algorithm</h4>
