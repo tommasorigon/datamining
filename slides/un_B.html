@@ -546,7 +546,7 @@ Bias-variance decomposition
 \mathbb{E}\left[f(\bm{x}_i; \hat{\beta}) - f(\bm{x}_i)\right] = \bm{x}_i^T(\bm{X}^T\bm{X})^{-1}\bm{X}^T\bm{f} - f(\bm{x}_i).
 </span> where <span class="math inline">\bm{f} = (f(\bm{x}_1),\dots,f(\bm{x}_n))^T</span>. Note that <span class="orange">if</span> <span class="math inline">f(\bm{x}) = \bm{x}^T\beta</span>, then the bias is zero.</p></li>
 <li><p>Moreover, in <span class="blue">ordinary least squares</span> the <span class="orange">variance</span> term equals <span class="math display">
-\frac{1}{n}\sum_{i=1}^n\text{var}\{f(\bm{x}_i; \hat{\beta})\} = \frac{\sigma^2}{n}\sum_{i=1}^n  \bm{x}_i^T (\bm{X}^T\bm{X})^{-1}\bm{x}_i = \frac{\sigma^2}{n}\text{tr}\{(\bm{X}^T\bm{X})(\bm{X}^T\bm{X})^{-1}\} = \sigma^2 \frac{p}{n}.
+\frac{1}{n}\sum_{i=1}^n\text{var}\{f(\bm{x}_i; \hat{\beta})\} = \frac{\sigma^2}{n}\sum_{i=1}^n  \bm{x}_i^T (\bm{X}^T\bm{X})^{-1}\bm{x}_i = \frac{\sigma^2}{n}\text{tr}(\bm{H}) = \sigma^2 \frac{p}{n}.
 </span></p></li>
 </ul>
 </div>

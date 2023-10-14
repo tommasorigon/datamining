@@ -610,7 +610,7 @@ $$
 
 -   Moreover, in [ordinary least squares]{.blue} the [variance]{.orange}
     term equals $$
-    \frac{1}{n}\sum_{i=1}^n\text{var}\{f(\bm{x}_i; \hat{\beta})\} = \frac{\sigma^2}{n}\sum_{i=1}^n  \bm{x}_i^T (\bm{X}^T\bm{X})^{-1}\bm{x}_i = \frac{\sigma^2}{n}\text{tr}\{(\bm{X}^T\bm{X})(\bm{X}^T\bm{X})^{-1}\} = \sigma^2 \frac{p}{n}.
+    \frac{1}{n}\sum_{i=1}^n\text{var}\{f(\bm{x}_i; \hat{\beta})\} = \frac{\sigma^2}{n}\sum_{i=1}^n  \bm{x}_i^T (\bm{X}^T\bm{X})^{-1}\bm{x}_i = \frac{\sigma^2}{n}\text{tr}(\bm{H}) = \sigma^2 \frac{p}{n}.
     $$
 :::
 
