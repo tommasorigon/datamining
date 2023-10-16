@@ -64,7 +64,7 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a></li>
-  <li><a href="#the-modelling-process" id="toc-the-modelling-process" class="nav-link" data-scroll-target="#the-modelling-process">The modelling process</a>
+  <li><a href="#the-modeling-process" id="toc-the-modeling-process" class="nav-link" data-scroll-target="#the-modeling-process">The modeling process</a>
   <ul class="collapse">
   <li><a href="#what-to-do-when-different-estimators-lead-to-dissimilar-conclusions" id="toc-what-to-do-when-different-estimators-lead-to-dissimilar-conclusions" class="nav-link" data-scroll-target="#what-to-do-when-different-estimators-lead-to-dissimilar-conclusions">What to do when different estimators lead to dissimilar conclusions?</a></li>
   <li><a href="#how-to-interpret-a-wrong-model" id="toc-how-to-interpret-a-wrong-model" class="nav-link" data-scroll-target="#how-to-interpret-a-wrong-model">How to interpret a wrong model?</a></li>
@@ -118,28 +118,28 @@ ul.task-list li input[type="checkbox"] {
 </div>
 <div style="font-size: 80%;">
 <p>“<em>The whole problem with the world is that fools and fanatics are always so certain of themselves, and wiser people so full of doubts.</em>”</p>
-<p><span class="grey">Bertrand Russel</span></p>
+<p><span class="grey">Bertrand Russell</span></p>
 </div>
 </div><div class="column" style="width:50%;">
 <ul>
-<li><p>This is not a normal unit and it has a more dynamic nature.</p></li>
-<li><p>I will collect here <span class="blue">interesting</span> questions that have been made by students over the years.</p></li>
-<li><p>The questions are organized by topic, but there will be a certain degree of overlap.</p></li>
+<li><p>This is not a normal unit and has a more dynamic nature.</p></li>
+<li><p>I will collect here <span class="blue">interesting</span> questions made by students over the years.</p></li>
+<li><p>The questions are organized by topic, but some overlap will occur.</p></li>
 <li><p>Hopefully, this unit will form the basis of a <span class="orange">statistical culture</span>.</p></li>
 <li><p>Indeed, it is based on the knowledge of several statisticians.</p></li>
 </ul>
 </div>
 </div>
 </section>
-<section id="the-modelling-process" class="level1">
-<h1>The modelling process</h1>
+<section id="the-modeling-process" class="level1">
+<h1>The modeling process</h1>
 <section id="what-to-do-when-different-estimators-lead-to-dissimilar-conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-do-when-different-estimators-lead-to-dissimilar-conclusions">What to do when different estimators lead to dissimilar conclusions?</h2>
 <ul>
-<li><p>Well, it happens all the times in applied statistics. It even occurs in Statistics I!</p></li>
+<li><p>Well, it happens all the time in applied statistics. It even occurs in Statistics I!</p></li>
 <li><p>For example, you might get slightly different values (or even opposite signs) when looking at the estimated regression coefficients <span class="math inline">\hat{\beta}_\text{ols}</span>, <span class="math inline">\hat{\beta}_\text{pcr}</span>, <span class="math inline">\hat{\beta}_\text{ridge}</span>.</p></li>
-<li><p>In linear models, do not assume the OLS estimator is “better” just because it is <span class="blue">unbiased</span>. Biased estimates are useful, if they lead to a (sufficiently high) <span class="orange">reduction of the variance</span>.</p></li>
-<li><p>In any event, do not forget these are, indeed, <span class="orange">estimates</span>! By definition, there will be some variability, therefore the <span class="blue">discrepancies</span> might be due to random <span class="orange">fluctuations</span>.</p></li>
+<li><p>In linear models, do not assume the OLS estimator is “better” just because it is <span class="blue">unbiased</span>. Biased estimates are helpful if they lead to a (sufficiently high) <span class="orange">reduction of the variance</span>.</p></li>
+<li><p>In any event, remember these are, indeed, <span class="orange">estimates</span>! By definition, there will be some variability; therefore, the <span class="blue">discrepancies</span> might be due to random <span class="orange">fluctuations</span>.</p></li>
 <li><p>To choose among different estimates, we need a criterion (or a combination of criteria), such as the <span class="blue">predictive performance</span>. However, the out-of-sample error is <span class="orange">not</span> the only relevant aspect!</p></li>
 <li><p>There might be other considerations to keep in mind, including the <span class="blue">interpretability</span>, the <span class="orange">robustness</span> of the method, and the <span class="grey">computational complexity</span>.</p></li>
 <li><p>Whenever different estimates display some differences, try to see it as an <span class="blue">opportunity</span> to <span class="orange">learn something from the data</span>. What could be the reason for such a discrepancy? What tells us about the data we are analyzing?</p></li>
@@ -148,12 +148,12 @@ ul.task-list li input[type="checkbox"] {
 <section id="how-to-interpret-a-wrong-model" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-interpret-a-wrong-model">How to interpret a wrong model?</h2>
 <ul>
-<li><p>First of all, by wrong we mean “<span class="orange">biased</span>”. Therefore, being “wrong” could actually be an advantage <span class="orange">if</span> the <span class="blue">focus</span> is on <span class="blue">pure predictions</span>.</p></li>
-<li><p>Even when the primary interest is on predictions, we can often say something about the <span class="orange">association</span> between the response variable and the covariates. Finding association is appropriate even in presence of biased estimates.</p></li>
+<li><p>First of all, by wrong, we mean “<span class="orange">biased</span>.” Therefore, being “wrong” could be an advantage <span class="orange">if</span> the <span class="blue">focus</span> is on <span class="blue">pure predictions</span>.</p></li>
+<li><p>Even when the primary interest is on predictions, we can often say something about the <span class="orange">association</span> between the response variable and the covariates. Finding association is appropriate even in the presence of biased estimates.</p></li>
 <li><p>The specific type of association reflects the <span class="blue">assumptions</span> implied by the chosen model. For example, linear models capture the <span class="orange">linear part</span> of the unknown and possibly more complex relationship <span class="math inline">f(x)</span>, but they cannot capture interactions (unless manually included).</p></li>
 <li><p>At the very least, we can often say something about the main factors affecting the predictions.</p></li>
-<li><p>Obviously, we must be <span class="orange">very careful</span> before making any <span class="orange">causal statement</span>. Even when the model is well-specified, emember that association <span class="math inline">\neq</span> causation.</p></li>
-<li><p>Do not forget that the estimated effects should be interpreted “<em>ceteris paribus</em>”! This means that the association between a variable and the response is often expressed conditionally on the effect of all the other variables.</p></li>
+<li><p>Obviously, we must be <span class="orange">very careful</span> before making any <span class="orange">causal statement</span>. Remember that association <span class="math inline">\neq</span> causation even when the model is well-specified.</p></li>
+<li><p>Do not forget that the estimated effects should be interpreted as “<em>ceteris paribus</em>”! This means that the association between a variable and the response is often expressed conditionally on the other variables’ effect.</p></li>
 </ul>
 <!-- ## What is the difference between an algorithm and a model? -->
 <!-- ::: columns -->
@@ -170,23 +170,23 @@ ul.task-list li input[type="checkbox"] {
 <section id="why-do-we-care-about-simple-models" class="level2">
 <h2 class="anchored" data-anchor-id="why-do-we-care-about-simple-models">Why do we care about simple models?</h2>
 <ul>
-<li><p>Simple models are useful to <span class="orange">explain</span> reality, not just to make predictions.</p></li>
-<li><p>Simple models <span class="math inline">\neq</span> linear models. A tree with a few splits is indeed “simple”. Some might say that parametric models relying on well-chosen assumption are simple, but it depends.</p></li>
-<li><p>Simple models tend to be more <span class="orange">robust</span>, i.e.&nbsp;less affected by contamination and/or changes in the data generative process.</p></li>
-<li><p>Besides, the <span class="blue">understanding</span> gained by fitting simple models is extremely valuable for estimating the more complex ones, because it provides guidance about the next steps.</p></li>
+<li><p>Simple models are helpful to <span class="orange">explain</span> reality, not just to make predictions.</p></li>
+<li><p>Simple models <span class="math inline">\neq</span> linear models. A tree with a few splits is indeed “simple.” Some might say that parametric models relying on well-chosen assumptions are simple, but it depends.</p></li>
+<li><p>Simple models tend to be more <span class="orange">robust</span>, i.e., less affected by contamination and changes in the data generative process.</p></li>
+<li><p>Besides, the <span class="blue">understanding</span> gained by fitting simple models is precious for estimating the more complex ones because it guides the next steps.</p></li>
 <li><p>The modelling process is <span class="blue">iterative</span> and <span class="orange">not a collection of independent</span> and <span class="orange">separate approaches</span>. You fit a model, check the results, and adjust your strategy.</p></li>
-<li><p>Another practical concern is that senior statisticians know hundreds of different techniques. When all these ingredients are combined together, they generate thousands if not millions of competing estimates. Hence, it becomes impossible to simply “use them all and pick the best performer”. You need guidance to find the final answer.</p></li>
+<li><p>Another practical concern is that senior statisticians know hundreds of different techniques. When all these ingredients are combined, they generate thousands, if not millions, of competing estimates. Hence, it becomes impossible to “use them all and pick the best performer.” You need guidance to find the final answer.</p></li>
 </ul>
 </section>
 <section id="what-if-simple-models-do-not-work-well" class="level2">
 <h2 class="anchored" data-anchor-id="what-if-simple-models-do-not-work-well">What if simple models do not work well?</h2>
 <p>…for example, what to do when simple models do not predict well?</p>
 <ul>
-<li><p>In that case, of course, it is time to move on and try something else and more sophisticated. This occurs quite often in practice, not every case-study can be solved with simple tools.</p></li>
-<li><p>However, you <span class="orange">should not</span> fit a sophisticated model for no reason, without having tried the simple ones in a first attempt.</p></li>
-<li><p>In other terms, you should try to fit a <span class="blue">deep neural network</span> only after <span class="orange">everything else has failed</span>.</p></li>
-<li><p>And even when it turns out that a complex model improves the predictive performance, always ask yourself: <span class="orange">“is it worth it?”</span> The answer is often <span class="blue">context-dependent</span>.</p></li>
-<li><p>Once again, there might be other considerations to keep in mind (interpretability, robustness, computational complexity).</p></li>
+<li><p>In that case, of course, it is time to move on and try something more sophisticated. This occurs often in practice; not every case study can be solved with simple tools.</p></li>
+<li><p>However, you <span class="orange">should not</span> fit a sophisticated model without trying the simple ones first.</p></li>
+<li><p>In other terms, you can fit a <span class="blue">deep neural network</span> only after <span class="orange">everything else has failed</span>.</p></li>
+<li><p>And even when it turns out that a complex model improves the predictive performance, always ask yourself: <span class="orange">“Is it worth it?”</span> The answer is often <span class="blue">context-dependent</span>.</p></li>
+<li><p>Once again, there might be other considerations to keep in mind (<span class="blue">interpretability</span>, <span class="orange">robustness</span>, <span class="grey">computational complexity</span>).</p></li>
 </ul>
 </section>
 </section>

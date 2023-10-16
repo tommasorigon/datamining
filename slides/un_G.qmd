@@ -65,16 +65,16 @@ styler:::style_file("../code/un_G.R")
 ::: {style="font-size: 80%;"}
 "*The whole problem with the world is that fools and fanatics are always so certain of themselves, and wiser people so full of doubts.*" 
 
-[Bertrand Russel]{.grey}
+[Bertrand Russell]{.grey}
 :::
 :::
 
 ::: {.column width="50%"}
-- This is not a normal unit and it has a more dynamic nature. 
+- This is not a normal unit and has a more dynamic nature. 
 
-- I will collect here [interesting]{.blue} questions that have been made by students over the years.
+- I will collect here [interesting]{.blue} questions made by students over the years.
 
-- The questions are organized by topic, but there will be a certain degree of overlap.
+- The questions are organized by topic, but some overlap will occur.
 
 - Hopefully, this unit will form the basis of a [statistical culture]{.orange}. 
 
@@ -82,17 +82,17 @@ styler:::style_file("../code/un_G.R")
 :::
 :::
 
-# The modelling process
+# The modeling process
 
 ## What to do when different estimators lead to dissimilar conclusions?
 
-- Well, it happens all the times in applied statistics. It even occurs in Statistics I!
+- Well, it happens all the time in applied statistics. It even occurs in Statistics I!
 
 - For example, you might get slightly different values (or even opposite signs) when looking at the estimated regression coefficients $\hat{\beta}_\text{ols}$, $\hat{\beta}_\text{pcr}$, $\hat{\beta}_\text{ridge}$.
 
-- In linear models, do not assume the OLS estimator is "better" just because it is [unbiased]{.blue}. Biased estimates are useful, if they lead to a (sufficiently high) [reduction of the variance]{.orange}.
+- In linear models, do not assume the OLS estimator is "better" just because it is [unbiased]{.blue}. Biased estimates are helpful if they lead to a (sufficiently high) [reduction of the variance]{.orange}.
 
-- In any event, do not forget these are, indeed, [estimates]{.orange}! By definition, there will be some variability, therefore the [discrepancies]{.blue} might be due to random [fluctuations]{.orange}.
+- In any event, remember these are, indeed, [estimates]{.orange}! By definition, there will be some variability; therefore, the [discrepancies]{.blue} might be due to random [fluctuations]{.orange}.
 
 - To choose among different estimates, we need a criterion (or a combination of criteria), such as the [predictive performance]{.blue}. However, the out-of-sample error is [not]{.orange} the only relevant aspect! 
 
@@ -102,17 +102,17 @@ styler:::style_file("../code/un_G.R")
 
 ## How to interpret a wrong model?
 
-- First of all, by wrong we mean "[biased]{.orange}". Therefore, being "wrong" could actually be an advantage [if]{.orange} the [focus]{.blue} is on [pure predictions]{.blue}.  
+- First of all, by wrong, we mean "[biased]{.orange}." Therefore, being "wrong" could be an advantage [if]{.orange} the [focus]{.blue} is on [pure predictions]{.blue}.  
 
-- Even when the primary interest is on predictions, we can often say something about the [association]{.orange} between the response variable and the covariates. Finding association is appropriate even in presence of biased estimates.
+- Even when the primary interest is on predictions, we can often say something about the [association]{.orange} between the response variable and the covariates. Finding association is appropriate even in the presence of biased estimates.
 
 - The specific type of association reflects the [assumptions]{.blue} implied by the chosen model. For example, linear models capture the [linear part]{.orange} of the unknown and possibly more complex relationship $f(x)$, but they cannot capture interactions (unless manually included). 
 
 - At the very least, we can often say something about the main factors affecting the predictions.
 
-- Obviously, we must be [very careful]{.orange} before making any [causal statement]{.orange}. Even when the model is well-specified, emember that association $\neq$ causation.
+- Obviously, we must be [very careful]{.orange} before making any [causal statement]{.orange}. Remember that association $\neq$ causation even when the model is well-specified.
 
-- Do not forget that the estimated effects should be interpreted "*ceteris paribus*"! This means that the association between a variable and the response is often expressed conditionally on the effect of all the other variables. 
+- Do not forget that the estimated effects should be interpreted as "*ceteris paribus*"! This means that the association between a variable and the response is often expressed conditionally on the other variables' effect. 
 
 <!-- ## What is the difference between an algorithm and a model? -->
 
@@ -132,17 +132,17 @@ styler:::style_file("../code/un_G.R")
 
 ## Why do we care about simple models?
 
-- Simple models are useful to [explain]{.orange} reality, not just to make predictions.
+- Simple models are helpful to [explain]{.orange} reality, not just to make predictions.
 
-- Simple models $\neq$ linear models. A tree with a few splits is indeed "simple". Some might say that parametric models relying on well-chosen assumption are simple, but it depends. 
+- Simple models $\neq$ linear models. A tree with a few splits is indeed "simple." Some might say that parametric models relying on well-chosen assumptions are simple, but it depends. 
 
-- Simple models tend to be more [robust]{.orange}, i.e. less affected by contamination and/or changes in the data generative process.
+- Simple models tend to be more [robust]{.orange}, i.e., less affected by contamination and changes in the data generative process.
 
-- Besides, the [understanding]{.blue} gained by fitting simple models is extremely valuable for estimating the more complex ones, because it provides guidance about the next steps. 
+- Besides, the [understanding]{.blue} gained by fitting simple models is precious for estimating the more complex ones because it guides the next steps. 
 
 - The modelling process is [iterative]{.blue} and [not a collection of independent]{.orange} and [separate approaches]{.orange}. You fit a model, check the results, and adjust your strategy. 
 
-- Another practical concern is that senior statisticians know hundreds of different techniques. When all these ingredients are combined together, they generate thousands if not millions of competing estimates. Hence, it becomes impossible to simply "use them all and pick the best performer". You need guidance to find the final answer. 
+- Another practical concern is that senior statisticians know hundreds of different techniques. When all these ingredients are combined, they generate thousands, if not millions, of competing estimates. Hence, it becomes impossible to "use them all and pick the best performer." You need guidance to find the final answer. 
 
 
 
@@ -150,12 +150,12 @@ styler:::style_file("../code/un_G.R")
 
 ...for example, what to do when simple models do not predict well?
 
-- In that case, of course, it is time to move on and try something else and more sophisticated. This occurs quite often in practice, not every case-study can be solved with simple tools.
+- In that case, of course, it is time to move on and try something more sophisticated. This occurs often in practice; not every case study can be solved with simple tools.
 
-- However, you [should not]{.orange} fit a sophisticated model for no reason, without having tried the simple ones in a first attempt. 
+- However, you [should not]{.orange} fit a sophisticated model without trying the simple ones first.
 
-- In other terms, you should try to fit a [deep neural network]{.blue} only after [everything else has failed]{.orange}.
+- In other terms, you can fit a [deep neural network]{.blue} only after [everything else has failed]{.orange}.
 
-- And even when it turns out that a complex model improves the predictive performance, always ask yourself: ["is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
+- And even when it turns out that a complex model improves the predictive performance, always ask yourself: ["Is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
-- Once again, there might be other considerations to keep in mind (interpretability, robustness, computational complexity). 
+- Once again, there might be other considerations to keep in mind ([interpretability]{.blue}, [robustness]{.orange}, [computational complexity]{.grey}). 
