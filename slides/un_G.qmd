@@ -138,7 +138,7 @@ styler:::style_file("../code/un_G.R")
 
 - More generally, whenever different models display some differences, try to see this as an [opportunity]{.blue} to [learn something from the data]{.orange}. What could be the reason for such a discrepancy?
 
-## How do we interpret a wrong model?
+## How to interpret a wrong model?
 
 - First of all, by wrong we mean "[biased]{.orange}". Therefore, being "wrong" could actually be an advantage [if]{.orange} the [focus]{.blue} is on [pure predictions]{.blue}.  
 
@@ -146,8 +146,8 @@ styler:::style_file("../code/un_G.R")
 
 - The association structure is related to the model itself. For example, linear models capture the [linear part]{.orange} of the unknown and possibly more complex relationship $f(x)$. 
 
-- In any event, at the very least, we can often say something about the main factors affecting the predictions.
+- At the very least, we can often say something about the main factors affecting the predictions.
 
-- Obviously, we must be very careful before making any [causal statement]{.orange}.
+- Obviously, we must be [very careful]{.orange} before making any [causal statement]{.orange}. Association $\neq$ causation. 
 
-- Also, do not forget that the estimated effects are "ceteris paribus"! 
+- Also, do not forget that the estimated effects are "*ceteris paribus*"! In other words, the association
