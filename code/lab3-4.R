@@ -113,15 +113,6 @@ summary(m_full)
 
 # 4 collinearities are due to "no basement", 3 collinearities are due to "no garage"
 
-# # In fact, note that at the basement
-# head(cbind(
-#   ames_train$Bsmt.Unf.SF + ames_train$BsmtFin.SF.1 + ames_train$BsmtFin.SF.2,
-#   ames_train$Total.Bsmt.SF
-# ))
-#
-# # And that at the ground floors
-# head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual.Fin.SF, ames_train$Gr.Liv.Area))
-
 # Predictions for the full model. This command, due to collinearity, will produced warnings!
 y_hat_full <- exp(predict(m_full, newdata = ames_validation))
 
