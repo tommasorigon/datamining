@@ -168,10 +168,19 @@ ul.task-list li input[type="checkbox"] {
 <li><p>In any event, do not forget these are <span class="orange">estimates</span>! By construction, there will be some variability among these values, therefore the discrepancies might be due to random <span class="orange">fluctuations</span>.</p></li>
 <li><p>To choose among the estimates, we need some criterion, such as the <span class="blue">predictive performance</span>, to identify the “best” estimator.</p></li>
 <li><p>This is <span class="orange">not</span> the only criterion! There might be other considerations to keepn in mind, including the <span class="blue">interpretability</span>, the <span class="orange">robustness</span> of the method, and the <span class="grey">computational complexity</span>.</p></li>
+<li><p>More generally, whenever different models display some differences, try to see this as an <span class="blue">opportunity</span> to <span class="orange">learn something from the data</span>. What could be the reason for such a discrepancy?</p></li>
 </ul>
 </section>
 <section id="how-do-we-interpret-a-wrong-model" class="level2">
 <h2 class="anchored" data-anchor-id="how-do-we-interpret-a-wrong-model">How do we interpret a wrong model?</h2>
+<ul>
+<li><p>First of all, by wrong we mean “<span class="orange">biased</span>”. Therefore, being “wrong” could actually be an advantage <span class="orange">if</span> the <span class="blue">focus</span> is on <span class="blue">pure predictions</span>.</p></li>
+<li><p>Even when there is interest in predictions, we can often say something about the <span class="orange">associations</span> between variables.</p></li>
+<li><p>The association structure is related to the model itself. For example, linear models capture the <span class="orange">linear part</span> of the unknown and possibly more complex relationship <span class="math inline">f(x)</span>.</p></li>
+<li><p>In any event, at the very least, we can often say something about the main factors affecting the predictions.</p></li>
+<li><p>Obviously, we must be very careful before making any <span class="orange">causal statement</span>.</p></li>
+<li><p>Also, do not forget that the estimated effects are “ceteris paribus”!</p></li>
+</ul>
 </section>
 
 </main>
