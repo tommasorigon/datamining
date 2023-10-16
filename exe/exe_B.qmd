@@ -42,7 +42,7 @@ editor_options:
     can be equivalently expressed as $$
     \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)).
     $$
-Refer also Exercise 3.3 of the textbook A&S (2011), which is implicitly computing similar quantities.
+Refer also to Exercise 3.3 of the textbook A&S (2011), which is implicitly computing similar quantities.
 
 #### B.3 - Leave-one-out
 

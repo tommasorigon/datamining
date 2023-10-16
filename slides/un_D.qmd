@@ -1594,7 +1594,7 @@ where $\mathcal{F}$ is a sufficiently regular [functional space]{.blue} (Sobolev
 
 ## Smoothing splines II
 
-:::callout-warning
+:::callout-note
 #### Theorem (Green and Silverman, 1994)
 Let $n_0 \le n$ be the [distinct]{.blue} points among $x_1,\dots,x_n$, with $x_i \in (a,b)$. Suppose $n_0 \ge 3$. 
 

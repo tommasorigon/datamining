@@ -3068,32 +3068,36 @@ vertical-align: -.125em;
 <h1><a href="../index.html">Homepage</a></h1>
 <section id="theoretical-exercises" class="level2">
 <h2 class="anchored" data-anchor-id="theoretical-exercises">Theoretical exercises</h2>
-<section id="exercise-d.1---differentiability-of-nadaraya-watson" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.1---differentiability-of-nadaraya-watson">Exercise D.1 - Differentiability of Nadaraya-Watson</h4>
+<section id="exercise-d.1" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.1">Exercise D.1</h4>
+<p>Consider the <span class="blue"><span class="math inline">k</span>-nearest neighbours</span> estimator <span class="math inline">\hat{f}(x)</span> for a regression problem <span class="math inline">Y_i = f(x_i) + \epsilon_i</span>, under the usual assumptions. <span class="orange">Find</span> the bias and the variance of <span class="math inline">\hat{f}(x)</span> and discuss their behavior as function of <span class="math inline">k</span>.</p>
+</section>
+<section id="exercise-d.2---differentiability-of-nadaraya-watson" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.2---differentiability-of-nadaraya-watson">Exercise D.2 - Differentiability of Nadaraya-Watson</h4>
 <p><span class="orange">Show</span> that the Nadaraya-Watson estimator with fixed bandwidth <span class="math inline">h</span> and a Gaussian kernel is <span class="blue">differentiable</span>.</p>
 <p>What can be said about the Epanechnikov kernel?</p>
 </section>
-<section id="exercise-d.2---local-linear-regression-explicit-formula" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.2---local-linear-regression-explicit-formula">Exercise D.2 - Local linear regression (explicit formula)</h4>
-<p>Prove the theorem about the explicit formula for <span class="blue">local linear regression estimator</span> that is stated in <a href="../slides/un_D.html#local-linear-regression-ii">this slide</a>.</p>
+<section id="exercise-d.3---local-linear-regression-explicit-formula" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.3---local-linear-regression-explicit-formula">Exercise D.3 - Local linear regression (explicit formula)</h4>
+<p>Prove the theorem about the explicit formula for <span class="blue">local linear regression estimator</span> stated in <a href="../slides/un_D.html#local-linear-regression-ii">this slide</a>.</p>
 </section>
-<section id="exercise-d.3---preservation-of-linear-trends" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.3---preservation-of-linear-trends">Exercise D.3 - Preservation of linear trends</h4>
+<section id="exercise-d.4---preservation-of-linear-trends" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.4---preservation-of-linear-trends">Exercise D.4 - Preservation of linear trends</h4>
 <p><span class="orange">Show</span> that local linear regression applied to <span class="math inline">(x_i, y_i)</span> <span class="orange">preserves</span> the <span class="blue">linear part of the fit</span>. In other words, let us decompose <span class="math inline">y_i = \hat{y}_{i,\text{ols}} + r_i</span>, where <span class="math inline">\hat{y}_{i,\text{ols}} = \hat{\beta}_0 + \hat{\beta}_1 x_i</span> represents the linear regression estimate, and <span class="math inline">\bm{S}</span> is the smoothing matrix, then <span class="math display">
 \bm{S}\bm{y} = \bm{S}\hat{\bm{y}}_\text{ols} + \bm{S}\bm{r} = \hat{\bm{y}}_\text{ols} + \bm{S}\bm{r}.
 </span> Another way of looking at this property is the following: if the points <span class="math inline">(x_i, y_i)</span> <span class="blue">belong to a line</span>, then the fitted values of a local linear regression coincide with <span class="math inline">y_i</span>. More formally, <span class="orange">show</span> that if <span class="math inline">y_i = \alpha + \beta x_i</span>, then <span class="math display">
 \hat{f}(x) = \sum_{i=1}^ns_i(x)y_i = \alpha + \beta x.
 </span></p>
 <p>Does the same property hold for the Nadaraya-Watson estimator?</p>
-<p><span class="blue">Hint</span>. Start by showing that <span class="math inline">\sum_{i=1}^ns_i(x) = 1</span> and that <span class="math inline">\sum_{i=1}^ns_i(x)(x_i - x) = 0</span>. Exploit these properties to obtain the proof.</p>
+<p><span class="blue">Hint</span>. Begin by showing that <span class="math inline">\sum_{i=1}^ns_i(x) = 1</span> and that <span class="math inline">\sum_{i=1}^ns_i(x)(x_i - x) = 0</span>. Exploit these properties to obtain the proof.</p>
 </section>
-<section id="exercise-d.4---conceptual-exercise" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.4---conceptual-exercise">Exercise D.4 - Conceptual exercise</h4>
+<section id="exercise-d.5---conceptual-exercise" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.5---conceptual-exercise">Exercise D.5 - Conceptual exercise</h4>
 <p>Every nonparametric regression model involves a <span class="blue">smoothing parameter</span>. For example, consider the parameter <span class="math inline">\lambda</span> of smoothing splines or <span class="math inline">h</span> of local linear regression.</p>
 <p>Can we estimate <span class="math inline">h</span> and <span class="math inline">\lambda</span> using a standard method such as the <span class="orange">maximum likelihood</span>?</p>
 </section>
-<section id="exercise-d.5---leave-one-out-cross-validation" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.5---leave-one-out-cross-validation">Exercise D.5 - Leave-one-out cross-validation</h4>
+<section id="exercise-d.6---leave-one-out-cross-validation" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.6---leave-one-out-cross-validation">Exercise D.6 - Leave-one-out cross-validation</h4>
 <p><span class="orange">Prove</span> the theorem about the <span class="blue">leave-one-out cross validation</span> for “projective” linear smoothers, described in <a href="../slides/un_D.html#choice-of-the-bandwidth-ii">this slide</a>.</p>
 <p>Then, show that the theorem is valid for the following estimators:</p>
 <ol type="i">
@@ -3104,8 +3108,8 @@ vertical-align: -.125em;
 </ol>
 <p>Finally, <span class="orange">prove</span> that in all the above cases <span class="math inline">|y_i - \hat{y}_{-i}| \ge |y_i - \hat{y}_i|</span>. That is, the leave-one-out residuals are always bigger than the regular residuals.</p>
 </section>
-<section id="exercise-d.6---truncated-power-basis" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.6---truncated-power-basis">Exercise D.6 - Truncated power basis</h4>
+<section id="exercise-d.7---truncated-power-basis" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.7---truncated-power-basis">Exercise D.7 - Truncated power basis</h4>
 <p>A cubic spline with one knots <span class="math inline">\xi</span> can be obtained using a basis of the form <span class="math inline">x</span>, <span class="math inline">x^2</span>, <span class="math inline">x^3</span> and (<span class="math inline">x - \xi)_+</span>, as a consequence of the truncated power basis Theorem of <a href="../slides/un_D.html#truncated-power-basis">this slide</a>.</p>
 <p>In this exercise we will show that a function <span class="math display">
 f(x) = \beta_0 + \beta_1 x + \beta_2 x^2 + \beta_3 x^3 + \beta_4 (x - \xi)_+^3
@@ -3123,8 +3127,11 @@ f_2(x) = a_2 + b_2 x + c_2 x^2 + d_3 x^3,
 </ol>
 <p>Conclude that <span class="math inline">f(x)</span> <span class="blue">is</span> indeed a <span class="blue">cubic spline</span>.</p>
 </section>
-<section id="exercise-d.7---smoothing-splines-estimator" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.7---smoothing-splines-estimator">Exercise D.7 - Smoothing splines estimator</h4>
+<section id="exercise-d.8---optimality-of-smoothing-splines" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.8---optimality-of-smoothing-splines">Exercise D.8 - Optimality of smoothing splines</h4>
+</section>
+<section id="exercise-d.9---smoothing-splines-estimator" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.9---smoothing-splines-estimator">Exercise D.9 - Smoothing splines estimator</h4>
 <p><span class="orange">Derive</span> the smoothing spline estimator <span class="math inline">\hat{\beta} = (\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T\bm{y}</span>.</p>
 </section>
 </section>
