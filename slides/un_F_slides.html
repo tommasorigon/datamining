@@ -31,6 +31,22 @@
     }
   </style>
   <link rel="stylesheet" href="un_G_files/libs/revealjs/dist/theme/quarto.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
   <link href="un_G_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="un_G_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="un_G_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -363,15 +379,37 @@
 </ul>
 </div>
 </div>
-</section>
-<section id="what-is-the-difference-between-an-algorithm-and-a-model" class="slide level2 center">
-<h2>What is the difference between an algorithm and a model?</h2>
+<!-- ## What is the difference between an algorithm and a model? -->
+<!-- ::: columns -->
+<!-- ::: {.column width="50%"} -->
+<!-- - [Model]{.blue}: a simplified *mathematical* representation of reality. -->
+<!-- - [Algorithm]{.blue}: a step-by-step procedure that is useful to obtain the unknown parts of a model. -->
+<!-- ::: -->
+<!-- ::: {.column width="50%"} -->
+<!-- [Example]{.orange}: linear models, neural networks, support vector machine, trees. -->
+<!-- [Example]{.orange}: gradient descent, Newton-Raphson, pathwise coordinate descent, LAR. -->
+<!-- ::: -->
+<!-- ::: -->
 </section>
 <section id="why-do-we-care-about-simple-models" class="slide level2 center">
 <h2>Why do we care about simple models?</h2>
+<ul>
+<li><p>Simple models are useful to <span class="orange">explain</span> reality, not just to make predictions.</p></li>
+<li><p>Simple models <span class="math inline">\neq</span> linear models. A tree with a few splits is indeed “simple”.</p></li>
+<li><p>Simple models tend to be more <span class="orange">robust</span>, i.e.&nbsp;less affected by contamination and/or changes in the data generative process.</p></li>
+<li><p>Besides, the <span class="blue">understanding</span> gained by fitting simple models is extremely valuable for fitting more complex ones.</p></li>
+<li><p>The modelling process is <span class="blue">iterative</span> and <span class="orange">not a collection of independent</span> and <span class="orange">separate approaches</span>.</p></li>
+</ul>
 </section>
 <section id="what-if-simple-models-do-not-work-well" class="slide level2 center">
 <h2>What if simple models do not work well?</h2>
+<p>…for example, what to do when simple models do not predict well?</p>
+<ul>
+<li><p>In that case, of course, it is time to move on and try something else.</p></li>
+<li><p>However, you <span class="orange">should not</span> fit a sophisticated model for no reason, without having tried the simple ones.</p></li>
+<li><p>In other terms, you should try to fit a <span class="blue">deep neural network</span> only <span class="orange">when everything else has failed</span>.</p></li>
+<li><p>And even when it turns out that a complex model improves the predictive performance, always ask yourself: <span class="orange">“is it worth it?”</span> The answer is often very context-dependent.</p></li>
+</ul>
 </section>
 <section id="what-to-do-when-different-estimators-lead-to-different-conclusions" class="slide level2 center">
 <h2>What to do when different estimators lead to different conclusions?</h2>

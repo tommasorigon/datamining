@@ -36,6 +36,22 @@ ul.task-list li input[type="checkbox"] {
 <link href="un_G_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 </head>
 
@@ -48,7 +64,6 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a></li>
-  <li><a href="#what-is-the-difference-between-an-algorithm-and-a-model" id="toc-what-is-the-difference-between-an-algorithm-and-a-model" class="nav-link" data-scroll-target="#what-is-the-difference-between-an-algorithm-and-a-model">What is the difference between an algorithm and a model?</a></li>
   <li><a href="#why-do-we-care-about-simple-models" id="toc-why-do-we-care-about-simple-models" class="nav-link" data-scroll-target="#why-do-we-care-about-simple-models">Why do we care about simple models?</a></li>
   <li><a href="#what-if-simple-models-do-not-work-well" id="toc-what-if-simple-models-do-not-work-well" class="nav-link" data-scroll-target="#what-if-simple-models-do-not-work-well">What if simple models do not work well?</a></li>
   <li><a href="#what-to-do-when-different-estimators-lead-to-different-conclusions" id="toc-what-to-do-when-different-estimators-lead-to-different-conclusions" class="nav-link" data-scroll-target="#what-to-do-when-different-estimators-lead-to-different-conclusions">What to do when different estimators lead to different conclusions?</a></li>
@@ -112,15 +127,37 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 </div>
 </div>
-</section>
-<section id="what-is-the-difference-between-an-algorithm-and-a-model" class="level2">
-<h2 class="anchored" data-anchor-id="what-is-the-difference-between-an-algorithm-and-a-model">What is the difference between an algorithm and a model?</h2>
+<!-- ## What is the difference between an algorithm and a model? -->
+<!-- ::: columns -->
+<!-- ::: {.column width="50%"} -->
+<!-- - [Model]{.blue}: a simplified *mathematical* representation of reality. -->
+<!-- - [Algorithm]{.blue}: a step-by-step procedure that is useful to obtain the unknown parts of a model. -->
+<!-- ::: -->
+<!-- ::: {.column width="50%"} -->
+<!-- [Example]{.orange}: linear models, neural networks, support vector machine, trees. -->
+<!-- [Example]{.orange}: gradient descent, Newton-Raphson, pathwise coordinate descent, LAR. -->
+<!-- ::: -->
+<!-- ::: -->
 </section>
 <section id="why-do-we-care-about-simple-models" class="level2">
 <h2 class="anchored" data-anchor-id="why-do-we-care-about-simple-models">Why do we care about simple models?</h2>
+<ul>
+<li><p>Simple models are useful to <span class="orange">explain</span> reality, not just to make predictions.</p></li>
+<li><p>Simple models <span class="math inline">\neq</span> linear models. A tree with a few splits is indeed “simple”.</p></li>
+<li><p>Simple models tend to be more <span class="orange">robust</span>, i.e.&nbsp;less affected by contamination and/or changes in the data generative process.</p></li>
+<li><p>Besides, the <span class="blue">understanding</span> gained by fitting simple models is extremely valuable for fitting more complex ones, because it provides guidance about the next steps.</p></li>
+<li><p>The modelling process is <span class="blue">iterative</span> and <span class="orange">not a collection of independent</span> and <span class="orange">separate approaches</span>.</p></li>
+</ul>
 </section>
 <section id="what-if-simple-models-do-not-work-well" class="level2">
 <h2 class="anchored" data-anchor-id="what-if-simple-models-do-not-work-well">What if simple models do not work well?</h2>
+<p>…for example, what to do when simple models do not predict well?</p>
+<ul>
+<li><p>In that case, of course, it is time to move on and try something else.</p></li>
+<li><p>However, you <span class="orange">should not</span> fit a sophisticated model for no reason, without having tried the simple ones.</p></li>
+<li><p>In other terms, you should try to fit a <span class="blue">deep neural network</span> only <span class="orange">when everything else has failed</span>.</p></li>
+<li><p>And even when it turns out that a complex model improves the predictive performance, always ask yourself: <span class="orange">“is it worth it?”</span> The answer is often very context-dependent.</p></li>
+</ul>
 </section>
 <section id="what-to-do-when-different-estimators-lead-to-different-conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="what-to-do-when-different-estimators-lead-to-different-conclusions">What to do when different estimators lead to different conclusions?</h2>

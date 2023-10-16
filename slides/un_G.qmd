@@ -82,11 +82,46 @@ styler:::style_file("../code/un_G.R")
 :::
 :::
 
-## What is the difference between an algorithm and a model?
+<!-- ## What is the difference between an algorithm and a model? -->
+
+<!-- ::: columns -->
+<!-- ::: {.column width="50%"} -->
+<!-- - [Model]{.blue}: a simplified *mathematical* representation of reality. -->
+
+<!-- - [Algorithm]{.blue}: a step-by-step procedure that is useful to obtain the unknown parts of a model. -->
+<!-- ::: -->
+
+<!-- ::: {.column width="50%"} -->
+<!-- [Example]{.orange}: linear models, neural networks, support vector machine, trees. -->
+
+<!-- [Example]{.orange}: gradient descent, Newton-Raphson, pathwise coordinate descent, LAR. -->
+<!-- ::: -->
+<!-- ::: -->
 
 ## Why do we care about simple models?
 
+- Simple models are useful to [explain]{.orange} reality, not just to make predictions.
+
+- Simple models $\neq$ linear models. A tree with a few splits is indeed "simple".
+
+- Simple models tend to be more [robust]{.orange}, i.e. less affected by contamination and/or changes in the data generative process.
+
+- Besides, the [understanding]{.blue} gained by fitting simple models is extremely valuable for fitting more complex ones, because it provides guidance about the next steps. 
+
+- The modelling process is [iterative]{.blue} and [not a collection of independent]{.orange} and [separate approaches]{.orange}.
+
+
 ## What if simple models do not work well?
+
+...for example, what to do when simple models do not predict well?
+
+- In that case, of course, it is time to move on and try something else.
+
+- However, you [should not]{.orange} fit a sophisticated model for no reason, without having tried the simple ones. 
+
+- In other terms, you should try to fit a [deep neural network]{.blue} only [when everything else has failed]{.orange}.
+
+- And even when it turns out that a complex model improves the predictive performance, always ask yourself: ["is it worth it?"]{.orange} The answer is often very context-dependent. 
 
 ## What to do when different estimators lead to different conclusions?
 
