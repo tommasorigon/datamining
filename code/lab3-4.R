@@ -9,7 +9,8 @@ knitr::opts_chunk$set(collapse = TRUE)
 #+ lab, include=TRUE, echo = TRUE, results = FALSE
 rm(list = ls())
 
-ames <- read.table("../data/ames.csv", header = TRUE, sep = ",", stringsAsFactors = TRUE)
+ames <- read.table("../data/ames.csv", header = TRUE, sep = ",", 
+                   stringsAsFactors = TRUE)
 
 # Training, validation and test set ----------------------------------------------------------------------
 
@@ -18,6 +19,7 @@ set.seed(123)
 # Randomly allocate the id of the variables into training and test
 id_train <- sort(sample(1:nrow(ames), size = floor(0.5 * nrow(ames)), replace = FALSE))
 id_validation_test <- setdiff(1:nrow(ames), id_train)
+
 # Now we allocate the validation test
 id_validation <- sort(sample(id_validation_test, size = floor(0.5 * length(id_validation_test)), replace = FALSE))
 # And finally the test set
@@ -112,15 +114,6 @@ m_full <- lm(log(SalePrice) ~ ., data = ames_train)
 summary(m_full)
 
 # 4 collinearities are due to "no basement", 3 collinearities are due to "no garage"
-
-# # In fact, note that at the basement
-# head(cbind(
-#   ames_train$Bsmt.Unf.SF + ames_train$BsmtFin.SF.1 + ames_train$BsmtFin.SF.2,
-#   ames_train$Total.Bsmt.SF
-# ))
-#
-# # And that at the ground floors
-# head(cbind(ames_train$X1st.Flr.SF + ames_train$X2nd.Flr.SF + ames_train$Low.Qual.Fin.SF, ames_train$Gr.Liv.Area))
 
 # Predictions for the full model. This command, due to collinearity, will produced warnings!
 y_hat_full <- exp(predict(m_full, newdata = ames_validation))
