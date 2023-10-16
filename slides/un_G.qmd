@@ -1,5 +1,5 @@
 ---
-title: "Frequentialy Asked Questions"
+title: "Frequently Asked Questions"
 subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
