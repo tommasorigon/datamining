@@ -106,10 +106,9 @@ styler:::style_file("../code/un_G.R")
 
 - Simple models tend to be more [robust]{.orange}, i.e. less affected by contamination and/or changes in the data generative process.
 
-- Besides, the [understanding]{.blue} gained by fitting simple models is extremely valuable for fitting more complex ones, because it provides guidance about the next steps. 
+- Besides, the [understanding]{.blue} gained by fitting simple models is extremely valuable for fitting the more complex ones, because it provides guidance about the next steps. 
 
-- The modelling process is [iterative]{.blue} and [not a collection of independent]{.orange} and [separate approaches]{.orange}.
-
+- The modelling process is [iterative]{.blue} and [not a collection of independent]{.orange} and [separate approaches]{.orange}. You fit a model, check the results, and adjust your strategy. 
 
 ## What if simple models do not work well?
 
@@ -119,10 +118,22 @@ styler:::style_file("../code/un_G.R")
 
 - However, you [should not]{.orange} fit a sophisticated model for no reason, without having tried the simple ones. 
 
-- In other terms, you should try to fit a [deep neural network]{.blue} only [when everything else has failed]{.orange}.
+- In other terms, you should try to fit a [deep neural network]{.blue} only if [everything else has failed]{.orange}.
 
-- And even when it turns out that a complex model improves the predictive performance, always ask yourself: ["is it worth it?"]{.orange} The answer is often very context-dependent. 
+- And even when it turns out that a complex model improves the predictive performance, always ask yourself: ["is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
 ## What to do when different estimators lead to different conclusions?
+
+- Well, this happens all the times in applied statistics. It even happens in Statistics I!
+
+- For instance, you might get different values (or even opposite signs) when looking at the estimated regression coefficients $\hat{\beta}_\text{ols}$, $\hat{\beta}_\text{pcr}$, $\hat{\beta}_\text{ridge}$.
+
+- Do not assume OLS coefficients are "better" just because they are [unbiased]{.blue}. There is value in biased estimates, if they lead to a (sufficiently high) reduction of the variance.
+
+- In any event, do not forget these are [estimates]{.orange}! By construction, there will be some variability among these values, therefore the discrepancies might be due to random [fluctuations]{.orange}.
+
+- To choose among the estimates, we need some criterion, such as the [predictive performance]{.blue}, to identify the "best" estimator.
+
+- This is [not]{.orange} the only criterion! There might be other considerations to keepn in mind, including the [interpretability]{.blue}, the [robustness]{.orange} of the method, and the [computational complexity]{.grey}.
 
 ## How do we interpret a wrong model?
