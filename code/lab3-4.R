@@ -9,7 +9,8 @@ knitr::opts_chunk$set(collapse = TRUE)
 #+ lab, include=TRUE, echo = TRUE, results = FALSE
 rm(list = ls())
 
-ames <- read.table("../data/ames.csv", header = TRUE, sep = ",", stringsAsFactors = TRUE)
+ames <- read.table("../data/ames.csv", header = TRUE, sep = ",", 
+                   stringsAsFactors = TRUE)
 
 # Training, validation and test set ----------------------------------------------------------------------
 
@@ -18,6 +19,7 @@ set.seed(123)
 # Randomly allocate the id of the variables into training and test
 id_train <- sort(sample(1:nrow(ames), size = floor(0.5 * nrow(ames)), replace = FALSE))
 id_validation_test <- setdiff(1:nrow(ames), id_train)
+
 # Now we allocate the validation test
 id_validation <- sort(sample(id_validation_test, size = floor(0.5 * length(id_validation_test)), replace = FALSE))
 # And finally the test set

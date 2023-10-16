@@ -167,7 +167,7 @@ table(ames$Neighborhood)
 # There are smartest way of doing this grouping, taking into account the location of each
 
 # Grouping the levels -----------------------------------------------------------------------------------------
-table(ames$Exterior.1st)
+table(ames$MS.SubClass)
 
 # library forcats
 ames$Exterior.1st <- forcats::fct_lump_lowfreq(ames$Exterior.1st)
