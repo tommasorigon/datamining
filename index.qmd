@@ -74,7 +74,7 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 | **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html)           | [Code F](code/un_F.R)     |
 | *Exercises*                            | [Exercises F](exe/exe_F.html)                      |                                                    |                           |
 | Lab 6 (Ames housing)                                  |                                      |                                                    | [Code Lab 6](code/lab6.R)            |
-<!-- | **The scientific culture**             | \[Unit G\]                           | \[Slides Unit G\]                                  |                           | -->
+| **FAQ - The statistical culture**             | [Unit G](slides/un_G.html)                           | [Slides Unit G](slides/un_G.html)                                  |                           |
 
 ## Exam
 

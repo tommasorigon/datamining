@@ -1,0 +1,93 @@
+---
+title: "Frequentialy Asked Questions"
+subtitle: "Data Mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+execute:
+  cache: false
+filters: 
+  - remove-pause.lua
+format:
+  revealjs:
+    df-print: tibble
+    auto-stretch: true
+    center: true
+    html-math-method: katex
+    transition: none
+    output-file: un_F_slides.html
+    slide-number: true
+    callout-appearance: minimal
+    code-line-numbers: true
+    theme: [default, ../template.css] # alternative themes (subset): default, night, dark
+    embed-resources: false
+    echo: false
+    fig-dpi: 200
+    # incremental: true  # Remove comment if you like incremental bullet points
+    logo: img/logoB.png
+    footer: "[Home page](https://tommasorigon.github.io/datamining)"
+  html:
+    html-math-method: katex
+    echo: false
+    callout-appearance: minimal
+    theme: [cosmo, ../template.css]
+    toc: true
+    toc-title: Table of contents
+    embed-resources: false
+    code-line-numbers: true
+    smooth-scroll: true
+    code-fold: false
+    code-summary: "Show the code"
+    fig-dpi: 200
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+## [Homepage](../index.html)
+
+```{r}
+#| warning: false
+#| echo: false
+#| include: false
+#| message: false
+#| purl: false
+
+knitr::purl("un_G.qmd", output = "../code/un_G.R", documentation = 0)
+styler:::style_file("../code/un_G.R")
+```
+
+::: columns
+::: {.column width="50%"}
+![](img/russell.jpg){width="60%" fig-align="center"}
+
+::: {style="font-size: 80%;"}
+"*The whole problem with the world is that fools and fanatics are always so certain of themselves, and wiser people so full of doubts.*" 
+
+[Bertrand Russel]{.grey}
+:::
+:::
+
+::: {.column width="50%"}
+- This is not a normal unit and it has a more dynamic nature. 
+
+- I will collect here [interesting]{.blue} questions that have been made by students over the years.
+
+- The questions are organized by topic, but there will be a certain degree of overlap.
+
+- Hopefully, this unit will form the basis of a [statistical culture]{.orange}. 
+
+- Indeed, it is based on the knowledge of several statisticians. 
+:::
+:::
+
+## What is the difference between an algorithm and a model?
+
+## Why do we care about simple models?
+
+## What if simple models do not work well?
+
+## What to do when different estimators lead to different conclusions?
+
+## How do we interpret a wrong model?
