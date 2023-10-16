@@ -82,6 +82,38 @@ styler:::style_file("../code/un_G.R")
 :::
 :::
 
+# The modelling process
+
+## What to do when different estimators lead to dissimilar conclusions?
+
+- Well, it happens all the times in applied statistics. It even occurs in Statistics I!
+
+- For example, you might get slightly different values (or even opposite signs) when looking at the estimated regression coefficients $\hat{\beta}_\text{ols}$, $\hat{\beta}_\text{pcr}$, $\hat{\beta}_\text{ridge}$.
+
+- In linear models, do not assume the OLS estimator is "better" just because it is [unbiased]{.blue}. Biased estimates are useful, if they lead to a (sufficiently high) [reduction of the variance]{.orange}.
+
+- In any event, do not forget these are, indeed, [estimates]{.orange}! By definition, there will be some variability, therefore the [discrepancies]{.blue} might be due to random [fluctuations]{.orange}.
+
+- To choose among different estimates, we need a criterion (or a combination of criteria), such as the [predictive performance]{.blue}. However, the out-of-sample error is [not]{.orange} the only relevant aspect! 
+
+- There might be other considerations to keep in mind, including the [interpretability]{.blue}, the [robustness]{.orange} of the method, and the [computational complexity]{.grey}.
+
+- Whenever different estimates display some differences, try to see it as an [opportunity]{.blue} to [learn something from the data]{.orange}. What could be the reason for such a discrepancy? What tells us about the data we are analyzing?
+
+## How to interpret a wrong model?
+
+- First of all, by wrong we mean "[biased]{.orange}". Therefore, being "wrong" could actually be an advantage [if]{.orange} the [focus]{.blue} is on [pure predictions]{.blue}.  
+
+- Even when the primary interest is on predictions, we can often say something about the [association]{.orange} between the response variable and the covariates. Finding association is appropriate even in presence of biased estimates.
+
+- The specific type of association reflects the [assumptions]{.blue} implied by the chosen model. For example, linear models capture the [linear part]{.orange} of the unknown and possibly more complex relationship $f(x)$, but they cannot capture interactions (unless manually included). 
+
+- At the very least, we can often say something about the main factors affecting the predictions.
+
+- Obviously, we must be [very careful]{.orange} before making any [causal statement]{.orange}. Even when the model is well-specified, emember that association $\neq$ causation.
+
+- Do not forget that the estimated effects should be interpreted "*ceteris paribus*"! This means that the association between a variable and the response is often expressed conditionally on the effect of all the other variables. 
+
 <!-- ## What is the difference between an algorithm and a model? -->
 
 <!-- ::: columns -->
@@ -102,52 +134,28 @@ styler:::style_file("../code/un_G.R")
 
 - Simple models are useful to [explain]{.orange} reality, not just to make predictions.
 
-- Simple models $\neq$ linear models. A tree with a few splits is indeed "simple".
+- Simple models $\neq$ linear models. A tree with a few splits is indeed "simple". Some might say that parametric models relying on well-chosen assumption are simple, but it depends. 
 
 - Simple models tend to be more [robust]{.orange}, i.e. less affected by contamination and/or changes in the data generative process.
 
-- Besides, the [understanding]{.blue} gained by fitting simple models is extremely valuable for fitting the more complex ones, because it provides guidance about the next steps. 
+- Besides, the [understanding]{.blue} gained by fitting simple models is extremely valuable for estimating the more complex ones, because it provides guidance about the next steps. 
 
 - The modelling process is [iterative]{.blue} and [not a collection of independent]{.orange} and [separate approaches]{.orange}. You fit a model, check the results, and adjust your strategy. 
+
+- Another practical concern is that senior statisticians know hundreds of different techniques. When all these ingredients are combined together, they generate thousands if not millions of competing estimates. Hence, it becomes impossible to simply "use them all and pick the best performer". You need guidance to find the final answer. 
+
+
 
 ## What if simple models do not work well?
 
 ...for example, what to do when simple models do not predict well?
 
-- In that case, of course, it is time to move on and try something else.
+- In that case, of course, it is time to move on and try something else and more sophisticated. This occurs quite often in practice, not every case-study can be solved with simple tools.
 
-- However, you [should not]{.orange} fit a sophisticated model for no reason, without having tried the simple ones. 
+- However, you [should not]{.orange} fit a sophisticated model for no reason, without having tried the simple ones in a first attempt. 
 
-- In other terms, you should try to fit a [deep neural network]{.blue} only if [everything else has failed]{.orange}.
+- In other terms, you should try to fit a [deep neural network]{.blue} only after [everything else has failed]{.orange}.
 
 - And even when it turns out that a complex model improves the predictive performance, always ask yourself: ["is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
-## What to do when different estimators lead to different conclusions?
-
-- Well, this happens all the times in applied statistics. It even happens in Statistics I!
-
-- For instance, you might get different values (or even opposite signs) when looking at the estimated regression coefficients $\hat{\beta}_\text{ols}$, $\hat{\beta}_\text{pcr}$, $\hat{\beta}_\text{ridge}$.
-
-- Do not assume OLS coefficients are "better" just because they are [unbiased]{.blue}. There is value in biased estimates, if they lead to a (sufficiently high) reduction of the variance.
-
-- In any event, do not forget these are [estimates]{.orange}! By construction, there will be some variability among these values, therefore the discrepancies might be due to random [fluctuations]{.orange}.
-
-- To choose among the estimates, we need some criterion, such as the [predictive performance]{.blue}, to identify the "best" estimator.
-
-- This is [not]{.orange} the only criterion! There might be other considerations to keepn in mind, including the [interpretability]{.blue}, the [robustness]{.orange} of the method, and the [computational complexity]{.grey}.
-
-- More generally, whenever different models display some differences, try to see this as an [opportunity]{.blue} to [learn something from the data]{.orange}. What could be the reason for such a discrepancy?
-
-## How to interpret a wrong model?
-
-- First of all, by wrong we mean "[biased]{.orange}". Therefore, being "wrong" could actually be an advantage [if]{.orange} the [focus]{.blue} is on [pure predictions]{.blue}.  
-
-- Even when there is interest in predictions, we can often say something about the [associations]{.orange} between variables.
-
-- The association structure is related to the model itself. For example, linear models capture the [linear part]{.orange} of the unknown and possibly more complex relationship $f(x)$. 
-
-- At the very least, we can often say something about the main factors affecting the predictions.
-
-- Obviously, we must be [very careful]{.orange} before making any [causal statement]{.orange}. Association $\neq$ causation. 
-
-- Also, do not forget that the estimated effects are "*ceteris paribus*"! In other words, the association
+- Once again, there might be other considerations to keep in mind (interpretability, robustness, computational complexity). 
