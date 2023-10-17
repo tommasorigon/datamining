@@ -182,12 +182,12 @@ styler:::style_file("../code/un_G.R")
 
 - It would be even worse to "manually" allocate units into each split, because that would also break the main assumption of cross-validation, i.e. the data should be [independently sampled]{.blue}.
 
-- Fair enough, so what should we do? In general, it [depends]{.blue}.
+- Fair enough, so what should we do? In general, it [depends]{.blue}. As a general strategy: be [creative]{.orange}, use your [judgment]{.blue}.
 
 - Obviously, an option is to [omit the variable]{.orange}, at the clear cost of a loss of information. However, for example if the variable is [binary]{.blue}, this is typically the only option you have. In this case, though, the discarded information is limited because the variable would be nearly constant. 
 
 - Alternatively, you could [merge]{.blue} the [rare values]{.blue} with other categories. However, the aggregation criterion is crucial. You could simply merge rare categories into a residual class called `Other`. Alternatively, you could use your judgment to make [smarter choices]{.blue} (e.g. merging `Isernia` with `Campobasso`, both in Molise). 
 
-- Other [details]{.orange}: is it preferable to perform the merging before estimating the model (using all the observations for fitting it), or after the estimation procedure (based on a reduced dataset), when making the predictions? If you think about it, this is just another instance of the bias-variance trade-off and there are no general answers. 
+- Other [details]{.orange}: is it preferable to perform the merging before estimating the model (using all the observations for fitting it), or after the estimation procedure (based on a reduced dataset), when making the predictions? This is just another instance of the [bias-variance trade-off]{.orange}. Hence, there are no general answers. 
 
-- The story does not ends here. For instance, taking a [Bayesian approach]{.blue} might be another principled possibility: prior information could be exploited to help the estimation, even in the absence of data points in the training. 
+- The story does not ends here. For instance, taking a [Bayesian approach]{.blue} might be another principled possibility: prior information could be exploited to help the estimation, even in the absence of data points in the training.
