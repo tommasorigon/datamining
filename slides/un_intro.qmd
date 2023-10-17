@@ -475,7 +475,7 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
 
 "*Quelli che s'innamoran di pratica sanza scienzia son come 'l nocchier ch'entra in navilio senza timone o bussola, che mai ha certezza dove si vada.*"
 
-[Leonardo da Vinci]{.blue}
+[Leonardo da Vinci]{.grey}
 
 ## Course material
 
