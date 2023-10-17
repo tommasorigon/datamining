@@ -71,6 +71,11 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#why-do-we-care-about-simple-models" id="toc-why-do-we-care-about-simple-models" class="nav-link" data-scroll-target="#why-do-we-care-about-simple-models">Why do we care about simple models?</a></li>
   <li><a href="#what-if-simple-models-do-not-work-well" id="toc-what-if-simple-models-do-not-work-well" class="nav-link" data-scroll-target="#what-if-simple-models-do-not-work-well">What if simple models do not work well?</a></li>
   </ul></li>
+  <li><a href="#handling-categorical-variables" id="toc-handling-categorical-variables" class="nav-link" data-scroll-target="#handling-categorical-variables">Handling categorical variables</a>
+  <ul class="collapse">
+  <li><a href="#i-have-been-told-that-linear-models-cannot-use-categorical-variables" id="toc-i-have-been-told-that-linear-models-cannot-use-categorical-variables" class="nav-link" data-scroll-target="#i-have-been-told-that-linear-models-cannot-use-categorical-variables">I have been told that linear models cannot use categorical variables…</a></li>
+  <li><a href="#in-the-test-set-there-are-a-few-values-that-were-not-observed-in-the-training-what-should-i-do" id="toc-in-the-test-set-there-are-a-few-values-that-were-not-observed-in-the-training-what-should-i-do" class="nav-link" data-scroll-target="#in-the-test-set-there-are-a-few-values-that-were-not-observed-in-the-training-what-should-i-do">In the test set there are a few values that were not observed in the training, what should I do?</a></li>
+  </ul></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_F_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
@@ -190,6 +195,30 @@ ul.task-list li input[type="checkbox"] {
 <li><p>A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error (i.e.&nbsp;the <a href="un_intro.html#press-the-button">button pressing culture</a>). A skilled statistician is more like an <span class="blue">artisan</span>, who uses her/his tools <span class="orange">when needed</span> and with <span class="orange">intelligence</span>, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of blind trial and error.</p></li>
 <li><p>Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: <span class="orange">“Is it worth it?”</span> The answer is often <span class="blue">context-dependent</span>.</p></li>
 <li><p>Once again, there might be other considerations to keep in mind: <span class="blue">interpretability</span>, <span class="orange">robustness</span>, <span class="grey">computational complexity</span>.</p></li>
+</ul>
+</section>
+</section>
+<section id="handling-categorical-variables" class="level1">
+<h1>Handling categorical variables</h1>
+<section id="i-have-been-told-that-linear-models-cannot-use-categorical-variables" class="level2">
+<h2 class="anchored" data-anchor-id="i-have-been-told-that-linear-models-cannot-use-categorical-variables">I have been told that linear models cannot use categorical variables…</h2>
+<ul>
+<li><p>Let me present you <a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">dummy variables</a>!</p></li>
+<li><p>This question was not made during a M.Sc. level course such as Data Mining at CLAMSES (otherwise it would have been a bit depressing), but it happened in <span class="orange">other contexts</span>.</p></li>
+</ul>
+</section>
+<section id="in-the-test-set-there-are-a-few-values-that-were-not-observed-in-the-training-what-should-i-do" class="level2">
+<h2 class="anchored" data-anchor-id="in-the-test-set-there-are-a-few-values-that-were-not-observed-in-the-training-what-should-i-do">In the test set there are a few values that were not observed in the training, what should I do?</h2>
+<ul>
+<li><p>This often occurs when a categorical variable, say <code>city</code>, takes multiple values, e.g.&nbsp;<code>Milan</code>, <code>Naples</code>, <code>Rome</code>, etc. However, a rare value, such as <code>Isernia</code>, may be present in the training and not in the test.</p></li>
+<li><p>The same issue can occur when doing cross-validation, or in the internal split into training / validation / test. You might be tempted to <span class="orange">change the seed</span> until you find a good split which does not display the issue. This practice is <span class="orange">wrong</span>; see below.</p></li>
+<li><p>First of all, it might take forever until you find a “good” seed. But then, if you keep sampling new splits until a specific condition is satisfied, you are implicitly <span class="orange">inducing dependence</span> across observations, breaking the main rationale of cross-validation or training/test set.</p></li>
+<li><p>It would be even worse to “manually” allocate units into each split, because that would also break the main assumption of cross-validation, i.e.&nbsp;the data should be <span class="blue">independently sampled</span>.</p></li>
+<li><p>Fair enough, so what should we do? In general, it <span class="blue">depends</span>.</p></li>
+<li><p>Obviously, an option is to <span class="orange">omit the variable</span>, at the clear cost of a loss of information. However, for example if the variable is <span class="blue">binary</span>, this is typically the only option you have. In this case, though, the discarded information is limited because the variable would be nearly constant.</p></li>
+<li><p>Alternatively, you could <span class="blue">merge</span> the <span class="blue">rare values</span> with other categories. However, the aggregation criterion is crucial. You could simply merge rare categories into a residual class called <code>Other</code>. Alternatively, you could use your judgment to make <span class="blue">smarter choices</span> (e.g.&nbsp;merging <code>Isernia</code> with <code>Campobasso</code>, both in Molise).</p></li>
+<li><p>Other <span class="orange">details</span>: is it preferable to perform the merging before estimating the model (using all the observations for fitting it), or after the estimation procedure (based on a reduced dataset), when making the predictions? If you think about it, this is just another instance of the bias-variance trade-off and there are no general answers.</p></li>
+<li><p>The story does not ends here. For instance, taking a <span class="blue">Bayesian approach</span> might be another principled possibility: prior information could be exploited to help the estimation, even in the absence of data points in the training.</p></li>
 </ul>
 </section>
 </section>

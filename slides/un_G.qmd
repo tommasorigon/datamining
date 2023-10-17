@@ -163,3 +163,31 @@ styler:::style_file("../code/un_G.R")
 - Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: ["Is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
 - Once again, there might be other considerations to keep in mind: [interpretability]{.blue}, [robustness]{.orange}, [computational complexity]{.grey}. 
+
+# Handling categorical variables
+
+## I have been told that linear models cannot use categorical variables...
+
+- Let me present you [dummy variables](https://en.wikipedia.org/wiki/Dummy_variable_(statistics))!
+
+- This question was not made during a M.Sc. level course such as Data Mining at CLAMSES (otherwise it would have been a bit depressing), but it happened in [other contexts]{.orange}.
+
+## In the test set there are a few values that were not observed in the training, what should I do?
+
+- This often occurs when a categorical variable, say `city`, takes multiple values, e.g. `Milan`, `Naples`, `Rome`, etc. However, a rare value, such as `Isernia`, may be present in the training and not in the test. 
+
+- The same issue can occur when doing cross-validation, or in the internal split into training / validation / test. You might be tempted to [change the seed]{.orange} until you find a good split which does not display the issue. This practice is [wrong]{.orange}; see below.
+
+- First of all, it might take forever until you find a "good" seed. But then, if you keep sampling new splits until a specific condition is satisfied, you are implicitly [inducing dependence]{.orange} across observations, breaking the main rationale of cross-validation or training/test set.
+
+- It would be even worse to "manually" allocate units into each split, because that would also break the main assumption of cross-validation, i.e. the data should be [independently sampled]{.blue}.
+
+- Fair enough, so what should we do? In general, it [depends]{.blue}.
+
+- Obviously, an option is to [omit the variable]{.orange}, at the clear cost of a loss of information. However, for example if the variable is [binary]{.blue}, this is typically the only option you have. In this case, though, the discarded information is limited because the variable would be nearly constant. 
+
+- Alternatively, you could [merge]{.blue} the [rare values]{.blue} with other categories. However, the aggregation criterion is crucial. You could simply merge rare categories into a residual class called `Other`. Alternatively, you could use your judgment to make [smarter choices]{.blue} (e.g. merging `Isernia` with `Campobasso`, both in Molise). 
+
+- Other [details]{.orange}: is it preferable to perform the merging before estimating the model (using all the observations for fitting it), or after the estimation procedure (based on a reduced dataset), when making the predictions? If you think about it, this is just another instance of the bias-variance trade-off and there are no general answers. 
+
+- The story does not ends here. For instance, taking a [Bayesian approach]{.blue} might be another principled possibility: prior information could be exploited to help the estimation, even in the absence of data points in the training. 
