@@ -84,6 +84,8 @@ styler:::style_file("../code/un_G.R")
 
 # The modeling process
 
+::: {.callout-note collapse=true}
+
 ## What to do when different estimators lead to dissimilar conclusions?
 
 - Well, it happens all the time in applied statistics. It even occurs in Statistics I!
@@ -99,6 +101,9 @@ styler:::style_file("../code/un_G.R")
 - There might be other considerations to keep in mind, including the [interpretability]{.blue}, the [robustness]{.orange} of the method, and the [computational complexity]{.grey}.
 
 - Whenever different estimates display some differences, try to see it as an [opportunity]{.blue} to [learn something from the data]{.orange}. What could be the reason for such a discrepancy? What tells us about the data we are analyzing?
+:::
+
+::: {.callout-note collapse=true}
 
 ## How to interpret a wrong model?
 
@@ -115,6 +120,7 @@ styler:::style_file("../code/un_G.R")
 - Obviously, we must be [very careful]{.orange} before making any [causal statement]{.orange}. Remember that association $\neq$ causation even when the model is well-specified.
 
 - Do not forget that the estimated effects should be interpreted as "*ceteris paribus*"! This means that the association between a variable and the response is often expressed conditionally on the other variables' effect. 
+:::
 
 <!-- ## What is the difference between an algorithm and a model? -->
 
@@ -132,6 +138,7 @@ styler:::style_file("../code/un_G.R")
 <!-- ::: -->
 <!-- ::: -->
 
+::: {.callout-note collapse=true}
 ## Why do we care about simple models?
 
 - Simple models are helpful to [explain]{.orange} reality, not just to make predictions.
@@ -145,6 +152,9 @@ styler:::style_file("../code/un_G.R")
 - The modelling process is [iterative]{.blue} and [not a collection of independent]{.orange} and [separate approaches]{.orange}. You fit a model, check the results, and adjust your strategy. 
 
 - Another practical concern is that senior statisticians know hundreds of different techniques. When all these ingredients are combined, they generate thousands, if not millions, of competing estimates. Hence, it becomes impossible to "use them all and pick the best performer." You need guidance to find the final answer. 
+:::
+
+::: {.callout-note collapse=true}
 
 ## What if simple models do not work well?
 
@@ -163,14 +173,20 @@ styler:::style_file("../code/un_G.R")
 - Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: ["Is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
 - Once again, there might be other considerations to keep in mind: [interpretability]{.blue}, [robustness]{.orange}, [computational complexity]{.grey}. 
+:::
 
 # Handling categorical variables
 
-## I have been told that linear models cannot use categorical variables...
+::: {.callout-note collapse=true}
+
+## I have been told that linear models cannot use categorical variables
 
 - Let me present you [dummy variables](https://en.wikipedia.org/wiki/Dummy_variable_(statistics))!
 
 - This question was not made during a M.Sc. level course such as Data Mining at CLAMSES (otherwise it would have been a bit depressing), but it happened in [other contexts]{.orange}.
+:::
+
+::: {.callout-note collapse=true}
 
 ## In the test set there are a few values that were not observed in the training, what should I do?
 
@@ -191,3 +207,4 @@ styler:::style_file("../code/un_G.R")
 - Other [details]{.orange}: is it preferable to perform the merging before estimating the model (using all the observations for fitting it), or after the estimation procedure (based on a reduced dataset), when making the predictions? This is just another instance of the [bias-variance trade-off]{.orange}. Hence, there are no general answers. 
 
 - The story does not ends here. For instance, taking a [Bayesian approach]{.blue} might be another principled possibility: prior information could be exploited to help the estimation, even in the absence of data points in the training.
+:::
