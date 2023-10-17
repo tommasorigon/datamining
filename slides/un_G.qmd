@@ -146,18 +146,20 @@ styler:::style_file("../code/un_G.R")
 
 - Another practical concern is that senior statisticians know hundreds of different techniques. When all these ingredients are combined, they generate thousands, if not millions, of competing estimates. Hence, it becomes impossible to "use them all and pick the best performer." You need guidance to find the final answer. 
 
-
-
 ## What if simple models do not work well?
 
 ...for example, what to do when simple models do not predict well?
 
 - In that case, of course, it is time to move on and try something more sophisticated. This occurs often in practice; not every case study can be solved with simple tools.
 
-- However, you [should not]{.orange} fit a sophisticated model without trying the simple ones first.
+- However, you [should not]{.orange} fit a sophisticated model without trying the simple ones first. In other terms, I would fit a [deep neural network]{.blue} only after [everything else has failed]{.orange}, as a last resort.
 
-- In other terms, I would fit a [deep neural network]{.blue} only after [everything else has failed]{.orange}, as a last resort.
+- The statement "*data are complicated, therefore I need a complex model*" is probably the result of [hype/over-excitement]{.orange} for the new shiny machine learning tool. 
 
-- And even when it turns out that a complex model improves the predictive performance, always ask yourself: ["Is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
+- Especially when data are complex, you should first check whether a simple solution exists. Sometimes this is actually the case, because "simple" models tend to high low variance. 
+
+- A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error. A skilled statistician is more like an [artisan]{.blue}, who uses her/his tools [when needed]{.orange} and with [intelligence]{.orange}, obtaining accurate predictions because she/he has a good understanding of the data, not as a result of a blind trial and error. 
+
+- Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: ["Is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
 - Once again, there might be other considerations to keep in mind ([interpretability]{.blue}, [robustness]{.orange}, [computational complexity]{.grey}). 
