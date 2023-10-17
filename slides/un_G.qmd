@@ -110,7 +110,7 @@ styler:::style_file("../code/un_G.R")
 
 - The specific [type of association]{.blue} reflects the [assumptions]{.blue} implied by the chosen model. For example, linear models capture the [linear part]{.orange} of the unknown and possibly more complex relationship $f(x)$, but they cannot capture interactions (unless manually included). 
 
-- At the very least, we can often say something about the main factors affecting the predictions.
+- At the very least, we can often say something about the main factors affecting the predictions. 
 
 - Obviously, we must be [very careful]{.orange} before making any [causal statement]{.orange}. Remember that association $\neq$ causation even when the model is well-specified.
 
@@ -156,7 +156,7 @@ styler:::style_file("../code/un_G.R")
 
 - However, you [should not]{.orange} fit a sophisticated model without trying the simple ones first.
 
-- In other terms, you can fit a [deep neural network]{.blue} only after [everything else has failed]{.orange}.
+- In other terms, I would fit a [deep neural network]{.blue} only after [everything else has failed]{.orange}, as a last resort.
 
 - And even when it turns out that a complex model improves the predictive performance, always ask yourself: ["Is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
