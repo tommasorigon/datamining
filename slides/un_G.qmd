@@ -106,7 +106,7 @@ styler:::style_file("../code/un_G.R")
 
 - We can often say something about the [association]{.orange} between the response variable and the covariates, i.e. we can still try to [interpret]{.blue} the results. 
 
-- Finding association is appropriate even in the presence of biased estimates, do not be discouraged by this aspect. However, you must be aware that the fitted model is, at best, an [approximation of reality]{.orange} (especially the biased ones), therefore you need to be prudent in your conclusions.
+- Finding association is appropriate even in the presence of biased estimates, do not be discouraged by this aspect. However, you must be aware that the fitted model is, at best, an [approximation of reality]{.orange} (especially the biased ones), therefore you need to be [prudent]{.blue} in your conclusions.
 
 - The specific [type of association]{.blue} reflects the [assumptions]{.blue} implied by the chosen model. For example, linear models capture the [linear part]{.orange} of the unknown and possibly more complex relationship $f(x)$, but they cannot capture interactions (unless manually included). 
 
