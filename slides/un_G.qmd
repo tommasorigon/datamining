@@ -158,7 +158,7 @@ styler:::style_file("../code/un_G.R")
 
 - Especially when data are complex, you should first check whether a simple solution exists. Sometimes this is actually the case, because "simple" models tend to have low variance. 
 
-- A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error. A skilled statistician is more like an [artisan]{.blue}, who uses her/his tools [when needed]{.orange} and with [intelligence]{.orange}, obtaining accurate predictions because she/he has a good understanding of the data, not as a result of a blind trial and error. 
+- A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error (i.e. the [button pressing culture](un_intro.html#press-the-button)). A skilled statistician is more like an [artisan]{.blue}, who uses her/his tools [when needed]{.orange} and with [intelligence]{.orange}, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of blind trial and error. 
 
 - Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: ["Is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
