@@ -162,4 +162,4 @@ styler:::style_file("../code/un_G.R")
 
 - Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: ["Is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
-- Once again, there might be other considerations to keep in mind ([interpretability]{.blue}, [robustness]{.orange}, [computational complexity]{.grey}). 
+- Once again, there might be other considerations to keep in mind: [interpretability]{.blue}, [robustness]{.orange}, [computational complexity]{.grey}. 
