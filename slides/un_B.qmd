@@ -67,7 +67,7 @@ styler:::style_file("../code/un_B.R")
 :::
 
 ::: {.column width="60%"}
-- This unit will cover the following [topics]{.orange}:
+-   This unit will cover the following [topics]{.orange}:
 
     -   Bias-variance trade-off
     -   Cross-validation
@@ -494,8 +494,8 @@ $$
 
     -   The [misclassification loss]{.orange}, which is defined as $$
         \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = \mathbb{I}(\tilde{Y}_i  \neq \hat{y}_i).
-        $$ The predictions are obtained by dichotomizing the probabilities
-        $\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) > 1/2)$.
+        $$ The predictions are obtained by dichotomizing the
+        probabilities $\hat{y}_i = \mathbb{I}(\hat{p}(\bm{x}_i) > 1/2)$.
     -   The [deviance]{.orange} or [cross-entropy]{.orange} loss
         functions are defined as $$
         \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\} = -2\left[ \mathbb{I}(Y_i = 1)\log{\hat{p}(\bm{x}_i)} + \mathbb{I}(Y_i = 0)\log{\{1 - \hat{p}(\bm{x}_i)}\}\right].
@@ -859,7 +859,7 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 ::: {.column width="50%"}
 -   A drug called "cholestyramine" is administered to $n = 164$ men.
 
-- We observe the pair $(x_i, y_i)$ for each man.
+-   We observe the pair $(x_i, y_i)$ for each man.
 
 -   The response $y_i$ is the [decrease in cholesterol level]{.orange}
     over the experiment.
@@ -884,8 +884,8 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 
 -   We consider a set of iid [random variables]{.blue}
     $(X_1, Y_1),\dots, (X_n, Y_n)$, whose realization is
-    $(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)$. This time, the covariates are
-    [random]{.orange}.
+    $(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)$. This time, the covariates
+    are [random]{.orange}.
 
 -   The main assumption is that these pairs are [iid]{.orange}, namely:
     $$(X_i, Y_i) \overset{\text{iid}}{\sim} \mathcal{P}, \quad  i=1,\dots,n.$$
@@ -1065,7 +1065,9 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   Let us define cross-validated "[residuals]{.orange}" of our
     procedure as follows $$
     r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
-    $$ so that $\widehat{\text{Err}} = \bar{r}$. Does it coincide with the estimate $\widehat{\text{Err}}$ presented in the previous slide? Recall that $V_k \approx n / K$...
+    $$ so that $\widehat{\text{Err}} = \bar{r}$. Does it coincide with
+    the estimate $\widehat{\text{Err}}$ presented in the previous slide?
+    Recall that $V_k \approx n / K$...
 
 -   Then, a simple estimate for the standard error of
     $\widehat{\text{Err}}$ is $$
@@ -1413,17 +1415,16 @@ ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
 
     -   The BIC and and the $10-$fold cross-validation selected $p = 2$
         (linear model);
-    -   The training/test split suggested $p = 3$ (quadratic
-        model);
+    -   The training/test split suggested $p = 3$ (quadratic model);
     -   All the others (LOO-CV, $\text{GCV}$, $\text{AIC}$ and
         $\text{AIC}_c$) concluded that $p = 4$ (cubic model).
 
 -   The good news is that all the above methods produced [similar
-    findings]{.blue}. For example, we are sure we should
-    choose $p \le 6$.
+    findings]{.blue}. For example, we are sure we should choose
+    $p \le 6$.
 
--   On the other hand, there is some [uncertainty]{.orange},
-    which is quite a common situation.
+-   On the other hand, there is some [uncertainty]{.orange}, which is
+    quite a common situation.
 
 -   In this specific case, we may prefer $p = 4$, since it is based on
     the less-biased estimates of $\text{Err}$, such as the LOO-CV.

@@ -59,4 +59,8 @@ of predictors $\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p$.
 
     iii. Different pruning strategies: `pmethod = "none"` (no pruning) and
         `pmethod = "backward"` (backward regression).
-        
+  
+## Practical exercise
+
+#### Exercise F.2 - Manual implementation of backfitting
+

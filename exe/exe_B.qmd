@@ -50,6 +50,26 @@ Refer also to Exercise 3.3 of the textbook A&S (2011), which is implicitly compu
 
 [Hint]{.blue}: many steps are similar to those needed for obtaining [recursive least squares]{.blue}. Begin the proof by applying Sherman-Morrison formula to $\hat{\beta}_{-i}$. 
 
+#### B.4 - An estimator with minimal variance
+
+Let us consider the inequality $\bm{A} \preccurlyeq \bm{B}$ between two squared matrices $\bm{A}$ and $\bm{B}$ of dimension $p \times p$. The symbol $\preccurlyeq$ means that $\bm{A} - \bm{B}$ is positive semi-definite. 
+
+Assume the [true model]{.blue} for the data $(x_i, y_i)$ is [linear]{.blue}, therefore $\bm{Y} = \bm{X}\beta + \bm{\epsilon}$. Let us assume, as usual, that the errors $\epsilon_i$ are iid and $\mathbb{E}(\epsilon_i) = 0$, $\text{var}(\epsilon_i) = \sigma^2$.  
+
+Let $\bm{V} = \sigma^2 (\bm{X}^T\bm{X})^{-1}$ be the covariance matrix of the ordinary least squares estimator $\hat{\beta}_\text{ols}$ and let $\tilde{\bm{V}}$ be the covariance matrix of another [linear]{.blue} and [unbiased]{.orange} estimator $\tilde{\beta} = \bm{A}\bm{y}$.
+
+[Prove]{.orange} that $\bm{V} \preccurlyeq \tilde{\bm{V}}$. Hence, does it make sense to look for other (linear) estimators for $\hat{\beta}$?
+
+#### B.5 - Heteroscedastic errors
+
+Let us consider a [regression]{.orange} problems in which $$
+        Y_i = f(\bm{x}_i) + v(\bm{x}_i) \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + v(\bm{x}_i)\tilde{\epsilon}_i, \quad i=1,\dots,n,
+      $$ where $\epsilon_i$ and $\tilde{\epsilon}_i$ are iid
+    "[error]{.orange}" terms, with $\mathbb{E}(\epsilon_i)=0$ and
+    $\text{var}(\epsilon_i)=\sigma^2$.
+
+Due to the presence of the function $v(\bm{x}_i)$, the error terms $v(\bm{x}_i) \epsilon_i$ have zero mean but variance $\sigma^2v(\bm{x}_i)^2$. In other words, the errors are [heteroscedastic]{.blue}. 
+
 ## Practical exercises
 
 #### B.4 - The `trawl` dataset

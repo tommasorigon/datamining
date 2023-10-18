@@ -29,7 +29,7 @@ editor_options:
 
 ## Theoretical exercises
 
-#### Exercise C.1 - Equivalence between PCR and OLS when $k = p$
+#### C.1 - Equivalence between PCR and OLS when $k = p$
 
 [Show]{.orange} that when the number of principal components $k = p$, then the predicted values of PCR and ordinary least squares coincide, namely
 $$
@@ -41,7 +41,7 @@ $$
 $$
 where $\hat{\beta}_\text{pcr}$ has been defined in [this slide](https://tommasorigon.github.io/datamining/slides/un_C.html#shrinkage-effect-of-principal-components-i).
 
-#### Exercise C.2 - Centering and scaling the predictors
+#### C.2 - Centering and scaling the predictors
 
 **Part I**
 
@@ -72,7 +72,7 @@ As mentioned in [this slide](https://tommasorigon.github.io/datamining/slides/un
     \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{scaled-ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
     $$ 
 
-#### Exercise C.3 - Ridge estimator
+#### C.3 - Ridge estimator
 
 [Verify]{.orange} the correctness of the statement of [this slide](../slides/un_C.html#lagrange-multipliers-and-ridge-solution). In other words, show that the [ridge estimator]{.blue}, under standard centering and scaling assumptions and defined as
 $$
@@ -84,7 +84,7 @@ $$
 $$
 [Hint]{.blue}: the proof is a simple adaptation of the one for ordinary least squares. 
 
-#### Exercise C.4 - Ridge data-augmentation
+#### C.4 - Ridge data-augmentation
 
 Show that the ridge regression estimator $\hat{\beta}_\text{ridge}$ can be obtained by [ordinary least squares]{.blue} regression on an [augmented data set]{.orange}. 
 
@@ -100,13 +100,13 @@ $$
 \hat{\beta}_\text{ridge} = (\tilde{\bm{X}}^T\tilde{\bm{X}})^{-1} \tilde{\bm{X}}^T\tilde{\bm{y}}.
 $$
 
-#### Exercise C.5 - Ridge regression with identical variables
+#### C.5 - Ridge regression with identical variables
 
 Suppose we run a ridge regression with parameter $\lambda$ on a single variable $\tilde{\bm{x}}_1$ (centered and scaled) and get a coefficient $\hat{\beta}_1$. We now include an exact copy $\tilde{\bm{x}}_2 = \tilde{\bm{x}}_1$ and refit our ridge regression. 
 
 [Show]{.orange} that both coefficients are identical and derive their value. 
 
-#### Exercise C.6 - Lasso solution with a single predictor
+#### C.6 - Lasso solution with a single predictor
 
 
 Consider thea lasso problem with a    [single-predictor]{.blue} $$
@@ -122,7 +122,7 @@ Consider thea lasso problem with a    [single-predictor]{.blue} $$
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
     $$
     
-#### Exercise C.7 - The tied covariances in LAR
+#### C.7 - The tied covariances in LAR
 
 Consider a regression problem with $k$ variables having mean zero and standard deviation one. The response is also centered. Suppose also that each variable has [identical absolute covariance]{.blue} with the response:
 $$
@@ -140,55 +140,13 @@ implying that the magnitude of the residuals is constant across the covariates a
 
 ## Practical exercises
 
-#### Exercise C.8 - The `Hitters` dataset
+#### C.8 - The `Hitters` dataset
 
 Consider the `Hitters` dataset which is available in the `ISLR` R library. Having removed the missing values, consider a regression models to predict the `Salary` as a function of the available covariates.
 
 Use best subset, principal components, ridge regression, and lasso to identify the handle the presence of potentially irrelevant variables. 
 
-#### Exercise C.9 - Implementation of pathwise coordinate optimization
+#### C.9 - Implementation of pathwise coordinate optimization
 
 Implement the pathwise coordinate optimization algorithm that is described in [this slide](../slides/un_C.html#coordinate-descent). Use it to predict the `Salary` of the baseball players on the `Hitters` dataset.
-
-<!-- #### Exercise P.1 -->
-
-<!-- ```{r} -->
-<!-- set.seed(123) -->
-<!-- x <- seq(from = 0, to = 4, length = 100) -->
-<!-- y <- 2 + x + rnorm(100, 0, 1) -->
-<!-- x_center <- x - mean(x) -->
-<!-- y_center <- y - mean(y) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- mean(y) -->
-<!-- ``` -->
-
-
-<!-- - To fix the ideas, the OLS estimed with [uncentered predictors]{.blue} is -->
-
-<!-- ```{r} -->
-<!-- #| echo: true -->
-<!-- coef(lm(y ~ x)) -->
-<!-- ``` -->
-
-<!-- - After centering, we obtain the  -->
-
-
-<!-- ```{r} -->
-<!-- #| echo: true -->
-<!-- round(coef(lm(y_center ~ x_center)), 6) -->
-<!-- ``` -->
-
-<!-- - asd -->
-
-<!-- ```{r} -->
-<!-- #| echo: true -->
-<!-- coef(lm(y ~ x_center)) -->
-<!-- ``` -->
-
-<!-- ```{r} -->
-<!-- #| echo: true -->
-<!-- coef(lm(y ~ 0 + x_center)) -->
-<!-- ``` -->
 
