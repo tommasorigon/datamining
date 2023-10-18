@@ -114,11 +114,11 @@ ul.task-list li input[type="checkbox"] {
 <ol type="1">
 <li><p>Generate <span class="math inline">n = 100</span> observations with predictors <span class="math inline">\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p</span> as independent standard Gaussian variates and fix these values.</p></li>
 <li><p>Generate response values <span class="math inline">y_i</span> also as standard Gaussian (<span class="math inline">\sigma^2 = 1</span>), independent of the predictors.</p></li>
-<li><p>Fit several MARS model using the <code>earth</code> R package and compare the <span class="orange">number of basis functions</span> included into the final model with the <span class="blue">effective degrees of freedom</span>. Do about 50 simulations of the response and average the results to get a good estimate of the degrees of freedom. Perform this operation as a function of the following tuning parameters:</p>
+<li><p>Fit several MARS models using the <code>earth</code> R package and compare the final <span class="orange">number of basis functions</span> of each model with the associated <span class="blue">effective degrees of freedom</span>. Do about 50 simulations of the response and average the results to get a decent Monte Carlo approximation of the degrees of freedom. Perform this operation as a function of the following tuning parameters:</p>
 <ol type="i">
-<li><p>For a sufficiently large grid of values of <code>nk</code>, the maximum number of terms to be included in the forward pass.</p></li>
-<li><p>Using <code>degree = 1</code>, <code>degree = 2</code>, and <code>degree = 3</code>, the maximum degree of MARS.</p></li>
-<li><p>When the <code>pmethod = "none"</code> (no pruning) and when <code>pmethod = "backward"</code> (backward regression).</p></li>
+<li><p>A sufficiently large grid of values for <code>nk</code>, the maximum number of terms to be included in the forward pass.</p></li>
+<li><p>Different maximum degrees of MARS: <code>degree = 1</code>, <code>degree = 2</code>, and <code>degree = 3</code>.</p></li>
+<li><p>Different pruning strategies: <code>pmethod = "none"</code> (no pruning) and <code>pmethod = "backward"</code> (backward regression).</p></li>
 </ol></li>
 </ol>
 </section>

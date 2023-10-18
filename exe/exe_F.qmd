@@ -47,16 +47,16 @@ of predictors $\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p$.
 2.  Generate response values $y_i$ also as standard Gaussian
     ($\sigma^2 = 1$), independent of the predictors. 
     
-3. Fit several MARS model using the `earth` R package and compare the [number of basis
-    functions]{.orange} included into the final model with the
-    [effective degrees of freedom]{.blue}.  Do about 50 simulations of the response and average the results to get a good estimate of the degrees of freedom. Perform this operation as a function of the following tuning parameters:
+3. Fit several MARS models using the `earth` R package and compare the final [number of basis
+    functions]{.orange} of each model with the associated
+    [effective degrees of freedom]{.blue}.  Do about 50 simulations of the response and average the results to get a decent Monte Carlo approximation of the degrees of freedom. 
+    Perform this operation as a function of the following tuning parameters:
 
-    i.  For a sufficiently large grid of values of `nk`, the maximum
+    i.  A sufficiently large grid of values for `nk`, the maximum
         number of terms to be included in the forward pass.
 
-    ii. Using `degree = 1`, `degree = 2`, and `degree = 3`, the maximum
-        degree of MARS.
+    ii. Different maximum degrees of MARS:  `degree = 1`, `degree = 2`, and `degree = 3`.
 
-    iii.  When the `pmethod = "none"` (no pruning) and when
+    iii. Different pruning strategies: `pmethod = "none"` (no pruning) and
         `pmethod = "backward"` (backward regression).
         
