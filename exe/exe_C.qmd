@@ -108,8 +108,7 @@ Suppose we run a ridge regression with parameter $\lambda$ on a single variable 
 
 #### C.6 - Lasso solution with a single predictor
 
-
-Consider thea lasso problem with a    [single-predictor]{.blue} $$
+Consider the lasso problem with a    [single-predictor]{.blue} $$
      \hat{\beta}_\text{lasso} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
       $$
 [Show]{.orange} that $\hat{\beta}_\text{lasso}$ has an [explicit expression]{.orange}, which is $$
@@ -138,15 +137,35 @@ implying that the magnitude of the residuals is constant across the covariates a
 
 [Realize]{.orange} that such a property implies that the [covariances]{.orange} with the residuals in the [LAR algorithm]{.blue} are [tied]{.orange}, having set $\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}$ and $0 \le \lambda \le \lambda_k$. 
 
+#### C.8 - Support vector machine as a ridge minimization problem ☠️ 
+
+Consider this exercise only if you already know  [Support Vector Machines]{.blue} (SVM). In SVM, we seek the optimal values $\hat{\beta}_0, \hat{\beta}$ that solve the following quadratic programming problem:
+$$
+\min_{\beta_0, \beta} \frac{1}{2}\sum_{j=1}^p\beta_j^2 + C \sum_{i=1}^n\xi_i, \quad \text{subject to}\quad  \xi_i \ge 0, \quad y_i(\beta_0 + \bm{x}_i^T\beta) \ge 1 - \xi_i, \quad \forall i,
+$$
+where $C > 0$ is a cost parameter and $y_i\in\{-1, 1\}$ the [categorical response]{.orange}. The SVM classifier is then obtained as $\hat{G}(x) = \text{sign}(\hat{f}(x))$, with $\hat{f}(x) = \hat{\beta}_0 + \bm{x}_i^T\hat{\beta}$.
+
+[Show]{.orange} that the SVM estimates corresponds to the solution of the following ridge problem
+$$
+(\hat{\beta}_0,\hat{\beta}) = \arg\min_{\beta_0,\beta_1}\: \underbrace{\sum_{i=1}^n[1 - y_i(\beta_0 + \bm{x}_i^T\beta)]_+}_{\text{hinge loss}} + \underbrace{\lambda\sum_{j=1}^p\beta_j^2}_{\text{ridge penalty}},
+$$
+in which $\lambda = 1/C$. Hence, SVMs are highly similar to a [logistic regression]{.orange}, with responses $y_i \in \{-1,1\}$ in which the log-likelihood
+$$\ell(\beta_0,\beta; \bm{y}) = \sum_{i=1}^n\log[1 + \exp\{y_i (\beta_0 + \bm{x}_i^T\beta)\}],
+$$
+has been replaced by the  [hinge loss]{.blue} 
+$$
+\ell_\text{hinge}(\beta_0,\beta; \bm{y}) = \sum_{i=1}^n[1 - y_i(\beta_0 + \bm{x}_i^T\beta)]_+.
+$$
+
 ## Practical exercises
 
-#### C.8 - The `Hitters` dataset
+#### C.9 - The `Hitters` dataset
 
 Consider the `Hitters` dataset which is available in the `ISLR` R library. Having removed the missing values, consider a regression models to predict the `Salary` as a function of the available covariates.
 
 Use best subset, principal components, ridge regression, and lasso to identify the handle the presence of potentially irrelevant variables. 
 
-#### C.9 - Implementation of pathwise coordinate optimization
+#### C.10 - Implementation of pathwise coordinate optimization
 
 Implement the pathwise coordinate optimization algorithm that is described in [this slide](../slides/un_C.html#coordinate-descent). Use it to predict the `Salary` of the baseball players on the `Hitters` dataset.
 

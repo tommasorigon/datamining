@@ -64,14 +64,20 @@ Let $\bm{V} = \sigma^2 (\bm{X}^T\bm{X})^{-1}$ be the covariance matrix of the or
 
 Let us consider a [regression]{.orange} problems in which $$
         Y_i = f(\bm{x}_i) + v(\bm{x}_i) \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + v(\bm{x}_i)\tilde{\epsilon}_i, \quad i=1,\dots,n,
-      $$ where $\epsilon_i$ and $\tilde{\epsilon}_i$ are iid
-    "[error]{.orange}" terms, with $\mathbb{E}(\epsilon_i)=0$ and
-    $\text{var}(\epsilon_i)=\sigma^2$.
+      $$ where $\epsilon_i$ and $\tilde{\epsilon}_i$ are iid, with $\mathbb{E}(\epsilon_i)=0$ and
+    $\text{var}(\epsilon_i)=\sigma^2$. Hence, the error terms $v(\bm{x}_i) \epsilon_i$ have zero mean and variance $\sigma^2v^2(\bm{x}_i)$. In other words, the errors are [heteroscedastic]{.blue}. 
 
-Due to the presence of the function $v(\bm{x}_i)$, the error terms $v(\bm{x}_i) \epsilon_i$ have zero mean but variance $\sigma^2v(\bm{x}_i)^2$. In other words, the errors are [heteroscedastic]{.blue}. 
+[Show]{.orange} that the [in-sample prediction
+    error]{.orange} under [squared loss]{.blue} can be decomposed as $$
+    \begin{aligned}
+    \text{ErrF} &= \mathbb{E}\left[\frac{1}{n} \sum_{i=1}^n \{\tilde{Y}_i- \hat{f}(\bm{x}_i)\}^2\right] \\
+    & = \frac{\sigma^2}{n}\sum_{i=1}^nv^2(\bm{x}_i) + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\hat{f}(\bm{x}_i) - f(\bm{x}_i)\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
+    \end{aligned}
+    $$
+[Conclude]{.orange} that the minimizer of $\text{ErrF}$ is $f(\bm{x}_i) = \mathbb{E}(\tilde{Y}_i)$. [Discuss]{.blue} the implications of the above results.
 
 ## Practical exercises
 
-#### B.4 - The `trawl` dataset
+#### B.6 - The `trawl` dataset
 
 Consider the dataset `trawl` contained in the `sm` library. Implement a function that fit a [polynomial regression]{.blue} using `Score1` as response variable ($y$) and `Longitude` as input variable ($x$). Implement a procedure that selects the [optimal degree]{.orange} of the polynomial based on leave-one-out cross-validation. 

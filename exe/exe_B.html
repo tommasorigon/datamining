@@ -3096,14 +3096,19 @@ vertical-align: -.125em;
 <h4 class="anchored" data-anchor-id="b.5---heteroscedastic-errors">B.5 - Heteroscedastic errors</h4>
 <p>Let us consider a <span class="orange">regression</span> problems in which <span class="math display">
         Y_i = f(\bm{x}_i) + v(\bm{x}_i) \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + v(\bm{x}_i)\tilde{\epsilon}_i, \quad i=1,\dots,n,
-      </span> where <span class="math inline">\epsilon_i</span> and <span class="math inline">\tilde{\epsilon}_i</span> are iid “<span class="orange">error</span>” terms, with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p>
-<p>Due to the presence of the function <span class="math inline">v(\bm{x}_i)</span>, the error terms <span class="math inline">v(\bm{x}_i) \epsilon_i</span> have zero mean but variance <span class="math inline">\sigma^2v(\bm{x}_i)^2</span>. In other words, the errors are <span class="blue">heteroscedastic</span>.</p>
+      </span> where <span class="math inline">\epsilon_i</span> and <span class="math inline">\tilde{\epsilon}_i</span> are iid, with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>. Hence, the error terms <span class="math inline">v(\bm{x}_i) \epsilon_i</span> have zero mean and variance <span class="math inline">\sigma^2v^2(\bm{x}_i)</span>. In other words, the errors are <span class="blue">heteroscedastic</span>.</p>
+<p><span class="orange">Show</span> that the <span class="orange">in-sample prediction error</span> under <span class="blue">squared loss</span> can be decomposed as <span class="math display">
+    \begin{aligned}
+    \text{ErrF} &amp;= \mathbb{E}\left[\frac{1}{n} \sum_{i=1}^n \{\tilde{Y}_i- \hat{f}(\bm{x}_i)\}^2\right] \\
+    &amp; = \frac{\sigma^2}{n}\sum_{i=1}^nv^2(\bm{x}_i) + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\hat{f}(\bm{x}_i) - f(\bm{x}_i)\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
+    \end{aligned}
+    </span> <span class="orange">Conclude</span> that the minimizer of <span class="math inline">\text{ErrF}</span> is <span class="math inline">f(\bm{x}_i) = \mathbb{E}(\tilde{Y}_i)</span>. <span class="blue">Discuss</span> the implications of the above results.</p>
 </section>
 </section>
 <section id="practical-exercises" class="level2">
 <h2 class="anchored" data-anchor-id="practical-exercises">Practical exercises</h2>
-<section id="b.4---the-trawl-dataset" class="level4">
-<h4 class="anchored" data-anchor-id="b.4---the-trawl-dataset">B.4 - The <code>trawl</code> dataset</h4>
+<section id="b.6---the-trawl-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="b.6---the-trawl-dataset">B.6 - The <code>trawl</code> dataset</h4>
 <p>Consider the dataset <code>trawl</code> contained in the <code>sm</code> library. Implement a function that fit a <span class="blue">polynomial regression</span> using <code>Score1</code> as response variable (<span class="math inline">y</span>) and <code>Longitude</code> as input variable (<span class="math inline">x</span>). Implement a procedure that selects the <span class="orange">optimal degree</span> of the polynomial based on leave-one-out cross-validation.</p>
 </section>
 </section>

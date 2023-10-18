@@ -29,21 +29,21 @@ editor_options:
 
 ## Theoretical exercises
 
-#### Exercise D.1
+#### D.1 - Bias-variance of KNN
 
 Consider the [$k$-nearest neighbours]{.blue} estimator $\hat{f}(x)$ for a regression problem $Y_i = f(x_i) + \epsilon_i$, under the usual assumptions. [Find]{.orange} the bias and the variance of $\hat{f}(x)$ and discuss their behavior as function of $k$.
 
-#### Exercise D.2 - Differentiability of Nadaraya-Watson
+#### D.2 - Differentiability of Nadaraya-Watson
 
 [Show]{.orange} that the Nadaraya-Watson estimator with fixed bandwidth $h$ and a Gaussian kernel is [differentiable]{.blue}. 
 
 What can be said about the Epanechnikov kernel? 
 
-#### Exercise D.3 - Local linear regression (explicit formula)
+#### D.3 - Local linear regression (explicit formula)
 
 Prove the theorem about the explicit formula for [local linear regression estimator]{.blue} stated in [this slide](../slides/un_D.html#local-linear-regression-ii). 
 
-#### Exercise D.4 - Preservation of linear trends
+#### D.4 - Preservation of linear trends
 
 [Show]{.orange} that local linear regression applied to $(x_i, y_i)$ [preserves]{.orange} the [linear part of the fit]{.blue}. In other words, let us decompose $y_i = \hat{y}_{i,\text{ols}} + r_i$, where $\hat{y}_{i,\text{ols}} = \hat{\beta}_0 + \hat{\beta}_1 x_i$ represents the linear regression estimate, and $\bm{S}$ is the smoothing matrix, then
 $$
@@ -58,13 +58,13 @@ Does the same property hold for the Nadaraya-Watson estimator?
 
 [Hint]{.blue}. Begin by showing that $\sum_{i=1}^ns_i(x) = 1$ and that $\sum_{i=1}^ns_i(x)(x_i - x) = 0$. Exploit these properties to obtain the proof. 
 
-#### Exercise D.5 - Conceptual exercise
+#### D.5 - Conceptual exercise
 
 Every nonparametric regression model involves a [smoothing parameter]{.blue}. For example, consider the parameter $\lambda$ of smoothing splines or $h$ of local linear regression. 
 
 Can we estimate $h$ and $\lambda$ using a standard method such as the [maximum likelihood]{.orange}?
 
-#### Exercise D.6 - Leave-one-out cross-validation
+#### D.6 - Leave-one-out cross-validation
 
 [Prove]{.orange} the theorem about the [leave-one-out cross validation]{.blue} for "projective" linear smoothers, described in [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii). 
 
@@ -77,7 +77,7 @@ Then, show that the theorem is valid for the following estimators:
   
 Finally, [prove]{.orange} that in all the above cases $|y_i - \hat{y}_{-i}| \ge |y_i - \hat{y}_i|$. That is, the leave-one-out residuals are always bigger than the regular residuals. 
 
-#### Exercise D.7 - Truncated power basis
+#### D.7 - Truncated power basis
 
 A cubic spline with one knots $\xi$ can be obtained using a basis of the form $x$, $x^2$, $x^3$ and ($x - \xi)_+$, as a consequence of the truncated power basis Theorem of [this slide](../slides/un_D.html#truncated-power-basis).
 
@@ -108,7 +108,7 @@ v. Show that $f''_1(\xi) = f''_2(\xi)$. That is, the second derivative $f''(x)$ 
 Conclude that $f(x)$ [is]{.blue} indeed a [cubic spline]{.blue}. 
 
 
-#### Exercise D.8 - Smoothing splines estimator
+#### D.8 - Smoothing splines estimator
 
 [Derive]{.orange} the smoothing spline estimator $\hat{\beta} = (\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T\bm{y}$, given for granted the validity of the Green and Silverman theorem about the optimality of natural cubic splines, as stated [here](../slides/un_D.html#smoothing-splines-ii).
 
@@ -116,13 +116,13 @@ Conclude that $f(x)$ [is]{.blue} indeed a [cubic spline]{.blue}.
 
 ## Practical exercises
 
-#### Exercise D.9 - Implementation of local linear regression
+#### D.9 - Implementation of local linear regression
 
 Write a function called `loclin(x, y, h)` that implements local linear regression using the formula of [this slide](../slides/un_D.html#local-linear-regression-ii). You can use any kernel function of your choice.
 
 Compare the results of your function `loclin` on the `auto` dataset with those of the libraries `KernSmooth` and `sm`, along the lines of what has been done in class. 
  
-#### Exercise D.10 - Implementation of leave-one-out cross-validation
+#### D.10 - Implementation of leave-one-out cross-validation
 
 Write a function called `loo_cv(X, y, h)` that computes the leave-one-out cross-validation for the `loclin(x, y, h)` function, using the result of [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii).
 
