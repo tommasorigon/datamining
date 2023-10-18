@@ -107,23 +107,22 @@ v. Show that $f''_1(\xi) = f''_2(\xi)$. That is, the second derivative $f''(x)$ 
 
 Conclude that $f(x)$ [is]{.blue} indeed a [cubic spline]{.blue}. 
 
-#### Exercise D.8 - Optimality of smoothing splines
 
-#### Exercise D.9 - Smoothing splines estimator
+#### Exercise D.8 - Smoothing splines estimator
 
-[Derive]{.orange} the smoothing spline estimator $\hat{\beta} = (\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T\bm{y}$.
+[Derive]{.orange} the smoothing spline estimator $\hat{\beta} = (\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T\bm{y}$, given for granted the validity of the Green and Silverman theorem about the optimality of natural cubic splines, as stated [here](../slides/un_D.html#smoothing-splines-ii).
 
 
 
 ## Practical exercises
 
-#### Exercise D.6 - Implementation of local linear regression
+#### Exercise D.9 - Implementation of local linear regression
 
 Write a function called `loclin(x, y, h)` that implements local linear regression using the formula of [this slide](../slides/un_D.html#local-linear-regression-ii). You can use any kernel function of your choice.
 
 Compare the results of your function `loclin` on the `auto` dataset with those of the libraries `KernSmooth` and `sm`, along the lines of what has been done in class. 
  
-#### Exercise D.7 - Implementation of leave-one-out cross-validation
+#### Exercise D.10 - Implementation of leave-one-out cross-validation
 
 Write a function called `loo_cv(X, y, h)` that computes the leave-one-out cross-validation for the `loclin(x, y, h)` function, using the result of [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii).
 

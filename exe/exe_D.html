@@ -3127,23 +3127,20 @@ f_2(x) = a_2 + b_2 x + c_2 x^2 + d_3 x^3,
 </ol>
 <p>Conclude that <span class="math inline">f(x)</span> <span class="blue">is</span> indeed a <span class="blue">cubic spline</span>.</p>
 </section>
-<section id="exercise-d.8---optimality-of-smoothing-splines" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.8---optimality-of-smoothing-splines">Exercise D.8 - Optimality of smoothing splines</h4>
-</section>
-<section id="exercise-d.9---smoothing-splines-estimator" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.9---smoothing-splines-estimator">Exercise D.9 - Smoothing splines estimator</h4>
-<p><span class="orange">Derive</span> the smoothing spline estimator <span class="math inline">\hat{\beta} = (\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T\bm{y}</span>.</p>
+<section id="exercise-d.8---smoothing-splines-estimator" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.8---smoothing-splines-estimator">Exercise D.8 - Smoothing splines estimator</h4>
+<p><span class="orange">Derive</span> the smoothing spline estimator <span class="math inline">\hat{\beta} = (\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T\bm{y}</span>, given for granted the validity of the Green and Silverman theorem about the optimality of natural cubic splines, as stated <a href="../slides/un_D.html#smoothing-splines-ii">here</a>.</p>
 </section>
 </section>
 <section id="practical-exercises" class="level2">
 <h2 class="anchored" data-anchor-id="practical-exercises">Practical exercises</h2>
-<section id="exercise-d.6---implementation-of-local-linear-regression" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.6---implementation-of-local-linear-regression">Exercise D.6 - Implementation of local linear regression</h4>
+<section id="exercise-d.9---implementation-of-local-linear-regression" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.9---implementation-of-local-linear-regression">Exercise D.9 - Implementation of local linear regression</h4>
 <p>Write a function called <code>loclin(x, y, h)</code> that implements local linear regression using the formula of <a href="../slides/un_D.html#local-linear-regression-ii">this slide</a>. You can use any kernel function of your choice.</p>
 <p>Compare the results of your function <code>loclin</code> on the <code>auto</code> dataset with those of the libraries <code>KernSmooth</code> and <code>sm</code>, along the lines of what has been done in class.</p>
 </section>
-<section id="exercise-d.7---implementation-of-leave-one-out-cross-validation" class="level4">
-<h4 class="anchored" data-anchor-id="exercise-d.7---implementation-of-leave-one-out-cross-validation">Exercise D.7 - Implementation of leave-one-out cross-validation</h4>
+<section id="exercise-d.10---implementation-of-leave-one-out-cross-validation" class="level4">
+<h4 class="anchored" data-anchor-id="exercise-d.10---implementation-of-leave-one-out-cross-validation">Exercise D.10 - Implementation of leave-one-out cross-validation</h4>
 <p>Write a function called <code>loo_cv(X, y, h)</code> that computes the leave-one-out cross-validation for the <code>loclin(x, y, h)</code> function, using the result of <a href="../slides/un_D.html#choice-of-the-bandwidth-ii">this slide</a>.</p>
 <p>Identify the optimal bandwidth for the <code>loclin</code> local linear regression, using the <code>auto</code> dataset.</p>
 </section>
