@@ -137,9 +137,9 @@ implying that the magnitude of the residuals is constant across the covariates a
 
 [Realize]{.orange} that such a property implies that the [covariances]{.orange} with the residuals in the [LAR algorithm]{.blue} are [tied]{.orange}, having set $\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}$ and $0 \le \lambda \le \lambda_k$. 
 
-#### C.8 - Support vector machine as a ridge minimization problem ☠️ 
+#### C.8 - ☠️ Support vector machine as a ridge minimization problem  
 
-Consider this exercise only if you already know  [Support Vector Machines]{.blue} (SVM). In SVM, we seek the optimal values $\hat{\beta}_0, \hat{\beta}$ that solve the following quadratic programming problem:
+Consider this exercise only if you already know  [Support Vector Machines]{.blue} (SVM). In SVMs, we seek for the optimal values $\hat{\beta}_0, \hat{\beta}$ that solve the following quadratic programming problem:
 $$
 \min_{\beta_0, \beta} \frac{1}{2}\sum_{j=1}^p\beta_j^2 + C \sum_{i=1}^n\xi_i, \quad \text{subject to}\quad  \xi_i \ge 0, \quad y_i(\beta_0 + \bm{x}_i^T\beta) \ge 1 - \xi_i, \quad \forall i,
 $$
@@ -150,7 +150,7 @@ $$
 (\hat{\beta}_0,\hat{\beta}) = \arg\min_{\beta_0,\beta_1}\: \underbrace{\sum_{i=1}^n[1 - y_i(\beta_0 + \bm{x}_i^T\beta)]_+}_{\text{hinge loss}} + \underbrace{\lambda\sum_{j=1}^p\beta_j^2}_{\text{ridge penalty}},
 $$
 in which $\lambda = 1/C$. Hence, SVMs are highly similar to a [logistic regression]{.orange}, with responses $y_i \in \{-1,1\}$ in which the log-likelihood
-$$\ell(\beta_0,\beta; \bm{y}) = \sum_{i=1}^n\log[1 + \exp\{y_i (\beta_0 + \bm{x}_i^T\beta)\}],
+$$\ell(\beta_0,\beta; \bm{y}) = \sum_{i=1}^n\log[1 + \exp\{-y_i (\beta_0 + \bm{x}_i^T\beta)\}],
 $$
 has been replaced by the  [hinge loss]{.blue} 
 $$
