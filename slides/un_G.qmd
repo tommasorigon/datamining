@@ -109,7 +109,7 @@ styler:::style_file("../code/un_G.R")
 
 - First of all, by wrong, we mean "[biased]{.orange}." Therefore, being "wrong" could be an advantage [if]{.orange} the [focus]{.blue} is on [pure predictions]{.blue}.  
 
-- We can often say something about the [association]{.orange} between the response variable and the covariates, i.e. we can still try to [interpret]{.blue} the results. 
+- We can often say something about the [association]{.orange} between the response variable and the covariates, i.e., we can still try to [interpret]{.blue} the results. 
 
 - Finding association is appropriate even in the presence of biased estimates, do not be discouraged by this aspect. However, you must be aware that the fitted model is, at best, an [approximation of reality]{.orange} (especially the biased ones), therefore you need to be [prudent]{.blue} in your conclusions.
 
@@ -119,7 +119,7 @@ styler:::style_file("../code/un_G.R")
 
 - Obviously, we must be [very careful]{.orange} before making any [causal statement]{.orange}. Remember that association $\neq$ causation even when the model is well-specified.
 
-- Do not forget that the estimated effects should be interpreted as "*ceteris paribus*"! This means that the association between a variable and the response is often expressed conditionally on the other variables' effect. 
+- Do not forget that the estimated effects should be interpreted as "*ceteris paribus*"! This means the association between a variable and the response is often expressed conditionally on the other variables' effect. 
 :::
 
 <!-- ## What is the difference between an algorithm and a model? -->
@@ -160,15 +160,15 @@ styler:::style_file("../code/un_G.R")
 
 ...for example, what to do when simple models do not predict well?
 
-- In that case, of course, it is time to move on and try something more sophisticated. This occurs often in practice; not every case study can be solved with simple tools.
+- In that case, of course, it is time to move on and try something more sophisticated. This often occurs in practice; only a few case-study can be solved with simple tools.
 
 - However, you [should not]{.orange} fit a sophisticated model without trying the simple ones first. In other terms, I would fit a [deep neural network]{.blue} only after [everything else has failed]{.orange}, as a last resort.
 
 - The statement "*data are complicated, therefore I need a complex model*" is probably the result of [hype/over-excitement]{.orange} for the new shiny machine learning tool. 
 
-- At the cost of being repetitive: especially when data are complex, you should first check whether a simple solution exists. Sometimes this is actually the case, because "simple" models tend to have low variance. 
+- At the cost of being repetitive, especially when data are complex, you should first check whether a simple solution exists. Sometimes, this is the case because "simple" models tend to have low variance. 
 
-- A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error (i.e. the [button pressing culture](un_intro.html#press-the-button)). A skilled statistician is more like an [artisan]{.blue}, who uses her/his tools [when needed]{.orange} and with [intelligence]{.orange}, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of blind trial and error. 
+- A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error (i.e., the [button pressing culture](un_intro.html#press-the-button)). A skilled statistician is more like an [artisan]{.blue}, who uses her/his tools [when needed]{.orange} and with [intelligence]{.orange}, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of blind trial and error. 
 
 - Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: ["Is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
@@ -183,28 +183,28 @@ styler:::style_file("../code/un_G.R")
 
 - Let me present you [dummy variables](https://en.wikipedia.org/wiki/Dummy_variable_(statistics))!
 
-- This question was not made during a M.Sc. level course such as Data Mining at CLAMSES (otherwise it would have been a bit depressing), but it happened in [other contexts]{.orange}.
+- This question was not made during an M.Sc. level course such as Data Mining at CLAMSES (otherwise, it would have been a bit depressing), but it happened in [other contexts]{.orange}.
 :::
 
 ::: {.callout-note collapse=true}
 
-## In the test set there are a few values that were not observed in the training, what should I do?
+## In the test set, there are a few values that were not observed in the training, what should I do?
 
-- This often occurs when a categorical variable, say `city`, takes multiple values, e.g. `Milan`, `Naples`, `Rome`, etc. However, a rare value, such as `Isernia`, may be present in the training and not in the test. 
+- This often occurs when a categorical variable, say `city`, takes multiple values, e.g., `Milan`, `Naples`, `Rome`, etc. However, a rare value, such as `Isernia`, may be present in the training and not in the test. 
 
-- The same issue can occur when doing cross-validation, or in the internal split into training / validation / test. You might be tempted to [change the seed]{.orange} until you find a good split which does not display the issue. This practice is [wrong]{.orange}; see below.
+- The same issue may arise during cross-validation or when splitting the data into training, validation, and test sets. You might be tempted to [change the seed]{.orange} until you find a good split that does not display the issue. This practice is [wrong]{.orange}; see below.
 
-- First of all, it might take forever until you find a "good" seed. But then, if you keep sampling new splits until a specific condition is satisfied, you are implicitly [inducing dependence]{.orange} across observations, breaking the main rationale of cross-validation or training/test set.
+- It might take forever to find a "good" seed. But then, if you keep sampling new splits until a specific condition is satisfied, you are implicitly [inducing dependence]{.orange} across observations, breaking the primary rationale of cross-validation or training/test set.
 
-- It would be even worse to "manually" allocate units into each split, because that would also break the main assumption of cross-validation, i.e. the data should be [independently sampled]{.blue}.
+- It would be even worse to "manually" allocate units into each split because that would also break the primary assumption of cross-validation, i.e., the data should be [independently sampled]{.blue}.
 
 - Fair enough, so what should we do? In general, it [depends]{.blue}. As a general strategy: be [creative]{.orange}, use your [judgment]{.blue}.
 
-- Obviously, an option is to [omit the variable]{.orange}, at the clear cost of a loss of information. However, for example if the variable is [binary]{.blue}, this is typically the only option you have. In this case, though, the discarded information is limited because the variable would be nearly constant. 
+- Obviously, an option is to [omit the variable]{.orange} at the explicit cost of losing information. However, for example, if the variable is [binary]{.blue}, this is typically your only option. In this case, the discarded information is limited because the variable would be nearly constant. 
 
-- Alternatively, you could [merge]{.blue} the [rare values]{.blue} with other categories. However, the aggregation criterion is crucial. You could simply merge rare categories into a residual class called `Other`. Alternatively, you could use your judgment to make [smarter choices]{.blue} (e.g. merging `Isernia` with `Campobasso`, both in Molise). 
+- Alternatively, you could [merge]{.blue} the [rare values]{.blue} with other categories. However, the aggregation criterion is crucial. You could merge rare categories into a residual class called `Other`. Alternatively, you could use your judgment to make [smarter choices]{.blue} (e.g., merging `Isernia` with `Campobasso`, both in Molise). 
 
-- Other [details]{.orange}: is it preferable to perform the merging before estimating the model (using all the observations for fitting it), or after the estimation procedure (based on a reduced dataset), when making the predictions? This is just another instance of the [bias-variance trade-off]{.orange}. Hence, there are no general answers. 
+- Other [details]{.orange}: is it preferable to perform the merging before estimating the model (using all the observations for fitting it) or after the estimation procedure (based on a reduced dataset) when making the predictions? This is another instance of the [bias-variance trade-off]{.orange}. Hence, there are no general answers. 
 
-- The story does not ends here. For instance, taking a [Bayesian approach]{.blue} might be another principled possibility: prior information could be exploited to help the estimation, even in the absence of data points in the training.
+- The story does not end here. For instance, taking a [Bayesian approach]{.blue} might be another principled possibility: prior information could be exploited to help the estimation, even without data points in the training.
 :::

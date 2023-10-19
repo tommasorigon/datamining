@@ -166,12 +166,12 @@ How to interpret a wrong model?
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>First of all, by wrong, we mean “<span class="orange">biased</span>.” Therefore, being “wrong” could be an advantage <span class="orange">if</span> the <span class="blue">focus</span> is on <span class="blue">pure predictions</span>.</p></li>
-<li><p>We can often say something about the <span class="orange">association</span> between the response variable and the covariates, i.e.&nbsp;we can still try to <span class="blue">interpret</span> the results.</p></li>
+<li><p>We can often say something about the <span class="orange">association</span> between the response variable and the covariates, i.e., we can still try to <span class="blue">interpret</span> the results.</p></li>
 <li><p>Finding association is appropriate even in the presence of biased estimates, do not be discouraged by this aspect. However, you must be aware that the fitted model is, at best, an <span class="orange">approximation of reality</span> (especially the biased ones), therefore you need to be <span class="blue">prudent</span> in your conclusions.</p></li>
 <li><p>The specific <span class="blue">type of association</span> reflects the <span class="blue">assumptions</span> implied by the chosen model. For example, linear models capture the <span class="orange">linear part</span> of the unknown and possibly more complex relationship <span class="math inline">f(x)</span>, but they cannot capture interactions (unless manually included).</p></li>
 <li><p>At the very least, we can often say something about the main factors affecting the predictions.</p></li>
 <li><p>Obviously, we must be <span class="orange">very careful</span> before making any <span class="orange">causal statement</span>. Remember that association <span class="math inline">\neq</span> causation even when the model is well-specified.</p></li>
-<li><p>Do not forget that the estimated effects should be interpreted as “<em>ceteris paribus</em>”! This means that the association between a variable and the response is often expressed conditionally on the other variables’ effect.</p></li>
+<li><p>Do not forget that the estimated effects should be interpreted as “<em>ceteris paribus</em>”! This means the association between a variable and the response is often expressed conditionally on the other variables’ effect.</p></li>
 </ul>
 </div>
 </div>
@@ -224,11 +224,11 @@ What if simple models do not work well?
 <div class="callout-body-container callout-body">
 <p>…for example, what to do when simple models do not predict well?</p>
 <ul>
-<li><p>In that case, of course, it is time to move on and try something more sophisticated. This occurs often in practice; not every case study can be solved with simple tools.</p></li>
+<li><p>In that case, of course, it is time to move on and try something more sophisticated. This often occurs in practice; only a few case-study can be solved with simple tools.</p></li>
 <li><p>However, you <span class="orange">should not</span> fit a sophisticated model without trying the simple ones first. In other terms, I would fit a <span class="blue">deep neural network</span> only after <span class="orange">everything else has failed</span>, as a last resort.</p></li>
 <li><p>The statement “<em>data are complicated, therefore I need a complex model</em>” is probably the result of <span class="orange">hype/over-excitement</span> for the new shiny machine learning tool.</p></li>
-<li><p>At the cost of being repetitive: especially when data are complex, you should first check whether a simple solution exists. Sometimes this is actually the case, because “simple” models tend to have low variance.</p></li>
-<li><p>A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error (i.e.&nbsp;the <a href="un_intro.html#press-the-button">button pressing culture</a>). A skilled statistician is more like an <span class="blue">artisan</span>, who uses her/his tools <span class="orange">when needed</span> and with <span class="orange">intelligence</span>, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of blind trial and error.</p></li>
+<li><p>At the cost of being repetitive, especially when data are complex, you should first check whether a simple solution exists. Sometimes, this is the case because “simple” models tend to have low variance.</p></li>
+<li><p>A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error (i.e., the <a href="un_intro.html#press-the-button">button pressing culture</a>). A skilled statistician is more like an <span class="blue">artisan</span>, who uses her/his tools <span class="orange">when needed</span> and with <span class="orange">intelligence</span>, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of blind trial and error.</p></li>
 <li><p>Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: <span class="orange">“Is it worth it?”</span> The answer is often <span class="blue">context-dependent</span>.</p></li>
 <li><p>Once again, there might be other considerations to keep in mind: <span class="blue">interpretability</span>, <span class="orange">robustness</span>, <span class="grey">computational complexity</span>.</p></li>
 </ul>
@@ -252,7 +252,7 @@ I have been told that linear models cannot use categorical variables
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Let me present you <a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">dummy variables</a>!</p></li>
-<li><p>This question was not made during a M.Sc. level course such as Data Mining at CLAMSES (otherwise it would have been a bit depressing), but it happened in <span class="orange">other contexts</span>.</p></li>
+<li><p>This question was not made during an M.Sc. level course such as Data Mining at CLAMSES (otherwise, it would have been a bit depressing), but it happened in <span class="orange">other contexts</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -263,22 +263,22 @@ I have been told that linear models cannot use categorical variables
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-In the test set there are a few values that were not observed in the training, what should I do?
+In the test set, there are a few values that were not observed in the training, what should I do?
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li><p>This often occurs when a categorical variable, say <code>city</code>, takes multiple values, e.g.&nbsp;<code>Milan</code>, <code>Naples</code>, <code>Rome</code>, etc. However, a rare value, such as <code>Isernia</code>, may be present in the training and not in the test.</p></li>
-<li><p>The same issue can occur when doing cross-validation, or in the internal split into training / validation / test. You might be tempted to <span class="orange">change the seed</span> until you find a good split which does not display the issue. This practice is <span class="orange">wrong</span>; see below.</p></li>
-<li><p>First of all, it might take forever until you find a “good” seed. But then, if you keep sampling new splits until a specific condition is satisfied, you are implicitly <span class="orange">inducing dependence</span> across observations, breaking the main rationale of cross-validation or training/test set.</p></li>
-<li><p>It would be even worse to “manually” allocate units into each split, because that would also break the main assumption of cross-validation, i.e.&nbsp;the data should be <span class="blue">independently sampled</span>.</p></li>
+<li><p>This often occurs when a categorical variable, say <code>city</code>, takes multiple values, e.g., <code>Milan</code>, <code>Naples</code>, <code>Rome</code>, etc. However, a rare value, such as <code>Isernia</code>, may be present in the training and not in the test.</p></li>
+<li><p>The same issue may arise during cross-validation or when splitting the data into training, validation, and test sets. You might be tempted to <span class="orange">change the seed</span> until you find a good split that does not display the issue. This practice is <span class="orange">wrong</span>; see below.</p></li>
+<li><p>It might take forever to find a “good” seed. But then, if you keep sampling new splits until a specific condition is satisfied, you are implicitly <span class="orange">inducing dependence</span> across observations, breaking the primary rationale of cross-validation or training/test set.</p></li>
+<li><p>It would be even worse to “manually” allocate units into each split because that would also break the primary assumption of cross-validation, i.e., the data should be <span class="blue">independently sampled</span>.</p></li>
 <li><p>Fair enough, so what should we do? In general, it <span class="blue">depends</span>. As a general strategy: be <span class="orange">creative</span>, use your <span class="blue">judgment</span>.</p></li>
-<li><p>Obviously, an option is to <span class="orange">omit the variable</span>, at the clear cost of a loss of information. However, for example if the variable is <span class="blue">binary</span>, this is typically the only option you have. In this case, though, the discarded information is limited because the variable would be nearly constant.</p></li>
-<li><p>Alternatively, you could <span class="blue">merge</span> the <span class="blue">rare values</span> with other categories. However, the aggregation criterion is crucial. You could simply merge rare categories into a residual class called <code>Other</code>. Alternatively, you could use your judgment to make <span class="blue">smarter choices</span> (e.g.&nbsp;merging <code>Isernia</code> with <code>Campobasso</code>, both in Molise).</p></li>
-<li><p>Other <span class="orange">details</span>: is it preferable to perform the merging before estimating the model (using all the observations for fitting it), or after the estimation procedure (based on a reduced dataset), when making the predictions? This is just another instance of the <span class="orange">bias-variance trade-off</span>. Hence, there are no general answers.</p></li>
-<li><p>The story does not ends here. For instance, taking a <span class="blue">Bayesian approach</span> might be another principled possibility: prior information could be exploited to help the estimation, even in the absence of data points in the training.</p></li>
+<li><p>Obviously, an option is to <span class="orange">omit the variable</span> at the explicit cost of losing information. However, for example, if the variable is <span class="blue">binary</span>, this is typically your only option. In this case, the discarded information is limited because the variable would be nearly constant.</p></li>
+<li><p>Alternatively, you could <span class="blue">merge</span> the <span class="blue">rare values</span> with other categories. However, the aggregation criterion is crucial. You could merge rare categories into a residual class called <code>Other</code>. Alternatively, you could use your judgment to make <span class="blue">smarter choices</span> (e.g., merging <code>Isernia</code> with <code>Campobasso</code>, both in Molise).</p></li>
+<li><p>Other <span class="orange">details</span>: is it preferable to perform the merging before estimating the model (using all the observations for fitting it) or after the estimation procedure (based on a reduced dataset) when making the predictions? This is another instance of the <span class="orange">bias-variance trade-off</span>. Hence, there are no general answers.</p></li>
+<li><p>The story does not end here. For instance, taking a <span class="blue">Bayesian approach</span> might be another principled possibility: prior information could be exploited to help the estimation, even without data points in the training.</p></li>
 </ul>
 </div>
 </div>
