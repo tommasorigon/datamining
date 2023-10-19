@@ -3142,29 +3142,38 @@ vertical-align: -.125em;
 </span> implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit <span class="math inline">x_i^T\hat{\beta}</span>.</p>
 <p><span class="orange">Realize</span> that such a property implies that the <span class="orange">covariances</span> with the residuals in the <span class="blue">LAR algorithm</span> are <span class="orange">tied</span>, having set <span class="math inline">\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}</span> and <span class="math inline">0 \le \lambda \le \lambda_k</span>.</p>
 </section>
-<section id="c.8---support-vector-machine-as-a-ridge-minimization-problem" class="level4">
-<h4 class="anchored" data-anchor-id="c.8---support-vector-machine-as-a-ridge-minimization-problem">C.8 - ☠️ Support vector machine as a ridge minimization problem</h4>
+<section id="c.8---ridge-and-lasso-with-orthogonal-predictors" class="level4">
+<h4 class="anchored" data-anchor-id="c.8---ridge-and-lasso-with-orthogonal-predictors">C.8 - Ridge and lasso with orthogonal predictors</h4>
+<p>When the <span class="blue">predictors</span> are mutually orthogonal, lasso and ridge become simpler. Let <span class="math inline">\bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p)</span> be the design matrix and suppose that <span class="math inline">\bm{Z}</span> is <span class="orange">orthogonal</span> and <span class="orange">standardized</span>, which means that <span class="math inline">\bm{Z}^T\bm{Z} = I_p</span>. Moreover, suppose the predictors and the response have been <span class="orange">centered</span>, that is <span class="math inline">\sum_{i=1}^ny_i = \sum_{i=1}^n z_{ij} = 0</span>.</p>
+<ul>
+<li><p>Find an explicit expression for <span class="math inline">\hat{\beta}_\text{ridge}</span>.</p></li>
+<li><p>Find an explicit expression for <span class="math inline">\hat{\beta}_\text{lasso}</span>.</p></li>
+</ul>
+<p><span class="blue">Discuss</span> the results.</p>
+</section>
+<section id="c.9---support-vector-machine-as-a-ridge-minimization-problem" class="level4">
+<h4 class="anchored" data-anchor-id="c.9---support-vector-machine-as-a-ridge-minimization-problem">C.9 - ☠️ Support vector machine as a ridge minimization problem</h4>
 <p>Consider this exercise only if you already know <span class="blue">Support Vector Machines</span> (SVM). In SVMs, we seek for the optimal values <span class="math inline">\hat{\beta}_0, \hat{\beta}</span> that solve the following quadratic programming problem: <span class="math display">
 \min_{\beta_0, \beta} \frac{1}{2}\sum_{j=1}^p\beta_j^2 + C \sum_{i=1}^n\xi_i, \quad \text{subject to}\quad  \xi_i \ge 0, \quad y_i(\beta_0 + \bm{x}_i^T\beta) \ge 1 - \xi_i, \quad \forall i,
 </span> where <span class="math inline">C &gt; 0</span> is a cost parameter and <span class="math inline">y_i\in\{-1, 1\}</span> the <span class="orange">categorical response</span>. The SVM classifier is then obtained as <span class="math inline">\hat{G}(x) = \text{sign}(\hat{f}(x))</span>, with <span class="math inline">\hat{f}(x) = \hat{\beta}_0 + \bm{x}_i^T\hat{\beta}</span>.</p>
 <p><span class="orange">Show</span> that the SVM estimates corresponds to the solution of the following ridge problem <span class="math display">
-(\hat{\beta}_0,\hat{\beta}) = \arg\min_{\beta_0,\beta_1}\: \underbrace{\sum_{i=1}^n[1 - y_i(\beta_0 + \bm{x}_i^T\beta)]_+}_{\text{hinge loss}} + \underbrace{\lambda\sum_{j=1}^p\beta_j^2}_{\text{ridge penalty}},
+(\hat{\beta}_0,\hat{\beta}) = \arg\min_{\beta_0,\beta}\: \underbrace{\sum_{i=1}^n[1 - y_i(\beta_0 + \bm{x}_i^T\beta)]_+}_{\text{hinge loss}} + \underbrace{\lambda\sum_{j=1}^p\beta_j^2}_{\text{ridge penalty}},
 </span> in which <span class="math inline">\lambda = 1/C</span>. Hence, SVMs are highly similar to a <span class="orange">logistic regression</span>, with responses <span class="math inline">y_i \in \{-1,1\}</span> in which the log-likelihood <span class="math display">\ell(\beta_0,\beta; \bm{y}) = \sum_{i=1}^n\log[1 + \exp\{-y_i (\beta_0 + \bm{x}_i^T\beta)\}],
 </span> has been replaced by the <span class="blue">hinge loss</span> <span class="math display">
 \ell_\text{hinge}(\beta_0,\beta; \bm{y}) = \sum_{i=1}^n[1 - y_i(\beta_0 + \bm{x}_i^T\beta)]_+.
-</span></p>
+</span> A detailed discussion is offered in <span class="blue">Section 12.3.2</span> of textbook <span class="orange">The Elements of Statistical Learning</span>.</p>
 </section>
 </section>
 <section id="practical-exercises" class="level2">
 <h2 class="anchored" data-anchor-id="practical-exercises">Practical exercises</h2>
-<section id="c.9---the-hitters-dataset" class="level4">
-<h4 class="anchored" data-anchor-id="c.9---the-hitters-dataset">C.9 - The <code>Hitters</code> dataset</h4>
+<section id="c.10---the-hitters-dataset" class="level4">
+<h4 class="anchored" data-anchor-id="c.10---the-hitters-dataset">C.10 - The <code>Hitters</code> dataset</h4>
 <p>Consider the <code>Hitters</code> dataset which is available in the <code>ISLR</code> R library. Having removed the missing values, consider a regression models to predict the <code>Salary</code> as a function of the available covariates.</p>
-<p>Use best subset, principal components, ridge regression, and lasso to identify the handle the presence of potentially irrelevant variables.</p>
+<p>Use best subset, principal components, ridge regression, and lasso to handle the presence of potentially irrelevant variables.</p>
 </section>
-<section id="c.10---implementation-of-pathwise-coordinate-optimization" class="level4">
-<h4 class="anchored" data-anchor-id="c.10---implementation-of-pathwise-coordinate-optimization">C.10 - Implementation of pathwise coordinate optimization</h4>
-<p>Implement the pathwise coordinate optimization algorithm that is described in <a href="../slides/un_C.html#coordinate-descent">this slide</a>. Use it to predict the <code>Salary</code> of the baseball players on the <code>Hitters</code> dataset.</p>
+<section id="c.11---implementation-of-pathwise-coordinate-optimization" class="level4">
+<h4 class="anchored" data-anchor-id="c.11---implementation-of-pathwise-coordinate-optimization">C.11 - Implementation of pathwise coordinate optimization</h4>
+<p>Implement the <span class="orange">pathwise coordinate optimization algorithm</span> that is described in <a href="../slides/un_C.html#coordinate-descent">this slide</a>. Use it to predict the <code>Salary</code> of the baseball players on the <code>Hitters</code> dataset.</p>
 </section>
 </section>
 </section>

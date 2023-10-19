@@ -62,5 +62,7 @@ of predictors $\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p$.
   
 ## Practical exercise
 
-#### Exercise F.2 - Manual implementation of backfitting
+#### Exercise F.2 - Implementation of the backfitting algorithm
+
+Implement the [backfitting algorithm]{.orange} that is described in [this slide](../slides/un_F.html#the-backfitting-algorithm-regression). Use it to predict the `Salary` of the baseball players on the `Hitters` dataset.
 

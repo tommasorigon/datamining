@@ -137,7 +137,17 @@ implying that the magnitude of the residuals is constant across the covariates a
 
 [Realize]{.orange} that such a property implies that the [covariances]{.orange} with the residuals in the [LAR algorithm]{.blue} are [tied]{.orange}, having set $\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}$ and $0 \le \lambda \le \lambda_k$. 
 
-#### C.8 - ☠️ Support vector machine as a ridge minimization problem  
+#### C.8 - Ridge and lasso with orthogonal predictors
+
+When the [predictors]{.blue} are mutually orthogonal, lasso and ridge become simpler. Let $\bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p)$ be the design matrix and suppose that $\bm{Z}$ is [orthogonal]{.orange} and [standardized]{.orange}, which means that $\bm{Z}^T\bm{Z} = I_p$. Moreover, suppose the predictors and the response have been [centered]{.orange}, that is $\sum_{i=1}^ny_i = \sum_{i=1}^n z_{ij} = 0$. 
+
+- Find an explicit expression for $\hat{\beta}_\text{ridge}$.
+
+- Find an explicit expression for $\hat{\beta}_\text{lasso}$. 
+
+[Discuss]{.blue} the results. 
+
+#### C.9 - ☠️ Support vector machine as a ridge minimization problem  
 
 Consider this exercise only if you already know  [Support Vector Machines]{.blue} (SVM). In SVMs, we seek for the optimal values $\hat{\beta}_0, \hat{\beta}$ that solve the following quadratic programming problem:
 $$
@@ -147,7 +157,7 @@ where $C > 0$ is a cost parameter and $y_i\in\{-1, 1\}$ the [categorical respons
 
 [Show]{.orange} that the SVM estimates corresponds to the solution of the following ridge problem
 $$
-(\hat{\beta}_0,\hat{\beta}) = \arg\min_{\beta_0,\beta_1}\: \underbrace{\sum_{i=1}^n[1 - y_i(\beta_0 + \bm{x}_i^T\beta)]_+}_{\text{hinge loss}} + \underbrace{\lambda\sum_{j=1}^p\beta_j^2}_{\text{ridge penalty}},
+(\hat{\beta}_0,\hat{\beta}) = \arg\min_{\beta_0,\beta}\: \underbrace{\sum_{i=1}^n[1 - y_i(\beta_0 + \bm{x}_i^T\beta)]_+}_{\text{hinge loss}} + \underbrace{\lambda\sum_{j=1}^p\beta_j^2}_{\text{ridge penalty}},
 $$
 in which $\lambda = 1/C$. Hence, SVMs are highly similar to a [logistic regression]{.orange}, with responses $y_i \in \{-1,1\}$ in which the log-likelihood
 $$\ell(\beta_0,\beta; \bm{y}) = \sum_{i=1}^n\log[1 + \exp\{-y_i (\beta_0 + \bm{x}_i^T\beta)\}],
@@ -156,16 +166,17 @@ has been replaced by the  [hinge loss]{.blue}
 $$
 \ell_\text{hinge}(\beta_0,\beta; \bm{y}) = \sum_{i=1}^n[1 - y_i(\beta_0 + \bm{x}_i^T\beta)]_+.
 $$
+A detailed discussion is offered in [Section 12.3.2]{.blue} of textbook [The Elements of Statistical Learning]{.orange}.
 
 ## Practical exercises
 
-#### C.9 - The `Hitters` dataset
+#### C.10 - The `Hitters` dataset
 
 Consider the `Hitters` dataset which is available in the `ISLR` R library. Having removed the missing values, consider a regression models to predict the `Salary` as a function of the available covariates.
 
-Use best subset, principal components, ridge regression, and lasso to identify the handle the presence of potentially irrelevant variables. 
+Use best subset, principal components, ridge regression, and lasso to handle the presence of potentially irrelevant variables. 
 
-#### C.10 - Implementation of pathwise coordinate optimization
+#### C.11 - Implementation of pathwise coordinate optimization
 
-Implement the pathwise coordinate optimization algorithm that is described in [this slide](../slides/un_C.html#coordinate-descent). Use it to predict the `Salary` of the baseball players on the `Hitters` dataset.
+Implement the [pathwise coordinate optimization algorithm]{.orange} that is described in [this slide](../slides/un_C.html#coordinate-descent). Use it to predict the `Salary` of the baseball players on the `Hitters` dataset.
 
