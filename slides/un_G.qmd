@@ -168,11 +168,19 @@ styler:::style_file("../code/un_G.R")
 
 - At the cost of being repetitive, especially when data are complex, you should first check whether a simple solution exists. Sometimes, this is the case because "simple" models tend to have low variance. 
 
-- A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error (i.e., the [button pressing culture](un_intro.html#press-the-button)). A skilled statistician is more like an [artisan]{.blue}, who uses her/his tools [when needed]{.orange} and with [intelligence]{.orange}, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of blind trial and error. 
+- A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error (i.e., the [button pressing culture](un_intro.html#press-the-button)). A skilled statistician is more like an [artisan]{.blue}, who uses her/his tools [when needed]{.orange} and with [intelligence]{.orange}, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of brutal trial and error. 
 
 - Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: ["Is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
 - Once again, there might be other considerations to keep in mind: [interpretability]{.blue}, [robustness]{.orange}, [computational complexity]{.grey}. 
+:::
+
+::: {.callout-note collapse=true}
+## What is a statistical model?
+
+This question is too complicated to be answered using bullet points on a website. You may find some answers in the very instructive but technical paper by Peter McCullagh, published on the *Annals of Statistics*.
+
+- McCullagh, P. (2002). [What is a statistical model?](https://projecteuclid.org/journals/annals-of-statistics/volume-30/issue-5/What-is-a-statistical-model/10.1214/aos/1035844977.full). Annals of Statistics **30** (5), 1225–67. 
 :::
 
 # Handling categorical variables
