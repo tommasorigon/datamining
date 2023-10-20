@@ -74,7 +74,15 @@ $$
 $$
 which is mentioned [here](../slides/un_A.html#the-recursive-least-squares-algorithm-ii) without proof.
 
-#### A.6 - Standardization of the input variables
+#### A.6 - Separability in logistic regression
+
+Consider a logistic regression model for binary data with a single predictor $x_i \in \mathbb{R}$, so that $f(x_i) = \beta_0 + \beta_1 x_i$ and $\mathbb{P}(Y_i = 1) = \pi(x_i) = 1/[1 + \exp\{-f(x_i)\}]$. Suppose there exists a point $x_0 \in \mathbb{R}$ that [perfectly separates]{.blue} the two binary outcomes. 
+
+[Investigate]{.orange} the behavior of the maximum likelihood estimate $\hat{\beta}_0, \hat{\beta}$ in this scenario. Then, generalize this result to the multivariate case, when $\bm{x}_i \in \mathbb{R}^p$. That is, suppose there exists a vector $\bm{x}_0 \in \mathbb{R}^p$ that perfectly separates the binary outcomes.
+
+A detailed description of this [separability issue]{.blue} is provided in the *Biometrika* paper by [Albert and Anderson (1984)](https://academic.oup.com/biomet/article/71/1/1/349338). See for example their Theorem 1. 
+
+#### A.7 - Standardization of the input variables
 
 I have read, on a popular social media, a sentence about standardization, that can be loosely translated as follows:
 
@@ -96,17 +104,15 @@ where $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ and $\bm{z}_i = (z_{i1},\dots,z_{ip})
 
 There are good reasons to standardize the variables, for instance, in ridge/lasso regression models. Moreover, centering the predictors may be helpful to get a design matrix which is better conditioned... But these motivations are not related to Gaussianity. 
 
-This is, unfortunately, a clear example of the [button pressing](../slides/un_intro.html#press-the-button) culture. 
-
 ## Practical exercises
 
-#### A.7 - Recursive least squares
+#### A.8 - Recursive least squares
 
 [Implement]{.orange} a function `ols_function(X, y)` that computes the least squares estimate using the recursive least squares algorithm, described in [this slide](../slides/un_A.html#the-recursive-least-squares-algorithm-i).
 
 A detailed description of this procedure is also described in [Algorithm 2.2]{.blue} of Azzalini \& Scarpa, 2011
 
-#### A.8 - Iteratively re-weighted least squares for logistic regression
+#### A.9 - Iteratively re-weighted least squares for logistic regression
 
 Implement a function called `logistic_mle(X, y)` which computes the maximum likelihood estimate for a logistic regression model using the [iteratively re-weighted least squares]{.blue}, as described [here](../slides/un_A.html#iteratively-re-weighted-least-squares-ii). 
 

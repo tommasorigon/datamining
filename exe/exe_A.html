@@ -3102,8 +3102,14 @@ vertical-align: -.125em;
 ||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2,
 </span> which is mentioned <a href="../slides/un_A.html#the-recursive-least-squares-algorithm-ii">here</a> without proof.</p>
 </section>
-<section id="a.6---standardization-of-the-input-variables" class="level4">
-<h4 class="anchored" data-anchor-id="a.6---standardization-of-the-input-variables">A.6 - Standardization of the input variables</h4>
+<section id="a.6---separability-in-logistic-regression" class="level4">
+<h4 class="anchored" data-anchor-id="a.6---separability-in-logistic-regression">A.6 - Separability in logistic regression</h4>
+<p>Consider a logistic regression model for binary data with a single predictor <span class="math inline">x_i \in \mathbb{R}</span>, so that <span class="math inline">f(x_i) = \beta_0 + \beta_1 x_i</span> and <span class="math inline">\mathbb{P}(Y_i = 1) = \pi(x_i) = 1/[1 + \exp\{-f(x_i)\}]</span>. Suppose there exists a point <span class="math inline">x_0 \in \mathbb{R}</span> that <span class="blue">perfectly separates</span> the two binary outcomes.</p>
+<p><span class="orange">Investigate</span> the behavior of the maximum likelihood estimate <span class="math inline">\hat{\beta}_0, \hat{\beta}</span> in this scenario. Then, generalize this result to the multivariate case, when <span class="math inline">\bm{x}_i \in \mathbb{R}^p</span>. That is, suppose there exists a vector <span class="math inline">\bm{x}_0 \in \mathbb{R}^p</span> that perfectly separates the binary outcomes.</p>
+<p>A detailed description of this <span class="blue">separability issue</span> is provided in the <em>Biometrika</em> paper by <a href="https://academic.oup.com/biomet/article/71/1/1/349338">Albert and Anderson (1984)</a>. See for example their Theorem 1.</p>
+</section>
+<section id="a.7---standardization-of-the-input-variables" class="level4">
+<h4 class="anchored" data-anchor-id="a.7---standardization-of-the-input-variables">A.7 - Standardization of the input variables</h4>
 <p>I have read, on a popular social media, a sentence about standardization, that can be loosely translated as follows:</p>
 <p><em>“Standardization should be used when the data follow a Gaussian distribution and the algorithm presumes that the data comes from a Gaussian law, as in linear regression.”</em></p>
 <p>There are multiple confusing statements. For instance, linear models do <span class="orange">not</span> assume the Gaussianity of the input variables <span class="math inline">x_{ij}</span>. Sometimes (but not necessarily!) the errors <span class="math inline">\epsilon_1,\dots,\epsilon_n</span> are assumed to be Gaussian.</p>
@@ -3114,18 +3120,17 @@ z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j},
 \hat{y}_i = \bm{x}_i^T\hat{\beta} = \bm{z}_i^T\hat{\gamma}, \qquad i=1,\dots,n,
 </span> where <span class="math inline">\bm{x}_i = (x_{i1},\dots,x_{ip})^T</span> and <span class="math inline">\bm{z}_i = (z_{i1},\dots,z_{ip})^T</span>. Hence, standardization of the inputs in ordinary least squares has <span class="blue">no effect</span> on the <span class="orange">predictions</span>. Similar linear operations on the inputs, such as <span class="blue">normalization</span>, would lead to the same conclusion.</p>
 <p>There are good reasons to standardize the variables, for instance, in ridge/lasso regression models. Moreover, centering the predictors may be helpful to get a design matrix which is better conditioned… But these motivations are not related to Gaussianity.</p>
-<p>This is, unfortunately, a clear example of the <a href="../slides/un_intro.html#press-the-button">button pressing</a> culture.</p>
 </section>
 </section>
 <section id="practical-exercises" class="level2">
 <h2 class="anchored" data-anchor-id="practical-exercises">Practical exercises</h2>
-<section id="a.7---recursive-least-squares" class="level4">
-<h4 class="anchored" data-anchor-id="a.7---recursive-least-squares">A.7 - Recursive least squares</h4>
+<section id="a.8---recursive-least-squares" class="level4">
+<h4 class="anchored" data-anchor-id="a.8---recursive-least-squares">A.8 - Recursive least squares</h4>
 <p><span class="orange">Implement</span> a function <code>ols_function(X, y)</code> that computes the least squares estimate using the recursive least squares algorithm, described in <a href="../slides/un_A.html#the-recursive-least-squares-algorithm-i">this slide</a>.</p>
 <p>A detailed description of this procedure is also described in <span class="blue">Algorithm 2.2</span> of Azzalini &amp; Scarpa, 2011</p>
 </section>
-<section id="a.8---iteratively-re-weighted-least-squares-for-logistic-regression" class="level4">
-<h4 class="anchored" data-anchor-id="a.8---iteratively-re-weighted-least-squares-for-logistic-regression">A.8 - Iteratively re-weighted least squares for logistic regression</h4>
+<section id="a.9---iteratively-re-weighted-least-squares-for-logistic-regression" class="level4">
+<h4 class="anchored" data-anchor-id="a.9---iteratively-re-weighted-least-squares-for-logistic-regression">A.9 - Iteratively re-weighted least squares for logistic regression</h4>
 <p>Implement a function called <code>logistic_mle(X, y)</code> which computes the maximum likelihood estimate for a logistic regression model using the <span class="blue">iteratively re-weighted least squares</span>, as described <a href="../slides/un_A.html#iteratively-re-weighted-least-squares-ii">here</a>.</p>
 <p>Verify that the output of <code>logistic_mle</code> and the built-in <code>glm</code> function coincide, using the <a href="../slides/un_A.html#the-heart-dataset">hearth dataset</a>.</p>
 </section>
