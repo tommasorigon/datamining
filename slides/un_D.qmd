@@ -1708,7 +1708,7 @@ The minimization of the above loss has a simple [finite-dimensional]{.orange} so
 
 - Smoothing splines have a Bayesian interpretation, being an instance of [Gaussian process]{.blue}. 
 
-- From a theoretical perspective, there exists (Chapter 5.8 of [HTF, 2011]{.grey}) an elegant theory based on [reprocuding kernel Hilbert spaces]{.orange}, that [unifies]{.blue}:
+- From a theoretical perspective, there exists (Chapter 5.8 of [HTF, 2011]{.grey}) an elegant theory based on [reproducing kernel Hilbert spaces]{.orange}, that [unifies]{.blue}:
     - Gaussian processes;
     - Smoothing splines;
     - Support vector machine.

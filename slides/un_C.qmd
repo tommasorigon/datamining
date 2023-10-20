@@ -1006,8 +1006,8 @@ ggplot(data = data_cv, aes(x = p, y = MSE)) +
     \text{var}(\hat{\beta}_\text{pcr}) = \sigma^2\sum_{j=1}^k \frac{1}{d_j^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T.
     $$
 
--   Thus, if a [multicollinearity]{.blue} exists, then it appears as a
-    principal component with very small variance, i.e., a small $d_j^2$.
+-   In case of [multicollinearity]{.blue}, then the [last]{.orange}
+    principal components will have a small variance, i.e., a small $d_j^2$.
     Its removal, therefore, drastically [reduces]{.orange} the
     [variance]{.orange} of $\hat{\beta}_\text{pcr}$.
 
@@ -2565,7 +2565,7 @@ X_test <- cbind(1, as.matrix(prostate_test)[, -9])
 y_test <- prostate_test[, 9]
 
 pred_ols <- X_test %*% tab$OLS
-pred_best <- X_test %*% tab$best_subset
+pred_best <- X_test %*% tab$`Best subset`
 pred_pcr <- X_test %*% tab$PCR
 pred_ridge <- X_test %*% tab$Ridge
 pred_lasso <- X_test %*% tab$Lasso

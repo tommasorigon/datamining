@@ -216,3 +216,26 @@ styler:::style_file("../code/un_G.R")
 
 - The story does not end here. For instance, taking a [Bayesian approach]{.blue} might be another principled possibility: prior information could be exploited to help the estimation, even without data points in the training.
 :::
+
+# Nonparametric regression
+
+::: {.callout-note collapse=true}
+
+## What is the definition of a "kernel"?
+
+In our slides, we called any [density function]{.orange} $w(\cdot)$, [symmetric]{.blue} around the origin, a "kernel". Typically the density is also [unimodal]{.blue} around the origin. 
+
+Depending on the book and the context, the definition of a kernel might be slightly different; here we are in agreement with the [textbook]{.blue} Azzalini, A. and Scarpa, B. (2011), [*Data Analysis and Data Mining*](http://azzalini.stat.unipd.it/Book-DM/)
+
+![](img/kernel_AS.png){width=70% fig-align="center"}
+
+and Wasserman, L. (2006), [*All of Nonparametric statistics*](https://link.springer.com/book/10.1007/0-387-30623-4)
+
+![](img/kernel_W.png){width=70% fig-align="center"}
+
+With that said, the word "kernel" has been used to indicate, more generally, a function that measures the [discrepancy]{.orange} between [two points]{.blue}, say $\bm{x}$ and $\bm{x}'$. 
+
+For instance, the definition given in Rasmussen, C. E. and  Williams, C. K. I. (2006), [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/chapters/) is indeed extremely general:
+
+![](img/kernel_GP.png){width=70% fig-align="center"}
+:::

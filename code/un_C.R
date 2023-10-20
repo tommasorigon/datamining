@@ -27,7 +27,7 @@ rownames(tab) <- tab[, 1]
 tab <- t(as.matrix(tab[, -1]))
 knitr::kable(tab, digits = 2)
 
-# Here I compute some basic quantities
+# Here, I compute some basic quantities
 X <- model.matrix(lpsa ~ ., data = prostate_train)[, -1]
 y <- prostate_train$lpsa
 n <- nrow(X)
@@ -439,7 +439,7 @@ sigma_sim <- 0.5
 
 set.seed(220)
 X_sim <- matrix(runif(n_sim * p_sim), n_sim, p_sim)
-# Here data are not related with any of the covariates
+# Here, data are not related to any of the covariates
 Y_sim <- matrix(rnorm(n_sim * R, mean = 4, sigma_sim), R, n_sim)
 
 pred_best_sim <- array(0, c(R, n_sim, p_sim + 1))
@@ -548,8 +548,6 @@ ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
   xlab("Degrees of freedom") +
   ylab("Regression coefficients")
 
-library(DT)
-
 tab <- data.frame(OLS = rep(0, p + 1), best_subset = rep(0, p + 1), PCR = rep(0, p + 1), Ridge = rep(0, p + 1), Lasso = rep(0, p + 1))
 
 rownames(tab) <- colnames(sum_best$which)
@@ -573,27 +571,14 @@ tab$Ridge <- my_ridge(X, y, standardize = TRUE, lambda_tilde = lambda_tilde_min_
 # Lasso
 tab$Lasso <- c(my_lasso(X, y)$beta_scale[4, ])
 
-
-# Output
-datatable(tab, colnames = c("OLS", "Best subset", "PCR", "Ridge", "Lasso"), options = list(pageLength = 9, dom = "t")) %>%
-  formatRound(columns = 1:5, digits = 3) %>%
-  formatStyle(
-    columns = 0, fontWeight = "bold"
-  ) %>%
-  formatStyle(
-    columns = 1:5,
-    backgroundColor = styleInterval(0, c("#FED8B1", "#DBE9FA"))
-  ) %>%
-  formatStyle(
-    columns = 1:5,
-    backgroundColor = styleEqual(0, c("white"))
-  )
+colnames(tab) <- c("OLS", "Best subset", "PCR", "Ridge", "Lasso")
+round(tab, digits = 3)
 
 X_test <- cbind(1, as.matrix(prostate_test)[, -9])
 y_test <- prostate_test[, 9]
 
 pred_ols <- X_test %*% tab$OLS
-pred_best <- X_test %*% tab$best_subset
+pred_best <- X_test %*% tab$`Best subset`
 pred_pcr <- X_test %*% tab$PCR
 pred_ridge <- X_test %*% tab$Ridge
 pred_lasso <- X_test %*% tab$Lasso

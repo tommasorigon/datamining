@@ -66,6 +66,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a></li>
   <li><a href="#the-modeling-process" id="toc-the-modeling-process" class="nav-link" data-scroll-target="#the-modeling-process">The modeling process</a></li>
   <li><a href="#handling-categorical-variables" id="toc-handling-categorical-variables" class="nav-link" data-scroll-target="#handling-categorical-variables">Handling categorical variables</a></li>
+  <li><a href="#nonparametric-regression" id="toc-nonparametric-regression" class="nav-link" data-scroll-target="#nonparametric-regression">Nonparametric regression</a></li>
   </ul>
 <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="un_F_slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
 </div>
@@ -285,6 +286,44 @@ In the test set, there are a few values that were not observed in the training, 
 <li><p>Other <span class="orange">details</span>: is it preferable to perform the merging before estimating the model (using all the observations for fitting it) or after the estimation procedure (based on a reduced dataset) when making the predictions? This is another instance of the <span class="orange">bias-variance trade-off</span>. Hence, there are no general answers.</p></li>
 <li><p>The story does not end here. For instance, taking a <span class="blue">Bayesian approach</span> might be another principled possibility: prior information could be exploited to help the estimation, even without data points in the training.</p></li>
 </ul>
+</div>
+</div>
+</div>
+</section>
+<section id="nonparametric-regression" class="level1">
+<h1>Nonparametric regression</h1>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+What is the definition of a “kernel”?
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>In our slides, we called any <span class="orange">density function</span> <span class="math inline">w(\cdot)</span>, <span class="blue">symmetric</span> around the origin, a “kernel”. Typically the density is also <span class="blue">unimodal</span> around the origin.</p>
+<p>Depending on the book and the context, the definition of a kernel might be slightly different; here we are in agreement with the <span class="blue">textbook</span> Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/kernel_AS.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+<p>and Wasserman, L. (2006), <a href="https://link.springer.com/book/10.1007/0-387-30623-4"><em>All of Nonparametric statistics</em></a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/kernel_W.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
+<p>With that said, the word “kernel” has been used to indicate, more generally, a function that measures the <span class="orange">discrepancy</span> between <span class="blue">two points</span>, say <span class="math inline">\bm{x}</span> and <span class="math inline">\bm{x}'</span>.</p>
+<p>For instance, the definition given in Rasmussen, C. E. and Williams, C. K. I. (2006), <a href="http://www.gaussianprocess.org/gpml/chapters/">Gaussian Processes for Machine Learning</a> is indeed extremely general:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/kernel_GP.png" class="img-fluid figure-img" style="width:70.0%"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>

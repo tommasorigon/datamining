@@ -1038,7 +1038,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li><p>The <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{pcr}</span>, assuming iid errors <span class="math inline">\epsilon_i</span> in the <span class="blue">original data</span>, is: <span class="math display">
 \text{var}(\hat{\beta}_\text{pcr}) = \sigma^2\sum_{j=1}^k \frac{1}{d_j^2} \tilde{\bm{v}}_j\tilde{\bm{v}}_j^T.
 </span></p></li>
-<li><p>Thus, if a <span class="blue">multicollinearity</span> exists, then it appears as a principal component with very small variance, i.e., a small <span class="math inline">d_j^2</span>. Its removal, therefore, drastically <span class="orange">reduces</span> the <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{pcr}</span>.</p></li>
+<li><p>In case of <span class="blue">multicollinearity</span>, then the <span class="orange">last</span> principal components will have a small variance, i.e., a small <span class="math inline">d_j^2</span>. Its removal, therefore, drastically <span class="orange">reduces</span> the <span class="orange">variance</span> of <span class="math inline">\hat{\beta}_\text{pcr}</span>.</p></li>
 <li><p>Furthermore, the predicted values for the <span class="orange">centered data</span> can be expressed as <span class="math display">
 \bm{X}\hat{\beta}_\text{pcr} = \sum_{j=1}^k \tilde{\bm{z}}_j \hat{\gamma}_j = \sum_{j=1}^k \tilde{\bm{z}}_j  \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j} = \sum_{j=1}^k \textcolor{darkblue}{d_j} \tilde{\bm{u}}_j  \frac{\textcolor{darkblue}{d_j}}{\textcolor{darkblue}{d_j^2}} \frac{\tilde{\bm{u}}_j^T\bm{y}}{\textcolor{red}{\tilde{\bm{u}}_j^T\tilde{\bm{u}}_j}} = \sum_{j=1}^k \tilde{\bm{u}}_j \tilde{\bm{u}}_j^T \bm{y}.
 </span></p></li>
@@ -2076,7 +2076,7 @@ Cons
 <li><p>At the beginning of this unit, we split the data into <span class="blue">training</span> set and <span class="orange">test</span> set. Using the training, we selected <span class="math inline">\lambda</span> via cross-validation or the <span class="math inline">C_p</span> index.</p></li>
 <li><p>Using the final test set with <span class="math inline">30</span> observations, we will assess which model is <span class="orange">preferable</span>.</p></li>
 </ul>
-<div class="cell" data-hash="un_C_cache/html/unnamed-chunk-39_2effd04705e71d1bf61ce12b5ea1a1e3">
+<div class="cell" data-hash="un_C_cache/html/unnamed-chunk-39_3343fee48fc25a3af4c971381b369f8e">
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <thead>
