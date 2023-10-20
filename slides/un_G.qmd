@@ -175,13 +175,13 @@ styler:::style_file("../code/un_G.R")
 - Once again, there might be other considerations to keep in mind: [interpretability]{.blue}, [robustness]{.orange}, [computational complexity]{.grey}. 
 :::
 
-::: {.callout-note collapse=true}
-## What is a statistical model?
+<!-- ::: {.callout-note collapse=true} -->
+<!-- ## What is a statistical model? -->
 
-This question is too complicated to be answered using bullet points on a website. You may find some answers in the very instructive but technical paper by Peter McCullagh, published on the *Annals of Statistics*.
+<!-- This question is too complicated to be answered using bullet points on a website. You may find some answers in the very instructive but technical paper by Peter McCullagh, published on the *Annals of Statistics*. -->
 
-- McCullagh, P. (2002). [What is a statistical model?](https://projecteuclid.org/journals/annals-of-statistics/volume-30/issue-5/What-is-a-statistical-model/10.1214/aos/1035844977.full). Annals of Statistics **30** (5), 1225–67. 
-:::
+<!-- - McCullagh, P. (2002). [What is a statistical model?](https://projecteuclid.org/journals/annals-of-statistics/volume-30/issue-5/What-is-a-statistical-model/10.1214/aos/1035844977.full). Annals of Statistics **30** (5), 1225–67.  -->
+<!-- ::: -->
 
 # Handling categorical variables
 
