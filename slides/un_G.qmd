@@ -235,7 +235,7 @@ and Wasserman, L. (2006), [*All of Nonparametric statistics*](https://link.sprin
 
 With that said, the word "kernel" has been used to indicate, more generally, a function that measures the [discrepancy]{.orange} between [two points]{.blue}, say $\bm{x}$ and $\bm{x}'$. 
 
-For instance, the definition given in Rasmussen, C. E. and  Williams, C. K. I. (2006), [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/chapters/) is indeed extremely general:
+For instance, the definition given in Rasmussen, C. E. and  Williams, C. K. I. (2006), [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/chapters/) is extremely general:
 
 ![](img/kernel_GP.png){width=70% fig-align="center"}
 :::
