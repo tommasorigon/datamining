@@ -84,25 +84,27 @@ A detailed description of this [separability issue]{.blue} is provided in the *B
 
 #### A.7 - Standardization of the input variables
 
-I have read, on a popular social media, a sentence about standardization, that can be loosely translated as follows:
+<!-- I have read, on a popular social media, a sentence about standardization, that can be loosely translated as follows: -->
 
-  *"Standardization should be used when the data follow a Gaussian distribution and the algorithm presumes that the data comes from a Gaussian law, as in linear regression."*
-    
-There are multiple confusing statements. For instance, linear models do [not]{.orange} assume the Gaussianity of the input variables $x_{ij}$. Sometimes (but not necessarily!) the errors $\epsilon_1,\dots,\epsilon_n$ are assumed to be Gaussian.
+<!--   *"Standardization should be used when the data follow a Gaussian distribution and the algorithm presumes that the data comes from a Gaussian law, as in linear regression."* -->
 
-But there is an even more striking mistake. Suppose the original input values $x_{ij}$ are standardized, namely the transformed variables $z_{ij}$ are such that 
+<!-- There are multiple confusing statements. For instance, linear models do [not]{.orange} assume the Gaussianity of the input variables $x_{ij}$. Sometimes (but not necessarily!) the errors $\epsilon_1,\dots,\epsilon_n$ are assumed to be Gaussian. -->
+
+<!-- But there is an even more striking mistake.  -->
+
+In a [linear model]{.blue}, suppose the original input values $x_{ij}$ are standardized, namely the transformed variables $z_{ij}$ are such that 
 $$
 z_{ij} = \frac{x_{ij} - \bar{x}_j}{s_j},
 $$
 where $\bar{x}_j$ and $s_j$ are the mean and the standard deviation of the $j$th variable. We denote with $\hat{\beta}$ the OLS estimate based on the original data and with $\hat{\gamma}$ the OLS estimate based on the standardized data. 
 
-As an exercise, [prove]{.orange} that the predicted values coincide, that is:
+[Prove]{.orange} that the predicted values coincide, that is:
 $$
 \hat{y}_i = \bm{x}_i^T\hat{\beta} = \bm{z}_i^T\hat{\gamma}, \qquad i=1,\dots,n,
 $$
 where $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ and $\bm{z}_i = (z_{i1},\dots,z_{ip})^T$. Hence, standardization of the inputs in ordinary least squares has [no effect]{.blue} on the [predictions]{.orange}. Similar linear operations on the inputs, such as [normalization]{.blue}, would lead to the same conclusion. 
 
-There are good reasons to standardize the variables, for instance, in ridge/lasso regression models. Moreover, centering the predictors may be helpful to get a design matrix which is better conditioned... But these motivations are not related to Gaussianity. 
+<!-- There are good reasons to standardize the variables, for instance, in ridge/lasso regression models. Moreover, centering the predictors may be helpful to get a design matrix which is better conditioned... But these motivations are not related to Gaussianity.  -->
 
 ## Practical exercises
 
