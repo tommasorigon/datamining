@@ -110,4 +110,14 @@ and Advanced Statistics M is also highly recommended.
 To schedule a meeting, please write to `tommaso.rigon@unimib.it`. Office
 hours is every **Tuesday at 17.30**
 
+## Acknowledgments
+
+The primary source of this website are the textbooks: [Azzalini and Scarpa (2011)]{.blue} and [Hastie, Tibshirani, and Friedman, J. (2009)]{.orange}. There a few pictures taken from these textbooks; in these occasions the original source is cited. 
+
+I have made use of several other books and scientific articles to complement the main textbooks, which are all cited at the end of each unit. Students are encouraged to consult the source material: these slides are just a concise summary. 
+
+I am also grateful to Aldo Solari, whose material of the courses [Data Mining](https://aldosolari.github.io/DM/) and [Statistical Learning](https://aldosolari.github.io/SL/) were used to lay the basis of this course.
+
+All the mistakes still present are mine. 
+
 ------------------------------------------------------------------------
