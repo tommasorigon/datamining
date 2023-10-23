@@ -585,12 +585,12 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 -   Hence, instead of computing a [local average]{.orange}
     ($\beta_2 = 0$), we consider a [local linear model]{.blue}. In other
     words, for every $x$ we seek the coefficients solving: $$
-    (\hat{\beta}_1, \hat{\beta}_2) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n \textcolor{darkblue}{w_i(x)}\left\{y_i - \beta_1 - \textcolor{red}{\beta_2(x_i - x)}\right\}^2.
+    \hat{\beta}(x) = \left(\hat{\beta}_1(x), \hat{\beta}_2(x)\right) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n \textcolor{darkblue}{w_i(x)}\left\{y_i - \beta_1 - \textcolor{red}{\beta_2(x_i - x)}\right\}^2.
     $$
 
--   Once the parameter $\hat{\beta}_1$ and $\hat{\beta}_2$ are obtained, the
+-   Once the parameter $\hat{\beta}_1(x)$ and $\hat{\beta}_2(x)$ are obtained, the
     local [linear regression estimator]{.blue} is $$
-    \hat{f}(x) = \hat{\beta}_1 + \hat{\beta}_2 (x - x) = \hat{\beta}_1.
+    \hat{f}(x) = \hat{\beta}_1(x) + \hat{\beta}_2(x) (x - x) = \hat{\beta}_1(x).
     $$
 :::
 
@@ -598,8 +598,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 -   The local linear regression, as we have seen in [Unit A](un_A.html),
     has an [explicit solution]{.orange}: $$
-    \hat{\beta} = (\bm{X}^T\bm{W}_x\bm{X})^{-1}\bm{X}^T\bm{W}_x\bm{y},
-    $$ where the rows of $\bm{X}$ are $\bm{x}_i = (1, x_i - x)$ and
+    \hat{\beta}(x) = (\bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}\bm{X}_x^T\bm{W}_x\bm{y},
+    $$ where the rows of $\bm{X}_x$ are $\bm{x}_{i,x} = (1, x_i - x)$ and
     $\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}$.
 
 -   In practice, we do [not]{.orange} need to solve this [linear

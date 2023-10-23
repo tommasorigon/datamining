@@ -659,10 +659,10 @@ w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
 f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) + \text{rest}.
 </span></p></li>
 <li class="fragment"><p>Hence, instead of computing a <span class="orange">local average</span> (<span class="math inline">\beta_2 = 0</span>), we consider a <span class="blue">local linear model</span>. In other words, for every <span class="math inline">x</span> we seek the coefficients solving: <span class="math display">
-(\hat{\beta}_1, \hat{\beta}_2) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n \textcolor{darkblue}{w_i(x)}\left\{y_i - \beta_1 - \textcolor{red}{\beta_2(x_i - x)}\right\}^2.
+\hat{\beta}(x) = \left(\hat{\beta}_1(x), \hat{\beta}_2(x)\right) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n \textcolor{darkblue}{w_i(x)}\left\{y_i - \beta_1 - \textcolor{red}{\beta_2(x_i - x)}\right\}^2.
 </span></p></li>
-<li class="fragment"><p>Once the parameter <span class="math inline">\hat{\beta}_1</span> and <span class="math inline">\hat{\beta}_2</span> are obtained, the local <span class="blue">linear regression estimator</span> is <span class="math display">
-\hat{f}(x) = \hat{\beta}_1 + \hat{\beta}_2 (x - x) = \hat{\beta}_1.
+<li class="fragment"><p>Once the parameter <span class="math inline">\hat{\beta}_1(x)</span> and <span class="math inline">\hat{\beta}_2(x)</span> are obtained, the local <span class="blue">linear regression estimator</span> is <span class="math display">
+\hat{f}(x) = \hat{\beta}_1(x) + \hat{\beta}_2(x) (x - x) = \hat{\beta}_1(x).
 </span></p></li>
 </ul>
 </div>
@@ -671,8 +671,8 @@ f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) +
 <h2>Local linear regression II</h2>
 <ul>
 <li><p>The local linear regression, as we have seen in <a href="un_A.html">Unit A</a>, has an <span class="orange">explicit solution</span>: <span class="math display">
-\hat{\beta} = (\bm{X}^T\bm{W}_x\bm{X})^{-1}\bm{X}^T\bm{W}_x\bm{y},
-</span> where the rows of <span class="math inline">\bm{X}</span> are <span class="math inline">\bm{x}_i = (1, x_i - x)</span> and <span class="math inline">\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}</span>.</p></li>
+\hat{\beta}(x) = (\bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}\bm{X}_x^T\bm{W}_x\bm{y},
+</span> where the rows of <span class="math inline">\bm{X}_x</span> are <span class="math inline">\bm{x}_{i,x} = (1, x_i - x)</span> and <span class="math inline">\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}</span>.</p></li>
 <li><p>In practice, we do <span class="orange">not</span> need to solve this <span class="orange">linear algebra</span> problem. An even more explicit and <span class="orange">non-iterative</span> solution can be found (see Exercises).</p></li>
 </ul>
 <div class="fragment">
