@@ -2730,7 +2730,7 @@ In a regression model with an elastic-net penalty, the coordinate descent is [th
 - The coordinate descent algorithm is implemented in the `glmnet` package. It is, de facto, the default algorithm for penalized generalized linear models. 
 
 - The `glmnet` implementation is very efficient due to several additional tricks:
-  - The [warm start]{.blue}. The algorithm for $\lambda_k$ is initialized in the previously obtained solution using $\lambda_{k-1}$.
+  - The [warm start]{.blue}. The algorithm for $\lambda_k$ is initialized at the previous solution using $\lambda_{k-1}$.
   - Partial residuals can be efficiently obtained [without re-computing]{.orange} the whole linear predictor.
   - The code is written in [Fortran]{.blue}.
   - Many other tricks are employed: active set convergence, tools for sparse $\bm{X}$ matrices, etc. 

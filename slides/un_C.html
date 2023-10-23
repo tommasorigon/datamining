@@ -2205,7 +2205,7 @@ Properties of convex optimization
 <li><p>The coordinate descent algorithm is implemented in the <code>glmnet</code> package. It is, de facto, the default algorithm for penalized generalized linear models.</p></li>
 <li><p>The <code>glmnet</code> implementation is very efficient due to several additional tricks:</p>
 <ul class="incremental">
-<li>The <span class="blue">warm start</span>. The algorithm for <span class="math inline">\lambda_k</span> is initialized in the previously obtained solution using <span class="math inline">\lambda_{k-1}</span>.</li>
+<li>The <span class="blue">warm start</span>. The algorithm for <span class="math inline">\lambda_k</span> is initialized at the previous solution using <span class="math inline">\lambda_{k-1}</span>.</li>
 <li>Partial residuals can be efficiently obtained <span class="orange">without re-computing</span> the whole linear predictor.</li>
 <li>The code is written in <span class="blue">Fortran</span>.</li>
 <li>Many other tricks are employed: active set convergence, tools for sparse <span class="math inline">\bm{X}</span> matrices, etc.</li>

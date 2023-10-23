@@ -2304,7 +2304,7 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
 <li class="fragment"><p>The coordinate descent algorithm is implemented in the <code>glmnet</code> package. It is, de facto, the default algorithm for penalized generalized linear models.</p></li>
 <li class="fragment"><p>The <code>glmnet</code> implementation is very efficient due to several additional tricks:</p>
 <ul>
-<li class="fragment">The <span class="blue">warm start</span>. The algorithm for <span class="math inline">\lambda_k</span> is initialized in the previously obtained solution using <span class="math inline">\lambda_{k-1}</span>.</li>
+<li class="fragment">The <span class="blue">warm start</span>. The algorithm for <span class="math inline">\lambda_k</span> is initialized at the previous solution using <span class="math inline">\lambda_{k-1}</span>.</li>
 <li class="fragment">Partial residuals can be efficiently obtained <span class="orange">without re-computing</span> the whole linear predictor.</li>
 <li class="fragment">The code is written in <span class="blue">Fortran</span>.</li>
 <li class="fragment">Many other tricks are employed: active set convergence, tools for sparse <span class="math inline">\bm{X}</span> matrices, etc.</li>
