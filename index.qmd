@@ -112,11 +112,11 @@ hours is every **Tuesday at 17.30**
 
 ## Acknowledgments
 
-The primary source of this website's content are the textbooks [Azzalini and Scarpa (2011)]{.blue} and [Hastie, Tibshirani, and Friedman, J. (2009)]{.orange}. There a few pictures taken from these textbooks; in these occasions the original source is cited. 
+The primary source of this website's content are the textbooks [Azzalini and Scarpa (2011)]{.blue} and [Hastie, Tibshirani, and Friedman (2009)]{.orange}. A few pictures have been taken from the textbooks; in these cases the original source is cited. 
 
-I have made use of several other books, scientific articles, and datasets to complement the main textbooks. They are all cited at the end of each unit. Students are encouraged to consult the source material: these slides are just a concise summary. 
+I have made use of several other books, scientific articles, and datasets to complement the main textbooks. They are all cited at the end of each unit. Students are encouraged to consult the books: these slides are just a concise summary. 
 
-I am also grateful to Aldo Solari, whose material of the courses [Data Mining](https://aldosolari.github.io/DM/) and [Statistical Learning](https://aldosolari.github.io/SL/) have been used to lay the basis of this course.
+I am also grateful to Aldo Solari, who gracefully shared the material of the courses [Data Mining](https://aldosolari.github.io/DM/) and [Statistical Learning](https://aldosolari.github.io/SL/). These websites have been used to lay the basis of this course.
 
 All the mistakes still present are mine. 
 
