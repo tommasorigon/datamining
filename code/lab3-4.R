@@ -344,7 +344,7 @@ lar_cv <- cv.lars(X_shrinkage, log(y_shrinkage), plot.it = TRUE)
 
 ## Elastic-net -----------------------------------------------------------------------------------------
 
-# We need to set alpha = 0 to use the ridge
+# We need to set (for example) alpha = 0.5 to select the elastic-net penalty. Any 0 < alpha < 1 would use an elastic-net penalty.
 lambda_en_grid <- exp(seq(-10, 0, length = 100))
 fit_en <- glmnet(X_shrinkage, log(y_shrinkage), alpha = 0.5, lambda = lambda_en_grid)
 
@@ -435,8 +435,8 @@ y_hat_rf <- exp(predict(m_rf, data = ames_test, type = "response")$predictions)
 # Final summary of the results ----------------------------------------------
 n_test <- nrow(ames_test)
 final_summary <- data.frame(
-  Predictions = c(y_hat_simple, y_hat_full, y_hat_back, y_hat_pcr, y_hat_ridge, y_hat_lar, y_hat_en, y_hat_rf),
-  Model = rep(c("Simple", "Full model", "Backward regression", "PCR", "Ridge", "Lar", "Elastic net", "Random Forest"), each = n_test),
+  Predictions = c(y_hat_median, y_hat_simple, y_hat_full, y_hat_back, y_hat_pcr, y_hat_ridge, y_hat_lar, y_hat_en, y_hat_rf),
+  Model = rep(c("Median", "Simple", "Full model", "Backward regression", "PCR", "Ridge", "Lar", "Elastic net", "Random Forest"), each = n_test),
   Truth = ames_test$SalePrice
 )
 final_summary$Errors <- final_summary$Predictions - final_summary$Truth
@@ -452,3 +452,4 @@ tapply(final_summary$Errors, final_summary$Model, sd)
 
 # Interquartile range
 tapply(final_summary$Errors, final_summary$Model, function(x) diff(quantile(x, probs = c(0.25, 0.75))))
+
