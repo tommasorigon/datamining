@@ -134,10 +134,10 @@ fit_forward <- regsubsets(log(SalePrice) ~ .,
 )
 sum_forward <- summary(fit_forward)
 
-fit_backward <- regsubsets(log(SalePrice) ~ .,
+m_backward <- regsubsets(log(SalePrice) ~ .,
   data = ames_train, method = "backward", nbest = 1, nvmax = p_max
 )
-sum_backward <- summary(fit_backward)
+sum_backward <- summary(m_backward)
 
 library(broom)
 library(dplyr)
@@ -147,7 +147,7 @@ fit_forward_summary <- fit_forward %>%
   mutate(p = sum(c_across(MS.SubClassOne_and_Half_Story_Finished_All_Ages:House.Age)), .keep = "unused") %>%
   ungroup()
 
-fit_backward_summary <- fit_backward %>%
+m_backward_summary <- m_backward %>%
   tidy() %>%
   rowwise() %>%
   mutate(p = sum(c_across(MS.SubClassOne_and_Half_Story_Finished_All_Ages:House.Age)), .keep = "unused") %>%
@@ -179,7 +179,7 @@ predict.regsubsets <- function(object, newdata, id, ...) {
 }
 
 # Let see out it works
-head(exp(predict(fit_backward, newdata = ames_train, id = 2)))
+head(exp(predict(m_backward, newdata = ames_train, id = 2)))
 
 # Validation set - selection of p and performance comparisons ----------------------------------------
 resid_back <- matrix(0, nrow(ames_validation), p_max + 1)
@@ -190,7 +190,7 @@ resid_back[, 1] <- ames_validation$SalePrice - exp(predict(lm(log(SalePrice) ~ 1
 resid_log_back[, 1] <- log(ames_validation$SalePrice) - predict(lm(log(SalePrice) ~ 1, data = ames_train), newdata = ames_validation)
 
 for (j in 2:(p_max + 1)) {
-  y_hat <- exp(predict(fit_backward, newdata = ames_validation, j - 1))
+  y_hat <- exp(predict(m_backward, newdata = ames_validation, j - 1))
   resid_back[, j] <- ames_validation$SalePrice - y_hat
   resid_log_back[, j] <- log(ames_validation$SalePrice) - log(y_hat)
 }
@@ -215,7 +215,7 @@ abline(v = p_back_optimal, lty = "dashed")
 abline(h = MSLE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
 # Optimal model on the validation set
-y_hat_back <- exp(predict(fit_backward, newdata = ames_validation, id = p_back_optimal))
+y_hat_back <- exp(predict(m_backward, newdata = ames_validation, id = p_back_optimal))
 
 MAE(ames_validation$SalePrice, y_hat_back)
 MSLE(ames_validation$SalePrice, y_hat_back)
@@ -224,8 +224,8 @@ MSLE(ames_validation$SalePrice, y_hat_back)
 
 library(pls)
 
-fit_pcr <- pcr(log(SalePrice) ~ ., data = ames_train, center = TRUE, scale = TRUE)
-summary(fit_pcr)
+m_pcr <- pcr(log(SalePrice) ~ ., data = ames_train, center = TRUE, scale = TRUE)
+summary(m_pcr)
 
 resid_pcr <- matrix(0, nrow(ames_validation), p_max + 1)
 resid_log_pcr <- matrix(0, nrow(ames_validation), p_max + 1)
@@ -234,7 +234,7 @@ resid_log_pcr <- matrix(0, nrow(ames_validation), p_max + 1)
 resid_pcr[, 1] <- resid_back[, 1]
 resid_log_pcr[, 1] <- resid_log_back[, 1]
 
-y_hat_pcr <- exp(predict(fit_pcr, newdata = ames_validation))
+y_hat_pcr <- exp(predict(m_pcr, newdata = ames_validation))
 for (j in 2:(p_max + 1)) {
   resid_pcr[, j] <- ames_validation$SalePrice - y_hat_pcr[, , j - 1]
   resid_log_pcr[, j] <- log(ames_validation$SalePrice) - log(y_hat_pcr[, , j - 1])
@@ -270,16 +270,16 @@ y_shrinkage <- ames_train$SalePrice
 
 # We need to set alpha = 0 to use the ridge
 lambda_ridge_grid <- exp(seq(-6, 6, length = 100))
-fit_ridge <- glmnet(X_shrinkage, log(y_shrinkage), alpha = 0, lambda = lambda_ridge_grid)
+m_ridge <- glmnet(X_shrinkage, log(y_shrinkage), alpha = 0, lambda = lambda_ridge_grid)
 
 par(mfrow = c(1, 1))
-plot(fit_ridge, xvar = "lambda")
+plot(m_ridge, xvar = "lambda")
 
 # How to select the "optimal" lambda?
 resid_ridge <- matrix(0, nrow(ames_validation), length(lambda_ridge_grid))
 resid_log_ridge <- matrix(0, nrow(ames_validation), length(lambda_ridge_grid))
 
-y_hat_ridge <- exp(predict(fit_ridge, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = lambda_ridge_grid))
+y_hat_ridge <- exp(predict(m_ridge, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = lambda_ridge_grid))
 for (j in 1:length(lambda_ridge_grid)) {
   resid_ridge[, j] <- ames_validation$SalePrice - y_hat_ridge[, j]
   resid_log_ridge[, j] <- log(ames_validation$SalePrice) - log(y_hat_ridge[, j])
@@ -302,7 +302,7 @@ plot(log(data_cv$lambda), data_cv$MSLE, type = "b", pch = 16, cex = 0.6, ylab = 
 abline(v = log(lambda_ridge_optimal), lty = "dashed")
 
 # Optimal model on the validation set
-y_hat_ridge <- exp(predict(fit_ridge, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = lambda_ridge_optimal))
+y_hat_ridge <- exp(predict(m_ridge, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = lambda_ridge_optimal))
 
 MAE(ames_validation$SalePrice, y_hat_ridge)
 MSLE(ames_validation$SalePrice, y_hat_ridge)
@@ -346,16 +346,16 @@ lar_cv <- cv.lars(X_shrinkage, log(y_shrinkage), plot.it = TRUE)
 
 # We need to set (for example) alpha = 0.5 to select the elastic-net penalty. Any 0 < alpha < 1 would use an elastic-net penalty.
 lambda_en_grid <- exp(seq(-10, 0, length = 100))
-fit_en <- glmnet(X_shrinkage, log(y_shrinkage), alpha = 0.5, lambda = lambda_en_grid)
+m_en <- glmnet(X_shrinkage, log(y_shrinkage), alpha = 0.5, lambda = lambda_en_grid)
 
 # Coefficient path
-plot(fit_en, xvar = "lambda")
+plot(m_en, xvar = "lambda")
 
 # How to select the "optimal" lambda?
 resid_en <- matrix(0, nrow(ames_validation), length(lambda_en_grid))
 resid_log_en <- matrix(0, nrow(ames_validation), length(lambda_en_grid))
 
-y_hat_en <- exp(predict(fit_en, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = lambda_en_grid))
+y_hat_en <- exp(predict(m_en, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = lambda_en_grid))
 for (j in 1:length(lambda_en_grid)) {
   resid_en[, j] <- ames_validation$SalePrice - y_hat_en[, j]
   resid_log_en[, j] <- log(ames_validation$SalePrice) - log(y_hat_en[, j])
@@ -378,7 +378,7 @@ plot(log(data_cv$lambda), data_cv$MSLE, type = "b", pch = 16, cex = 0.6, ylab = 
 abline(v = log(lambda_en_optimal), lty = "dashed")
 
 # Optimal model on the validation set
-y_hat_en <- exp(predict(fit_en, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = lambda_en_optimal))
+y_hat_en <- exp(predict(m_en, newx = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], s = lambda_en_optimal))
 
 MAE(ames_validation$SalePrice, y_hat_en)
 MSLE(ames_validation$SalePrice, y_hat_en)
@@ -394,6 +394,59 @@ en_cv$lambda.1se
 
 # MSLE for lambda.min and lambda.1se
 en_cv$cvm[en_cv$index]
+
+# Group Lasso ---------------------------------------------------------------------------------------------
+library(grpreg)
+library(forcats)
+
+group_times <- function(x){
+  if(is.factor(x)){
+    group_times <- length(fct_unique(x)) - 1
+  } else {
+    group_times <- 1
+  }
+  group_times
+}
+
+groups <- NULL
+for(j in colnames(subset(ames_train, select = -SalePrice))){
+  groups <- c(groups, rep(j, times = group_times(ames_train[, j])))
+}
+
+# Estimation of the group lasso
+lambda_grp_grid <- exp(seq(-11, 0, length = 100))
+m_grp_lasso <- grpreg(X = X_shrinkage, y = log(y_shrinkage), group = groups, lambda = lambda_grp_grid)
+
+# Coefficient path
+plot(m_grp_lasso, log.l = TRUE)
+
+## Cross-validation for elastic-net
+set.seed(123)
+grp_lasso_cv <- cv.grpreg(X_shrinkage, log(y_shrinkage), group = groups, lambda = lambda_grp_grid)
+
+par(mfrow = c(1, 1))
+plot(grp_lasso_cv)
+
+lambda_grp_optimal <- grp_lasso_cv$lambda.min
+
+# Optimal model on the validation set
+y_hat_grp_lasso <- exp(predict(m_grp_lasso, X = model.matrix(SalePrice ~ ., data = ames_validation)[, -1], 
+                               lambda = lambda_grp_optimal))
+
+MAE(ames_validation$SalePrice, y_hat_grp_lasso)
+MSLE(ames_validation$SalePrice, y_hat_grp_lasso)
+
+# Number of nonzero groups
+predict(m_grp_lasso, type="ngroups", lambda=lambda_grp_optimal) 
+
+# List of variables that have been selected
+predict(m_grp_lasso, type="groups", lambda=lambda_grp_optimal) 
+
+# Number of non-zero coefficients
+predict(m_grp_lasso, type="nvars", lambda=lambda_grp_optimal)
+
+cbind(coef(m_grp_lasso, lambda = lambda_grp_optimal),
+      coef(m_en, s = lambda_en_optimal))
 
 ## Random forests (spoiler!) ------------------------------------------------------------------------------
 library(ranger)
@@ -415,28 +468,31 @@ y_hat_simple <- exp(predict(m_simple, newdata = ames_test))
 y_hat_full <- exp(predict(m_full, newdata = ames_test))
 
 # Backward
-y_hat_back <- exp(predict(fit_backward, newdata = ames_test, id = p_back_optimal))
+y_hat_back <- exp(predict(m_backward, newdata = ames_test, id = p_back_optimal))
 
 # PCR
-y_hat_pcr <- exp(predict(fit_pcr, newdata = ames_test))[, , p_pcr_optimal]
+y_hat_pcr <- exp(predict(m_pcr, newdata = ames_test))[, , p_pcr_optimal]
 
 # Ridge
-y_hat_ridge <- exp(predict(fit_ridge, newx = model.matrix(SalePrice ~ ., data = ames_test)[, -1], s = lambda_en_optimal))
+y_hat_ridge <- exp(predict(m_ridge, newx = model.matrix(SalePrice ~ ., data = ames_test)[, -1], s = lambda_en_optimal))
 
 # LAR
 y_hat_lar <- exp(predict(m_lar, newx = model.matrix(SalePrice ~ ., data = ames_test)[, -1], s = which.min(m_lar$Cp))$fit)
 
 # Elastic net
-y_hat_en <- exp(predict(fit_en, newx = model.matrix(SalePrice ~ ., data = ames_test)[, -1], s = lambda_en_optimal))
+y_hat_en <- exp(predict(m_en, newx = model.matrix(SalePrice ~ ., data = ames_test)[, -1], s = lambda_en_optimal))
 
+# Group lasso
+y_hat_grp_lasso <- exp(predict(m_grp_lasso, X = model.matrix(SalePrice ~ ., data = ames_test)[, -1], 
+                               lambda = lambda_grp_optimal))
 # Random forest
 y_hat_rf <- exp(predict(m_rf, data = ames_test, type = "response")$predictions)
 
 # Final summary of the results ----------------------------------------------
 n_test <- nrow(ames_test)
 final_summary <- data.frame(
-  Predictions = c(y_hat_median, y_hat_simple, y_hat_full, y_hat_back, y_hat_pcr, y_hat_ridge, y_hat_lar, y_hat_en, y_hat_rf),
-  Model = rep(c("Median", "Simple", "Full model", "Backward regression", "PCR", "Ridge", "Lar", "Elastic net", "Random Forest"), each = n_test),
+  Predictions = c(y_hat_median, y_hat_simple, y_hat_full, y_hat_back, y_hat_pcr, y_hat_ridge, y_hat_lar, y_hat_en, y_hat_grp_lasso, y_hat_rf),
+  Model = rep(c("Median", "Simple", "Full model", "Backward regression", "PCR", "Ridge", "Lar", "Elastic net", "Group lasso", "Random Forest"), each = n_test),
   Truth = ames_test$SalePrice
 )
 final_summary$Errors <- final_summary$Predictions - final_summary$Truth
