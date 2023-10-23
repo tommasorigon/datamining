@@ -452,6 +452,10 @@ predict(m_grp_lasso, type="nvars", lambda=lambda_grp_optimal)
 cbind(coef(m_grp_lasso, lambda = lambda_grp_optimal),
       coef(m_en, s = lambda_en_optimal))
 
+plot(coef(m_grp_lasso, lambda = lambda_grp_optimal)[-1],
+      coef(m_en, s = lambda_en_optimal)[-1])
+
+
 ## Random forests (spoiler!) ------------------------------------------------------------------------------
 library(ranger)
 m_rf <- ranger(log(SalePrice) ~ ., data = ames_train, num.trees = 2000, mtry = 10, max.depth = 30)
