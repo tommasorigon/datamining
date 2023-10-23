@@ -399,6 +399,7 @@ en_cv$cvm[en_cv$index]
 library(grpreg)
 library(forcats)
 
+# Need to create the "groups"
 group_times <- function(x){
   if(is.factor(x)){
     group_times <- length(fct_unique(x)) - 1
@@ -425,8 +426,10 @@ set.seed(123)
 grp_lasso_cv <- cv.grpreg(X_shrinkage, log(y_shrinkage), group = groups, lambda = lambda_grp_grid)
 
 par(mfrow = c(1, 1))
+# Cross-validation
 plot(grp_lasso_cv)
 
+# Optimal lambda value
 lambda_grp_optimal <- grp_lasso_cv$lambda.min
 
 # Optimal model on the validation set
@@ -445,6 +448,7 @@ predict(m_grp_lasso, type="groups", lambda=lambda_grp_optimal)
 # Number of non-zero coefficients
 predict(m_grp_lasso, type="nvars", lambda=lambda_grp_optimal)
 
+# Comparison between group-lasso and elastic-net
 cbind(coef(m_grp_lasso, lambda = lambda_grp_optimal),
       coef(m_en, s = lambda_en_optimal))
 
