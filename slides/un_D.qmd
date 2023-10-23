@@ -960,7 +960,7 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
 
 -   Let us consider a [logistic regression]{.blue} with a single predictor. For
     every value $x$ we seek $$
-    (\hat{\beta}_1,\hat{\beta}_2)= \arg\max_{(\beta_1, \beta_2)}\sum_{i=1}^nw_i(x)\left[y_i (\beta_1 + \beta_2 x_i) - \log\{1 + \exp(\beta_1 + \beta_2 x_i)\}\right],
+    \hat{\beta}(x)= \arg\max_{(\beta_1, \beta_2)}\sum_{i=1}^nw_i(x)\left[y_i (\beta_1 + \beta_2 x_i) - \log\{1 + \exp(\beta_1 + \beta_2 x_i)\}\right],
     $$ whose solution can be found using iteratively re-weighted least
     squares.
 
@@ -982,7 +982,7 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
 
 -   To estimate $f$ on a specific point $\bm{x} = (x_1,x_2)^T$, a [natural
     extension]{.blue} of local linear regression takes the form $$
-      (\hat{\beta}_1, \hat{\beta}_2, \hat{\beta}_3) = \arg\min_{(\beta_1, \beta_2, \beta_3)} \sum_{i=1}^n w_i(\bm{x})\left\{y_i - \beta_1 - \beta_2(x_{i1} - x_1) - \beta_3(x_{i2} - x_2) \right\}^2.
+      \hat{\beta}(\bm{x}) = \arg\min_{(\beta_1, \beta_2, \beta_3)} \sum_{i=1}^n w_i(\bm{x})\left\{y_i - \beta_1 - \beta_2(x_{i1} - x_1) - \beta_3(x_{i2} - x_2) \right\}^2.
     $$
 
 . . .
@@ -1167,7 +1167,7 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
 - Splines are [piecewise polynomial functions]{.blue} with [smoothness]{.orange} and
 [continuity]{.orange} constraints.
 
-- Originally developed for [ship-building]{.blue} to draw a smooth curve through a
+- Originally developed for [ship-building]{.blue} to [draw a smooth curve]{.orange} through a
 set of points. 
 
 - The solution was to place metal weights (called

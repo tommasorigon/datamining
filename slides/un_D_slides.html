@@ -947,7 +947,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 <div class="fragment">
 <ul>
 <li>Let us consider a <span class="blue">logistic regression</span> with a single predictor. For every value <span class="math inline">x</span> we seek <span class="math display">
-(\hat{\beta}_1,\hat{\beta}_2)= \arg\max_{(\beta_1, \beta_2)}\sum_{i=1}^nw_i(x)\left[y_i (\beta_1 + \beta_2 x_i) - \log\{1 + \exp(\beta_1 + \beta_2 x_i)\}\right],
+\hat{\beta}(x)= \arg\max_{(\beta_1, \beta_2)}\sum_{i=1}^nw_i(x)\left[y_i (\beta_1 + \beta_2 x_i) - \log\{1 + \exp(\beta_1 + \beta_2 x_i)\}\right],
 </span> whose solution can be found using iteratively re-weighted least squares.</li>
 </ul>
 </div>
@@ -965,7 +965,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 y_i = f(x_{i1}, x_{i2}) + \epsilon_i.
 </span></p></li>
 <li><p>To estimate <span class="math inline">f</span> on a specific point <span class="math inline">\bm{x} = (x_1,x_2)^T</span>, a <span class="blue">natural extension</span> of local linear regression takes the form <span class="math display">
-  (\hat{\beta}_1, \hat{\beta}_2, \hat{\beta}_3) = \arg\min_{(\beta_1, \beta_2, \beta_3)} \sum_{i=1}^n w_i(\bm{x})\left\{y_i - \beta_1 - \beta_2(x_{i1} - x_1) - \beta_3(x_{i2} - x_2) \right\}^2.
+  \hat{\beta}(\bm{x}) = \arg\min_{(\beta_1, \beta_2, \beta_3)} \sum_{i=1}^n w_i(\bm{x})\left\{y_i - \beta_1 - \beta_2(x_{i1} - x_1) - \beta_3(x_{i2} - x_2) \right\}^2.
 </span></p></li>
 </ul>
 <div class="fragment">
@@ -1080,7 +1080,7 @@ h_{28}(x) &amp;= I(x \ge \xi_9),  &amp;&amp;h_{29}(x) = x\:I(x \ge \xi_9), &amp;
 <h2>Splines I</h2>
 <ul>
 <li><p>Splines are <span class="blue">piecewise polynomial functions</span> with <span class="orange">smoothness</span> and <span class="orange">continuity</span> constraints.</p></li>
-<li><p>Originally developed for <span class="blue">ship-building</span> to draw a smooth curve through a set of points.</p></li>
+<li><p>Originally developed for <span class="blue">ship-building</span> to <span class="orange">draw a smooth curve</span> through a set of points.</p></li>
 <li><p>The solution was to place metal weights (called <span class="orange">knots</span>) at the control points, and bend a thin metal or wooden beam (called a <span class="blue">spline</span>) through the weights.</p></li>
 </ul>
 <div class="columns">
