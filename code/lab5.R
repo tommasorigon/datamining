@@ -155,7 +155,7 @@ m_spl2 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = F))
 plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
 lines(newx$x, predict(m_spl2, newx), lty = 2, col = "darkblue")
 
-# Disegno delle linee verticali in corrispondenza dei nodi
+# Plot vertical lines on the internal knots
 abline(v = xi[2], lty = 3)
 abline(v = xi[3], lty = 3)
 
