@@ -63,7 +63,7 @@ styler:::style_file("../code/un_E.R")
 ::: columns
 ::: {.column width="30%"}
 
-![](img/curse3.jpg){fig-align="center" width="80%"}
+![](img/curse3.jpg){fig-align="center" width="90%"}
 
 ::: {style="font-size: 50%;"}
 *"In view of all that we have said in the foregoing sections, the many obstacles we appear to have surmounted, what casts the pall over our victory celebration? It is the [curse of dimensionality]{.orange}, a malediction that has plagued the scientist from the earliest days."*
