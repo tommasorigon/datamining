@@ -122,7 +122,7 @@ styler:::style_file("../code/un_E.R")
 
 . . .
 
-- To put it another way, to get a local neighborhood with $10$ data points along each axis, $10^p$ data points are needed in the corresponding $p$-dimensional neighborhood. 
+- To put it another way, to get a local neighborhood with $10$ data points along each axis we need about $10^p$ data points. 
 
 . . .
 
