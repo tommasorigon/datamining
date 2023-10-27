@@ -165,7 +165,7 @@ Note that we get $\text{dist}(10, 1000) = 0.483$ even with a much larger sample 
 $$
 \text{side}(r, p) = r^{1/p},
 $$
-which is again exponentially decreasing in $p$.
+which is again exponentially increasing in $p$.
 
 - Hence, when $p = 1$, the expected amount of points in the [local sub-interval]{.orange} $(0, 1/10)$ is again $1/10$. 
 
