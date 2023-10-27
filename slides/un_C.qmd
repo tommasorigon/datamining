@@ -663,7 +663,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 -   Best subset selection is appealing because of its [conceptual
     simplicity]{.blue}.
 
--   Best subset and forward regression can be used when computations are not problematic, even when $p > n$.
+-   Best subset and forward regression can be used, if computationally feasible, even when $p > n$.
 :::
 
 . . .
