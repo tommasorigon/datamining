@@ -223,7 +223,7 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
 
 . . .
 
--   These considerations support the idea that [nonparametric
+-   These considerations support the idea that a [nonparametric
     approach]{.blue} might be more appropriate.
 
 -   However, the number of covariates is $p = 5$ and therefore a fully
