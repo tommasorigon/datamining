@@ -149,7 +149,7 @@ abline(v = xi[3], lty = 3)
 xi <- quantile(x, c(0, 0.333, 0.666, 1))
 xi_int <- xi[2:(length(xi) - 1)] # There are K = 2 INTERNAL knots
 
-# unisco alle x i due punti in cui ho scelto di mettere i nodi
+# Draw the knots as vertical lines
 m_spl2 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = F))
 
 plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
