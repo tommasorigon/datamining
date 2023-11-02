@@ -129,10 +129,10 @@ library(leaps)
 p_max <- 175
 
 # There are some collinear variables, therefore this will produce warnings!
-fit_forward <- regsubsets(log(SalePrice) ~ .,
+m_forward <- regsubsets(log(SalePrice) ~ .,
   data = ames_train, method = "forward", nbest = 1, nvmax = p_max, really.big = TRUE
 )
-sum_forward <- summary(fit_forward)
+sum_forward <- summary(m_forward)
 
 m_backward <- regsubsets(log(SalePrice) ~ .,
   data = ames_train, method = "backward", nbest = 1, nvmax = p_max
@@ -141,7 +141,7 @@ sum_backward <- summary(m_backward)
 
 library(broom)
 library(dplyr)
-fit_forward_summary <- fit_forward %>%
+m_forward_summary <- m_forward %>%
   tidy() %>%
   rowwise() %>%
   mutate(p = sum(c_across(MS.SubClassOne_and_Half_Story_Finished_All_Ages:House.Age)), .keep = "unused") %>%
@@ -159,14 +159,31 @@ which(sum_backward$which[2, ]) # Model with two covariates
 which(sum_backward$which[3, ]) # Model with three covariates
 which(sum_backward$which[4, ]) # Model with four covariates
 
+# The official version of this function is bugged - fixed with this (inefficient) turnaround
+coef.regsubsets <- function(object, id, data){
+  s <- summary(object)
+  y <- model.response(model.frame(form, data))
+  X <- model.matrix(form, data)
+  xvars <- names(which(s$which[id, ]))
+  Xvars <- X[, xvars]
+  beta_hat <- c(solve(crossprod(Xvars), crossprod(Xvars, y)))
+  names(beta_hat) <- xvars
+  beta_hat
+}
+
+round(coef(m_backward, 1, ames_train), 6)
+round(coef(m_backward, 2, ames_train), 6)
+round(coef(m_backward, 3, ames_train), 6)
+round(coef(m_backward, 4, ames_train), 6)
+
 # Coding time. Regsubsets does not have a "predict" method, we need to do it ourselves
-predict.regsubsets <- function(object, newdata, id, ...) {
+predict.regsubsets <- function(object, data, newdata, id, ...) {
   form <- as.formula(object[["call"]][[2]])
 
   # Compute the design matrix
   X <- model.matrix(form, newdata)
   # Identify the correct beta coefficients
-  beta_hat <- coef(object, id = id)
+  beta_hat <- coef(object, id = id, data)
   xvars <- names(beta_hat)
 
   # Making the predictions
@@ -179,7 +196,7 @@ predict.regsubsets <- function(object, newdata, id, ...) {
 }
 
 # Let see out it works
-head(exp(predict(m_backward, newdata = ames_train, id = 2)))
+head(exp(predict(m_backward, data = ames_train, newdata = ames_train, id = 2)))
 
 # Validation set - selection of p and performance comparisons ----------------------------------------
 resid_back <- matrix(0, nrow(ames_validation), p_max + 1)
@@ -190,7 +207,7 @@ resid_back[, 1] <- ames_validation$SalePrice - exp(predict(lm(log(SalePrice) ~ 1
 resid_log_back[, 1] <- log(ames_validation$SalePrice) - predict(lm(log(SalePrice) ~ 1, data = ames_train), newdata = ames_validation)
 
 for (j in 2:(p_max + 1)) {
-  y_hat <- exp(predict(m_backward, newdata = ames_validation, j - 1))
+  y_hat <- exp(predict(m_backward, data = ames_train, newdata = ames_validation, j - 1))
   resid_back[, j] <- ames_validation$SalePrice - y_hat
   resid_log_back[, j] <- log(ames_validation$SalePrice) - log(y_hat)
 }
@@ -215,7 +232,7 @@ abline(v = p_back_optimal, lty = "dashed")
 abline(h = MSLE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
 # Optimal model on the validation set
-y_hat_back <- exp(predict(m_backward, newdata = ames_validation, id = p_back_optimal))
+y_hat_back <- exp(predict(m_backward, data = ames_train, newdata = ames_validation, id = p_back_optimal))
 
 MAE(ames_validation$SalePrice, y_hat_back)
 MSLE(ames_validation$SalePrice, y_hat_back)
@@ -252,9 +269,11 @@ p_pcr_optimal
 # Plots on the validation set
 plot(data_cv$p, data_cv$MAE, type = "b", pch = 16, cex = 0.6, ylab = "MAE (validation)", xlab = "p")
 abline(v = p_pcr_optimal, lty = "dashed")
+abline(h = MAE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
 plot(data_cv$p, data_cv$MSLE, type = "b", pch = 16, cex = 0.6, ylab = "MSLE", xlab = "p")
 abline(v = p_pcr_optimal, lty = "dashed")
+abline(h = MSLE(ames_validation$SalePrice, y_hat_simple), lty = "dotted")
 
 # Optimal model on the validation set
 MAE(ames_validation$SalePrice, y_hat_pcr[, , p_pcr_optimal])
@@ -476,7 +495,7 @@ y_hat_simple <- exp(predict(m_simple, newdata = ames_test))
 y_hat_full <- exp(predict(m_full, newdata = ames_test))
 
 # Backward
-y_hat_back <- exp(predict(m_backward, newdata = ames_test, id = p_back_optimal))
+y_hat_back <- exp(predict(m_backward, data = ames_train, newdata = ames_test, id = p_back_optimal))
 
 # PCR
 y_hat_pcr <- exp(predict(m_pcr, newdata = ames_test))[, , p_pcr_optimal]
