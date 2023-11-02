@@ -95,7 +95,7 @@ such that $f(x) = f_1(x)$ for all $x \le \xi$. Express $a_1, b_1, c_1, d_1$ in t
 
 ii. Find another cubic polynomial 
 $$
-f_2(x) = a_2 + b_2 x + c_2 x^2 + d_3 x^3,
+f_2(x) = a_2 + b_2 x + c_2 x^2 + d_2 x^3,
 $$
 such that $f(x) = f_2(x)$ for all $x > \xi$. Express $a_2, b_2, c_2, d_2$ in terms of $\beta_0,\dots,\beta_4$. This establishes that $f(x)$ is piecewise polynomial. 
 
