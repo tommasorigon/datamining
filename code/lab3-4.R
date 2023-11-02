@@ -153,14 +153,9 @@ m_backward_summary <- m_backward %>%
   mutate(p = sum(c_across(MS.SubClassOne_and_Half_Story_Finished_All_Ages:House.Age)), .keep = "unused") %>%
   ungroup()
 
-# Let us see what happens at the lowest levels
-which(sum_backward$which[1, ]) # Model with one covariate
-which(sum_backward$which[2, ]) # Model with two covariates
-which(sum_backward$which[3, ]) # Model with three covariates
-which(sum_backward$which[4, ]) # Model with four covariates
-
-# The official version of this function is bugged - fixed with this (inefficient) turnaround
+# The official version of this function is bugged - fixed with an inefficient (!) turnaround.
 coef.regsubsets <- function(object, id, data){
+  form <- as.formula(object[["call"]][[2]])
   s <- summary(object)
   y <- model.response(model.frame(form, data))
   X <- model.matrix(form, data)
@@ -170,6 +165,12 @@ coef.regsubsets <- function(object, id, data){
   names(beta_hat) <- xvars
   beta_hat
 }
+
+# Let us see what happens at the lowest levels
+which(sum_backward$which[1, ]) # Model with one covariate
+which(sum_backward$which[2, ]) # Model with two covariates
+which(sum_backward$which[3, ]) # Model with three covariates
+which(sum_backward$which[4, ]) # Model with four covariates
 
 round(coef(m_backward, 1, ames_train), 6)
 round(coef(m_backward, 2, ames_train), 6)
