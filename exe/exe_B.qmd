@@ -52,7 +52,7 @@ Refer also to Exercise 3.3 of the textbook A&S (2011), which is implicitly compu
 
 #### B.4 - An estimator with minimal variance
 
-Let us consider the inequality $\bm{A} \preccurlyeq \bm{B}$ between two squared matrices $\bm{A}$ and $\bm{B}$ of dimension $p \times p$. The symbol $\preccurlyeq$ means that $\bm{A} - \bm{B}$ is positive semi-definite. 
+Let us consider the inequality $\bm{B} \preccurlyeq \bm{A}$ between two squared matrices $\bm{A}$ and $\bm{B}$ of dimension $p \times p$. The symbol $\preccurlyeq$ means that $\bm{A} - \bm{B}$ is positive semi-definite. 
 
 Assume the [true model]{.blue} for the data $(x_i, y_i)$ is [linear]{.blue}, therefore $\bm{Y} = \bm{X}\beta + \bm{\epsilon}$. Let us assume, as usual, that the errors $\epsilon_i$ are iid and $\mathbb{E}(\epsilon_i) = 0$, $\text{var}(\epsilon_i) = \sigma^2$.  
 
