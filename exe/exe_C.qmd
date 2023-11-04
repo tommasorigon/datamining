@@ -41,6 +41,12 @@ $$
 $$
 where $\hat{\beta}_\text{pcr}$ has been defined in [this slide](https://tommasorigon.github.io/datamining/slides/un_C.html#shrinkage-effect-of-principal-components-i).
 
+::: {.callout-note collapse=true}
+#### Solution
+
+To be added. Refer to the notes available on e-learning.
+:::
+
 #### C.2 - Centering and scaling the predictors
 
 **Part I**
@@ -84,6 +90,12 @@ $$
 $$
 [Hint]{.blue}: the proof is a simple adaptation of the one for ordinary least squares. 
 
+::: {.callout-note collapse=true}
+#### Solution
+
+To be added. Refer to the notes available on e-learning.
+:::
+
 #### C.4 - Ridge data-augmentation
 
 Show that the ridge regression estimator $\hat{\beta}_\text{ridge}$ can be obtained by [ordinary least squares]{.blue} regression on an [augmented data set]{.orange}. 
@@ -99,6 +111,12 @@ By introducing artificial data having response value zero, the fitting procedure
 $$
 \hat{\beta}_\text{ridge} = (\tilde{\bm{X}}^T\tilde{\bm{X}})^{-1} \tilde{\bm{X}}^T\tilde{\bm{y}}.
 $$
+
+::: {.callout-note collapse=true}
+#### Solution
+
+To be added. Refer to the notes available on e-learning.
+:::
 
 #### C.5 - Ridge regression with identical variables
 
@@ -136,6 +154,12 @@ $$
 implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit $x_i^T\hat{\beta}$.
 
 [Realize]{.orange} that such a property implies that the [covariances]{.orange} with the residuals in the [LAR algorithm]{.blue} are [tied]{.orange}, having set $\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}$ and $0 \le \lambda \le \lambda_k$. 
+
+::: {.callout-note collapse=true}
+#### Solution
+
+To be added. Refer to the notes available on e-learning.
+:::
 
 #### C.8 - Ridge and lasso with orthogonal predictors
 

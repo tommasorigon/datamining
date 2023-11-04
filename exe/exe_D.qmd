@@ -43,6 +43,12 @@ What can be said about the Epanechnikov kernel?
 
 Prove the theorem about the explicit formula for [local linear regression estimator]{.blue} stated in [this slide](../slides/un_D.html#local-linear-regression-ii). 
 
+::: {.callout-note collapse=true}
+#### Solution
+
+To be added. Refer to the notes available on e-learning.
+:::
+
 #### D.4 - Preservation of linear trends
 
 [Show]{.orange} that local linear regression applied to $(x_i, y_i)$ [preserves]{.orange} the [linear part of the fit]{.blue}. In other words, let us decompose $y_i = \hat{y}_{i,\text{ols}} + r_i$, where $\hat{y}_{i,\text{ols}} = \hat{\beta}_0 + \hat{\beta}_1 x_i$ represents the linear regression estimate, and $\bm{S}$ is the smoothing matrix, then
@@ -76,6 +82,12 @@ Then, show that the theorem is valid for the following estimators:
   iv. Smoothing splines. [Hint]{.blue}: you may want to use again the Sherman-Morrison formula. 
   
 Finally, [prove]{.orange} that in all the above cases $|y_i - \hat{y}_{-i}| \ge |y_i - \hat{y}_i|$. That is, the leave-one-out residuals are always bigger than the regular residuals. 
+
+::: {.callout-note collapse=true}
+#### Partial solution
+
+To be added. Refer to the notes available on e-learning for a solution of the first part of the exercise.
+:::
 
 #### D.7 - Truncated power basis
 

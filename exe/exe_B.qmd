@@ -44,11 +44,23 @@ editor_options:
     $$
 Refer also to Exercise 3.3 of the textbook A&S (2011), which is implicitly computing similar quantities.
 
+::: {.callout-note collapse=true}
+#### Solution
+
+To be added. Refer to the notes available on e-learning.
+:::
+
 #### B.3 - Leave-one-out
 
 [Prove]{.orange} the leave-one-out formula for linear models stated in [this slide](../slides/un_B.html#leave-one-out-cross-validation). 
 
 [Hint]{.blue}: many steps are similar to those needed for obtaining [recursive least squares]{.blue}. Begin the proof by applying Sherman-Morrison formula to $\hat{\beta}_{-i}$. 
+
+::: {.callout-note collapse=true}
+#### Solution
+
+To be added. Refer to the notes available on e-learning.
+:::
 
 #### B.4 - An estimator with minimal variance
 

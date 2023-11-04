@@ -42,6 +42,13 @@ $$
 
 [Hint]{.blue}. You may want to look for the properties of [projection matrices]{.orange} on your favorite linear algebra textbook, otherwise this exercise becomes quite hard. 
 
+
+::: {.callout-note collapse=true}
+#### Solution
+
+To be added. Refer to the notes available on e-learning.
+:::
+
 #### A.2 - Positive definiveness of $\bm{X}^T\bm{X}$
 
 [Prove]{.orange} the statement of [Proposition A.1](../slides/un_A.html#cholesky-factorization). In other words, suppose the  $n\times p$  matrix $\bm{X}$ has [full rank]{.blue}, that is $\text{rk}(\bm{X}) = p$, with $p < n$. Then, show that $\bm{X}^T\bm{X}$ is [positive definite]{.blue}.
@@ -105,6 +112,12 @@ $$
 where $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ and $\bm{z}_i = (z_{i1},\dots,z_{ip})^T$. Hence, standardization of the inputs in ordinary least squares has [no effect]{.blue} on the [predictions]{.orange}. Similar linear operations on the inputs, such as [normalization]{.blue}, would lead to the same conclusion. 
 
 <!-- There are good reasons to standardize the variables, for instance, in ridge/lasso regression models. Moreover, centering the predictors may be helpful to get a design matrix which is better conditioned... But these motivations are not related to Gaussianity.  -->
+
+::: {.callout-note collapse=true}
+#### Solution
+
+To be added. The exercise has been discussed in-class.
+:::
 
 ## Practical exercises
 

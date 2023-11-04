@@ -3075,6 +3075,22 @@ vertical-align: -.125em;
 </span> where the definition of <span class="math inline">\bm{Z}</span> and <span class="math inline">\hat{\gamma} = (\hat{\gamma}_1,\dots, \hat{\gamma}_p)</span> is given in <a href="../slides/un_C.html#principal-components-regression-pcr">this slide</a>. Moreover, show that when <span class="math inline">k = p</span> <span class="math display">
 \hat{\beta}_\text{ols} = \hat{\beta}_\text{pcr},
 </span> where <span class="math inline">\hat{\beta}_\text{pcr}</span> has been defined in <a href="https://tommasorigon.github.io/datamining/slides/un_C.html#shrinkage-effect-of-principal-components-i">this slide</a>.</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>To be added. Refer to the notes available on e-learning.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="c.2---centering-and-scaling-the-predictors" class="level4">
 <h4 class="anchored" data-anchor-id="c.2---centering-and-scaling-the-predictors">C.2 - Centering and scaling the predictors</h4>
@@ -3101,6 +3117,22 @@ vertical-align: -.125em;
 </span> is the <span class="orange">minimizer</span> of the penalized loss function <span class="math display">
 \sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2.
 </span> <span class="blue">Hint</span>: the proof is a simple adaptation of the one for ordinary least squares.</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>To be added. Refer to the notes available on e-learning.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="c.4---ridge-data-augmentation" class="level4">
 <h4 class="anchored" data-anchor-id="c.4---ridge-data-augmentation">C.4 - Ridge data-augmentation</h4>
@@ -3113,6 +3145,22 @@ vertical-align: -.125em;
 </span> By introducing artificial data having response value zero, the fitting procedure is forced to shrink the coefficients towards zero. <span class="orange">Show</span> that <span class="math display">
 \hat{\beta}_\text{ridge} = (\tilde{\bm{X}}^T\tilde{\bm{X}})^{-1} \tilde{\bm{X}}^T\tilde{\bm{y}}.
 </span></p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>To be added. Refer to the notes available on e-learning.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="c.5---ridge-regression-with-identical-variables" class="level4">
 <h4 class="anchored" data-anchor-id="c.5---ridge-regression-with-identical-variables">C.5 - Ridge regression with identical variables</h4>
@@ -3141,6 +3189,22 @@ vertical-align: -.125em;
 \text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha)) = \frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - r_i(\alpha)\} = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
 </span> implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit <span class="math inline">x_i^T\hat{\beta}</span>.</p>
 <p><span class="orange">Realize</span> that such a property implies that the <span class="orange">covariances</span> with the residuals in the <span class="blue">LAR algorithm</span> are <span class="orange">tied</span>, having set <span class="math inline">\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}</span> and <span class="math inline">0 \le \lambda \le \lambda_k</span>.</p>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Solution
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>To be added. Refer to the notes available on e-learning.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="c.8---ridge-and-lasso-with-orthogonal-predictors" class="level4">
 <h4 class="anchored" data-anchor-id="c.8---ridge-and-lasso-with-orthogonal-predictors">C.8 - Ridge and lasso with orthogonal predictors</h4>
