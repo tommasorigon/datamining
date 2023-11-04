@@ -153,7 +153,8 @@ m_backward_summary <- m_backward %>%
   mutate(p = sum(c_across(MS.SubClassOne_and_Half_Story_Finished_All_Ages:House.Age)), .keep = "unused") %>%
   ungroup()
 
-# The official version of this function is bugged - fixed with an inefficient (!) turnaround.
+# The official version of this function is bugged - fixed with an inefficient (!) tweak;
+# Hopefully the original function coef.regsubsets will be fixed soon.
 coef.regsubsets <- function(object, id, data){
   form <- as.formula(object[["call"]][[2]])
   s <- summary(object)
