@@ -811,7 +811,7 @@ $$ where $\alpha_w = \int w^2(z)\mathrm{d}z$.
     which is much [slower]{.orange} than the [parametric]{.orange} case
     $n^{-1}$.
 
-## ☠️ - Bias reduction of local linear regression
+## Bias reduction of local linear regression
 
 - Compared to the Nadaraya-Watson estimator,
     local linear regression corrects the [first-order]{.orange} term of the [bias]{.orange},

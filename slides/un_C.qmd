@@ -1449,7 +1449,7 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
     [compensate]{.orange} the increase in bias, especially when $p$ is
     large relative to $n$.
 
-## ☠️ - A historical perspective I
+## A historical perspective I
 
 ::: incremental
 -   The ridge regression estimator was originally proposed by Hoerl and
@@ -1468,7 +1468,7 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
     practice.
 :::
 
-## ☠️ - A historical perspective II
+## A historical perspective II
 
 ::: incremental
 -   Ridge provides a [remedy]{.blue} for [ill-conditioning]{.orange}, by
@@ -1490,7 +1490,7 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
     the Russian mathematician Andrey Tikhonov.
 :::
 
-## ☠️ - A historical perspective III
+## A historical perspective III
 
 ![](img/ridge_paper.png){fig-align="center" width="40%"}
 
@@ -2314,7 +2314,7 @@ $$
 $$
 :::
 
-## ☠️ - Effective degrees of freedom of LAR and best subset
+## Effective degrees of freedom of LAR and best subset
 
 ```{r}
 #| cache: true

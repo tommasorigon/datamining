@@ -760,7 +760,7 @@ $$
     since the complexity is cubic in $p$.
 :::
 
-## ☠️ - Error propagation in normal equations
+## Error propagation in normal equations
 
 ::: incremental
 -   The normal equations method is typically [quicker]{.blue} than other
@@ -781,7 +781,7 @@ $$
     numerical instabilities and/or a [loss in accuracy]{.orange}.
 :::
 
-## ☠️ - Condition numbers and normal equations
+## Condition numbers and normal equations
 
 ::: incremental
 -   Suppose $\bm{X} \in \mathbb{R}^{n \times p}$ with $n \ge p$ has full

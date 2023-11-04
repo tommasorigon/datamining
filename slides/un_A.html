@@ -96,8 +96,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#cholesky-factorization-and-least-squares" id="toc-cholesky-factorization-and-least-squares" class="nav-link" data-scroll-target="#cholesky-factorization-and-least-squares">Cholesky factorization and least squares</a></li>
   <li><a href="#forward-and-backward-substitutions" id="toc-forward-and-backward-substitutions" class="nav-link" data-scroll-target="#forward-and-backward-substitutions">Forward and backward substitutions</a></li>
   <li><a href="#computational-complexity" id="toc-computational-complexity" class="nav-link" data-scroll-target="#computational-complexity">Computational complexity</a></li>
-  <li><a href="#error-propagation-in-normal-equations" id="toc-error-propagation-in-normal-equations" class="nav-link" data-scroll-target="#error-propagation-in-normal-equations">☠️ - Error propagation in normal equations</a></li>
-  <li><a href="#condition-numbers-and-normal-equations" id="toc-condition-numbers-and-normal-equations" class="nav-link" data-scroll-target="#condition-numbers-and-normal-equations">☠️ - Condition numbers and normal equations</a></li>
+  <li><a href="#error-propagation-in-normal-equations" id="toc-error-propagation-in-normal-equations" class="nav-link" data-scroll-target="#error-propagation-in-normal-equations">Error propagation in normal equations</a></li>
+  <li><a href="#condition-numbers-and-normal-equations" id="toc-condition-numbers-and-normal-equations" class="nav-link" data-scroll-target="#condition-numbers-and-normal-equations">Condition numbers and normal equations</a></li>
   </ul></li>
   <li><a href="#the-qr-decomposition" id="toc-the-qr-decomposition" class="nav-link" data-scroll-target="#the-qr-decomposition">The QR decomposition</a>
   <ul class="collapse">
@@ -864,7 +864,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </div>
 </section>
 <section id="error-propagation-in-normal-equations" class="level2">
-<h2 class="anchored" data-anchor-id="error-propagation-in-normal-equations">☠️ - Error propagation in normal equations</h2>
+<h2 class="anchored" data-anchor-id="error-propagation-in-normal-equations">Error propagation in normal equations</h2>
 <div class="incremental">
 <ul class="incremental">
 <li><p>The normal equations method is typically <span class="blue">quicker</span> than other algorithms, as it removes the dependency on <span class="math inline">n</span>, but it is in general numerically more <span class="orange">unstable</span>.</p></li>
@@ -880,7 +880,7 @@ x_1 = \frac{b_1}{l_{11}}, \qquad x_2 = \frac{b_2 -  l_{21}x_1}{l_{22}}, \qquad x
 </div>
 </section>
 <section id="condition-numbers-and-normal-equations" class="level2">
-<h2 class="anchored" data-anchor-id="condition-numbers-and-normal-equations">☠️ - Condition numbers and normal equations</h2>
+<h2 class="anchored" data-anchor-id="condition-numbers-and-normal-equations">Condition numbers and normal equations</h2>
 <div class="incremental">
 <ul class="incremental">
 <li><p>Suppose <span class="math inline">\bm{X} \in \mathbb{R}^{n \times p}</span> with <span class="math inline">n \ge p</span> has full rank and singular values <span class="math inline">d_1 \ge d_2 \ge \dots \ge d_p</span>. Then its <span class="orange">condition number</span> is <span class="math display">
