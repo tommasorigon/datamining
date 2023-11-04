@@ -80,7 +80,12 @@ library(mgcv)
 m_gam_simple <- gam(Luxury ~ s(Overall.Qual) + s(Gr.Liv.Area) + s(House.Age) + s(Tot.Bathrooms), 
                 data = ames_train, family = "binomial")
 summary(m_gam_simple)
-plot(m_gam_simple, scale = 0)
+plot(m_gam_simple, scale = 0, se = FALSE)
+
+m_gam <- gam(Luxury ~ s(Overall.Qual) + s(Gr.Liv.Area) + s(House.Age) + s(Tot.Bathrooms) + s(Porch.Sq.Feet) + s(Wood.Deck.SF) + Kitchen.Qual  + s(Garage.Area), 
+                    data = ames_train, family = "binomial", select = TRUE)
+summary(m_gam)
+plot(m_gam, scale = 0, se = FALSE)
 
 # MARS ----------------------------------------------------------------------------------------------------
 
@@ -113,6 +118,8 @@ y_hat_lasso <- c(predict(lasso_cv, newx = model.matrix(Luxury ~ ., data = ames_t
 # GAM
 y_hat_gam_simple <- c(predict(m_gam_simple, newdata = ames_test, type = "response"))
 
+y_hat_gam <- c(predict(m_gam, newdata = ames_test, type = "response"))
+
 # MARS1
 y_hat_mars1 <- c(predict(m_mars1, newdata = ames_test, type = "response"))
 
@@ -142,17 +149,18 @@ metrics <- function(y, probs, cutoff = 0.5){
 # Target variable
 y_test <- ames_test$Luxury
 
-cutoff <- 0.8
+cutoff <- 0.5
 metrics(y = y_test, probs = y_hat_simple, cutoff = cutoff)
 metrics(y = y_test, probs = y_hat_ridge, cutoff = cutoff)
 metrics(y = y_test, probs = y_hat_lasso, cutoff = cutoff)
 metrics(y = y_test, probs = y_hat_gam_simple, cutoff = cutoff)
+metrics(y = y_test, probs = y_hat_gam, cutoff = cutoff)
 metrics(y = y_test, probs = y_hat_mars1, cutoff = cutoff)
 metrics(y = y_test, probs = y_hat_mars2, cutoff = cutoff)
 metrics(y = y_test, probs = y_hat_mars3, cutoff = cutoff)
 metrics(y = y_test, probs = y_hat_rf, cutoff = cutoff)
 
-table(y_hat_lasso > 0.7, y_test)
+table(y_hat_lasso >  cutoff, y_test)
 
 library(ROCR)
 pred_lasso <- prediction(y_hat_lasso, y_test)
@@ -161,9 +169,15 @@ perf_lasso <- performance(pred_lasso, "tpr","fpr")
 pred_simple <- prediction(y_hat_simple, y_test)
 perf_simple <- performance(pred_simple, "tpr","fpr")
 
+pred_gam <- prediction(y_hat_gam, y_test)
+perf_gam <- performance(pred_gam, "tpr","fpr")
+
 pred_mars3 <- prediction(y_hat_mars3, y_test)
 perf_mars3 <- performance(pred_mars3, "tpr","fpr")
 
 plot(perf_lasso, col = "darkblue")
+abline(c(0,1), lty = "dotted")
+plot(perf_gam, col = "darkgreen", add = TRUE)
 plot(perf_mars3, col = "black", add = TRUE, lty = "dotted")
 plot(perf_simple, col = "darkorange", add = TRUE, lty = "dashed")
+
