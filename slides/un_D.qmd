@@ -711,7 +711,7 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 -   In linear smoothers, we can express the predicted values
     $\hat{\bm{y}}$ using [matrix notation]{.orange} $$
-    \hat{\bm{y}} = \sum_{i=1}^n\bm{s}_i \bm{y} = \bm{S}\bm{y}, \qquad \bm{s}_i = (s_1(x_i), \dots, s_n(x_i))^T,
+    \hat{\bm{y}} = \sum_{i=1}^n\bm{s}_i y_i = \bm{S}\bm{y}, \qquad \bm{s}_i = (s_i(x_1), \dots, s_i(x_n))^T,
     $$ where $\bm{S} = (\bm{s}_1,\dots,\bm{s}_n)^T$ is the so-called
     $n \times n$ [smoothing]{.blue} matrix.
 

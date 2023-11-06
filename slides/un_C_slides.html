@@ -1762,7 +1762,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 \end{cases}
 </span></p></li>
 <li class="fragment"><p>The above solution can be written as <span class="math inline">\hat{\beta}_\text{lasso} = \mathcal{S}_\lambda(\hat{\beta}_\text{ols})</span>, where <span class="math inline">\mathcal{S}_\lambda(x) = \text{sign}(x)(|x| - \lambda)_+</span> is the <span class="blue">soft-thresholding</span> operator and <span class="math inline">(\cdot)_+</span> is the <span class="orange">positive part</span> of a number (<code>pmax(0, x)</code>).</p></li>
-<li class="fragment"><p>For <span class="orange">ridge regression</span> (including a <span class="math inline">n^{-1}</span> factor in the least squares penalty, see <a href="#/elastic-net-with-a-single-predictor">here</a>) we get: <span class="math display">
+<li class="fragment"><p>For <span class="orange">ridge regression</span> (including a <span class="math inline">n^{-1}</span> factor in the least squares penalty; see <a href="#/elastic-net-with-a-single-predictor">here</a>) we get: <span class="math display">
 \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
 </span></p></li>
 </ul>

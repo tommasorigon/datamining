@@ -1996,7 +1996,7 @@ ggplot() +
     the [soft-thresholding]{.blue} operator and $(\cdot)_+$ is the
     [positive part]{.orange} of a number (`pmax(0, x)`).
 
--   For [ridge regression]{.orange} (including a $n^{-1}$ factor in the least squares penalty, see [here](#elastic-net-with-a-single-predictor)) we get: $$
+-   For [ridge regression]{.orange} (including a $n^{-1}$ factor in the least squares penalty; see [here](#elastic-net-with-a-single-predictor)) we get: $$
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
     $$
 :::
