@@ -3178,7 +3178,7 @@ Solution
     \end{cases}
     </span> <span class="orange">Show</span> in addition that <span class="math display">
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i},
-    </span> <span class="orange">Note</span>. In ridge regression, you need to include a <span class="math inline">n^{-1}</span> scaling factor in the least squares penalty; i.e. you need to consider ridge as a special case of <a href="../slides/un_C.html#elastic-net-with-a-single-predictor">this equation</a>. This makes the values of <span class="math inline">\lambda</span> comparable between ridge and lasso.</p>
+    </span> <span class="orange">Note</span>. In ridge regression, you need to include a <span class="math inline">n^{-1}</span> scaling factor in the penalized loss: this makes the values of <span class="math inline">\lambda</span> comparable between ridge and lasso. More precisely, you need to consider the ridge solution as a special case of <a href="../slides/un_C.html#elastic-net-with-a-single-predictor">this equation</a> with <span class="math inline">\alpha = 0</span>.</p>
 </section>
 <section id="c.7---the-tied-covariances-in-lar" class="level4">
 <h4 class="anchored" data-anchor-id="c.7---the-tied-covariances-in-lar">C.7 - The tied covariances in LAR</h4>

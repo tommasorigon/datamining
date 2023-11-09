@@ -139,7 +139,7 @@ Consider the lasso problem with a    [single-predictor]{.blue} $$
 $$
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i},
     $$
-[Note]{.orange}. In ridge regression, you need to include a $n^{-1}$ scaling factor in the least squares penalty; i.e. you need to consider ridge as a special case of [this equation](../slides/un_C.html#elastic-net-with-a-single-predictor). This makes the values of $\lambda$ comparable between ridge and lasso. 
+[Note]{.orange}. In ridge regression, you need to include a $n^{-1}$ scaling factor in the penalized loss: this makes the values of $\lambda$ comparable between ridge and lasso. More precisely, you need to consider the ridge solution as a special case of [this equation](../slides/un_C.html#elastic-net-with-a-single-predictor) with $\alpha = 0$. 
 
 #### C.7 - The tied covariances in LAR
 
