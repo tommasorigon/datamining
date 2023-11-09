@@ -2668,9 +2668,9 @@ $$
 
 . . .
 
-- Let us define the [partial residuals]{.blue} $r_i^{(j)} = y_i - \sum_{j \neq k} x_{ij}\beta_j$. Then the updated $\beta_k$ is
+- Let us define the [partial residuals]{.blue} $r_i^{(k)} = y_i - \sum_{j \neq k} x_{ij}\beta_j$. Then the updated $\beta_k$ is
 $$
-\beta_k \leftarrow \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}\left(\frac{1}{n}\sum_{i=1}^n x_{ik} r_i^{(j)}\right).
+\beta_k \leftarrow \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}\left(\frac{1}{n}\sum_{i=1}^n x_{ik} r_i^{(k)}\right).
 $$
 We [cycle]{.orange} this update for $k=1,\dots,p$, over and over until convergence.
 

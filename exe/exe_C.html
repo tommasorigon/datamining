@@ -3184,7 +3184,7 @@ Solution
 <h4 class="anchored" data-anchor-id="c.7---the-tied-covariances-in-lar">C.7 - The tied covariances in LAR</h4>
 <p>Consider a regression problem with <span class="math inline">k</span> variables having mean zero and standard deviation one. The response is also centered. Suppose also that each variable has <span class="blue">identical absolute covariance</span> with the response: <span class="math display">
 \text{cov}(\tilde{\bm{x}}_j, \bm{y}) = \frac{1}{n}\sum_{j=1}^k x_{ij} y_i= \lambda_{k-1}, \qquad j=1,\dots,k.
-</span> Let <span class="math inline">\hat{\beta}</span> be the <span class="blue">least squares</span> estimate and let us denote with <span class="math inline">r_i(\alpha) = y_i - \alpha x_i^T\hat{\beta}</span> the residuals from a fraction of the predictions, with <span class="math inline">\alpha \in [0, 1]</span>.</p>
+</span> Let <span class="math inline">\hat{\beta}</span> be the <span class="blue">least squares</span> estimate and let us denote with <span class="math inline">r_i(\alpha) = y_i - \alpha \bm{x}_i^T\hat{\beta}</span> the residuals from a fraction of the predictions, with <span class="math inline">\alpha \in [0, 1]</span>.</p>
 <p><span class="orange">Prove</span> that the following relationship holds: <span class="math display">
 \text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha)) = \frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - r_i(\alpha)\} = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
 </span> implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit <span class="math inline">\bm{x}_i^T\hat{\beta}</span>.</p>

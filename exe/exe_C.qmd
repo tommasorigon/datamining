@@ -147,7 +147,7 @@ Consider a regression problem with $k$ variables having mean zero and standard d
 $$
 \text{cov}(\tilde{\bm{x}}_j, \bm{y}) = \frac{1}{n}\sum_{j=1}^k x_{ij} y_i= \lambda_{k-1}, \qquad j=1,\dots,k.
 $$
-Let $\hat{\beta}$ be the [least squares]{.blue} estimate and let us denote with $r_i(\alpha) = y_i - \alpha x_i^T\hat{\beta}$ the residuals from a fraction of the predictions, with $\alpha \in [0, 1]$.
+Let $\hat{\beta}$ be the [least squares]{.blue} estimate and let us denote with $r_i(\alpha) = y_i - \alpha \bm{x}_i^T\hat{\beta}$ the residuals from a fraction of the predictions, with $\alpha \in [0, 1]$.
 
 [Prove]{.orange} that the following relationship holds:
 $$
