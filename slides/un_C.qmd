@@ -2663,16 +2663,16 @@ Replacing $\le$ with $<$ for $t \in(0,1)$ gives the definition of [strict convex
 
 - We can [re-write]{.orange} the objective function of the elastic-net in a more convenient form:
 $$
-\frac{1}{2n}\sum_{i=1}^n \left(\textcolor{red}{y_i - \sum_{j \neq k} x_{ij}\beta_j} - x_{ik} \beta_k\right)^2 + \lambda\left(\alpha  |\beta_k| + \frac{(1 - \alpha)}{2} \beta_k^2\right) + \underbrace{\lambda  \sum_{j\neq k}^p \{\alpha |\beta_j| + \frac{(1 - \alpha)}{2}\beta_j^2\}}_{\text{does not depend on } \beta_k},
+\frac{1}{2n}\sum_{i=1}^n \left(\textcolor{red}{y_i - \sum_{k \neq j} x_{ik}\beta_k} - x_{ij} \beta_j\right)^2 + \lambda\left(\alpha  |\beta_j| + \frac{(1 - \alpha)}{2} \beta_j^2\right) + \underbrace{\lambda  \sum_{k\neq j}^p \{\alpha |\beta_k| + \frac{(1 - \alpha)}{2}\beta_k^2\}}_{\text{does not depend on } \beta_j},
 $$ 
 
 . . .
 
-- Let us define the [partial residuals]{.blue} $r_i^{(k)} = y_i - \sum_{j \neq k} x_{ij}\beta_j$. Then the updated $\beta_k$ is
+- Let us define the [partial residuals]{.blue} $r_i^{(j)} = y_i - \sum_{k \neq j} x_{ik}\beta_k$. Then the updated $\beta_j$ is
 $$
-\beta_k \leftarrow \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}\left(\frac{1}{n}\sum_{i=1}^n x_{ik} r_i^{(k)}\right).
+\beta_j \leftarrow \frac{1}{1 + (1 - \alpha)\lambda}\mathcal{S}_{\alpha\lambda}\left(\frac{1}{n}\sum_{i=1}^n x_{ij} r_i^{(j)}\right).
 $$
-We [cycle]{.orange} this update for $k=1,\dots,p$, over and over until convergence.
+We [cycle]{.orange} this update for $j=1,\dots,p$, over and over until convergence.
 
 ## Coordinate descent - Example
 
