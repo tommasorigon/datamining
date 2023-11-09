@@ -87,7 +87,7 @@ Consider a logistic regression model for binary data with a single predictor $x_
 
 [Investigate]{.orange} the behavior of the maximum likelihood estimate $\hat{\beta}_0, \hat{\beta}$ in this scenario. Then, generalize this result to the multivariate case, when $\bm{x}_i \in \mathbb{R}^p$. That is, suppose there exists a vector $\bm{x}_0 \in \mathbb{R}^p$ that perfectly separates the binary outcomes.
 
-A detailed description of this [separability issue]{.blue} is provided in the *Biometrika* paper by [Albert and Anderson (1984)](https://academic.oup.com/biomet/article/71/1/1/349338). See for example their Theorem 1. 
+A detailed description of this [separability issue]{.blue} is provided in the *Biometrika* paper by [Albert and Anderson (1984)](https://academic.oup.com/biomet/article/71/1/1/349338). See also the paper by [Rigon and Aliverti (2023)](../extra/RigonAliverti2023.pdf) for a simple correction. 
 
 #### A.7 - Standardization of the input variables
 
