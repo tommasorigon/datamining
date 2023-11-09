@@ -135,11 +135,12 @@ Consider the lasso problem with a    [single-predictor]{.blue} $$
     \text{cov}(x,y) + \lambda, \qquad &\text{if} \quad \text{cov}(x,y) < -\lambda \\
     \end{cases}
     $$
-[Show]{.orange} in addition (including a $n^{-1}$ factor in the least squares penalty; see [here](../slides/un_C.html/#elastic-net-with-a-single-predictor)) that 
+[Show]{.orange} in addition  that 
 $$
-    \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
+    \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i},
     $$
-    
+[Note]{.orange}. In ridge regression, you need to include a $n^{-1}$ scaling factor in the least squares penalty; i.e. you need to consider ridge as a special case of [this equation](../slides/un_C.html#elastic-net-with-a-single-predictor). This makes the values of $\lambda$ comparable between ridge and lasso. 
+
 #### C.7 - The tied covariances in LAR
 
 Consider a regression problem with $k$ variables having mean zero and standard deviation one. The response is also centered. Suppose also that each variable has [identical absolute covariance]{.blue} with the response:
@@ -152,7 +153,7 @@ Let $\hat{\beta}$ be the [least squares]{.blue} estimate and let us denote with 
 $$
 \text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha)) = \frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - r_i(\alpha)\} = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
 $$
-implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit $x_i^T\hat{\beta}$.
+implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit $\bm{x}_i^T\hat{\beta}$.
 
 [Realize]{.orange} that such a property implies that the [covariances]{.orange} with the residuals in the [LAR algorithm]{.blue} are [tied]{.orange}, having set $\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}$ and $0 \le \lambda \le \lambda_k$. 
 

@@ -3176,9 +3176,9 @@ Solution
     0 \qquad &amp;\text{if} \quad \text{cov}(x,y) \le \lambda\\
     \text{cov}(x,y) + \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &lt; -\lambda \\
     \end{cases}
-    </span> <span class="orange">Show</span> in addition (including a <span class="math inline">n^{-1}</span> factor in the least squares penalty; see <a href="../slides/un_C.html/#elastic-net-with-a-single-predictor">here</a>) that <span class="math display">
-    \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
-    </span></p>
+    </span> <span class="orange">Show</span> in addition that <span class="math display">
+    \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i},
+    </span> <span class="orange">Note</span>. In ridge regression, you need to include a <span class="math inline">n^{-1}</span> scaling factor in the least squares penalty; i.e. you need to consider ridge as a special case of <a href="../slides/un_C.html#elastic-net-with-a-single-predictor">this equation</a>. This makes the values of <span class="math inline">\lambda</span> comparable between ridge and lasso.</p>
 </section>
 <section id="c.7---the-tied-covariances-in-lar" class="level4">
 <h4 class="anchored" data-anchor-id="c.7---the-tied-covariances-in-lar">C.7 - The tied covariances in LAR</h4>
@@ -3187,7 +3187,7 @@ Solution
 </span> Let <span class="math inline">\hat{\beta}</span> be the <span class="blue">least squares</span> estimate and let us denote with <span class="math inline">r_i(\alpha) = y_i - \alpha x_i^T\hat{\beta}</span> the residuals from a fraction of the predictions, with <span class="math inline">\alpha \in [0, 1]</span>.</p>
 <p><span class="orange">Prove</span> that the following relationship holds: <span class="math display">
 \text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha)) = \frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - r_i(\alpha)\} = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
-</span> implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit <span class="math inline">x_i^T\hat{\beta}</span>.</p>
+</span> implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit <span class="math inline">\bm{x}_i^T\hat{\beta}</span>.</p>
 <p><span class="orange">Realize</span> that such a property implies that the <span class="orange">covariances</span> with the residuals in the <span class="blue">LAR algorithm</span> are <span class="orange">tied</span>, having set <span class="math inline">\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}</span> and <span class="math inline">0 \le \lambda \le \lambda_k</span>.</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
