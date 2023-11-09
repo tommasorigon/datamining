@@ -135,7 +135,8 @@ Consider the lasso problem with a    [single-predictor]{.blue} $$
     \text{cov}(x,y) + \lambda, \qquad &\text{if} \quad \text{cov}(x,y) < -\lambda \\
     \end{cases}
     $$
-[Show]{.orange} in addition that $$
+[Show]{.orange} in addition (including a $n^{-1}$ factor in the least squares penalty; see [here](../slides/un_C.html/#elastic-net-with-a-single-predictor)) that 
+$$
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
     $$
     

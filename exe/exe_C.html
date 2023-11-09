@@ -3176,7 +3176,7 @@ Solution
     0 \qquad &amp;\text{if} \quad \text{cov}(x,y) \le \lambda\\
     \text{cov}(x,y) + \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &lt; -\lambda \\
     \end{cases}
-    </span> <span class="orange">Show</span> in addition that <span class="math display">
+    </span> <span class="orange">Show</span> in addition (including a <span class="math inline">n^{-1}</span> factor in the least squares penalty; see <a href="../slides/un_C.html/#elastic-net-with-a-single-predictor">here</a>) that <span class="math display">
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i}.
     </span></p>
 </section>
