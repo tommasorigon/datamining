@@ -3182,13 +3182,14 @@ Solution
 </section>
 <section id="c.7---the-tied-covariances-in-lar" class="level4">
 <h4 class="anchored" data-anchor-id="c.7---the-tied-covariances-in-lar">C.7 - The tied covariances in LAR</h4>
-<p>Consider a regression problem with <span class="math inline">k</span> variables having mean zero and standard deviation one. The response is also centered. Suppose also that each variable has <span class="blue">identical absolute covariance</span> with the response: <span class="math display">
+<p>Consider a regression problem with <span class="math inline">k</span> variables <span class="math inline">\bm{x}_j</span> having mean zero and standard deviation one. The response variable is centered as well. Moreover, suppose that each variable has <span class="blue">identical absolute covariance</span> with the response: <span class="math display">
 \text{cov}(\tilde{\bm{x}}_j, \bm{y}) = \frac{1}{n}\sum_{j=1}^k x_{ij} y_i= \lambda_{k-1}, \qquad j=1,\dots,k.
 </span> Let <span class="math inline">\hat{\beta}</span> be the <span class="blue">least squares</span> estimate and let us denote with <span class="math inline">r_i(\alpha) = y_i - \alpha \bm{x}_i^T\hat{\beta}</span> the residuals from a fraction of the predictions, with <span class="math inline">\alpha \in [0, 1]</span>.</p>
 <p><span class="orange">Prove</span> that the following relationship holds: <span class="math display">
 \text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha)) = \frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - r_i(\alpha)\} = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
 </span> implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit <span class="math inline">\bm{x}_i^T\hat{\beta}</span>.</p>
 <p><span class="orange">Realize</span> that such a property implies that the <span class="orange">covariances</span> with the residuals in the <span class="blue">LAR algorithm</span> are <span class="orange">tied</span>, having set <span class="math inline">\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}</span> and <span class="math inline">0 \le \lambda \le \lambda_k</span>.</p>
+<p><span class="orange">Hint</span>. This problem is easier if you use <span class="blue">matrix notation</span>, that is, considering the covariances <span class="math inline">n^{-1}\bm{X}^T\bm{r}(\alpha)</span> and the partial residuals <span class="math inline">\bm{r}(\alpha) = \bm{y} - \alpha\bm{X}\hat{\beta}</span>.</p>
 <div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">

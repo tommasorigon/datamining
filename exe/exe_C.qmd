@@ -143,7 +143,7 @@ $$
 
 #### C.7 - The tied covariances in LAR
 
-Consider a regression problem with $k$ variables having mean zero and standard deviation one. The response is also centered. Suppose also that each variable has [identical absolute covariance]{.blue} with the response:
+Consider a regression problem with $k$ variables $\bm{x}_j$ having mean zero and standard deviation one. The response variable is centered as well. Moreover, suppose that each variable has [identical absolute covariance]{.blue} with the response:
 $$
 \text{cov}(\tilde{\bm{x}}_j, \bm{y}) = \frac{1}{n}\sum_{j=1}^k x_{ij} y_i= \lambda_{k-1}, \qquad j=1,\dots,k.
 $$
@@ -156,6 +156,9 @@ $$
 implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit $\bm{x}_i^T\hat{\beta}$.
 
 [Realize]{.orange} that such a property implies that the [covariances]{.orange} with the residuals in the [LAR algorithm]{.blue} are [tied]{.orange}, having set $\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}$ and $0 \le \lambda \le \lambda_k$. 
+
+[Hint]{.orange}. This problem is easier if you use [matrix notation]{.blue}, that is, considering the covariances $n^{-1}\bm{X}^T\bm{r}(\alpha)$ and the partial residuals $\bm{r}(\alpha) = \bm{y} - \alpha\bm{X}\hat{\beta}$.
+
 
 ::: {.callout-note collapse=true}
 #### Solution
