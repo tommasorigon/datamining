@@ -146,13 +146,13 @@ $$
 
 Consider a regression problem with $k$ variables $\bm{x}_j$ having mean zero and standard deviation one. The response variable is centered as well. Moreover, suppose that each variable has [identical absolute covariance]{.blue} with the response:
 $$
-\text{cov}(\tilde{\bm{x}}_j, \bm{y}) = \frac{1}{n}\sum_{j=1}^k x_{ij} y_i= \lambda_{k-1}, \qquad j=1,\dots,k.
+\left|\text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \left|\frac{1}{n}\sum_{j=1}^k x_{ij} y_i \right|= \lambda_{k-1}, \qquad j=1,\dots,k.
 $$
 Let $\hat{\beta}$ be the [least squares]{.blue} estimate and let us denote with $r_i(\alpha) = y_i - \alpha \bm{x}_i^T\hat{\beta}$ the residuals from a fraction of the predictions, with $\alpha \in [0, 1]$.
 
 [Prove]{.orange} that the following relationship holds:
 $$
-\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha)) = \frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - r_i(\alpha)\} = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
+\left|\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha))\right| = \left|\frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - r_i(\alpha)\}\right| = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
 $$
 implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit $\bm{x}_i^T\hat{\beta}$.
 
