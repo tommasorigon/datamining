@@ -144,7 +144,7 @@ $$
 
 #### C.7 - The tied covariances in LAR
 
-Consider a regression problem with $k$ variables $\bm{x}_j$ having mean zero and standard deviation one. The response variable is centered as well. Moreover, suppose that each variable has [identical absolute covariance]{.blue} with the response:
+Consider a regression problem with $k$ variables $\tilde{\bm{x}}_j$ having mean zero and standard deviation one. The response variable is centered as well. Moreover, suppose that each variable has [identical absolute covariance]{.blue} with the response:
 $$
 \left|\text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \left|\frac{1}{n}\sum_{j=1}^k x_{ij} y_i \right|= \lambda_{k-1}, \qquad j=1,\dots,k.
 $$
