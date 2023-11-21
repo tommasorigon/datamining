@@ -1237,6 +1237,8 @@ $$ Such an estimator [always exists]{.blue} and is [unique]{.orange}
 
 <!-- ::: -->
 
+
+
 ## The geometry of the ridge solution
 
 ```{r}

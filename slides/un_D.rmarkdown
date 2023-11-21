@@ -47,7 +47,11 @@ editor_options:
   chunk_output_type: console
 ---
 
+
+
 ## [Homepage](../index.html)
+
+
 
 ```{r}
 #| warning: false
@@ -59,6 +63,8 @@ editor_options:
 knitr::purl("un_D.qmd", output = "../code/un_D.R", documentation = 0)
 styler:::style_file("../code/un_D.R")
 ```
+
+
 
 ::: columns
 ::: {.column width="30%"}
@@ -101,6 +107,8 @@ object treasured both for its artistic merit as well as usefulness."*
 
 ::: columns
 ::: {.column width="40%"}
+
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4.5
@@ -119,6 +127,8 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
   xlab("Compliance") +
   ylab("Cholesterol Decrease")
 ```
+
+
 :::
 
 ::: {.column width="60%"}
@@ -163,6 +173,8 @@ ggplot(data = dataset, aes(x = compliance, y = cholesterol.decrease)) +
 :::
 
 ::: {.column width="40%"}
+
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4
@@ -177,6 +189,8 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
   xlab("Engine size (L)") +
   ylab("Urban distance (km/L)")
 ```
+
+
 :::
 :::
 
@@ -184,6 +198,8 @@ ggplot(data = auto, aes(x = engine.size, y = city.distance)) +
 
 ::: columns
 ::: {.column width="40%"}
+
+
 ```{r}
 #| fig-width: 5
 #| fig-height: 4
@@ -201,6 +217,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 ```
+
+
 :::
 
 ::: {.column width="60%"}
@@ -257,6 +275,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 ## Old friends: polynomials (`mcycle` data)
 
+
+
 ```{r}
 #| fig-width: 7.8
 #| fig-height: 4.55
@@ -292,6 +312,8 @@ ggplot(data = data_pred) +
   xlab("x") +
   ylab("y") # Manual identification of an "interesting" region
 ```
+
+
 
 # Local regression
 
@@ -373,6 +395,8 @@ ggplot(data = data_pred) +
 
 ## K-nearest neighbours ($k = 6$)
 
+
+
 ```{r}
 #| fig-width: 7.8
 #| fig-height: 4.55
@@ -392,6 +416,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 ```
+
+
 
 ## Comments and limitations about the KNN method
 
@@ -479,6 +505,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 ::: panel-tabset
 ## Smoothing $h = 1$
 
+
+
 ```{r}
 #| fig-width: 7.8
 #| fig-height: 4
@@ -502,7 +530,11 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   ylab("Head acceleration (g)")
 ```
 
+
+
 ## Smoothing $h = 0.3$
+
+
 
 ```{r}
 #| fig-width: 7.8
@@ -525,7 +557,11 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   ylab("Head acceleration (g)")
 ```
 
+
+
 ## Smoothing $h = 2$
+
+
 
 ```{r}
 #| fig-width: 7.8
@@ -547,7 +583,11 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   ylab("Head acceleration (g)")
 ```
 
+
+
 ## Smoothing $h = 4$
+
+
 
 ```{r}
 #| fig-width: 7.8
@@ -568,6 +608,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 ```
+
+
 :::
 
 ## Local linear regression I
@@ -659,6 +701,8 @@ $$
 
 ## Local linear regression ($h = 1.46$, Gaussian kernel)
 
+
+
 ```{r}
 loclin1 <- function(x, y, bandwidth, x0){
   w <- dnorm(x, mean = x0, sd = bandwidth)
@@ -721,6 +765,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 ```
+
+
 
 ## Linear smoothers I
 
@@ -944,6 +990,8 @@ $$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{
 
 ## Choice of the bandwidth IV
 
+
+
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
@@ -966,6 +1014,8 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
   xlab("Effective degrees of freedom (df)") +
   ylab("Mean Squared Error (MSE)") 
 ```
+
+
 
 ## Loess
 
@@ -1047,6 +1097,8 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
 
 ## The bivariate case ($h_1 = 0.5, h_2 = 150$)
 
+
+
 ```{r}
 #| message: false
 #| fig-width: 9
@@ -1069,6 +1121,8 @@ contour(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
   xlab = "Engine size (L)", ylab = "Curb weight (kg)", col = "#1170aa")
 points(auto$engine.size, auto$curb.weight, cex = 0.5, pch = 16, col = "#fc7d0b")
 ```
+
+
 
 ## Pros and cons of kernel nonparametric regression
 
@@ -1128,6 +1182,8 @@ points(auto$engine.size, auto$curb.weight, cex = 0.5, pch = 16, col = "#fc7d0b")
 
 ## Piecewise regression I
 
+
+
 ```{r}
 #| fig-width: 6
 #| fig-height: 3
@@ -1149,6 +1205,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 ```
+
+
 
 -   A [piecewise constant]{.blue} regression model is another instance
     of basis expansions, in which we consider step functions, say
@@ -1186,6 +1244,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
 
 ## Piecewise polynomial functions
 
+
+
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
@@ -1217,6 +1277,8 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 ```
+
+
 
 ## Splines I
 
@@ -1384,6 +1446,8 @@ $$
 
 ## Regression splines ($p = 12$)
 
+
+
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
@@ -1415,7 +1479,11 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   ylab("Head acceleration (g)")
 ```
 
+
+
 ## On the choice of $p$ (cubic splines)
+
+
 
 ```{r}
 # Code execution and storage of the interesting quantities
@@ -1454,6 +1522,8 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   xlab("Model complexity (p)") +
   ylab("Mean Squared Error (MSE)") 
 ```
+
+
 
 ## Natural cubic splines I
 
@@ -1513,6 +1583,8 @@ $x_1 < \dots < x_n$ as knots. The interpolating natural cubic spline is
 
 ## Natural cubic splines ($k = 12$)
 
+
+
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
@@ -1544,6 +1616,8 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
   ylab("Head acceleration (g)")
 ```
 
+
+
 ## Computations: B-splines I
 
 ::: incremental
@@ -1573,6 +1647,8 @@ ggplot(data = data_plot, aes(x = times, y = pred, col = Method)) +
 
 ## Computations: B-splines II
 
+
+
 ```{r}
 tpower <- function(x, t, p) {
   (x - t)^p * (x > t)
@@ -1600,6 +1676,8 @@ ggplot(data = data_plot, aes(x = times_seq, y = value, col = as.factor(Var2))) +
   xlab("x") +
   ylab(expression(h[j](x)))
 ```
+
+
 
 ## ☠️ - Details of B-splines I
 
@@ -1764,6 +1842,8 @@ knots at the distinct points.
 
 ## Smoothing splines ($\text{df}_\text{sm} = 12.26$)
 
+
+
 ```{r}
 #| fig-width: 9
 #| fig-height: 5
@@ -1782,6 +1862,8 @@ ggplot(data = dataset, aes(x = times, y = accel)) +
   xlab("Time (ms)") +
   ylab("Head acceleration (g)")
 ```
+
+
 
 ## The equivalent kernel
 
@@ -1918,3 +2000,4 @@ Laber](https://github.com/ericlaber/ericlaber.github.io/blob/main/docs/topic_one
     -   Green, P. J., and Silverman, B. W. (1994). *Nonparametric
         Regression and Generalized Linear Models: A Roughness Penalty
         Approach*. Springer.
+
