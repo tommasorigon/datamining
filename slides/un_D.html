@@ -84,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#nadaraya-watson-gaussian-kernel" id="toc-nadaraya-watson-gaussian-kernel" class="nav-link" data-scroll-target="#nadaraya-watson-gaussian-kernel">Nadaraya-Watson (Gaussian kernel)</a></li>
   <li><a href="#local-linear-regression-i" id="toc-local-linear-regression-i" class="nav-link" data-scroll-target="#local-linear-regression-i">Local linear regression I</a></li>
   <li><a href="#local-linear-regression-ii" id="toc-local-linear-regression-ii" class="nav-link" data-scroll-target="#local-linear-regression-ii">Local linear regression II</a></li>
-  <li><a href="#proof" id="toc-proof" class="nav-link" data-scroll-target="#proof">✏️ - <em>Proof</em></a></li>
+  <li><a href="#proof-of-local-linear-smoothing" id="toc-proof-of-local-linear-smoothing" class="nav-link" data-scroll-target="#proof-of-local-linear-smoothing">✏️ - <em>Proof of local linear smoothing</em></a></li>
   <li><a href="#local-linear-regression-h-1.46-gaussian-kernel" id="toc-local-linear-regression-h-1.46-gaussian-kernel" class="nav-link" data-scroll-target="#local-linear-regression-h-1.46-gaussian-kernel">Local linear regression (<span class="math inline">h = 1.46</span>, Gaussian kernel)</a></li>
   <li><a href="#linear-smoothers-i" id="toc-linear-smoothers-i" class="nav-link" data-scroll-target="#linear-smoothers-i">Linear smoothers I</a></li>
   <li><a href="#linear-smoothers-ii" id="toc-linear-smoothers-ii" class="nav-link" data-scroll-target="#linear-smoothers-ii">Linear smoothers II</a></li>
@@ -503,15 +503,15 @@ Theorem (Local linear smoothing)
 </div>
 </div>
 </section>
-<section id="proof" class="level2 scrollable">
-<h2 class="scrollable anchored" data-anchor-id="proof">✏️ - <em>Proof</em></h2>
-<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<section id="proof-of-local-linear-smoothing" class="level2" data-visibility="hidden">
+<h2 data-visibility="hidden" class="anchored" data-anchor-id="proof-of-local-linear-smoothing">✏️ - <em>Proof of local linear smoothing</em></h2>
+<div class="callout callout-style-simple callout-important no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Proof of the Theorem (Local linear smoothing)
+✏️ - <em>Click to expand</em>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
@@ -525,19 +525,32 @@ Proof of the Theorem (Local linear smoothing)
     \hat{\beta}(x) = (\bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}\bm{X}_x^T\bm{W}_x\bm{y},
     </span> where the rows of <span class="math inline">\bm{X}_x</span> are <span class="math inline">\bm{x}_{i,x} = (1, x_i - x)</span> and <span class="math inline">\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}</span>. Recall that <span class="math display">
 a_j(x) = n^{-1}\sum_{i=1}^n w_i(x) (x_i - x)^j,</span> for <span class="math inline">j=0,1,2</span>, then: <span class="math display">
-\bm{X}_x^T\bm{W}_x\bm{X}_x = \begin{pmatrix}\sum_{i=1}^n w_i(x) &amp; \sum_{i=1}^nw_i(x)(x_i - x) \\
-\sum_{i=1}^nw_i(x)(x_i - x) &amp; \sum_{i=1}^nw_i(x)(x_i - x)^2\end{pmatrix} = n
-\begin{pmatrix}
+\bm{X}_x^T\bm{W}_x\bm{X}_x = \begin{bmatrix}\sum_{i=1}^n w_i(x) &amp; \sum_{i=1}^nw_i(x)(x_i - x) \\
+\sum_{i=1}^nw_i(x)(x_i - x) &amp; \sum_{i=1}^nw_i(x)(x_i - x)^2\end{bmatrix} = n
+\begin{bmatrix}
 a_0(x) &amp; a_1(x) \\
 a_1(x) &amp; a_2(x)
-\end{pmatrix}.
+\end{bmatrix}.
 </span> Similarly, we obtain that<span class="math display">
-\bm{X}_x^T\bm{W}_x\bm{y} = \begin{pmatrix}\sum_{i=1}^nw_i(x)y_i \\ \sum_{i=1}^nw_i(x)(x_i - x)y_i \end{pmatrix}.
+\bm{X}_x^T\bm{W}_x\bm{y} = \begin{bmatrix}\sum_{i=1}^nw_i(x)y_i \\ \sum_{i=1}^nw_i(x)(x_i - x)y_i \end{bmatrix}.
 </span> Note that we can write <span class="math inline">\hat{\beta}(x) = (n^{-1} \bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}(n^{-1} \bm{X}_x^T\bm{W}_x\bm{y})</span>. Moreover, the inverse of <span class="math inline">n^{-1}\bm{X}_x^T\bm{W}_x\bm{X}_x</span> can be easily calculated, being a <span class="math inline">2 \times 2</span> matrix, obtaining: <span class="math display">
-\left(\frac{1}{n}\bm{X}_x^T\bm{W}_x\bm{X}_x\right)^{-1} = \frac{1}{a_0(x)a_2(x) - a_1^2(x)}\begin{pmatrix}
+\left(\frac{1}{n}\bm{X}_x^T\bm{W}_x\bm{X}_x\right)^{-1} = \frac{1}{a_0(x)a_2(x) - a_1^2(x)}\begin{bmatrix}
 a_2(x) &amp; -a_1(x) \\
 -a_1(x) &amp; a_0(x)
-\end{pmatrix}.
+\end{bmatrix}.
+</span> Combining the above elements, we obtain <span class="math display">
+\begin{aligned}
+\hat{\beta}(x) &amp;=(n^{-1} \bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}(n^{-1} \bm{X}_x^T\bm{W}_x\bm{y}) \\
+&amp;=\frac{1}{a_0(x)a_2(x) - a_1^2(x)}\begin{bmatrix}
+a_2(x) &amp; -a_1(x) \\
+-a_1(x) &amp; a_0(x)
+\end{bmatrix}\frac{1}{n}\begin{bmatrix}\sum_{i=1}^nw_i(x)y_i \\ \sum_{i=1}^nw_i(x)(x_i - x)y_i \end{bmatrix},
+\end{aligned}
+</span> which means that the first component <span class="math inline">\hat{f}(x) = \hat{\beta}_1(x)</span> of the above vector coincides with <span class="math display">
+\begin{aligned}
+\hat{f}(x) = \hat{\beta}_1(x) &amp;=\frac{1}{a_0(x)a_2(x) - a_1^2(x)}\frac{a_2(x)\sum_{i=1}^nw_i(x)y_i - a_1(x)\sum_{i=1}^nw_i(x)(x_i - x)y_i}{n} \\
+&amp; = \frac{1}{n}\sum_{i=1}^n \frac{w_i(x)\{a_2(x) - a_1(x)(x_i - x)\}}{a_0(x)a_2(x) - a_1^2(x)}y_i.
+\end{aligned}
 </span></p>
 </div>
 </div>

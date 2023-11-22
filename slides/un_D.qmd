@@ -619,10 +619,11 @@ $$ where $a_j(x) = n^{-1}\sum_{i=1}^n w_i(x) (x_i - x)^j$, for
 $j=0,1,2$.
 :::
 
-## ✏️ - *Proof* {visibility="hidden"}
+## ✏️ - *Proof of local linear smoothing* {visibility="hidden"}
 
-::: {.callout-warning collapse=true}
-#### Proof of the Theorem (Local linear smoothing)
+::: {.callout-important collapse=true}
+#### ✏️ - *Click to expand*
+
 The local linear regression estimator $\hat{f}(x)$ coincides with
 $$
     \hat{f}(x) = \hat{\beta}_1(x) + \hat{\beta}_2(x) (x - x) = \hat{\beta}_1(x),
@@ -637,22 +638,39 @@ and $\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}$. Recall that $$
 a_j(x) = n^{-1}\sum_{i=1}^n w_i(x) (x_i - x)^j,$$ 
 for $j=0,1,2$, then:
 $$
-\bm{X}_x^T\bm{W}_x\bm{X}_x = \begin{pmatrix}\sum_{i=1}^n w_i(x) & \sum_{i=1}^nw_i(x)(x_i - x) \\
-\sum_{i=1}^nw_i(x)(x_i - x) & \sum_{i=1}^nw_i(x)(x_i - x)^2\end{pmatrix} = n 
-\begin{pmatrix}
+\bm{X}_x^T\bm{W}_x\bm{X}_x = \begin{bmatrix}\sum_{i=1}^n w_i(x) & \sum_{i=1}^nw_i(x)(x_i - x) \\
+\sum_{i=1}^nw_i(x)(x_i - x) & \sum_{i=1}^nw_i(x)(x_i - x)^2\end{bmatrix} = n 
+\begin{bmatrix}
 a_0(x) & a_1(x) \\
 a_1(x) & a_2(x)
-\end{pmatrix}.
+\end{bmatrix}.
 $$
 Similarly, we obtain that$$
-\bm{X}_x^T\bm{W}_x\bm{y} = \begin{pmatrix}\sum_{i=1}^nw_i(x)y_i \\ \sum_{i=1}^nw_i(x)(x_i - x)y_i \end{pmatrix}.
+\bm{X}_x^T\bm{W}_x\bm{y} = \begin{bmatrix}\sum_{i=1}^nw_i(x)y_i \\ \sum_{i=1}^nw_i(x)(x_i - x)y_i \end{bmatrix}.
 $$
 Note that we can write  $\hat{\beta}(x) = (n^{-1} \bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}(n^{-1} \bm{X}_x^T\bm{W}_x\bm{y})$. Moreover, the inverse of $n^{-1}\bm{X}_x^T\bm{W}_x\bm{X}_x$ can be easily calculated, being a $2 \times 2$ matrix, obtaining:
 $$
-\left(\frac{1}{n}\bm{X}_x^T\bm{W}_x\bm{X}_x\right)^{-1} = \frac{1}{a_0(x)a_2(x) - a_1^2(x)}\begin{pmatrix}
+\left(\frac{1}{n}\bm{X}_x^T\bm{W}_x\bm{X}_x\right)^{-1} = \frac{1}{a_0(x)a_2(x) - a_1^2(x)}\begin{bmatrix}
 a_2(x) & -a_1(x) \\
 -a_1(x) & a_0(x)
-\end{pmatrix}.
+\end{bmatrix}.
+$$
+Combining the above elements, we obtain
+$$
+\begin{aligned}
+\hat{\beta}(x) &=(n^{-1} \bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}(n^{-1} \bm{X}_x^T\bm{W}_x\bm{y}) \\
+&=\frac{1}{a_0(x)a_2(x) - a_1^2(x)}\begin{bmatrix}
+a_2(x) & -a_1(x) \\
+-a_1(x) & a_0(x)
+\end{bmatrix}\frac{1}{n}\begin{bmatrix}\sum_{i=1}^nw_i(x)y_i \\ \sum_{i=1}^nw_i(x)(x_i - x)y_i \end{bmatrix},
+\end{aligned}
+$$
+which means that the first component $\hat{f}(x) = \hat{\beta}_1(x)$ of the above vector coincides with
+$$
+\begin{aligned}
+\hat{f}(x) = \hat{\beta}_1(x) &=\frac{1}{a_0(x)a_2(x) - a_1^2(x)}\frac{a_2(x)\sum_{i=1}^nw_i(x)y_i - a_1(x)\sum_{i=1}^nw_i(x)(x_i - x)y_i}{n} \\
+& = \frac{1}{n}\sum_{i=1}^n \frac{w_i(x)\{a_2(x) - a_1(x)(x_i - x)\}}{a_0(x)a_2(x) - a_1^2(x)}y_i.
+\end{aligned}
 $$
 :::
 
