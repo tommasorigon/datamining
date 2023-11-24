@@ -292,7 +292,7 @@ estimate]{.orange} has an explicit solution: $$
     is obtained as follows: $$
     s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
     $$
-
+## Properties of the hat matrix {.visibility = "hidden"}
 
 ## Linear regression: inference
 
