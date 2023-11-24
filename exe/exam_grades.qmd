@@ -1,0 +1,43 @@
+---
+title: "Data Mining Exam"
+subtitle: "21 November 2023"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+lang: en
+format:
+  html:
+    html-math-method: katex
+    echo: true
+    callout-appearance: minimal
+    theme: [cosmo, ../template.css]
+    toc: true
+    toc-title: Table of contents
+    embed-resources: true
+    code-line-numbers: true
+    smooth-scroll: true
+    fig-dpi: 250
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+
+# [Homepage](../index.html)
+
+```{r}
+#| echo: false
+outcome <- read.csv("outcome.csv", sep = ";", dec = ",")
+outcome <- subset(outcome, select=c(Matricola, Grade, Theory, Project))
+outcome <- outcome[outcome$Grade != "ASS" & outcome$Grade != "RIT", ]
+outcome$Grade[outcome$Grade == "31"] <- "30 cum laude"
+```
+
+
+## Grades
+
+```{r}
+#| echo: false
+knitr::kable(outcome[order(outcome$Matricola),],row.names = FALSE, align = c('l', 'l', "r", "r"))
+```
