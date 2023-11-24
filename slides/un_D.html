@@ -519,11 +519,13 @@ Theorem (Local linear smoothing)
 <div class="callout-body-container callout-body">
 <p>The local linear regression estimator <span class="math inline">\hat{f}(x)</span> is defined as <span class="math display">
     \hat{f}(x) = \hat{\beta}_1(x) + \hat{\beta}_2(x) (x - x) = \hat{\beta}_1(x),
-    </span> where <span class="math display">
+</span> where the local coefficients are obtained from <span class="math display">
     \hat{\beta}(x) = \left(\hat{\beta}_1(x), \hat{\beta}_2(x)\right) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n w_i(x)\left\{y_i - \beta_1 - \beta_2(x_i - x)\right\}^2.
-    </span> The above minimization problem is an instance of <span class="orange">weighted least squares</span> and its solution is well known, as we have seen in Unit A or you might have seen in previous courses. In fact, it can be shown that <span class="math display">
+    </span> The above minimization problem is an instance of <span class="orange">weighted least squares</span> and its solution is well known, as we have seen in Unit A. In fact, it can be shown that <span class="math display">
     \hat{\beta}(x) = (\bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}\bm{X}_x^T\bm{W}_x\bm{y},
-    </span> where the rows of <span class="math inline">\bm{X}_x</span> are <span class="math inline">\bm{x}_{i,x} = (1, x_i - x)</span> and <span class="math inline">\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}</span>. Recall that <span class="math display">
+    </span> where the rows of <span class="math inline">\bm{X}_x</span> are <span class="math inline">\bm{x}_{i,x} = (1, x_i - x)</span> and <span class="math inline">\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}</span>.</p>
+<hr>
+<p>Recall that <span class="math display">
 a_j(x) = n^{-1}\sum_{i=1}^n w_i(x) (x_i - x)^j,</span> for <span class="math inline">j=0,1,2</span>, then: <span class="math display">
 \bm{X}_x^T\bm{W}_x\bm{X}_x = \begin{bmatrix}\sum_{i=1}^n w_i(x) &amp; \sum_{i=1}^nw_i(x)(x_i - x) \\
 \sum_{i=1}^nw_i(x)(x_i - x) &amp; \sum_{i=1}^nw_i(x)(x_i - x)^2\end{bmatrix} = n
@@ -533,7 +535,9 @@ a_1(x) &amp; a_2(x)
 \end{bmatrix}.
 </span> Similarly, simple algebra leads to<span class="math display">
 \bm{X}_x^T\bm{W}_x\bm{y} = \begin{bmatrix}\sum_{i=1}^nw_i(x)y_i \\ \sum_{i=1}^nw_i(x)(x_i - x)y_i \end{bmatrix}.
-</span> The vector <span class="math inline">\hat{\beta}(x)</span> can be equivalently written as <span class="math inline">\hat{\beta}(x) = (n^{-1} \bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}(n^{-1} \bm{X}_x^T\bm{W}_x\bm{y})</span>. Moreover, the inverse of <span class="math inline">n^{-1}\bm{X}_x^T\bm{W}_x\bm{X}_x</span> can be easily evaluated, giving: <span class="math display">
+</span></p>
+<hr>
+<p>The local regression coefficients can be equivalently written as <span class="math inline">\hat{\beta}(x) = (n^{-1} \bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}(n^{-1} \bm{X}_x^T\bm{W}_x\bm{y})</span>. Moreover, the inverse of <span class="math inline">n^{-1}\bm{X}_x^T\bm{W}_x\bm{X}_x</span> can be easily evaluated, giving: <span class="math display">
 \left(\frac{1}{n}\bm{X}_x^T\bm{W}_x\bm{X}_x\right)^{-1} = \frac{1}{a_0(x)a_2(x) - a_1^2(x)}\begin{bmatrix}
 a_2(x) &amp; -a_1(x) \\
 -a_1(x) &amp; a_0(x)

@@ -627,14 +627,18 @@ $j=0,1,2$.
 The local linear regression estimator $\hat{f}(x)$ is defined as
 $$
     \hat{f}(x) = \hat{\beta}_1(x) + \hat{\beta}_2(x) (x - x) = \hat{\beta}_1(x),
-    $$ where 
+$$ where the local coefficients are obtained from
     $$
     \hat{\beta}(x) = \left(\hat{\beta}_1(x), \hat{\beta}_2(x)\right) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n w_i(x)\left\{y_i - \beta_1 - \beta_2(x_i - x)\right\}^2.
     $$
-The above minimization problem is an instance of [weighted least squares]{.orange} and its solution is well known, as we have seen in Unit A or you might have seen in previous courses. In fact, it can be shown that $$
+The above minimization problem is an instance of [weighted least squares]{.orange} and its solution is well known, as we have seen in Unit A. In fact, it can be shown that $$
     \hat{\beta}(x) = (\bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}\bm{X}_x^T\bm{W}_x\bm{y},
     $$ where the rows of $\bm{X}_x$ are $\bm{x}_{i,x} = (1, x_i - x)$
-and $\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}$. Recall that $$
+and $\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}$. 
+
+-----------------------------------------------------------------------------
+
+Recall that $$
 a_j(x) = n^{-1}\sum_{i=1}^n w_i(x) (x_i - x)^j,$$ 
 for $j=0,1,2$, then:
 $$
@@ -648,7 +652,10 @@ $$
 Similarly, simple algebra leads to$$
 \bm{X}_x^T\bm{W}_x\bm{y} = \begin{bmatrix}\sum_{i=1}^nw_i(x)y_i \\ \sum_{i=1}^nw_i(x)(x_i - x)y_i \end{bmatrix}.
 $$
-The vector $\hat{\beta}(x)$ can be equivalently written as $\hat{\beta}(x) = (n^{-1} \bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}(n^{-1} \bm{X}_x^T\bm{W}_x\bm{y})$. Moreover, the inverse of $n^{-1}\bm{X}_x^T\bm{W}_x\bm{X}_x$ can be easily evaluated, giving:
+
+---------------------------------------------------------------------------------
+
+The local regression coefficients can be equivalently written as $\hat{\beta}(x) = (n^{-1} \bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}(n^{-1} \bm{X}_x^T\bm{W}_x\bm{y})$. Moreover, the inverse of $n^{-1}\bm{X}_x^T\bm{W}_x\bm{X}_x$ can be easily evaluated, giving:
 $$
 \left(\frac{1}{n}\bm{X}_x^T\bm{W}_x\bm{X}_x\right)^{-1} = \frac{1}{a_0(x)a_2(x) - a_1^2(x)}\begin{bmatrix}
 a_2(x) & -a_1(x) \\

@@ -1339,7 +1339,7 @@ known and invertible.
 -   In [matrix notation]{.orange}, we will write $$
     \ell'(\beta) = \bm{X}^T(\bm{y} - \bm{p}), \qquad j(\beta) = \bm{X}^T\bm{W}\bm{X},
     $$ where $\bm{p} = (p(\bm{x}_1; \beta), \dots, p(\bm{x}_n; \beta))$
-    and $W = \text{diag}(w_1(\beta),\dots, w_n(\beta))$.
+    and $\bm{W} = \text{diag}(w_1(\beta),\dots, w_n(\beta))$.
 
 -   Unfortunately, a closed-form expression for $\hat{\beta}$, solving
     the [likelihood equations]{.blue} $\bm{X}^T(\bm{y} - \bm{p}) = 0$,
