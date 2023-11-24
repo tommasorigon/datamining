@@ -45,7 +45,7 @@ What can be said about the Epanechnikov kernel?
 Prove the theorem about the explicit formula for [local linear regression estimator]{.blue} stated in [this slide](../slides/un_D.html#local-linear-regression-ii). 
 
 ::: {.callout-warning collapse=true}
-#### Solution
+#### ✏️ - *Solution*
 
 The solution is provided [here](../slides/un_D.html#proof-of-local-linear-smoothing).
 :::
