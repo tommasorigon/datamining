@@ -106,7 +106,7 @@ Thus, there are necessarily $p$ eigenvalues equal to $1$ and $n - p$ eigenvalues
 
 ---------------------------------------------------------
 
-Finally, we show that the sums of the rows (and the columns) of $\bm{H}$ is $\bm{1}_n$, if the intercept is included. This follows from the fact that $\bm{H}$ is [projecting]{.blue} the values of $\bm{y}$ into the space of columns of $\bm{X}$. 
+Finally, we show that the sums of the rows (and the columns) of $\bm{H}$ is $1$, if the intercept is included. This follows from the fact that $\bm{H}$ is [projecting]{.blue} the values of $\bm{y}$ into the space of columns of $\bm{X}$. 
 
 Hence, if the intercept is included in the model, we obtain that
 $$
