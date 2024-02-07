@@ -58,13 +58,13 @@ styler:::style_file("../code/un_A.R")
 ::: columns
 ::: {.column width="40%"}
 ![](img/ABC.png) *"Everything should be made as simple as possible, but
-not simpler"* 
+not simpler"*
 
 Attributed to [Albert Einstein]{.grey}
 :::
 
 ::: {.column width="60%"}
-- This unit will cover the following [topics]{.orange}:
+-   This unit will cover the following [topics]{.orange}:
 
     -   Linear models and the modeling process
     -   Cholesky factorization
@@ -239,7 +239,7 @@ corresponding vector of [coefficients]{.orange}.
     whereas the $i$th observation (row) is $\bm{x}_i$: $$
     \bm{X} = (\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p) = (\bm{x}_1, \dots,\bm{x}_n)^T.
     $$
-    
+
 . . .
 
 -   Then, a [linear model]{.blue} can be written using the [compact
@@ -288,12 +288,10 @@ estimate]{.orange} has an explicit solution: $$
     D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{H})\bm{y}.
     $$
 
--   Moreover, a typical estimate for the [residual variance]{.orange} $\sigma^2$
-    is obtained as follows: $$
+-   Moreover, a typical estimate for the [residual variance]{.orange}
+    $\sigma^2$ is obtained as follows: $$
     s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\hat{\beta})^2.
     $$
-
-
 
 ## Linear regression: inference
 
@@ -311,8 +309,9 @@ estimate]{.orange} has an explicit solution: $$
     \widehat{\text{var}}(\hat{\beta}) = s^2 (\bm{X}^T\bm{X})^{-1}.
     $$
 
--   The [standard errors]{.orange} of the components of $\hat{\beta}$ correspond
-    to the square root of the diagonal of the above covariance matrix.
+-   The [standard errors]{.orange} of the components of $\hat{\beta}$
+    correspond to the square root of the diagonal of the above
+    covariance matrix.
 
 . . .
 
@@ -344,7 +343,6 @@ estimate]{.orange} has an explicit solution: $$
     R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1 - \frac{\sum_{i=1}^n (y_i - \hat{y}_i)^2}{\sum_{i=1}^n(y_i - \bar{y})^2}.
     $$
 
-
 ## A first model: estimated coefficients
 
 -   We obtain the following [summary]{.orange} for the regression
@@ -356,13 +354,13 @@ m1 <- lm(city.distance ~ engine.size + I(engine.size^2) + I(engine.size^3) + fue
 kable(tidy(m1, conf.int = FALSE), digits = 3)
 ```
 
-|term             | estimate| std.error| statistic| p.value|
-|:----------------|--------:|---------:|---------:|-------:|
-|`(Intercept)`      |   28.045|     3.076|     9.119|   0.000|
-|`engine.size`      |  -10.980|     3.531|    -3.109|   0.002|
-|`engine.size^2` |    2.098|     1.271|     1.651|   0.100|
-|`engine.size^3` |   -0.131|     0.139|    -0.939|   0.349|
-|`fuel_gas`          |   -3.214|     0.427|    -7.523|   0.000|
+| term            | estimate | std.error | statistic | p.value |
+|:----------------|---------:|----------:|----------:|--------:|
+| `(Intercept)`   |   28.045 |     3.076 |     9.119 |   0.000 |
+| `engine.size`   |  -10.980 |     3.531 |    -3.109 |   0.002 |
+| `engine.size^2` |    2.098 |     1.271 |     1.651 |   0.100 |
+| `engine.size^3` |   -0.131 |     0.139 |    -0.939 |   0.349 |
+| `fuel_gas`      |   -3.214 |     0.427 |    -7.523 |   0.000 |
 
 -   Moreover, the coefficient $R^2$ and the residual standard deviation
     $s$ are:
@@ -421,12 +419,11 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
 
 . . .
 
--   Also, this model is unsuitable for [extrapolation]{.orange}.
-    Indeed:
+-   Also, this model is unsuitable for [extrapolation]{.orange}. Indeed:
 
     -   It has no grounding in physics or engineering, leading to
-        difficulties when interpreting the trend and to
-        paradoxical situations.
+        difficulties when interpreting the trend and to paradoxical
+        situations.
     -   For example, the curve of the set of gasoline cars shows a local
         minimum around $4.6 L$ and then rises again!
 
@@ -459,11 +456,11 @@ m2 <- lm(log(city.distance) ~ I(log(engine.size)) + fuel, data = auto)
 kable(tidy(m2, conf.int = FALSE), digits = 3)
 ```
 
-|term                | estimate| std.error| statistic| p.value|
-|:-------------------|--------:|---------:|---------:|-------:|
-|`(Intercept)`         |    3.060|     0.047|    64.865|       0|
-|`log(engine.size)` |   -0.682|     0.040|   -17.129|       0|
-|`fuel_gas`             |   -0.278|     0.038|    -7.344|       0|
+| term               | estimate | std.error | statistic | p.value |
+|:-------------------|---------:|----------:|----------:|--------:|
+| `(Intercept)`      |    3.060 |     0.047 |    64.865 |       0 |
+| `log(engine.size)` |   -0.682 |     0.040 |   -17.129 |       0 |
+| `fuel_gas`         |   -0.278 |     0.038 |    -7.344 |       0 |
 
 ## Second model: fitted values
 
@@ -541,13 +538,13 @@ m3 <- lm(log(city.distance) ~ I(log(engine.size)) + I(log(curb.weight)) + fuel +
 kable(tidy(m3, conf.int = FALSE), digits = 3)
 ```
 
-|term                | estimate| std.error| statistic| p.value|
-|:-------------------|--------:|---------:|---------:|-------:|
-|`(Intercept)`         |    9.423|     0.482|    19.549|   0.000|
-|`log(engine.size)` |   -0.180|     0.051|    -3.504|   0.001|
-|`log(curb.weight)` |   -0.943|     0.072|   -13.066|   0.000|
-|`fuel_gas`             |   -0.353|     0.022|   -15.934|   0.000|
-|`cylinders2_TRUE`      |   -0.481|     0.052|    -9.301|   0.000|
+| term               | estimate | std.error | statistic | p.value |
+|:-------------------|---------:|----------:|----------:|--------:|
+| `(Intercept)`      |    9.423 |     0.482 |    19.549 |   0.000 |
+| `log(engine.size)` |   -0.180 |     0.051 |    -3.504 |   0.001 |
+| `log(curb.weight)` |   -0.943 |     0.072 |   -13.066 |   0.000 |
+| `fuel_gas`         |   -0.353 |     0.022 |   -15.934 |   0.000 |
+| `cylinders2_TRUE`  |   -0.481 |     0.052 |    -9.301 |   0.000 |
 
 ## A third model: graphical diagnostics
 
@@ -575,9 +572,9 @@ r.squared.original <- 1 - sum(mean((auto$city.distance - exp(predict(m3)))^2)) /
 kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)]))
 ```
 
--   In this third model, we handled the [outliers]{.orange}
-    appearing in the residual plots, which it turns out are identified
-    by the group of cars having 2 cylinders.
+-   In this third model, we handled the [outliers]{.orange} appearing in
+    the residual plots, which it turns out are identified by the group
+    of cars having 2 cylinders.
 
 -   The diagnostic plots are also very much improved, although still not
     perfect.
@@ -591,25 +588,33 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
     -   Dataset <http://azzalini.stat.unipd.it/Book-DM/auto.dat>
     -   Variable description
         <http://azzalini.stat.unipd.it/Book-DM/auto.names>
-        
+
 ## A tour inside old-fashioned statistics
 
-
-- The first part of the unit is a tour in the "old style" data modeling, the kind of culture that Leo Breiman so [heavily criticized]{.orange} in his 2001 *Statistical Science* paper.
-
-. . .
-
-- However, this dataset was sufficiently small, meaning it could be "manually" analyzed and modeled. We gained much [understanding]{.blue} by doing so. 
-
-- Hence, these old tools should not be considered useless or irrelevant. 
+-   The first part of the unit is a tour in the "old style" data
+    modeling, the kind of culture that Leo Breiman so [heavily
+    criticized]{.orange} in his 2001 *Statistical Science* paper.
 
 . . .
 
-- The second half of the unit will have an entirely different flavor, though. 
+-   However, this dataset was sufficiently small, meaning it could be
+    "manually" analyzed and modeled. We gained much
+    [understanding]{.blue} by doing so.
 
-- Given the vast amount of data we now have, it makes sense to focus on [computations]{.orange} for fitting linear models.
+-   Hence, these old tools should not be considered useless or
+    irrelevant.
 
-- As we will see, the mathematical simplicity of linear models leads to extremely [fast computations]{.blue}, an important advantage in the era of big data. 
+. . .
+
+-   The second half of the unit will have an entirely different flavor,
+    though.
+
+-   Given the vast amount of data we now have, it makes sense to focus
+    on [computations]{.orange} for fitting linear models.
+
+-   As we will see, the mathematical simplicity of linear models leads
+    to extremely [fast computations]{.blue}, an important advantage in
+    the era of big data.
 
 # Normal equations
 
@@ -654,9 +659,8 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
     [symmetric]{.blue} matrix $\bm{A} \in \mathbb{R}^{p \times p}$ is
     [positive definite]{.orange} if and only if one of the following
     properties is satisfied
-    -   The quadratic form $\bm{x}^T \bm{A} \bm{x} > 0$
-        for all $\bm{x} \in \mathbb{R}^p$ such that
-        $\bm{x} \neq 0$.
+    -   The quadratic form $\bm{x}^T \bm{A} \bm{x} > 0$ for all
+        $\bm{x} \in \mathbb{R}^p$ such that $\bm{x} \neq 0$.
     -   The eigenvalues $\lambda_1,\dots,\lambda_p$ of $\bm{A}$ are all
         strictly positive.
 -   We now describe a strategy to compute $\hat{\beta}$ that exploits
@@ -1000,8 +1004,8 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     [reliable]{.blue}).
 
 -   The default approach in R, i.e., the one implemented in the `lm`
-    function is the QR factorization because one typically also needs
-    to compute $\bm{H}$, or the leverages.
+    function is the QR factorization because one typically also needs to
+    compute $\bm{H}$, or the leverages.
 :::
 
 ## ☠️ - Pivoting and rank deficiencies
@@ -1018,9 +1022,9 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     particularly important even when $\text{rk}(\bm{X}) = p$ to prevent
     numerical issues when the condition number $\kappa(\bm{X})$ is high.
 
--   In the presence of perfect collinearity, the implementation of the QR
-    decomposition in R (`qr`) relies on pivoting. This is why the `lm`
-    function can automatically "omit" a predictor.
+-   In the presence of perfect collinearity, the implementation of the
+    QR decomposition in R (`qr`) relies on pivoting. This is why the
+    `lm` function can automatically "omit" a predictor.
 :::
 
 # Iterative methods
@@ -1073,9 +1077,9 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 ## Recursive estimates
 
 ::: incremental
--   In many occasions, the data flows continuously, meaning that we get a
-    new pair of observations $(\bm{x}_{n+1}, y_{n+1})$ every minute, or
-    even every second.
+-   In many occasions, the data flows continuously, meaning that we get
+    a new pair of observations $(\bm{x}_{n+1}, y_{n+1})$ every minute,
+    or even every second.
 
 -   In these cases, we would like to [update]{.orange} the current least
     square estimate $\hat{\beta}_{(n)}$ with the new information
@@ -1139,8 +1143,8 @@ $$
 ## The recursive least squares algorithm II
 
 -   The recursive estimation
-    $\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + \bm{k}_n e_{n+1}$ takes the
-    form of a [linear filter]{.orange}, in which the new estimate
+    $\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + \bm{k}_n e_{n+1}$ takes
+    the form of a [linear filter]{.orange}, in which the new estimate
     $\hat{\beta}_{(n+1)}$ is obtained by modifying the old one
     $\hat{\beta}_{(n+1)}$.
 
@@ -1252,8 +1256,8 @@ p0
 In a [generalized linear model]{.blue}, the response variable is related
 to the covariates through: $$
 \mathbb{E}(Y_i) = g\{f(\bm{x}_i; \beta)\} = g(\beta_1 x_{i1} + \cdots + \beta_p x_{ip}) = g(\bm{x}_i^T\beta),
-$$ where $g^{-1}(\cdot)$ is the so-called [link function]{.orange}, which is
-known and invertible.
+$$ where $g^{-1}(\cdot)$ is the so-called [link function]{.orange},
+which is known and invertible.
 :::
 
 ## Likelihood-based inference
@@ -1382,9 +1386,9 @@ known and invertible.
     (\bm{X}^T\bm{W}\bm{X})\beta = \bm{X}^T\bm{W}\bm{z}.
     $$
 
--   Once again, the Cholesky and the QR decomposition can be exploited to
-    speed up computations. See Section 5.4 of Arnold et al. (2019) for
-    further details.
+-   Once again, the Cholesky and the QR decomposition can be exploited
+    to speed up computations. See Section 5.4 of Arnold et al. (2019)
+    for further details.
 
 -   It can be shown that $\beta = (0,\dots,0)^T$ is a good starting
     point for the initialization.
@@ -1409,21 +1413,22 @@ m1 <- glm(chd ~ ., data = heart, family = "binomial")
 kable(tidy(m1, conf.int = FALSE), digits = 3)
 ```
 
-|term           | estimate| std.error| statistic| p.value|
-|:--------------|--------:|---------:|---------:|-------:|
-|`(Intercept)`    |   -4.130|     0.964|    -4.283|   0.000|
-|`sbp`            |    0.006|     0.006|     1.023|   0.306|
-|`tobacco`        |    0.080|     0.026|     3.034|   0.002|
-|`ldl`            |    0.185|     0.057|     3.219|   0.001|
-|`famhist_Present` |    0.939|     0.225|     4.177|   0.000|
-|`obesity`        |   -0.035|     0.029|    -1.187|   0.235|
-|`alcohol`        |    0.001|     0.004|     0.136|   0.892|
-|`age`            |    0.043|     0.010|     4.181|   0.000|
+| term              | estimate | std.error | statistic | p.value |
+|:------------------|---------:|----------:|----------:|--------:|
+| `(Intercept)`     |   -4.130 |     0.964 |    -4.283 |   0.000 |
+| `sbp`             |    0.006 |     0.006 |     1.023 |   0.306 |
+| `tobacco`         |    0.080 |     0.026 |     3.034 |   0.002 |
+| `ldl`             |    0.185 |     0.057 |     3.219 |   0.001 |
+| `famhist_Present` |    0.939 |     0.225 |     4.177 |   0.000 |
+| `obesity`         |   -0.035 |     0.029 |    -1.187 |   0.235 |
+| `alcohol`         |    0.001 |     0.004 |     0.136 |   0.892 |
+| `age`             |    0.043 |     0.010 |     4.181 |   0.000 |
 
 -   Results of the IRLS algorithm applied to the logistic regression
     model using `heart` data.
-  
-- The coefficient of the variable `obesity` is [negative]{.orange}. Why do you think this is the case?
+
+-   The coefficient of the variable `obesity` is [negative]{.orange}.
+    Why do you think this is the case?
 
 ## Prediction and model assessment I
 
@@ -1459,18 +1464,19 @@ colnames(tab) <- c("Actual 0", "Actual 1", "Actual total")
 kable(tab)
 ```
 
--   Hence, the [overall accuracy]{.orange} is $(255 + 82) / 462 \approx 0.72$.
+-   Hence, the [overall accuracy]{.orange} is
+    $(255 + 82) / 462 \approx 0.72$.
 
 . . .
 
-- The [true positive rate]{.blue} ([specificity]{.orange}) is defined as
-$$
-\text{specificity} = 1 - \mathbb{P}(``\text{false positive}") \approx \frac{n_{00}}{n_{00} + n_{10}} = \frac{255}{255 + 47} = 0.844.
-$$
-- On the other hand, the [true negative rate]{.blue} ([sensitivity]{.orange}) is defined as
-$$
-\text{sensitivity} = 1 - \mathbb{P}(``\text{false negative}") \approx \frac{n_{11}}{n_{01} + n_{11}} = \frac{82}{72 + 82} = 0.532.
-$$
+-   The [true positive rate]{.blue} ([specificity]{.orange}) is defined
+    as $$
+    \text{specificity} = 1 - \mathbb{P}(``\text{false positive}") \approx \frac{n_{00}}{n_{00} + n_{10}} = \frac{255}{255 + 47} = 0.844.
+    $$
+-   On the other hand, the [true negative rate]{.blue}
+    ([sensitivity]{.orange}) is defined as $$
+    \text{sensitivity} = 1 - \mathbb{P}(``\text{false negative}") \approx \frac{n_{11}}{n_{01} + n_{11}} = \frac{82}{72 + 82} = 0.532.
+    $$
 
 ## The ROC curve
 
@@ -1491,27 +1497,30 @@ p
 
 ## Other topics
 
-- When the number of responses labels $K > 2$, we cannot use any more logistic regression.
+-   When the number of responses labels $K > 2$, we cannot use any more
+    logistic regression.
 
-- The natural extension is called [multinomial regression]{.orange}, in which we model the probabilities
-$$
-\mathbb{P}(Y_i = k) = p_k(\bm{x}_i,\beta), \qquad k=1,\dots,K,
-$$
-for example, using [multinomial logit]{.orange}. The ideas of GLMs can be easily borrowed.
+-   The natural extension is called [multinomial regression]{.orange},
+    in which we model the probabilities $$
+    \mathbb{P}(Y_i = k) = p_k(\bm{x}_i,\beta), \qquad k=1,\dots,K,
+    $$ for example, using [multinomial logit]{.orange}. The ideas of
+    GLMs can be easily borrowed.
 
-- An alternative and straightforward approach is [linear discriminant analysis]{.blue}, which is based on Bayes theorem. 
+-   An alternative and straightforward approach is [linear discriminant
+    analysis]{.blue}, which is based on Bayes theorem.
 
-- You can find these topics in the textbook A&S (2011), although you have likely seen these models in the previous courses. 
+-   You can find these topics in the textbook A&S (2011), although you
+    have likely seen these models in the previous courses.
 
 ## References
 
 -   [Main references (M.Sc. level)]{.blue}
-    -   **Chapters 2 and 5** of Azzalini, A. and Scarpa, B. (2011), [*Data
-        Analysis and Data
+    -   **Chapters 2 and 5** of Azzalini, A. and Scarpa, B. (2011),
+        [*Data Analysis and Data
         Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford
         University Press.
-    -   **Chapters 3 and 4** of Hastie, T., Tibshirani, R. and Friedman, J.
-        (2009), [*The Elements of Statistical
+    -   **Chapters 3 and 4** of Hastie, T., Tibshirani, R. and
+        Friedman, J. (2009), [*The Elements of Statistical
         Learning*](https://hastie.su.domains/ElemStatLearn/), Second
         Edition, Springer.
 -   [Basic references (B.Sc. level)]{.grey}
