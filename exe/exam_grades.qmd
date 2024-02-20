@@ -1,6 +1,6 @@
 ---
 title: "Data Mining - Exam"
-subtitle: "Date: 29-01-2024"
+subtitle: "Date: 29-02-2024"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
 lang: en
@@ -36,5 +36,7 @@ outcome$Grade[outcome$Grade == "31"] <- "30 cum laude"
 
 ```{r}
 #| echo: false
-knitr::kable(outcome[order(outcome$Matricola),],row.names = FALSE, align = c('l', 'l', "r", "r"))
+outcome$Note <- "-"
+outcome$Note[outcome$Matricola == "843607"] <-"Project was 9 pages long (maximum was 4)"
+knitr::kable(outcome[order(outcome$Matricola),],row.names = FALSE, align = c('l', 'l', "l", "l", "r"))
 ```

@@ -842,9 +842,9 @@ $$
 ## Regression by successive orthogonalization
 
 ::: incremental
--   Clearly, the predictors of $\bm{X}$ are generally not orthogonal.
+-   Clearly, the predictors in $\bm{X}$ are generally not orthogonal.
     Hence, we want to find a suitable transformation
-    $\bm{Z} = \bm{X} \bm{\Gamma}^{-1}$ that [orthogonalize]{.blue} the
+    $\bm{Z} = \bm{X} \bm{\Gamma}^{-1}$ that [orthogonalizes]{.blue} the
     [predictors]{.orange}.
 
 -   Suppose, for example, that $p = 2$. We set [first orthogonal
