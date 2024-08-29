@@ -6,15 +6,16 @@ institute: "_Università degli Studi di Milano-Bicocca_"
 lang: en
 execute:
   cache: true
+page-layout: full
 format:
   html:
     html-math-method: katex
     echo: true
     callout-appearance: minimal
-    theme: [cosmo, template.css]
+    theme: [simplex, template.css]
     toc: true
     toc-title: Table of contents
-    embed-resources: true
+    embed-resources: false
     code-line-numbers: true
     smooth-scroll: true
     fig-dpi: 250

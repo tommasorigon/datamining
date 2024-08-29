@@ -8,7 +8,7 @@
 <link href="un_D_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="un_D_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="un_D_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.433">
+  <meta name="generator" content="quarto-1.5.56">
 
   <meta name="author" content="Tommaso Rigon">
   <title>Nonparametric regression</title>
@@ -31,7 +31,7 @@
     }
   </style>
   <link rel="stylesheet" href="un_D_files/libs/revealjs/dist/theme/quarto.css">
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
  var macros = [];
@@ -46,7 +46,7 @@
    });
 }}});
   </script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
   <link href="un_D_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="un_D_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="un_D_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -172,7 +172,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -379,8 +380,7 @@
 <li><p>We do not believe <span class="math inline">f(\bm{x})</span> is a polynomial nor it belongs to some parametric family of functions.</p></li>
 <li><p>Can we fit a <span class="blue">nonparametric</span> relationship that does <span class="orange">not</span> make strong <span class="orange">assumptions</span> on <span class="math inline">f(\bm{x})</span>? Let us review some old datasets…</p></li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section>
 <section id="motivating-applications" class="title-slide slide level1 center">
@@ -393,7 +393,11 @@
 <div class="column" style="width:40%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-2-1.png" width="1000"></p>
+<div>
+<figure>
+<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-2-1.png" width="1250"></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -407,8 +411,7 @@
     </span></p></li>
 <li><p>In <a href="un_B.html#another-example-cholesterol-data">Unit B</a> we fit a <span class="orange">polynomial</span> with degree <span class="math inline">3</span> on this data, although there was some <span class="blue">uncertainty</span>.</p></li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="the-auto-dataset" class="slide level2 center">
 <h2>The <code>auto</code> dataset</h2>
@@ -426,11 +429,14 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 </div><div class="column" style="width:40%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-3-1.png" width="1000"></p>
+<div>
+<figure>
+<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-3-1.png" width="1250"></p>
+</figure>
 </div>
 </div>
 </div>
-</div>
+</div></div>
 </section>
 <section id="the-mcycle-dataset" class="slide level2 center">
 <h2>The <code>mcycle</code> dataset</h2>
@@ -438,7 +444,11 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <div class="column" style="width:40%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-4-1.png" width="1000"></p>
+<div>
+<figure>
+<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-4-1.png" width="1250"></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column" style="width:60%;">
@@ -453,8 +463,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 </ul></li>
 <li><p>It is of interest to discern the <span class="blue">general shape</span> of the underlying acceleration curve.</p></li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="old-friends-polynomials" class="slide level2 center">
 <h2>Old friends: polynomials</h2>
@@ -478,7 +487,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <section id="old-friends-polynomials-mcycle-data" class="slide level2 center">
 <h2>Old friends: polynomials (<code>mcycle</code> data)</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-5-1.png" width="1560" class="r-stretch quarto-figure-center"></section></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"></section></section>
 <section>
 <section id="local-regression" class="title-slide slide level1 center">
 <h1>Local regression</h1>
@@ -539,7 +548,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 <section id="k-nearest-neighbours-k-6" class="slide level2 center">
 <h2>K-nearest neighbours (<span class="math inline">k = 6</span>)</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-6-1.png" width="1560" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"></section>
 <section id="comments-and-limitations-about-the-knn-method" class="slide level2 center">
 <h2>Comments and limitations about the KNN method</h2>
 <ul>
@@ -608,7 +617,7 @@ w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-7-1.png" width="1560"></p>
+<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center" width="1950"></p>
 </figure>
 </div>
 </div>
@@ -619,7 +628,7 @@ w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-8-1.png" width="1560"></p>
+<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center" width="1950"></p>
 </figure>
 </div>
 </div>
@@ -630,7 +639,7 @@ w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-9-1.png" width="1560"></p>
+<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center" width="1950"></p>
 </figure>
 </div>
 </div>
@@ -641,7 +650,7 @@ w_i(x) = \frac{1}{h} \phi\left(\frac{x_i - x}{h}\right), \qquad i=1,\dots,n,
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-10-1.png" width="1560"></p>
+<p><img data-src="un_D_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center" width="1950"></p>
 </figure>
 </div>
 </div>
@@ -694,7 +703,7 @@ f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) +
 <section id="local-linear-regression-h-1.46-gaussian-kernel" class="slide level2 center">
 <h2>Local linear regression (<span class="math inline">h = 1.46</span>, Gaussian kernel)</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-13-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-13-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="linear-smoothers-i" class="slide level2 center">
 <h2>Linear smoothers I</h2>
 <ul>
@@ -740,7 +749,7 @@ f(x) = \underbrace{f(x_0)}_{\beta_1} + \underbrace{f'(x_0)}_{\beta_2}(x - x_0) +
 <ul>
 <li>As mentioned before, the choice of the kernel is <span class="orange">not crucial</span>. Some alternatives are:</li>
 </ul>
-<table>
+<table class="caption-top">
 <colgroup>
 <col style="width: 28%">
 <col style="width: 39%">
@@ -914,7 +923,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 <section id="choice-of-the-bandwidth-iv" class="slide level2 center">
 <h2>Choice of the bandwidth IV</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-14-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="loess" class="slide level2 center">
 <h2>Loess</h2>
 <ul>
@@ -981,7 +990,7 @@ w_i(\bm{x}) = \frac{1}{h_1 h_2} w\left(\frac{x_{i1} - x_1}{h_1}\right)w\left(\fr
 <section id="the-bivariate-case-h_1-0.5-h_2-150" class="slide level2 center">
 <h2>The bivariate case (<span class="math inline">h_1 = 0.5, h_2 = 150</span>)</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-15-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="pros-and-cons-of-kernel-nonparametric-regression" class="slide level2 center">
 <h2>Pros and cons of kernel nonparametric regression</h2>
 <div class="callout callout-tip no-icon callout-titled callout-style-simple">
@@ -1042,7 +1051,7 @@ h_1(x) = 1, \quad h_2(x) = x, \quad h_3(x) = x^2, \quad \dots \quad h_p(x) = x^{
 <section id="piecewise-regression-i" class="slide level2 center">
 <h2>Piecewise regression I</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-16-1.png" width="1200" class="r-stretch quarto-figure-center"><ul>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1500"><ul>
 <li>A <span class="blue">piecewise constant</span> regression model is another instance of basis expansions, in which we consider step functions, say <span class="math inline">p = 3</span> <span class="math display">
 h_1(x) = I(x &lt; \xi_1), \quad h_2(x) = I(\xi_1 \le x &lt; \xi_2), \quad h_3(x) =  I(x \ge \xi_2),
 </span> where <span class="math inline">\xi = (\xi_1,\xi_2)</span> are pre-specified cutpoints, called <span class="orange">knots</span>. Here <span class="math inline">\xi = (15, 25)</span>.</li>
@@ -1076,7 +1085,7 @@ h_{28}(x) &amp;= I(x \ge \xi_9),  &amp;&amp;h_{29}(x) = x\:I(x \ge \xi_9), &amp;
 <section id="piecewise-polynomial-functions" class="slide level2 center">
 <h2>Piecewise polynomial functions</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-17-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-17-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="splines-i" class="slide level2 center">
 <h2>Splines I</h2>
 <ul>
@@ -1088,17 +1097,16 @@ h_{28}(x) &amp;= I(x \ge \xi_9),  &amp;&amp;h_{29}(x) = x\:I(x \ge \xi_9), &amp;
 <div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="img/ship.jpg" style="width:70.0%"></p>
+<p><img data-src="img/ship.jpg" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
 </figure>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="img/spline_draw.png" style="width:65.0%"></p>
+<p><img data-src="img/spline_draw.png" class="quarto-figure quarto-figure-center" style="width:65.0%"></p>
 </figure>
 </div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="splines-ii" class="slide level2 center">
 <h2>Splines II</h2>
@@ -1135,7 +1143,7 @@ h_{28}(x) &amp;= I(x \ge \xi_9),  &amp;&amp;h_{29}(x) = x\:I(x \ge \xi_9), &amp;
 <li>Figure 5.2 of <span class="grey">HTF (2011)</span>, in which are shown piecewise <span class="orange">cubic polynomials</span> with <span class="blue">increasing regularity</span>. The bottom-right plot (green line) depicts a <span class="orange">cubic spline</span>.</li>
 </ul>
 
-<img data-src="img/splines_HTF.png" style="width:120.0%" class="r-stretch quarto-figure-center"></section>
+<img data-src="img/splines_HTF.png" class="quarto-figure quarto-figure-center r-stretch" style="width:120.0%"></section>
 <section id="splines-iv" class="slide level2 center">
 <h2>Splines IV</h2>
 <ul>
@@ -1238,11 +1246,11 @@ f(x; \beta) = \sum_{j=1}^{k+d+1}h_j(x) \beta_j.
 <section id="regression-splines-p-12" class="slide level2 center">
 <h2>Regression splines (<span class="math inline">p = 12</span>)</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-18-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-18-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="on-the-choice-of-p-cubic-splines" class="slide level2 center">
 <h2>On the choice of <span class="math inline">p</span> (cubic splines)</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-20-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-20-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="natural-cubic-splines-i" class="slide level2 center">
 <h2>Natural cubic splines I</h2>
 <ul>
@@ -1304,7 +1312,7 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <section id="natural-cubic-splines-k-12" class="slide level2 center">
 <h2>Natural cubic splines (<span class="math inline">k = 12</span>)</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-21-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-21-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="computations-b-splines-i" class="slide level2 center">
 <h2>Computations: B-splines I</h2>
 <div>
@@ -1322,7 +1330,7 @@ f(x; \beta) = \sum_{j=1}^k N_j(x)\beta_j.
 <section id="computations-b-splines-ii" class="slide level2 center">
 <h2>Computations: B-splines II</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-22-1.png" width="2000" class="r-stretch"></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-22-1.png" width="2500" class="r-stretch"></section>
 <section id="details-of-b-splines-i" class="slide level2 center">
 <h2>☠️ - Details of B-splines I</h2>
 <ul>
@@ -1474,7 +1482,7 @@ f(x; \beta) = \sum_{j=1}^{n_0} N_j(x)\beta_j,
 <section id="smoothing-splines-textdf_textsm-12.26" class="slide level2 center">
 <h2>Smoothing splines (<span class="math inline">\text{df}_\text{sm} = 12.26</span>)</h2>
 
-<img data-src="un_D_files/figure-revealjs/unnamed-chunk-23-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_D_files/figure-revealjs/unnamed-chunk-23-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="the-equivalent-kernel" class="slide level2 center">
 <h2>The equivalent kernel</h2>
 <ul>
@@ -1602,9 +1610,11 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
 <li>Green, P. J., and Silverman, B. W. (1994). <em>Nonparametric Regression and Generalized Linear Models: A Roughness Penalty Approach</em>. Springer.</li>
 </ul></li>
 </ul>
-
-<img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
+<div class="quarto-auto-generated-content">
+<p><img src="img/logoB.png" class="slide-logo"></p>
+<div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
+</div>
 </div>
 </section></section>
     </div>
@@ -1632,7 +1642,6 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -1869,18 +1878,7 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
         }
         return false;
       }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
-          }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
+      const onCopySuccess = function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -1912,11 +1910,50 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
         }, 1000);
         // clear code selection
         e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
       });
-      function tippyHover(el, contentFn) {
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1926,8 +1963,17 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -1941,7 +1987,11 @@ w(t) = \frac{1}{2}\exp\left(-\frac{|t|}{\sqrt{2}}\right)\sin\left(\frac{|t|}{\sq
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {

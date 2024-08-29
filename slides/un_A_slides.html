@@ -8,7 +8,7 @@
 <link href="un_A_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="un_A_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="un_A_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.4.549">
+  <meta name="generator" content="quarto-1.5.56">
 
   <meta name="author" content="Tommaso Rigon">
   <title>A-B-C</title>
@@ -31,7 +31,7 @@
     }
   </style>
   <link rel="stylesheet" href="un_A_files/libs/revealjs/dist/theme/quarto.css">
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
  var macros = [];
@@ -46,7 +46,7 @@
    });
 }}});
   </script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
   <link href="un_A_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="un_A_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="un_A_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -376,8 +376,7 @@
 <li><p>The <span class="blue">computational aspects</span> of linear models will be novel to most of you…</p></li>
 <li><p>… but you should be already <span class="orange">very familiar</span> with linear models!</p></li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section>
 <section id="old-friends-linear-models" class="title-slide slide level1 center">
@@ -392,7 +391,7 @@
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="un_A_files/figure-revealjs/unnamed-chunk-2-1.png" width="750"></p>
+<p><img data-src="un_A_files/figure-revealjs/unnamed-chunk-2-1.png" width="1250"></p>
 </figure>
 </div>
 </div>
@@ -410,8 +409,7 @@
 <li>The fuel type (gasoline or diesel, <code>fuel</code>).</li>
 </ul></li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="linear-regression" class="slide level2 center">
 <h2>Linear regression</h2>
@@ -421,7 +419,7 @@
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="un_A_files/figure-revealjs/unnamed-chunk-3-1.png" width="600"></p>
+<p><img data-src="un_A_files/figure-revealjs/unnamed-chunk-3-1.png" width="1000"></p>
 </figure>
 </div>
 </div>
@@ -435,8 +433,7 @@ Y_i = \beta_1 + \beta_2 x_i + \epsilon_i, \qquad i=1,\dots,n,
 <li><p>… but the plot suggests that the relationship between <code>city.distance</code> and <code>engine.size</code> is <span class="orange">not</span> well approximated by a <span class="orange">linear</span> function.</p></li>
 <li><p>… and also that <code>fuel</code> has a non-negligible effect on the response.</p></li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="regression-models" class="slide level2 center">
 <h2>Regression models</h2>
@@ -596,7 +593,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <ul>
 <li>We obtain the following <span class="orange">summary</span> for the regression coefficients <span class="math inline">\hat{\beta}</span>.</li>
 </ul>
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -649,7 +646,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: right;">r.squared</th>
@@ -671,11 +668,11 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <section id="a-first-model-fitted-values" class="slide level2 center">
 <h2>A first model: fitted values</h2>
 
-<img data-src="un_A_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1170"></section>
+<img data-src="un_A_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"></section>
 <section id="a-first-model-graphical-diagnostics" class="slide level2 center">
 <h2>A first model: graphical diagnostics</h2>
 
-<img data-src="un_A_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1170"></section>
+<img data-src="un_A_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"></section>
 <section id="comments-and-criticisms" class="slide level2 center">
 <h2>Comments and criticisms</h2>
 <ul>
@@ -716,7 +713,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 </div>
 <div class="fragment">
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -755,11 +752,11 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <section id="second-model-fitted-values" class="slide level2 center">
 <h2>Second model: fitted values</h2>
 
-<img data-src="un_A_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1170"></section>
+<img data-src="un_A_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"></section>
 <section id="second-model-graphical-diagnostics" class="slide level2 center">
 <h2>Second model: graphical diagnostics</h2>
 
-<img data-src="un_A_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1170"></section>
+<img data-src="un_A_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"></section>
 <section id="comments-and-criticisms-1" class="slide level2 center">
 <h2>Comments and criticisms</h2>
 <ul>
@@ -767,7 +764,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: right;">r.squared.original</th>
@@ -807,7 +804,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
   </span> for <span class="math inline">i=1,\dots,n</span>. The estimates are:</p></li>
 </ul>
 <div class="fragment">
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -860,7 +857,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <section id="a-third-model-graphical-diagnostics" class="slide level2 center">
 <h2>A third model: graphical diagnostics</h2>
 
-<img data-src="un_A_files/figure-revealjs/unnamed-chunk-13-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1170"></section>
+<img data-src="un_A_files/figure-revealjs/unnamed-chunk-13-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"></section>
 <section id="comments-and-criticisms-2" class="slide level2 center">
 <h2>Comments and criticisms</h2>
 <ul>
@@ -868,7 +865,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: right;">r.squared.original</th>
@@ -1374,7 +1371,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="un_A_files/figure-revealjs/unnamed-chunk-15-1.png" width="750"></p>
+<p><img data-src="un_A_files/figure-revealjs/unnamed-chunk-15-1.png" width="1250"></p>
 </figure>
 </div>
 </div>
@@ -1391,13 +1388,12 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 </ul></li>
 <li><p>The response variable is <span class="orange">binary</span>: we cannot rely on linear regression models.</p></li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="the-heart-dataset-1" class="slide level2 center">
 <h2>The <code>heart</code> dataset</h2>
 
-<img data-src="un_A_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1650"></section>
+<img data-src="un_A_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2750"></section>
 <section id="generalized-linear-models-1" class="slide level2 center">
 <h2>Generalized linear models</h2>
 <ul>
@@ -1442,7 +1438,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <ul>
 <li class="fragment"><p>When <span class="math inline">Y_i</span> are Gaussian random variables, then the log-likelihood is <span class="math display">
 \ell(\beta, \sigma^2) = -\frac{n}{2}\log{\sigma^2} - \frac{1}{\sigma^2}D(\beta),
-</span> where <span class="math inline">D(\beta)</span> is the same quantity we have <a href="/#/linear-regression-estimation-i">defined before</a>.</p></li>
+</span> where <span class="math inline">D(\beta)</span> is the same quantity we have <a href="./#/linear-regression-estimation-i">defined before</a>.</p></li>
 <li class="fragment"><p>Hence, the <span class="blue">ordinary least squares</span> estimate <span class="math inline">\hat{\beta}</span> is also the <span class="orange">maximum likelihood</span> estimate. Indeed, the maximizer of the log-likelihood with respect to <span class="math inline">\beta</span> is also the minimizer of <span class="math inline">D(\beta)</span>.</p></li>
 <li class="fragment"><p>Instead, the maximum likelihood estimate for the variance is <span class="math inline">\hat{\sigma}^2 = D(\hat{\beta}) / n</span>.</p></li>
 <li class="fragment"><p>Note in addition that the log-likelihood, evaluated at its maximum, is <span class="math display">
@@ -1521,7 +1517,7 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
 </section>
 <section id="the-estimated-model" class="slide level2 center">
 <h2>The estimated model</h2>
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: left;">term</th>
@@ -1603,7 +1599,7 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
 </span> for some threshold <span class="math inline">c</span>, which is <span class="orange">usually</span> set equal to <span class="math inline">1/2</span>.</p></li>
 <li><p>We can then compare the responses with the predicted values using the <span class="blue">confusion matrix</span>:</p></li>
 </ul>
-<table>
+<table class="caption-top">
 <tbody>
 <tr class="odd">
 <td></td>
@@ -1645,7 +1641,7 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
@@ -1694,7 +1690,7 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
 <section id="the-roc-curve" class="slide level2 center">
 <h2>The ROC curve</h2>
 
-<img data-src="un_A_files/figure-revealjs/unnamed-chunk-19-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1500"></section>
+<img data-src="un_A_files/figure-revealjs/unnamed-chunk-19-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"></section>
 <section id="other-topics" class="slide level2 center">
 <h2>Other topics</h2>
 <ul>
@@ -1992,18 +1988,7 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
         }
         return false;
       }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
-          }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
+      const onCopySuccess = function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -2035,7 +2020,47 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
         }, 1000);
         // clear code selection
         e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
       });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
       function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
@@ -2072,7 +2097,11 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {

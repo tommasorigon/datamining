@@ -7,6 +7,7 @@ execute:
   cache: false
 filters: 
   - remove-pause.lua
+page-layout: full
 format:
   revealjs:
     df-print: tibble
@@ -21,7 +22,7 @@ format:
     theme: [default, ../template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: false
-    fig-dpi: 200
+    fig-dpi: 250
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
@@ -30,7 +31,7 @@ format:
     html-math-method: katex
     echo: false
     callout-appearance: minimal
-    theme: [cosmo, ../template.css]
+    theme: [simplex, ../template.css]
     toc: true
     toc-title: Table of contents
     embed-resources: false
@@ -38,7 +39,7 @@ format:
     smooth-scroll: true
     code-fold: false
     code-summary: "Show the code"
-    fig-dpi: 200
+    fig-dpi: 250
     highlight-style: github
 editor: 
   markdown: 
@@ -621,26 +622,24 @@ $j=0,1,2$.
 
 ## ✏️ - *Proof (Local linear smoothing)* {visibility="hidden"}
 
-::: {.callout-important collapse=true}
+::: {.callout-important collapse="true"}
 #### ✏️ - *Click to expand*
 
-The local linear regression estimator $\hat{f}(x)$ is defined as
-$$
+The local linear regression estimator $\hat{f}(x)$ is defined as $$
     \hat{f}(x) = \hat{\beta}_1(x) + \hat{\beta}_2(x) (x - x) = \hat{\beta}_1(x),
-$$ where the local coefficients are obtained from
-    $$
+$$ where the local coefficients are obtained from $$
     \hat{\beta}(x) = \left(\hat{\beta}_1(x), \hat{\beta}_2(x)\right) = \arg\min_{(\beta_1, \beta_2)} \sum_{i=1}^n w_i(x)\left\{y_i - \beta_1 - \beta_2(x_i - x)\right\}^2.
-    $$
-The above minimization problem is an instance of [weighted least squares]{.orange} and its solution is well known, as we have seen in Unit A. In fact, it can be shown that $$
+    $$ The above minimization problem is an instance of [weighted least
+squares]{.orange} and its solution is well known, as we have seen in
+Unit A. In fact, it can be shown that $$
     \hat{\beta}(x) = (\bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}\bm{X}_x^T\bm{W}_x\bm{y},
     $$ where the rows of $\bm{X}_x$ are $\bm{x}_{i,x} = (1, x_i - x)$
-and $\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}$. 
+and $\bm{W}_x = \text{diag}\{w_1(x),\dots,w_n(x)\}$.
 
------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 Recall that $$
-a_j(x) = n^{-1}\sum_{i=1}^n w_i(x) (x_i - x)^j,$$ 
-for $j=0,1,2$, then:
+a_j(x) = n^{-1}\sum_{i=1}^n w_i(x) (x_i - x)^j,$$ for $j=0,1,2$, then:
 $$
 \bm{X}_x^T\bm{W}_x\bm{X}_x = \begin{bmatrix}\sum_{i=1}^n w_i(x) & \sum_{i=1}^nw_i(x)(x_i - x) \\
 \sum_{i=1}^nw_i(x)(x_i - x) & \sum_{i=1}^nw_i(x)(x_i - x)^2\end{bmatrix} = n 
@@ -648,22 +647,21 @@ $$
 a_0(x) & a_1(x) \\
 a_1(x) & a_2(x)
 \end{bmatrix}.
-$$
-Similarly, simple algebra leads to$$
+$$ Similarly, simple algebra leads to$$
 \bm{X}_x^T\bm{W}_x\bm{y} = \begin{bmatrix}\sum_{i=1}^nw_i(x)y_i \\ \sum_{i=1}^nw_i(x)(x_i - x)y_i \end{bmatrix}.
 $$
 
----------------------------------------------------------------------------------
+------------------------------------------------------------------------
 
-The local regression coefficients can be equivalently written as $\hat{\beta}(x) = (n^{-1} \bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}(n^{-1} \bm{X}_x^T\bm{W}_x\bm{y})$. Moreover, the inverse of $n^{-1}\bm{X}_x^T\bm{W}_x\bm{X}_x$ can be easily evaluated, giving:
-$$
+The local regression coefficients can be equivalently written as
+$\hat{\beta}(x) = (n^{-1} \bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}(n^{-1} \bm{X}_x^T\bm{W}_x\bm{y})$.
+Moreover, the inverse of $n^{-1}\bm{X}_x^T\bm{W}_x\bm{X}_x$ can be
+easily evaluated, giving: $$
 \left(\frac{1}{n}\bm{X}_x^T\bm{W}_x\bm{X}_x\right)^{-1} = \frac{1}{a_0(x)a_2(x) - a_1^2(x)}\begin{bmatrix}
 a_2(x) & -a_1(x) \\
 -a_1(x) & a_0(x)
 \end{bmatrix}.
-$$
-Combining the above elements, we obtain
-$$
+$$ Combining the above elements, we obtain $$
 \begin{aligned}
 \hat{\beta}(x) &=(n^{-1} \bm{X}_x^T\bm{W}_x\bm{X}_x)^{-1}(n^{-1} \bm{X}_x^T\bm{W}_x\bm{y}) \\
 &=\frac{1}{a_0(x)a_2(x) - a_1^2(x)}\begin{bmatrix}
@@ -671,16 +669,14 @@ a_2(x) & -a_1(x) \\
 -a_1(x) & a_0(x)
 \end{bmatrix}\frac{1}{n}\begin{bmatrix}\sum_{i=1}^nw_i(x)y_i \\ \sum_{i=1}^nw_i(x)(x_i - x)y_i \end{bmatrix},
 \end{aligned}
-$$
-which means that the first component $\hat{f}(x) = \hat{\beta}_1(x)$ of the above vector is
-$$
+$$ which means that the first component $\hat{f}(x) = \hat{\beta}_1(x)$
+of the above vector is $$
 \begin{aligned}
 \hat{f}(x) = \hat{\beta}_1(x) &=\frac{1}{a_0(x)a_2(x) - a_1^2(x)}\frac{a_2(x)\sum_{i=1}^nw_i(x)y_i - a_1(x)\sum_{i=1}^nw_i(x)(x_i - x)y_i}{n} \\
 & = \frac{1}{n}\sum_{i=1}^n \frac{w_i(x)\{a_2(x) - a_1(x)(x_i - x)\}}{a_0(x)a_2(x) - a_1^2(x)}y_i.
 \end{aligned}
 $$
 :::
-
 
 ## Local linear regression ($h = 1.46$, Gaussian kernel)
 

@@ -8,7 +8,7 @@
 <link href="un_C_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="un_C_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="un_C_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.3.433">
+  <meta name="generator" content="quarto-1.5.56">
 
   <meta name="author" content="Tommaso Rigon">
   <title>Shrinkage and variable selection</title>
@@ -31,7 +31,7 @@
     }
   </style>
   <link rel="stylesheet" href="un_C_files/libs/revealjs/dist/theme/quarto.css">
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
  var macros = [];
@@ -46,7 +46,7 @@
    });
 }}});
   </script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
   <link href="un_C_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="un_C_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="un_C_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -172,7 +172,8 @@
   }
 
   .callout.callout-titled .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
   .callout.callout-titled .callout-icon::before {
@@ -375,8 +376,7 @@
 <li><p>This problem is quite challenging when the <span class="blue">ratio</span> <span class="math inline">p / n</span> is <span class="blue">large</span>.</p></li>
 <li><p>In the <span class="orange">extreme case</span> <span class="math inline">p &gt; n</span>, is there any hope of fitting a meaningful model?</p></li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section>
 <section id="a-biostatistical-motivation" class="title-slide slide level1 center">
@@ -421,7 +421,7 @@
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Original dataset</a></li><li><a href="#tabset-1-2">Standardized dataset</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
-<div class="cell" data-hash="un_C_cache/revealjs/unnamed-chunk-2_6b76e4f598c7ccfb3daa83aeae80fab5">
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 97
 Columns: 10
@@ -439,7 +439,7 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 </div>
 </div>
 <div id="tabset-1-2">
-<div class="cell" data-hash="un_C_cache/revealjs/unnamed-chunk-3_10a33a90e203e11f9be2fa7136dca1f8">
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 97
 Columns: 10
@@ -465,7 +465,7 @@ $ train   &lt;lgl&gt; TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, FALSE, FA
 <section id="correlation-matrix-of-prostate" class="slide level2 center">
 <h2>Correlation matrix of <code>prostate</code></h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-4-1.png" width="3000" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-4-1.png" class="quarto-figure quarto-figure-center r-stretch" width="3750"></section>
 <section id="the-regression-framework" class="slide level2 center">
 <h2>The regression framework</h2>
 <div>
@@ -510,7 +510,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <section id="a-naïve-approach-abusing-p-values" class="slide level2 center">
 <h2>A naïve approach: (ab)using p-values</h2>
 <div style="font-size: 75%;">
-<table>
+<table class="caption-top">
 <colgroup>
 <col style="width: 13%">
 <col style="width: 16%">
@@ -621,8 +621,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <li><p>In many data mining problems, the focus is on <span class="orange">minimizing</span> the <span class="orange">prediction errors</span>.</p></li>
 <li><p>Hence, often we may <span class="blue">accept some bias</span> (i.e., we use a “wrong” but useful model), if this leads to a <span class="orange">reduction in variance</span>.</p></li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="overview-of-this-unit" class="slide level2 center">
 <h2>Overview of this unit</h2>
@@ -636,7 +635,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <li><p>These “discrete” methods can be seen as the naïve counterpart of more advanced and <span class="blue">continuous</span> ideas that are presented in the second part of the Unit.</p></li>
 </ul>
 <div class="fragment">
-<table>
+<table class="caption-top">
 <colgroup>
 <col style="width: 25%">
 <col style="width: 43%">
@@ -671,7 +670,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 </section>
 <section id="overview-of-the-final-results" class="slide level2 center">
 <h2>Overview of the final results</h2>
-<table>
+<table class="caption-top">
 <colgroup>
 <col style="width: 22%">
 <col style="width: 22%">
@@ -803,13 +802,13 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <section id="step-1.-and-2.-of-best-subset-selection" class="slide level2 center">
 <h2>Step 1. and 2. of best subset selection</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-8-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2500"></section>
 <section id="the-best-models-mathcalm_1dots-mathcalm_p" class="slide level2 center">
 <h2>The “best” models <span class="math inline">\mathcal{M}_1,\dots, \mathcal{M}_p</span></h2>
 <ul>
 <li>The output of the <span class="orange">best subset selection</span>, on the training set is:</li>
 </ul>
-<div class="cell" data-hash="un_C_cache/revealjs/unnamed-chunk-9_c6d710f80ac5f62c2c94e295b87386a3">
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>         lcavol lweight age lbph svi lcp gleason pgg45
 1  ( 1 ) "*"    " "     " " " "  " " " " " "     " "  
@@ -854,7 +853,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <section id="step-3.-of-best-subset-selection-via-cross-validation" class="slide level2 center">
 <h2>Step 3. of best subset selection via cross-validation</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-11-1.png" width="2000" class="r-stretch quarto-figure-center"><ul>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-11-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2500"><ul>
 <li>By applying the “1 standard error rule”, we select <span class="math inline">k = 2</span>, i.e. <code>lcavol</code> and <code>lweight</code>.</li>
 </ul>
 </section>
@@ -935,7 +934,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <section id="forward-backward-and-best-subset" class="slide level2 center">
 <h2>Forward, backward and best subset</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-13-1.png" width="2000" class="r-stretch quarto-figure-center"><ul>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-13-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2500"><ul>
 <li>In the <code>prostate</code> dataset, forward, backward and best subset selection all gave precisely the <span class="orange">same path of solutions</span> on the full training set.</li>
 </ul>
 </section>
@@ -990,8 +989,7 @@ Y_i = f(\bm{x}_i) + \epsilon_i, \qquad
 <li><p>The main statistical tool, unsurprisingly, will be the celebrated <span class="blue">principal components analysis</span> (PCA).</p></li>
 <li><p>We will compress the covariate information <span class="math inline">\bm{X}</span> using a smaller set of variables <span class="math inline">\bm{Z}</span>, i.e.&nbsp;the principal components.</p></li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="the-intercept-term" class="slide level2 center">
 <h2>The intercept term</h2>
@@ -1115,7 +1113,7 @@ z_{ij} = x_{i1}v_{i1} + \cdots + x_{ip} v_{ip} = \bm{x}_{i}^T\tilde{\bm{v}}_j.
 <section id="principal-component-analysis-prostate-data" class="slide level2 center">
 <h2>Principal component analysis: <code>prostate</code> data</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-14-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2500"></section>
 <section id="principal-components-regression-pcr" class="slide level2 center">
 <h2>Principal components regression (PCR)</h2>
 <div>
@@ -1135,7 +1133,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="selection-of-k-cross-validation" class="slide level2 center">
 <h2>Selection of <span class="math inline">k</span>: cross-validation</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-16-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2500"></section>
 <section id="shrinkage-effect-of-principal-components-i" class="slide level2 center">
 <h2>Shrinkage effect of principal components I</h2>
 <div>
@@ -1175,7 +1173,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="shrinkage-effect-of-principal-components-iii" class="slide level2 center">
 <h2>Shrinkage effect of principal components III</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-17-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-17-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="pros-and-cons-of-pcr" class="slide level2 center">
 <h2>Pros and cons of PCR</h2>
 <div class="callout callout-tip no-icon callout-titled callout-style-simple">
@@ -1219,7 +1217,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <div class="column" style="width:30%;">
 <div class="quarto-figure quarto-figure-left">
 <figure>
-<p><img data-src="img/ridge.jpg"></p>
+<p><img data-src="img/ridge.jpg" class="quarto-figure quarto-figure-left"></p>
 </figure>
 </div>
 </div><div class="column" style="width:70%;">
@@ -1230,8 +1228,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li><p>As a byproduct, the induced regularization procedure enables estimation even when <span class="math inline">p &gt; n</span>.</p></li>
 <li><p>The first method that has been proposed is called <span class="orange">ridge regression</span>. The lasso and the elastic-net are other examples.</p></li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="the-ridge-regularization-method" class="slide level2 center">
 <h2>The ridge regularization method</h2>
@@ -1348,11 +1345,11 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="the-geometry-of-the-ridge-solution" class="slide level2 center">
 <h2>The geometry of the ridge solution</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-18-1.png" width="2000" class="r-stretch"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-18-1.png" width="2500" class="r-stretch"></section>
 <section id="the-ridge-path" class="slide level2 center">
 <h2>The ridge path</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-21-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-21-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="comments-on-the-ridge-path" class="slide level2 center">
 <h2>Comments on the ridge path</h2>
 <ul>
@@ -1462,7 +1459,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="a-historical-perspective-iii" class="slide level2 center">
 <h2>A historical perspective III</h2>
 
-<img data-src="img/ridge_paper.png" style="width:40.0%" class="r-stretch quarto-figure-center"><ul>
+<img data-src="img/ridge_paper.png" class="quarto-figure quarto-figure-center r-stretch" style="width:40.0%"><ul>
 <li>Figure 1 of the <span class="orange">original paper</span> by Hoerl and Kennard (1970), displaying the bias-variance <span class="blue">trade-off</span>.</li>
 </ul>
 </section>
@@ -1528,19 +1525,26 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <h2>Effective degrees of freedom III</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-hash="un_C_cache/revealjs/unnamed-chunk-22_41d4b62e804b6f12fe259fc565ab1675">
+<div class="cell">
 <div class="cell-output-display">
-<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-22-1.png" width="1000"></p>
+<div>
+<figure>
+<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-22-1.png" width="1250"></p>
+</figure>
+</div>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
-<div class="cell" data-hash="un_C_cache/revealjs/unnamed-chunk-23_f5df80c5764d0be4712f9dbd05837384">
+<div class="cell">
 <div class="cell-output-display">
-<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-23-1.png" width="1000"></p>
+<div>
+<figure>
+<p><img data-src="un_C_files/figure-revealjs/unnamed-chunk-23-1.png" width="1250"></p>
+</figure>
 </div>
 </div>
 </div>
-</div>
+</div></div>
 </section>
 <section id="cross-validation-for-ridge-regression-i" class="slide level2 center">
 <h2>Cross-validation for ridge regression I</h2>
@@ -1582,11 +1586,11 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <!-- recalling that $\bar{y} = 0$. Therefore, the leave-one-out mean squared error is -->
 <!-- $$\widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_{i, \text{ridge}}}{1 - h_{i, \text{ridge}}}\right)^2.$$ -->
 <!-- ::: -->
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-25-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-25-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2500"></section>
 <section id="the-ridge-estimate" class="slide level2 center">
 <h2>The ridge estimate</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-27-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-27-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="further-properties-of-ridge-regression" class="slide level2 center">
 <h2>Further properties of ridge regression</h2>
 <div>
@@ -1657,8 +1661,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </ul></li>
 <li>Best subset selection is sparse (but computationally unfeasible), the ridge estimator is not.</li>
 </ul>
-</div>
-</div>
+</div></div>
 </section>
 <section id="the-least-absolute-selection-and-shrinkage-operator" class="slide level2 center">
 <h2>The <span class="orange">l</span>east <span class="orange">a</span>bsolute <span class="orange">s</span>election and <span class="orange">s</span>hrinkage <span class="orange">o</span>perator</h2>
@@ -1747,7 +1750,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="the-geometry-of-the-lasso-solution" class="slide level2 center">
 <h2>The geometry of the lasso solution</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-28-1.png" width="2000" class="r-stretch"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-28-1.png" width="2500" class="r-stretch"></section>
 <section id="lasso-with-a-single-predictor-i" class="slide level2 center">
 <h2>Lasso with a single predictor I</h2>
 <div>
@@ -1771,7 +1774,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="lasso-with-a-single-predictor-ii" class="slide level2 center">
 <h2>Lasso with a single predictor II</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-29-1.png" width="2000" class="r-stretch"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-29-1.png" width="2500" class="r-stretch"></section>
 <section id="soft-thresholding-and-lasso-solution" class="slide level2 center">
 <h2>Soft-thresholding and lasso solution</h2>
 <ul>
@@ -1807,7 +1810,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <!-- -   The coefficient of `age`, `gleason` and `lcp` are negative and then -->
 <!--     are set equal to zero for higher values of $\lambda$. Compare this -->
 <!--     with the [ridge path]{.orange}. -->
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-31-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-31-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="least-angle-regression-i" class="slide level2 center">
 <h2>Least angle regression I</h2>
 <ul>
@@ -1933,7 +1936,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <ul>
 <li>On the other hand, let <span class="math inline">\mathcal{A}_\text{lasso}</span> be the active set of the lasso. For these variables, the penalized lasso loss is differentiable, obtaining: <span class="math display">
 \text{cov}(\tilde{\bm{x}}_j, \bm{r}(\lambda)) = \frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - \bm{x}_i^T\beta(\lambda)\} = \lambda \text{sign}(\beta_j), \qquad j \in \mathcal{A}_\text{lasso},
-</span> which <span class="orange">coincide</span> with the LAR solution if <span class="math inline">s_j = \text{sign}(\beta_j)</span>, which is <span class="blue">almost always the case</span>.</li>
+</span> which <span class="orange">coincide</span> with the LAR solution if <span class="math inline">s_j =  \text{sign}(\beta_j)</span>, which is <span class="blue">almost always the case</span>.</li>
 </ul>
 </div>
 </section>
@@ -1998,15 +2001,15 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <section id="effective-degrees-of-freedom-of-lar-and-best-subset" class="slide level2 center">
 <h2>Effective degrees of freedom of LAR and best subset</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-33-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-33-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="cross-validation-for-lasso" class="slide level2 center">
 <h2>Cross-validation for lasso</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-35-1.png" width="2000" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-35-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2500"></section>
 <section id="the-lar-lasso-estimate" class="slide level2 center">
 <h2>The LAR (lasso) estimate</h2>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-37-1.png" width="1800" class="r-stretch quarto-figure-center"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-37-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="other-properties-of-lar-and-lasso" class="slide level2 center">
 <h2>Other properties of LAR and lasso</h2>
 <div>
@@ -2057,7 +2060,7 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 </section>
 <section id="the-prostate-dataset.-a-summary-of-the-estimates" class="slide level2 center">
 <h2>The <code>prostate</code> dataset. A summary of the estimates</h2>
-<table>
+<table class="caption-top">
 <colgroup>
 <col style="width: 22%">
 <col style="width: 22%">
@@ -2159,9 +2162,9 @@ f(\bm{z}_i; \gamma) = \gamma_1 z_{i1} + \cdots + \gamma_kz_{ik}, \qquad i=1,\dot
 <li><p>Using the final test set with <span class="math inline">30</span> observations, we will assess which model is <span class="orange">preferable</span>.</p></li>
 </ul>
 <div class="fragment">
-<div class="cell" data-hash="un_C_cache/revealjs/unnamed-chunk-39_59b622643a874c4badb5dcc117ce17eb">
+<div class="cell">
 <div class="cell-output-display">
-<table>
+<table class="caption-top">
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
@@ -2295,7 +2298,7 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
 <h2>Coordinate descent - Example</h2>
 <p><span class="orange">Objective function</span>: <span class="math inline">(1 - \beta_1 - 2 \beta_2)^2 + (3 - \beta_1 - 2 \beta_2)^2 + 5 (|\beta_1| + |\beta_2|)</span>.</p>
 
-<img data-src="un_C_files/figure-revealjs/unnamed-chunk-40-1.png" width="2000" class="r-stretch"></section>
+<img data-src="un_C_files/figure-revealjs/unnamed-chunk-40-1.png" width="2500" class="r-stretch"></section>
 <section id="pathwise-coordinate-optimization" class="slide level2 center">
 <h2>Pathwise coordinate optimization</h2>
 <div>
@@ -2417,9 +2420,11 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
 <li>Tay, J. K., Narasimhan, B. and Hastie, T. (2023). Elastic net regularization paths for all generalized linear models. <em>Journal of Statistical Software</em> <strong>106</strong> (1).</li>
 </ul></li>
 </ul>
-
-<img src="img/logoB.png" class="slide-logo r-stretch"><div class="footer footer-default">
+<div class="quarto-auto-generated-content">
+<p><img src="img/logoB.png" class="slide-logo"></p>
+<div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
+</div>
 </div>
 </section></section>
     </div>
@@ -2447,7 +2452,6 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
       Reveal.initialize({
 'controlsAuto': true,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
@@ -2684,18 +2688,7 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
         }
         return false;
       }
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        text: function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
-            }
-          }
-          return codeEl.innerText;
-        }
-      });
-      clipboard.on('success', function(e) {
+      const onCopySuccess = function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -2727,11 +2720,50 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
         }, 1000);
         // clear code selection
         e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
       });
-      function tippyHover(el, contentFn) {
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -2741,8 +2773,17 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
           interactive: true,
           interactiveBorder: 10,
           theme: 'light-border',
-          placement: 'bottom-start'
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -2756,7 +2797,11 @@ f(t \bm{b}_1 + (1-t)\bm{b}_2) \le  t f(\bm{b}_1) + (1-t) f(\bm{b}_2).
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {
