@@ -7,6 +7,7 @@ execute:
   cache: false
 filters: 
   - remove-pause.lua
+page-layout: full
 format:
   revealjs:
     df-print: tibble
@@ -21,7 +22,7 @@ format:
     theme: [default, ../template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: false
-    fig-dpi: 200
+    fig-dpi: 250
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
@@ -29,7 +30,7 @@ format:
     html-math-method: katex
     echo: false
     callout-appearance: minimal
-    theme: [cosmo, ../template.css]
+    theme: [simplex, ../template.css]
     toc: true
     toc-title: Table of contents
     embed-resources: false
@@ -37,7 +38,7 @@ format:
     smooth-scroll: true
     code-fold: false
     code-summary: "Show the code"
-    fig-dpi: 200
+    fig-dpi: 250
 editor: 
   markdown: 
     wrap: 72
@@ -45,15 +46,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-H0CBBT90DC"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-H0CBBT90DC');
-</script>
 
 ## [Homepage](../index.html)
 

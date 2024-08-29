@@ -6,12 +6,13 @@ institute: "_Università degli Studi di Milano-Bicocca_"
 lang: en
 execute:
   cache: true
+page-layout: full
 format:
   html:
     html-math-method: katex
     echo: true
     callout-appearance: minimal
-    theme: [cosmo, ../template.css]
+    theme: [simplex, ../template.css]
     toc: true
     toc-title: Table of contents
     embed-resources: true
@@ -42,7 +43,7 @@ $$
 $$
 where $\hat{\beta}_\text{pcr}$ has been defined in [this slide](https://tommasorigon.github.io/datamining/slides/un_C.html#shrinkage-effect-of-principal-components-i).
 
-::: {.callout-note collapse=true}
+::: {.callout-warning collapse=true}
 #### Solution
 
 To be added. Refer to the notes available on e-learning.
@@ -91,7 +92,7 @@ $$
 $$
 [Hint]{.blue}: the proof is a simple adaptation of the one for ordinary least squares. 
 
-::: {.callout-note collapse=true}
+::: {.callout-warning collapse=true}
 #### Solution
 
 To be added. Refer to the notes available on e-learning.
@@ -113,7 +114,7 @@ $$
 \hat{\beta}_\text{ridge} = (\tilde{\bm{X}}^T\tilde{\bm{X}})^{-1} \tilde{\bm{X}}^T\tilde{\bm{y}}.
 $$
 
-::: {.callout-note collapse=true}
+::: {.callout-warning collapse=true}
 #### Solution
 
 To be added. Refer to the notes available on e-learning.
@@ -161,7 +162,7 @@ implying that the magnitude of the residuals is constant across the covariates a
 [Hint]{.orange}. This problem is easier if you use [matrix notation]{.blue}, that is, considering the covariances $n^{-1}\bm{X}^T\bm{r}(\alpha)$ and the partial residuals $\bm{r}(\alpha) = \bm{y} - \alpha\bm{X}\hat{\beta}$.
 
 
-::: {.callout-note collapse=true}
+::: {.callout-warning collapse=true}
 #### Solution
 
 To be added. Refer to the notes available on e-learning.

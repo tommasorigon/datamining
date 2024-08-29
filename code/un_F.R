@@ -41,7 +41,7 @@ knitr::kable(tidy(m_gam, parametric = FALSE), digits = 3)
 library(gratia)
 data_plot <- smooth_estimates(m_gam, smooth = "s(Longitude)")
 
-ggplot(data = data_plot, aes(x = Longitude, y = est)) +
+ggplot(data = data_plot, aes(x = Longitude, y = .estimate)) +
   geom_line(linewidth = 1, col = "#1170aa") +
   geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Longitude, y = `s(Longitude)`), size = 0.7) +
   theme_minimal() +
@@ -50,7 +50,7 @@ ggplot(data = data_plot, aes(x = Longitude, y = est)) +
 
 data_plot <- smooth_estimates(m_gam, smooth = "s(Latitude)")
 
-ggplot(data = data_plot, aes(x = Latitude, y = est)) +
+ggplot(data = data_plot, aes(x = Latitude, y = .estimate)) +
   geom_line(linewidth = 1, col = "#1170aa") +
   geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Latitude, y = `s(Latitude)`), size = 0.7) +
   theme_minimal() +
@@ -59,7 +59,7 @@ ggplot(data = data_plot, aes(x = Latitude, y = est)) +
 
 data_plot <- smooth_estimates(m_gam, smooth = "s(Depth)")
 
-ggplot(data = data_plot, aes(x = Depth, y = est)) +
+ggplot(data = data_plot, aes(x = Depth, y = .estimate)) +
   geom_line(linewidth = 1, col = "#1170aa") +
   geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Depth, y = `s(Depth)`), size = 0.7) +
   theme_minimal() +

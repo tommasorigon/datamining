@@ -7,6 +7,7 @@ execute:
   cache: false
 filters: 
   - remove-pause.lua
+page-layout: full
 format:
   revealjs:
     df-print: tibble
@@ -21,7 +22,7 @@ format:
     theme: [default, ../template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: false
-    fig-dpi: 200
+    fig-dpi: 250
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
@@ -29,7 +30,7 @@ format:
     html-math-method: katex
     echo: false
     callout-appearance: minimal
-    theme: [cosmo, ../template.css]
+    theme: [simplex, ../template.css]
     toc: true
     toc-title: Table of contents
     embed-resources: false
@@ -37,7 +38,7 @@ format:
     smooth-scroll: true
     code-fold: false
     code-summary: "Show the code"
-    fig-dpi: 200
+    fig-dpi: 250
 editor: 
   markdown: 
     wrap: 72
@@ -555,7 +556,7 @@ knitr::kable(tidy(m_gam, parametric = FALSE), digits = 3)
 library(gratia)
 data_plot <- smooth_estimates(m_gam, smooth = "s(Longitude)")
 
-ggplot(data = data_plot, aes(x = Longitude, y = est)) +
+ggplot(data = data_plot, aes(x = Longitude, y = .estimate)) +
   geom_line(linewidth = 1, col = "#1170aa") +
   geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Longitude, y = `s(Longitude)`), size = 0.7) +
   theme_minimal() +
@@ -572,7 +573,7 @@ ggplot(data = data_plot, aes(x = Longitude, y = est)) +
 #| message: false
 data_plot <- smooth_estimates(m_gam, smooth = "s(Latitude)")
 
-ggplot(data = data_plot, aes(x = Latitude, y = est)) +
+ggplot(data = data_plot, aes(x = Latitude, y = .estimate)) +
   geom_line(linewidth = 1, col = "#1170aa") +
   geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Latitude, y = `s(Latitude)`), size = 0.7) +
   theme_minimal() +
@@ -589,7 +590,7 @@ ggplot(data = data_plot, aes(x = Latitude, y = est)) +
 #| message: false
 data_plot <- smooth_estimates(m_gam, smooth = "s(Depth)")
 
-ggplot(data = data_plot, aes(x = Depth, y = est)) +
+ggplot(data = data_plot, aes(x = Depth, y = .estimate)) +
   geom_line(linewidth = 1, col = "#1170aa") +
   geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Depth, y = `s(Depth)`), size = 0.7) +
   theme_minimal() +

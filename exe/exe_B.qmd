@@ -6,12 +6,13 @@ institute: "_Università degli Studi di Milano-Bicocca_"
 lang: en
 execute:
   cache: true
+page-layout: full
 format:
   html:
     html-math-method: katex
     echo: true
     callout-appearance: minimal
-    theme: [cosmo, ../template.css]
+    theme: [simplex, ../template.css]
     toc: true
     toc-title: Table of contents
     embed-resources: true
@@ -46,7 +47,7 @@ editor_options:
     $$
 Refer also to Exercise 3.3 of the textbook A&S (2011), which is implicitly computing similar quantities.
 
-::: {.callout-note collapse=true}
+::: {.callout-warning collapse=true}
 #### Solution
 
 To be added. Refer to the notes available on e-learning.
@@ -58,7 +59,7 @@ To be added. Refer to the notes available on e-learning.
 
 [Hint]{.blue}: many steps are similar to those needed for obtaining [recursive least squares]{.blue}. Begin the proof by applying Sherman-Morrison formula to $\hat{\beta}_{-i}$. 
 
-::: {.callout-note collapse=true}
+::: {.callout-warning collapse=true}
 #### Solution
 
 To be added. Refer to the notes available on e-learning.
