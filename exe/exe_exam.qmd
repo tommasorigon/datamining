@@ -6,12 +6,13 @@ institute: "_Università degli Studi di Milano-Bicocca_"
 lang: en
 execute:
   cache: true
+page-layout: full
 format:
   html:
     html-math-method: katex
     echo: true
     callout-appearance: minimal
-    theme: [cosmo, ../template.css]
+    theme: [simplex, ../template.css]
     toc: true
     toc-title: Table of contents
     embed-resources: true
@@ -30,7 +31,7 @@ editor_options:
 
 ## Mock exam
 
-This a mock exam of the course Data Mining. The actual exam will have a similar structure. The candidate has **3 hours** to complete the exam.
+This a mock exam of the course Data Mining. The actual exam will have a similar structure. The candidate has **2.5 hours** to complete the exam.
 
 #### Question 1
 
