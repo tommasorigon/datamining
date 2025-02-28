@@ -2241,21 +2241,6 @@ Properties of convex optimization
 <h2 class="anchored" data-anchor-id="coordinate-descent---example">Coordinate descent - Example</h2>
 <p><span class="orange">Objective function</span>: <span class="math inline">(1 - \beta_1 - 2 \beta_2)^2 + (3 - \beta_1 - 2 \beta_2)^2 + 5 (|\beta_1| + |\beta_2|)</span>.</p>
 <div class="cell">
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in geom_segment(aes(x = -1.53, y = -2, xend = -1.53, yend = 1.5), : All aesthetics have length 1, but the data has 11211 rows.
-ℹ Please consider using `annotate()` or provide this layer with data containing
-  a single row.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in geom_segment(aes(x = -1.53, y = 1.5, xend = m$par[1], yend = 1.5), : All aesthetics have length 1, but the data has 11211 rows.
-ℹ Please consider using `annotate()` or provide this layer with data containing
-  a single row.</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in geom_segment(aes(x = m$par[1], y = 1.5, xend = m$par[1], yend = m$par[2]), : All aesthetics have length 1, but the data has 11211 rows.
-ℹ Please consider using `annotate()` or provide this layer with data containing
-  a single row.</code></pre>
-</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -2275,7 +2260,7 @@ Properties of convex optimization
 <ul class="incremental">
 <li>The <span class="blue">warm start</span>. The algorithm for <span class="math inline">\lambda_k</span> is initialized at the previous solution using <span class="math inline">\lambda_{k-1}</span>.</li>
 <li>Partial residuals can be efficiently obtained <span class="orange">without re-computing</span> the whole linear predictor.</li>
-<li>The code is written in <span class="blue">Fortran</span>.</li>
+<li>The code is written in <span class="blue">C++</span> from <a href="https://cran.r-project.org/web/packages/glmnet/news/news.html">version 4.1-3</a>, it used to be written in <span class="orange">Fortran</span>.</li>
 <li>Many other tricks are employed: active set convergence, tools for sparse <span class="math inline">\bm{X}</span> matrices, etc.</li>
 </ul></li>
 <li><p>The same algorithm can also be used to fit ridge regression and lasso, which is often convenient even though alternatives would be available.</p></li>

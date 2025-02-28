@@ -2684,6 +2684,7 @@ We [cycle]{.orange} this update for $j=1,\dots,p$, over and over until convergen
 [Objective function]{.orange}: $(1 - \beta_1 - 2 \beta_2)^2 + (3 - \beta_1 - 2 \beta_2)^2 + 5 (|\beta_1| + |\beta_2|)$.
 
 ```{r}
+#| warning: false
 # Objective function
 f <- function(x) {
   return((1 - x[1] - 2 * x[2])^2 + (3 - x[1] - 2 * x[2])^2 + 5 * (abs(x[1]) + abs(x[2])))
@@ -2735,8 +2736,8 @@ In a regression model with an elastic-net penalty, the coordinate descent is [th
 
 - The `glmnet` implementation is very efficient due to several additional tricks:
   - The [warm start]{.blue}. The algorithm for $\lambda_k$ is initialized at the previous solution using $\lambda_{k-1}$.
-  - Partial residuals can be efficiently obtained [without re-computing]{.orange} the whole linear predictor.
-  - The code is written in [Fortran]{.blue}.
+  - Partial residuals can be efficiently obtained [without re-computing]{.orange} the whole linear predictor. 
+  - The code is written in [C++]{.blue} from  [version 4.1-3](https://cran.r-project.org/web/packages/glmnet/news/news.html), it used to be written in [Fortran]{.orange}.
   - Many other tricks are employed: active set convergence, tools for sparse $\bm{X}$ matrices, etc. 
 
 - The same algorithm can also be used to fit ridge regression and lasso, which is often convenient even though alternatives would be available. 
