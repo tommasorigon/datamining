@@ -7,9 +7,9 @@ execute:
   cache: false
 filters: 
   - remove-pause.lua
+page-layout: full
 format:
   revealjs:
-    df-print: tibble
     auto-stretch: true
     center: true
     html-math-method: katex
@@ -21,25 +21,20 @@ format:
     theme: [default, ../template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: false
-    fig-dpi: 150
+    fig-dpi: 250
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
-    highlight-style: github
   html:
     html-math-method: katex
     echo: false
     callout-appearance: minimal
-    theme: [cosmo, ../template.css]
+    theme: [simplex, ../template.css]
     toc: true
     toc-title: Table of contents
     embed-resources: false
-    code-line-numbers: true
     smooth-scroll: true
-    code-fold: false
-    code-summary: "Show the code"
-    fig-dpi: 150
-    highlight-style: github
+    fig-dpi: 250
 editor: 
   markdown: 
     wrap: 72
