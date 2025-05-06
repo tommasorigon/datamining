@@ -1007,7 +1007,7 @@ Proposition A.2. OLS with orthogonal predictors
 </span></p></li>
 <li><p>The <span class="math inline">p \times p</span> matrix <span class="math inline">\bm{\Gamma}</span> is <span class="orange">upper triangular</span>, whereas the columns of the <span class="math inline">n \times p</span> matrix <span class="math inline">\bm{Z}</span> are <span class="blue">mutually orthogonal</span>, due to the properties of the residuals of a linear model.</p></li>
 <li><p>It is often convenient to <span class="orange">standardize</span> the columns of <span class="math inline">\bm{Z}</span>, dividing them by their norm <span class="math inline">||\tilde{\bm{z}}_j||</span>. Let <span class="math inline">\bm{D} = \text{diag}(||\tilde{\bm{z}}_1||, \dots, ||\tilde{\bm{z}}_p||)</span>, then in matrix notation: <span class="math display">
-\bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}.
+\bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}\quad \text{and} \quad \bm{R} = \bm{D}\bm{\Gamma}.
 </span></p></li>
 <li><p><span class="orange">Remark</span>. Note that <span class="math inline">\bm{Q}^T \bm{Q} = I_p</span>, i.e.&nbsp;the columns of <span class="math inline">\bm{Q}</span> are <span class="blue">orthonormal</span>.</p></li>
 </ul>

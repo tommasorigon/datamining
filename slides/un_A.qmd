@@ -909,7 +909,7 @@ $$
     $\bm{Z}$, dividing them by their norm $||\tilde{\bm{z}}_j||$. Let
     $\bm{D} = \text{diag}(||\tilde{\bm{z}}_1||, \dots, ||\tilde{\bm{z}}_p||)$,
     then in matrix notation: $$
-    \bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}.
+    \bm{X} = \bm{Z} \bm{\Gamma} = \bm{Z} \bm{D}^{-1} \bm{D} \bm{\Gamma} = \bm{Q} \bm{R}, \quad \text{with} \quad \bm{Q} = \bm{Z}\bm{D}^{-1}\quad \text{and} \quad \bm{R} = \bm{D}\bm{\Gamma}.
     $$
 
 -   [Remark]{.orange}. Note that $\bm{Q}^T \bm{Q} = I_p$, i.e. the
