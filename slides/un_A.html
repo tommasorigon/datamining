@@ -1350,12 +1350,12 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
 </span></p></li>
 <li><p>By maximizing the quadratic approximation, in logistic regression we get the update <span class="math display">
 \begin{aligned}
-\beta^{\text{new}} &amp;= \beta^{(\text{old})} + j(\beta^{\text{old}})^{-1}\ell'(\beta^{\text{old}}) = \beta^{(\text{old})} + (\bm{X}^T\bm{W}\bm{X})^{-1}\bm{X}^T(\bm{y} - \bm{p}) \\
+\beta^{(\text{new})} &amp;= \beta^{(\text{old})} + j(\beta^{\text{old}})^{-1}\ell'(\beta^{\text{old}}) = \beta^{(\text{old})} + (\bm{X}^T\bm{W}\bm{X})^{-1}\bm{X}^T(\bm{y} - \bm{p}) \\
 &amp; = (\bm{X}^T\bm{W}\bm{X})^{-1}\bm{X}^T\bm{W}\bm{z},
 \end{aligned}
 </span> where <span class="math inline">\bm{z} = \bm{X}\beta^{(\text{old})} + \bm{W}^{-1}(\bm{y} - \bm{p})</span>, which we <span class="orange">cycle repeatedly</span> until <span class="blue">convergence</span>.</p></li>
 <li><p>This algorithm is sometimes called <span class="blue">iteratively re-weighted least squares</span> (IRLS), because <span class="orange">each step</span> can be seen as the solution of the weighted least squares problem <span class="math display">
-\beta^{\text{new}} = \arg\min_\beta (\bm{z} - \bm{X}\beta)^T \bm{W}(\bm{z} - \bm{X}\beta).
+\beta^{(\text{new})} = \arg\min_\beta (\bm{z} - \bm{X}\beta)^T \bm{W}(\bm{z} - \bm{X}\beta).
 </span></p></li>
 </ul>
 </div>
