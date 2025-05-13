@@ -331,31 +331,32 @@ print(manual, digits = 12)
 # Temporal extension (end)	31 December 2019
 
 library(readr)
-drivers <- read_csv("../data/drivers2.csv", n_max = 10000)
+libary(tidyverse)
+drivers <- read_csv("https://dati.mit.gov.it/hfs/patenti_Lombardia.csv")
 ```
 
 
-<!-- ```{r} -->
-<!-- # Change the name of the columns -->
-<!-- colnames(drivers) <- c("id", "birth", "town", "city", "region", "state", "gender", "category", "date", "habilit", "date_habilit", "expiration", "date_foreigners", "points") -->
+```{r}
+# Change the name of the columns
+colnames(drivers) <- c("id", "birth", "town", "city", "region", "state", "gender", "category", "date", "habilit", "date_habilit", "expiration", "date_foreigners", "points")
 
-<!-- # Change the format of the date -->
-<!-- drivers <- drivers %>% mutate(date = ymd_hms(date), experience = 2019 - year(date), age = 2019 - birth) -->
+# Change the format of the date
+drivers <- drivers %>% mutate(date = ymd_hms(date), experience = 2019 - year(date), age = 2019 - birth)
 
-<!-- # Select patent B and other things -->
-<!-- drivers <- drivers %>% -->
-<!--   filter(category == "B", is.na(state), !is.na(points)) %>% -->
-<!--   filter(experience > 0) -->
+# Select patent B and other things
+drivers <- drivers %>%
+  filter(category == "B", is.na(state), !is.na(points)) %>%
+  filter(experience > 0)
 
-<!-- # Remove irrelevant columns -->
-<!-- drivers <- drivers %>% select(-c(id, category, state, date_foreigners, expiration, date_habilit, birth, date, region)) -->
-<!-- drivers <- drivers %>% mutate(hazard = sqrt(-(points - 30))) -->
-<!-- drivers <- na.omit(drivers) -->
+# Remove irrelevant columns
+drivers <- drivers %>% select(-c(id, category, state, date_foreigners, expiration, date_habilit, birth, date, region))
+drivers <- drivers %>% mutate(hazard = sqrt(-(points - 30)))
+drivers <- na.omit(drivers)
 
-<!-- glimpse(drivers) -->
-<!-- summary(drivers) -->
-<!-- write_csv(drivers, "../data/drivers2.csv") -->
-<!-- ``` -->
+glimpse(drivers)
+summary(drivers)
+write_csv(drivers, "../data/drivers2.csv")
+```
 
 
 ```{r}
