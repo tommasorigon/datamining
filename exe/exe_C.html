@@ -3263,7 +3263,7 @@ Solution
      \hat{\beta}_\text{lasso} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
       </span> <span class="orange">Show</span> that <span class="math inline">\hat{\beta}_\text{lasso}</span> has an <span class="orange">explicit expression</span>, which is <span class="math display">
     \hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &gt; \lambda \\
-    0 \qquad &amp;\text{if} \quad \text{cov}(x,y) \le \lambda\\
+    0 \qquad &amp;\text{if} \quad |\text{cov}(x,y)| \le \lambda\\
     \text{cov}(x,y) + \lambda, \qquad &amp;\text{if} \quad \text{cov}(x,y) &lt; -\lambda \\
     \end{cases}
     </span> <span class="orange">Show</span> in addition that <span class="math display">

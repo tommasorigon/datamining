@@ -1990,7 +1990,7 @@ ggplot() +
 -   This simple problem admits an [explicit expression]{.orange} (see
     Exercises), which is $$
     \hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &\text{if} \quad \text{cov}(x,y) > \lambda \\
-    0 \qquad &\text{if} \quad \text{cov}(x,y) \le \lambda\\
+    0 \qquad &\text{if} \quad |\text{cov}(x,y)| \le \lambda\\
     \text{cov}(x,y) + \lambda, \qquad &\text{if} \quad \text{cov}(x,y) < -\lambda \\
     \end{cases}
     $$

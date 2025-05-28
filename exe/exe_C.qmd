@@ -133,7 +133,7 @@ Consider the lasso problem with a    [single-predictor]{.blue} $$
       $$
 [Show]{.orange} that $\hat{\beta}_\text{lasso}$ has an [explicit expression]{.orange}, which is $$
     \hat{\beta}_\text{lasso} = \begin{cases} \text{cov}(x,y) - \lambda, \qquad &\text{if} \quad \text{cov}(x,y) > \lambda \\
-    0 \qquad &\text{if} \quad \text{cov}(x,y) \le \lambda\\
+    0 \qquad &\text{if} \quad |\text{cov}(x,y)| \le \lambda\\
     \text{cov}(x,y) + \lambda, \qquad &\text{if} \quad \text{cov}(x,y) < -\lambda \\
     \end{cases}
     $$

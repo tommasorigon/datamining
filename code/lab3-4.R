@@ -16,6 +16,7 @@ ames <- read.table("../data/ames.csv", header = TRUE, sep = ",",
 
 # Manual subdivision in training / test
 set.seed(123)
+
 # Randomly allocate the id of the variables into training and test
 id_train <- sort(sample(1:nrow(ames), size = floor(0.5 * nrow(ames)), replace = FALSE))
 id_validation_test <- setdiff(1:nrow(ames), id_train)
