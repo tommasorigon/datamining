@@ -84,7 +84,7 @@ Then, show that the theorem is valid for the following estimators:
   iii. Regression splines. [Hint]{.blue}: this is a special instance of linear model, so...
   iv. Smoothing splines. [Hint]{.blue}: you may want to use again the Sherman-Morrison formula. 
   
-Finally, [prove]{.orange} that in all the above cases $|y_i - \hat{y}_{-i}| \ge |y_i - \hat{y}_i|$. That is, the leave-one-out residuals are always bigger than the regular residuals. 
+<!-- Finally, [prove]{.orange} that in all the above cases $|y_i - \hat{y}_{-i}| \ge |y_i - \hat{y}_i|$. That is, the leave-one-out residuals are always bigger than the regular residuals.  -->
 
 ::: {.callout-warning collapse=true}
 #### Partial solution

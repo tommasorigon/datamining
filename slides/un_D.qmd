@@ -1329,7 +1329,7 @@ Let $\xi_1 < \cdots < \xi_k$ be a set of ordered points called
 [knots]{.orange} belonging to $(a, b)$. Let $$
 h_j(x) = x^{j-1}, \qquad j=1,\dots,d + 1,
 $$ and $$
-h_j(x) = (x - \xi_j)_+^d, \qquad j = 2 + d, \dots, k + d + 1.
+h_{j + d + 1}(x) = (x - \xi_j)_+^d, \qquad j = 1, \dots, k.
 $$ Then, the functions $\{h_1,\dots,h_{k+d + 1}\}$ form a basis for the
 set of splines of degree $d$ at these knots, called the [truncated power
 basis]{.blue}.

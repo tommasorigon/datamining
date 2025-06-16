@@ -1093,7 +1093,7 @@ Theorem (Truncated power basis)
 <p>Let <span class="math inline">\xi_1 &lt; \cdots &lt; \xi_k</span> be a set of ordered points called <span class="orange">knots</span> belonging to <span class="math inline">(a, b)</span>. Let <span class="math display">
 h_j(x) = x^{j-1}, \qquad j=1,\dots,d + 1,
 </span> and <span class="math display">
-h_j(x) = (x - \xi_j)_+^d, \qquad j = 2 + d, \dots, k + d + 1.
+h_{j + d + 1}(x) = (x - \xi_j)_+^d, \qquad j = 1, \dots, k.
 </span> Then, the functions <span class="math inline">\{h_1,\dots,h_{k+d + 1}\}</span> form a basis for the set of splines of degree <span class="math inline">d</span> at these knots, called the <span class="blue">truncated power basis</span>.</p>
 <p>Thus, any <span class="orange"><span class="math inline">d</span>th degree spline</span> <span class="math inline">f(x, \beta)</span> with these knots can be written as a basis expansion <span class="math display">
 f(x; \beta) = \sum_{j=1}^{k+d+1}h_j(x) \beta_j.
