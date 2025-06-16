@@ -208,3 +208,4 @@ plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex
 
 m_smooth <- smooth.spline(x, y, spar = 0.8)
 lines(predict(m_smooth, x = newx$x))
+

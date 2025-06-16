@@ -153,7 +153,7 @@ Let $\hat{\beta}$ be the [least squares]{.blue} estimate and let us denote with 
 
 [Prove]{.orange} that the following relationship holds:
 $$
-\left|\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha))\right| = \left|\frac{1}{n}\sum_{i=1}^nx_{ij}\{y_i - r_i(\alpha)\}\right| = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
+\left|\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha))\right| = \left|\frac{1}{n}\sum_{i=1}^nx_{ij}r_i(\alpha)\right| = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
 $$
 implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit $\bm{x}_i^T\hat{\beta}$.
 
