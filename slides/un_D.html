@@ -634,8 +634,8 @@ a_2(x) &amp; -a_1(x) \\
 <h2 class="anchored" data-anchor-id="linear-smoothers-ii">Linear smoothers II</h2>
 <ul>
 <li>In linear smoothers, we can express the predicted values <span class="math inline">\hat{\bm{y}}</span> using <span class="orange">matrix notation</span> <span class="math display">
-\hat{\bm{y}} = \sum_{i=1}^n\bm{s}_i y_i = \bm{S}\bm{y}, \qquad \bm{s}_i = (s_i(x_1), \dots, s_i(x_n))^T,
-</span> where <span class="math inline">\bm{S} = (\bm{s}_1,\dots,\bm{s}_n)^T</span> is the so-called <span class="math inline">n \times n</span> <span class="blue">smoothing</span> matrix.</li>
+\hat{\bm{y}} = \sum_{i=1}^n\tilde{\bm{s}}_i y_i = \bm{S}\bm{y}, \qquad \tilde{\bm{s}}_i = (s_i(x_1), \dots, s_i(x_n))^T,
+</span> where <span class="math inline">\bm{S} = (\tilde{\bm{s}}_1,\dots,\tilde{\bm{s}}_n)</span> is the so-called <span class="math inline">n \times n</span> <span class="blue">smoothing</span> matrix.</li>
 </ul>
 <ul>
 <li>Each row of the smoothing matrix <span class="math inline">\bm{s}_i</span> is called <span class="orange">equivalent kernel</span> for estimating <span class="math inline">\hat{f}(x_i)</span>; in the Nadaraya Watson estimator <span class="math inline">\bm{s}_i</span> is indeed a normalized kernel.</li>
