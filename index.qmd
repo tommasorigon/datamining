@@ -26,9 +26,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-
-
-
 This is the website of the **Data Mining** course (6 CFU) of the "*Corso
 di Laurea Magistrale in Scienze Statistiche ed Economiche* (CLAMSES)",
 Università degli Studi di Milano-Bicocca.
