@@ -338,7 +338,7 @@ D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\be
 </ul>
 <div class="fragment">
 <ul>
-<li><p>The quantity <span class="math inline">D(\hat{\beta})</span> is the so-called <span class="blue">deviance</span>, which is equal to <span class="math display">
+<li><p>The quantity <span class="math inline">D(\hat{\beta})</span> is the so-called residual <span class="blue">deviance</span>, which is equal to <span class="math display">
 D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{H})\bm{y}.
 </span></p></li>
 <li><p>Moreover, a typical estimate for the <span class="orange">residual variance</span> <span class="math inline">\sigma^2</span> is obtained as follows: <span class="math display">
@@ -1201,12 +1201,12 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <h2>Linear models with Gaussian errors</h2>
 <ul>
 <li class="fragment"><p>When <span class="math inline">Y_i</span> are Gaussian random variables, then the log-likelihood is <span class="math display">
-\ell(\beta, \sigma^2) = -\frac{n}{2}\log{\sigma^2} - \frac{1}{\sigma^2}D(\beta),
+\ell(\beta, \sigma^2) = -\frac{n}{2}\log{\sigma^2} - \frac{1}{2\sigma^2}D(\beta),
 </span> where <span class="math inline">D(\beta)</span> is the same quantity we have defined before.</p></li>
 <li class="fragment"><p>Hence, the <span class="blue">ordinary least squares</span> estimate <span class="math inline">\hat{\beta}</span> is also the <span class="orange">maximum likelihood</span> estimate. Indeed, the maximizer of the log-likelihood with respect to <span class="math inline">\beta</span> is also the minimizer of <span class="math inline">D(\beta)</span>.</p></li>
 <li class="fragment"><p>Instead, the maximum likelihood estimate for the variance is <span class="math inline">\hat{\sigma}^2 = D(\hat{\beta}) / n</span>.</p></li>
 <li class="fragment"><p>Note in addition that the log-likelihood, evaluated at its maximum, is <span class="math display">
--2 \ell(\hat{\beta},\hat{\sigma}^2) =  n \log\{D(\beta)/n\} + n,
+-2 \ell(\hat{\beta},\hat{\sigma}^2) =  n \log\{D(\hat{\beta})/n\} + n,
 </span> a quantity that will turn useful in <a href="un_B.html">Unit B</a>.</p></li>
 </ul>
 </section>

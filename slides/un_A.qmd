@@ -284,7 +284,7 @@ estimate]{.orange} has an explicit solution: $$
 
 . . .
 
--   The quantity $D(\hat{\beta})$ is the so-called [deviance]{.blue},
+-   The quantity $D(\hat{\beta})$ is the so-called residual [deviance]{.blue},
     which is equal to $$
     D(\hat{\beta}) = ||\bm{y} - \hat{\bm{y}}||^2 = \bm{y}^T(I_n - \bm{H})\bm{y}.
     $$
@@ -1289,7 +1289,7 @@ $$ where $g(\cdot)$ is the so-called [link function]{.orange}, which is known an
 ::: incremental
 -   When $Y_i$ are Gaussian random variables, then the log-likelihood is
     $$
-    \ell(\beta, \sigma^2) = -\frac{n}{2}\log{\sigma^2} - \frac{1}{\sigma^2}D(\beta),
+    \ell(\beta, \sigma^2) = -\frac{n}{2}\log{\sigma^2} - \frac{1}{2\sigma^2}D(\beta),
     $$ where $D(\beta)$ is the same quantity we have defined
     before.
 
@@ -1303,7 +1303,7 @@ $$ where $g(\cdot)$ is the so-called [link function]{.orange}, which is known an
 
 -   Note in addition that the log-likelihood, evaluated at its maximum,
     is $$
-    -2 \ell(\hat{\beta},\hat{\sigma}^2) =  n \log\{D(\beta)/n\} + n,
+    -2 \ell(\hat{\beta},\hat{\sigma}^2) =  n \log\{D(\hat{\beta})/n\} + n,
     $$ a quantity that will turn useful in [Unit B](un_B.html).
 :::
 
