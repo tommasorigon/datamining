@@ -1166,7 +1166,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <ul>
 <li><p>If the outcome is binary, a count, or if the errors are heteroscedastic, then the Gaussian linear regression model might be inappropriate.</p></li>
 <li><p>We let <span class="math inline">Y_i</span> be iid draws from an <span class="blue">exponentialy dispersion family</span>, which includes the Binomial, the Poisson, and the Gaussian distribution as special cases.</p></li>
-<li><p>The canonical statistical solution are <span class="orange">generalized linear models</span>, which are usually taught in undergraduate courses (e.g.&nbsp;Statistica III). This is just a <span class="orange">short recap</span>.</p></li>
+<li><p>The canonical statistical solution are <span class="orange">generalized linear models</span>, which are usually taught in undergraduate courses (e.g.&nbsp;<a href="https://tommasorigon.github.io/StatIII/">Statistica III</a>). This is just a <span class="orange">short recap</span>.</p></li>
 </ul>
 <div class="fragment">
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
@@ -1176,8 +1176,8 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 </div>
 <div class="callout-content">
 <p>In a <span class="blue">generalized linear model</span>, the response variable is related to the covariates through: <span class="math display">
-\mathbb{E}(Y_i) = g\{f(\bm{x}_i; \beta)\} = g(\beta_1 x_{i1} + \cdots + \beta_p x_{ip}) = g(\bm{x}_i^T\beta),
-</span> where <span class="math inline">g^{-1}(\cdot)</span> is the so-called <span class="orange">link function</span>, which is known and invertible.</p>
+\mathbb{E}(Y_i) = g^{-1}\{f(\bm{x}_i; \beta)\} = g^{-1}(\beta_1 x_{i1} + \cdots + \beta_p x_{ip}) = g^{-1}(\bm{x}_i^T\beta),
+</span> where <span class="math inline">g(\cdot)</span> is the so-called <span class="orange">link function</span>, which is known and invertible.</p>
 </div>
 </div>
 </div>
@@ -1216,7 +1216,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <li class="fragment"><p>The <code>heart</code> dataset presents a <span class="blue">classification</span> problem, in which we assume that <span class="math display">
 Y_i \overset{\text{ind}}{\sim} \text{Bern}\{p(\bm{x}_i; \beta)\}, \qquad i=1,\dots,n.
 </span></p></li>
-<li class="fragment"><p>The <span class="blue">canonical link</span> function <span class="math inline">g(x) = e^x / (1 + e^{x})</span> leads to the GLM <span class="math display">
+<li class="fragment"><p>The <span class="blue">canonical link</span> function <span class="math inline">g^{-1}(x) = e^x / (1 + e^{x})</span> leads to the GLM <span class="math display">
 \mathbb{P}(Y_i = 1)= p(\bm{x}_i; \beta) = \frac{\exp\{f(\bm{x}_i; \beta)\}}{1 + \exp\{f(\bm{x}_i; \beta)\}} = \frac{\exp(\beta_1 x_{i1} + \cdots + \beta_p x_{ip})}{1 + \exp(\beta_1 x_{i1} + \cdots + \beta_p x_{ip})},
 </span> known as <span class="orange">logistic regression</span>. Note that in this model <span class="math inline">\mathbb{E}(Y_i) = \mathbb{P}(Y_i = 1)</span>.</p></li>
 <li class="fragment"><p>After some algebra, it can be shown that the log-likelihood is <span class="math display">

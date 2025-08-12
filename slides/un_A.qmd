@@ -1247,7 +1247,7 @@ p0
 
 -   The canonical statistical solution are [generalized linear
     models]{.orange}, which are usually taught in undergraduate courses
-    (e.g. Statistica III). This is just a [short recap]{.orange}.
+    (e.g. [Statistica III](https://tommasorigon.github.io/StatIII/)). This is just a [short recap]{.orange}.
 
 . . .
 
@@ -1256,9 +1256,8 @@ p0
 
 In a [generalized linear model]{.blue}, the response variable is related
 to the covariates through: $$
-\mathbb{E}(Y_i) = g\{f(\bm{x}_i; \beta)\} = g(\beta_1 x_{i1} + \cdots + \beta_p x_{ip}) = g(\bm{x}_i^T\beta),
-$$ where $g^{-1}(\cdot)$ is the so-called [link function]{.orange},
-which is known and invertible.
+\mathbb{E}(Y_i) = g^{-1}\{f(\bm{x}_i; \beta)\} = g^{-1}(\beta_1 x_{i1} + \cdots + \beta_p x_{ip}) = g^{-1}(\bm{x}_i^T\beta),
+$$ where $g(\cdot)$ is the so-called [link function]{.orange}, which is known and invertible.
 :::
 
 ## Likelihood-based inference
@@ -1316,7 +1315,7 @@ which is known and invertible.
     Y_i \overset{\text{ind}}{\sim} \text{Bern}\{p(\bm{x}_i; \beta)\}, \qquad i=1,\dots,n.
     $$
 
--   The [canonical link]{.blue} function $g(x) = e^x / (1 + e^{x})$
+-   The [canonical link]{.blue} function $g^{-1}(x) = e^x / (1 + e^{x})$
     leads to the GLM $$
     \mathbb{P}(Y_i = 1)= p(\bm{x}_i; \beta) = \frac{\exp\{f(\bm{x}_i; \beta)\}}{1 + \exp\{f(\bm{x}_i; \beta)\}} = \frac{\exp(\beta_1 x_{i1} + \cdots + \beta_p x_{ip})}{1 + \exp(\beta_1 x_{i1} + \cdots + \beta_p x_{ip})},
     $$ known as [logistic regression]{.orange}. Note that in this model
