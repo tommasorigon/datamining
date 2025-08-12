@@ -1290,8 +1290,8 @@ $$ where $g(\cdot)$ is the so-called [link function]{.orange}, which is known an
 -   When $Y_i$ are Gaussian random variables, then the log-likelihood is
     $$
     \ell(\beta, \sigma^2) = -\frac{n}{2}\log{\sigma^2} - \frac{1}{\sigma^2}D(\beta),
-    $$ where $D(\beta)$ is the same quantity we have [defined
-    before](/#/linear-regression-estimation-i).
+    $$ where $D(\beta)$ is the same quantity we have defined
+    before.
 
 -   Hence, the [ordinary least squares]{.blue} estimate $\hat{\beta}$ is
     also the [maximum likelihood]{.orange} estimate. Indeed, the

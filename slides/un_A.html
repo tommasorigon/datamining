@@ -1299,7 +1299,7 @@ Generalized linear model (GLMs)
 <ul class="incremental">
 <li><p>When <span class="math inline">Y_i</span> are Gaussian random variables, then the log-likelihood is <span class="math display">
 \ell(\beta, \sigma^2) = -\frac{n}{2}\log{\sigma^2} - \frac{1}{\sigma^2}D(\beta),
-</span> where <span class="math inline">D(\beta)</span> is the same quantity we have <a href="./#/linear-regression-estimation-i">defined before</a>.</p></li>
+</span> where <span class="math inline">D(\beta)</span> is the same quantity we have defined before.</p></li>
 <li><p>Hence, the <span class="blue">ordinary least squares</span> estimate <span class="math inline">\hat{\beta}</span> is also the <span class="orange">maximum likelihood</span> estimate. Indeed, the maximizer of the log-likelihood with respect to <span class="math inline">\beta</span> is also the minimizer of <span class="math inline">D(\beta)</span>.</p></li>
 <li><p>Instead, the maximum likelihood estimate for the variance is <span class="math inline">\hat{\sigma}^2 = D(\hat{\beta}) / n</span>.</p></li>
 <li><p>Note in addition that the log-likelihood, evaluated at its maximum, is <span class="math display">
