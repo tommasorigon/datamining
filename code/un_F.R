@@ -42,7 +42,7 @@ library(gratia)
 data_plot <- smooth_estimates(m_gam, smooth = "s(Longitude)")
 
 ggplot(data = data_plot, aes(x = Longitude, y = .estimate)) +
-  geom_line(linewidth = 1, col = "#1170aa") +
+  geom_line(linewidth = 1, col = "#3232AA") +
   geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Longitude, y = `s(Longitude)`), size = 0.7) +
   theme_minimal() +
   xlab("Longitude of the sampling position") +
@@ -51,7 +51,7 @@ ggplot(data = data_plot, aes(x = Longitude, y = .estimate)) +
 data_plot <- smooth_estimates(m_gam, smooth = "s(Latitude)")
 
 ggplot(data = data_plot, aes(x = Latitude, y = .estimate)) +
-  geom_line(linewidth = 1, col = "#1170aa") +
+  geom_line(linewidth = 1, col = "#3232AA") +
   geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Latitude, y = `s(Latitude)`), size = 0.7) +
   theme_minimal() +
   xlab("Latitude of the sampling position") +
@@ -60,7 +60,7 @@ ggplot(data = data_plot, aes(x = Latitude, y = .estimate)) +
 data_plot <- smooth_estimates(m_gam, smooth = "s(Depth)")
 
 ggplot(data = data_plot, aes(x = Depth, y = .estimate)) +
-  geom_line(linewidth = 1, col = "#1170aa") +
+  geom_line(linewidth = 1, col = "#3232AA") +
   geom_point(data = add_partial_residuals(m_gam, data = trawl_train), aes(x = Depth, y = `s(Depth)`), size = 0.7) +
   theme_minimal() +
   xlab("Depth of the sampling position") +
