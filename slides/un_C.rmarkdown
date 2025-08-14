@@ -173,7 +173,7 @@ ggcorrplot(corr,
   hc.order = FALSE,
   outline.col = "white",
   ggtheme = ggplot2::theme_bw,
-  colors = c("#FF8C00", "white", "#3232AA")
+  colors = c("#fc7d0b", "white", "#1170aa")
 )
 ```
 
@@ -405,8 +405,8 @@ ggplot(data = data_best_subset, aes(x = p, y = value)) +
   geom_point() +
   theme_light() +
   theme(legend.position = "top") +
-  geom_line(data = data_best_subset2, aes(x = p, y = MSE), col = "#FF8C00") +
-  geom_point(data = data_best_subset2, aes(x = p, y = MSE), col = "#FF8C00", size = 1.5) +
+  geom_line(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b") +
+  geom_point(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b", size = 1.5) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Number of covariates") +
   ylab("Mean squared error (training)")
@@ -1260,18 +1260,18 @@ points <- data.frame(
 )
 
 ggplot() +
-  geom_circle(aes(x0 = 0, y0 = 0, r = 2), color = "#FF8C00", fill = "#FF8C00") +
-  geom_ellipse(aes(x0 = x0, y0 = y0, a = a, b = b, angle = angle), color = "#3232AA", data = ellipses) +
-  geom_point(aes(x = x, y = y), data = points, color = "#3232AA") +
+  geom_circle(aes(x0 = 0, y0 = 0, r = 2), color = "#fc7d0b", fill = "#fc7d0b") +
+  geom_ellipse(aes(x0 = x0, y0 = y0, a = a, b = b, angle = angle), color = "#1170aa", data = ellipses) +
+  geom_point(aes(x = x, y = y), data = points, color = "#1170aa") +
   theme_minimal() +
   geom_vline(xintercept = 0, linetype = "dotted") +
   geom_hline(yintercept = 0, linetype = "dotted") +
   xlab(expression(beta[1])) +
   ylab(expression(beta[2])) +
   coord_fixed() +
-  annotate("text", x = 5.4, y = 3.2, label = expression(hat(beta)[ols]), col = "#3232AA") +
-  annotate("text", x = -1, y = 2.5, label = expression(beta[1]^2 + beta[2]^2 == s), col = "#FF8C00") +
-  annotate("text", x = 1.7, y = 4.8, label = expression(sum((y[i] - x[i]^T * beta)^2, i == 1, n) == c), col = "#3232AA")
+  annotate("text", x = 5.4, y = 3.2, label = expression(hat(beta)[ols]), col = "#1170aa") +
+  annotate("text", x = -1, y = 2.5, label = expression(beta[1]^2 + beta[2]^2 == s), col = "#fc7d0b") +
+  annotate("text", x = 1.7, y = 4.8, label = expression(sum((y[i] - x[i]^T * beta)^2, i == 1, n) == c), col = "#1170aa")
 ```
 
 ## The ridge path
@@ -1963,18 +1963,18 @@ points <- data.frame(
 )
 
 ggplot() +
-  geom_rhombus(color = "#FF8C00", fill = "#FF8C00") +
-  geom_ellipse(aes(x0 = x0, y0 = y0, a = a, b = b, angle = angle), color = "#3232AA", data = ellipses) +
-  geom_point(aes(x = x, y = y), data = points, color = "#3232AA") +
+  geom_rhombus(color = "#fc7d0b", fill = "#fc7d0b") +
+  geom_ellipse(aes(x0 = x0, y0 = y0, a = a, b = b, angle = angle), color = "#1170aa", data = ellipses) +
+  geom_point(aes(x = x, y = y), data = points, color = "#1170aa") +
   theme_minimal() +
   geom_vline(xintercept = 0, linetype = "dotted") +
   geom_hline(yintercept = 0, linetype = "dotted") +
   xlab(expression(beta[1])) +
   ylab(expression(beta[2])) +
   coord_fixed() +
-  annotate("text", x = 2.9, y = 2.9, label = expression(hat(beta)[ols]), col = "#3232AA") +
-  annotate("text", x = 2, y = -0.5, label = expression(paste("|", beta[1], "|") + paste("|", beta[2], "|") == s), col = "#FF8C00") +
-  annotate("text", x = 5, y = 0.7, label = expression(sum((y[i] - x[i]^T * beta)^2, i == 1, n) == c), col = "#3232AA")
+  annotate("text", x = 2.9, y = 2.9, label = expression(hat(beta)[ols]), col = "#1170aa") +
+  annotate("text", x = 2, y = -0.5, label = expression(paste("|", beta[1], "|") + paste("|", beta[2], "|") == s), col = "#fc7d0b") +
+  annotate("text", x = 5, y = 0.7, label = expression(sum((y[i] - x[i]^T * beta)^2, i == 1, n) == c), col = "#1170aa")
 ```
 
 ## Lasso with a single predictor I
@@ -2700,7 +2700,7 @@ df$Z <- apply(df, 1, function(row) f(row))
 
 ggplot(data = df, aes(x = X, y = Y)) +
   theme_light() +
-  geom_contour(aes(z = Z), colour = "#3232AA", bins = 25) +
+  geom_contour(aes(z = Z), colour = "#1170aa", bins = 25) +
   geom_point(
     data = data.frame(
       X = c(m$par[1], -1.53),
@@ -2709,13 +2709,13 @@ ggplot(data = df, aes(x = X, y = Y)) +
     aes(x = X, y = Y), color = "black"
   ) +
   geom_segment(aes(x = -1.53, y = -2, xend = -1.53, yend = 1.5),
-    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#FF8C00"
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
   ) +
   geom_segment(aes(x = -1.53, y = 1.5, xend = m$par[1], yend = 1.5),
-    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#FF8C00"
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
   ) +
   geom_segment(aes(x = m$par[1], y = 1.5, xend = m$par[1], yend = m$par[2]),
-    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#FF8C00"
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
   ) +
   labs(x = expression(beta[1]), y = expression(beta[2])) +
   theme_minimal() +

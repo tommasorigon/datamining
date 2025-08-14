@@ -1,22 +1,21 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="un_F_files/libs/clipboard/clipboard.min.js"></script>
-<script src="un_F_files/libs/quarto-html/tabby.min.js"></script>
-<script src="un_F_files/libs/quarto-html/popper.min.js"></script>
-<script src="un_F_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="un_F_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="un_F_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="un_F_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="un_F_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.5.56">
+<script src="un_G_files/libs/clipboard/clipboard.min.js"></script>
+<script src="un_G_files/libs/quarto-html/tabby.min.js"></script>
+<script src="un_G_files/libs/quarto-html/popper.min.js"></script>
+<script src="un_G_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="un_G_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="un_G_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="un_G_files/libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.32">
 
   <meta name="author" content="Tommaso Rigon">
-  <title>Additive models</title>
+  <title>Frequently Asked Questions</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="un_F_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="un_F_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="un_G_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="un_G_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -30,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="un_F_files/libs/revealjs/dist/theme/quarto.css">
+  <link rel="stylesheet" href="un_G_files/libs/revealjs/dist/theme/quarto-a0c0cc41185901f99e5862491b9a6885.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -47,208 +46,10 @@
 }}});
   </script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
-  <link href="un_F_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="un_F_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="un_F_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="un_F_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
-
-  .callout {
-    margin-top: 1em;
-    margin-bottom: 1em;  
-    border-radius: .25rem;
-  }
-
-  .callout.callout-style-simple { 
-    padding: 0em 0.5em;
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-    display: flex;
-  }
-
-  .callout.callout-style-default {
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-  }
-
-  .callout .callout-body-container {
-    flex-grow: 1;
-  }
-
-  .callout.callout-style-simple .callout-body {
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-style-default .callout-body {
-    font-size: 0.9rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-titled.callout-style-simple .callout-body {
-    margin-top: 0.2em;
-  }
-
-  .callout:not(.callout-titled) .callout-body {
-      display: flex;
-  }
-
-  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
-    padding-left: 1.6em;
-  }
-
-  .callout.callout-titled .callout-header {
-    padding-top: 0.2em;
-    margin-bottom: -0.2em;
-  }
-
-  .callout.callout-titled .callout-title  p {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-    
-  .callout.callout-titled.callout-style-simple .callout-content  p {
-    margin-top: 0;
-  }
-
-  .callout.callout-titled.callout-style-default .callout-content  p {
-    margin-top: 0.7em;
-  }
-
-  .callout.callout-style-simple div.callout-title {
-    border-bottom: none;
-    font-size: .9rem;
-    font-weight: 600;
-    opacity: 75%;
-  }
-
-  .callout.callout-style-default  div.callout-title {
-    border-bottom: none;
-    font-weight: 600;
-    opacity: 85%;
-    font-size: 0.9rem;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-default div.callout-content {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-simple .callout-icon::before {
-    height: 1rem;
-    width: 1rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 1rem 1rem;
-  }
-
-  .callout.callout-style-default .callout-icon::before {
-    height: 0.9rem;
-    width: 0.9rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 0.9rem 0.9rem;
-  }
-
-  .callout-title {
-    display: flex
-  }
-    
-  .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  .callout.no-icon::before {
-    display: none !important;
-  }
-
-  .callout.callout-titled .callout-body > .callout-content > :last-child {
-    padding-bottom: 0.5rem;
-    margin-bottom: 0;
-  }
-
-  .callout.callout-titled .callout-icon::before {
-    margin-top: .5rem;
-    padding-right: .5rem;
-  }
-
-  .callout:not(.callout-titled) .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  /* Callout Types */
-
-  div.callout-note {
-    border-left-color: #4582ec !important;
-  }
-
-  div.callout-note .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
-  }
-
-  div.callout-note.callout-style-default .callout-title {
-    background-color: #dae6fb
-  }
-
-  div.callout-important {
-    border-left-color: #d9534f !important;
-  }
-
-  div.callout-important .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-important.callout-style-default .callout-title {
-    background-color: #f7dddc
-  }
-
-  div.callout-warning {
-    border-left-color: #f0ad4e !important;
-  }
-
-  div.callout-warning .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-warning.callout-style-default .callout-title {
-    background-color: #fcefdc
-  }
-
-  div.callout-tip {
-    border-left-color: #02b875 !important;
-  }
-
-  div.callout-tip .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-tip.callout-style-default .callout-title {
-    background-color: #ccf1e3
-  }
-
-  div.callout-caution {
-    border-left-color: #fd7e14 !important;
-  }
-
-  div.callout-caution .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
-  }
-
-  div.callout-caution.callout-style-default .callout-title {
-    background-color: #ffe5d0
-  }
-
-  </style>
+  <link href="un_G_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="un_G_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="un_G_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="un_G_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -342,7 +143,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Additive models</h1>
+  <h1 class="title">Frequently Asked Questions</h1>
   <p class="subtitle">Data Mining - CdL CLAMSES</p>
 
 <div class="quarto-title-authors">
@@ -360,1025 +161,209 @@
 <section id="homepage" class="slide level2 center">
 <h2><a href="../index.html">Homepage</a></h2>
 <div class="columns">
-<div class="column" style="width:35%;">
+<div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="img/reef.jpg" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
+<p><img data-src="img/russell.jpg" class="quarto-figure quarto-figure-center" style="width:60.0%"></p>
 </figure>
 </div>
-<div style="font-size: 90%;">
-<p>The <a href="https://en.wikipedia.org/wiki/Great_Barrier_Reef">Great Barrier Reef</a></p>
+<div style="font-size: 80%;">
+<p>“<em>The whole problem with the world is that fools and fanatics are always so certain of themselves, and wiser people so full of doubts.</em>”</p>
+<p><span class="grey">Bertrand Russell</span></p>
 </div>
-</div><div class="column" style="width:65%;">
+</div><div class="column" style="width:50%;">
 <ul>
-<li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
-<ul>
-<li>Generalized additive models (GAMs)</li>
-<li>Multivariate Adaptive Regression Splines (MARS)</li>
-</ul></li>
-<li><p>We have seen that <span class="blue">fully nonparametric</span> methods are plagued by the <span class="orange">curse of dimensionality</span>.</p></li>
-<li><p>GAMs and MARS are <span class="blue">semi-parametric</span> approaches that keep the model complexity under control so that:</p>
-<ul>
-<li>they are more flexible than linear models;</li>
-<li>they are not hugely impacted by the curse of dimensionality.</li>
-</ul></li>
-<li><p>The running example is about <span class="orange">trawl data</span> from the <span class="blue">Great Barrier Reef</span>.</p></li>
+<li><p>This is not a normal unit and has a more dynamic nature.</p></li>
+<li><p>I will collect here <span class="blue">interesting</span> questions made by students over the years.</p></li>
+<li><p>The questions are organized by topic, but some overlap will occur.</p></li>
+<li><p>Hopefully, this unit will form the basis of a <span class="orange">statistical culture</span>.</p></li>
+<li><p>Indeed, it is based on the knowledge of several statisticians.</p></li>
 </ul>
 </div></div>
 </section>
-<section>
-<section id="an-ecological-application" class="title-slide slide level1 center">
-<h1>An ecological application</h1>
-
-</section>
-<section id="the-trawl-dataset" class="slide level2 center">
-<h2>The <code>trawl</code> dataset</h2>
-<div>
-<ul>
-<li class="fragment"><p>We consider the <code>trawl</code> dataset, which refers to a <span class="blue">survey</span> of the <span class="blue">fauna</span> on the sea bed lying between the coast of northern Queensland and the <span class="orange">Great Barrier Reef</span>.</p></li>
-<li class="fragment"><p>The <span class="blue">response</span> variable is <code>Score</code>, which is a standardized numeric quantity measuring the amount of fishes caught on a given location.</p></li>
-<li class="fragment"><p>We want to <span class="blue">predict</span> the <span class="orange">catch score</span>, as a function of a few covariates:</p>
-<ul>
-<li class="fragment">the <code>Latitude</code> and <code>Longitude</code> of the sampling position. The longitude can be seen as a proxy of the distance from the coast in this specific experiment;</li>
-<li class="fragment">the <code>Depth</code> of the sea on the sampling position;</li>
-<li class="fragment">the <code>Zone</code> of the sampling region, either open or closed to <span class="blue">commercial fishing</span>;</li>
-<li class="fragment">the <code>Year</code> of the sampling, which can be either <code>1992</code> or <code>1993</code>.</li>
-</ul></li>
-<li class="fragment"><p>Having remove a few observations due to missingness, we split the data into <span class="blue">training</span> (119 obs.) and <span class="orange">test</span> set (30 obs.). The full <code>trawl</code> dataset is available in the <code>sm</code> R package.</p></li>
-</ul>
-</div>
-</section>
-<section id="the-trawl-dataset-1" class="slide level2 center">
-<h2>The <code>trawl</code> dataset</h2>
-<div class="flourish-embed flourish-map" data-src="visualisation/15070357">
-<script src="https://public.flourish.studio/resources/embed.js"></script>
-</div>
-</section>
-<section id="getting-started-linear-models" class="slide level2 center">
-<h2>Getting started: linear models</h2>
-<ul>
-<li><p>Let begin our analysis by trying to predict the <code>Score</code> using a <span class="orange">linear model</span> of the form <span class="math display">
-y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
-</span></p></li>
-<li><p>The above values correspond to the variables of the <code>trawl</code> dataset, so that <span class="math display">
-\begin{aligned}
-\texttt{Score}_i = \beta_0 &amp;+ \beta_1 \texttt{Latitude}_i + \beta_2 \texttt{Longitude}_i + \\
-&amp;+ \beta_3\texttt{Depth}_i + \beta_4 I(\texttt{Zone}_i = \texttt{Closed}) + \beta_5 I(\texttt{Year}_i = \texttt{1993}).
-\end{aligned}
-</span></p></li>
-<li><p>Such a model can be estimated using <span class="orange">ordinary least squares</span>, resulting in:</p></li>
-</ul>
-<div style="font-size: 75%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">statistic</th>
-<th style="text-align: right;">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><code>(Intercept)</code></td>
-<td style="text-align: right;">297.690</td>
-<td style="text-align: right;">26.821</td>
-<td style="text-align: right;">11.099</td>
-<td style="text-align: right;">0.000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>Latitude</code></td>
-<td style="text-align: right;">0.256</td>
-<td style="text-align: right;">0.222</td>
-<td style="text-align: right;">1.151</td>
-<td style="text-align: right;">0.252</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><code>Longitude</code></td>
-<td style="text-align: right;">-2.054</td>
-<td style="text-align: right;">0.187</td>
-<td style="text-align: right;">-10.955</td>
-<td style="text-align: right;">0.000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>Depth</code></td>
-<td style="text-align: right;">0.020</td>
-<td style="text-align: right;">0.007</td>
-<td style="text-align: right;">3.003</td>
-<td style="text-align: right;">0.003</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><code>Zone_Closed</code></td>
-<td style="text-align: right;">-0.116</td>
-<td style="text-align: right;">0.102</td>
-<td style="text-align: right;">-1.143</td>
-<td style="text-align: right;">0.255</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>Year_1993</code></td>
-<td style="text-align: right;">0.127</td>
-<td style="text-align: right;">0.103</td>
-<td style="text-align: right;">1.242</td>
-<td style="text-align: right;">0.217</td>
-</tr>
-</tbody>
-</table>
-</div>
-</section>
-<section id="scatterplot-with-loess-estimate" class="slide level2 center">
-<h2>Scatterplot with <code>loess</code> estimate</h2>
-
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
-<section id="comments-and-cricism-of-linear-models" class="slide level2 center">
-<h2>Comments and cricism of linear models</h2>
-<ul>
-<li>Is this a good model?</li>
-</ul>
-<div class="fragment">
-<ul>
-<li>Granted that every model is just an approximation of reality, it is undeniable that there are some <span class="orange">problematic</span> aspects.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>By simple graphical inspection, it seems that the relationship between <code>Score</code> and <code>Longitude</code> is <span class="orange">non-linear</span>.</p></li>
-<li><p>Also, an <span class="blue">interaction effect</span> between <code>Year</code> and <code>Longitude</code> could be present.</p></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>These considerations support the idea that a <span class="blue">nonparametric approach</span> might be more appropriate.</p></li>
-<li><p>However, the number of covariates is <span class="math inline">p = 5</span> and therefore a fully nonparametric estimation would <span class="orange">not</span> be <span class="orange">feasible</span>, because of the curse of dimensionality.</p></li>
-<li><p>We need a simplified modelling strategy, that accounts for non-linearities but at the same time is not fully flexible.</p></li>
-</ul>
-</div>
-</section></section>
-<section>
-<section id="generalized-additive-models-gam" class="title-slide slide level1 center">
-<h1>Generalized additive models (GAM)</h1>
-
-</section>
-<section id="the-anova-decomposition-of-a-function" class="slide level2 center">
-<h2>The ANOVA decomposition of a function</h2>
-<ul>
-<li>We seek for an estimate of (a suitable transformation of) the <span class="blue">mean function</span>, namely <span class="math display">
-g^{-1}\{\mathbb{E}(Y_i)\} = f(x_{i1},\dots,x_{ip}),
-</span> where <span class="math inline">g^{-1}(\cdot)</span> is the so-called <span class="orange">link function</span>.</li>
-</ul>
-<div class="fragment">
-<ul>
-<li>The <span class="orange">unknown</span> multivariate function <span class="math inline">f(\bm{x}) = f(x_1,\dots,x_p) : \mathbb{R}^p \rightarrow \mathbb{R}</span> is <span class="orange">too complex</span>. However, the following <span class="blue">decomposition</span> holds <span class="math display">
-f(\bm{x}) = \beta_0 + \underbrace{\sum_{j=1}^p f_j(x_j)}_{\text{Main effect}} + \underbrace{\sum_{j=1}^p\sum_{k &lt; j}f_{jk}(x_j, x_k)}_{\text{Interaction effect}} + \underbrace{\sum_{j=1}^p\sum_{k &lt; j}\sum_{h &lt; k &lt; j}f_{jkh}(x_j, x_k, x_h)}_{\text{Higher order interaction}} + \cdots.
-</span></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>By imposing <span class="blue">suitable constraints</span>, this decomposition can be made <span class="orange">unique</span>.</p></li>
-<li><p>More importantly, this decomposition gives us an intuition on how to build non-linear models with a simplified structure.</p></li>
-</ul>
-</div>
-</section>
-<section id="generalized-additive-models-gam-1" class="slide level2 center">
-<h2>Generalized additive models (GAM)</h2>
-<ul>
-<li>A <span class="blue">generalized additive model</span> (GAM) presumes a representation of the following type: <span class="math display">
-f(\bm{x}_i) = \beta_0 + f_1(x_{i1}) + \cdots + f_p(x_{ip}) = \beta_0 + \sum_{j=1}^pf_j(x_{ij}), \qquad i=1,\dots,n,
-</span> where <span class="math inline">f_1,\dots,f_p</span> are <span class="orange">smooth univariate</span> functions with a potentially non-linear behavior.</li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>In GAMs we include only the <span class="blue">main effects</span> and we <span class="orange">exclude</span> the <span class="orange">interactions</span> terms.</p></li>
-<li><p>Generalized linear models (GLMs) are a <span class="orange">special case</span> of GAMs, in which <span class="math inline">f_j(x_{ij}) = \beta_j x_{ij}</span>.</p></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>To avoid what is essentially a problem of <span class="blue">model identifiability</span>, it is necessary for the various <span class="math inline">f_j</span> to be centered around <span class="math inline">0</span>, that is <span class="math display">
-\sum_{i=1}^n f_j(x_{ij}) = 0, \qquad j=1,\dots,p.
-</span></li>
-</ul>
-</div>
-</section>
-<section id="the-backfitting-algorithm-i" class="slide level2 center">
-<h2>The backfitting algorithm I</h2>
-<ul>
-<li>There exist several strategies for <span class="orange">estimating</span> the <span class="orange">unknown functions</span> <span class="math inline">f_1,\dots,f_p</span>. One of them, called <span class="blue">backfitting</span>, is particularly appealing because of its elegance and generality.</li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>Suppose we model each <span class="math inline">f_j(x) = \sum_{m = 1}^{M_j}\beta_{mj} h_{mj}(x)</span> with a <span class="orange">basis expansion</span>, for example using <span class="blue">regression splines</span>.</p></li>
-<li><p>In a <span class="orange">regression problem</span> we need to minimize, over the unknown <span class="math inline">\beta</span> parameters, the loss <span class="math display">
-\sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_{ij})\right\}^2
-</span> subject to the constraint <span class="math inline">\sum_{i=1}^n f_j(x_{ij}) = 0</span>.</p></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>When <span class="math inline">f_j</span> are regression splines, the above loss can be <span class="orange">minimized</span> using <span class="orange">least squares</span>. The identifiability issue could be handled by removing the intercept term from each spline basis.</p></li>
-<li><p>However, here we consider an <span class="orange">alternative</span> and <span class="blue">iterative</span> minimization method, which is similar to the coordinate descent algorithm we employed for the elastic-net.</p></li>
-</ul>
-</div>
-</section>
-<section id="the-backfitting-algorithm-ii" class="slide level2 center">
-<h2>The backfitting algorithm II</h2>
-<ul>
-<li>Now, let us re-arrange the term in the squared loss as follows: <span class="math display">
-  \sum_{i=1}^n\left\{\textcolor{red}{y_i - \beta_0 - \sum_{k\neq j}f_k(x_{ik})} - f_j(x_{ij})\right\}^2,
-</span> where the highlighted terms are sometimes called <span class="blue">partial residuals</span>.</li>
-</ul>
-<div class="fragment">
-<!-- - If all the functions but the $j$th were known, the estimation would reduce to a [univariate nonparametric smoothing]{.orange} of the $j$th covariate using the partial residuals as response. -->
-<ul>
-<li>Hence, we can repeatedly and iteratively fit a <span class="blue">univariate smoothing</span> model for <span class="math inline">f_j</span> using the <span class="orange">partial residuals</span> as <span class="orange">response</span>, keeping fixed the value of the other functions <span class="math inline">f_k</span>, for <span class="math inline">k \neq j</span>.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>This algorithm produces the same fit of least squares when <span class="math inline">f_j</span> are regression splines, but the idea is appealing because it can be used with any <span class="blue">generic smoothers</span> <span class="math inline">\mathcal{S}_j</span>.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>Finally, note that under the constraint <span class="math inline">\sum_{i=1}^n f_j(x_{ij}) = 0</span> the least square estimate for the <span class="orange">intercept</span> term is <span class="math inline">\hat{\beta}_0 = \bar{y}</span>, i.e.&nbsp;the arithmetic mean.</li>
-</ul>
-</div>
-</section>
-<section id="the-backfitting-algorithm-regression" class="slide level2 center">
-<h2>The backfitting algorithm (regression)</h2>
+<section id="the-modeling-process" class="title-slide slide level1 center">
+<h1>The modeling process</h1>
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>The backfitting algorithm for additive regression models</strong></p>
+<p><strong>What to do when different estimators lead to dissimilar conclusions?</strong></p>
 </div>
 <div class="callout-content">
-<ol type="1">
-<li><p>Initialize <span class="math inline">\hat{\beta}_0 = \bar{y}</span> and set <span class="math inline">f_j(x_j) = 0</span>, for <span class="math inline">j=1,\dots,p</span>.</p></li>
-<li><p>Cycle <span class="math inline">j =1,\dots,p</span>, <span class="math inline">j =1,\dots,p</span>, <span class="math inline">\dots</span>, until <span class="orange">convergence</span>:</p>
-<ol type="i">
-<li><p>Update the <span class="math inline">k</span>th function by smoothing via <span class="math inline">\mathcal{S}_j</span> the <span class="blue">partial residuals</span>, so that <span class="math display">
-\hat{f}_j(x) \leftarrow \mathcal{S}_j\left[\left\{x_{ij}, y_i - \hat{\beta}_0 - \sum_{k \neq j} \hat{f}_k(x_{ik})\right\}_{i=1}^n\right].
-</span></p></li>
-<li><p>Center the function by subtracting its mean <span class="math display">
-\hat{f}_j(x) \leftarrow \hat{f}_j(x) - \frac{1}{n}\sum_{i=1}^n\hat{f}_j(x_{ij}).
-</span></p></li>
-</ol></li>
-</ol>
-</div>
-</div>
-</div>
-</section>
-<section id="backfitting-comments-and-considerations" class="slide level2 center">
-<h2>Backfitting: comments and considerations</h2>
 <ul>
-<li><p>The backfitting algorithm, when <span class="math inline">f_j</span> are modeled as <span class="blue">regression splines</span>, is known as “Gauss-Seidel”. The <span class="orange">convergence</span> is <span class="orange">guaranteed</span> under standard conditions.</p></li>
-<li><p>Interestingly, even when <span class="math inline">\mathcal{S}_j</span> are <span class="blue">smoothing splines</span> the <span class="orange">convergence</span> of backfitting is <span class="orange">guaranteed</span>; the proof for this statement is less straightforward.</p></li>
-</ul>
-<div class="fragment">
-<ul>
-<li>In general, however, there is no theoretical guarantee that the algorithm will ever converge, even though the practical experience suggest that this is <span class="orange">not</span> a <span class="orange">big concern</span>.</li>
+<li><p>Well, it happens all the time in applied statistics. It even occurs in Statistics I!</p></li>
+<li><p>For example, you might get slightly different values (or even opposite signs) when looking at the estimated regression coefficients <span class="math inline">\hat{\beta}_\text{ols}</span>, <span class="math inline">\hat{\beta}_\text{pcr}</span>, <span class="math inline">\hat{\beta}_\text{ridge}</span>.</p></li>
+<li><p>In linear models, do not assume the OLS estimator is “better” just because it is <span class="blue">unbiased</span>. Biased estimates are helpful if they lead to a (sufficiently high) <span class="orange">reduction of the variance</span>.</p></li>
+<li><p>In any event, remember these are, indeed, <span class="orange">estimates</span>! By definition, there will be some variability; therefore, the <span class="blue">discrepancies</span> might be due to random <span class="orange">fluctuations</span>.</p></li>
+<li><p>To choose among different estimates, we need a criterion (or a combination of criteria), such as the <span class="blue">predictive performance</span>. However, the out-of-sample error is <span class="orange">not</span> the only relevant aspect!</p></li>
+<li><p>There might be other considerations to keep in mind, including the <span class="blue">interpretability</span>, the <span class="orange">robustness</span> of the method, and the <span class="grey">computational complexity</span>.</p></li>
+<li><p>Whenever different estimates display some differences, try to see it as an <span class="blue">opportunity</span> to <span class="orange">learn something from the data</span>. What could be the reason for such a discrepancy? What tells us about the data we are analyzing?</p></li>
 </ul>
 </div>
-<div class="fragment">
-<ul>
-<li>When <span class="math inline">\mathcal{S}_j</span> is a <span class="orange">linear smoother</span> with smoothing matrix <span class="math inline">\bm{S}_j</span>, then by analogy with the previous unit we can define the <span class="blue">effective degrees of freedom</span> of <span class="math inline">\hat{f}_j</span> as <span class="math display">
-\text{df}_j = \text{tr}(\bm{S}_j).
-</span> The number of degrees of the whole model therefore is <span class="math inline">\text{df} = 1 + \sum_{j=1}^p \text{df}_j</span>.</li>
-</ul>
 </div>
-<div class="fragment">
-<ul>
-<li>A variant of backfitting for classification problems is available. Once again, relying on <span class="orange">quadratic approximations</span> of the log-likelihood allows for a generalization to GLMs.</li>
-</ul>
 </div>
-</section>
-<section id="the-backfitting-algorithm-classification" class="slide level2 center">
-<h2>The backfitting algorithm (classification)</h2>
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>Local scoring algorithm for additive logistic regression</strong></p>
-</div>
-<div class="callout-content">
-<ol type="1">
-<li><p>Initialize <span class="math inline">\hat{\beta}_0 = \text{logit}(\bar{y})</span> and set <span class="math inline">f_j(x_j) = 0</span>, for <span class="math inline">j=1,\dots,p</span>.</p></li>
-<li><p>Iterate <span class="orange">until convergence</span>:</p>
-<ol type="i">
-<li><p>Define the quantities <span class="math inline">\hat{\eta}_i = \hat{\beta}_0 + \sum_{j=1}^p\hat{f}_j(x_{ij})</span> and <span class="math inline">\hat{\pi}_i = \{1 + \exp(-\hat{\eta}_i)\}^{-1}</span>.</p></li>
-<li><p>Construct the <span class="orange">working response</span> <span class="math display">
-z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qquad i=1,\dots,n.
-</span></p></li>
-<li><p>Construct the <span class="orange">weights</span> <span class="math inline">w_i = \hat{\pi}_i(1 - \hat{\pi}_i)</span>, for <span class="math inline">i=1,\dots,n</span>.</p></li>
-<li><p>Use a <span class="blue">weighted backfitting</span> algorithm using the <span class="math inline">z_i</span> as responses, which produces a new set of estimates <span class="math inline">\hat{f}_1,\dots,\hat{f}_p</span>.</p></li>
-</ol></li>
-</ol>
-</div>
-</div>
-</div>
-</section>
-<section id="gam-using-penalized-splines" class="slide level2 center">
-<h2>GAM using penalized splines</h2>
-<ul>
-<li>A common special instance of GAM occurs when <span class="blue">smoothing splines</span> are employed. In the regression case, the <span class="orange">backfitting</span> algorithm implicitly minimizes the following <span class="orange">penalized loss</span> <span class="math display">
-\mathscr{L}(f_1,\dots,f_p; \lambda) = \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_j)\right\}^2 + \sum_{j=1}^p\lambda_j \int_{a_j}^{b_j}\{f''_j(t)\}^2\mathrm{d}t,
-</span> where <span class="math inline">\lambda = (\lambda_1,\dots,\lambda_p)</span> is a vector of <span class="blue">smoothing parameters</span>.</li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>Each <span class="math inline">f_j(x;\beta)</span> is a <span class="orange">natural cubic spline</span>, therefore the penalized least squares criterion is <span class="math display">
-\mathscr{L}(\beta; \lambda) = \sum_{i=1}^n\left\{y_i - \beta_0 - \sum_{j=1}^pf_j(x_j; \beta_j)\right\}^2 + \sum_{j=1}^p\lambda_j \beta_j^T\bm{\Omega}_j\beta_j,
-</span> whose joint <span class="blue">minimization</span> over <span class="math inline">\beta</span> is available in closed form.</p></li>
-<li><p>Hence, a <span class="orange">direct algorithm</span> that minimizes <span class="math inline">\mathscr{L}(\beta; \lambda)</span> is used instead of backfitting.</p></li>
-</ul>
-</div>
-</section>
-<section id="on-the-choice-of-smoothing-parameters" class="slide level2 center">
-<h2>On the choice of smoothing parameters</h2>
-<ul>
-<li><p>In GAMs there are <span class="math inline">p</span> <span class="orange">smoothing parameters</span> <span class="math inline">\lambda_1,\dots,\lambda_p</span> that must be selected. We can proceed in the usual way, e.g.&nbsp;considering the <span class="blue">generalized cross-validation</span> criteria: <span class="math display">
-\text{GCV}(\lambda_1,\dots,\lambda_p) = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - \text{df}/n}\right)^2.
-</span></p></li>
-<li><p>An alternative criterion in this context is the <span class="blue">REML</span> (Restricted Maximum Likelihood), which is the <span class="blue">marginal likelihood</span> of the corresponding <span class="orange">Bayesian model</span>.</p></li>
-</ul>
-<div class="fragment">
-<ul>
-<li>It is <span class="orange">not possible</span> to construct a <span class="orange">grid</span> of values for all the combinations of smoothing parameters <span class="math inline">\lambda_1,\dots,\lambda_p</span>, because the number of terms increases exponentially in <span class="math inline">p</span>.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>Hence, many software packages <span class="blue">numerically optimize</span> the <span class="math inline">\text{GCV}(\lambda_1,\dots,\lambda_p)</span>, or other information criteria, as a function of <span class="math inline">\lambda_1,\dots,\lambda_p</span>, using e.g. the Newton-Raphson method.</p></li>
-<li><p>Such an approach is particularly convenient in combination with <span class="orange">smoothing splines</span>, because the <span class="orange">derivatives</span> needed for Newton’s method are available in closed form.</p></li>
-</ul>
-</div>
-</section>
-<section id="gam-and-variable-selection" class="slide level2 center">
-<h2>GAM and variable selection</h2>
-<div>
-<ul>
-<li class="fragment"><p>When <span class="math inline">p</span> is large there is need to remove the potentially <span class="orange">irrelevant variables</span>. There exist several <span class="blue">variable selection</span> ideas for GAMs, but we will not cover the details here.</p></li>
-<li class="fragment"><p><span class="blue">Option 1</span>. <span class="orange">Stepwise regression</span>. Perhaps the simplest method, although it is not as efficient as in linear models because we cannot exploit the same computational tricks.</p></li>
-<li class="fragment"><p><span class="blue">Option 2</span>. <span class="orange">COSSO: Component Selection and Smoothing Operator</span> (Lin and Zhang, 2006). It’s an idea based on combining lasso-type penalties and GAMs.</p></li>
-<li class="fragment"><p><span class="blue">Option 3</span>. <span class="orange">SpAM: Sparse Additive Models</span> (Ravikumar, Liu, Lafferty and Wasserman, 2009). Similar to the above, but it exploits a variation of the non-negative garrote.</p></li>
-<li class="fragment"><p><span class="blue">Option 4</span>. <span class="orange">Double-penalty and shrinkage</span> (Marra and Wood, 2011). It acts on the penalty term of smoothing splines so that high-values of <span class="math inline">\lambda_1,\dots,\lambda_p</span> leads to constant functions.</p></li>
-<li class="fragment"><p><span class="blue">Option X</span>. <span class="orange">Fancy name</span>. Yet another method for variable selection with GAMs.</p></li>
-</ul>
-</div>
-</section>
-<section id="gam-modeling-of-trawl-data" class="slide level2 center">
-<h2>GAM modeling of <code>trawl</code> data</h2>
-<ul>
-<li><p>Let us get back to the <code>trawl</code> data. A <span class="blue">specification</span> based on GAM could be<span class="math display">
-  \begin{aligned}
-  \texttt{Score}_i = \beta_0 &amp;+  f_1(\texttt{Longitude}_i)+ f_2(\texttt{Latitude}_i) + f_3(\texttt{Depth}_i) +\\
-  &amp;+ \beta_1 I(\texttt{Zone}_i = \texttt{Closed}) + \beta_2 I(\texttt{Year}_i = \texttt{1993}).
-  \end{aligned}
-  </span></p></li>
-<li><p>In GAMs the predictors are <span class="blue">not necessarily</span> modeled using <span class="blue">nonparametric</span> methods. Indeed, it is common to have a combination of smooth functions and linear terms.</p></li>
-<li><p>Besides, it does <span class="orange">not make sense</span> to “smooth” a <span class="orange">dummy variable</span>.</p></li>
-</ul>
-<div class="fragment">
-<div style="font-size: 75%;">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">term</th>
-<th style="text-align: right;">estimate</th>
-<th style="text-align: right;">std.error</th>
-<th style="text-align: right;">df</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><code>(Intercept)</code></td>
-<td style="text-align: right;">0.849</td>
-<td style="text-align: right;">0.088</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>Zone_Closed</code></td>
-<td style="text-align: right;">-0.075</td>
-<td style="text-align: right;">0.099</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><code>Year_1993</code></td>
-<td style="text-align: right;">0.149</td>
-<td style="text-align: right;">0.093</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>s(Longitude)</code></td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">4.694</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><code>s(Latitude)</code></td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">1</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><code>s(Depth)</code></td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">-</td>
-<td style="text-align: right;">2.447</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-<section id="partial-effect-of-gams-longitude" class="slide level2 center">
-<h2>Partial effect of GAMs (<code>Longitude</code>)</h2>
-
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"></section>
-<section id="partial-effect-of-gams-latitude" class="slide level2 center">
-<h2>Partial effect of GAMs (<code>Latitude</code>)</h2>
-
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-8-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"></section>
-<section id="partial-effect-of-gams-depth" class="slide level2 center">
-<h2>Partial effect of GAMs (<code>Depth</code>)</h2>
-
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-9-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"></section>
-<section id="comments-and-criticism-trawl-data" class="slide level2 center">
-<h2>Comments and criticism (<code>trawl</code> data)</h2>
-<ul>
-<li>The fitted GAM model highlights some interesting aspects of the <code>trawl</code> data.</li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>In the first place, it seems confirmed that the <code>Longitude</code> has a <span class="orange">marked non-linear</span> impact on the <span class="blue">catch score</span>, as the initial analysis was suggesting.</p></li>
-<li><p>In particular, the catch score is high when the sampling location is close to the coast (but not too close!), and then it suddenly decreases.</p></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>The effective degrees of freedom of <code>Latitude</code> is <span class="math inline">\text{df}_2 = 1</span>, meaning that the estimated <span class="math inline">\hat{f}_2</span> <span class="blue">collapsed</span> to a <span class="blue">linear term</span>. The corresponding shrinkage parameter <span class="math inline">\lambda_2</span> is very high.</p></li>
-<li><p>Overall, the effect due to the <code>Latitude</code> looks <span class="orange">small</span> or <span class="orange">not present</span> at all.</p></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>The <code>Depth</code> seems to have a <span class="orange">relevant effect</span> on the <code>Score</code>, but this is likely due to a few <span class="blue">leverage points</span> at the right extreme of the <code>Depth</code> range.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>Finally, we note that both <code>Zone</code> and <code>Year</code> seem to have a minor effect.</li>
-</ul>
-</div>
-</section>
-<section id="naïve-bayes-classifier-and-gams" class="slide level2 center">
-<h2>☠️ - Naïve Bayes classifier and GAMs</h2>
-<ul>
-<li><p>The <span class="orange">naïve Bayes classifier</span> expresses the <span class="blue">binary</span> classification probability <span class="math inline">\text{pr}(y = 1 \mid \bm{x})</span> as <span class="math display">
-\text{pr}(y = 1 \mid \bm{x}) = \frac{\pi_1 \prod_{j=1}^p p_{j1}(x_j)}{\pi_0\prod_{j=1}^p p_{j0}(x_j) + \pi_1\prod_{j=1}^p p_{j1}(x_j)} = \frac{\pi_1\prod_{j=1}^p p_{j1}(x_j)}{p(\bm{x})}.
-</span></p></li>
-<li><p>Hence, using class <span class="math inline">0</span> as a <span class="orange">baseline</span>, we can derive the following expression:<span class="math display">
-\log\frac{\text{pr}(y = 1 \mid \bm{x})}{\text{pr}(y = 0 \mid \bm{x})} = \log\frac{\pi_1\prod_{j=1}^p p_{j1}(x_j)}{\pi_0\prod_{j=1}^p p_{j0}(x_j)} = \log\frac{\pi_1}{\pi_0} + \sum_{j=1}^p\log\frac{p_{j1}(x_j)}{p_{j0}(x_j)} = \beta_0 + \sum_{j=1}^pf_j(x_j).
-</span></p></li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>Therefore, although naïve Bayes and GAMs are fitted in a quite different way, there is a <span class="orange">tight connection</span> among the two methods.</p></li>
-<li><p>Naïve Bayes has a <span class="blue">generalized additive model structure</span>. This also suggests that the “<span class="orange">additive assumption</span>” is linked to the notion of <span class="orange">independence</span> among the covariates.</p></li>
-</ul>
-</div>
-</section>
-<section id="the-mgcv-r-package" class="slide level2 center">
-<h2>☠️ - The <code>mgcv</code> <strong>R</strong> package</h2>
-<div class="columns">
-<div class="column" style="width:35%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="img/iceberg.jpg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
-</figure>
-</div>
-</div><div class="column" style="width:65%;">
-<div>
-<ul>
-<li class="fragment"><p>GAMs were <span class="orange">invented</span> by Hastie and Tibshirani in 1986, including the backfitting algorithm.</p></li>
-<li class="fragment"><p>Simon Wood (2003) described <span class="blue">thin-plate regression splines</span> and their estimation (no backfitting).</p></li>
-<li class="fragment"><p>Simon Wood (2004, 2011) invented methods for estimating <span class="math inline">\lambda_1,\dots,\lambda_p</span> in an <span class="orange">efficient</span> and <span class="orange">stable</span> manner.</p></li>
-<li class="fragment"><p>Marra and Wood (2011) discussed many methods for practical <span class="orange">variable selection</span> for GAMs.</p></li>
-<li class="fragment"><p>For further details, there is a <span class="blue">recent and advanced book</span> by Simon Wood (2017) entitled “<em>Generalized Additive Models: An Introduction with R</em>”.</p></li>
-<li class="fragment"><p>The <code>mgcv</code> package in <strong>R</strong> (by Simon Wood) implements everything mentioned here.</p></li>
-</ul>
-</div>
-</div></div>
-</section>
-<section id="pros-and-cons-of-generalized-additive-models-gams" class="slide level2 center">
-<h2>Pros and cons of generalized additive models (GAMs)</h2>
-<div class="callout callout-tip no-icon callout-titled callout-style-simple">
-<div class="callout-body">
-<div class="callout-title">
-<p><strong>Pros</strong></p>
+<p><strong>How to interpret a wrong model?</strong></p>
 </div>
 <div class="callout-content">
 <ul>
-<li><p>GAMs can automatically model <span class="orange">non-linear</span> relationships. This can potentially make more accurate predictions for the response.</p></li>
-<li><p>GAMs, as linear models, are <span class="blue">interpretable</span>: the variation of the fitted response, holding all but one predictor fixed, <span class="orange">does not depend</span> on the values of the <span class="orange">other predictors</span>.</p></li>
-<li><p>In practice, this means that we can <span class="orange">plot</span> the <span class="orange">fitted functions</span> <span class="math inline">\hat{f}_j</span> separately to examine the roles of the predictors in modelling the response.</p></li>
-<li><p>Additive assumption is quite strong, but it is still possible to <span class="blue">manually add interactions</span> as in the linear regression case.</p></li>
+<li><p>First of all, by wrong, we mean “<span class="orange">biased</span>.” Therefore, being “wrong” could be an advantage <span class="orange">if</span> the <span class="blue">focus</span> is on <span class="blue">pure predictions</span>.</p></li>
+<li><p>We can often say something about the <span class="orange">association</span> between the response variable and the covariates, i.e., we can still try to <span class="blue">interpret</span> the results.</p></li>
+<li><p>Finding association is appropriate even in the presence of biased estimates, do not be discouraged by this aspect. However, you must be aware that the fitted model is, at best, an <span class="orange">approximation of reality</span> (especially the biased ones), therefore you need to be <span class="blue">prudent</span> in your conclusions.</p></li>
+<li><p>The specific <span class="blue">type of association</span> reflects the <span class="blue">assumptions</span> implied by the chosen model. For example, linear models capture the <span class="orange">linear part</span> of the unknown and possibly more complex relationship <span class="math inline">f(x)</span>, but they cannot capture interactions (unless manually included).</p></li>
+<li><p>At the very least, we can often say something about the main factors affecting the predictions.</p></li>
+<li><p>Obviously, we must be <span class="orange">very careful</span> before making any <span class="orange">causal statement</span>. Remember that association <span class="math inline">\neq</span> causation even when the model is well-specified.</p></li>
+<li><p>Do not forget that the estimated effects should be interpreted as “<em>ceteris paribus</em>”! This means the association between a variable and the response is often expressed conditionally on the other variables’ effect.</p></li>
 </ul>
 </div>
 </div>
 </div>
-<div class="fragment">
-<div class="callout callout-warning no-icon callout-titled callout-style-simple">
-<div class="callout-body">
-<div class="callout-title">
-<p><strong>Cons</strong></p>
-</div>
-<div class="callout-content">
-<ul>
-<li>Especially when <span class="math inline">p</span> is large, it is almost impossible to manually model all the <span class="orange">interactions</span> among covariates. GAMs do <span class="orange">not</span> take <span class="orange">second-order</span> effects (or higher) into account.</li>
-</ul>
-</div>
-</div>
-</div>
-</div>
-</section></section>
-<section>
-<section id="mars" class="title-slide slide level1 center">
-<h1>MARS</h1>
-
-</section>
-<section id="multivariate-adaptive-regression-splines" class="slide level2 center">
-<h2><span class="orange">M</span>ultivariate <span class="orange">A</span>daptive <span class="orange">R</span>egression <span class="orange">S</span>plines</h2>
-<div class="columns">
-<div class="column" style="width:40%;">
-<p><img data-src="img/mars.png"></p>
-</div><div class="column" style="width:60%;">
-<ul>
-<li><p>MARS are a generalization of GAMs that avoid the <span class="orange">additivity assumption</span>.</p></li>
-<li><p>MARS allow modeling of <span class="blue">non–linear interactions</span> and not just non–linear marginal effects.</p></li>
-<li><p>MARS are at the same time:</p>
-<ul>
-<li>A generalization of <span class="blue">stepwise regression</span>;</li>
-<li>A method based on multi-dimensional <span class="orange">tensor splines</span>;</li>
-<li>A modification of <span class="blue">classification and regression trees</span> (CART).</li>
-</ul></li>
-<li><p>MARS combine many of the techniques we have seen in this course into a single sophisticated algorithm.</p></li>
-</ul>
-</div></div>
-<!-- ```{r} -->
-<!-- #| fig-width: 7.8 -->
-<!-- #| fig-height: 4 -->
-<!-- #| fig-align: center -->
-<!-- x <- y <- seq(from = 0, to = 1, length = 50) -->
-<!-- xy_seq <- expand.grid(x, y) -->
-<!-- z <- matrix(apply(xy_seq, 1, function(x) pmax(0, x[1] - 0.5) * pmax(0, 0.75 - x[2])), nrow = length(x)) -->
-<!-- persp(x, y, z, theta = -60, phi = 20, col = "#fc7d0b", shade = 0.5, xlab = "x1", ylab = "x2", zlab = "h(x)", ) -->
-<!-- ``` -->
-</section>
-<section id="mars-additive-representation" class="slide level2 center">
-<h2>MARS additive representation</h2>
-<ul>
-<li>MARS is an <span class="blue">additive model</span> of the form: <span class="math display">
-f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^M \beta_m h_m(\bm{x}),
-</span> where <span class="math inline">h_m(\bm{x})</span> are <span class="orange">basis functions</span> and <span class="math inline">\beta = (\beta_1,\dots,\beta_M)^T</span> are regression coefficients.</li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>Once the basis functions are specified, the estimate for <span class="math inline">\hat{\beta}</span> is straightforward, using for example <span class="blue">least squares</span> or the IWLS algorithm in the classification case.</p></li>
-<li><p>The main distinction with GAMs is that in MARS the basis functions are <span class="orange">estimated</span> from the <span class="orange">data</span> and therefore they are <span class="orange">not pre-specified</span> in advance.</p></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>MARS is essentially a smart <span class="blue">heuristic algorithm</span> for selecting a collection of basis functions <span class="math inline">h_1(\bm{x}),\dots, h_M(\bm{x})</span> that hopefully does not incur in the <span class="orange">curse of dimensionality</span>.</li>
-</ul>
-</div>
-</section>
-<section id="basis-functions-for-mars-reflected-pairs" class="slide level2 center">
-<h2>Basis functions for MARS (reflected pairs)</h2>
-<ul>
-<li>The MARS algorithm begins by including just the <span class="blue">intercept term</span>, i.e.&nbsp;<span class="math inline">f(\bm{x}; \beta) = \beta_0</span>. Then, we proceed by <span class="orange">iteratively</span> adding basis functions.</li>
-</ul>
-<div class="fragment">
-<ul>
-<li>In MARS the basis functions are always <span class="orange">coupled</span> (or <span class="orange">reflected</span>), meaning that we always add them in pairs to the additive specification.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>Let us consider the following set of <span class="blue">pairs</span> of <span class="blue">basis functions</span> (linear splines): <span class="math display">
-\mathcal{C} = \{(x_j - \xi)_+,  (\xi - x_j)_+ : \xi \in \{x_{1j},\dots,x_{nj}\}, \ j=1,\dots,p \}.
-</span> For example, two basis functions could be <span class="math inline">h_1(\bm{x}) = (x_1 - 0.5)_+</span> and <span class="math inline">h_2(\bm{x}) = (0.5 - x_1)_+</span>.</p></li>
-<li><p>The <span class="blue">knots</span> are placed in correspondence of the <span class="blue">observed data</span>. Hence, there are in <span class="orange">total</span> <span class="math inline">2 n p</span> <span class="orange">possible basis functions</span> among which we can choose.</p></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li>In the <span class="blue">first step</span> of the MARS algorithm, we identify the pair <span class="math inline">h_1(\bm{x}) = (x_j - \xi)_+</span> and <span class="math inline">h_2(\bm{x}) = (\xi - x_j)_+</span> that, together with the <span class="blue">intercept</span>, <span class="orange">minimize</span> the <span class="orange">loss function</span>.</li>
-</ul>
-</div>
-</section>
-<section id="an-example-of-reflected-pair-basis" class="slide level2 center">
-<h2>An example of reflected pair basis</h2>
-
-<img data-src="un_F_files/figure-revealjs/unnamed-chunk-10-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1950"><ul>
-<li>The function <span class="math inline">h_1(x) = (x - 0.5)_+</span> (<span class="blue">blue</span>) and its reflection <span class="math inline">h_2(x) = (0.5 - x)_+</span> (<span class="orange">orange</span>).</li>
-</ul>
-</section>
-<section id="a-stepwise-construction" class="slide level2 center">
-<h2>A stepwise construction</h2>
-<div>
-<ul>
-<li class="fragment"><p>Hence, <span class="orange">after</span> the <span class="orange">first step</span> of the MARS algorithm, our model for example could be <span class="math display">
-f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1 (x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+.
-</span></p></li>
-<li class="fragment"><p>In the subsequent step, we consider a <span class="blue">new pair</span> of basis functions <span class="math inline">(x_j - \xi)_+, (\xi - x_j)_+</span> in <span class="math inline">\mathcal{C}</span>, but this time we are allowed to perform two kind of operations:</p>
-<ol type="i">
-<li class="fragment">We can include the new pair to the predictor in an <span class="orange">additive</span> way, obtaining for example <span class="math display">
-   f(\bm{x}; \beta) =  \beta_0 + \beta_1(x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+ + \beta_3\textcolor{red}{ (x_2 - 0.75)_+} + \beta_4\textcolor{red}{(0.75 - x_2)_+}.
-   </span></li>
-<li class="fragment">We can include the new pair in a <span class="orange">multiplicative</span> way, by considering the products between the <span class="blue">new basis</span> and one of the <span class="blue">old bases</span> of the model, obtaining for instance <span class="math display">
-   \begin{aligned}
-   f(\bm{x}; \beta) =  \beta_0 &amp;+ \beta_1\textcolor{darkblue}{(x_1 - 0.5)_+} + \beta_2(0.5 - x_1)_+ \\
-   &amp;+ \beta_3 \textcolor{red}{(x_1 - 0.5)_+(x_2 - 0.75)_+} + \beta_4 \textcolor{red}{(x_1 - 0.5)_+(0.75 - x_2)_+}.
-   \end{aligned}
-   </span></li>
-</ol></li>
-</ul>
-</div>
-</section>
-<section id="an-example-of-tensor-product-basis" class="slide level2 center">
-<h2>An example of tensor product basis</h2>
-
-<img data-src="img/mars.png" class="quarto-figure quarto-figure-center r-stretch" style="width:50.0%"><ul>
-<li>The <span class="orange">product</span> function <span class="math inline">h(\bm{x}) = (x_1 - 0.5)_+ (x_2 - 0.75)_+</span> in the range <span class="math inline">(0, 1)^2</span>.</li>
-</ul>
-</section>
-<section id="section" class="slide level2 center">
-<h2></h2>
+<!-- ## What is the difference between an algorithm and a model? -->
+<!-- ::: columns -->
+<!-- ::: {.column width="50%"} -->
+<!-- - [Model]{.blue}: a simplified *mathematical* representation of reality. -->
+<!-- - [Algorithm]{.blue}: a step-by-step procedure that is useful to obtain the unknown parts of a model. -->
+<!-- ::: -->
+<!-- ::: {.column width="50%"} -->
+<!-- [Example]{.orange}: linear models, neural networks, support vector machine, trees. -->
+<!-- [Example]{.orange}: gradient descent, Newton-Raphson, pathwise coordinate descent, LAR. -->
+<!-- ::: -->
+<!-- ::: -->
 <div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>MARS algorithm (degree <span class="math inline">d</span>)</strong></p>
+<p><strong>Why do we care about simple models?</strong></p>
 </div>
 <div class="callout-content">
-<div>
-<ol type="1">
-<li class="fragment"><p>Initialize <span class="math inline">f(\bm{x}; \beta) = \beta_0</span> and let <span class="math inline">K</span> be <span class="orange">maximum number of pairs</span>, so that <span class="math inline">M = 2K</span>.</p></li>
-<li class="fragment"><p>Identify the <span class="blue">initial pair</span> of basis functions <span class="math inline">h_1</span> and <span class="math inline">h_2</span> in <span class="math inline">\mathcal{C}</span> that minimize the loss function. Then, let <span class="math inline">h_0(\bm{x}) = 1</span> and set <span class="math inline">\mathcal{M}_1 = \{h_0, h_1, h_2\}</span>.</p></li>
-<li class="fragment"><p>For <span class="math inline">k = 1,\dots,K - 1</span>, do:</p>
-<ol type="i">
-<li class="fragment"><p>Let <span class="math inline">\mathcal{M}_k = \{h_0, h_1,\dots,h_{2k}\}</span> be the basis functions already present in the model.</p></li>
-<li class="fragment"><p>Consider a <span class="blue">novel pair</span> of bases <span class="math inline">\tilde{h}_1,\tilde{h}_2 \in \mathcal{C} \setminus \mathcal{M}_k</span>. A <span class="orange">candidate pair</span> is obtained by <span class="orange">multiplying</span> <span class="math inline">\tilde{h}_1,\tilde{h}_2</span> with one of the bases in <span class="math inline">\mathcal{M}_k</span>. Note that <span class="math inline">h_0 \in \mathcal{M}_k</span>.</p></li>
-<li class="fragment"><p>A <span class="orange">valid</span> candidate basis does not contain the same variable <span class="math inline">x_j</span> more than once in the product, and it must involve at most <span class="blue"><span class="math inline">d</span> product terms</span>.</p></li>
-<li class="fragment"><p>Identify the <span class="blue">optimal pair</span> among the candidates at steps (ii)-(iii) that <span class="orange">reduces</span> the <span class="orange">loss function</span> the most. This results in a new pair of bases <span class="math inline">h_{2k+1}, h_{2k+2}</span>.</p></li>
-<li class="fragment"><p>Set <span class="math inline">\mathcal{M}_{k+1} \leftarrow \mathcal{M}_k \cup \{h_{2k+1}, h_{2k+2}\}</span>.</p></li>
-</ol></li>
-<li class="fragment"><p>Return the collection of models <span class="math inline">\mathcal{M}_1,\dots,\mathcal{M}_K</span>.</p></li>
-</ol>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="basis-selection-and-backward-regression" class="slide level2 center">
-<h2>Basis selection and backward regression</h2>
 <ul>
-<li>The <span class="orange">degree <span class="math inline">d</span></span> of the MARS algorithms allow to control the number order of interactions of the model. Note that when <span class="blue"><span class="math inline">d = 1</span></span> it corresponds to a GAM (<span class="blue">no interactions</span>).</li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>The final model with <span class="math inline">M</span> terms is very likely <span class="orange">overfitting</span> the data. Hence, it is important to remove some of the bases using <span class="blue">backward regression</span> or best subset.</p></li>
-<li><p>The <span class="orange">optimal reduced model</span> can be selected via cross-validation, but generalized cross-validation is often preferred due to computational reasons.</p></li>
+<li><p>Simple models are helpful to <span class="orange">explain</span> reality, not just to make predictions.</p></li>
+<li><p>Simple models <span class="math inline">\neq</span> linear models. A tree with a few splits is indeed “simple.” Some might say that parametric models relying on well-chosen assumptions are simple, but it depends.</p></li>
+<li><p>Simple models tend to be more <span class="orange">robust</span>, i.e., less affected by contamination and changes in the data generative process.</p></li>
+<li><p>Besides, the <span class="blue">understanding</span> gained by fitting simple models is precious for estimating the more complex ones because it guides the next steps.</p></li>
+<li><p>The modelling process is <span class="blue">iterative</span> and <span class="orange">not a collection of independent</span> and <span class="orange">separate approaches</span>. You fit a model, check the results, and adjust your strategy.</p></li>
+<li><p>Another practical concern is that senior statisticians know hundreds of different techniques. When all these ingredients are combined, they generate thousands, if not millions, of competing estimates. Hence, it becomes impossible to “use them all and pick the best performer.” You need guidance to find the final answer.</p></li>
 </ul>
 </div>
-<div class="fragment">
-<ul>
-<li><p>Unfortunately, it is not clear how to compute the <span class="orange">effective degrees of freedom</span> that are needed in the <span class="math inline">\text{GCV}</span> formula.</p></li>
-<li><p>In MARS, however, we do not have any miraculous simple formula like in LAR or ridge.</p></li>
-<li><p>Simulation studies suggest that, for every knot placed, we should pay a <span class="orange">price</span> of about <span class="orange"><span class="math inline">3</span> degrees of freedom</span>. However, this result is quite <span class="blue">heuristic</span>.</p></li>
-</ul>
-</div>
-</section>
-<section id="heuristics-behind-mars" class="slide level2 center">
-<h2>Heuristics behind MARS</h2>
-<ul>
-<li><p>The basis functions used in MARS have the advantage of <span class="orange">operating locally</span>.</p></li>
-<li><p>When the basis functions in <span class="math inline">\mathcal{C}</span> are multiplied together, the result is <span class="orange">nonzero</span> only over the small part of the feature space where <span class="blue">both component</span> functions are <span class="blue">nonzero</span>.</p></li>
-</ul>
-<div class="fragment">
-<ul>
-<li><p>Hence, the estimated function is built up <span class="blue">parsimoniously</span>, by making <span class="orange">small local modifications</span> to the fit obtained at the previous step.</p></li>
-<li><p>This is important, since one should “spend” degrees of freedom carefully in high dimensions, to avoid incurring into the <span class="orange">curse of dimensionality</span>.</p></li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>The constructional logic of the model is <span class="orange">hierarchical</span>. We can multiply new basis functions that involve new variables only to the basis functions already in the model.</p></li>
-<li><p>Hence, an <span class="blue">interaction</span> of a <span class="blue">higher order</span> can only be introduced <span class="orange">when</span> interactions of a <span class="orange">lower order are present</span>.</p></li>
-<li><p>This constraint, introduced for computational reasons, does not necessarily reflect the real behavior of the data, but it often helps in <span class="blue">interpreting the results</span>.</p></li>
-</ul>
-</div>
-</section>
-<section id="mars-modeling-of-trawl-data-d-1" class="slide level2 center">
-<h2>MARS modeling of <code>trawl</code> data (<span class="math inline">d = 1</span>)</h2>
-<ul>
-<li>We fit a MARS model with <span class="math inline">d = 1</span> (<span class="orange">no interactions</span>), using <span class="math inline">M = 20</span>. Then, the model was simplified using <span class="blue">best subset selection</span> and <span class="math inline">\text{GCV}</span>. The results are:</li>
-</ul>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Term</th>
-<th>Basis function</th>
-<th>Coefficient</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">h_0(\bm{x})</span></td>
-<td><span class="math inline">1</span></td>
-<td>1.382</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">h_1(\bm{x})</span></td>
-<td><span class="math inline">(\texttt{Longitude} - 143.28)_+</span></td>
-<td>-4.275</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">h_2(\bm{x})</span></td>
-<td><span class="math inline">(\texttt{Longitude} - 143.58)_+</span></td>
-<td>3.984</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<ul>
-<li>To clarify, this specification corresponds to the following <span class="blue">estimated</span> regression <span class="blue">function</span>: <span class="math display">
-f(\bm{x}_i; \hat{\beta}) = 1.382 - 4.275(\texttt{Longitude}_i - 143.28)_+ + 3.984 (\texttt{Longitude}_i - 143.58)_+,
-</span> which has the structure of a GAM. However, the <span class="orange">estimation procedure</span> is <span class="orange">different</span>.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>The estimated function <span class="math inline">f(\bm{x}_i; \hat{\beta})</span> is <span class="blue">remarkably simple</span> and it involves only the <code>Longitude</code>. Moreover, the relationship between <code>Score</code> and <code>Longitude</code> is non-linear.</p></li>
-<li><p>Both these considerations are consistent with the previous findings, obtained using GAMs.</p></li>
-</ul>
-</div>
-</section>
-<section id="mars-modeling-of-trawl-data-d-2" class="slide level2 center">
-<h2>MARS modeling of <code>trawl</code> data (<span class="math inline">d = 2</span>)</h2>
-<ul>
-<li>We fit a MARS model with <span class="math inline">d = 2</span> (<span class="orange">first order interactions</span>), using <span class="math inline">M = 20</span>. As before, the model was simplified using <span class="blue">best subset selection</span> and <span class="math inline">\text{GCV}</span>. The results are:</li>
-</ul>
-<table class="caption-top">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 56%">
-<col style="width: 30%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Term</th>
-<th>Basis function</th>
-<th>Coefficient</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">h_0(\bm{x})</span></td>
-<td><span class="math inline">1</span></td>
-<td>1.318</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">h_1(\bm{x})</span></td>
-<td><span class="math inline">(\texttt{Longitude} - 143.28)_+</span></td>
-<td>-5.388</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">h_2(\bm{x})</span></td>
-<td><span class="math inline">(\texttt{Longitude} - 143.58)_+</span></td>
-<td>4.172</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">h_3(\bm{x})</span></td>
-<td><span class="math inline">I(\texttt{Year} = \texttt{1993})(\texttt{Longitude} - 143.05)_+</span></td>
-<td>0.679</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">h_4(\bm{x})</span></td>
-<td><span class="math inline">[\texttt{Latitude} - (-11.72)]_+ (\texttt{Longitude} - 143.05)_+</span></td>
-<td>1.489</td>
-</tr>
-</tbody>
-</table>
-<div class="fragment">
-<ul>
-<li><p>As expected, a degree <span class="math inline">2</span> MARS lead to a more sophisticated fit involving <span class="blue">interactions</span> between <code>Year</code> and <code>Longitude</code> as well as between <code>Latitude</code> and <code>Longitude</code>.</p></li>
-<li><p>We can explore these effects using <span class="orange">partial plots</span>.</p></li>
-</ul>
-</div>
-</section>
-<section id="partial-effects" class="slide level2 center">
-<h2>Partial effects</h2>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Linear model</a></li><li><a href="#tabset-1-2">GAM model</a></li><li><a href="#tabset-1-3">MARS (degree 1)</a></li><li><a href="#tabset-1-4">MARS (degree 2)</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-14-1.png" class="quarto-figure quarto-figure-center" width="2250"></p>
-</figure>
 </div>
 </div>
-</div>
-</div>
-<div id="tabset-1-2">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center" width="2250"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-3">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-16-1.png" class="quarto-figure quarto-figure-center" width="2250"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-4">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="un_F_files/figure-revealjs/unnamed-chunk-17-1.png" class="quarto-figure quarto-figure-center" width="2250"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="results-on-the-test-set" class="slide level2 center">
-<h2>Results on the test set</h2>
-<ul>
-<li>We can now check the predictive performance on the <span class="orange">test set</span>, to see which is model scored the best in terms of MAE and RMSE.</li>
-</ul>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top">
-<colgroup>
-<col style="width: 7%">
-<col style="width: 16%">
-<col style="width: 19%">
-<col style="width: 8%">
-<col style="width: 23%">
-<col style="width: 23%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;"></th>
-<th style="text-align: right;">Null model</th>
-<th style="text-align: right;">Linear model</th>
-<th style="text-align: right;">GAM</th>
-<th style="text-align: right;">MARS (degree 1)</th>
-<th style="text-align: right;">MARS (degree 2)</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">MAE</td>
-<td style="text-align: right;">0.611</td>
-<td style="text-align: right;">0.361</td>
-<td style="text-align: right;">0.315</td>
-<td style="text-align: right;">0.305</td>
-<td style="text-align: right;">0.334</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">RMSE</td>
-<td style="text-align: right;">0.718</td>
-<td style="text-align: right;">0.463</td>
-<td style="text-align: right;">0.408</td>
-<td style="text-align: right;">0.390</td>
-<td style="text-align: right;">0.407</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="fragment">
-<ul>
-<li>It is quite clear that including a <span class="blue">non-linear</span> specification for the <code>Longitude</code> was indeed a good idea that improved the predictive performance.</li>
-</ul>
-</div>
-<div class="fragment">
-<ul>
-<li><p>Somewhat surprisingly, the <span class="blue">best model</span> is the extremely simple (yet effective) <span class="orange">MARS of degree <span class="math inline">1</span></span>.</p></li>
-<li><p>The weak interactions effects captured by the MARS of degree <span class="math inline">2</span> led an increased variance of the estimates, slightly deteriorating the fit.</p></li>
-</ul>
-</div>
-</section>
-<section id="pros-and-cons-of-mars" class="slide level2 center">
-<h2>Pros and cons of MARS</h2>
-<div class="callout callout-tip no-icon callout-titled callout-style-simple">
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>Pros</strong></p>
+<p><strong>What if simple models do not work well?</strong></p>
 </div>
 <div class="callout-content">
+<p>…for example, what to do when simple models do not predict well?</p>
 <ul>
-<li>MARS constructs a sophisticated model by <span class="blue">sequentially refining</span> the previous fit.</li>
-<li>MARS can capture <span class="orange">interaction</span> effects.</li>
-<li>The MARS algorithm can be employed for both regression and classification problems.</li>
-<li>The final model is often interpretable. The order of the interactions can be controlled by fixing <span class="math inline">d</span>.</li>
+<li><p>In that case, of course, it is time to move on and try something more sophisticated. This often occurs in practice; only a few case-study can be solved with simple tools.</p></li>
+<li><p>However, you <span class="orange">should not</span> fit a sophisticated model without trying the simple ones first. In other terms, I would fit a <span class="blue">deep neural network</span> only after <span class="orange">everything else has failed</span>, as a last resort.</p></li>
+<li><p>The statement “<em>data are complicated, therefore I need a complex model</em>” is probably the result of <span class="orange">hype/over-excitement</span> for the new shiny machine learning tool.</p></li>
+<li><p>At the cost of being repetitive, especially when data are complex, you should first check whether a simple solution exists. Sometimes, this is the case because “simple” models tend to have low variance.</p></li>
+<li><p>A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error (i.e., the <a href="un_intro.html#press-the-button">button pressing culture</a>). A skilled statistician is more like an <span class="blue">artisan</span>, who uses her/his tools <span class="orange">when needed</span> and with <span class="orange">intelligence</span>, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of brutal trial and error.</p></li>
+<li><p>Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: <span class="orange">“Is it worth it?”</span> The answer is often <span class="blue">context-dependent</span>.</p></li>
+<li><p>Once again, there might be other considerations to keep in mind: <span class="blue">interpretability</span>, <span class="orange">robustness</span>, <span class="grey">computational complexity</span>.</p></li>
 </ul>
 </div>
 </div>
 </div>
-<div class="fragment">
-<div class="callout callout-warning no-icon callout-titled callout-style-simple">
+<!-- ::: {.callout-note collapse=true} -->
+<!-- ## What is a statistical model? -->
+<!-- This question is too complicated to be answered using bullet points on a website. You may find some answers in the very instructive but technical paper by Peter McCullagh, published on the *Annals of Statistics*. -->
+<!-- - McCullagh, P. (2002). [What is a statistical model?](https://projecteuclid.org/journals/annals-of-statistics/volume-30/issue-5/What-is-a-statistical-model/10.1214/aos/1035844977.full). Annals of Statistics **30** (5), 1225–67.  -->
+<!-- ::: -->
+</section>
+
+<section id="handling-categorical-variables" class="title-slide slide level1 center">
+<h1>Handling categorical variables</h1>
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>Cons</strong></p>
+<p><strong>I have been told that linear models cannot use categorical variables</strong></p>
 </div>
 <div class="callout-content">
 <ul>
-<li><p>MARS can quickly <span class="orange">overfit</span> the data if the model complexity is not kept under control.</p></li>
-<li><p>Unfortunately, this is not always easy to do as there is <span class="orange">limited theoretical support</span> that guides us in the choice of the effective degree of freedom.</p></li>
+<li><p>Let me present you <a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">dummy variables</a>!</p></li>
+<li><p>This question was not made during an M.Sc. level course such as Data Mining at CLAMSES (otherwise, it would have been a bit depressing), but it happened in <span class="orange">other contexts</span>.</p></li>
 </ul>
 </div>
 </div>
 </div>
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>In the test set, there are a few values that were not observed in the training, what should I do?</strong></p>
 </div>
-</section></section>
-<section>
-<section id="references" class="title-slide slide level1 center">
-<h1>References</h1>
+<div class="callout-content">
+<ul>
+<li><p>This often occurs when a categorical variable, say <code>city</code>, takes multiple values, e.g., <code>Milan</code>, <code>Naples</code>, <code>Rome</code>, etc. However, a rare value, such as <code>Isernia</code>, may be present in the training and not in the test.</p></li>
+<li><p>The same issue may arise during cross-validation or when splitting the data into training, validation, and test sets. You might be tempted to <span class="orange">change the seed</span> until you find a good split that does not display the issue. This practice is <span class="orange">wrong</span>; see below.</p></li>
+<li><p>It might take forever to find a “good” seed. But then, if you keep sampling new splits until a specific condition is satisfied, you are implicitly <span class="orange">inducing dependence</span> across observations, breaking the primary rationale of cross-validation or training/test set.</p></li>
+<li><p>It would be even worse to “manually” allocate units into each split because that would also break the primary assumption of cross-validation, i.e., the data should be <span class="blue">independently sampled</span>.</p></li>
+<li><p>Fair enough, so what should we do? In general, it <span class="blue">depends</span>. As a general strategy: be <span class="orange">creative</span>, use your <span class="blue">judgment</span>.</p></li>
+<li><p>Obviously, an option is to <span class="orange">omit the variable</span> at the explicit cost of losing information. However, for example, if the variable is <span class="blue">binary</span>, this is typically your only option. In this case, the discarded information is limited because the variable would be nearly constant.</p></li>
+<li><p>Alternatively, you could <span class="blue">merge</span> the <span class="blue">rare values</span> with other categories. However, the aggregation criterion is crucial. You could merge rare categories into a residual class called <code>Other</code>. Alternatively, you could use your judgment to make <span class="blue">smarter choices</span> (e.g., merging <code>Isernia</code> with <code>Campobasso</code>, both in Molise).</p></li>
+<li><p>Other <span class="orange">details</span>: is it preferable to perform the merging before estimating the model (using all the observations for fitting it) or after the estimation procedure (based on a reduced dataset) when making the predictions? This is another instance of the <span class="orange">bias-variance trade-off</span>. Hence, there are no general answers.</p></li>
+<li><p>The story does not end here. For instance, taking a <span class="blue">Bayesian approach</span> might be another principled possibility: prior information could be exploited to help the estimation, even without data points in the training.</p></li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+
+<section id="nonparametric-regression" class="title-slide slide level1 center">
+<h1>Nonparametric regression</h1>
+<div class="callout callout-note no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>What is the definition of a “kernel”?</strong></p>
+</div>
+<div class="callout-content">
+<p>In our slides, we called any <span class="orange">density function</span> <span class="math inline">w(\cdot)</span>, <span class="blue">symmetric</span> around the origin, a “kernel”. Typically the density is also <span class="blue">unimodal</span> around the origin.</p>
+<p>Depending on the book and the context, the definition of a kernel might be slightly different; here we are in agreement with the <span class="blue">textbook</span> Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/kernel_AS.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
+</figure>
+</div>
+<p>and Wasserman, L. (2006), <a href="https://link.springer.com/book/10.1007/0-387-30623-4"><em>All of Nonparametric statistics</em></a></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/kernel_W.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
+</figure>
+</div>
+<p>With that said, the word “kernel” has been used to indicate, more generally, a function that measures the <span class="orange">discrepancy</span> between <span class="blue">two points</span>, say <span class="math inline">\bm{x}</span> and <span class="math inline">\bm{x}'</span>.</p>
+<p>For instance, the definition given in Rasmussen, C. E. and Williams, C. K. I. (2006), <a href="http://www.gaussianprocess.org/gpml/chapters/">Gaussian Processes for Machine Learning</a> is extremely general:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/kernel_GP.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 
 </section>
-<section id="references-i" class="slide level2 center">
-<h2>References I</h2>
-<ul>
-<li><span class="blue">Main references</span>
-<ul>
-<li><strong>Chapters 4 and 5</strong> of Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
-<li><strong>Chapter 9</strong> of Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
-</ul></li>
-<li><span class="orange">Historical references</span>
-<ul>
-<li>Hastie, T., and Tibshirani, R. (1986). <a href="https://projecteuclid.org/journals/statistical-science/volume-1/issue-3/Generalized-Additive-Models/10.1214/ss/1177013604.full">Generalized Additive Models</a>. <em>Statistical Science</em> <strong>1</strong>(3), 209-318.</li>
-<li>Friedman, Jerome H. 1991. <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-19/issue-1/Multivariate-Adaptive-Regression-Splines/10.1214/aos/1176347963.full">Multivariate Adaptive Regression Splines</a>. <em>Annals of Statistics</em> <strong>19</strong>(1), 1-141.</li>
-</ul></li>
-</ul>
-</section>
-<section id="specialized-references-i" class="slide level2 center">
-<h2>Specialized references I</h2>
-<ul>
-<li><span class="orange">Simon Wood’s contributions</span>
-<ul>
-<li>Wood, S. N. (2003). Thin plate regression splines. <em>Journal of the Royal Statistical Society. Series B: Statistical Methodology</em> <strong>65</strong>, 95-114.</li>
-<li>Wood, S. N. (2004). Stable and efficient multiple smoothing parameter estimation for generalized additive models. <em>Journal of the American Statistical Association</em> <strong>99</strong>, 673-86.</li>
-<li>Wood, S. N. (2011). Fast stable restricted maximum likelihood and marginal likelihood estimation of semiparametric generalized linear models. <em>Journal of the Royal Statistical Society. Series B: Statistical Methodology</em> <strong>73</strong>(1), 3-36.</li>
-<li>Marra, G. and Wood, S. N. (2011). Practical variable selection for generalized additive models. <em>Computational Statistics and Data Analysis</em> <strong>55</strong>(7), 2372–87.</li>
-<li>Wood, S. N. (2017). <em>Generalized Additive Models: An Introduction with R</em>. CRC Press.</li>
-</ul></li>
-</ul>
-<div class="quarto-auto-generated-content">
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="img/logoB.png" class="slide-logo"></p>
 <div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
 </div>
-</div>
-</section></section>
-    </div>
-  </div>
+</div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="un_F_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="un_G_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="un_F_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="un_F_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="un_F_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="un_F_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="un_F_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="un_G_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="un_G_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="un_G_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="un_G_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="un_G_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="un_F_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="un_F_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="un_F_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="un_G_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="un_G_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="un_G_files/libs/revealjs/plugin/zoom/zoom.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -1392,7 +377,8 @@ f(\bm{x}_i; \hat{\beta}) = 1.382 - 4.275(\texttt{Longitude}_i - 143.28)_+ + 3.98
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1593,192 +579,172 @@ f(\bm{x}_i; \hat{\beta}) = 1.382 - 4.275(\texttt{Longitude}_i - 143.28)_+ + 3.98
     </script>
 
     <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
-          }
-        }
-        return false;
-      }
-      const onCopySuccess = function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
-          }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      }
-      const getTextToCopy = function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
             }
           }
-          return codeEl.innerText;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-        text: getTextToCopy
-      });
-      clipboard.on('success', onCopySuccess);
-      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-        // For code content inside modals, clipBoardJS needs to be initialized with a container option
-        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-          text: getTextToCopy,
-          container: window.document.getElementById('quarto-embedded-source-code-modal')
-        });
-        clipboardModal.on('success', onCopySuccess);
-      }
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          return false;
         }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
             }
-          }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
         }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-        const config = {
-          allowHTML: true,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start',
-        };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
-          }
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
-          }
-        } else {
-          return undefined;
-        }
-      };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
               }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
           });
         }
-      }
-    });
-    </script>
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
     
 
 </body></html>

@@ -289,7 +289,7 @@ curve(f(x), n = 300, add = TRUE)
 -   Taking this reasoning to the extreme would lead to the choice
     $p = n$, so that $$
     \text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
-    $$, i.e., a perfect fit. This procedure is called
+    $$ i.e., a perfect fit. This procedure is called
     [interpolation]{.blue}.
 
 -   However, we are [not]{.orange} interested in predicting

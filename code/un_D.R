@@ -68,10 +68,10 @@ library(kknn)
 fit_knn <- fitted(kknn(accel ~ times, train = dataset, test = data.frame(times = times_seq), kernel = "rectangular", k = 6))
 
 ggplot(data = dataset, aes(x = times, y = accel)) +
-  geom_ribbon(aes(xmin = 51.7, xmax = 57.7), fill = "#fc7d0b", alpha = 0.6) +
-  geom_ribbon(aes(xmin = 19, xmax = 21), fill = "#fc7d0b", alpha = 0.6) +
+  geom_ribbon(aes(xmin = 51.7, xmax = 57.7), fill = "#FF8C00", alpha = 0.6) +
+  geom_ribbon(aes(xmin = 19, xmax = 21), fill = "#FF8C00", alpha = 0.6) +
   geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = times_seq, y = fit_knn), aes(x = x, y = y), col = "#1170aa") +
+  geom_line(data = data.frame(x = times_seq, y = fit_knn), aes(x = x, y = y), col = "#3232AA") +
   geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
   geom_vline(xintercept = 54.7, lty = "dashed", linewidth = 0.4) +
   theme_minimal() +
@@ -86,9 +86,9 @@ band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
 fit_nw <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = times_seq)
 
 ggplot(data = dataset, aes(x = times, y = accel)) +
-  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#fc7d0b", alpha = 0.6) +
+  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#FF8C00", alpha = 0.6) +
   geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#1170aa") +
+  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#3232AA") +
   geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
   theme_minimal() +
   geom_function(fun = function(x) 150 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
@@ -101,9 +101,9 @@ band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
 fit_nw <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = times_seq)
 
 ggplot(data = dataset, aes(x = times, y = accel)) +
-  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#fc7d0b", alpha = 0.6) +
+  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#FF8C00", alpha = 0.6) +
   geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#1170aa") +
+  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#3232AA") +
   geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
   theme_minimal() +
   geom_function(fun = function(x) 50 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
@@ -116,9 +116,9 @@ band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
 fit_nw <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = times_seq)
 
 ggplot(data = dataset, aes(x = times, y = accel)) +
-  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#fc7d0b", alpha = 0.6) +
+  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#FF8C00", alpha = 0.6) +
   geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#1170aa") +
+  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#3232AA") +
   geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
   theme_minimal() +
   geom_function(fun = function(x) 180 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
@@ -131,9 +131,9 @@ band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
 fit_nw <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = times_seq)
 
 ggplot(data = dataset, aes(x = times, y = accel)) +
-  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#fc7d0b", alpha = 0.6) +
+  geom_ribbon(aes(xmin = qnorm(0.05, 20, sd = h_param), xmax = qnorm(0.95, 20, sd = h_param)), fill = "#FF8C00", alpha = 0.6) +
   geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#1170aa") +
+  geom_line(data = data.frame(x = fit_nw$x, y = fit_nw$y), aes(x = x, y = y), col = "#3232AA") +
   geom_vline(xintercept = 20, lty = "dashed", linewidth = 0.4) +
   theme_minimal() +
   geom_function(fun = function(x) 600 * dnorm(x, 20, h_param) - 134, linetype = "dotted", n = 500, xlim = c(qnorm(0.001, 20, sd = h_param), xmax = qnorm(0.999, 20, sd = h_param))) +
@@ -188,7 +188,7 @@ fit_locpoly <- loclin(x, y, bandwidth = h_opt, x0 = x_seq)
 
 ggplot(data = dataset, aes(x = times, y = accel)) +
   geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = x_seq, y = fit_locpoly), aes(x = x, y = y), col = "#1170aa") +
+  geom_line(data = data.frame(x = x_seq, y = fit_locpoly), aes(x = x, y = y), col = "#3232AA") +
   theme_minimal() +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +
@@ -204,7 +204,7 @@ colnames(data_bv) <- c("df", "SE", "Error term", "value")
 ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
   geom_line() +
   geom_point() +
-  geom_vline(xintercept = df_opt, linetype = "dotted", col = "#fc7d0b") +
+  geom_vline(xintercept = df_opt, linetype = "dotted", col = "#FF8C00") +
   theme_light() +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
@@ -224,9 +224,9 @@ fit_sm <- sm.regression(cbind(auto$engine.size, auto$curb.weight), auto$city.dis
 )
 
 contour(fit_sm$eval.points[, 1], fit_sm$eval.points[, 2], fit_sm$estimate,
-  xlab = "Engine size (L)", ylab = "Curb weight (kg)", col = "#1170aa"
+  xlab = "Engine size (L)", ylab = "Curb weight (kg)", col = "#3232AA"
 )
-points(auto$engine.size, auto$curb.weight, cex = 0.5, pch = 16, col = "#fc7d0b")
+points(auto$engine.size, auto$curb.weight, cex = 0.5, pch = 16, col = "#FF8C00")
 
 library(splines2)
 
@@ -236,7 +236,7 @@ y_hat_bs <- predict(fit_bs, newdata = data.frame(times = times_seq))
 
 ggplot(data = dataset, aes(x = times, y = accel)) +
   geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = times_seq, y = y_hat_bs), aes(x = x, y = y), col = "#1170aa") +
+  geom_line(data = data.frame(x = times_seq, y = y_hat_bs), aes(x = x, y = y), col = "#3232AA") +
   theme_minimal() +
   geom_vline(xintercept = 15, linetype = "dotted") +
   geom_vline(xintercept = 25, linetype = "dotted") +
@@ -319,7 +319,7 @@ colnames(data_bv) <- c("p", "SE", "Error term", "value")
 ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   geom_line() +
   geom_point() +
-  geom_vline(xintercept = 12, linetype = "dotted", col = "#fc7d0b") +
+  geom_vline(xintercept = 12, linetype = "dotted", col = "#FF8C00") +
   theme_light() +
   theme(legend.position = "top") +
   scale_color_tableau(palette = "Color Blind") +
@@ -385,7 +385,7 @@ y_hat_smooth <- predict(fit_smooth, x = x_seq)
 
 ggplot(data = dataset, aes(x = times, y = accel)) +
   geom_point(size = 0.7) +
-  geom_line(data = data.frame(x = y_hat_smooth$x, y = y_hat_smooth$y), aes(x = x, y = y), col = "#1170aa") +
+  geom_line(data = data.frame(x = y_hat_smooth$x, y = y_hat_smooth$y), aes(x = x, y = y), col = "#3232AA") +
   theme_minimal() +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Time (ms)") +

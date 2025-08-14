@@ -9,23 +9,6 @@ filters:
   - remove-pause.lua
 page-layout: full
 format:
-  revealjs:
-    df-print: tibble
-    auto-stretch: true
-    center: true
-    html-math-method: katex
-    transition: none
-    output-file: un_F_slides.html
-    slide-number: true
-    callout-appearance: minimal
-    code-line-numbers: true
-    theme: [default, ../template.css] # alternative themes (subset): default, night, dark
-    embed-resources: false
-    echo: false
-    fig-dpi: 250
-    # incremental: true  # Remove comment if you like incremental bullet points
-    logo: img/logoB.png
-    footer: "[Home page](https://tommasorigon.github.io/datamining)"
   html:
     html-math-method: katex
     echo: false

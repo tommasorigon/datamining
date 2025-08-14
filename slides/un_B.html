@@ -351,7 +351,7 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 <li><p>One might be tempted to let <span class="math inline">p</span> as large as possible to make the model more flexible…</p></li>
 <li><p>Taking this reasoning to the extreme would lead to the choice <span class="math inline">p = n</span>, so that <span class="math display">
 \text{MSE}_\text{train} = 0, \qquad R^2_\text{train} = 1,
-</span>, i.e., a perfect fit. This procedure is called <span class="blue">interpolation</span>.</p></li>
+</span> i.e., a perfect fit. This procedure is called <span class="blue">interpolation</span>.</p></li>
 <li><p>However, we are <span class="orange">not</span> interested in predicting <span class="orange">yesterday</span> data. Our goal is to predict <span class="blue">tomorrow</span>’s data, i.e.&nbsp;a <span class="blue">new set</span> of <span class="math inline">n = 30</span> points: <span class="math display">
 (x_1, \tilde{y}_1), \dots, (x_n, \tilde{y}_n),
 </span> using <span class="math inline">\hat{y}_i = f(x_i; \hat{\beta})</span>, where <span class="math inline">\hat{\beta}</span> is obtained using yesterday’s data.</p></li>
