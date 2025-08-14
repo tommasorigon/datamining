@@ -19,7 +19,7 @@ ggcorrplot(corr,
   hc.order = FALSE,
   outline.col = "white",
   ggtheme = ggplot2::theme_bw,
-  colors = c("#fc7d0b", "white", "#1170aa")
+  colors = c("#FF8C00", "white", "#3232AA")
 )
 
 tab <- data.frame(broom::tidy(lm(lpsa ~ ., data = prostate_train), conf.int = FALSE))
@@ -50,8 +50,8 @@ ggplot(data = data_best_subset, aes(x = p, y = value)) +
   geom_point() +
   theme_light() +
   theme(legend.position = "top") +
-  geom_line(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b") +
-  geom_point(data = data_best_subset2, aes(x = p, y = MSE), col = "#fc7d0b", size = 1.5) +
+  geom_line(data = data_best_subset2, aes(x = p, y = MSE), col = "#FF8C00") +
+  geom_point(data = data_best_subset2, aes(x = p, y = MSE), col = "#FF8C00", size = 1.5) +
   scale_color_tableau(palette = "Color Blind") +
   xlab("Number of covariates") +
   ylab("Mean squared error (training)")
@@ -611,7 +611,7 @@ df$Z <- apply(df, 1, function(row) f(row))
 
 ggplot(data = df, aes(x = X, y = Y)) +
   theme_light() +
-  geom_contour(aes(z = Z), colour = "#1170aa", bins = 25) +
+  geom_contour(aes(z = Z), colour = "#3232AA", bins = 25) +
   geom_point(
     data = data.frame(
       X = c(m$par[1], -1.53),
@@ -620,13 +620,13 @@ ggplot(data = df, aes(x = X, y = Y)) +
     aes(x = X, y = Y), color = "black"
   ) +
   geom_segment(aes(x = -1.53, y = -2, xend = -1.53, yend = 1.5),
-    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#FF8C00"
   ) +
   geom_segment(aes(x = -1.53, y = 1.5, xend = m$par[1], yend = 1.5),
-    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#FF8C00"
   ) +
   geom_segment(aes(x = m$par[1], y = 1.5, xend = m$par[1], yend = m$par[2]),
-    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#fc7d0b"
+    arrow = arrow(type = "closed", angle = 25, length = unit(0.05, "inches")), color = "#FF8C00"
   ) +
   labs(x = expression(beta[1]), y = expression(beta[2])) +
   theme_minimal() +
