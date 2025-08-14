@@ -32,7 +32,7 @@ Università degli Studi di Milano-Bicocca.
 
 ## Teaching material
 
-### Required
+#### Required
 
 -   Azzalini, A. and Scarpa, B. (2011), [*Data Analysis and Data
     Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford University
@@ -41,7 +41,7 @@ Università degli Studi di Milano-Bicocca.
     of Statistical Learning*](https://hastie.su.domains/ElemStatLearn/),
     Second Edition, Springer.
 
-### Optional
+#### Optional
 
 -   Efron, B. and Hastie, T. (2016), [*Computer Age Statistical
     Inference*](https://hastie.su.domains/CASI/), Cambridge University
@@ -49,7 +49,7 @@ Università degli Studi di Milano-Bicocca.
 -   Lewis, Kane, Arnold (2019) *A Computational Approach to Statistical
     Learning*. Chapman And Hall/Crc.
 
-### Slides and lecture notes
+#### Slides and lecture notes
 
 The slides are meant to be used in HTML. However, if you *really* want
 to convert the HTML slides into pdf files, you can [follow the

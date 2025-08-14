@@ -6,9 +6,8 @@
 <script src="un_B_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="un_B_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="un_B_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="un_B_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="un_B_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.5.56">
+<link href="un_B_files/libs/quarto-html/quarto-syntax-highlighting-234273d1456647dabc34a594ac50e507.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.32">
 
   <meta name="author" content="Tommaso Rigon">
   <title>Optimism, Conflicts, and Trade-offs</title>
@@ -30,8 +29,9 @@
       vertical-align: middle;
     }
     /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -42,7 +42,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -95,7 +95,7 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="un_B_files/libs/revealjs/dist/theme/quarto.css">
+  <link rel="stylesheet" href="un_B_files/libs/revealjs/dist/theme/quarto-a0c0cc41185901f99e5862491b9a6885.css">
   <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
   <script>document.addEventListener("DOMContentLoaded", function () {
  var mathElements = document.getElementsByClassName("math");
@@ -116,204 +116,6 @@
   <link href="un_B_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="un_B_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
   <link href="un_B_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
-  <style type="text/css">
-
-  .callout {
-    margin-top: 1em;
-    margin-bottom: 1em;  
-    border-radius: .25rem;
-  }
-
-  .callout.callout-style-simple { 
-    padding: 0em 0.5em;
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-    display: flex;
-  }
-
-  .callout.callout-style-default {
-    border-left: solid #acacac .3rem;
-    border-right: solid 1px silver;
-    border-top: solid 1px silver;
-    border-bottom: solid 1px silver;
-  }
-
-  .callout .callout-body-container {
-    flex-grow: 1;
-  }
-
-  .callout.callout-style-simple .callout-body {
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-style-default .callout-body {
-    font-size: 0.9rem;
-    font-weight: 400;
-  }
-
-  .callout.callout-titled.callout-style-simple .callout-body {
-    margin-top: 0.2em;
-  }
-
-  .callout:not(.callout-titled) .callout-body {
-      display: flex;
-  }
-
-  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
-    padding-left: 1.6em;
-  }
-
-  .callout.callout-titled .callout-header {
-    padding-top: 0.2em;
-    margin-bottom: -0.2em;
-  }
-
-  .callout.callout-titled .callout-title  p {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-    
-  .callout.callout-titled.callout-style-simple .callout-content  p {
-    margin-top: 0;
-  }
-
-  .callout.callout-titled.callout-style-default .callout-content  p {
-    margin-top: 0.7em;
-  }
-
-  .callout.callout-style-simple div.callout-title {
-    border-bottom: none;
-    font-size: .9rem;
-    font-weight: 600;
-    opacity: 75%;
-  }
-
-  .callout.callout-style-default  div.callout-title {
-    border-bottom: none;
-    font-weight: 600;
-    opacity: 85%;
-    font-size: 0.9rem;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-default div.callout-content {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-  }
-
-  .callout.callout-style-simple .callout-icon::before {
-    height: 1rem;
-    width: 1rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 1rem 1rem;
-  }
-
-  .callout.callout-style-default .callout-icon::before {
-    height: 0.9rem;
-    width: 0.9rem;
-    display: inline-block;
-    content: "";
-    background-repeat: no-repeat;
-    background-size: 0.9rem 0.9rem;
-  }
-
-  .callout-title {
-    display: flex
-  }
-    
-  .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  .callout.no-icon::before {
-    display: none !important;
-  }
-
-  .callout.callout-titled .callout-body > .callout-content > :last-child {
-    padding-bottom: 0.5rem;
-    margin-bottom: 0;
-  }
-
-  .callout.callout-titled .callout-icon::before {
-    margin-top: .5rem;
-    padding-right: .5rem;
-  }
-
-  .callout:not(.callout-titled) .callout-icon::before {
-    margin-top: 1rem;
-    padding-right: .5rem;
-  }
-
-  /* Callout Types */
-
-  div.callout-note {
-    border-left-color: #4582ec !important;
-  }
-
-  div.callout-note .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
-  }
-
-  div.callout-note.callout-style-default .callout-title {
-    background-color: #dae6fb
-  }
-
-  div.callout-important {
-    border-left-color: #d9534f !important;
-  }
-
-  div.callout-important .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-important.callout-style-default .callout-title {
-    background-color: #f7dddc
-  }
-
-  div.callout-warning {
-    border-left-color: #f0ad4e !important;
-  }
-
-  div.callout-warning .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-warning.callout-style-default .callout-title {
-    background-color: #fcefdc
-  }
-
-  div.callout-tip {
-    border-left-color: #02b875 !important;
-  }
-
-  div.callout-tip .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
-  }
-
-  div.callout-tip.callout-style-default .callout-title {
-    background-color: #ccf1e3
-  }
-
-  div.callout-caution {
-    border-left-color: #fd7e14 !important;
-  }
-
-  div.callout-caution .callout-icon::before {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
-  }
-
-  div.callout-caution.callout-style-default .callout-title {
-    background-color: #ffe5d0
-  }
-
-  </style>
   <style type="text/css">
     .reveal div.sourceCode {
       margin: 0;
@@ -475,7 +277,6 @@
 </section>
 <section id="polynomial-regression" class="slide level2 center">
 <h2>Polynomial regression</h2>
-<div>
 <ul>
 <li class="fragment"><p>The function <span class="math inline">f(x)</span> is unknown, therefore, it should be estimated.</p></li>
 <li class="fragment"><p>A simple approach is using the tools of <a href="unit_A_slides.html">Unit A</a>, such as <span class="orange">polynomial regression</span>: <span class="math display">
@@ -488,7 +289,6 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 \text{MSE}_{\text{train}} = \frac{1}{n}\sum_{i=1}^n\{y_i -f(x_i; \hat{\beta})\}^2,
 </span> or alternatively <span class="math inline">R^2_\text{train}</span>, for different values of <span class="math inline">p</span>…</p></li>
 </ul>
-</div>
 </section>
 <section id="yesterdays-data-polynomial-regression" class="slide level2 center">
 <h2>Yesterday’s data, polynomial regression</h2>
@@ -525,7 +325,6 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
 <section id="yesterdays-data-tomorrows-prediction" class="slide level2 center">
 <h2>Yesterday’s data, tomorrow’s prediction</h2>
-<div>
 <ul>
 <li class="fragment"><p>The <span class="blue">MSE</span> decreases as the number of parameter increases; similarly, the <span class="blue"><span class="math inline">R^2</span></span> increases as a function of <span class="math inline">p</span>. It can be <span class="orange">proved</span> that this <span class="orange">always happens</span> using ordinary least squares.</p></li>
 <li class="fragment"><p>One might be tempted to let <span class="math inline">p</span> as large as possible to make the model more flexible…</p></li>
@@ -537,7 +336,6 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 </span> using <span class="math inline">\hat{y}_i = f(x_i; \hat{\beta})</span>, where <span class="math inline">\hat{\beta}</span> is obtained using yesterday’s data.</p></li>
 <li class="fragment"><p><span class="orange">Remark</span>. Tomorrow’s r.v. <span class="math inline">\tilde{Y}_1,\dots, \tilde{Y}_n</span> follow the same scheme as yesterday’s data.</p></li>
 </ul>
-</div>
 </section>
 <section id="tomorrows-data-polynomial-regression" class="slide level2 center">
 <h2>Tomorrow’s data, polynomial regression</h2>
@@ -570,7 +368,6 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 </section>
 <section id="comments-and-remarks" class="slide level2 center">
 <h2>Comments and remarks</h2>
-<div>
 <ul>
 <li class="fragment"><p>The mean squared error on tomorrow’s data (<span class="blue">test</span>) is defined as <span class="math display">
 \text{MSE}_{\text{test}} = \frac{1}{n}\sum_{i=1}^n\{\tilde{y}_i -f(x_i; \hat{\beta})\}^2,
@@ -584,7 +381,6 @@ f(x; \beta) = \beta_1 + \beta_2 x + \beta_3 x^2 + \cdots + \beta_p x^{p-1},
 <li class="fragment">True <span class="math inline">f(\bm{x})</span> <a href="http://azzalini.stat.unipd.it/Book-DM/f_true.R" class="uri">http://azzalini.stat.unipd.it/Book-DM/f_true.R</a></li>
 </ul></li>
 </ul>
-</div>
 </section>
 <section id="orthogonal-polynomials" class="slide level2 center">
 <h2>☠️ - Orthogonal polynomials</h2>
@@ -628,7 +424,6 @@ x3                0  0  0  1</code></pre>
 </section>
 <section id="summary-and-notation-fixed-x" class="slide level2 center">
 <h2>Summary and notation (fixed-<span class="math inline">X</span>)</h2>
-<div>
 <ul>
 <li class="fragment"><p>In the previous example, we consider two sets of <span class="blue">random variables</span>:</p>
 <ul>
@@ -644,11 +439,9 @@ x3                0  0  0  1</code></pre>
 \mathbb{P}(Y_i = 1) = p(\bm{x}_i) =  g\{f(\bm{x}_i)\}, \qquad i=1,\dots,n,
 </span> where <span class="math inline">g(x) :\mathbb{R} \rightarrow (0,1)</span> is monotone transformation, such as the inverse logit.</p></li>
 </ul>
-</div>
 </section>
 <section id="the-in-sample-prediction-error" class="slide level2 center">
 <h2>The in-sample prediction error</h2>
-<div>
 <ul>
 <li class="fragment"><p>The <span class="orange">training data</span> is used to estimate a function of the covariates <span class="math inline">\hat{f}(\bm{x}_i)</span>. We hope our predictions work well on the <span class="blue">test set</span>.</p></li>
 <li class="fragment"><p>A measure of quality for the predictions is the <span class="blue">in-sample prediction error</span>: <span class="math display">
@@ -657,11 +450,9 @@ x3                0  0  0  1</code></pre>
 <li class="fragment"><p>The expectation is taken with respect to training random variable <span class="math inline">Y_1,\dots,Y_n</span>, implicitly appearing in <span class="math inline">\hat{f}(\bm{x})</span>, and the new data points <span class="math inline">\tilde{Y}_1,\dots,\tilde{Y}_n</span>.</p></li>
 <li class="fragment"><p>The in-sample prediction error is measuring the <span class="blue">average</span> “discrepancy” between the <span class="orange">new data points</span> and the corresponding predictions based on the training.</p></li>
 </ul>
-</div>
 </section>
 <section id="loss-functions" class="slide level2 center">
 <h2>Loss functions</h2>
-<div>
 <ul>
 <li class="fragment"><p>Examples of loss functions for <span class="blue">regression problems</span> <span class="math inline">Y \in \mathbb{R}</span> are:</p>
 <ul>
@@ -678,7 +469,6 @@ x3                0  0  0  1</code></pre>
 </span></li>
 </ul></li>
 </ul>
-</div>
 </section>
 <section id="regression-under-quadratic-loss-i" class="slide level2 center">
 <h2>Regression under quadratic loss I</h2>
@@ -701,7 +491,6 @@ x3                0  0  0  1</code></pre>
 </section>
 <section id="regression-under-quadratic-loss-ii" class="slide level2 center">
 <h2>Regression under quadratic loss II</h2>
-<div>
 <ul>
 <li class="fragment"><p>We would like to make the <span class="orange">mean squared error</span> as <span class="orange">small</span> as possible, e.g., by choosing an “optimal” degree of the polynomial <span class="math inline">p-1</span> that minimizes it.</p></li>
 <li class="fragment"><p>Let us recall the previous decomposition <span class="math display">
@@ -712,11 +501,9 @@ x3                0  0  0  1</code></pre>
 </span> but even in this (overly optimistic) situation, we would still commit mistakes, due to the presence of <span class="math inline">\tilde{\epsilon}_i</span> (unless <span class="math inline">\sigma^2 = 0</span>). Hence, the variance <span class="math inline">\sigma^2</span> is called the <span class="orange">irreducible error</span>.</p></li>
 <li class="fragment"><p>Since we do not know <span class="math inline">f(\bm{x}_i)</span>, we seek for an estimate <span class="math inline">\hat{f}(\bm{x}_i) \approx f(\bm{x}_i)</span>, in the attempt of minimizing the <span class="blue">reducible error</span>.</p></li>
 </ul>
-</div>
 </section>
 <section id="classification-under-misclassification-loss" class="slide level2 center">
 <h2>Classification under misclassification loss</h2>
-<div>
 <ul>
 <li class="fragment"><p>In <span class="orange">classification problems</span>, under a <span class="blue">misclassification loss</span>, the in-sample prediction error is <span class="math display">
 \text{ErrF} = \mathbb{E}\left[\frac{1}{n}\sum_{i=1}^n  \mathscr{L}\{\tilde{Y}_i; \hat{f}(\bm{x}_i)\}\right] = \frac{1}{n}\sum_{i=1}^n  \mathbb{E}\{\mathbb{I}(\tilde{Y}_i \neq \hat{y}_i)\}= \frac{1}{n}\sum_{i=1}^n\mathbb{P}(\tilde{Y}_i \neq \hat{y}_i).
@@ -729,7 +516,6 @@ x3                0  0  0  1</code></pre>
 </span></p></li>
 <li class="fragment"><p>The <span class="blue">Bayes rate</span> is the error rate we would get if we knew the true <span class="math inline">p(\bm{x})</span> and can be regarded as the <span class="orange">irreducible error</span> for classification problems.</p></li>
 </ul>
-</div>
 </section>
 <section id="bias-variance-trade-off" class="slide level2 center">
 <h2>Bias-variance trade-off</h2>
@@ -755,7 +541,6 @@ x3                0  0  0  1</code></pre>
 </section>
 <section id="example-bias-variance-in-linear-regression-models" class="slide level2 center">
 <h2>Example: bias-variance in linear regression models</h2>
-<div>
 <ul>
 <li class="fragment"><p>In <span class="blue">regression problems</span> the <span class="orange">in-sample prediction error</span> under <span class="blue">squared loss</span> is <span class="math display">
 \begin{aligned}
@@ -769,7 +554,6 @@ x3                0  0  0  1</code></pre>
 \frac{1}{n}\sum_{i=1}^n\text{var}\{f(\bm{x}_i; \hat{\beta})\} = \frac{\sigma^2}{n}\sum_{i=1}^n  \bm{x}_i^T (\bm{X}^T\bm{X})^{-1}\bm{x}_i = \frac{\sigma^2}{n}\text{tr}(\bm{H}) = \sigma^2 \frac{p}{n}.
 </span></p></li>
 </ul>
-</div>
 </section>
 <section id="if-we-knew-fx" class="slide level2 center">
 <h2>If we knew <span class="math inline">f(x)</span>…</h2>
@@ -777,7 +561,6 @@ x3                0  0  0  1</code></pre>
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-14-1.png" width="2000" class="r-stretch"></section>
 <section id="bias-variance-trade-off-1" class="slide level2 center">
 <h2>Bias-variance trade-off</h2>
-<div>
 <ul>
 <li class="fragment"><p>When <span class="math inline">p</span> grows, the mean squared error first decreases and then it increases. In the example, the <span class="orange">theoretical optimum</span> is <span class="math inline">p = 6</span> (5th degree polynomial).</p></li>
 <li class="fragment"><p>The <span class="orange">bias</span> measures the ability of <span class="math inline">\hat{f}(\bm{x})</span> to reconstruct the true <span class="math inline">f(\bm{x})</span>. The bias is due to <span class="blue">lack of knowledge</span> of the data-generating mechanism. It equals zero when <span class="math inline">\mathbb{E}\{\hat{f}(\bm{x})\} = f(\bm{x})</span>.</p></li>
@@ -788,11 +571,9 @@ x3                0  0  0  1</code></pre>
 <li class="fragment"><p>We say that an estimator is <span class="orange">overfitting</span> the data if an increase in variance comes without important gains in terms of bias.</p></li>
 </ul>
 <!-- - **Summary**. Low model complexity: [high bias]{.orange}, [low variance]{.blue}. High model complexity: [low bias]{.blue}, [high variance]{.orange}. -->
-</div>
 </section>
 <section id="but-since-we-do-not-know-fx" class="slide level2 center">
 <h2>But since we do not know <span class="math inline">f(x)</span>…</h2>
-<div>
 <ul>
 <li class="fragment"><p>We just concluded that we must expect a trade-off between error and variance components. In practice, however, we cannot do this because, of course, <span class="math inline">f(x)</span> is <span class="orange">unknown</span>.</p></li>
 <li class="fragment"><p>A simple solution consists indeed in <span class="orange">splitting</span> the observations in two parts: a <span class="orange">training set</span> <span class="math inline">(y_1,\dots,y_n)</span> and a <span class="blue">test set</span> <span class="math inline">(\tilde{y}_1,\dots,\tilde{y}_n)</span>, having the same covariates <span class="math inline">x_1,\dots,x_n</span>.</p></li>
@@ -802,7 +583,6 @@ x3                0  0  0  1</code></pre>
 </span></p></li>
 <li class="fragment"><p>This is precisely what we already did with yesterday’s and tomorrow’s data!</p></li>
 </ul>
-</div>
 </section>
 <section id="mse-on-training-and-test-set-recap" class="slide level2 center">
 <h2>MSE on training and test set (recap)</h2>
@@ -810,7 +590,6 @@ x3                0  0  0  1</code></pre>
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-15-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2000"></section>
 <section id="optimism-i" class="slide level2 center">
 <h2>Optimism I</h2>
-<div>
 <ul>
 <li class="fragment"><p>Let us investigate this discrepancy between training and test more in-depth.</p></li>
 <li class="fragment"><p>In <span class="blue">regression problems</span>, under a <span class="blue">squared loss function</span>, the <span class="orange">in-sample prediction error</span> is <span class="math display">
@@ -824,11 +603,9 @@ x3                0  0  0  1</code></pre>
 \text{Opt} = \mathbb{E}(\text{MSE}_\text{test}) - \mathbb{E}(\text{MSE}_\text{train}).
 </span></p></li>
 </ul>
-</div>
 </section>
 <section id="optimism-ii" class="slide level2 center">
 <h2>Optimism II</h2>
-<div>
 <ul>
 <li class="fragment"><p>It can be proved (see Exercises) that the <span class="orange">optimism</span> has a very simple form: <span class="math display">
 \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i))
@@ -841,7 +618,6 @@ x3                0  0  0  1</code></pre>
 </span></p></li>
 <li class="fragment"><p>If <span class="math inline">\sigma^2</span> is unknown, then it must be <span class="orange">estimated</span> using for instance <span class="math inline">s^2</span>.</p></li>
 </ul>
-</div>
 </section>
 <section id="optimism-iii" class="slide level2 center">
 <h2>Optimism III</h2>
@@ -880,7 +656,6 @@ x3                0  0  0  1</code></pre>
 </section>
 <section id="summary-and-notation-random-x" class="slide level2 center">
 <h2>Summary and notation (random-<span class="math inline">X</span>)</h2>
-<div>
 <ul>
 <li class="fragment"><p>A slight change to the previous setup is necessary. In fact, there are no reasons to believe that the <span class="blue">compliance</span> is a fixed covariate.</p></li>
 <li class="fragment"><p>We consider a set of iid <span class="blue">random variables</span> <span class="math inline">(X_1, Y_1),\dots, (X_n, Y_n)</span>, whose realization is <span class="math inline">(\bm{x}_1,y_1),\dots,(\bm{x}_n, y_n)</span>. This time, the covariates are <span class="orange">random</span>.</p></li>
@@ -889,11 +664,9 @@ x3                0  0  0  1</code></pre>
   Y_i = f(\bm{x}_i) + \epsilon_i, \quad i=1,\dots,n,
 </span> where <span class="math inline">\epsilon_i</span> are iid “<span class="orange">error</span>” terms with <span class="math inline">\mathbb{E}(\epsilon_i)=0</span> and <span class="math inline">\text{var}(\epsilon_i)=\sigma^2</span>.</p></li>
 </ul>
-</div>
 </section>
 <section id="expected-prediction-error" class="slide level2 center">
 <h2>Expected prediction error</h2>
-<div>
 <ul>
 <li class="fragment"><p>In this setting with random covariates, we want to minimize the <span class="orange">expected prediction error</span>: <span class="math display">
 \text{Err} =  \mathbb{E}\left[\mathscr{L}\{\tilde{Y}; \hat{f}(\tilde{X})\}\right],
@@ -905,7 +678,6 @@ x3                0  0  0  1</code></pre>
   </span></p></li>
 <li class="fragment"><p>The data-splitting strategy we used before is an effective tool for assessing the error. However, its <span class="blue">interpretation</span> is changed: we are now estimating <span class="math inline">\text{Err}</span> and not <span class="math inline">\text{ErrF}</span>.</p></li>
 </ul>
-</div>
 </section>
 <section id="mse-on-training-and-test-cholesterol-data" class="slide level2 center">
 <h2>MSE on training and test (<code>cholesterol</code> data)</h2>
@@ -913,7 +685,6 @@ x3                0  0  0  1</code></pre>
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-20-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2000"></section>
 <section id="training-validation-and-test-i" class="slide level2 center">
 <h2>Training, validation, and test I</h2>
-<div>
 <ul>
 <li class="fragment"><p>On many occasions, we may need to select several complexity parameters and compare hundreds of models.</p></li>
 <li class="fragment"><p>If the same test set is used for such a task, the final assessment of the error is somewhat biased and <span class="orange">too optimistic</span>, because we are “learning” from the test set.</p></li>
@@ -925,7 +696,6 @@ x3                0  0  0  1</code></pre>
 </ul></li>
 <li class="fragment"><p>Ideally, the test set should be kept in a “vault” and be brought out only at the end of the data analysis.</p></li>
 </ul>
-</div>
 </section>
 <section id="training-validation-and-test-ii" class="slide level2 center">
 <h2>Training, validation, and test II</h2>
@@ -952,7 +722,6 @@ x3                0  0  0  1</code></pre>
 </section>
 <section id="cross-validation-ii" class="slide level2 center">
 <h2>Cross-validation II</h2>
-<div>
 <ul>
 <li class="fragment"><p>In the <span class="blue"><span class="math inline">K</span>-fold cross validation</span> we compute for each fold <span class="math inline">k</span> we fit a model <span class="math inline">\hat{f}_{-V_k}(\bm{x})</span> without using the observations of <span class="math inline">V_k</span>.</p></li>
 <li class="fragment"><p>Hence, the model must be estimated <span class="orange"><span class="math inline">K</span> times</span>, which could be computationally challenging.</p></li>
@@ -960,11 +729,9 @@ x3                0  0  0  1</code></pre>
 </span> where <span class="math inline">|V_k|</span> is the cardinality of <span class="math inline">V_k</span>, i.e. <span class="math inline">V_k \approx n / K</span>.</p></li>
 <li class="fragment"><p>We summarize the above errors using the mean, obtaining the following <span class="orange">estimate</span> for the <span class="orange">expected prediction error</span>: <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].</span></p></li>
 </ul>
-</div>
 </section>
 <section id="cross-validation-iii" class="slide level2 center">
 <h2>Cross-validation III</h2>
-<div>
 <ul>
 <li class="fragment"><p>An advantage of CV is that <span class="blue">variance</span> of the Monte Carlo estimate <span class="math inline">\widehat{\mathrm{Err}}</span> can be quantified.</p></li>
 <li class="fragment"><p>Let us define cross-validated “<span class="orange">residuals</span>” of our procedure as follows <span class="math display">
@@ -976,7 +743,6 @@ r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
 <li class="fragment"><p>The above formula is often criticized for producing intervals that are <span class="orange">too narrow</span>!</p></li>
 <li class="fragment"><p>Indeed, the estimate <span class="math inline">\widehat{\text{se}}</span> of the standard deviation of <span class="math inline">\widehat{\text{Err}}</span> assumes that the observed errors <span class="math inline">r_1, \dots, r_n</span> are independent, but this is false!</p></li>
 </ul>
-</div>
 </section>
 <section id="cross-validation-iv-cholesterol-data" class="slide level2 center">
 <h2>Cross-validation IV (<code>cholesterol</code> data)</h2>
@@ -1006,7 +772,6 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </section>
 <section id="generalized-cross-validation" class="slide level2 center">
 <h2>Generalized cross-validation</h2>
-<div>
 <ul>
 <li class="fragment">An alternative to LOO-CV is the so-called <span class="orange">generalized cross validation</span> (GCV), defined as <span class="math display">
 \text{GCV} = \widehat{\mathrm{Err}} = \frac{1}{n}\sum_{i=1}^n \left(\frac{y_i - \hat{y}_i}{1 - p/n}\right)^2.
@@ -1018,7 +783,6 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 \text{GCV} \approx \frac{1}{n}\sum_{i=1}^n\{y_i - f(\bm{x}_i; \hat{\beta})\}^2 +  \frac{2\hat{\sigma}^2 p}{n}, \qquad \hat{\sigma}^2 =\frac{1}{n}\sum_{i=1}^n\{y_i - f(\bm{x}_i; \hat{\beta})\}^2,
 </span> revealing a sharp connection with the <span class="math inline">C_p</span> of Mallows.</li>
 </ul>
-</div>
 </section>
 <section id="loo-cv-and-gcv-cholesterol-data" class="slide level2 center">
 <h2>LOO-CV and GCV (<code>cholesterol</code> data)</h2>
@@ -1026,7 +790,6 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <img data-src="un_B_files/figure-revealjs/unnamed-chunk-24-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2000"></section>
 <section id="on-the-choice-of-k" class="slide level2 center">
 <h2>On the choice of <span class="math inline">K</span></h2>
-<div>
 <ul>
 <li class="fragment"><p>Common choices are <span class="math inline">K = 5</span> or <span class="math inline">K = 10</span>. It is quite evident that a <span class="blue">larger <span class="math inline">K</span></span> requires more <span class="blue">computations</span>.</p></li>
 <li class="fragment"><p>A <span class="math inline">K</span>-fold CV with <span class="math inline">K=5</span> or <span class="math inline">K = 10</span> is a (upwords) <span class="orange">biased estimate</span> of <span class="math inline">\text{Err}</span> because it uses less observations than those available (either <span class="math inline">4/5</span> or <span class="math inline">9/10</span>).</p></li>
@@ -1034,7 +797,6 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <li class="fragment"><p>Indeed, the estimates <span class="math inline">\hat{f}_{-i}</span> and <span class="math inline">\hat{f}_{-i'}</span> have <span class="math inline">n - 2</span> observations in common. Recall that the variance of the sum is: <span class="math display">\text{var}(X + Y) = \text{var}(X) + \text{var}(Y) + 2\text{cov}(X, Y).</span></p></li>
 <li class="fragment"><p>Overall, the choice is very much context-dependent.</p></li>
 </ul>
-</div>
 <!-- ## ☠️ - Optimism, random-$X$ -->
 <!-- -   What is a good definition and estimate of the [optimism]{.orange} in -->
 <!--     the very much realistic scenario where the covariates are random? -->
@@ -1047,7 +809,6 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </section>
 <section id="goodness-of-fit-with-a-penalty-term" class="slide level2 center">
 <h2>Goodness of fit with a penalty term</h2>
-<div>
 <ul>
 <li class="fragment"><p>The main statistical method for estimating unknown parameters of a model is the <span class="blue">maximize the log-likelihood</span> <span class="math inline">\ell(\theta) = \ell(\theta; y_1,\dots,y_n)</span>.</p></li>
 <li class="fragment"><p>However, we cannot pick the value of <span class="math inline">p</span> that maximizes the log-likelihood (why not?)</p></li>
@@ -1058,11 +819,9 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <li class="fragment"><p>The choice of the specific penalty identifies a particular criterion.</p></li>
 <li class="fragment"><p>An advantage of <span class="math inline">\text{IC}</span> is that they are based on the full dataset.</p></li>
 </ul>
-</div>
 </section>
 <section id="the-akaike-information-criterion-i" class="slide level2 center">
 <h2>The Akaike information criterion I</h2>
-<div>
 <ul>
 <li class="fragment"><p>Akaike suggested minimizing over <span class="math inline">p</span> the <span class="blue">expectation</span> of the <span class="orange">Kullback-Leibler divergence</span>: <span class="math display">
 \text{KL}(p(\cdot; \theta_0) \mid\mid p(\cdot;\hat{\theta})) = \int p(\tilde{\bm{Y}};\theta_0) \log{p(\tilde{\bm{Y}};\theta_0)}\mathrm{d}\tilde{\bm{Y}} - \int p(\tilde{\bm{Y}};\theta_0)\log{p(\tilde{\bm{Y}};\hat{\theta})\mathrm{d}\tilde{\bm{Y}}},
@@ -1075,11 +834,9 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 \end{aligned}
 </span> is <span class="orange">minimized</span>. Unfortunately, we cannot compute nor minimize <span class="math inline">\Delta(p)</span> because <span class="math inline">\theta_0</span> is unknown.</p></li>
 </ul>
-</div>
 </section>
 <section id="the-akaike-information-criterion-ii" class="slide level2 center">
 <h2>The Akaike information criterion II</h2>
-<div>
 <ul>
 <li class="fragment"><p>The theoretical quantity <span class="math inline">\Delta(p)</span> cannot be obtained. However, the quantity <span class="math display">
 \text{AIC} = -2 \ell(\hat{\theta}) + 2 p,
@@ -1090,11 +847,9 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <li class="fragment"><p>In practice, we will select the value of <span class="math inline">p</span> minimizing the <span class="math inline">\text{AIC}</span>, which is typically quite easy.</p></li>
 <li class="fragment"><p>The factor <span class="math inline">2</span> is just a <span class="blue">convention</span>, introduced to match the quantities of the usual asymptotic theory.</p></li>
 </ul>
-</div>
 </section>
 <section id="the-aic-for-gaussian-linear-models" class="slide level2 center">
 <h2>The AIC for Gaussian linear models</h2>
-<div>
 <ul>
 <li class="fragment"><p>Let us assume that <span class="math inline">\sigma^2</span> is <span class="orange">known</span>. Then the <span class="math inline">\text{AIC}</span> for a Gaussian linear model is <span class="math display">
 \begin{aligned}
@@ -1108,7 +863,6 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </span> implying that for fixed values <span class="math inline">\sigma^2</span> the <span class="math inline">C_p</span> of Mallows and the Akaike’s <span class="math inline">\text{AIC}</span> are <span class="blue">equivalent</span>, i.e.&nbsp;they lead to the same <span class="orange">minimum</span>.</p></li>
 <li class="fragment"><p>When <span class="math inline">\sigma^2</span> is unknown, then it is estimated, and the <span class="math inline">C_p</span> and <span class="math inline">\text{AIC}</span> may be slightly different.</p></li>
 </ul>
-</div>
 </section>
 <section id="aic-aicc-bic" class="slide level2 center">
 <h2>AIC, AICc, BIC</h2>
@@ -1179,7 +933,6 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </section>
 <section id="an-optimistic-summary" class="slide level2 center">
 <h2>An optimistic summary</h2>
-<div>
 <ul>
 <li class="fragment"><p>In the <code>cholesterol</code> dataset, the various indices produced <span class="orange">different results</span>!</p>
 <ul>
@@ -1192,7 +945,6 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <li class="fragment"><p>In this specific case, we may prefer <span class="math inline">p = 4</span>, since it is based on the less-biased estimates of <span class="math inline">\text{Err}</span>, such as the LOO-CV.</p></li>
 <li class="fragment"><p>However, this choice is <span class="blue">debatable</span>: another statistician may prefer the simpler linear model with <span class="math inline">p =2</span>.</p></li>
 </ul>
-</div>
 </section>
 <section id="the-cholesterol-data-final-model-p-4" class="slide level2 center">
 <h2>The <code>cholesterol</code> data: final model (<span class="math inline">p = 4</span>)</h2>
@@ -1212,15 +964,15 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <li>Bates, S., Hastie, T., and R. Tibshirani (2023). “<a href="https://doi.org/10.1080/01621459.2023.2197686">Cross-validation: what does it estimate and how well does it do it?</a>” <em>Journal of the American Statistical Association</em>, in press.</li>
 </ul></li>
 </ul>
-<div class="quarto-auto-generated-content">
+
+</section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
 <p><img src="img/logoB.png" class="slide-logo"></p>
 <div class="footer footer-default">
 <p><a href="https://tommasorigon.github.io/datamining">Home page</a></p>
 </div>
-</div>
-</section>
-    </div>
-  </div>
+</div></div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
   <script src="un_B_files/libs/revealjs/dist/reveal.js"></script>
@@ -1248,7 +1000,8 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1449,192 +1202,172 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
     </script>
 
     <script id="quarto-html-after-body" type="application/javascript">
-    window.document.addEventListener("DOMContentLoaded", function (event) {
-      const toggleBodyColorMode = (bsSheetEl) => {
-        const mode = bsSheetEl.getAttribute("data-mode");
-        const bodyEl = window.document.querySelector("body");
-        if (mode === "dark") {
-          bodyEl.classList.add("quarto-dark");
-          bodyEl.classList.remove("quarto-light");
-        } else {
-          bodyEl.classList.add("quarto-light");
-          bodyEl.classList.remove("quarto-dark");
-        }
-      }
-      const toggleBodyColorPrimary = () => {
-        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-        if (bsSheetEl) {
-          toggleBodyColorMode(bsSheetEl);
-        }
-      }
-      toggleBodyColorPrimary();  
-      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
-      tabsets.forEach(function(tabset) {
-        const tabby = new Tabby('#' + tabset.id);
-      });
-      const isCodeAnnotation = (el) => {
-        for (const clz of el.classList) {
-          if (clz.startsWith('code-annotation-')) {                     
-            return true;
-          }
-        }
-        return false;
-      }
-      const onCopySuccess = function(e) {
-        // button target
-        const button = e.trigger;
-        // don't keep focus
-        button.blur();
-        // flash "checked"
-        button.classList.add('code-copy-button-checked');
-        var currentTitle = button.getAttribute("title");
-        button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
-        setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
-          }
-          button.setAttribute("title", currentTitle);
-          button.classList.remove('code-copy-button-checked');
-        }, 1000);
-        // clear code selection
-        e.clearSelection();
-      }
-      const getTextToCopy = function(trigger) {
-          const codeEl = trigger.previousElementSibling.cloneNode(true);
-          for (const childEl of codeEl.children) {
-            if (isCodeAnnotation(childEl)) {
-              childEl.remove();
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
             }
           }
-          return codeEl.innerText;
-      }
-      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-        text: getTextToCopy
-      });
-      clipboard.on('success', onCopySuccess);
-      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-        // For code content inside modals, clipBoardJS needs to be initialized with a container option
-        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
-        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-          text: getTextToCopy,
-          container: window.document.getElementById('quarto-embedded-source-code-modal')
-        });
-        clipboardModal.on('success', onCopySuccess);
-      }
-        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-        var mailtoRegex = new RegExp(/^mailto:/);
-          var filterRegex = new RegExp('/' + window.location.host + '/');
-        var isInternal = (href) => {
-            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          return false;
         }
-        // Inspect non-navigation links and adorn them if external
-     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-        for (var i=0; i<links.length; i++) {
-          const link = links[i];
-          if (!isInternal(link.href)) {
-            // undo the damage that might have been done by quarto-nav.js in the case of
-            // links that we want to consider external
-            if (link.dataset.originalHref !== undefined) {
-              link.href = link.dataset.originalHref;
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
             }
-          }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
         }
-      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-        const config = {
-          allowHTML: true,
-          maxWidth: 500,
-          delay: 100,
-          arrow: false,
-          appendTo: function(el) {
-              return el.closest('section.slide') || el.parentElement;
-          },
-          interactive: true,
-          interactiveBorder: 10,
-          theme: 'light-border',
-          placement: 'bottom-start',
-        };
-        if (contentFn) {
-          config.content = contentFn;
-        }
-        if (onTriggerFn) {
-          config.onTrigger = onTriggerFn;
-        }
-        if (onUntriggerFn) {
-          config.onUntrigger = onUntriggerFn;
-        }
-          config['offset'] = [0,0];
-          config['maxWidth'] = 700;
-        window.tippy(el, config); 
-      }
-      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-      for (var i=0; i<noterefs.length; i++) {
-        const ref = noterefs[i];
-        tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-          try { href = new URL(href).hash; } catch {}
-          const id = href.replace(/^#\/?/, "");
-          const note = window.document.getElementById(id);
-          if (note) {
-            return note.innerHTML;
-          } else {
-            return "";
-          }
-        });
-      }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
-          }
-        } else {
-          return undefined;
-        }
-      };
-      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-      for (var i=0; i<bibliorefs.length; i++) {
-        const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
               }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
           });
         }
-      }
-    });
-    </script>
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
     
 
 </body></html>
