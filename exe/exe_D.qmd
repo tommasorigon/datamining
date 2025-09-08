@@ -75,15 +75,15 @@ Can we estimate $h$ and $\lambda$ using a standard method such as the [maximum l
 
 #### D.6 - Leave-one-out cross-validation
 
-[Prove]{.orange} the theorem about the [leave-one-out cross validation]{.blue} for "projective" linear smoothers, described in [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii). 
+[Prove]{.orange} the theorem on [leave-one-out cross-validation]{.blue} for "projective" linear smoothers, as described in [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii).  
 
-Then, show that the theorem is valid for the following estimators: 
+Then, show that the theorem holds for the following estimators:  
 
-  i. Nadaraya-Watson estimator. [Hint]{.blue}: use the fact that Nadaraya-Watson is "projective" almost by definition.
-  ii. Local linear regression. [Hint]{.blue}: prove that local linear regression is "projective".
-  iii. Regression splines. [Hint]{.blue}: this is a special instance of linear model, so...
-  iv. Smoothing splines. [Hint]{.blue}: you may want to use again the Sherman-Morrison formula. 
-  
+  i. Nadaraya–Watson estimator. [Hint]{.blue}: use the fact that the Nadaraya–Watson estimator is "projective" almost by definition.  
+  ii. Local linear regression. [Hint]{.blue}: prove that local linear regression is "projective."  
+  iii. Regression splines. [Hint]{.blue}: this is a special case of a linear model, so you can prove the theorem directly rather than by establishing the projectivity property.  
+  iv. Smoothing splines. [Hint]{.blue}: again, you may want to use the Sherman–Morrison formula and prove the theorem directly.  
+
 <!-- Finally, [prove]{.orange} that in all the above cases $|y_i - \hat{y}_{-i}| \ge |y_i - \hat{y}_i|$. That is, the leave-one-out residuals are always bigger than the regular residuals.  -->
 
 ::: {.callout-warning collapse=true}

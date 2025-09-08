@@ -2318,13 +2318,16 @@ window.Quarto = {
 </section>
 <section id="d.6---leave-one-out-cross-validation" class="level4">
 <h4 class="anchored" data-anchor-id="d.6---leave-one-out-cross-validation">D.6 - Leave-one-out cross-validation</h4>
-<p><span class="orange">Prove</span> the theorem about the <span class="blue">leave-one-out cross validation</span> for “projective” linear smoothers, described in <a href="../slides/un_D.html#choice-of-the-bandwidth-ii">this slide</a>.</p>
-<p>Then, show that the theorem is valid for the following estimators:</p>
+<p><span class="orange">Prove</span> the theorem on <span class="blue">leave-one-out cross-validation</span> for “projective” linear smoothers, as described in <a href="../slides/un_D.html#choice-of-the-bandwidth-ii">this slide</a>.</p>
+<p>Then, show that the theorem holds for the following estimators:</p>
 <ol type="i">
-<li>Nadaraya-Watson estimator. <span class="blue">Hint</span>: use the fact that Nadaraya-Watson is “projective” almost by definition.</li>
-<li>Local linear regression. <span class="blue">Hint</span>: prove that local linear regression is “projective”.</li>
-<li>Regression splines. <span class="blue">Hint</span>: this is a special instance of linear model, so…</li>
-<li>Smoothing splines. <span class="blue">Hint</span>: you may want to use again the Sherman-Morrison formula.</li>
+<li>Nadaraya–Watson estimator. <span class="blue">Hint</span>: use the fact that the Nadaraya–Watson estimator is “projective” almost by definition.<br>
+</li>
+<li>Local linear regression. <span class="blue">Hint</span>: prove that local linear regression is “projective.”<br>
+</li>
+<li>Regression splines. <span class="blue">Hint</span>: this is a special case of a linear model, so you can prove the theorem directly rather than by establishing the projectivity property.<br>
+</li>
+<li>Smoothing splines. <span class="blue">Hint</span>: again, you may want to use the Sherman–Morrison formula and prove the theorem directly.</li>
 </ol>
 <!-- Finally, [prove]{.orange} that in all the above cases $|y_i - \hat{y}_{-i}| \ge |y_i - \hat{y}_i|$. That is, the leave-one-out residuals are always bigger than the regular residuals.  -->
 <div class="callout callout-style-simple callout-warning no-icon callout-titled">
