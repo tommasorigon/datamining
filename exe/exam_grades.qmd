@@ -1,6 +1,6 @@
 ---
 title: "Data Mining - Exam"
-subtitle: "Date: 04-07-2025"
+subtitle: "Date: 12-09-2025"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
 lang: en
