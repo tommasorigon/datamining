@@ -22,7 +22,7 @@ format:
     theme: [default, ../template.css] # alternative themes (subset): default, night, dark
     embed-resources: false
     echo: false
-    fig-dpi: 90
+    fig-dpi: 150
     # incremental: true  # Remove comment if you like incremental bullet points
     logo: img/logoB.png
     footer: "[Home page](https://tommasorigon.github.io/datamining)"
