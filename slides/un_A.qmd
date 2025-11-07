@@ -34,7 +34,7 @@ format:
     toc-title: Table of contents
     embed-resources: false
     smooth-scroll: true
-    fig-dpi: 250
+    fig-dpi: 90
 editor: 
   markdown: 
     wrap: 72
@@ -110,9 +110,7 @@ p0 <- ggpairs(auto,
   diag = "blank"
 ) +
   theme_light() +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("") +
-  ylab("")
+  scale_color_tableau(palette = "Color Blind")
 p0
 ```
 :::
@@ -1229,9 +1227,7 @@ p0 <- ggpairs(heart,
   diag = "blank"
 ) +
   theme_light() +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("") +
-  ylab("")
+  scale_color_tableau(palette = "Color Blind") 
 p0
 ```
 

@@ -16,9 +16,7 @@ p0 <- ggpairs(auto,
   diag = "blank"
 ) +
   theme_light() +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("") +
-  ylab("")
+  scale_color_tableau(palette = "Color Blind")
 p0
 
 ggplot(data = auto, aes(x = engine.size, y = city.distance, col = fuel)) +
@@ -115,9 +113,7 @@ p0 <- ggpairs(heart,
   diag = "blank"
 ) +
   theme_light() +
-  scale_color_tableau(palette = "Color Blind") +
-  xlab("") +
-  ylab("")
+  scale_color_tableau(palette = "Color Blind")
 p0
 
 m1 <- glm(chd ~ ., data = heart, family = "binomial")
