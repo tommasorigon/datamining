@@ -1,24 +1,27 @@
 ---
 title: "Mock exam"
-subtitle: "Data mining - CdL CLAMSES"
+subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
-lang: en
-execute:
-  cache: true
 page-layout: full
+lang: it
+citeproc: true
+reference-location: margin
+execute:
+  cache: false
 format:
   html:
     html-math-method: katex
-    echo: true
+    echo: false
     callout-appearance: minimal
     theme: [simplex, ../template.css]
-    toc: true
-    toc-title: Table of contents
-    embed-resources: true
+    embed-resources: false
     code-line-numbers: true
     smooth-scroll: true
-    fig-dpi: 250
+    code-fold: false
+    code-summary: "Show the code"
+    fig-dpi: 150
+    highlight-style: github
 editor: 
   markdown: 
     wrap: 72

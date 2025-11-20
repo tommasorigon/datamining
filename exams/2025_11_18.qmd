@@ -1,6 +1,6 @@
 ---
 title: "Exam - 18 November 2025"
-subtitle: "Data Mining (M) - CdL CLAMSES"
+subtitle: "Data Mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
 page-layout: full
