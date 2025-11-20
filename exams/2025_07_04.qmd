@@ -48,3 +48,24 @@ Discuss similarities and differences between cross-validation and generalized cr
 
 #### Problem 3
 
+Consider lasso and ridge regression when the predictors are mutually orthogonal. More precisely, let $\bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p)$ be the design matrix and suppose $\bm{Z}$ is orthogonal and standardized, which means $\bm{Z}^T\bm{Z} = I_p$. Moreover, suppose the predictors and the response have been centered, that is $\sum_{i=1}^ny_i = \sum_{i=1}^n z_{ij} = 0$. 
+
+1. Find an explicit expression for $\hat{\beta}_\text{ridge}$.
+
+2. Find an explicit expression for $\hat{\beta}_\text{lasso}$. 
+
+#### Problem 4
+
+Let $(x_i, y_i) \in \mathbb{R}^2$ for $i=1,\dots,n$ be pairs of iid realizations from an unknown density function $f(x, y)$, namely $(X_i, Y_i) \overset{\text{iid}}{\sim} f$. A common estimator for $f(x, y)$ is the kernel density estimator (KDE), which is defined as follows:
+$$
+\hat{f}(x, y) = \frac{1}{n}\sum_{i=1}^n\frac{1}{h_1 h_2}\phi\left(\frac{x - x_i}{h_1}\right)\phi\left(\frac{y - y_i}{h_2}\right),
+$$
+where $\phi(\cdot)$ is the density function of a standard Gaussian and $h_1, h_2 > 0$ are positive constants. 
+
+1. Verify that $\hat{f}(x, y) > 0$ and $\hat{f}(x, y)$ integrates to $1$ on $\mathbb{R}^2$. In other words, show that $\hat{f}(x, y)$ is a bivariate density function. 
+
+1. Compute the estimated marginal density $\hat{f}(x)$ and the estimated conditional density $\hat{f}( y \mid x)$ associated to $\hat{f}(x, y)$.
+
+1. Let $g(x) = \mathbb{E}(Y \mid X = x)$ be the conditional mean associated to $f(y \mid x)$. Obtain the estimator $\hat{g}(x)$ for $g(x)$ from the estimated conditional density $\hat{f}(y \mid x)$. 
+
+1. Discuss similarities between $\hat{g}(x)$ and other known nonparametric estimators of $g(x)$.

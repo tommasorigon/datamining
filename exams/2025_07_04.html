@@ -139,6 +139,26 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <h4 class="anchored" data-anchor-id="problem-2">Problem 2</h4>
 <p>Discuss similarities and differences between cross-validation and generalized cross-validation.</p>
 </section>
+<section id="problem-3" class="level4">
+<h4 class="anchored" data-anchor-id="problem-3">Problem 3</h4>
+<p>Consider lasso and ridge regression when the predictors are mutually orthogonal. More precisely, let <span class="math inline">\bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p)</span> be the design matrix and suppose <span class="math inline">\bm{Z}</span> is orthogonal and standardized, which means <span class="math inline">\bm{Z}^T\bm{Z} = I_p</span>. Moreover, suppose the predictors and the response have been centered, that is <span class="math inline">\sum_{i=1}^ny_i = \sum_{i=1}^n z_{ij} = 0</span>.</p>
+<ol type="1">
+<li><p>Find an explicit expression for <span class="math inline">\hat{\beta}_\text{ridge}</span>.</p></li>
+<li><p>Find an explicit expression for <span class="math inline">\hat{\beta}_\text{lasso}</span>.</p></li>
+</ol>
+</section>
+<section id="problem-4" class="level4">
+<h4 class="anchored" data-anchor-id="problem-4">Problem 4</h4>
+<p>Let <span class="math inline">(x_i, y_i) \in \mathbb{R}^2</span> for <span class="math inline">i=1,\dots,n</span> be pairs of iid realizations from an unknown density function <span class="math inline">f(x, y)</span>, namely <span class="math inline">(X_i, Y_i) \overset{\text{iid}}{\sim} f</span>. A common estimator for <span class="math inline">f(x, y)</span> is the kernel density estimator (KDE), which is defined as follows: <span class="math display">
+\hat{f}(x, y) = \frac{1}{n}\sum_{i=1}^n\frac{1}{h_1 h_2}\phi\left(\frac{x - x_i}{h_1}\right)\phi\left(\frac{y - y_i}{h_2}\right),
+</span> where <span class="math inline">\phi(\cdot)</span> is the density function of a standard Gaussian and <span class="math inline">h_1, h_2 &gt; 0</span> are positive constants.</p>
+<ol type="1">
+<li><p>Verify that <span class="math inline">\hat{f}(x, y) &gt; 0</span> and <span class="math inline">\hat{f}(x, y)</span> integrates to <span class="math inline">1</span> on <span class="math inline">\mathbb{R}^2</span>. In other words, show that <span class="math inline">\hat{f}(x, y)</span> is a bivariate density function.</p></li>
+<li><p>Compute the estimated marginal density <span class="math inline">\hat{f}(x)</span> and the estimated conditional density <span class="math inline">\hat{f}( y \mid x)</span> associated to <span class="math inline">\hat{f}(x, y)</span>.</p></li>
+<li><p>Let <span class="math inline">g(x) = \mathbb{E}(Y \mid X = x)</span> be the conditional mean associated to <span class="math inline">f(y \mid x)</span>. Obtain the estimator <span class="math inline">\hat{g}(x)</span> for <span class="math inline">g(x)</span> from the estimated conditional density <span class="math inline">\hat{f}(y \mid x)</span>.</p></li>
+<li><p>Discuss similarities between <span class="math inline">\hat{g}(x)</span> and other known nonparametric estimators of <span class="math inline">g(x)</span>.</p></li>
+</ol>
+</section>
 </section>
 
 </main>
