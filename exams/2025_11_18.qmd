@@ -1,0 +1,66 @@
+---
+title: "Exam of 18 November 2025"
+subtitle: "Data Mining (M) - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+page-layout: full
+lang: it
+citeproc: true
+reference-location: margin
+execute:
+  cache: false
+format:
+  html:
+    html-math-method: katex
+    echo: false
+    callout-appearance: minimal
+    theme: [simplex, ../template.css]
+    embed-resources: false
+    code-line-numbers: true
+    smooth-scroll: true
+    code-fold: false
+    code-summary: "Show the code"
+    fig-dpi: 150
+    highlight-style: github
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+# [Homepage](../index.html)
+
+The time available to the candidate is **2 hours** and **30 minutes**. 
+
+#### Problem 1
+
+Suppose that $p < n$ and that $\text{rk}(\boldsymbol{X}) = p$, where $\boldsymbol{X}$ is a design matrix with centered and standardized covariates and $\boldsymbol{y} = (y_1, \dots, y_n)$ is a centered response variable.
+
+(a) Describe the method of principal component regression and provide an explicit formula for the estimate of the regression coefficients $\hat{\beta}_\text{pcr}$.
+
+(b) Assume that $y_i = f(\boldsymbol{x}_i) + \epsilon_i$, where the $\epsilon_i$ are iid errors with variance $\sigma^2$. Compute $\text{var}(\hat{\beta}_\text{pcr})$ and compare it with the variance of the OLS estimator $\text{var}(\hat{\beta}_\text{ols})$ based on $\boldsymbol{X}$ and $\boldsymbol{y}$. 
+
+#### Problem 2
+
+Introduce the elastic net penalty for a linear regression problem, and then:
+
+(a) Discuss the role of its two parameters, denoted by $\alpha$ and $\lambda$ in the notation used during the course.
+
+(b) Describe the similarities and differences between the elastic net, ridge regression, and lasso regression.
+
+(c) Consider a regression problem with a single predictor $x_i$, which you may assume to be centered and standardized. Derive an explicit expression for the elastic net coefficient $\hat{\beta}_\text{en}$ and compare it with the OLS estimate $\hat{\beta}_\text{ols}$.
+
+(d) Describe the coordinate descent algorithm for the elastic net in the general case, i.e. with an arbitrary number $p$ of predictors.
+
+#### Problem 3
+
+Find the minimizer over $\beta$ of the following penalized loss function:
+$$
+\mathcal{L}(\beta; \lambda) = \sum_{i=1}^n(y_i - \boldsymbol{x}_i^T\beta)^2 + \lambda \beta^T\boldsymbol{\Omega}\beta,
+  $$ 
+where $\lambda > 0$ and $\boldsymbol{\Omega}$ is a $p \times p$ invertible matrix. Discuss the connection between the above minimization problem and smoothing splines. 
+
+#### Problem 4
+
+What is the "curse of dimensionality"? Provide a synthetic description.

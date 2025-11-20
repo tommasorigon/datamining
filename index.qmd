@@ -81,7 +81,7 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
 
 #### Rules
 
-- The exam is made of [two parts]{.orange}:
+The exam is made of [two parts]{.orange}:
 
 - (20 / 30) [Written examination]{.blue}: a pen-and-paper exam about the theoretical aspects of the course.
 
@@ -90,13 +90,14 @@ documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#pr
    - You will make use of the [Kaggle](https://www.kaggle.com) platform ([optional]{.blue});
    - Further info will be provided in due time.
   
-- Both parts are [mandatory]{.orange}, and you need to submit the assignment [before]{.orange} attempting the written part. The report expires after one year from the end of the course.
+Both parts are [mandatory]{.orange}, and you need to submit the assignment [before]{.orange} attempting the written part. The report expires after one year from the end of the course. The final grade is obtained as the [sum]{.blue} of the above scores. 
 
-- The final grade is obtained as the [sum]{.blue} of the above scores. 
+#### Past written examinations
 
-#### Mock exam
-
-An example of written examination is provided at [this link](exe/exe_exam.html). 
+| Date | Exam |
+|------|------|
+| 18 November 2025  | [Exam](exams/2025_11_18.html) |
+| -    | [Mock exam](exe/exe_exam.html) |
 
 ## Prerequisites
 
