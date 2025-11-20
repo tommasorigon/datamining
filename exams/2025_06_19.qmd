@@ -1,0 +1,78 @@
+---
+title: "Exam - 19 June 2025"
+subtitle: "Data Mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+page-layout: full
+lang: en
+citeproc: true
+reference-location: margin
+execute:
+  cache: false
+format:
+  html:
+    html-math-method: katex
+    echo: false
+    callout-appearance: minimal
+    theme: [simplex, ../template.css]
+    embed-resources: false
+    code-line-numbers: true
+    smooth-scroll: true
+    code-fold: false
+    code-summary: "Show the code"
+    fig-dpi: 150
+    highlight-style: github
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+# [Homepage](../index.html)
+
+The time available to the candidate is **2 hours** and **30 minutes**. 
+
+#### Problem 1
+
+Let us consider a [regression]{.orange} problem in which $$
+        Y_i = f(\bm{x}_i) + v(\bm{x}_i) \epsilon_i \quad (\text{training data}), \qquad \tilde{Y}_i = f(\bm{x}_i) + v(\bm{x}_i)\tilde{\epsilon}_i \quad (\text{test data}), 
+      $$ for $i=1,\dots,n$, where $\epsilon_i$ and $\tilde{\epsilon}_i$ are iid, with $\mathbb{E}(\epsilon_i)=0$ and
+    $\text{var}(\epsilon_i)=\sigma^2$. Hence, the error terms $v(\bm{x}_i) \epsilon_i$ have zero mean and variance $\sigma^2v^2(\bm{x}_i)$. In other words, the errors are heteroscedastic. The estimated function $\hat{f}(x)$ is based on the training data. 
+
+1. Show that *in-sample prediction error* under squared loss can be decomposed as $$
+    \begin{aligned}
+    \text{ErrF} &= \mathbb{E}\left[\frac{1}{n} \sum_{i=1}^n \{\tilde{Y}_i- \hat{f}(\bm{x}_i)\}^2\right]  = \frac{\sigma^2}{n}\sum_{i=1}^nv^2(\bm{x}_i) + \frac{1}{n}\sum_{i=1}^n\mathbb{E}\left[\hat{f}(\bm{x}_i) - f(\bm{x}_i)\right]^2 + \frac{1}{n}\sum_{i=1}^n\text{var}\{\hat{f}(\bm{x}_i)\}.
+    \end{aligned}
+    $$
+Provide an interpretation for all the above quantities. 
+
+2. What is the theoretically optimal function that minimizes $\text{ErrF}$? Why?
+
+3. The optimism is defined as $$
+    \text{Opt} = \mathbb{E}(\text{MSE}_\text{test}) - \mathbb{E}(\text{MSE}_\text{train}).
+    $$
+    Find a simplified expression for the optimism assuming, as before, heteroscedasticity of the errors, where $\text{MSE}_\text{test}$ and $\text{MSE}_\text{train}$ are the mean squared errors on the test and training data, respectively.
+
+3. Suppose now that the fitted model is linear, i.e., $\hat{f}(\bm{x}) = \bm{x}^\top \hat{\beta}$, where $\hat{\beta}$ denotes the ordinary least squares (OLS) estimator. **Obtain** a closed form expression for the optimism assuming, as before, heteroscedasticity of the errors. 
+
+#### Problem 2
+
+Discuss differences and similarities between lasso and ridge regression. Describe the role of the penalty parameter $\lambda$; what does it happen when $\lambda \rightarrow 0$?
+
+#### Problem 3
+
+Suppose we run a ridge regression with parameter $\lambda$ on a single variable $\tilde{\bm{x}}_1$ (centered and scaled) and get a coefficient $\hat{\beta}_1$. We now include an exact copy $\tilde{\bm{x}}_2 = \tilde{\bm{x}}_1$ and refit our ridge regression. 
+
+**Show** that both coefficients are identical and derive an explicit expression for their value. 
+
+#### Problem 4
+
+Show that the *local linear regression* $\hat{f}(x)$ applied to $(x_i, y_i)$ preserves the linear part of the fit. 
+
+1. More precisely, show that if the points $(x_i, y_i)$ belong to a line, then the fitted values of a local linear regression coincide with $y_i$. In formulas, if $y_i = \alpha + \beta x_i$, show that
+$$
+\hat{f}(x) = \sum_{i=1}^ns_i(x)y_i = \alpha + \beta x.
+$$
+
+1. Does the same property hold for the Nadaraya-Watson estimator? 

@@ -1,0 +1,50 @@
+---
+title: "Exam - 4 July 2025"
+subtitle: "Data Mining - CdL CLAMSES"
+author: "[Tommaso Rigon]{.orange}"
+institute: "_Università degli Studi di Milano-Bicocca_"
+page-layout: full
+lang: en
+citeproc: true
+reference-location: margin
+execute:
+  cache: false
+format:
+  html:
+    html-math-method: katex
+    echo: false
+    callout-appearance: minimal
+    theme: [simplex, ../template.css]
+    embed-resources: false
+    code-line-numbers: true
+    smooth-scroll: true
+    code-fold: false
+    code-summary: "Show the code"
+    fig-dpi: 150
+    highlight-style: github
+editor: 
+  markdown: 
+    wrap: 72
+editor_options: 
+  chunk_output_type: console
+---
+
+# [Homepage](../index.html)
+
+The time available to the candidate is **2 hours** and **30 minutes**. 
+
+#### Problem 1
+
+Let $\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}$ be the leave-one-out predictions of a linear model and let $h_i = [\bm{H}]_{ii}$ and $\hat{y}_i$ be the leverages and the predictions of the full model estimated using least squares, respectively.
+
+1. **Prove** that the leave-one-out residuals are $$
+y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
+$$
+2. What is the usefulness of this result? Discuss.
+
+#### Problem 2
+
+Discuss similarities and differences between cross-validation and generalized cross-validation.
+
+#### Problem 3
+

@@ -8,7 +8,7 @@
 
 <meta name="author" content="Tommaso Rigon">
 
-<title>Data mining</title>
+<title>Exam - 4 July 2025</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -24,48 +24,79 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="index_files/libs/clipboard/clipboard.min.js"></script>
-<script src="index_files/libs/quarto-html/quarto.js" type="module"></script>
-<script src="index_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="index_files/libs/quarto-html/popper.min.js"></script>
-<script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="index_files/libs/quarto-html/anchor.min.js"></script>
-<link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-2dd8675203c32411a5a6bac4cfca86ce.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap-abca03668476d56ad8e58af0d59d28d0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="2025_07_04_files/libs/clipboard/clipboard.min.js"></script>
+<script src="2025_07_04_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="2025_07_04_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="2025_07_04_files/libs/quarto-html/popper.min.js"></script>
+<script src="2025_07_04_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="2025_07_04_files/libs/quarto-html/anchor.min.js"></script>
+<link href="2025_07_04_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="2025_07_04_files/libs/quarto-html/quarto-syntax-highlighting-92eaa9f3cac64f6982a8a06e2ba947a3.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="2025_07_04_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="2025_07_04_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="2025_07_04_files/libs/bootstrap/bootstrap-a2df0661c95f77ff6dc2b303efe7ee0b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
 <body class="quarto-light">
 
 <div id="quarto-content" class="page-columns page-rows-contents page-layout-full">
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-  <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#teaching-material" id="toc-teaching-material" class="nav-link active" data-scroll-target="#teaching-material">Teaching material</a></li>
-  <li><a href="#exam" id="toc-exam" class="nav-link" data-scroll-target="#exam">Exam</a></li>
-  <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites</a></li>
-  <li><a href="#office-hours" id="toc-office-hours" class="nav-link" data-scroll-target="#office-hours">Office hours</a></li>
-  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
-  </ul>
-</nav>
-</div>
-<main class="content column-page-left" id="quarto-document-content">
+
+<main class="content column-page" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Data mining</h1>
-<p class="subtitle lead">CdL CLAMSES</p>
+<h1 class="title">Exam - 4 July 2025</h1>
+<p class="subtitle lead">Data Mining - CdL CLAMSES</p>
 </div>
 
 
-<div class="quarto-title-meta-author column-page-left">
+<div class="quarto-title-meta-author column-page">
   <div class="quarto-title-meta-heading">Author</div>
   <div class="quarto-title-meta-heading">Affiliation</div>
   
@@ -79,7 +110,7 @@ ul.task-list li input[type="checkbox"] {
       </div>
   </div>
 
-<div class="quarto-title-meta column-page-left">
+<div class="quarto-title-meta column-page">
 
       
   
@@ -91,210 +122,23 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This is the website of the <strong>Data Mining</strong> course (6 CFU) of the “<em>Corso di Laurea Magistrale in Scienze Statistiche ed Economiche</em> (CLAMSES)”, Università degli Studi di Milano-Bicocca.</p>
-<section id="teaching-material" class="level2">
-<h2 class="anchored" data-anchor-id="teaching-material">Teaching material</h2>
-<section id="required" class="level4">
-<h4 class="anchored" data-anchor-id="required">Required</h4>
-<ul>
-<li>Azzalini, A. and Scarpa, B. (2011), <a href="http://azzalini.stat.unipd.it/Book-DM/"><em>Data Analysis and Data Mining</em></a>, Oxford University Press.</li>
-<li>Hastie, T., Tibshirani, R. and Friedman, J. (2009), <a href="https://hastie.su.domains/ElemStatLearn/"><em>The Elements of Statistical Learning</em></a>, Second Edition, Springer.</li>
-</ul>
+<section id="homepage" class="level1">
+<h1><a href="../index.html">Homepage</a></h1>
+<p>The time available to the candidate is <strong>2 hours</strong> and <strong>30 minutes</strong>.</p>
+<section id="problem-1" class="level4">
+<h4 class="anchored" data-anchor-id="problem-1">Problem 1</h4>
+<p>Let <span class="math inline">\hat{y}_{-i} = \bm{x}_i^T\hat{\beta}_{-i}</span> be the leave-one-out predictions of a linear model and let <span class="math inline">h_i = [\bm{H}]_{ii}</span> and <span class="math inline">\hat{y}_i</span> be the leverages and the predictions of the full model estimated using least squares, respectively.</p>
+<ol type="1">
+<li><strong>Prove</strong> that the leave-one-out residuals are <span class="math display">
+y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
+</span></li>
+<li>What is the usefulness of this result? Discuss.</li>
+</ol>
 </section>
-<section id="optional" class="level4">
-<h4 class="anchored" data-anchor-id="optional">Optional</h4>
-<ul>
-<li>Efron, B. and Hastie, T. (2016), <a href="https://hastie.su.domains/CASI/"><em>Computer Age Statistical Inference</em></a>, Cambridge University Press.</li>
-<li>Lewis, Kane, Arnold (2019) <em>A Computational Approach to Statistical Learning</em>. Chapman And Hall/Crc.</li>
-</ul>
+<section id="problem-2" class="level4">
+<h4 class="anchored" data-anchor-id="problem-2">Problem 2</h4>
+<p>Discuss similarities and differences between cross-validation and generalized cross-validation.</p>
 </section>
-<section id="slides-and-lecture-notes" class="level4">
-<h4 class="anchored" data-anchor-id="slides-and-lecture-notes">Slides and lecture notes</h4>
-<p>The slides are meant to be used in HTML. However, if you <em>really</em> want to convert the HTML slides into pdf files, you can <a href="https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf">follow the instruction of the quarto documentation</a>.</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Topic</th>
-<th>Notes</th>
-<th>Slides</th>
-<th>Code</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Introduction</strong></td>
-<td><a href="slides/un_intro.html">Introduction</a></td>
-<td><a href="slides/un_intro_slides.html">Slides Introduction</a></td>
-<td></td>
-</tr>
-<tr class="even">
-<td><strong>A-B-C</strong></td>
-<td><a href="slides/un_A.html">Unit A</a></td>
-<td><a href="slides/un_A_slides.html">Slides Unit A</a></td>
-<td><a href="code/un_A.R">Code A</a></td>
-</tr>
-<tr class="odd">
-<td>Lab 1 (Computations for linear models)</td>
-<td></td>
-<td></td>
-<td><a href="code/lab1.R">Code Lab 1</a></td>
-</tr>
-<tr class="even">
-<td><em>Exercises</em></td>
-<td><a href="exe/exe_A.html">Exercises A</a></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><strong>Optimism, conflicts and trade-offs</strong></td>
-<td><a href="slides/un_B.html">Unit B</a></td>
-<td><a href="slides/un_B_slides.html">Slides Unit B</a></td>
-<td><a href="code/un_B.R">Code B</a></td>
-</tr>
-<tr class="even">
-<td><em>Exercises</em></td>
-<td><a href="exe/exe_B.html">Exercises B</a></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Lab 2 (Ames housing)</td>
-<td></td>
-<td></td>
-<td><a href="code/lab2.R">Code Lab 2</a></td>
-</tr>
-<tr class="even">
-<td><strong>Shrinkage and variable selection</strong></td>
-<td><a href="slides/un_C.html">Unit C</a></td>
-<td><a href="slides/un_C_slides.html">Slides Unit C</a></td>
-<td><a href="code/un_C.R">Code C</a></td>
-</tr>
-<tr class="odd">
-<td><em>Exercises</em></td>
-<td><a href="exe/exe_C.html">Exercises C</a></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="even">
-<td>Lab 3-4 (Ames housing)</td>
-<td></td>
-<td></td>
-<td><a href="code/lab3-4.R">Code Lab 3-4</a></td>
-</tr>
-<tr class="odd">
-<td><strong>Nonparametric regression</strong></td>
-<td><a href="slides/un_D.html">Unit D</a></td>
-<td><a href="slides/un_D_slides.html">Slides Unit D</a></td>
-<td><a href="code/un_D.R">Code D</a></td>
-</tr>
-<tr class="even">
-<td><em>Exercises</em></td>
-<td><a href="exe/exe_D.html">Exercises D</a></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Lab 5 (Auto)</td>
-<td></td>
-<td></td>
-<td><a href="code/lab5.R">Code Lab 5</a></td>
-</tr>
-<tr class="even">
-<td><strong>The curse of dimensionality</strong></td>
-<td><a href="slides/un_E.html">Unit E</a></td>
-<td><a href="slides/un_E_slides.html">Slides Unit E</a></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td><strong>Additive models</strong></td>
-<td><a href="slides/un_F.html">Unit F</a></td>
-<td><a href="slides/un_F_slides.html">Slides Unit F</a></td>
-<td><a href="code/un_F.R">Code F</a></td>
-</tr>
-<tr class="even">
-<td><em>Exercises</em></td>
-<td><a href="exe/exe_F.html">Exercises F</a></td>
-<td></td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>Lab 6 (Ames housing)</td>
-<td></td>
-<td></td>
-<td><a href="code/lab6.R">Code Lab 6</a></td>
-</tr>
-<tr class="even">
-<td><strong>FAQ - The statistical culture</strong></td>
-<td><a href="slides/un_G.html">Unit G</a></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="exam" class="level2">
-<h2 class="anchored" data-anchor-id="exam">Exam</h2>
-<section id="rules" class="level4">
-<h4 class="anchored" data-anchor-id="rules">Rules</h4>
-<p>The exam is made of <span class="orange">two parts</span>:</p>
-<ul>
-<li><p>(20 / 30) <span class="blue">Written examination</span>: a pen-and-paper exam about the theoretical aspects of the course.</p></li>
-<li><p>(10 / 30) <span class="blue">Individual assignment</span>: a data challenge.</p>
-<ul>
-<li>You will be given a prediction task, and you will need to submit your <span class="orange">predictions</span> and produce a <span class="orange">report</span> of maximum 4 pages;</li>
-<li>You will make use of the <a href="https://www.kaggle.com">Kaggle</a> platform (<span class="blue">optional</span>);</li>
-<li>Further info will be provided in due time.</li>
-</ul></li>
-</ul>
-<p>Both parts are <span class="orange">mandatory</span>, and you need to submit the assignment <span class="orange">before</span> attempting the written part. The report expires after one year from the end of the course. The final grade is obtained as the <span class="blue">sum</span> of the above scores.</p>
-</section>
-<section id="past-written-examinations" class="level4">
-<h4 class="anchored" data-anchor-id="past-written-examinations">Past written examinations</h4>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Date</th>
-<th>Exam</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>18 November 2025</td>
-<td><a href="exams/2025_11_18.html">Exam</a></td>
-</tr>
-<tr class="even">
-<td>4 July 2025</td>
-<td><a href="exams/2025_07_04.html">Exam</a></td>
-</tr>
-<tr class="odd">
-<td>19 June 2025</td>
-<td><a href="exams/2025_06_19.html">Exam</a></td>
-</tr>
-<tr class="even">
-<td>-</td>
-<td><a href="exe/exe_exam.html">Mock exam</a></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="prerequisites" class="level2">
-<h2 class="anchored" data-anchor-id="prerequisites">Prerequisites</h2>
-<p>Knowledge of the topics (i) linear algebra, (ii) linear models, and (iii) generalized linear models (GLMs), is highly recommended.</p>
-<p>Knowledge of topics covered in the courses Probability and Statistics M and Advanced Statistics M is also highly recommended.</p>
-</section>
-<section id="office-hours" class="level2">
-<h2 class="anchored" data-anchor-id="office-hours">Office hours</h2>
-<p>To schedule a meeting, please write to <code>tommaso.rigon@unimib.it</code>. Office hours is every <strong>Tuesday at 17.30</strong></p>
-</section>
-<section id="acknowledgments" class="level2">
-<h2 class="anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
-<p>The primary source of this website’s content are the textbooks <span class="blue">Azzalini and Scarpa (2011)</span> and <span class="orange">Hastie, Tibshirani, and Friedman (2009)</span>. A few pictures have been taken from the textbooks; in these cases the original source is cited.</p>
-<p>I have made use of several other books, scientific articles, and datasets to complement the main textbooks. They are all cited at the end of each unit. Students are encouraged to consult the books: these slides are just a concise summary.</p>
-<p>I am also grateful to Aldo Solari, who gracefully shared the material of the courses <a href="https://aldosolari.github.io/DM/">Data Mining</a> and <a href="https://aldosolari.github.io/SL/">Statistical Learning</a>. These websites have been used to lay the basis of this course.</p>
-<p>All the mistakes still present are mine.</p>
-<hr>
 </section>
 
 </main>
@@ -703,5 +547,5 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<script src="index_files/libs/quarto-html/zenscroll-min.js"></script>
+<script src="2025_07_04_files/libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

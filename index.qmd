@@ -97,6 +97,8 @@ Both parts are [mandatory]{.orange}, and you need to submit the assignment [befo
 | Date | Exam |
 |------------|----------|
 | 18 November 2025  | [Exam](exams/2025_11_18.html) |
+| 4 July 2025  | [Exam](exams/2025_07_04.html) |
+| 19 June 2025  | [Exam](exams/2025_06_19.html) |
 | -    | [Mock exam](exe/exe_exam.html) |
 
 ## Prerequisites
