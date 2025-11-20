@@ -95,7 +95,7 @@ Both parts are [mandatory]{.orange}, and you need to submit the assignment [befo
 #### Past written examinations
 
 | Date | Exam |
-|------|------|
+|------------|----------|
 | 18 November 2025  | [Exam](exams/2025_11_18.html) |
 | -    | [Mock exam](exe/exe_exam.html) |
 
