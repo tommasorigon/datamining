@@ -36,7 +36,7 @@ editor_options:
 
 This a mock exam of the course Data Mining. The actual exam will have a similar structure. The candidate has **2.5 hours** to complete the exam.
 
-#### Question 1
+#### Problem 1
 
 The Sherman-Morrison lemma is provided below. Let $\bm{A} \in \mathbb{R}^{p\times p}$ be an invertible matrix and let
 $\bm{b},\bm{d}$ be $p$-dimensional vectors. Then $$
@@ -54,7 +54,7 @@ Answer the following questions:
 4. Find a similar recursive formula for the ridge estimator.
 
 
-#### Question 2
+#### Problem 2
 
 The ridge estimator $\hat{\beta}_\text{ridge}$ is the [minimizer]{.orange} of $$
     \sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2 = ||\bm{y} - \bm{X}\beta||^2 + \lambda ||\beta||^2,
@@ -67,7 +67,7 @@ Answer the following questions:
 3. Discuss the role of $\lambda$. What does it happen when $\lambda \rightarrow 0$?
 
 
-#### Question 3
+#### Problem 3
 
 The optimism is defined as $\text{Opt} = \mathbb{E}(\text{MSE}_\text{test}) - \mathbb{E}(\text{MSE}_\text{train})$. Answer to the following questions:
 
@@ -75,6 +75,6 @@ The optimism is defined as $\text{Opt} = \mathbb{E}(\text{MSE}_\text{test}) - \m
 2. Specialize the previous formula of the optimism for linear models and linear smoothers. Include all the intermediate steps. 
 3. Discuss the usefulness of such formulas in nonparametric regression. 
 
-#### Question 4
+#### Problem 4
 
 Discuss differences and similarities between regression splines and smoothing splines.
