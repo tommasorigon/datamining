@@ -51,28 +51,25 @@ Università degli Studi di Milano-Bicocca.
 
 #### Slides and lecture notes
 
-The slides are meant to be used in HTML. However, if you *really* want
-to convert the HTML slides into pdf files, you can [follow the
-instruction of the quarto
-documentation](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf).
+The slides are meant to be used in HTML. 
 
 | Topic                                  | Notes                                | Slides                                             | Code                      |
 |----------------------------------------|--------------------------------------|----------------------------------------------------|---------------------------|
-| **Introduction**                       | [Introduction](slides/un_intro.html) | [Slides Introduction](slides/un_intro_slides.html) |                           |
-| **A-B-C**                              | [Unit A](slides/un_A.html)           | [Slides Unit A](slides/un_A_slides.html)           | [Code A](code/un_A.R)     |
+| **Introduction**                       | [Introduction](slides/un_intro.html) | [Slides Introduction](slides/un_intro_slides.html) ([pdf version](slides/un_intro_slides.pdf)) |                           |
+| **A-B-C**                              | [Unit A](slides/un_A.html)           | [Slides Unit A](slides/un_A_slides.html) ([pdf version](slides/un_A_slides.pdf))           | [Code A](code/un_A.R)     |
 | Lab 1 (Computations for linear models) |                                      |                                                    | [Code Lab 1](code/lab1.R) |
 | *Exercises*                            | [Exercises A](exe/exe_A.html)                      |                                                    |                           |
-| **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)           | [Slides Unit B](slides/un_B_slides.html)           | [Code B](code/un_B.R)     |
+| **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)           | [Slides Unit B](slides/un_B_slides.html) ([pdf version](slides/un_B_slides.pdf))           | [Code B](code/un_B.R)     |
 | *Exercises*                            | [Exercises B](exe/exe_B.html)                      |                                                    |                           |
 | Lab 2 (Ames housing)                   |                                      |                                                    | [Code Lab 2](code/lab2.R) |
-| **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html)           | [Code C](code/un_C.R)     |
+| **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html) ([pdf version](slides/un_C_slides.pdf))          | [Code C](code/un_C.R)     |
 | *Exercises*                            | [Exercises C](exe/exe_C.html)                      |                                                    |                           |
 | Lab 3-4 (Ames housing)                   |                                      |                                                    | [Code Lab 3-4](code/lab3-4.R) |
-| **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)           | [Code D](code/un_D.R)     |
+| **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)  ([pdf version](slides/un_D_slides.pdf))          | [Code D](code/un_D.R)     |
 | *Exercises*                            | [Exercises D](exe/exe_D.html)                      |                                                    |                           |
 | Lab 5 (Auto)                                 |                                      |                                                    | [Code Lab 5](code/lab5.R)            |
-| **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html)           |                           |
-| **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html)           | [Code F](code/un_F.R)     |
+| **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html) ([pdf version](slides/un_E_slides.pdf))           |                           |
+| **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html) ([pdf version](slides/un_F_slides.pdf))            | [Code F](code/un_F.R)     |
 | *Exercises*                            | [Exercises F](exe/exe_F.html)                      |                                                    |                           |
 | Lab 6 (Ames housing)                                  |                                      |                                                    | [Code Lab 6](code/lab6.R)            |
 | **FAQ - The statistical culture**             | [Unit G](slides/un_G.html)                           |                                   |                           |
