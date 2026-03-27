@@ -538,3 +538,4 @@ tapply(final_summary$Errors, final_summary$Model, sd)
 
 # Interquartile range
 tapply(final_summary$Errors, final_summary$Model, function(x) diff(quantile(x, probs = c(0.25, 0.75))))
+
