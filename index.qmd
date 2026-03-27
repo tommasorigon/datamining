@@ -53,11 +53,11 @@ Università degli Studi di Milano-Bicocca.
 
 The slides are meant to be used in HTML. 
 
-| Topic                                  | Notes                                | Slides                                             | Code                      |
+| Topic                                  | Notes                                | Slides                                             | Further material                      |
 |----------------------------------------|--------------------------------------|----------------------------------------------------|---------------------------|
 | **Introduction**                       | [Introduction](slides/un_intro.html) | [Slides Introduction](slides/un_intro_slides.html) ([pdf version](slides/un_intro_slides.pdf)) |                           |
-| **A-B-C**                              | [Unit A](slides/un_A.html)           | [Slides Unit A](slides/un_A_slides.html) ([pdf version](slides/un_A_slides.pdf))           | [Code A](code/un_A.R)     |
-| Lab 1 (Computations for linear models) |                                      |                                                    | [Code Lab 1](code/lab1.R) |
+| **A-B-C**                              | [Unit A](slides/un_A.html)           | [Slides Unit A](slides/un_A_slides.html) ([pdf version](slides/un_A_slides.pdf))           |     |
+| Lab 1 (Computations for linear models) | [`lab1.R`](code/lab1.R)                                    |                                                    |  |
 | *Exercises*                            | [Exercises A](exe/exe_A.html)                      |                                                    |                           |
 | **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)           | [Slides Unit B](slides/un_B_slides.html) ([pdf version](slides/un_B_slides.pdf))           | [Code B](code/un_B.R)     |
 | *Exercises*                            | [Exercises B](exe/exe_B.html)                      |                                                    |                           |
