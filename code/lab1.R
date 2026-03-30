@@ -15,10 +15,7 @@ ames <- read.csv("../data/AmesHousing.csv")
 # Variable description: https://tommasorigon.github.io/datamining/data/ames_documentation.txt
 
 # Brief look at the dataset
-str(ames)
-
-# The skimr package is requires here; use "summary" as an alternative
-skimr::skim(ames)
+glimpse(ames)
 
 # ----------------------------------------
 # 1. Basic filtering
@@ -46,9 +43,9 @@ hist(log(ames$SalePrice), main = "log(SalePrice)")
 # 3. Missing values
 # ----------------------------------------
 
-# Compute the frequency of the missing values for each variable
-freq_missing <- apply(ames, 2, function(x) sum(is.na(x))) # Number of missing values
-freq_missing[freq_missing > 0]
+ames %>%
+  summarise(across(everything(), ~ sum(is.na(.x)))) %>%
+  select(where(~ .x > 0))
 
 # It turns out (see the documentation) that NA here means "no alley"
 table(ames$Alley, useNA = "always")
@@ -68,9 +65,9 @@ ames <- ames %>%
 ames <- ames %>% select(-starts_with("BsmtFin"))
 
 # Garage: if any missing → no garage
-no_garage <- apply(ames[, c("Garage.Cond","Garage.Finish","Garage.Qual","Garage.Type")], 1, function(x) any(is.na(x)))
-ames[no_garage, c("Garage.Cond","Garage.Finish","Garage.Qual","Garage.Type")] <- "No garage"
-
+ames <- ames %>%
+  mutate(across(starts_with("Garage"), ~ replace(.x, if_any(starts_with("Garage"), is.na), "No garage")))
+ 
 # Drop problematic variable
 ames <- ames %>% 
   select(-Garage.Yr.Blt)
@@ -97,13 +94,15 @@ ames <- ames %>%
 # 4. Reduce categorical complexity
 # ----------------------------------------
 
+ames <- ames %>%
+  mutate(MS.SubClass = as.character(MS.SubClass))
+
 # Lump rare levels (min frequency = 20)
 ames <- ames %>%
-  mutate(across(where(is.character), ~ fct_lump_min(as.factor(.), min = 20)))
+  mutate(Neighborhood = fct_lump_min(Neighborhood, 20))
 
-# Neighborhood grouping
-freq <- table(ames$Neighborhood)
-ames$Neighborhood[freq[ames$Neighborhood] < 20] <- "Small"
+ames <- ames %>%
+  mutate(across(where(is.character), ~ fct_lump_lowfreq(.x)))
 
 # ----------------------------------------
 # 5. Feature engineering
@@ -129,8 +128,8 @@ ames <- ames %>%
 # ----------------------------------------
 
 library(caret)
-nzv <- nearZeroVar(ames)
-ames <- ames[, -nzv]
+ames <- ames %>%
+  select(-all_of(nearZeroVar(.)))
 
 # ----------------------------------------
 # 7. Save cleaned dataset
