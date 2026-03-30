@@ -1,5 +1,5 @@
 #' ---
-#' title: "LAB 2 (Optimism and cross-validation)"
+#' title: "LAB 3 (Juice data, classification)"
 #' author: "Tommaso Rigon"
 #' ---
 #' 

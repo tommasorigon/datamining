@@ -1,277 +1,139 @@
 #' ---
-#' title: "LAB 1 (Computations for linear models)"
+#' title: "LAB 1 (Ames Housing, pre-processing)"
 #' author: "Tommaso Rigon"
 #' ---
-#' 
-#+ setup, include=FALSE
-knitr::opts_chunk$set(collapse = TRUE)
 
-#+ lab, include=TRUE, echo = TRUE, results = FALSE
 rm(list = ls())
 
-# The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
-auto <- read.table("../data/auto.txt", header = TRUE)
+library(tidyverse)
+library(forcats)
 
-# Select the variables we need
-auto <- subset(auto, select = c(city.distance, engine.size, n.cylinders, curb.weight, fuel))
+# Load data
+ames <- read.csv("../data/AmesHousing.csv")
 
-# Create a new variable (cylinders)
-auto$cylinders2 <- factor(auto$n.cylinders == 2)
+# Official paper: https://jse.amstat.org/v19n3/decock.pdf
+# Variable description: https://tommasorigon.github.io/datamining/data/ames_documentation.txt
 
-# This is the final model we obtained in Unit A, after a long modelling process
-m_final <- lm(log(city.distance) ~ I(log(engine.size)) + I(log(curb.weight)) + fuel + cylinders2, data = auto)
+# Brief look at the dataset
+str(ames)
 
-# Summary of the results
-summary(m_final)
+# The skimr package is requires here; use "summary" as an alternative
+skimr::skim(ames)
 
-# Design matrix obtained from the model
-X <- model.matrix(log(city.distance) ~ I(log(engine.size)) + I(log(curb.weight)) + fuel + cylinders2, data = auto)
-y <- log(auto$city.distance)
+# ----------------------------------------
+# 1. Basic filtering
+# ----------------------------------------
 
-# Optional. I remove the column names to improve the HTML readibility
-colnames(X) <- NULL
+# Keep only residential, normal sales
+ames <- ames %>%
+  filter(
+    !MS.Zoning %in% c("C (all)", "I (all)", "A (agr)", "FV"),
+    Sale.Condition == "Normal"
+  ) %>%
+  select(-Sale.Condition, -Sale.Type, -Order, -PID)
 
-dim(X)
+# ----------------------------------------
+# 2. Response variable
+# ----------------------------------------
 
-# Least squares, the naive way.
-# This provides the correct numbers in simple examples, but it is inefficient AND numerically inaccurate
-solve(t(X) %*% X) %*% t(X) %*% y
+summary(ames$SalePrice)
 
-# Sufficients statistics for this model
-XtX <- crossprod(X)
-Xty <- crossprod(X, y)
-round(XtX, digits = 1)
-round(Xty, digits = 2)
+par(mfrow = c(1,2))
+hist(ames$SalePrice, main = "SalePrice")
+hist(log(ames$SalePrice), main = "log(SalePrice)")
 
-# The next algorithm make use of normal equations, but it does not know that XtX is positive definite
-ols_solve <- function(X, y) {
-  XtX <- crossprod(X)
-  Xty <- crossprod(X, y)
-  solve(XtX, Xty)
-}
+# ----------------------------------------
+# 3. Missing values
+# ----------------------------------------
 
-ols_solve(X, y)
+# Compute the frequency of the missing values for each variable
+freq_missing <- apply(ames, 2, function(x) sum(is.na(x))) # Number of missing values
+freq_missing[freq_missing > 0]
 
-library(microbenchmark) # Needs to be installed
+# It turns out (see the documentation) that NA here means "no alley"
+table(ames$Alley, useNA = "always")
 
-# Measure the speed of execution
-times <- microbenchmark(
-  matrix_inversion = solve(t(X) %*% X) %*% t(X) %*% y,
-  linear_system = ols_solve(X, y), times = 1000
-)
+# Categorical: "absence = meaningful"
+ames <- ames %>%
+  mutate(
+    Alley = replace_na(Alley, "No alley"),
+    Fence = replace_na(Fence, "No fence"),
+    Fireplace.Qu = replace_na(Fireplace.Qu, "No fireplace"),
+    Bsmt.Exposure = ifelse(Bsmt.Exposure == "" | is.na(Bsmt.Exposure), "No basement", Bsmt.Exposure),
+    Bsmt.Cond = replace_na(Bsmt.Cond, "No basement"),
+    Bsmt.Qual = replace_na(Bsmt.Qual, "No basement")
+  )
 
-# Summary of the timings
-times
-boxplot(times)
+# Drop complex basement vars (simplify)
+ames <- ames %>% select(-starts_with("BsmtFin"))
 
-R <- chol(XtX)
-round(R, 3)
+# Garage: if any missing → no garage
+no_garage <- apply(ames[, c("Garage.Cond","Garage.Finish","Garage.Qual","Garage.Type")], 1, function(x) any(is.na(x)))
+ames[no_garage, c("Garage.Cond","Garage.Finish","Garage.Qual","Garage.Type")] <- "No garage"
 
-# Confirm that this is the appropriate Cholesky decomposition
-round(XtX, 3)
-round(t(R) %*% R, 3)
+# Drop problematic variable
+ames <- ames %>% 
+  select(-Garage.Yr.Blt)
 
-# Ordinary least squares with Cholesky
-ols_chol <- function(X, y) {
-  XtX <- crossprod(X)
-  Xty <- crossprod(X, y)
-  R <- chol(XtX)
-  beta_hat <- backsolve(R, forwardsolve(t(R), Xty))
-  beta_hat
-}
+# Numeric imputations
+ames <- ames %>%
+  mutate(
+    Bsmt.Full.Bath = replace_na(Bsmt.Full.Bath, 0),
+    Bsmt.Half.Bath = replace_na(Bsmt.Half.Bath, 0),
+    Lot.Frontage   = replace_na(Lot.Frontage, 0),
+    Mas.Vnr.Area   = replace_na(Mas.Vnr.Area, 0)
+  )
 
-ols_chol(X, y)
+# Other fixes
+ames <- ames %>%
+  mutate(
+    Electrical   = ifelse(Electrical == "", "SBrkr", Electrical),
+    Mas.Vnr.Type = ifelse(Mas.Vnr.Type == "", "None", Mas.Vnr.Type),
+    Misc.Feature = replace_na(Misc.Feature, "None"),
+    Pool.QC      = ifelse(is.na(Pool.QC), "No", "Yes")
+  )
 
-# Measure the speed of execution
-times <- microbenchmark(
-  matrix_inversion = solve(t(X) %*% X) %*% t(X) %*% y,
-  linear_system = ols_solve(X, y),
-  cholesky = ols_chol(X, y),
-  times = 1000
-)
+# ----------------------------------------
+# 4. Reduce categorical complexity
+# ----------------------------------------
 
-# Summary of the timings
-times
-boxplot(times)
+# Lump rare levels (min frequency = 20)
+ames <- ames %>%
+  mutate(across(where(is.character), ~ fct_lump_min(as.factor(.), min = 20)))
 
-# However, the Cholesky decomposition is giving us much more.
-# To get the variance of the estimates we need to compute the inverse of XtX
+# Neighborhood grouping
+freq <- table(ames$Neighborhood)
+ames$Neighborhood[freq[ames$Neighborhood] < 20] <- "Small"
 
-# Traditional inverse (not ideal)
-solve(XtX)
-# Cholesky inverse
-chol2inv(R)
+# ----------------------------------------
+# 5. Feature engineering
+# ----------------------------------------
 
-microbenchmark(matrix_inversion = solve(XtX), cholesky = chol2inv(R))
+ames <- ames %>%
+  mutate(
+    Porch.SF = Open.Porch.SF + Enclosed.Porch + X3Ssn.Porch + Screen.Porch,
+    Tot.Bath = Full.Bath + 0.5*Half.Bath + Bsmt.Full.Bath + 0.5*Bsmt.Half.Bath,
+    House.Age = Yr.Sold - Year.Remod.Add
+  )
 
-# This specific linear regression model is fairly well-conditioned
-# Any method (even the naive ones) are going to work just fine
-kappa(t(X) %*% X, exact = TRUE)
+# Remove redundant variables
+ames <- ames %>%
+  select(
+    -c(Open.Porch.SF, Enclosed.Porch, X3Ssn.Porch, Screen.Porch),
+    -c(Full.Bath, Half.Bath, Bsmt.Full.Bath, Bsmt.Half.Bath),
+    -c(Mo.Sold, Yr.Sold, Year.Remod.Add, Year.Built)
+  )
 
-# Note that this coincide with:
-kappa(X, exact = TRUE)^2
+# ----------------------------------------
+# 6. Near-zero variance features
+# ----------------------------------------
 
-# Re-implementation via Gram-Schmidt
-factorizationQR <- function(X) {
-  p <- ncol(X)
-  n <- nrow(X)
-  Q <- matrix(0, n, p)
-  R <- matrix(0, p, p)
-  for (j in 1:p) {
-    Zj <- X[, j]
-    if (j > 1) {
-      for (k in 1:(j - 1)) {
-        R[k, j] <- crossprod(Q[, k], X[, j])
-        Zj <- Zj - R[k, j] * Q[, k]
-      }
-    }
-    R[j, j] <- sqrt(crossprod(Zj))
-    Q[, j] <- Zj / R[j, j]
-  }
-  return(list(Q = Q, R = R))
-}
+library(caret)
+nzv <- nearZeroVar(ames)
+ames <- ames[, -nzv]
 
-# Let us compute the QR factorization
-QR <- factorizationQR(X)
+# ----------------------------------------
+# 7. Save cleaned dataset
+# ----------------------------------------
 
-# This is an orthogonal matrix
-round(crossprod(QR$Q), 3)
-
-# This coincide with the Cholesky
-round(QR$R, 3)
-round(R, 3)
-
-ols_QR <- function(X, y) {
-  qr_obj <- factorizationQR(X)
-  Q <- qr_obj$Q
-  R <- qr_obj$R
-  Qty <- crossprod(Q, y)
-  beta_hat <- backsolve(R, Qty)
-  beta_hat
-}
-ols_QR(X, y)
-
-# Be careful, here pivoting is performed
-# This means the QR might be different with that of factorizationQR
-QR_obj <- qr(X)
-
-ols_QR <- function(X, y) {
-  qr_obj <- qr(X)
-  qr.coef(qr_obj, y)
-}
-
-ols_QR(X, y)
-
-# Measure the speed of execution
-times <- microbenchmark(
-  matrix_inversion = solve(t(X) %*% X) %*% t(X) %*% y,
-  linear_system = ols_solve(X, y),
-  cholesky = ols_chol(X, y),
-  QR = ols_QR(X, y),
-  times = 1000
-)
-
-# Summary of the timings
-times
-boxplot(times)
-
-# Estimated coefficients
-qr.coef(QR_obj, y)
-
-# Predicted values
-head(predict(m_final))
-head(qr.fitted(QR_obj, y))
-
-# Residuals
-head(residuals(m_final))
-head(qr.resid(QR_obj, y))
-
-# Influence points
-head(influence(m_final)$hat)
-head(rowSums(qr.Q(QR_obj)^2))
-
-# Inverse of XtX
-solve(XtX)
-chol2inv(qr.R(QR_obj))
-
-a <- 1e-7
-X <- cbind(c(1, a, 0), c(1, 0, a))
-y <- c(1, 0, -1)
-
-manual <- rbind((1 - a) / (-2 * a^2 - a^4) + (-1 - a^2) / (-2 * a^2 - a^4), 1 / (-2 * a^2 - a^4) + ((1 - a) * (-1 - a^2)) / (-2 * a^2 - a^4))
-
-print(ols_solve(X, y), digits = 12)
-print(ols_chol(X, y), digits = 12)
-print(ols_QR(X, y), digits = 12)
-print(manual, digits = 12)
-
-# Additional information
-
-# Source of the data: https://dati.mit.gov.it/hfs/patenti_Lombardia.csv
-# Documentation: http://dati.mit.gov.it/catalog/dataset/patenti
-
-# Author:	Direzione generale per la motorizzazione - Div7 - Centro elaborazione dati motorizzazione
-# Last update:	21 December 2022, 17:16 (UTC+01:00)
-# Created:	20 February 2022, 18:21 (UTC+01:00)
-# Temporal extension (end)	31 December 2019
-
-# DATASET DOWNLOAD (~200MB)
-# The dataset "drives2.csv" can be downloaded here: https://drive.google.com/file/d/17Fiz1MIFDNNBzs6T9EKWVLhHB1IMZYwB/view?usp=share_link
-
-library(readr)
-drivers <- read_csv("../data/drivers2.csv", n_max = 10000)
-
-# Design matrix obtained from the model
-X <- model.matrix(hazard ~ poly(age, 10) + poly(experience, 10) + habilit + gender + city, data = drivers)
-y <- drivers$hazard
-
-dim(X)
-
-# Measure the speed of execution
-times <- microbenchmark(
-  matrix_inversion = solve(t(X) %*% X) %*% t(X) %*% y,
-  linear_system = ols_solve(X, y),
-  cholesky = ols_chol(X, y),
-  QR = ols_QR(X, y),
-  times = 50
-)
-
-# Summary of the timings
-times
-
-library(biglm)
-
-drivers_chunk1 <- read_csv("../data/drivers2.csv",
-  n_max = 100000, skip = 0, col_names = TRUE
-)
-name_cols <- colnames(drivers_chunk1)
-
-m_big <- biglm(hazard ~ poly(age, 10) + poly(experience, 10) + habilit + gender + city,
-  data = drivers_chunk1
-)
-summary(m_big)
-
-rm(drivers_chunk1)
-gc() # Free unused R memory
-
-drivers_chunk2 <- read_csv("../data/drivers2.csv",
-  n_max = 100000, skip = 100000, col_names = FALSE
-)
-colnames(drivers_chunk2) <- name_cols
-
-m_big <- update(m_big, drivers_chunk2)
-summary(m_big)
-
-rm(drivers_chunk2)
-gc() # Free unused R memory
-
-drivers_chunk3 <- read_csv("../data/drivers2.csv",
-  n_max = 100000, skip = 200000, col_names = FALSE
-)
-colnames(drivers_chunk3) <- name_cols
-
-m_big <- update(m_big, drivers_chunk3)
-summary(m_big)
-
-print(object.size(m_big), units = "KB")
-
+write.csv(ames, "../data/ames_clean.csv", row.names = FALSE)

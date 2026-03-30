@@ -61,7 +61,7 @@ editor_options:
     -   Google translate;
     -   recommendation systems (Netflix challenge);
     -   business analytics (churn prediction, credit risk assessment);
-    -   and, more recently, chatGPT.
+    -   and, more recently, large language models (chatGPT).
 
 -   And yet, there is a lot of [confusion]{.orange} about the
     [history]{.blue} and the [boundaries]{.blue} of the field. For

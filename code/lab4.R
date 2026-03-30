@@ -1,5 +1,5 @@
 #' ---
-#' title: "LAB 3-4 (Ames Housing)"
+#' title: "LAB 4 (Ames Housing, regression)"
 #' author: "Tommaso Rigon"
 #' ---
 #' 

@@ -53,26 +53,28 @@ Università degli Studi di Milano-Bicocca.
 
 The slides are meant to be used in HTML. 
 
-| Topic                                  | Notes                                | Slides                                             | Further material                      |
-|----------------------------------------|--------------------------------------|----------------------------------------------------|---------------------------|
-| **Introduction**                       | [Introduction](slides/un_intro.html) | [Slides Introduction](slides/un_intro_slides.html) ([pdf version](slides/un_intro_slides.pdf)) |                           |
-| **A-B-C**                              | [Unit A](slides/un_A.html)           | [Slides Unit A](slides/un_A_slides.html) ([pdf version](slides/un_A_slides.pdf))           |     |
-| Lab 1 (Computations for linear models) | [`lab1.R`](code/lab1.R)                                    |                                                    |  |
-| *Exercises*                            | [Exercises A](exe/exe_A.html)                      |                                                    |                           |
-| **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)           | [Slides Unit B](slides/un_B_slides.html) ([pdf version](slides/un_B_slides.pdf))           | [Code B](code/un_B.R)     |
-| *Exercises*                            | [Exercises B](exe/exe_B.html)                      |                                                    |                           |
-| Lab 2 (Ames housing)                   |                                      |                                                    | [Code Lab 2](code/lab2.R) |
-| **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html) ([pdf version](slides/un_C_slides.pdf))          | [Code C](code/un_C.R)     |
-| *Exercises*                            | [Exercises C](exe/exe_C.html)                      |                                                    |                           |
-| Lab 3-4 (Ames housing)                   |                                      |                                                    | [Code Lab 3-4](code/lab3-4.R) |
-| **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)  ([pdf version](slides/un_D_slides.pdf))          | [Code D](code/un_D.R)     |
-| *Exercises*                            | [Exercises D](exe/exe_D.html)                      |                                                    |                           |
-| Lab 5 (Auto)                                 |                                      |                                                    | [Code Lab 5](code/lab5.R)            |
-| **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html) ([pdf version](slides/un_E_slides.pdf))           |                           |
-| **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html) ([pdf version](slides/un_F_slides.pdf))            | [Code F](code/un_F.R)     |
-| *Exercises*                            | [Exercises F](exe/exe_F.html)                      |                                                    |                           |
-| Lab 6 (Ames housing)                                  |                                      |                                                    | [Code Lab 6](code/lab6.R)            |
-| **FAQ - The statistical culture**             | [Unit G](slides/un_G.html)                           |                                   |                           |
+| Topic                                  | Notes                                | Slides                                             | 
+|----------------------------------------|--------------------------------------|----------------------------------------------------|
+| **Introduction**                       | [Introduction](slides/un_intro.html) | [Slides Introduction](slides/un_intro_slides.html) ([pdf version](slides/un_intro_slides.pdf)) |                      
+| **A-B-C**                              | [Unit A](slides/un_A.html)           | [Slides Unit A](slides/un_A_slides.html) ([pdf version](slides/un_A_slides.pdf)) |
+| Lab 1 (`ames`)                         | [`lab1.R`](code/lab1.R)              |                                                    | 
+| *Exercises*                            | [Exercises A](exe/exe_A.html)                      |                                                    |                       
+| **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)           | [Slides Unit B](slides/un_B_slides.html) ([pdf version](slides/un_B_slides.pdf))           |    
+| Lab 2 (Cross validation)               | [`lab2.R`](code/lab2.R)              |                                                    | 
+| *Exercises*                            | [Exercises B](exe/exe_B.html)                      |                                                    |                    
+| **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html) ([pdf version](slides/un_C_slides.pdf))          |   
+| *Exercises*                            | [Exercises C](exe/exe_C.html)                      |                                                    |           
+| Lab 3 (`juice`)                        | [`lab3.R`](code/lab3.R)                                     |                                                    |  
+| Lab 4 (`ames`)                         | [`lab4.R`](code/lab4.R)                                     |                                                    | 
+| **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)  ([pdf version](slides/un_D_slides.pdf))          |    
+| *Exercises*                            | [Exercises D](exe/exe_D.html)                      |                                                    |     
+| Lab 5 (`auto`)                         | [`lab5.R`](code/lab5.R)                                    |                                                    |        
+| **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html) ([pdf version](slides/un_E_slides.pdf))           |                          
+| **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html) ([pdf version](slides/un_F_slides.pdf))            |     
+| *Exercises*                            | [Exercises F](exe/exe_F.html)                      |                                                    |             
+| Lab 6 (`juice`)                        | [`lab6.R`](code/lab6.R)                                     |                                                    |  
+| Lab 7 (`ames`)                         | [`lab7.R`](code/lab7.R)                                     |                                                    | 
+| **FAQ - The statistical culture**      | [Unit G](slides/un_G.html)                           |                                   |                         
 
 ## Exam
 

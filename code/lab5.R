@@ -1,7 +1,9 @@
-# LAB 5 (Auto) -------------------------------------------------------------------
-# Course: Data Mining
-# Author: Tommaso Rigon
-
+#' ---
+#' title: "LAB 5 (auto data, nonparametric regression)"
+#' author: "Tommaso Rigon"
+#' ---
+#' 
+#+ setup, include=FALSE
 rm(list = ls()) # Clean the environment
 
 # The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
