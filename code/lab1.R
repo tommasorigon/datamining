@@ -1,7 +1,7 @@
-#' ---
-#' title: "LAB 1 (Ames Housing, pre-processing)"
-#' author: "Tommaso Rigon"
-#' ---
+# ----------------------------------------
+# Title: LAB 1 (Ames Housing, pre-processing)
+# Author: Tommaso Rigon
+# ----------------------------------------
 
 rm(list = ls())
 
@@ -128,8 +128,15 @@ ames <- ames %>%
 # ----------------------------------------
 
 library(caret)
+
+nzv <- nearZeroVar(ames)
+
+# Show names
+names(ames)[nzv]
+
+# Remove them
 ames <- ames %>%
-  select(-all_of(nearZeroVar(.)))
+  select(-all_of(nzv))
 
 # ----------------------------------------
 # 7. Save cleaned dataset

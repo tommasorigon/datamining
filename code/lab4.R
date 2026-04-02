@@ -1,12 +1,8 @@
-#' ---
-#' title: "LAB 4 (Ames Housing, regression)"
-#' author: "Tommaso Rigon"
-#' ---
-#' 
-#+ setup, include=FALSE
-knitr::opts_chunk$set(collapse = TRUE)
+# ----------------------------------------
+# Title: LAB 4 (Ames Housing, regression)
+# Author: Tommaso Rigon
+# ----------------------------------------
 
-#+ lab, include=TRUE, echo = TRUE, results = FALSE
 rm(list = ls())
 
 ames <- read.table("../data/ames.csv", header = TRUE, sep = ",", 

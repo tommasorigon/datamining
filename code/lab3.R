@@ -1,11 +1,7 @@
-#' ---
-#' title: "LAB 3 (Juice data, classification)"
-#' author: "Tommaso Rigon"
-#' ---
-#' 
-#+ setup, include=FALSE
-knitr::opts_chunk$set(collapse = TRUE)
+# ----------------------------------------
+# Title: LAB 3 (Juice data, classification)
+# Author: Tommaso Rigon
+# ----------------------------------------
 
-#+ lab, include=TRUE, echo = TRUE, results = TRUE
 rm(list = ls())
 
