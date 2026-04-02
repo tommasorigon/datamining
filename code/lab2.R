@@ -54,7 +54,8 @@ rec_prep <- prep(rec_poly_3)
 bake(rec_prep, new_data = NULL) # Training data
 bake(rec_prep, new_data = head(trawl_val)) # Validation data
 
-# Tunable recipe
+# Tunable recipe ----------------------------------------------------------------------------------------
+
 rec_poly <- recipe(Score1 ~ Longitude, data = trawl_tr) %>%
   step_poly(Longitude, degree = tune())
 
@@ -86,14 +87,14 @@ collect_metrics(poly_val)
 autoplot(poly_val, metric = "rmse") + theme_bw()
 autoplot(poly_val, metric = "mae") + theme_bw()
 
-select_best(poly_val, metric = "rmse")
-select_best(poly_val, metric = "mae")
+show_best(poly_val, metric = "rmse")
+show_best(poly_val, metric = "mae")
 
 # Select final best model (including validation set)
 best_lm_val <- fit_best(poly_val, metric = "rmse", add_validation_set = TRUE)
-best_lm_val
+tidy(best_lm_val)
 
-# If you want to have a closer look at this model, you can call
+# If you want to have a closer look at this model, you can also call
 m_val <- best_lm_val %>% extract_fit_engine()
 summary(m_val)
 
@@ -119,8 +120,8 @@ collect_metrics(poly_cv)
 autoplot(poly_cv, metric = "rmse") + theme_bw()
 autoplot(poly_cv, metric = "mae") + theme_bw()
 
-select_best(poly_cv, metric = "rmse")
-select_best(poly_cv, metric = "mae")
+show_best(poly_cv, metric = "rmse")
+show_best(poly_cv, metric = "mae")
 
 best_lm_cv <- fit_best(poly_cv, metric = "rmse")
 
