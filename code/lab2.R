@@ -45,11 +45,11 @@ rec_prep <- prep(rec_poly_3)
 bake(rec_prep, new_data = NULL) # Training data
 bake(rec_prep, new_data = head(trawl_val)) # Validation data
 
-wf_poly_3 <- workflow() %>% 
-  add_model(m_linear) %>% 
+wf_poly_3 <- workflow() %>%
+  add_model(m_linear) %>%
   add_recipe(rec_poly_3)
 
-m_poly_3 <- wf_poly_3 %>% 
+m_poly_3 <- wf_poly_3 %>%
   fit(data = trawl_tr)
 
 tidy(m_poly_3)
@@ -62,8 +62,8 @@ augment(m_poly_3, new_data = trawl_val) %>% mae(truth = Score1, estimate = .pred
 rec_poly <- recipe(Score1 ~ Longitude, data = trawl_tr) %>%
   step_poly(Longitude, degree = tune())
 
-wf_poly <- workflow() %>% 
-  add_model(m_linear) %>% 
+wf_poly <- workflow() %>%
+  add_model(m_linear) %>%
   add_recipe(rec_poly)
 
 # Method for evaluating the loss: validation set
