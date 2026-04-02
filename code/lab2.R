@@ -93,12 +93,9 @@ show_best(poly_val, metric = "rmse")
 show_best(poly_val, metric = "mae")
 
 # Select final best model (including validation set)
-best_lm_val <- fit_best(poly_val, metric = "rmse", add_validation_set = TRUE)
+best_param_val <- select_best(poly_val, metric = "rmse")
+best_lm_val <- finalize_workflow(wf_poly, best_param_val) %>% fit(data = bind_rows(trawl_tr, trawl_val))
 tidy(best_lm_val)
-
-# If you want to have a closer look at this model, you can also call
-m_val <- best_lm_val %>% extract_fit_engine()
-summary(m_val)
 
 # Cross-validation ------------------------------------------------------------------------------------
 
@@ -125,18 +122,15 @@ autoplot(poly_cv, metric = "mae") + theme_bw()
 show_best(poly_cv, metric = "rmse")
 show_best(poly_cv, metric = "mae")
 
-best_lm_cv <- fit_best(poly_cv, metric = "rmse")
+# Select final best model (including validation set)
+best_param_cv <- select_best(poly_cv, metric = "rmse")
+best_lm_cv <- finalize_workflow(wf_poly, best_param_cv) %>% fit(data = trawl_tr2)
+tidy(best_lm_cv)
 
 # Final errors --------------------------------------------------------------
-rmse_vec(
-  truth = trawl_te$Score1,
-  estimate = predict(best_lm_val, new_data = trawl_te)$.pred
-)
 
-rmse_vec(
-  truth = trawl_te$Score1,
-  estimate = predict(best_lm_cv, new_data = trawl_te)$.pred
-)
+augment(best_lm_val, new_data = trawl_te) %>% rmse(truth = Score1, estimate = .pred)
+augment(best_lm_cv, new_data = trawl_te) %>% rmse(truth = Score1, estimate = .pred)
 
 # Graphical representation on the test set
 seq_data <- tibble(Longitude = seq(142.5, 144, length.out = 200))
