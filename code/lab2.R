@@ -91,6 +91,11 @@ select_best(poly_val, metric = "mae")
 
 # Select final best model (including validation set)
 best_lm_val <- fit_best(poly_val, metric = "rmse", add_validation_set = TRUE)
+best_lm_val
+
+# If you want to have a closer look at this model, you can call
+m_val <- best_lm_val %>% extract_fit_engine()
+summary(m_val)
 
 # Cross-validation ------------------------------------------------------------------------------------
 
@@ -119,7 +124,7 @@ select_best(poly_cv, metric = "mae")
 
 best_lm_cv <- fit_best(poly_cv, metric = "rmse")
 
-# Final errors
+# Final errors --------------------------------------------------------------
 rmse_vec(
   truth = trawl_te$Score1,
   estimate = predict(best_lm_val, new_data = trawl_te)$.pred
