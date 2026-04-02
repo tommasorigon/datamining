@@ -1,12 +1,11 @@
-# ---------------------------------------------
-# Title: LAB 2 (Optimism and cross-validation)
+# --------------------------------------------------------------------------------
+# Title: LAB 2 (Introduction to tidymodels, data splitting and cross-validation)
 # Author: Tommaso Rigon
-# ---------------------------------------------
+# --------------------------------------------------------------------------------
 
 rm(list = ls())
 
 library(tidymodels)
-library(tidyverse)
 
 data("trawl", package = "sm")
 glimpse(trawl)
@@ -28,36 +27,44 @@ head(trawl_val)
 plot(trawl_tr$Longitude, trawl_tr$Score1, pch = 16)
 plot(trawl_val$Longitude, trawl_val$Score1, pch = 16)
 
-# Fitting a polynomial regression "the old way" vs better approach
-m_degree3_raw <- lm(
-  Score1 ~ Longitude + I(Longitude^2) + I(Longitude^3),
-  data = trawl_tr
-)
-
-m_degree3_poly <- lm(
-  Score1 ~ poly(Longitude, 3),
-  data = trawl_tr
-)
-
-# Predictions on the validation set and RMSE
-fit_degree3 <- predict(m_degree3_poly, newdata = trawl_val)
-rmse_vec(trawl_val$Score1, fit_degree3)
-
 # The tidymodel workflow ------------------------------------------------------------------------------
 
-# Recipe (defined on training data)
+# Model
+m_linear <- linear_reg() %>%
+  set_engine("lm")
+
+# Fitting a linear model
+m_poly_3 <- fit(m_linear, Score1 ~ poly(Longitude, 3), data = trawl_tr)
+tidy(m_poly_3)
+
+# Alternative syntax based on recipes
 rec_poly_3 <- recipe(Score1 ~ Longitude, data = trawl_tr) %>%
   step_poly(Longitude, degree = 3)
 
 rec_prep <- prep(rec_poly_3)
-
 bake(rec_prep, new_data = NULL) # Training data
 bake(rec_prep, new_data = head(trawl_val)) # Validation data
+
+wf_poly_3 <- workflow() %>% 
+  add_model(m_linear) %>% 
+  add_recipe(rec_poly_3)
+
+m_poly_3 <- wf_poly_3 %>% 
+  fit(data = trawl_tr)
+
+tidy(m_poly_3)
+
+augment(m_poly_3, new_data = trawl_val) %>% rmse(truth = Score1, estimate = .pred)
+augment(m_poly_3, new_data = trawl_val) %>% mae(truth = Score1, estimate = .pred)
 
 # Tunable recipe ----------------------------------------------------------------------------------------
 
 rec_poly <- recipe(Score1 ~ Longitude, data = trawl_tr) %>%
   step_poly(Longitude, degree = tune())
+
+wf_poly <- workflow() %>% 
+  add_model(m_linear) %>% 
+  add_recipe(rec_poly)
 
 # Method for evaluating the loss: validation set
 val_resample <- validation_set(split)
@@ -65,17 +72,12 @@ val_resample <- validation_set(split)
 # Metrics
 metric_list <- metric_set(rmse, mae)
 
-# Model
-m_linear <- linear_reg() %>%
-  set_engine("lm")
-
 # Grid of polynomial degrees
 grid_poly <- tibble(degree = 1:15)
 
 # Tuning on validation set (train + validation only)
 poly_val <- tune_grid(
-  object = m_linear,
-  preprocessor = rec_poly,
+  wf_poly,
   resamples = val_resample,
   metrics = metric_list,
   grid = grid_poly,
