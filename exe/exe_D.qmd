@@ -31,28 +31,24 @@ editor_options:
 
 ## Theoretical exercises
 
-#### D.1 - Bias-variance of KNN
+:::{.callout-note collapse=true}
+#### Exercise A - Bias-variance of KNN - Solution: [`notes.pdf`](exe_D_A.pdf)
 
 Consider the [$k$-nearest neighbours]{.blue} estimator $\hat{f}(x)$ for a regression problem $Y_i = f(x_i) + \epsilon_i$, under the usual assumptions. [Find]{.orange} the bias and the variance of $\hat{f}(x)$ and discuss their behavior as function of $k$.
 
-#### D.2 - Differentiability of Nadaraya-Watson
+:::
+
+:::{.callout-note collapse=true}
+#### Exercise B - Differentiability of Nadaraya-Watson - Solution: [`notes.pdf`](exe_D_B.pdf)
 
 [Show]{.orange} that the Nadaraya-Watson estimator with fixed bandwidth $h$ and a Gaussian kernel is [differentiable]{.blue}. 
 
 What can be said about the Epanechnikov kernel? 
 
-#### D.3 - Local linear regression (explicit formula)
-
-Prove the theorem about the explicit formula for [local linear regression estimator]{.blue} stated in [this slide](../slides/un_D.html#local-linear-regression-ii). 
-
-::: {.callout-warning collapse=true}
-#### ✏️ - *Solution*
-
-The solution is provided [here](../slides/un_D.html#proof-of-local-linear-smoothing).
 :::
 
-
-#### D.4 - Preservation of linear trends
+:::{.callout-note collapse=true}
+#### Exercise C - Preservation of linear trends - Solution: [`notes.pdf`](exe_D_C.pdf)
 
 [Show]{.orange} that local linear regression applied to $(x_i, y_i)$ [preserves]{.orange} the [linear part of the fit]{.blue}. In other words, let us decompose $y_i = \hat{y}_{i,\text{ols}} + r_i$, where $\hat{y}_{i,\text{ols}} = \hat{\beta}_0 + \hat{\beta}_1 x_i$ represents the linear regression estimate, and $\bm{S}$ is the smoothing matrix, then
 $$
@@ -67,32 +63,30 @@ Does the same property hold for the Nadaraya-Watson estimator?
 
 [Hint]{.blue}. Begin by showing that $\sum_{i=1}^ns_i(x) = 1$ and that $\sum_{i=1}^ns_i(x)(x_i - x) = 0$. Exploit these properties to obtain the proof. 
 
-#### D.5 - Conceptual exercise
+:::
+
+:::{.callout-note collapse=true}
+#### Exercise D - Maximum penalized likelihood estimate for $\lambda$ - Solution: [`notes.pdf`](exe_D_D.pdf)
 
 Every nonparametric regression model involves a [smoothing parameter]{.blue}. For example, consider the parameter $\lambda$ of smoothing splines or $h$ of local linear regression. 
 
 Can we estimate $h$ and $\lambda$ using a standard method such as the [maximum likelihood]{.orange}?
+:::
 
-#### D.6 - Leave-one-out cross-validation
+:::{.callout-note collapse=true}
+#### Exercise D - General leave-one-out cross-validation - Solution: [`notes.pdf`](exe_D_D.pdf)
 
-[Prove]{.orange} the theorem on [leave-one-out cross-validation]{.blue} for "projective" linear smoothers, as described in [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii).  
+Consider the theorem on [leave-one-out cross-validation]{.blue} for "projective" linear smoothers, as described in [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii).  
 
-Then, show that the theorem holds for the following estimators:  
+Show that the theorem holds for the following estimators:  
 
   i. Nadaraya–Watson estimator. [Hint]{.blue}: use the fact that the Nadaraya–Watson estimator is "projective" almost by definition.  
   ii. Local linear regression. [Hint]{.blue}: prove that local linear regression is "projective."  
-  iii. Regression splines. [Hint]{.blue}: this is a special case of a linear model, so you can prove the theorem directly rather than by establishing the projectivity property.  
-  iv. Smoothing splines. [Hint]{.blue}: again, you may want to use the Sherman–Morrison formula and prove the theorem directly.  
 
-<!-- Finally, [prove]{.orange} that in all the above cases $|y_i - \hat{y}_{-i}| \ge |y_i - \hat{y}_i|$. That is, the leave-one-out residuals are always bigger than the regular residuals.  -->
-
-::: {.callout-warning collapse=true}
-#### Partial solution
-
-To be added. Refer to the notes available on e-learning for a solution of the first part of the exercise.
 :::
 
-#### D.7 - Truncated power basis
+:::{.callout-note collapse=true}
+#### Exercise E - Truncated power basis
 
 A cubic spline with one knots $\xi$ can be obtained using a basis of the form $x$, $x^2$, $x^3$ and ($x - \xi)_+$, as a consequence of the truncated power basis Theorem of [this slide](../slides/un_D.html#truncated-power-basis).
 
@@ -121,24 +115,28 @@ iv. Show that $f'_1(\xi) = f'_2(\xi)$. That is, the first derivative $f'(x)$ is 
 v. Show that $f''_1(\xi) = f''_2(\xi)$. That is, the second derivative $f''(x)$ is continuous at $\xi$.
 
 Conclude that $f(x)$ [is]{.blue} indeed a [cubic spline]{.blue}. 
+:::
 
-
-#### D.8 - Smoothing splines estimator
+:::{.callout-note collapse=true}
+#### Exercise F - Smoothing splines estimator
 
 [Derive]{.orange} the smoothing spline estimator $\hat{\beta} = (\bm{N}^T\bm{N} + \lambda \bm{\Omega})^{-1}\bm{N}^T\bm{y}$, given for granted the validity of the Green and Silverman theorem about the optimality of natural cubic splines, as stated [here](../slides/un_D.html#smoothing-splines-ii).
+:::
 
+## Coding exercises
 
-
-## Practical exercises
-
-#### D.9 - Implementation of local linear regression
+:::{.callout-note collapse=true}
+#### Exercise G - Implementation of local linear regression
 
 Write a function called `loclin(x, y, h)` that implements local linear regression using the formula of [this slide](../slides/un_D.html#local-linear-regression-ii). You can use any kernel function of your choice.
 
 Compare the results of your function `loclin` on the `auto` dataset with those of the libraries `KernSmooth` and `sm`, along the lines of what has been done in class. 
- 
-#### D.10 - Implementation of leave-one-out cross-validation
+:::
+
+:::{.callout-note collapse=true}
+#### Exercise H - Implementation of leave-one-out cross-validation
 
 Write a function called `loo_cv(X, y, h)` that computes the leave-one-out cross-validation for the `loclin(x, y, h)` function, using the result of [this slide](../slides/un_D.html#choice-of-the-bandwidth-ii).
 
 Identify the optimal bandwidth for the `loclin` local linear regression, using the `auto` dataset.
+:::
