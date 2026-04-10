@@ -8,6 +8,7 @@ execute:
 filters: 
   - remove-pause.lua
 page-layout: full
+message: false
 format:
   revealjs:
     df-print: tibble
@@ -167,6 +168,8 @@ glimpse(prostate)
 #| fig-width: 15
 #| fig-height: 7
 #| fig-align: center
+#| message: false
+#| warning: false
 library(ggcorrplot)
 corr <- cor(subset(prostate_train, select = -lpsa)) # Remove the outcome lpsa
 ggcorrplot(corr,
