@@ -176,6 +176,6 @@ Use best subset, principal components, ridge regression, and lasso to handle the
 :::{.callout-note collapse=true}
 #### Exercise I - Implementation of pathwise coordinate optimization
 
-Implement the [pathwise coordinate optimization algorithm]{.orange} that is described in [this slide](../slides/un_C.html#coordinate-descent). Use it to predict the `Salary` of the baseball players on the `Hitters` dataset.
+Implement the [pathwise coordinate optimization algorithm]{.blue} that is described in [this slide](../slides/un_C.html#coordinate-descent). Use it to predict the `Salary` of the baseball players on the `Hitters` dataset.
 
 :::
