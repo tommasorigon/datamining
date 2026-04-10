@@ -42,11 +42,11 @@ plot(ames_train$Total.Bsmt.SF, ames_train$SalePrice,
 
 plot(ames_train$Garage.Area, ames_train$SalePrice, xlab = "Garage Area", ylab = "Sale Price", pch = 16, cex = 0.8)
 
-plot(ames_train$Porch.Sq.Feet, ames_train$SalePrice,
+plot(ames_train$Porch.SF, ames_train$SalePrice,
   xlab = "Porch Square Feet", ylab = "Sale Price", pch = 16, cex = 0.8
 )
 
-plot(ames_train$Tot.Bathrooms, ames_train$SalePrice,
+plot(ames_train$Tot.Bath, ames_train$SalePrice,
   xlab = "Tot Bathrooms", ylab = "Sale Price", pch = 16, cex = 0.8
 )
 
@@ -80,7 +80,7 @@ round(MAE(ames_validation$SalePrice, y_hat_median), 4)
 round(MSLE(ames_validation$SalePrice, y_hat_median), 4)
 
 # A first simple model --------------------------------------------------------------------------
-m_simple <- lm(SalePrice ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bathrooms, data = ames_train)
+m_simple <- lm(SalePrice ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bath, data = ames_train)
 summary(m_simple)
 
 y_hat_simple <- predict(m_simple, newdata = ames_validation)
@@ -92,7 +92,7 @@ round(MAE(ames_validation$SalePrice, y_hat_simple), 4)
 round(MSLE(ames_validation$SalePrice, y_hat_simple), 4)
 
 # Taking the log scale -----------------------------------------------------------------------------------
-m_simple <- lm(log(SalePrice) ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bathrooms, data = ames_train)
+m_simple <- lm(log(SalePrice) ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bath, data = ames_train)
 summary(m_simple)
 
 # Re-obtain the original scale

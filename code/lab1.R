@@ -123,23 +123,10 @@ ames <- ames %>%
     -c(Mo.Sold, Yr.Sold, Year.Remod.Add, Year.Built)
   )
 
-# ----------------------------------------
-# 6. Near-zero variance features
-# ----------------------------------------
 
-library(caret)
-
-nzv <- nearZeroVar(ames)
-
-# Show names
-names(ames)[nzv]
-
-# Remove them
-ames <- ames %>%
-  select(-all_of(nzv))
 
 # ----------------------------------------
 # 7. Save cleaned dataset
 # ----------------------------------------
 
-write.csv(ames, "../data/ames_clean.csv", row.names = FALSE)
+write.csv(ames, "../data/ames.csv", row.names = FALSE)
