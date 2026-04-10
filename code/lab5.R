@@ -1,213 +1,134 @@
-#' ---
-#' title: "LAB 5 (auto data, nonparametric regression)"
-#' author: "Tommaso Rigon"
-#' ---
-#' 
-#+ setup, include=FALSE
-rm(list = ls()) # Clean the environment
+# ----------------------------------------
+# Title: LAB 3 (Juice data, classification)
+# Author: Tommaso Rigon
+# ----------------------------------------
 
-# The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
-auto <- read.table("../data/auto.txt", header = TRUE)
-auto <- subset(auto, select = c(city.distance, engine.size))
+rm(list = ls())
 
-# Summary
-str(auto)
+# The data on fruit juice purchases are taken from Chapter 11 of Foster, Stine and Waterman "Business Analysis Using Regression".
 
-y <- auto$city.distance # As the name suggest: city distance
-x <- auto$engine.size # And engine size (L)
+# The data refer to 1070 fruit juice purchases of two different brands (MM and CH) in certain US supermarkets, supplied with some contributory variables. The variables are
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+# Variable     Description
 
-# Set of points at which the curve is evaluated
-newx <- data.frame(x = seq(min(x), max(x), length = 1000))
+# choice       pre-chosen brand (factor, with 2 levels)
+# id.cust      customer identification
+# week         identifier of week of purchase
+# priceCH      reference price for  brand CH (USD)
+# priceMM      reference price for  brand MM (USD)
+# discountCH   discount applied to  product CH (USD)
+# discountMM   discount applied to product MM (USD)
+# loyaltyCH    loyalty indicator for  product CH
+# loyaltyMM    loyalty indicator for  product MM
+# store        store identifier (factor, with 5 levels)
+# ...          other variables obtained by combining the former
 
-# p = 1 (linear regression)
-lines(newx$x, predict(lm(y ~ x), newdata = newx), lty = 1, col = "black")
+# Variable loyaltyMM is constructed starting from the value 0.5 and updating with every purchase by the same customer, with a value which increases by 20% of the current difference between the current value and 1, if the customer chose MM, and falls by 20% of the  difference between the current value and 0 if the customer chose CH. The corresponding variable loyaltyCH is given by  1-loyaltyMM.
 
-# p = 2 (parabolic regression)
-lines(newx$x, predict(lm(y ~ x + I(x^2)), newdata = newx), lty = 2, col = "darkorange")
+juice <- read.table("https://tommasorigon.github.io/StatIII/data/juice.txt", header = TRUE, stringsAsFactors = TRUE)
+str(juice)
 
-# p = 3 (cubic regression)
-# Here I am using the more convenient syntax "poly"
-lines(newx$x, predict(lm(y ~ poly(x, degree = 3)), newdata = newx), lty = 3, col = "darkblue")
+# QUESTION 1. We are interested in predicting the preference of customers towards CH and MM as a function of relevant covariates. What kind of model could be appropriate? What covariates do you think might be useful?
 
-# If I use an extreme value for the degree, it does not work well anymore
-lines(newx$x, predict(lm(y ~ poly(x, degree = 10)), newdata = newx), lty = 6)
+# QUESTION 2: let us consider the following "wrong" approach, which causes an error. Why do you think it happens?
 
-# Nadaraya-Watson estimator ---------------------------------------------
+# A WRONG idea - the "automatic" data scientist
+m_wrong <- glm(choice ~ ., family = binomial, data = juice)
+summary(m_wrong)
 
-# Notice the bandwidth parametrization and the kernel used
-? ksmooth
+# QUESTION 3: Clean the data and provide some descriptive analysis that may be helpful to understand the relationship between variables and the response.
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+# COMMENT: in the dataset there are (i) irrelevant variables (ii) leaker variables such as buyCH (iii) redundant variables.
 
-h_param <- 1 # Let us try a few parameters here
-band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
-m_nw1 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
-lines(m_nw1)
+# buyCH and choice represent the same variable in different formats (factor vs int). One or the other must be removed
+juice <- subset(juice, select = -c(buyCH))
 
-h_param <- 0.2 # Let us try a few parameters here
-band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
-m_nw2 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
-lines(m_nw2, col = "darkorange")
+# loyaltyCH and loyaltyMM are collinear, we cannot use both.
 
-h_param <- 0.1 # Let us try a few parameters here
-band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
-m_nw3 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
-lines(m_nw3, col = "darkblue")
+# id.cust is difficult to use, because there a lot of customers and very few observations per id
+juice <- subset(juice, select = -c(id.cust))
 
-# Local polynomial regression (KernSmooth)---------------------------------------
+# store, StoreID, store7 are referring to the same quantity
+juice <- subset(juice, select = -c(StoreID, store7))
+juice$store <- as.factor(juice$store)
 
-# install.packages(KernSmooth)
-library(KernSmooth)
+# salepriceCH is the FINAL price, obtained as priceCH - discountCH, making these three variables COLLINEAR.
+# We can keep them but we cannot use them together
+plot(juice$priceCH - juice$discountCH, juice$salepriceCH)
+plot(juice$priceMM - juice$discountMM, juice$salepriceMM)
 
-? locpoly
+# pricediff and listpricediff are also collinear variables, being equal to
+# pricediff = salepriceMM - salepriceCH;
+# listpricediff = priceMM - priceCH
+plot(juice$salepriceMM - juice$salepriceCH, juice$pricediff)
+plot(juice$priceMM - juice$priceCH, juice$listpricediff)
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+# pctdiscMM and pctdiscCH are also potentially problematic, albeit non-collinear. specialCH are "special weeks", again potentially problematic
 
-# Local linear regression (with a given bandwidith)
-m_local_linear <- locpoly(x, y, degree = 1, bandwidth = 0.5, kernel = "normal", gridsize = 500)
-lines(m_local_linear)
+# QUESTION 4: identify a good model using a subset of the total number variables. Can we use all the available variables? Why not?
 
-# Local quadratic regression
-m_local_quadratic <- locpoly(x, y, degree = 2, bandwidth = 0.5, kernel = "normal", gridsize = 500)
-lines(m_local_quadratic, lty = 2, col = "darkorange")
+# Let us consider a FORWARD approach for building this model. The backward does not work (!)
+m0 <- glm(choice ~ 1, family = binomial, data = juice)
+summary(m0)
 
-# Local cubic regression
-m_local_cubic <- locpoly(x, y, degree = 3, bandwidth = 0.5, kernel = "normal", gridsize = 500)
-lines(m_local_cubic, lty = 2, col = "darkblue")
+# Variables we would like to POTENTIALLY consider
+scope <- choice ~ week + priceCH + priceMM + discountCH + discountMM + specialCH + specialMM + loyaltyCH + loyaltyMM + salepriceMM + salepriceCH + pricediff + pctdiscMM + pctdiscCH + listpricediff + store
 
-# Local polynomial regression (sm package) ------------------------------------------
+# Which variable is the most "relevant", meaning that reduced the deviance the most?
+add1(m0, scope = scope, test = "LRT")
 
-# install.packages(sm)
-library(sm)
+# Loyalty is the most relevance variable. Let us include it (one of them, because they are obviously collinear)
+m1 <- glm(choice ~ loyaltyMM, family = binomial, data = juice)
+summary(m1)
 
-? sm.regression
+add1(m1, scope = scope, test = "LRT")
+m2 <- glm(choice ~ loyaltyMM + pricediff, family = binomial, data = juice)
+summary(m2)
 
-sm.regression(x, y, h = 2, pch = 16, cex = 0.6)
-sm.regression(x, y, h = 0.5, pch = 16, cex = 0.6, lty = 2, col = "darkorange")
-sm.regression(x, y, h = 0.1, pch = 16, cex = 0.6, lty = 3, col = "darkblue")
+add1(m2, scope = scope, test = "LRT")
 
-? h.select
-h.select(x, y, method = "cv", hstart = 0.05, hend = 3, ngrid = 50) # Cross-validation
-h.select(x, y, method = "aicc") # Corrected AIC
+m3 <- glm(choice ~ loyaltyMM + pricediff + store, family = binomial, data = juice)
+summary(m3)
+add1(m3, scope = scope, test = "LRT")
 
-hcv(x, y, display = "lines", hstart = 0.05, hend = 3, ngrid = 50)
+# Fully automatic procedures
 
-# From the documentation:
-# As from version 2.1 of the package, a similar effect can be obtained with the new function h.select, via h.select(x, method="cv"). Users are encouraged to adopt this route, since hcv might be not accessible directly in future releases of the package. When the sample size is large hcv uses the raw data while h.select(x, method="cv") uses binning. The latter is likely to produce a more stable choice for h.
+# Forward selection (k = 2 is the AIC)
+m_forward <- step(m0, scope = scope, direction = "forward", k = 2)
+summary(m_forward)
 
-sm.regression(x, y, h = 0.42, pch = 16, cex = 0.6, lty = 2)
+# Stepwise selection
+m_step <- step(m0, scope = scope, direction = "both", k = 2)
+summary(m_step)
 
-# Loess -----------------------------------------------------------------------------
+# QUESTION 5: evaluate the goodness of fit of the estimated model.
 
-? loess.smooth
-? loess
+# Diagnostic plots are not usuful for binary data
+par(mfrow = c(2, 2))
+plot(m3, which = 1:4) # As usual, these graphs are not particularly informative
+par(mfrow = c(1, 1))
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+pred_m3 <- predict(m3, type = "response")
+class_m3 <- as.factor(pred_m3 > 0.5)
 
-# Estimate a loess model
-m_loess1 <- loess.smooth(x, y, span = 0.5, degree = 1, evaluation = 1000, family = "symmetric")
-lines(m_loess1)
+# Confusion matrix
+table(class_m3, juice$choice)
 
-# Over-smoothing
-m_loess2 <- loess.smooth(x, y, span = 0.8, degree = 1, evaluation = 1000, family = "symmetric")
-lines(m_loess2, col = "darkorange")
+# Accuracy of the model is about 83%:
+sum(diag(table(juice$choice, class_m3))) / nrow(juice)
 
-# Under-smoothing
-m_loess3 <- loess.smooth(x, y, span = 0.33, degree = 1, evaluation = 1000, family = "symmetric")
-lines(m_loess3, col = "darkblue")
+# Error is 1 - accuracy, is about 16%:
+1 - sum(diag(table(juice$choice, class_m3))) / nrow(juice)
 
-# Regression splines ---------------------------------------------------
+# Calibration plot
+breaks <- seq(from = 0, to = 1, length = 20)
+class_m3 <- cut(pred_m3, breaks = breaks)
 
-# install.packages("splines")
-library(splines)
+pred_avg <- tapply(pred_m3, class_m3, mean)
+prop <- tapply(as.numeric(juice$choice) - 1, class_m3, mean)
 
-# Knots selection
-xi <- seq(min(x), max(x), length = 4) # I select 4 knots in total, equally spaced
-xi_int <- xi[2:(length(xi) - 1)] # There are actually K = 2 INTERNAL knots
+plot(prop, pred_avg, pch = 16, xlab = "Empirical proportions (binned)", ylab = "Predicted proportions (binned)")
+rug(pred_m3)
+abline(c(0, 1), lty = "dotted")
 
-# The new data points are based on the sequence points + the internal knots
-newx <- data.frame(x = sort(c(seq(min(x), max(x), length = 1000), xi_int)))
-
-# The intercept has been excluded, therefore there are K + 3 components (and not K + 4)
-B <- bs(x, knots = xi_int, degree = 3, intercept = F)
-
-dim(B)
-head(B)
-
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
-
-# Spline regression is just a linear model!
-m_spl1 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = F))
-lines(newx$x, predict(m_spl1, newx), lty = 2, col = "darkorange")
-
-# Vertical lines where the knots are placed
-abline(v = xi[2], lty = 3)
-abline(v = xi[3], lty = 3)
-
-# Regression splines - Nodes on the quantiles ----------------------
-
-xi <- quantile(x, c(0, 0.333, 0.666, 1))
-xi_int <- xi[2:(length(xi) - 1)] # There are K = 2 INTERNAL knots
-
-# Draw the knots as vertical lines
-m_spl2 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = F))
-
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
-lines(newx$x, predict(m_spl2, newx), lty = 2, col = "darkblue")
-
-# Plot vertical lines on the internal knots
-abline(v = xi[2], lty = 3)
-abline(v = xi[3], lty = 3)
-
-# Regression splines - Degrees of freeedom specification ---------------
-
-# Basis function of a B-spline (degree = 3, cubic splines)
-# The following relationship holds: df = length(knots) + degree
-# Knots are chosen using quantiles of the x distribution
-
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
-
-# This is equivalent to the previous command
-m_spl2 <- lm(y ~ bs(x, df = 5, degree = 3, intercept = F))
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
-lines(newx$x, predict(m_spl2, newx), lty = 1, col = "black")
-
-# Let us change a bit the degrees of freedom
-m_spl3 <- lm(y ~ bs(x, df = 10, degree = 3, intercept = F))
-lines(newx$x, predict(m_spl3, newx), lty = 2, col = "darkorange")
-
-# This is, equite evidently, overfitting the data
-m_spl4 <- lm(y ~ bs(x, df = 15, degree = 3, intercept = F))
-lines(newx$x, predict(m_spl4, newx), lty = 3, col = "darkblue")
-
-
-# Smoothing Splines ------------------------------------------------
-
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
-
-? smooth.spline
-m_smooth <- smooth.spline(x, y)
-m_smooth
-
-lines(m_smooth) # Ok, the default did not work!
-
-# Let us try some alternative values
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
-
-m_smooth1 <- smooth.spline(x, y, lambda = 0.0001)
-lines(predict(m_smooth1, x = newx$x), lty = 1, col = "black")
-
-m_smooth2 <- smooth.spline(x, y, lambda = 0.001)
-lines(predict(m_smooth2, x = newx$x), lty = 2, col = "darkorange")
-
-m_smooth3 <- smooth.spline(x, y, lambda = 0.01)
-lines(predict(m_smooth3, x = newx$x), lty = 2, col = "darkblue")
-
-# Let us use "spar" instead of lambda
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
-
-m_smooth <- smooth.spline(x, y, spar = 0.8)
-lines(predict(m_smooth, x = newx$x))
-
+# There are also specialized approaches, such as the ROC curve and the lift curve. You will study them in other courses such as Data Mining.
