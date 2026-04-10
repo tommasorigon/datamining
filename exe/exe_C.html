@@ -2228,7 +2228,7 @@ window.Quarto = {
   <li><a href="#homepage" id="toc-homepage" class="nav-link active" data-scroll-target="#homepage">Homepage</a>
   <ul class="collapse">
   <li><a href="#theoretical-exercises" id="toc-theoretical-exercises" class="nav-link" data-scroll-target="#theoretical-exercises">Theoretical exercises</a></li>
-  <li><a href="#practical-exercises" id="toc-practical-exercises" class="nav-link" data-scroll-target="#practical-exercises">Practical exercises</a></li>
+  <li><a href="#coding-exercises" id="toc-coding-exercises" class="nav-link" data-scroll-target="#coding-exercises">Coding exercises</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -2270,34 +2270,41 @@ window.Quarto = {
 
 <section id="homepage" class="level1">
 <h1><a href="../index.html">Homepage</a></h1>
+<p>The theoretical exercises described below could be quite <span class="orange">difficult</span>. At the <span class="blue">exam</span>, you can expect a <span class="blue">simplified version</span> of them; otherwise, they would represent a formidable challenge for most of you.</p>
 <section id="theoretical-exercises" class="level2">
 <h2 class="anchored" data-anchor-id="theoretical-exercises">Theoretical exercises</h2>
-<section id="c.1---equivalence-between-pcr-and-ols-when-k-p" class="level4">
-<h4 class="anchored" data-anchor-id="c.1---equivalence-between-pcr-and-ols-when-k-p">C.1 - Equivalence between PCR and OLS when <span class="math inline">k = p</span></h4>
-<p><span class="orange">Show</span> that when the number of principal components <span class="math inline">k = p</span>, then the predicted values of PCR and ordinary least squares coincide, namely <span class="math display">
-\bm{X}\hat{\beta}_\text{ols} = \bm{Z}\hat{\gamma}_\text{pcr},
-</span> where the definition of <span class="math inline">\bm{Z}</span> and <span class="math inline">\hat{\gamma} = (\hat{\gamma}_1,\dots, \hat{\gamma}_p)</span> is given in <a href="../slides/un_C.html#principal-components-regression-pcr">this slide</a>. Moreover, show that when <span class="math inline">k = p</span> <span class="math display">
-\hat{\beta}_\text{ols} = \hat{\beta}_\text{pcr},
-</span> where <span class="math inline">\hat{\beta}_\text{pcr}</span> has been defined in <a href="https://tommasorigon.github.io/datamining/slides/un_C.html#shrinkage-effect-of-principal-components-i">this slide</a>.</p>
-<div class="callout callout-style-simple callout-warning no-icon callout-titled">
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution
+Exercise A - Equivalence between PCR and OLS when <span class="math inline">k = p</span> - Solution: <a href="exe_C_A.pdf"><code>notes.pdf</code></a>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
 <div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>To be added. Refer to the notes available on e-learning.</p>
+<p><span class="orange">Show</span> that when the number of principal components <span class="math inline">k = p</span>, then the predicted values of PCR and ordinary least squares coincide, namely <span class="math display">
+\bm{X}\hat{\beta}_\text{ols} = \bm{Z}\hat{\gamma}_\text{pcr},
+</span> where the definition of <span class="math inline">\bm{Z}</span> and <span class="math inline">\hat{\gamma} = (\hat{\gamma}_1,\dots, \hat{\gamma}_p)</span> is given in <a href="../slides/un_C.html#principal-components-regression-pcr">this slide</a>. Moreover, show that when <span class="math inline">k = p</span> <span class="math display">
+\hat{\beta}_\text{ols} = \hat{\beta}_\text{pcr},
+</span> where <span class="math inline">\hat{\beta}_\text{pcr}</span> has been defined in <a href="https://tommasorigon.github.io/datamining/slides/un_C.html#shrinkage-effect-of-principal-components-i">this slide</a>.</p>
 </div>
 </div>
 </div>
-</section>
-<section id="c.2---centering-and-scaling-the-predictors" class="level4">
-<h4 class="anchored" data-anchor-id="c.2---centering-and-scaling-the-predictors">C.2 - Centering and scaling the predictors</h4>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise B - Centering and scaling the predictors - Solution: <a href="exe_C_B.pdf"><code>notes.pdf</code></a>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p><strong>Part I</strong></p>
 <p>Suppose the covariates <span class="math inline">\tilde{\bm{x}}_j</span> were <span class="blue">scaled</span> (same variance) but <span class="orange">not centered</span> (different means). Moreover, suppose the response <span class="math inline">y</span> was <span class="orange">not centered</span>. Consider the following estimator <span class="math display">
 (\hat{\beta}_0, \hat{\beta}_\text{ridge}) = \arg\min_{\beta_0,\beta} \sum_{i=1}^n(y_{i} - \beta_0 - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2.
@@ -2313,9 +2320,21 @@ Solution
 <p>As mentioned in <a href="https://tommasorigon.github.io/datamining/slides/un_C.html#centering-and-scaling-the-predictors-ii">this slide</a>, <span class="orange">show</span> that the coefficients of <span class="orange">ridge regression</span>, expressed in the <span class="blue">original scale</span>, are <span class="math display">
     \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{scaled-ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
     </span></p>
-</section>
-<section id="c.4---ridge-data-augmentation" class="level4">
-<h4 class="anchored" data-anchor-id="c.4---ridge-data-augmentation">C.4 - Ridge data-augmentation</h4>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise C - Ridge data-augmentation - Solution: <a href="exe_C_C.pdf"><code>notes.pdf</code></a>
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p>Show that the ridge regression estimator <span class="math inline">\hat{\beta}_\text{ridge}</span> can be obtained by <span class="blue">ordinary least squares</span> regression on an <span class="orange">augmented data set</span>.</p>
 <p>We augment the centered matrix <span class="math inline">\bm{X}</span> with <span class="math inline">p</span> additional rows <span class="math inline">\sqrt{\lambda} I_p</span> and augment <span class="math inline">\bm{y}</span> with <span class="math inline">p</span> zeros, namely we consider the augmented dataset <span class="math display">
 \tilde{\bm{X}} = \begin{pmatrix}
@@ -2325,30 +2344,38 @@ Solution
 </span> By introducing artificial data having response value zero, the fitting procedure is forced to shrink the coefficients towards zero. <span class="orange">Show</span> that <span class="math display">
 \hat{\beta}_\text{ridge} = (\tilde{\bm{X}}^T\tilde{\bm{X}})^{-1} \tilde{\bm{X}}^T\tilde{\bm{y}}.
 </span></p>
-<div class="callout callout-style-simple callout-warning no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution
+Exercise D - Ridge regression with identical variables - Solution: <a href="exe_C_D.pdf"><code>notes.pdf</code></a>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-2" class="callout-2-contents callout-collapse collapse">
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>To be added. Refer to the notes available on e-learning.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="c.5---ridge-regression-with-identical-variables" class="level4">
-<h4 class="anchored" data-anchor-id="c.5---ridge-regression-with-identical-variables">C.5 - Ridge regression with identical variables</h4>
 <p>Suppose we run a ridge regression with parameter <span class="math inline">\lambda</span> on a single variable <span class="math inline">\tilde{\bm{x}}_1</span> (centered and scaled) and get a coefficient <span class="math inline">\hat{\beta}_1</span>. We now include an exact copy <span class="math inline">\tilde{\bm{x}}_2 = \tilde{\bm{x}}_1</span> and refit our ridge regression.</p>
 <p><span class="orange">Show</span> that both coefficients are identical and derive their value.</p>
-</section>
-<section id="c.6---lasso-solution-with-a-single-predictor" class="level4">
-<h4 class="anchored" data-anchor-id="c.6---lasso-solution-with-a-single-predictor">C.6 - Lasso solution with a single predictor</h4>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-5-contents" aria-controls="callout-5" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise E - Lasso solution with a single predictor
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-5" class="callout-5-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p>Consider the lasso problem with a <span class="blue">single-predictor</span> <span class="math display">
      \hat{\beta}_\text{lasso} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
       </span> <span class="orange">Show</span> that <span class="math inline">\hat{\beta}_\text{lasso}</span> has an <span class="orange">explicit expression</span>, which is <span class="math display">
@@ -2359,45 +2386,42 @@ Solution
     </span> <span class="orange">Show</span> in addition that <span class="math display">
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i},
     </span> <span class="orange">Note</span>. In ridge regression, you need to include a <span class="math inline">n^{-1}</span> scaling factor in the penalized loss: this makes the values of <span class="math inline">\lambda</span> comparable between ridge and lasso. More precisely, you need to consider the ridge solution as a special case of <a href="../slides/un_C.html#elastic-net-with-a-single-predictor">this equation</a> with <span class="math inline">\alpha = 0</span>.</p>
-</section>
-<section id="c.7---the-tied-covariances-in-lar" class="level4">
-<h4 class="anchored" data-anchor-id="c.7---the-tied-covariances-in-lar">C.7 - The tied covariances in LAR</h4>
-<p>Consider a regression problem with <span class="math inline">k</span> variables <span class="math inline">\tilde{\bm{x}}_j</span> having mean zero and standard deviation one. The response variable is centered as well. Moreover, suppose that each variable has <span class="blue">identical absolute covariance</span> with the response: <span class="math display">
-\left|\text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \left|\frac{1}{n}\sum_{j=1}^k x_{ij} y_i \right|= \lambda_{k-1}, \qquad j=1,\dots,k.
-</span> Let <span class="math inline">\hat{\beta}</span> be the <span class="blue">least squares</span> estimate and let us denote with <span class="math inline">r_i(\alpha) = y_i - \alpha \bm{x}_i^T\hat{\beta}</span> the residuals from a fraction of the predictions, with <span class="math inline">\alpha \in [0, 1]</span>.</p>
-<p><span class="orange">Prove</span> that the following relationship holds: <span class="math display">
-\left|\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha))\right| = \left|\frac{1}{n}\sum_{i=1}^nx_{ij}r_i(\alpha)\right| = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
-</span> implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit <span class="math inline">\bm{x}_i^T\hat{\beta}</span>.</p>
-<p><span class="orange">Realize</span> that such a property implies that the <span class="orange">covariances</span> with the residuals in the <span class="blue">LAR algorithm</span> are <span class="orange">tied</span>, having set <span class="math inline">\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}</span> and <span class="math inline">0 \le \lambda \le \lambda_k</span>.</p>
-<p><span class="orange">Hint</span>. This problem is easier if you use <span class="blue">matrix notation</span>, that is, considering the covariances <span class="math inline">n^{-1}\bm{X}^T\bm{r}(\alpha)</span> and the partial residuals <span class="math inline">\bm{r}(\alpha) = \bm{y} - \alpha\bm{X}\hat{\beta}</span>.</p>
-<div class="callout callout-style-simple callout-warning no-icon callout-titled">
-<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-3-contents" aria-controls="callout-3" aria-expanded="false" aria-label="Toggle callout">
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-6-contents" aria-controls="callout-6" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Solution
+Exercise F - Ridge and lasso with orthogonal predictors - Solution: <a href="exe_C_F.pdf"><code>notes.pdf</code></a>
 </div>
 <div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
-<div id="callout-3" class="callout-3-contents callout-collapse collapse">
+<div id="callout-6" class="callout-6-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>To be added. Refer to the notes available on e-learning.</p>
-</div>
-</div>
-</div>
-</section>
-<section id="c.8---ridge-and-lasso-with-orthogonal-predictors" class="level4">
-<h4 class="anchored" data-anchor-id="c.8---ridge-and-lasso-with-orthogonal-predictors">C.8 - Ridge and lasso with orthogonal predictors</h4>
 <p>When the <span class="blue">predictors</span> are mutually orthogonal, lasso and ridge become simpler. Let <span class="math inline">\bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p)</span> be the design matrix and suppose that <span class="math inline">\bm{Z}</span> is <span class="orange">orthogonal</span> and <span class="orange">standardized</span>, which means that <span class="math inline">\bm{Z}^T\bm{Z} = I_p</span>. Moreover, suppose the predictors and the response have been <span class="orange">centered</span>, that is <span class="math inline">\sum_{i=1}^ny_i = \sum_{i=1}^n z_{ij} = 0</span>.</p>
 <ul>
 <li><p>Find an explicit expression for <span class="math inline">\hat{\beta}_\text{ridge}</span>.</p></li>
 <li><p>Find an explicit expression for <span class="math inline">\hat{\beta}_\text{lasso}</span>.</p></li>
 </ul>
 <p><span class="blue">Discuss</span> the results.</p>
-</section>
-<section id="c.9---support-vector-machine-as-a-ridge-minimization-problem" class="level4">
-<h4 class="anchored" data-anchor-id="c.9---support-vector-machine-as-a-ridge-minimization-problem">C.9 - ☠️ Support vector machine as a ridge minimization problem</h4>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-7-contents" aria-controls="callout-7" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise G - ☠️ Support vector machine as a ridge minimization problem
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-7" class="callout-7-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p>Consider this exercise only if you already know <span class="blue">Support Vector Machines</span> (SVM). In SVMs, we seek for the optimal values <span class="math inline">\hat{\beta}_0, \hat{\beta}</span> that solve the following quadratic programming problem: <span class="math display">
 \min_{\beta_0, \beta} \frac{1}{2}\sum_{j=1}^p\beta_j^2 + C \sum_{i=1}^n\xi_i, \quad \text{subject to}\quad  \xi_i \ge 0, \quad y_i(\beta_0 + \bm{x}_i^T\beta) \ge 1 - \xi_i, \quad \forall i,
 </span> where <span class="math inline">C &gt; 0</span> is a cost parameter and <span class="math inline">y_i\in\{-1, 1\}</span> the <span class="orange">categorical response</span>. The SVM classifier is then obtained as <span class="math inline">\hat{G}(x) = \text{sign}(\hat{f}(x))</span>, with <span class="math inline">\hat{f}(x) = \hat{\beta}_0 + \bm{x}_i^T\hat{\beta}</span>.</p>
@@ -2407,19 +2431,45 @@ Solution
 </span> has been replaced by the <span class="blue">hinge loss</span> <span class="math display">
 \ell_\text{hinge}(\beta_0,\beta; \bm{y}) = \sum_{i=1}^n[1 - y_i(\beta_0 + \bm{x}_i^T\beta)]_+.
 </span> A detailed discussion is offered in <span class="blue">Section 12.3.2</span> of textbook <span class="orange">The Elements of Statistical Learning</span>.</p>
+</div>
+</div>
+</div>
 </section>
-</section>
-<section id="practical-exercises" class="level2">
-<h2 class="anchored" data-anchor-id="practical-exercises">Practical exercises</h2>
-<section id="c.10---the-hitters-dataset" class="level4">
-<h4 class="anchored" data-anchor-id="c.10---the-hitters-dataset">C.10 - The <code>Hitters</code> dataset</h4>
+<section id="coding-exercises" class="level2">
+<h2 class="anchored" data-anchor-id="coding-exercises">Coding exercises</h2>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-8-contents" aria-controls="callout-8" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise H - The <code>Hitters</code> dataset
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-8" class="callout-8-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p>Consider the <code>Hitters</code> dataset which is available in the <code>ISLR</code> R library. Having removed the missing values, consider a regression models to predict the <code>Salary</code> as a function of the available covariates.</p>
 <p>Use best subset, principal components, ridge regression, and lasso to handle the presence of potentially irrelevant variables.</p>
-</section>
-<section id="c.11---implementation-of-pathwise-coordinate-optimization" class="level4">
-<h4 class="anchored" data-anchor-id="c.11---implementation-of-pathwise-coordinate-optimization">C.11 - Implementation of pathwise coordinate optimization</h4>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-9-contents" aria-controls="callout-9" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercise I - Implementation of pathwise coordinate optimization
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-9" class="callout-9-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
 <p>Implement the <span class="orange">pathwise coordinate optimization algorithm</span> that is described in <a href="../slides/un_C.html#coordinate-descent">this slide</a>. Use it to predict the <code>Salary</code> of the baseball players on the <code>Hitters</code> dataset.</p>
-</section>
+</div>
+</div>
+</div>
 </section>
 </section>
 

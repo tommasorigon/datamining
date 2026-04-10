@@ -29,9 +29,13 @@ editor_options:
 
 # [Homepage](../index.html)
 
+The theoretical exercises described below could be quite [difficult]{.orange}. At the [exam]{.blue}, you can expect a [simplified version]{.blue} of them; otherwise, they would represent a formidable challenge for most of you.
+
+
 ## Theoretical exercises
 
-#### C.1 - Equivalence between PCR and OLS when $k = p$
+:::{.callout-note collapse=true}
+#### Exercise A - Equivalence between PCR and OLS when $k = p$ - Solution: [`notes.pdf`](exe_C_A.pdf)
 
 [Show]{.orange} that when the number of principal components $k = p$, then the predicted values of PCR and ordinary least squares coincide, namely
 $$
@@ -42,14 +46,10 @@ $$
 \hat{\beta}_\text{ols} = \hat{\beta}_\text{pcr},
 $$
 where $\hat{\beta}_\text{pcr}$ has been defined in [this slide](https://tommasorigon.github.io/datamining/slides/un_C.html#shrinkage-effect-of-principal-components-i).
-
-::: {.callout-warning collapse=true}
-#### Solution
-
-To be added. Refer to the notes available on e-learning.
 :::
 
-#### C.2 - Centering and scaling the predictors
+:::{.callout-note collapse=true}
+#### Exercise B - Centering and scaling the predictors - Solution: [`notes.pdf`](exe_C_B.pdf)
 
 **Part I**
 
@@ -62,8 +62,6 @@ $$
 \hat{\beta}_\text{ridge} = \arg\min_{\beta} \sum_{i=1}^n\{(y_{i} - \bar{y}) - (\bm{x}_{i} - \bar{\bm{x}})^T\beta\}^2 + \lambda \sum_{j=1}^p\beta_j^2.
 $$
 and that $\hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{ridge}$. 
-
-
 
 **Part II**
 
@@ -80,7 +78,11 @@ As mentioned in [this slide](https://tommasorigon.github.io/datamining/slides/un
     \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{scaled-ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
     $$ 
 
-#### C.4 - Ridge data-augmentation
+:::
+
+
+:::{.callout-note collapse=true}
+#### Exercise C - Ridge data-augmentation - Solution: [`notes.pdf`](exe_C_C.pdf)
 
 Show that the ridge regression estimator $\hat{\beta}_\text{ridge}$ can be obtained by [ordinary least squares]{.blue} regression on an [augmented data set]{.orange}. 
 
@@ -95,20 +97,19 @@ By introducing artificial data having response value zero, the fitting procedure
 $$
 \hat{\beta}_\text{ridge} = (\tilde{\bm{X}}^T\tilde{\bm{X}})^{-1} \tilde{\bm{X}}^T\tilde{\bm{y}}.
 $$
-
-::: {.callout-warning collapse=true}
-#### Solution
-
-To be added. Refer to the notes available on e-learning.
 :::
 
-#### C.5 - Ridge regression with identical variables
+:::{.callout-note collapse=true}
+#### Exercise D - Ridge regression with identical variables - Solution: [`notes.pdf`](exe_C_D.pdf)
 
 Suppose we run a ridge regression with parameter $\lambda$ on a single variable $\tilde{\bm{x}}_1$ (centered and scaled) and get a coefficient $\hat{\beta}_1$. We now include an exact copy $\tilde{\bm{x}}_2 = \tilde{\bm{x}}_1$ and refit our ridge regression. 
 
 [Show]{.orange} that both coefficients are identical and derive their value. 
+:::
 
-#### C.6 - Lasso solution with a single predictor
+
+:::{.callout-note collapse=true}
+#### Exercise E - Lasso solution with a single predictor
 
 Consider the lasso problem with a    [single-predictor]{.blue} $$
      \hat{\beta}_\text{lasso} = \arg\min_{\beta}\frac{1}{2n}\sum_{i=1}^n(y_{i} - x_{i}\beta)^2 + \lambda |\beta|.
@@ -124,33 +125,10 @@ $$
     \hat{\beta}_\text{ridge} = \frac{1}{\lambda + 1}\text{cov}(x,y) =\frac{1}{\lambda + 1}\hat{\beta}_\text{ols} = \frac{1}{\lambda + 1}\frac{1}{n}\sum_{i=1}^n x_{i}y_{i},
     $$
 [Note]{.orange}. In ridge regression, you need to include a $n^{-1}$ scaling factor in the penalized loss: this makes the values of $\lambda$ comparable between ridge and lasso. More precisely, you need to consider the ridge solution as a special case of [this equation](../slides/un_C.html#elastic-net-with-a-single-predictor) with $\alpha = 0$. 
-
-#### C.7 - The tied covariances in LAR
-
-Consider a regression problem with $k$ variables $\tilde{\bm{x}}_j$ having mean zero and standard deviation one. The response variable is centered as well. Moreover, suppose that each variable has [identical absolute covariance]{.blue} with the response:
-$$
-\left|\text{cov}(\tilde{\bm{x}}_j, \bm{y})\right| = \left|\frac{1}{n}\sum_{j=1}^k x_{ij} y_i \right|= \lambda_{k-1}, \qquad j=1,\dots,k.
-$$
-Let $\hat{\beta}$ be the [least squares]{.blue} estimate and let us denote with $r_i(\alpha) = y_i - \alpha \bm{x}_i^T\hat{\beta}$ the residuals from a fraction of the predictions, with $\alpha \in [0, 1]$.
-
-[Prove]{.orange} that the following relationship holds:
-$$
-\left|\text{cov}(\tilde{\bm{x}}_j, \bm{r}(\alpha))\right| = \left|\frac{1}{n}\sum_{i=1}^nx_{ij}r_i(\alpha)\right| = \lambda_{k-1} (1 - \alpha), \qquad j=1,\dots,k,
-$$
-implying that the magnitude of the residuals is constant across the covariates as we progress toward the least squares fit $\bm{x}_i^T\hat{\beta}$.
-
-[Realize]{.orange} that such a property implies that the [covariances]{.orange} with the residuals in the [LAR algorithm]{.blue} are [tied]{.orange}, having set $\alpha = (\lambda_{k-1} - \lambda) / \lambda_{k-1}$ and $0 \le \lambda \le \lambda_k$. 
-
-[Hint]{.orange}. This problem is easier if you use [matrix notation]{.blue}, that is, considering the covariances $n^{-1}\bm{X}^T\bm{r}(\alpha)$ and the partial residuals $\bm{r}(\alpha) = \bm{y} - \alpha\bm{X}\hat{\beta}$.
-
-
-::: {.callout-warning collapse=true}
-#### Solution
-
-To be added. Refer to the notes available on e-learning.
 :::
 
-#### C.8 - Ridge and lasso with orthogonal predictors
+:::{.callout-note collapse=true}
+#### Exercise F - Ridge and lasso with orthogonal predictors - Solution: [`notes.pdf`](exe_C_F.pdf)
 
 When the [predictors]{.blue} are mutually orthogonal, lasso and ridge become simpler. Let $\bm{Z} = (\tilde{\bm{z}}_1,\dots,\tilde{\bm{z}}_p)$ be the design matrix and suppose that $\bm{Z}$ is [orthogonal]{.orange} and [standardized]{.orange}, which means that $\bm{Z}^T\bm{Z} = I_p$. Moreover, suppose the predictors and the response have been [centered]{.orange}, that is $\sum_{i=1}^ny_i = \sum_{i=1}^n z_{ij} = 0$. 
 
@@ -159,8 +137,10 @@ When the [predictors]{.blue} are mutually orthogonal, lasso and ridge become sim
 - Find an explicit expression for $\hat{\beta}_\text{lasso}$. 
 
 [Discuss]{.blue} the results. 
+:::
 
-#### C.9 - ☠️ Support vector machine as a ridge minimization problem  
+:::{.callout-note collapse=true}
+#### Exercise G - ☠️ Support vector machine as a ridge minimization problem
 
 Consider this exercise only if you already know  [Support Vector Machines]{.blue} (SVM). In SVMs, we seek for the optimal values $\hat{\beta}_0, \hat{\beta}$ that solve the following quadratic programming problem:
 $$
@@ -180,16 +160,22 @@ $$
 \ell_\text{hinge}(\beta_0,\beta; \bm{y}) = \sum_{i=1}^n[1 - y_i(\beta_0 + \bm{x}_i^T\beta)]_+.
 $$
 A detailed discussion is offered in [Section 12.3.2]{.blue} of textbook [The Elements of Statistical Learning]{.orange}.
+:::
 
-## Practical exercises
+## Coding exercises
 
-#### C.10 - The `Hitters` dataset
+:::{.callout-note collapse=true}
+#### Exercise H - The `Hitters` dataset
 
 Consider the `Hitters` dataset which is available in the `ISLR` R library. Having removed the missing values, consider a regression models to predict the `Salary` as a function of the available covariates.
 
 Use best subset, principal components, ridge regression, and lasso to handle the presence of potentially irrelevant variables. 
 
-#### C.11 - Implementation of pathwise coordinate optimization
+:::
+
+:::{.callout-note collapse=true}
+#### Exercise I - Implementation of pathwise coordinate optimization
 
 Implement the [pathwise coordinate optimization algorithm]{.orange} that is described in [this slide](../slides/un_C.html#coordinate-descent). Use it to predict the `Salary` of the baseball players on the `Hitters` dataset.
 
+:::
