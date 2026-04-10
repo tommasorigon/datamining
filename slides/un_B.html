@@ -150,13 +150,13 @@ window.Quarto = {
   <li><a href="#regression-under-quadratic-loss-ii" id="toc-regression-under-quadratic-loss-ii" class="nav-link" data-scroll-target="#regression-under-quadratic-loss-ii">Regression under quadratic loss II</a></li>
   <li><a href="#classification-under-misclassification-loss" id="toc-classification-under-misclassification-loss" class="nav-link" data-scroll-target="#classification-under-misclassification-loss">Classification under misclassification loss</a></li>
   <li><a href="#bias-variance-trade-off" id="toc-bias-variance-trade-off" class="nav-link" data-scroll-target="#bias-variance-trade-off">Bias-variance trade-off</a></li>
-  <li><a href="#example-bias-variance-in-linear-regression-models" id="toc-example-bias-variance-in-linear-regression-models" class="nav-link" data-scroll-target="#example-bias-variance-in-linear-regression-models">Example: bias-variance in linear regression models</a></li>
+  <li><a href="#bias-variance-in-linear-regression-models" id="toc-bias-variance-in-linear-regression-models" class="nav-link" data-scroll-target="#bias-variance-in-linear-regression-models">Bias-variance in linear regression models 📖</a></li>
   <li><a href="#if-we-knew-fx" id="toc-if-we-knew-fx" class="nav-link" data-scroll-target="#if-we-knew-fx">If we knew <span class="math inline">f(x)</span>…</a></li>
   <li><a href="#bias-variance-trade-off-1" id="toc-bias-variance-trade-off-1" class="nav-link" data-scroll-target="#bias-variance-trade-off-1">Bias-variance trade-off</a></li>
   <li><a href="#but-since-we-do-not-know-fx" id="toc-but-since-we-do-not-know-fx" class="nav-link" data-scroll-target="#but-since-we-do-not-know-fx">But since we do not know <span class="math inline">f(x)</span>…</a></li>
   <li><a href="#mse-on-training-and-test-set-recap" id="toc-mse-on-training-and-test-set-recap" class="nav-link" data-scroll-target="#mse-on-training-and-test-set-recap">MSE on training and test set (recap)</a></li>
   <li><a href="#optimism-i" id="toc-optimism-i" class="nav-link" data-scroll-target="#optimism-i">Optimism I</a></li>
-  <li><a href="#optimism-ii" id="toc-optimism-ii" class="nav-link" data-scroll-target="#optimism-ii">Optimism II</a></li>
+  <li><a href="#optimism-ii" id="toc-optimism-ii" class="nav-link" data-scroll-target="#optimism-ii">Optimism II 📖</a></li>
   <li><a href="#optimism-iii" id="toc-optimism-iii" class="nav-link" data-scroll-target="#optimism-iii">Optimism III</a></li>
   </ul></li>
   <li><a href="#cross-validation" id="toc-cross-validation" class="nav-link" data-scroll-target="#cross-validation">Cross-validation</a>
@@ -171,7 +171,7 @@ window.Quarto = {
   <li><a href="#cross-validation-ii" id="toc-cross-validation-ii" class="nav-link" data-scroll-target="#cross-validation-ii">Cross-validation II</a></li>
   <li><a href="#cross-validation-iii" id="toc-cross-validation-iii" class="nav-link" data-scroll-target="#cross-validation-iii">Cross-validation III</a></li>
   <li><a href="#cross-validation-iv-cholesterol-data" id="toc-cross-validation-iv-cholesterol-data" class="nav-link" data-scroll-target="#cross-validation-iv-cholesterol-data">Cross-validation IV (<code>cholesterol</code> data)</a></li>
-  <li><a href="#leave-one-out-cross-validation" id="toc-leave-one-out-cross-validation" class="nav-link" data-scroll-target="#leave-one-out-cross-validation">Leave-one-out cross-validation</a></li>
+  <li><a href="#leave-one-out-cross-validation" id="toc-leave-one-out-cross-validation" class="nav-link" data-scroll-target="#leave-one-out-cross-validation">Leave-one-out cross-validation 📖</a></li>
   <li><a href="#generalized-cross-validation" id="toc-generalized-cross-validation" class="nav-link" data-scroll-target="#generalized-cross-validation">Generalized cross-validation</a></li>
   <li><a href="#loo-cv-and-gcv-cholesterol-data" id="toc-loo-cv-and-gcv-cholesterol-data" class="nav-link" data-scroll-target="#loo-cv-and-gcv-cholesterol-data">LOO-CV and GCV (<code>cholesterol</code> data)</a></li>
   <li><a href="#on-the-choice-of-k" id="toc-on-the-choice-of-k" class="nav-link" data-scroll-target="#on-the-choice-of-k">On the choice of <span class="math inline">K</span></a></li>
@@ -584,8 +584,8 @@ Bias-variance decomposition
 </div>
 </div>
 </section>
-<section id="example-bias-variance-in-linear-regression-models" class="level2">
-<h2 class="anchored" data-anchor-id="example-bias-variance-in-linear-regression-models">Example: bias-variance in linear regression models</h2>
+<section id="bias-variance-in-linear-regression-models" class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-in-linear-regression-models">Bias-variance in linear regression models 📖</h2>
 <div class="incremental">
 <ul class="incremental">
 <li><p>In <span class="blue">regression problems</span> the <span class="orange">in-sample prediction error</span> under <span class="blue">squared loss</span> is <span class="math display">
@@ -674,10 +674,10 @@ Bias-variance decomposition
 </div>
 </section>
 <section id="optimism-ii" class="level2">
-<h2 class="anchored" data-anchor-id="optimism-ii">Optimism II</h2>
+<h2 class="anchored" data-anchor-id="optimism-ii">Optimism II 📖</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>It can be proved (see Exercises) that the <span class="orange">optimism</span> has a very simple form: <span class="math display">
+<li><p>It can be proved that the <span class="orange">optimism</span> has a very simple form: <span class="math display">
 \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i))
 </span></p></li>
 <li><p>If <span class="blue">ordinary least squares</span> are employed, then the predictions are <span class="math inline">\bm{H}\bm{Y}</span>, therefore <span class="math display">
@@ -853,7 +853,7 @@ r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
 </div>
 </section>
 <section id="leave-one-out-cross-validation" class="level2">
-<h2 class="anchored" data-anchor-id="leave-one-out-cross-validation">Leave-one-out cross-validation</h2>
+<h2 class="anchored" data-anchor-id="leave-one-out-cross-validation">Leave-one-out cross-validation 📖</h2>
 <ul>
 <li><p>The maximum possible value for <span class="math inline">K</span> is <span class="math inline">n</span>, the <span class="orange">leave-one-out</span> cross-validation (LOO-CV).</p></li>
 <li><p>The LOO-CV is hard to implement because it requires the estimation of <span class="math inline">n</span> different models.</p></li>

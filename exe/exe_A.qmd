@@ -35,7 +35,7 @@ editor_options:
 
 # [Homepage](../index.html)
 
-The theoretical exercises described below are quite [difficult]{.orange}. At the [exam]{.blue}, you can expect a [simplified version]{.blue} of them; otherwise, they would represent a formidable challenge for most of you.
+The theoretical exercises described below could be quite [difficult]{.orange}. At the [exam]{.blue}, you can expect a [simplified version]{.blue} of them; otherwise, they would represent a formidable challenge for most of you.
 
 ## Theoretical exercises
 

@@ -593,7 +593,7 @@ decomposition: $$
 $$
 :::
 
-## Example: bias-variance in linear regression models
+## Bias-variance in linear regression models 📖
 
 ::: incremental
 -   In [regression problems]{.blue} the [in-sample prediction
@@ -781,10 +781,10 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     $$
 :::
 
-## Optimism II
+## Optimism II 📖
 
 ::: incremental
--   It can be proved (see Exercises) that the [optimism]{.orange} has a
+-   It can be proved that the [optimism]{.orange} has a
     very simple form: $$
     \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i))
     $$
@@ -1128,7 +1128,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
   ylab("Mean Squared Error (MSE)")
 ```
 
-## Leave-one-out cross-validation
+## Leave-one-out cross-validation 📖
 
 -   The maximum possible value for $K$ is $n$, the
     [leave-one-out]{.orange} cross-validation (LOO-CV).

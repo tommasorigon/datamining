@@ -30,42 +30,22 @@ editor_options:
 
 # [Homepage](../index.html)
 
+The theoretical exercises described below could be quite [difficult]{.orange}. At the [exam]{.blue}, you can expect a [simplified version]{.blue} of them; otherwise, they would represent a formidable challenge for most of you.
+
 
 ## Theoretical exercises
 
-#### B.1 - Bias-variance decomposition
+
+:::{.callout-note collapse=true}
+#### Exercise A - Bias-variance decomposition - Solution: [`notes.pdf`](exe_B_A.pdf)
 
 [Prove]{.orange} the bias-variance decomposition stated in [this slide](../slides/un_B.html#bias-variance-trade-off).
 
-#### B.2 - Optimism
-
-[Prove]{.orange} that, as stated in [this slide](../slides/un_B.html#optimism-ii), the optimism, defined as $$
-    \text{Opt} = \mathbb{E}(\text{MSE}_\text{test}) - \mathbb{E}(\text{MSE}_\text{train}),
-    $$
-    can be equivalently expressed as $$
-    \text{Opt} = \frac{2}{n}\sum_{i=1}^n\text{cov}(Y_i, \hat{f}(\bm{x}_i)).
-    $$
-Refer also to Exercise 3.3 of the textbook A&S (2011), which is implicitly computing similar quantities.
-
-::: {.callout-warning collapse=true}
-#### Solution
-
-To be added. Refer to the notes available on e-learning.
 :::
 
-#### B.3 - Leave-one-out
 
-[Prove]{.orange} the leave-one-out formula for linear models stated in [this slide](../slides/un_B.html#leave-one-out-cross-validation). 
-
-[Hint]{.blue}: many steps are similar to those needed for obtaining [recursive least squares]{.blue}. Begin the proof by applying Sherman-Morrison formula to $\hat{\beta}_{-i}$. 
-
-::: {.callout-warning collapse=true}
-#### Solution
-
-To be added. Refer to the notes available on e-learning.
-:::
-
-#### B.4 - An estimator with minimal variance
+:::{.callout-note collapse=true}
+#### Exercise B - An estimator with minimal variance - Solution: [`notes.pdf`](exe_B_B.pdf)
 
 Let us consider the inequality $\bm{B} \preccurlyeq \bm{A}$ between two squared matrices $\bm{A}$ and $\bm{B}$ of dimension $p \times p$. The symbol $\preccurlyeq$ means that $\bm{A} - \bm{B}$ is positive semi-definite. 
 
@@ -74,8 +54,10 @@ Assume the [true model]{.blue} for the data $(x_i, y_i)$ is [linear]{.blue}, the
 Let $\bm{V} = \sigma^2 (\bm{X}^T\bm{X})^{-1}$ be the covariance matrix of the ordinary least squares estimator $\hat{\beta}_\text{ols}$ and let $\tilde{\bm{V}}$ be the covariance matrix of another [linear]{.blue} and [unbiased]{.orange} estimator $\tilde{\beta} = \bm{A}\bm{y}$.
 
 [Prove]{.orange} that $\bm{V} \preccurlyeq \tilde{\bm{V}}$. Hence, does it make sense to look for other (linear) estimators for $\hat{\beta}$?
+:::
 
-#### B.5 - Heteroscedastic errors
+:::{.callout-note collapse=true}
+#### Exercise C - Heteroscedastic errors
 
 Let us consider a [regression]{.orange} problems in which $$
         Y_i = f(\bm{x}_i) + v(\bm{x}_i) \epsilon_i, \qquad \tilde{Y}_i = f(\bm{x}_i) + v(\bm{x}_i)\tilde{\epsilon}_i, \quad i=1,\dots,n,
@@ -90,9 +72,13 @@ Let us consider a [regression]{.orange} problems in which $$
     \end{aligned}
     $$
 [Conclude]{.orange} that the minimizer of $\text{ErrF}$ is $f(\bm{x}_i) = \mathbb{E}(\tilde{Y}_i)$. [Discuss]{.blue} the implications of the above results.
+:::
 
-## Practical exercises
+## Coding exercise
 
-#### B.6 - The `trawl` dataset
+:::{.callout-note collapse=true}
+#### Exercise D - Leave-one-out cross validation
 
-Consider the dataset `trawl` contained in the `sm` library. Implement a function that fit a [polynomial regression]{.blue} using `Score1` as response variable ($y$) and `Longitude` as input variable ($x$). Implement a procedure that selects the [optimal degree]{.orange} of the polynomial based on leave-one-out cross-validation. 
+Consider the dataset `trawl` contained in the `sm` library. Implement a function that fit a [polynomial regression]{.blue} using `Score1` as response variable ($y$) and `Longitude` as input variable ($x$). Implement a procedure that selects the [optimal degree]{.orange} of the polynomial based on [leave-one-out cross-validation]{.blue}. 
+
+:::
