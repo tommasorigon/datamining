@@ -3,22 +3,28 @@ title: "Exercises A"
 subtitle: "Data mining - CdL CLAMSES"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
-lang: en
-execute:
-  cache: true
 page-layout: full
+bibliography: ../biblio.bib
+citeproc: true
+csl: https://www.zotero.org/styles/journal-of-the-american-statistical-association
+reference-location: margin
+execute:
+  cache: false
 format:
   html:
     html-math-method: katex
-    echo: true
+    echo: false
     callout-appearance: minimal
     theme: [simplex, ../template.css]
     toc: true
     toc-title: Table of contents
-    embed-resources: true
+    embed-resources: false
     code-line-numbers: true
     smooth-scroll: true
-    fig-dpi: 250
+    code-fold: false
+    code-summary: "Show the code"
+    fig-dpi: 150
+    highlight-style: github
 editor: 
   markdown: 
     wrap: 72
@@ -29,9 +35,12 @@ editor_options:
 
 # [Homepage](../index.html)
 
+The theoretical exercises described below are quite [difficult]{.orange}. At the [exam]{.blue}, you can expect a [simplified version]{.blue} of them; otherwise, they would represent a formidable challenge for most of you.
+
 ## Theoretical exercises
 
-#### A.1 - Properties of the projection matrix $\bm{H}$
+:::{.callout-note collapse=true}
+#### Exercise A - Properties of $\bm{H}$ - Solution: [`notes.pdf`](exe_A_A.pdf)
 
 Suppose the $n\times p$ design matrix $\bm{X}$ has [full rank]{.blue}, that is $\text{rk}(\bm{X}) = p$, with $p < n$. [Prove]{.orange} that 
 $$
@@ -44,99 +53,97 @@ $$
 
 [Hint]{.blue}. You may want to look for the properties of [projection matrices]{.orange} on your favorite linear algebra textbook, otherwise this exercise becomes quite hard. 
 
-
-::: {.callout-warning collapse=true}
-#### ✏️ - *Solution (Try it yourself before looking at it!)*
-Suppose $\bm{X}$ is of full rank, that is $\text{rk}(\bm{X}) = p$. Then the following QR decomposition holds true
-$$
-\bm{X} = \bm{Q}\bm{R},
-$$
-with $\bm{Q} \in \mathbb{R}^{n \times p}$ and such that $\text{rk}(\bm{Q}) = p$ and $\bm{Q}^T\bm{Q} = I_p$. 
-
----------------------------------------------------------
-
-We firstly show that $\bm{H}$ is [symmetric]{.orange}, i.e. $\bm{H}^T = \bm{H}$. In fact:
-$$
-\bm{H}^T = \left[\bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T\right]^T = (\bm{X}^T)^T\left[(\bm{X}^T\bm{X})^{-1}\right]^T\bm{X}^T = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T = \bm{H},
-$$
-where has been used the fact that $\left[(\bm{X}^T\bm{X})^{-1}\right]^T =(\bm{X}^T\bm{X})^{-1}$ because of symmetry. 
-
----------------------------------------------------------
-
-We now offer [two alternative proofs]{.blue} to show that $\text{tr}(\bm{H}) = p$. The first proof is based on the  following property of the trace operator: $\text{tr}(\bm{A}\bm{B}) = \text{tr}(\bm{B}\bm{A})$. Hence,
-$$
-\text{tr}(\bm{H}) = \text{tr}(\bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T) = \text{tr}\left(\bm{X}^T\bm{X}(\bm{X}^T\bm{X})^{-1}\right) = \text{tr}(I_p) = p.
-$$
-[Alternatively]{.orange}, using the QR decomposition:
-$$
-\text{tr}(\bm{H}) = \text{tr}(\bm{Q}\bm{Q}^T) = \text{tr}(\bm{Q}^T\bm{Q}) = \text{tr}(I_p) = p.
-$$
-
----------------------------------------------------------
-
-The matrix $\bm{H}$ is [idempotent]{.blue}, meaning that $\bm{H}^2 = \bm{H}$. In fact,
-$$
-\bm{H}^2 = \bm{H}\bm{H} = \bm{X}(\bm{X}^T\bm{X})^{-1}\underbrace{\bm{X}^T \bm{X}(\bm{X}^T\bm{X})^{-1}}_{=I_p}\bm{X}^T = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T = \bm{H}
-$$
-[Alternatively]{.orange}, using the QR decomposition:
-$$
-\bm{H}^2 = \bm{H}\bm{H} = \bm{Q}\underbrace{\bm{Q}^T\bm{Q}}_{=I_p}\bm{Q}^T = \bm{Q}\bm{Q}^T = \bm{H}.
-$$
-
----------------------------------------------------------
-
-We now show that the rank of $\bm{H}$ is $p$. In order to do so, we consider the [spectral decomposition]{.blue} of $\bm{H}$. Suppose $\lambda$ is an [eigenvalue]{.orange} of the symmetric matrix $\bm{H}$, which means there is an (eigen-)vector $\bm{x} \in \mathbb{R}^n$ such that $\bm{x} \neq 0$
-$$
-\bm{H}\bm{x} = \lambda \bm{x}.
-$$
-We now exploit the fact that $\bm{H}$ is [idempotent]{.blue}:
-$$
-\lambda \bm{x} = \bm{H}\bm{x} = \bm{H} \underbrace{\bm{H} \bm{x}}_{=\lambda \bm{x}} = \lambda \underbrace{\bm{H} \bm{x}}_{=\lambda \bm{x}}  =  \lambda^2 \bm{x}.
-$$
-We have shown that $\lambda \bm{x} = \lambda^2 \bm{x}$ for $\bm{x} \neq 0$. This equality is true if and only if
-$$
-\lambda(\lambda - 1)\bm{x} = \bm{0}_n,
-$$
-which implies that the [eigevalues]{.orange} of $\bm{H}$ are [necessarily]{.orange} $\lambda \in \{0, 1\}$. Incidentally, this proves that $\bm{H}$ is positive semi-definite (not requested by the exercise). 
-
-Let $\lambda_1,\dots,\lambda_n$ be the eigenvalues of $\bm{H}$. We proved before that $\text{tr}(\bm{H}) = p$ and note in addition that 
-$$
-\text{tr}(\bm{H}) = \sum_{i=1}^n \lambda_i = p.
-$$
-Thus, there are necessarily $p$ eigenvalues equal to $1$ and $n - p$ eigenvalues to $0$. In particular, there are $p$ positive eigenvalues, implying that $\text{rk}(\bm{H}) = p$.
-
----------------------------------------------------------
-
-Finally, we show that the sums of the rows (and the columns) of $\bm{H}$ is $1$, if the intercept is included. This follows from the fact that $\bm{H}$ is [projecting]{.blue} the values of $\bm{y}$ into the space of columns of $\bm{X}$. 
-
-Hence, if the intercept is included in the model, we obtain that
-$$
-\bm{H} \bm{1}_n = \bm{1}_n.
-$$
-
 :::
 
-#### A.2 - Positive definiveness of $\bm{X}^T\bm{X}$
+<!-- ::: {.callout-warning collapse=true} -->
+<!-- #### ✏️ - *Solution (Try it yourself before looking at it!)* -->
+<!-- Suppose $\bm{X}$ is of full rank, that is $\text{rk}(\bm{X}) = p$. Then the following QR decomposition holds true -->
+<!-- $$ -->
+<!-- \bm{X} = \bm{Q}\bm{R}, -->
+<!-- $$ -->
+<!-- with $\bm{Q} \in \mathbb{R}^{n \times p}$ and such that $\text{rk}(\bm{Q}) = p$ and $\bm{Q}^T\bm{Q} = I_p$.  -->
+
+<!-- --------------------------------------------------------- -->
+
+<!-- We firstly show that $\bm{H}$ is [symmetric]{.orange}, i.e. $\bm{H}^T = \bm{H}$. In fact: -->
+<!-- $$ -->
+<!-- \bm{H}^T = \left[\bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T\right]^T = (\bm{X}^T)^T\left[(\bm{X}^T\bm{X})^{-1}\right]^T\bm{X}^T = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T = \bm{H}, -->
+<!-- $$ -->
+<!-- where has been used the fact that $\left[(\bm{X}^T\bm{X})^{-1}\right]^T =(\bm{X}^T\bm{X})^{-1}$ because of symmetry.  -->
+
+<!-- --------------------------------------------------------- -->
+
+<!-- We now offer [two alternative proofs]{.blue} to show that $\text{tr}(\bm{H}) = p$. The first proof is based on the  following property of the trace operator: $\text{tr}(\bm{A}\bm{B}) = \text{tr}(\bm{B}\bm{A})$. Hence, -->
+<!-- $$ -->
+<!-- \text{tr}(\bm{H}) = \text{tr}(\bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T) = \text{tr}\left(\bm{X}^T\bm{X}(\bm{X}^T\bm{X})^{-1}\right) = \text{tr}(I_p) = p. -->
+<!-- $$ -->
+<!-- [Alternatively]{.orange}, using the QR decomposition: -->
+<!-- $$ -->
+<!-- \text{tr}(\bm{H}) = \text{tr}(\bm{Q}\bm{Q}^T) = \text{tr}(\bm{Q}^T\bm{Q}) = \text{tr}(I_p) = p. -->
+<!-- $$ -->
+
+<!-- --------------------------------------------------------- -->
+
+<!-- The matrix $\bm{H}$ is [idempotent]{.blue}, meaning that $\bm{H}^2 = \bm{H}$. In fact, -->
+<!-- $$ -->
+<!-- \bm{H}^2 = \bm{H}\bm{H} = \bm{X}(\bm{X}^T\bm{X})^{-1}\underbrace{\bm{X}^T \bm{X}(\bm{X}^T\bm{X})^{-1}}_{=I_p}\bm{X}^T = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T = \bm{H} -->
+<!-- $$ -->
+<!-- [Alternatively]{.orange}, using the QR decomposition: -->
+<!-- $$ -->
+<!-- \bm{H}^2 = \bm{H}\bm{H} = \bm{Q}\underbrace{\bm{Q}^T\bm{Q}}_{=I_p}\bm{Q}^T = \bm{Q}\bm{Q}^T = \bm{H}. -->
+<!-- $$ -->
+
+<!-- --------------------------------------------------------- -->
+
+<!-- We now show that the rank of $\bm{H}$ is $p$. In order to do so, we consider the [spectral decomposition]{.blue} of $\bm{H}$. Suppose $\lambda$ is an [eigenvalue]{.orange} of the symmetric matrix $\bm{H}$, which means there is an (eigen-)vector $\bm{x} \in \mathbb{R}^n$ such that $\bm{x} \neq 0$ -->
+<!-- $$ -->
+<!-- \bm{H}\bm{x} = \lambda \bm{x}. -->
+<!-- $$ -->
+<!-- We now exploit the fact that $\bm{H}$ is [idempotent]{.blue}: -->
+<!-- $$ -->
+<!-- \lambda \bm{x} = \bm{H}\bm{x} = \bm{H} \underbrace{\bm{H} \bm{x}}_{=\lambda \bm{x}} = \lambda \underbrace{\bm{H} \bm{x}}_{=\lambda \bm{x}}  =  \lambda^2 \bm{x}. -->
+<!-- $$ -->
+<!-- We have shown that $\lambda \bm{x} = \lambda^2 \bm{x}$ for $\bm{x} \neq 0$. This equality is true if and only if -->
+<!-- $$ -->
+<!-- \lambda(\lambda - 1)\bm{x} = \bm{0}_n, -->
+<!-- $$ -->
+<!-- which implies that the [eigevalues]{.orange} of $\bm{H}$ are [necessarily]{.orange} $\lambda \in \{0, 1\}$. Incidentally, this proves that $\bm{H}$ is positive semi-definite (not requested by the exercise).  -->
+
+<!-- Let $\lambda_1,\dots,\lambda_n$ be the eigenvalues of $\bm{H}$. We proved before that $\text{tr}(\bm{H}) = p$ and note in addition that  -->
+<!-- $$ -->
+<!-- \text{tr}(\bm{H}) = \sum_{i=1}^n \lambda_i = p. -->
+<!-- $$ -->
+<!-- Thus, there are necessarily $p$ eigenvalues equal to $1$ and $n - p$ eigenvalues to $0$. In particular, there are $p$ positive eigenvalues, implying that $\text{rk}(\bm{H}) = p$. -->
+
+<!-- --------------------------------------------------------- -->
+
+<!-- Finally, we show that the sums of the rows (and the columns) of $\bm{H}$ is $1$, if the intercept is included. This follows from the fact that $\bm{H}$ is [projecting]{.blue} the values of $\bm{y}$ into the space of columns of $\bm{X}$.  -->
+
+<!-- Hence, if the intercept is included in the model, we obtain that -->
+<!-- $$ -->
+<!-- \bm{H} \bm{1}_n = \bm{1}_n. -->
+<!-- $$ -->
+
+<!-- ::: -->
+
+:::{.callout-note collapse=true}
+#### Exercise B - Positive definiveness of $\bm{X}^T\bm{X}$ - Solution: [`notes.pdf`](exe_A_B.pdf)
 
 [Prove]{.orange} the statement of [Proposition A.1](../slides/un_A.html#cholesky-factorization). In other words, suppose the  $n\times p$  matrix $\bm{X}$ has [full rank]{.blue}, that is $\text{rk}(\bm{X}) = p$, with $p < n$. Then, show that $\bm{X}^T\bm{X}$ is [positive definite]{.blue}.
+:::
 
-#### A.3 - OLS with orthogonal predictors
+:::{.callout-note collapse=true}
+#### Exercise C - OLS with orthogonal predictors - Solution: [`notes.pdf`](exe_A_C.pdf)
 
 [Prove]{.orange} the statement of [Proposition A.2](../slides/un_A.html#orthogonal-predictors). In other words, show that when the predictors are orthogonal the least square estimate is $$
 \hat{\beta}_j = \frac{\tilde{\bm{z}}_j^T\bm{y}}{\tilde{\bm{z}}_j^T\tilde{\bm{z}}_j}, \qquad j=1,\dots,p.
 $$
 
-Assume, in addition, that $\bm{Y} = \bm{Z}\beta + \bm{\epsilon}$ and that the errors $\epsilon_i \overset{\text{iid}}{\sim} \text{N}(0, \sigma^2)$. Then, obtain the covariance matrix of $\hat{\beta}$ and conclude that the estimators $\hat{\beta}_j$ and $\hat{\beta}_{j'}$ are independent, .
+Assume, in addition, that $\bm{Y} = \bm{Z}\beta + \bm{\epsilon}$ and that the errors $\epsilon_i \overset{\text{iid}}{\sim} \text{N}(0, \sigma^2)$. Then, obtain the covariance matrix of $\hat{\beta}$ and conclude that the estimators $\hat{\beta}_j$ and $\hat{\beta}_{j'}$ are independent.
+:::
 
-#### A.4 - Final step of the Gram-Schidmt algorithm
-
-Consider the last equation of [this slide](../slides/un_A.html#the-qr-decomposition-and-least-squares), that is
-$$
-\hat{\beta}_p = (\tilde{\bm{z}}_p^T\bm{y}) / (\tilde{\bm{z}}_p^T \tilde{\bm{z}}_p).
-$$
-Realize that this estimate can be regarded as the [final]{.orange} (additional) [step]{.orange} of the [Gram-Schmidt]{.blue} algorithm, as mentioned in Algorithm 2.1 of the textbook Azzalini \& Scarpa (2011).
-
-#### A.5 - Recursive least squares
+:::{.callout-note collapse=true}
+#### Exercise D - Recursive least squares - Solution: [`notes.pdf`](exe_A_D.pdf)
 
 [Verify]{.orange} the correctness of the [recursive least square]{.blue} equations described in [this slide](../slides/un_A.html#the-recursive-least-squares-algorithm-i). 
 
@@ -147,16 +154,20 @@ $$
 ||\bm{y}_{(n + 1)} - \bm{X}_{(n+1)}\hat{\beta}_{(n+1)}||^2 = ||\bm{y}_{(n)} - \bm{X}_{(n)}\hat{\beta}_{(n)}||^2 + v_{(n)} e_{n+1}^2,
 $$
 which is mentioned [here](../slides/un_A.html#the-recursive-least-squares-algorithm-ii) without proof.
+:::
 
-#### A.6 - Separability in logistic regression
+:::{.callout-note collapse=true}
+#### Exercise E - Separability in logistic regression - Solution: [`notes.pdf`](exe_A_E.pdf)
 
 Consider a logistic regression model for binary data with a single predictor $x_i \in \mathbb{R}$, so that $f(x_i) = \beta_0 + \beta_1 x_i$ and $\mathbb{P}(Y_i = 1) = \pi(x_i) = 1/[1 + \exp\{-f(x_i)\}]$. Suppose there exists a point $x_0 \in \mathbb{R}$ that [perfectly separates]{.blue} the two binary outcomes. 
 
 [Investigate]{.orange} the behavior of the maximum likelihood estimate $\hat{\beta}_0, \hat{\beta}$ in this scenario. Then, generalize this result to the multivariate case, when $\bm{x}_i \in \mathbb{R}^p$. That is, suppose there exists a vector $\bm{x}_0 \in \mathbb{R}^p$ that perfectly separates the binary outcomes.
 
 A detailed description of this [separability issue]{.blue} is provided in the *Biometrika* paper by [Albert and Anderson (1984)](https://academic.oup.com/biomet/article/71/1/1/349338). See also the paper by [Rigon and Aliverti (2023)](../extra/RigonAliverti2023.pdf) for a simple correction. 
+:::
 
-#### A.7 - Standardization of the input variables
+:::{.callout-note collapse=true}
+#### Exercise F - Standardization of the input variables - Solution: [`notes.pdf`](exe_A_F.pdf)
 
 <!-- I have read, on a popular social media, a sentence about standardization, that can be loosely translated as follows: -->
 
@@ -177,25 +188,25 @@ $$
 \hat{y}_i = \bm{x}_i^T\hat{\beta} = \bm{z}_i^T\hat{\gamma}, \qquad i=1,\dots,n,
 $$
 where $\bm{x}_i = (x_{i1},\dots,x_{ip})^T$ and $\bm{z}_i = (z_{i1},\dots,z_{ip})^T$. Hence, standardization of the inputs in ordinary least squares has [no effect]{.blue} on the [predictions]{.orange}. Similar linear operations on the inputs, such as [normalization]{.blue}, would lead to the same conclusion. 
+:::
 
 <!-- There are good reasons to standardize the variables, for instance, in ridge/lasso regression models. Moreover, centering the predictors may be helpful to get a design matrix which is better conditioned... But these motivations are not related to Gaussianity.  -->
 
-::: {.callout-note collapse=true}
-#### Solution
+## Coding exercises
 
-To be added. The exercise has been discussed in-class.
-:::
-
-## Practical exercises
-
-#### A.8 - Recursive least squares
+:::{.callout-note collapse=true}
+#### Exercise G - Recursive OLS
 
 [Implement]{.orange} a function `ols_function(X, y)` that computes the least squares estimate using the recursive least squares algorithm, described in [this slide](../slides/un_A.html#the-recursive-least-squares-algorithm-i).
 
 A detailed description of this procedure is also described in [Algorithm 2.2]{.blue} of Azzalini \& Scarpa, 2011
+:::
 
-#### A.9 - Iteratively re-weighted least squares for logistic regression
+:::{.callout-note collapse=true}
+#### Exercise H - Iteratively re-weighted least squares for logistic regression
 
 Implement a function called `logistic_mle(X, y)` which computes the maximum likelihood estimate for a logistic regression model using the [iteratively re-weighted least squares]{.blue}, as described [here](../slides/un_A.html#iteratively-re-weighted-least-squares-ii). 
 
 Verify that the output of `logistic_mle` and the built-in `glm` function coincide, using the [hearth dataset](../slides/un_A.html#the-heart-dataset).
+
+:::
