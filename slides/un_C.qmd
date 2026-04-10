@@ -1101,7 +1101,7 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 :::
 
 
-## The ridge regularization method
+## The ridge regularization method 
 
 -   The ridge estimator is the most common [shrinkage method]{.blue} and
     is the [minimizer]{.orange} of $$
@@ -1182,7 +1182,7 @@ For ridge problems, we will assume the data have been previously
     \sum_{i=1}^n(y_i - \bm{x}_{i}^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p \beta_j^2 \le s.
     $$
 
-## Lagrange multipliers and ridge solution
+## Lagrange multipliers and ridge solution 📖
 
 -   The ridge regression problem can be [equivalently
     expressed]{.orange} in its [Lagrangian
@@ -1428,7 +1428,7 @@ ggplot(data = data_ridge, aes(x = lambda_tilde, y = value, col = Covariate)) +
     regression [thresholds]{.blue} the singular values, [ridge
     regression]{.orange} shrinks them.
 
-## Bias-variance trade-off
+## Bias-variance trade-off 📖
 
 -   The ridge regression [add some bias]{.orange} to the estimates, but
     it [reduces]{.blue} their [variance]{.blue}.
@@ -1553,7 +1553,7 @@ freedom]{.orange} are defined as $$
 $$
 :::
 
-## Effective degrees of freedom II
+## Effective degrees of freedom II 📖
 
 ::: incremental
 -   The effective degrees of freedom of [ordinary least squares]{.blue}
@@ -2231,7 +2231,7 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
 :::
 :::
 
-## Least angle regression: remarks
+## Least angle regression: remarks 📖
 
 - The coefficients in LAR change in a [piecewise]{.orange} fashion, with knots in $\lambda_k$. The LAR path coincides [almost always]{.blue} with the lasso. Otherwise, a simple modification is required:
 

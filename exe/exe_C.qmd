@@ -80,24 +80,6 @@ As mentioned in [this slide](https://tommasorigon.github.io/datamining/slides/un
     \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta}_\text{scaled-ridge}, \qquad \hat{\beta}_\text{scaled-ridge} = \text{diag}(1 / s_1,\dots, 1/s_p) \hat{\beta}_\text{ridge}.
     $$ 
 
-#### C.3 - Ridge estimator
-
-[Verify]{.orange} the correctness of the statement of [this slide](../slides/un_C.html#lagrange-multipliers-and-ridge-solution). In other words, show that the [ridge estimator]{.blue}, under standard centering and scaling assumptions and defined as
-$$
-\hat{\beta}_\text{ridge} = (\bm{X}^T\bm{X} + \lambda I_p)^{-1}\bm{X}^T\bm{y},
-$$
-is the [minimizer]{.orange} of the penalized loss function
-$$
-\sum_{i=1}^n(y_{i} - \bm{x}_{i}^T\beta)^2 + \lambda \sum_{j=1}^p\beta_j^2.
-$$
-[Hint]{.blue}: the proof is a simple adaptation of the one for ordinary least squares. 
-
-::: {.callout-warning collapse=true}
-#### Solution
-
-To be added. Refer to the notes available on e-learning.
-:::
-
 #### C.4 - Ridge data-augmentation
 
 Show that the ridge regression estimator $\hat{\beta}_\text{ridge}$ can be obtained by [ordinary least squares]{.blue} regression on an [augmented data set]{.orange}. 

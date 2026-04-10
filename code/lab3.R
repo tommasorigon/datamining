@@ -1,5 +1,5 @@
 # ----------------------------------------
-# Title: LAB 4 (Ames Housing, regression)
+# Title: LAB 3 (Ames Housing, regression)
 # Author: Tommaso Rigon
 # ----------------------------------------
 
