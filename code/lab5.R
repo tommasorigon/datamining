@@ -25,32 +25,18 @@ rm(list = ls())
 
 # Variable loyaltyMM is constructed starting from the value 0.5 and updating with every purchase by the same customer, with a value which increases by 20% of the current difference between the current value and 1, if the customer chose MM, and falls by 20% of the  difference between the current value and 0 if the customer chose CH. The corresponding variable loyaltyCH is given by  1-loyaltyMM.
 
-juice <- read.table("https://tommasorigon.github.io/StatIII/data/juice.txt", header = TRUE, stringsAsFactors = TRUE)
-str(juice)
+library(tidyverse)
+library(tidymodels)
 
-# QUESTION 1. We are interested in predicting the preference of customers towards CH and MM as a function of relevant covariates. What kind of model could be appropriate? What covariates do you think might be useful?
+juice <- read_table("https://tommasorigon.github.io/StatIII/data/juice.txt")
 
-# QUESTION 2: let us consider the following "wrong" approach, which causes an error. Why do you think it happens?
-
-# A WRONG idea - the "automatic" data scientist
-m_wrong <- glm(choice ~ ., family = binomial, data = juice)
-summary(m_wrong)
-
-# QUESTION 3: Clean the data and provide some descriptive analysis that may be helpful to understand the relationship between variables and the response.
-
-# COMMENT: in the dataset there are (i) irrelevant variables (ii) leaker variables such as buyCH (iii) redundant variables.
+glimpse(juice)
 
 # buyCH and choice represent the same variable in different formats (factor vs int). One or the other must be removed
-juice <- subset(juice, select = -c(buyCH))
-
-# loyaltyCH and loyaltyMM are collinear, we cannot use both.
-
-# id.cust is difficult to use, because there a lot of customers and very few observations per id
-juice <- subset(juice, select = -c(id.cust))
-
 # store, StoreID, store7 are referring to the same quantity
-juice <- subset(juice, select = -c(StoreID, store7))
-juice$store <- as.factor(juice$store)
+juice <- juice %>% 
+  mutate(choice = factor(choice), store = factor(store), id.cust = factor(id.cust)) %>% 
+  select(-c(StoreID, store7, buyCH))
 
 # salepriceCH is the FINAL price, obtained as priceCH - discountCH, making these three variables COLLINEAR.
 # We can keep them but we cannot use them together
@@ -65,70 +51,182 @@ plot(juice$priceMM - juice$priceCH, juice$listpricediff)
 
 # pctdiscMM and pctdiscCH are also potentially problematic, albeit non-collinear. specialCH are "special weeks", again potentially problematic
 
-# QUESTION 4: identify a good model using a subset of the total number variables. Can we use all the available variables? Why not?
+# Three-way split: 50 % train / 25 % validation / 25 % test ----------------------------------------
+set.seed(123)
+split <- initial_split(juice, prop = 3/4)
 
-# Let us consider a FORWARD approach for building this model. The backward does not work (!)
-m0 <- glm(choice ~ 1, family = binomial, data = juice)
-summary(m0)
+juice_tr <- training(split)
+juice_te <- testing(split) # kept untouched until the very end
 
-# Variables we would like to POTENTIALLY consider
-scope <- choice ~ week + priceCH + priceMM + discountCH + discountMM + specialCH + specialMM + loyaltyCH + loyaltyMM + salepriceMM + salepriceCH + pricediff + pctdiscMM + pctdiscCH + listpricediff + store
+# Recipes -------------------------------------------------------------------------------------------
 
-# Which variable is the most "relevant", meaning that reduced the deviance the most?
-add1(m0, scope = scope, test = "LRT")
+# Model
+m_logit <- logistic_reg() %>%
+  set_engine("glm")
 
-# Loyalty is the most relevance variable. Let us include it (one of them, because they are obviously collinear)
-m1 <- glm(choice ~ loyaltyMM, family = binomial, data = juice)
-summary(m1)
+# The outcome is log_SalePrice; SalePrice is dropped from the predictor set.
+base_recipe <- recipe(choice ~ ., data = juice_tr) %>%
+  step_dummy(all_factor_predictors()) %>%
+  step_zv(all_predictors())
 
-add1(m1, scope = scope, test = "LRT")
-m2 <- glm(choice ~ loyaltyMM + pricediff, family = binomial, data = juice)
-summary(m2)
+# Shrinkage methods additionally require centring and scaling
+shrinkage_recipe <- base_recipe %>%
+  step_normalize(all_predictors())
 
-add1(m2, scope = scope, test = "LRT")
+# Metrics (original dollar scale)
+my_metrics <- metric_set(roc_auc, mn_log_loss)
 
-m3 <- glm(choice ~ loyaltyMM + pricediff + store, family = binomial, data = juice)
-summary(m3)
-add1(m3, scope = scope, test = "LRT")
+# Cross-validation
+cv_samples <- vfold_cv(juice_tr, v = 10)
 
-# Fully automatic procedures
+# Simple GLM -----------------------------------------------------------------------------------------
 
-# Forward selection (k = 2 is the AIC)
-m_forward <- step(m0, scope = scope, direction = "forward", k = 2)
-summary(m_forward)
+wf_simple <- workflow() %>%
+  add_recipe(recipe(choice ~ loyaltyCH + pricediff + store, data = juice_tr)) %>%
+  add_model(m_logit) 
 
-# Stepwise selection
-m_step <- step(m0, scope = scope, direction = "both", k = 2)
-summary(m_step)
+cv_simple <- wf_simple %>%
+  fit_resamples(resamples = cv_samples,
+                metrics = my_metrics)
 
-# QUESTION 5: evaluate the goodness of fit of the estimated model.
+collect_metrics(cv_simple)
 
-# Diagnostic plots are not usuful for binary data
-par(mfrow = c(2, 2))
-plot(m3, which = 1:4) # As usual, these graphs are not particularly informative
-par(mfrow = c(1, 1))
+# Final model, using the entire validation set
+m_simple <- wf_simple %>% fit(data = juice_tr)
+tidy(m_simple)
 
-pred_m3 <- predict(m3, type = "response")
-class_m3 <- as.factor(pred_m3 > 0.5)
+# FULL GLM -----------------------------------------------------------------------------------------
 
-# Confusion matrix
-table(class_m3, juice$choice)
+wf_full <- workflow() %>%
+  add_recipe(base_recipe) %>%
+  add_model(m_logit) 
 
-# Accuracy of the model is about 83%:
-sum(diag(table(juice$choice, class_m3))) / nrow(juice)
+cv_full <- wf_full %>%
+  fit_resamples(resamples = cv_samples,
+                metrics = my_metrics)
 
-# Error is 1 - accuracy, is about 16%:
-1 - sum(diag(table(juice$choice, class_m3))) / nrow(juice)
+collect_metrics(cv_full)
 
-# Calibration plot
-breaks <- seq(from = 0, to = 1, length = 20)
-class_m3 <- cut(pred_m3, breaks = breaks)
+# Final model, using the entire validation set
+m_full <- wf_full %>% fit(data = juice_tr)
+tidy(m_full)
 
-pred_avg <- tapply(pred_m3, class_m3, mean)
-prop <- tapply(as.numeric(juice$choice) - 1, class_m3, mean)
+# PCR -----------------------------------------------------------------------------------------
 
-plot(prop, pred_avg, pch = 16, xlab = "Empirical proportions (binned)", ylab = "Predicted proportions (binned)")
-rug(pred_m3)
-abline(c(0, 1), lty = "dotted")
+wf_pcr <- workflow() %>%
+  add_recipe(shrinkage_recipe %>% step_pca(all_predictors(), num_comp = tune())) %>%
+  add_model(m_logit)
 
-# There are also specialized approaches, such as the ROC curve and the lift curve. You will study them in other courses such as Data Mining.
+pcr_cv <- tune_grid(
+  wf_pcr,
+  resamples = cv_samples,
+  grid = tibble(num_comp = c(1:20, seq(from = 20, to = 90, by = 5))),
+  metrics = my_metrics,
+  control = control_grid(save_workflow = TRUE, verbose = TRUE)
+)
+
+collect_metrics(pcr_cv)
+
+autoplot(pcr_cv, metric = "roc_auc") + theme_bw()
+autoplot(pcr_cv, metric = "mn_log_loss") + theme_bw()
+
+show_best(pcr_cv, metric = "roc_auc")
+show_best(pcr_cv, metric = "mn_log_loss")
+
+# Select final best model (including validation set)
+best_pcr_cv <- select_best(pcr_cv, metric = "mn_log_loss")
+best_pcr_cv <- finalize_workflow(wf_pcr, best_pcr_cv) %>% fit(data = juice_tr)
+
+tidy(best_pcr_cv)
+
+# Ridge -----------------------------------------------------------------------------------------
+wf_ridge <- workflow() %>%
+  add_recipe(shrinkage_recipe) %>%
+  add_model(logistic_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet"))
+
+ridge_cv <- tune_grid(
+  wf_ridge,
+  resamples = cv_samples,
+  grid      = tibble(penalty = exp(seq(-4, 5.5, length.out = 100))),
+  metrics   = my_metrics
+)
+
+collect_metrics(ridge_cv)
+
+autoplot(ridge_cv, metric = "roc_auc") + theme_bw()
+autoplot(ridge_cv, metric = "mn_log_loss") + theme_bw()
+show_best(ridge_cv, metric = "roc_auc")
+show_best(ridge_cv, metric = "mn_log_loss")
+
+# Select final best model (including validation set)
+best_ridge_cv <- select_best(ridge_cv, metric = "mn_log_loss")
+best_ridge_cv <- finalize_workflow(wf_ridge, best_ridge_cv) %>% fit(data = juice_tr)
+
+print(tidy(best_ridge_cv), n = 15)
+
+# Lasso -----------------------------------------------------------------------------------------
+wf_lasso <- workflow() %>%
+  add_recipe(shrinkage_recipe) %>%
+  add_model(logistic_reg(penalty = tune(), mixture = 1) %>% set_engine("glmnet"))
+
+lasso_cv <- tune_grid(
+  wf_lasso,
+  resamples = cv_samples,
+  grid      = tibble(penalty = exp(seq(-10, -2, length.out = 100))),
+  metrics   = my_metrics
+)
+
+collect_metrics(lasso_cv)
+
+autoplot(lasso_cv, metric = "roc_auc") + theme_bw()
+autoplot(lasso_cv, metric = "mn_log_loss") + theme_bw()
+
+show_best(lasso_cv, metric = "roc_auc")
+show_best(lasso_cv, metric = "mn_log_loss")
+
+# Select final best model (including validation set)
+best_lasso_cv <- select_best(lasso_cv, metric = "mn_log_loss")
+best_lasso_cv <- finalize_workflow(wf_lasso, best_lasso_cv) %>% fit(data = juice_tr)
+
+print(tidy(best_lasso_cv), n = 40)
+
+# Elastic Net -----------------------------------------------------------------------------------------
+wf_en <- workflow() %>%
+  add_recipe(shrinkage_recipe) %>%
+  add_model(logistic_reg(penalty = tune(), mixture = 0.5) %>% set_engine("glmnet"))
+
+en_cv <- tune_grid(
+  wf_en,
+  resamples = cv_samples,
+  grid      = tibble(penalty = exp(seq(-10, -2, length.out = 100))),
+  metrics   = my_metrics
+)
+
+autoplot(en_cv, metric = "roc_auc") + theme_bw()
+autoplot(en_cv, metric = "mn_log_loss") + theme_bw()
+
+show_best(en_cv, metric = "roc_auc")
+show_best(en_cv, metric = "mn_log_loss")
+
+# Select final best model (including validation set)
+best_en_cv <- select_best(en_cv, metric = "mn_log_loss")
+best_en_cv <- finalize_workflow(wf_en, best_en_cv) %>% fit(data = juice_tr)
+
+print(tidy(best_lasso_cv), n = 40)
+
+# Final comparison on the test set -----------------------------------------------------------------------------------------
+
+fitted_models <- list(
+  Simple        = m_simple,
+  Full          = m_full,
+  PCR           = best_pcr_cv,
+  Ridge         = best_ridge_cv,
+  Lasso         = best_lasso_cv,
+  `Elastic Net` = best_en_cv)
+
+results <- imap_dfr(fitted_models, function(model, name) {
+  augment(model, new_data = juice_te) %>%
+    my_metrics(truth = choice, .pred_CH) %>% mutate(model = name)
+})
+
+results %>% pivot_wider(names_from = .metric, values_from = .estimate) %>% arrange(mn_log_loss)
