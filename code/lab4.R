@@ -44,7 +44,7 @@ shrinkage_recipe <- base_recipe %>%
 # Metrics (original dollar scale)
 my_metrics <- metric_set(exp_mae)
 
-# Benchmark: median prediction 
+# Benchmark: median prediction
 ames_val %>%
   mutate(.pred = log(median(ames_tr$SalePrice))) %>%
   my_metrics(truth = log_SalePrice, estimate = .pred)
@@ -80,8 +80,8 @@ wf_pcr <- workflow() %>%
 pcr_val <- tune_grid(
   wf_pcr,
   resamples = val_resample,
-  grid      = tibble(num_comp = 1:113),
-  metrics   = my_metrics,
+  grid = tibble(num_comp = 1:113),
+  metrics = my_metrics,
   control = control_grid(save_workflow = TRUE, verbose = TRUE)
 )
 
@@ -169,16 +169,15 @@ print(tidy(best_en_val), n = 15)
 
 wf_rf <- workflow() %>%
   add_recipe(shrinkage_recipe) %>%
-  add_model(rand_forest(trees = tune(), mtry = tune(), min_n = tune(), mode = "regression") %>% set_engine("ranger")) 
+  add_model(rand_forest(trees = tune(), mtry = tune(), min_n = tune(), mode = "regression") %>% set_engine("ranger"))
 
 rf_val <- tune_grid(
   wf_rf,
   resamples = val_resample,
-  grid      = tibble(expand.grid(trees = c(1000, 2000, 5000), mtry = c(5, 10, 30, 50), min_n = c(10, 20, 50))),
-  metrics   = my_metrics,
+  grid = tibble(expand.grid(trees = c(1000, 2000, 5000), mtry = c(5, 10, 30, 50), min_n = c(10, 20, 50))),
+  metrics = my_metrics,
   control = control_grid(verbose = TRUE)
 )
-
 
 collect_metrics(rf_val)
 
@@ -191,6 +190,7 @@ best_rf_val <- finalize_workflow(wf_rf, best_rf_val) %>% fit(data = ames_tr)
 
 
 # Final comparison on the test set -----------------------------------------------------------------------------------------
+
 fitted_models <- list(
   Simple        = m_simple,
   Full          = m_full,
@@ -202,7 +202,8 @@ fitted_models <- list(
 )
 
 results <- imap_dfr(fitted_models, function(model, name) {
-  augment(model, new_data = ames_te) %>% exp_mae(truth = log_SalePrice, estimate = .pred) %>%
+  augment(model, new_data = ames_te) %>%
+    exp_mae(truth = log_SalePrice, estimate = .pred) %>%
     transmute(model = name, mae = .estimate)
 })
 
