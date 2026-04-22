@@ -123,8 +123,6 @@ ames <- ames %>%
     -c(Mo.Sold, Yr.Sold, Year.Remod.Add, Year.Built)
   )
 
-
-
 # ----------------------------------------
 # 7. Save cleaned dataset
 # ----------------------------------------

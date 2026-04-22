@@ -7,8 +7,20 @@ rm(list = ls())
 
 ames <- read.table("../data/ames.csv", header = TRUE, sep = ",", 
                    stringsAsFactors = TRUE)
+source("routines.R")
 
 # Training, validation and test set ----------------------------------------------------------------------
+
+library(tidymodels)
+
+main_rec <- recipe(SalePrice ~ ., data = ames) %>%
+  step_nzv(all_predictors(), freq_cut = 95/5, unique_cut = 10)
+
+rec_prep <- prep(main_rec)
+
+ames2 <- bake(rec_prep, new_data = NULL) # Training data
+bake(rec_prep, new_data = head(ames_validation)) # Validation data
+
 
 # Manual subdivision in training / test
 set.seed(123)
@@ -27,7 +39,7 @@ ames_train <- ames[id_train, ]
 ames_validation <- ames[id_validation, ]
 ames_test <- ames[id_test, ]
 
-skimr::skim(ames_train)
+glimpse(ames_train)
 
 # Some initial plots ------------------------------------------------------------------------------------
 
@@ -136,33 +148,17 @@ m_backward <- regsubsets(log(SalePrice) ~ .,
 )
 sum_backward <- summary(m_backward)
 
-library(broom)
-library(dplyr)
 m_forward_summary <- m_forward %>%
   tidy() %>%
   rowwise() %>%
-  mutate(p = sum(c_across(MS.SubClassOne_and_Half_Story_Finished_All_Ages:House.Age)), .keep = "unused") %>%
+  mutate(p = sum(c_across(MS.SubClass160:House.Age)), .keep = "unused") %>%
   ungroup()
 
 m_backward_summary <- m_backward %>%
   tidy() %>%
   rowwise() %>%
-  mutate(p = sum(c_across(MS.SubClassOne_and_Half_Story_Finished_All_Ages:House.Age)), .keep = "unused") %>%
+  mutate(p = sum(c_across(MS.SubClass160:House.Age)), .keep = "unused") %>%
   ungroup()
-
-# The official version of this function is bugged - fixed with an inefficient (!) tweak;
-# Hopefully the original function coef.regsubsets will be fixed soon.
-coef.regsubsets <- function(object, id, data){
-  form <- as.formula(object[["call"]][[2]])
-  s <- summary(object)
-  y <- model.response(model.frame(form, data))
-  X <- model.matrix(form, data)
-  xvars <- names(which(s$which[id, ]))
-  Xvars <- X[, xvars]
-  beta_hat <- c(solve(crossprod(Xvars), crossprod(Xvars, y)))
-  names(beta_hat) <- xvars
-  beta_hat
-}
 
 # Let us see what happens at the lowest levels
 which(sum_backward$which[1, ]) # Model with one covariate
@@ -174,25 +170,6 @@ round(coef(m_backward, 1, ames_train), 6)
 round(coef(m_backward, 2, ames_train), 6)
 round(coef(m_backward, 3, ames_train), 6)
 round(coef(m_backward, 4, ames_train), 6)
-
-# Coding time. Regsubsets does not have a "predict" method, we need to do it ourselves
-predict.regsubsets <- function(object, data, newdata, id, ...) {
-  form <- as.formula(object[["call"]][[2]])
-
-  # Compute the design matrix
-  X <- model.matrix(form, newdata)
-  # Identify the correct beta coefficients
-  beta_hat <- coef(object, id = id, data)
-  xvars <- names(beta_hat)
-
-  # Making the predictions
-  pred_mat <- X[, xvars] %*% beta_hat
-
-  # Housekeeping
-  pred <- as.numeric(pred_mat)
-  names(pred) <- rownames(X)
-  pred
-}
 
 # Let see out it works
 head(exp(predict(m_backward, data = ames_train, newdata = ames_train, id = 2)))
