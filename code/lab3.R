@@ -5,13 +5,13 @@
 
 rm(list = ls())
 
+library(tidyverse)
+library(tidymodels)
+
 ames <- read_csv("../data/ames.csv")
 source("routines.R")
 
 # Training, validation and test set ----------------------------------------------------------------------
-
-library(tidymodels)
-glimpse(ames)
 
 main_rec <- recipe(SalePrice ~ ., data = ames) %>%
   step_nzv(all_predictors(), unique_cut = 10)
@@ -39,19 +39,19 @@ factor_vars <- c(
   "Kitchen.Qual", "MS.Zoning", "Roof.Style", "Neighborhood"
 )
 
-ames_tr |>
-  select(SalePrice, all_of(numeric_vars)) |>
-  pivot_longer(-SalePrice) |>
+ames_tr %>%
+  select(SalePrice, all_of(numeric_vars)) %>%
+  pivot_longer(-SalePrice) %>%
   ggplot(aes(value, SalePrice)) +
   geom_point(alpha = 0.4, size = 0.8) +
   facet_wrap(~name, scales = "free_x") +
   labs(title = "SalePrice vs numeric predictors") +
   theme_light()
 
-ames_tr |>
-  select(SalePrice, all_of(factor_vars)) |>
-  mutate(across(all_of(factor_vars), as.factor)) |>
-  pivot_longer(-SalePrice) |>
+ames_tr %>%
+  select(SalePrice, all_of(factor_vars)) %>%
+  mutate(across(all_of(factor_vars), as.factor)) %>%
+  pivot_longer(-SalePrice) %>%
   ggplot(aes(value, SalePrice)) +
   geom_boxplot() +
   facet_wrap(~name, scales = "free_x") +

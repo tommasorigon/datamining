@@ -6,19 +6,19 @@
 rm(list = ls())
 library(tidyverse)
 library(tidymodels)
+source("https://tommasorigon.github.io/datamining/code/routines.R", echo = TRUE)
 
-# ── 1. Data ───────────────────────────────────────────────────────────────────
+# Data ---------------------------------------------------------------------------------------------
 # log_SalePrice is the model outcome; SalePrice is kept for final evaluation
 ames <- read_csv("../data/ames.csv")
 
 main_rec <- recipe(SalePrice ~ ., data = ames) %>%
   step_nzv(all_predictors(), unique_cut = 10)
 
-ames <- bake(prep(main_rec), new_data = ames) |>
+ames <- bake(prep(main_rec), new_data = ames) %>%
   mutate(log_SalePrice = log(SalePrice))
 
-
-# ── 2. Three-way split: 50 % train / 25 % validation / 25 % test ─────────────
+# Three-way split: 50 % train / 25 % validation / 25 % test ----------------------------------------
 set.seed(123)
 split <- initial_validation_split(ames, prop = c(0.5, 0.25))
 
@@ -26,76 +26,87 @@ ames_tr <- training(split)
 ames_val <- validation(split)
 ames_te <- testing(split) # kept untouched until the very end
 
-# ── 4. Recipes ────────────────────────────────────────────────────────────────
+# Recipes -------------------------------------------------------------------------------------------
+
+# Model
+m_linear <- linear_reg() %>%
+  set_engine("lm")
+
 # The outcome is log_SalePrice; SalePrice is dropped from the predictor set.
-base_recipe <- recipe(log_SalePrice ~ ., data = ames_tr) |>
-  step_rm(SalePrice) |>
-  step_novel(all_nominal_predictors()) |>
-  step_dummy(all_nominal_predictors())
+base_recipe <- recipe(log_SalePrice ~ ., data = ames_tr) %>%
+  step_rm(SalePrice) 
 
 # Shrinkage methods additionally require centring and scaling
-shrinkage_recipe <- base_recipe |>
+shrinkage_recipe <- base_recipe %>%
   step_normalize(all_numeric_predictors())
 
-# ── 5. Metrics (original dollar scale) ───────────────────────────────────────
-my_metrics <- metric_set(mae, rmse)
+# Metrics (original dollar scale)
+my_metrics <- metric_set(exp_mae)
 
-# augment() adds .pred (log scale) to the data; we exponentiate before metrics
-eval_on_validation <- function(wf) {
-  augment(wf, ames_val) |>
-    mutate(.pred = exp(.pred)) |>
-    my_metrics(truth = SalePrice, estimate = .pred)
-}
+# Benchmark: median prediction 
+ames_val %>%
+  mutate(.pred = log(median(ames_tr$SalePrice))) %>%
+  my_metrics(truth = log_SalePrice, estimate = .pred)
 
-# ── 6. Benchmark: median prediction ──────────────────────────────────────────
-ames_val |>
-  mutate(.pred = median(ames_tr$SalePrice)) |>
-  my_metrics(truth = SalePrice, estimate = .pred)
+# Simple OLS -----------------------------------------------------------------------------------------
 
-# ── 7. Simple OLS ────────────────────────────────────────────────────────────
-wf_simple <- workflow() |>
-  add_recipe(
-    recipe(log_SalePrice ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bath,
-           data = ames_tr)
-  ) |>
-  add_model(linear_reg()) |>
+m_simple <- workflow() %>%
+  add_recipe(recipe(log_SalePrice ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bath, data = ames_tr)) %>%
+  add_model(m_linear) %>%
   fit(ames_tr)
 
-eval_on_validation(wf_simple)
+tidy(m_simple)
+eval_on_validation(m_simple)
 
-# ── 8. Full OLS ───────────────────────────────────────────────────────────────
-wf_full <- workflow() |>
-  add_recipe(base_recipe) |>
-  add_model(linear_reg()) |>
+# Full OLS -----------------------------------------------------------------------------------------
+m_full <- workflow() %>%
+  add_recipe(base_recipe) %>%
+  add_model(linear_reg()) %>%
   fit(ames_tr)
 
-eval_on_validation(wf_full)
+print(tidy(m_full), n = 30)
+eval_on_validation(m_full)
 
-# ── 9. PCR ────────────────────────────────────────────────────────────────────
-val_rset <- validation_set(split)
+# PCR -----------------------------------------------------------------------------------------
 
-wf_pcr <- workflow() |>
-  add_recipe(shrinkage_recipe |> step_pca(all_numeric_predictors(), num_comp = tune())) |>
-  add_model(linear_reg())
+val_resample <- validation_set(split)
 
-pcr_tune <- tune_grid(
+wf_pcr <- workflow() %>%
+  add_recipe(shrinkage_recipe %>% step_pca(all_numeric_predictors(), num_comp = tune())) %>%
+  add_model(m_linear)
+
+pcr_val <- tune_grid(
   wf_pcr,
-  resamples = val_rset,
-  grid      = tibble(num_comp = 1:115),
-  metrics   = my_metrics
+  resamples = val_resample,
+  grid      = tibble(num_comp = 1:124),
+  metrics   = my_metrics,
+  control = control_grid(save_workflow = TRUE, verbose = TRUE)
 )
+
+collect_metrics(pcr_val)
+
+autoplot(pcr_val, metric = "rmse") + theme_bw()
+autoplot(pcr_val, metric = "mae") + theme_bw()
+
+show_best(pcr_val, metric = "rmse")
+show_best(pcr_val, metric = "mae")
+
+# Select final best model (including validation set)
+best_param_val <- select_best(poly_val, metric = "rmse")
+best_lm_val <- finalize_workflow(wf_poly, best_param_val) %>% fit(data = bind_rows(trawl_tr, trawl_val))
+tidy(best_lm_val)
 
 autoplot(pcr_tune, metric = "mae") + theme_light()
 
-wf_pcr_final <- finalize_workflow(wf_pcr, select_best(pcr_tune, metric = "rmse")) |>
+wf_pcr_final <- finalize_workflow(wf_pcr, select_best(pcr_tune, metric = "rmse")) %>%
   fit(ames_tr)
 
 eval_on_validation(wf_pcr_final)
 
 # ── 10. Ridge ─────────────────────────────────────────────────────────────────
-wf_ridge <- workflow() |>
-  add_recipe(shrinkage_recipe) |>
-  add_model(linear_reg(penalty = tune(), mixture = 0) |> set_engine("glmnet"))
+wf_ridge <- workflow() %>%
+  add_recipe(shrinkage_recipe) %>%
+  add_model(linear_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet"))
 
 ridge_tune <- tune_grid(
   wf_ridge,
@@ -106,15 +117,15 @@ ridge_tune <- tune_grid(
 
 autoplot(ridge_tune) + theme_light()
 
-wf_ridge_final <- finalize_workflow(wf_ridge, select_best(ridge_tune, metric = "rmse")) |>
+wf_ridge_final <- finalize_workflow(wf_ridge, select_best(ridge_tune, metric = "rmse")) %>%
   fit(ames_tr)
 
 eval_on_validation(wf_ridge_final)
 
 # ── 11. Lasso ─────────────────────────────────────────────────────────────────
-wf_lasso <- workflow() |>
-  add_recipe(shrinkage_recipe) |>
-  add_model(linear_reg(penalty = tune(), mixture = 1) |> set_engine("glmnet"))
+wf_lasso <- workflow() %>%
+  add_recipe(shrinkage_recipe) %>%
+  add_model(linear_reg(penalty = tune(), mixture = 1) %>% set_engine("glmnet"))
 
 lasso_tune <- tune_grid(
   wf_lasso,
@@ -125,15 +136,15 @@ lasso_tune <- tune_grid(
 
 autoplot(lasso_tune) + theme_light()
 
-wf_lasso_final <- finalize_workflow(wf_lasso, select_best(lasso_tune, metric = "rmse")) |>
+wf_lasso_final <- finalize_workflow(wf_lasso, select_best(lasso_tune, metric = "rmse")) %>%
   fit(ames_tr)
 
 eval_on_validation(wf_lasso_final)
 
 # ── 12. Elastic Net ───────────────────────────────────────────────────────────
-wf_en <- workflow() |>
-  add_recipe(shrinkage_recipe) |>
-  add_model(linear_reg(penalty = tune(), mixture = 0.5) |> set_engine("glmnet"))
+wf_en <- workflow() %>%
+  add_recipe(shrinkage_recipe) %>%
+  add_model(linear_reg(penalty = tune(), mixture = 0.5) %>% set_engine("glmnet"))
 
 en_tune <- tune_grid(
   wf_en,
@@ -142,17 +153,17 @@ en_tune <- tune_grid(
   metrics   = metric_set(rmse)
 )
 
-wf_en_final <- finalize_workflow(wf_en, select_best(en_tune, metric = "rmse")) |>
+wf_en_final <- finalize_workflow(wf_en, select_best(en_tune, metric = "rmse")) %>%
   fit(ames_tr)
 
 eval_on_validation(wf_en_final)
 
 # ── 13. Random Forest ─────────────────────────────────────────────────────────
-wf_rf <- workflow() |>
-  add_recipe(base_recipe) |>
-  add_model(rand_forest(trees = 2000, mtry = 10) |>
-              set_engine("ranger") |>
-              set_mode("regression")) |>
+wf_rf <- workflow() %>%
+  add_recipe(base_recipe) %>%
+  add_model(rand_forest(trees = 2000, mtry = 10) %>%
+              set_engine("ranger") %>%
+              set_mode("regression")) %>%
   fit(ames_tr)
 
 eval_on_validation(wf_rf)
@@ -179,8 +190,8 @@ results <- imap_dfr(fitted_models, function(wf, name) {
 })
 
 # Summary table
-results |>
-  group_by(model) |>
-  my_metrics(truth = truth, estimate = estimate) |>
-  pivot_wider(names_from = .metric, values_from = .estimate) |>
+results %>%
+  group_by(model) %>%
+  my_metrics(truth = truth, estimate = estimate) %>%
+  pivot_wider(names_from = .metric, values_from = .estimate) %>%
   arrange(rmse)

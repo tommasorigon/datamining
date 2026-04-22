@@ -30,3 +30,35 @@ predict.regsubsets <- function(object, data, newdata, id, ...) {
   names(pred) <- rownames(X)
   pred
 }
+
+library(yardstick)
+library(rlang)
+
+exp_mae_vec <- function(truth, estimate, na_rm = TRUE, ...) {
+  # Remove NA
+  if (na_rm) {
+    idx      <- !is.na(truth) & !is.na(estimate)
+    truth    <- truth[idx]
+    estimate <- estimate[idx]
+  }
+  mean(abs(exp(truth) - exp(estimate)))
+}
+
+# ---- Generic methods ------------------------------------------
+
+exp_mae <- function(data, ...) UseMethod("exp_mae")
+
+# Registra la metrica come "minimize" (minore = meglio)
+exp_mae <- new_numeric_metric(exp_mae, direction = "minimize")
+
+exp_mae.data.frame <- function(data, truth, estimate, na_rm = TRUE, ...) {
+  numeric_metric_summarizer(
+    metric_nm = "exp_mae",
+    metric_fn = exp_mae_vec,
+    data      = data,
+    truth     = !!enquo(truth),
+    estimate  = !!enquo(estimate),
+    na_rm     = na_rm,
+    ...
+  )
+}
