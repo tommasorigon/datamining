@@ -221,7 +221,7 @@ editor_options:
 :::
 
 -   After the Ph.D., Breiman resigned and went into full-time
-    [free-lance consulting]{.orange}, and it worked as a consultant for
+    [free-lance consulting]{.orange}, and he worked as a consultant for
     thirteen years.
 
 -   Breiman joined the UC Berkeley [Statistics]{.blue} Department in 1980. 
@@ -319,7 +319,7 @@ editor_options:
 
 ::: incremental
 
-- Predictive [interpretability]{.blue} means transparent understanding the [driving factors]{.blue} of the predictions. An example is linear models with few (highly relevant) variables. 
+- Predictive [interpretability]{.blue} means transparent understanding of the [driving factors]{.blue} of the predictions. An example is linear models with few (highly relevant) variables. 
 
 - For example, if I change the value of a set of covariates, what is the impact on predictions?
 
@@ -327,7 +327,7 @@ editor_options:
 
 - However, the [predictive relevance]{.blue} of a variable does [not]{.orange} imply a [causal effect]{.orange} on the response. 
 
-- Finding causal relationship requires [careful thinking]{.orange}, a suitable [sampling design]{.blue}, or both. 
+- Finding causal relationships requires [careful thinking]{.orange}, a suitable [sampling design]{.blue}, or both. 
 :::
 
 ## A definition of "data mining"
@@ -360,7 +360,7 @@ The most fundamental difference between classical statistical applications and d
 
 . . .
 
-:::callout-note
+::: callout-note
 #### Davison (2003) 
 Statistics concerns what can be [learned]{.orange} from [data]{.orange}.
 :::
@@ -400,12 +400,12 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
 
 - But statistics has profoundly changed over the years, [broadening]{.orange} its [boundaries]{.orange}. 
 
-- The road was paved by [Tukey]{.orange} in the 60s, with further exhortations  by [Breiman]{.blue}.
+- The road was paved by [Tukey]{.orange} in the 60s, with further impetus from [Breiman]{.blue}.
 
 - [Modern statistics]{.blue} encompasses [also]{.orange}:
   - Data gathering and representation;
   - Computational aspects;
-  - Algorithmic and modeling culture to prediction.
+  - Algorithmic and modeling culture for prediction.
 
 - Feel free to call it "data science" if you like the bright, shiny new term. 
 :::
@@ -416,7 +416,7 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
 
 ::: incremental
 
-- While it might seem that [data science]{.blue} and [data mining]{.blue} have [strong roots]{.orange} in [statistics]{.orange}, it cannot be denied the existence of two distinct, albeit often overlapping, [communities]{.blue}.
+- While it might seem that [data science]{.blue} and [data mining]{.blue} have [strong roots]{.orange} in [statistics]{.orange}, one cannot deny the existence of two distinct, albeit often overlapping, [communities]{.blue}.
 
 - For the lack of a better term, we will call these communities the [statisticians]{.orange} and the [computer scientists]{.blue}, as identified by their [background]{.blue} and studies. 
 
@@ -507,7 +507,7 @@ Statistics [...] is the technology of [extracting meaning]{.blue} from [data]{.b
 ## Exam
 
 
-- The exam is made of [two parts]{.orange}:
+- The exam consists of [two parts]{.orange}:
 
 - (20 / 30) [Written examination]{.blue}: a pen-and-paper exam about the theoretical aspects of the course.
 
