@@ -115,12 +115,13 @@ ames <- ames %>%
     House.Age = Yr.Sold - Year.Remod.Add
   )
 
-# Remove redundant variables
+# Remove redundant or "difficult" variables
 ames <- ames %>%
   select(
     -c(Open.Porch.SF, Enclosed.Porch, X3Ssn.Porch, Screen.Porch),
     -c(Full.Bath, Half.Bath, Bsmt.Full.Bath, Bsmt.Half.Bath),
-    -c(Mo.Sold, Yr.Sold, Year.Remod.Add, Year.Built)
+    -c(Mo.Sold, Yr.Sold, Year.Remod.Add, Year.Built),
+    -c(Garage.Area)
   )
 
 # ----------------------------------------
