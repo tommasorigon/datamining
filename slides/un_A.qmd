@@ -250,7 +250,7 @@ corresponding vector of [coefficients]{.orange}.
 ## Linear regression: estimation I
 
 -   The optimal set of coefficients $\hat{\beta}$ is the minimizer of
-    the [least squared criterion]{.orange} $$
+    the [least squares criterion]{.orange} $$
     D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
     $$ also known as [residual sum of squares (RSS)]{.orange}, where $$
     ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2},$$ denotes the [Euclidean
@@ -274,7 +274,7 @@ estimate]{.orange} has an explicit solution: $$
     \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{H}\bm{y}, \qquad \bm{H} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
     $$
 
--   $\bm{H}$ is a $n \times n$ [projection matrix]{.orange} matrix
+-   $\bm{H}$ is a $n \times n$ [projection matrix]{.orange}
     sometimes called [hat matrix]{.blue}.
 
 -   It can be shown that $\text{tr}(\bm{H}) = \text{rk}(\bm{H}) = p$.
@@ -314,7 +314,7 @@ estimate]{.orange} has an explicit solution: $$
 
 . . .
 
--   Confidence interval and Wald's tests can be obtained through
+-   Confidence intervals and Wald's tests can be obtained through
     classical inferential theory.
 
 . . .
@@ -407,7 +407,7 @@ ggplot(data = augmented_m1, aes(x = .fitted, y = .resid, col = fuel)) +
 
 -   The overall fit [seems satisfactory]{.blue} at first glance,
     especially if we aim at predicting the urban distance of cars when
-    average engine size (i.e., between $1.5L$ and $3L$).
+    the engine size is average (i.e., between $1.5L$ and $3L$).
 
 . . .
 
@@ -572,7 +572,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 ```
 
 -   In this third model, we handled the [outliers]{.orange} appearing in
-    the residual plots, which it turns out are identified by the group
+    the residual plots, which turn out to be identified by the group
     of cars having 2 cylinders.
 
 -   The diagnostic plots are also very much improved, although still not
@@ -590,7 +590,7 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 
 ## A tour inside old-fashioned statistics
 
--   The first part of the unit is a tour in the "old style" data
+-   The first part of the unit is a tour of the "old style" data
     modeling, the kind of culture that Leo Breiman so [heavily
     criticized]{.orange} in his 2001 *Statistical Science* paper.
 
@@ -652,8 +652,6 @@ kable(data.frame(r.squared.original = r.squared.original, glance(m3)[c(1, 3, 10)
 
 . . .
 
-. . .
-
 -   Recall (from your favorite linear algebra textbook) that a
     [symmetric]{.blue} matrix $\bm{A} \in \mathbb{R}^{p \times p}$ is
     [positive definite]{.orange} if and only if one of the following
@@ -699,7 +697,7 @@ $$
     $\bm{X}^T\bm{X}$. Then, the [normal equations]{.orange} can be
     written as $$
     \bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y}.
-    $$ This system can now solved in [two steps]{.orange}:
+    $$ This system can now be solved in [two steps]{.orange}:
 
 -   [Step 1 (Forwardsolve)]{.blue}. Solve with respect to $\bm{z}$ the
     system of equations $$
@@ -1014,7 +1012,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     is still possible to obtain a "QR" factorization of the form $$
     \bm{X}\bm{P} = \bm{Q}\begin{bmatrix}\bm{R}_{11} & \bm{R}_{12} \\
     0 & 0\end{bmatrix},
-    $$ where $\bm{P}$ is a $p × p$ permutation matrix and $\bm{R}_{11}$
+    $$ where $\bm{P}$ is a $p \times p$ permutation matrix and $\bm{R}_{11}$
     is an $k \times k$ upper triangular and non-singular matrix.
 
 -   This operation is sometimes called [pivoting]{.blue}, and it is
@@ -1076,7 +1074,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
 ## Recursive estimates
 
 ::: incremental
--   In many occasions, the data flows continuously, meaning that we get
+-   On many occasions, the data flows continuously, meaning that we get
     a new pair of observations $(\bm{x}_{n+1}, y_{n+1})$ every minute,
     or even every second.
 
@@ -1090,7 +1088,7 @@ it coincides with the [Cholesky factor]{.orange} of $\bm{X}^T\bm{X}$.
     one would need to invert (or factorize) a $p \times p$ matrix every
     time, which could be costly.
 
--   Let us define some useful quantity: $$
+-   Let us define some useful quantities: $$
     \bm{V}_{(n)} = \bm{W}_{(n)}^{-1} = (\bm{X}_{(n)}^T\bm{X}_{(n)})^{-1},
     $$ where $\bm{X}_{(n)}$ denotes the design matrix with $n$
     observations and analogously $\bm{y}_{(n)}$.
@@ -1145,7 +1143,7 @@ $$
     $\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + \bm{k}_n e_{n+1}$ takes
     the form of a [linear filter]{.orange}, in which the new estimate
     $\hat{\beta}_{(n+1)}$ is obtained by modifying the old one
-    $\hat{\beta}_{(n+1)}$.
+    $\hat{\beta}_{(n)}$.
 
 -   This is performed according to the [prediction error]{.blue}
     $\epsilon_{n+1}$ and the [gain]{.orange} $k_n$ of the filter.
@@ -1196,13 +1194,13 @@ ggplot(data = heart, aes(x = ldl, y = age, col = chd)) +
 ::: {.column width="60%"}
 -   Let us consider the South African `heart`
     [dataset](https://hastie.su.domains/ElemStatLearn/datasets/SAheart.data),
-    described is [Section 4.4.2]{.blue} of HTF (2009).
+    described in [Section 4.4.2]{.blue} of HTF (2009).
 
 -   We want to [predict]{.blue} the insurgence of [coronary heart
     disease]{.orange} (`chd`) as a function of known risk factors:
 
     -   Cholesterol level (`ldl`) and obesity (`obesity`)
-    -   Consumption of tobacco (`tobacco`) and alcohol (`alcool`)
+    -   Consumption of tobacco (`tobacco`) and alcohol (`alcohol`)
     -   Systolic blood pressure (`sbp`)
     -   Age (`age`) and family history (`famhist`)
 
@@ -1237,7 +1235,7 @@ p0
     heteroscedastic, then the Gaussian linear regression model might be
     inappropriate.
 
--   We let $Y_i$ be iid draws from an [exponentialy dispersion
+-   We let $Y_i$ be iid draws from an [exponential dispersion
     family]{.blue}, which includes the Binomial, the Poisson, and the
     Gaussian distribution as special cases.
 
@@ -1465,11 +1463,11 @@ kable(tab)
 
 . . .
 
--   The [true positive rate]{.blue} ([specificity]{.orange}) is defined
+-   The [true negative rate]{.blue} ([specificity]{.orange}) is defined
     as $$
     \text{specificity} = 1 - \mathbb{P}(``\text{false positive}") \approx \frac{n_{00}}{n_{00} + n_{10}} = \frac{255}{255 + 47} = 0.844.
     $$
--   On the other hand, the [true negative rate]{.blue}
+-   On the other hand, the [true positive rate]{.blue}
     ([sensitivity]{.orange}) is defined as $$
     \text{sensitivity} = 1 - \mathbb{P}(``\text{false negative}") \approx \frac{n_{11}}{n_{01} + n_{11}} = \frac{82}{72 + 82} = 0.532.
     $$

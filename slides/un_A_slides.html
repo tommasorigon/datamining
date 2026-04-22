@@ -307,7 +307,7 @@ x_{n1} &amp; \cdots &amp; x_{np}
 <section id="linear-regression-estimation-i" class="slide level2 center">
 <h2>Linear regression: estimation I</h2>
 <ul>
-<li>The optimal set of coefficients <span class="math inline">\hat{\beta}</span> is the minimizer of the <span class="orange">least squared criterion</span> <span class="math display">
+<li>The optimal set of coefficients <span class="math inline">\hat{\beta}</span> is the minimizer of the <span class="orange">least squares criterion</span> <span class="math display">
 D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\beta||^2,
 </span> also known as <span class="orange">residual sum of squares (RSS)</span>, where <span class="math display">
 ||\bm{y}|| = \sqrt{y_1^2 + \cdots + y_n^2},</span> denotes the <span class="blue">Euclidean norm</span>.</li>
@@ -333,7 +333,7 @@ D(\beta) = (\bm{y} - \bm{X}\beta)^T(\bm{y} - \bm{X}\beta) = ||\bm{y} - \bm{X}\be
 <li><p>In matrix notation, the predicted values can be obtained as <span class="math display">
 \hat{\bm{y}} = \bm{X}\hat{\beta} = \bm{H}\bm{y}, \qquad \bm{H} = \bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T.
 </span></p></li>
-<li><p><span class="math inline">\bm{H}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> matrix sometimes called <span class="blue">hat matrix</span>.</p></li>
+<li><p><span class="math inline">\bm{H}</span> is a <span class="math inline">n \times n</span> <span class="orange">projection matrix</span> sometimes called <span class="blue">hat matrix</span>.</p></li>
 <li><p>It can be shown that <span class="math inline">\text{tr}(\bm{H}) = \text{rk}(\bm{H}) = p</span>. Moreover, it holds <span class="math inline">\bm{H} = \bm{H}^T</span> and <span class="math inline">\bm{H}^2 = \bm{H}</span>.</p></li>
 </ul>
 <div class="fragment">
@@ -361,7 +361,7 @@ s^2 = \frac{D(\hat{\beta})}{n - p} = \frac{1}{n-p}\sum_{i=1}^n(y_i - \bm{x}_i^T\
 </ul>
 <div class="fragment">
 <ul>
-<li>Confidence interval and Wald’s tests can be obtained through classical inferential theory.</li>
+<li>Confidence intervals and Wald’s tests can be obtained through classical inferential theory.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -476,7 +476,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <h2>Comments and criticisms</h2>
 <ul>
 <li><p>Is this a good model?</p></li>
-<li><p>The overall fit <span class="blue">seems satisfactory</span> at first glance, especially if we aim at predicting the urban distance of cars when average engine size (i.e., between <span class="math inline">1.5L</span> and <span class="math inline">3L</span>).</p></li>
+<li><p>The overall fit <span class="blue">seems satisfactory</span> at first glance, especially if we aim at predicting the urban distance of cars when the engine size is average (i.e., between <span class="math inline">1.5L</span> and <span class="math inline">3L</span>).</p></li>
 </ul>
 <div class="fragment">
 <ul>
@@ -685,7 +685,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 </div>
 </div>
 <ul>
-<li><p>In this third model, we handled the <span class="orange">outliers</span> appearing in the residual plots, which it turns out are identified by the group of cars having 2 cylinders.</p></li>
+<li><p>In this third model, we handled the <span class="orange">outliers</span> appearing in the residual plots, which turn out to be identified by the group of cars having 2 cylinders.</p></li>
 <li><p>The diagnostic plots are also very much improved, although still not perfect.</p></li>
 <li><p>The estimates are coherent with our expectations, based on common knowledge. Have a look at the textbook (A&amp;S) for a detailed explanation of <span class="math inline">\beta_4</span>!</p></li>
 <li><p>The car dataset is available from the textbook (A&amp;S) website:</p>
@@ -698,7 +698,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <section id="a-tour-inside-old-fashioned-statistics" class="slide level2 center">
 <h2>A tour inside old-fashioned statistics</h2>
 <ul>
-<li>The first part of the unit is a tour in the “old style” data modeling, the kind of culture that Leo Breiman so <span class="orange">heavily criticized</span> in his 2001 <em>Statistical Science</em> paper.</li>
+<li>The first part of the unit is a tour of the “old style” data modeling, the kind of culture that Leo Breiman so <span class="orange">heavily criticized</span> in his 2001 <em>Statistical Science</em> paper.</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -793,7 +793,7 @@ R^2 = 1 - \frac{\text{(``Residual deviance'')}}{\text{(``Total deviance'')}} = 1
 <li class="fragment"><p>The Cholesky factorization is incredibly helpful for computing least squares. Indeed:</p></li>
 <li class="fragment"><p>Let <span class="math inline">\bm{R}^T\bm{R}</span> be the Cholesky factorization of the matrix <span class="math inline">\bm{X}^T\bm{X}</span>. Then, the <span class="orange">normal equations</span> can be written as <span class="math display">
 \bm{R}^T\bm{R} \beta = \bm{X}^T \bm{y}.
-</span> This system can now solved in <span class="orange">two steps</span>:</p></li>
+</span> This system can now be solved in <span class="orange">two steps</span>:</p></li>
 <li class="fragment"><p><span class="blue">Step 1 (Forwardsolve)</span>. Solve with respect to <span class="math inline">\bm{z}</span> the system of equations <span class="math display">
 \bm{R}^T \bm{z} = \bm{X}^T \bm{y}.
 </span></p></li>
@@ -1020,7 +1020,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <li class="fragment"><p>If <span class="math inline">\text{rk}(\bm{X}) = k &lt; p</span> (<span class="orange">rank deficiency</span>) then it is still possible to obtain a “QR” factorization of the form <span class="math display">
 \bm{X}\bm{P} = \bm{Q}\begin{bmatrix}\bm{R}_{11} &amp; \bm{R}_{12} \\
 0 &amp; 0\end{bmatrix},
-</span> where <span class="math inline">\bm{P}</span> is a <span class="math inline">p × p</span> permutation matrix and <span class="math inline">\bm{R}_{11}</span> is an <span class="math inline">k \times k</span> upper triangular and non-singular matrix.</p></li>
+</span> where <span class="math inline">\bm{P}</span> is a <span class="math inline">p \times p</span> permutation matrix and <span class="math inline">\bm{R}_{11}</span> is an <span class="math inline">k \times k</span> upper triangular and non-singular matrix.</p></li>
 <li class="fragment"><p>This operation is sometimes called <span class="blue">pivoting</span>, and it is particularly important even when <span class="math inline">\text{rk}(\bm{X}) = p</span> to prevent numerical issues when the condition number <span class="math inline">\kappa(\bm{X})</span> is high.</p></li>
 <li class="fragment"><p>In the presence of perfect collinearity, the implementation of the QR decomposition in R (<code>qr</code>) relies on pivoting. This is why the <code>lm</code> function can automatically “omit” a predictor.</p></li>
 </ul>
@@ -1058,10 +1058,10 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <section id="recursive-estimates" class="slide level2 center">
 <h2>Recursive estimates</h2>
 <ul>
-<li class="fragment"><p>In many occasions, the data flows continuously, meaning that we get a new pair of observations <span class="math inline">(\bm{x}_{n+1}, y_{n+1})</span> every minute, or even every second.</p></li>
+<li class="fragment"><p>On many occasions, the data flows continuously, meaning that we get a new pair of observations <span class="math inline">(\bm{x}_{n+1}, y_{n+1})</span> every minute, or even every second.</p></li>
 <li class="fragment"><p>In these cases, we would like to <span class="orange">update</span> the current least square estimate <span class="math inline">\hat{\beta}_{(n)}</span> with the new information <span class="math inline">(\bm{x}_{n+1}, y_{n+1})</span>, but ideally without re-doing all the calculations.</p></li>
 <li class="fragment"><p>The <span class="blue">recursive data import</span> of the <a href="#/recursive-data-import">previous slide</a> is partially unsatisfactory, because one would need to invert (or factorize) a <span class="math inline">p \times p</span> matrix every time, which could be costly.</p></li>
-<li class="fragment"><p>Let us define some useful quantity: <span class="math display">
+<li class="fragment"><p>Let us define some useful quantities: <span class="math display">
 \bm{V}_{(n)} = \bm{W}_{(n)}^{-1} = (\bm{X}_{(n)}^T\bm{X}_{(n)})^{-1},
 </span> where <span class="math inline">\bm{X}_{(n)}</span> denotes the design matrix with <span class="math inline">n</span> observations and analogously <span class="math inline">\bm{y}_{(n)}</span>.</p></li>
 </ul>
@@ -1108,7 +1108,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <section id="the-recursive-least-squares-algorithm-ii" class="slide level2 center">
 <h2>The recursive least squares algorithm II</h2>
 <ul>
-<li><p>The recursive estimation <span class="math inline">\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + \bm{k}_n e_{n+1}</span> takes the form of a <span class="orange">linear filter</span>, in which the new estimate <span class="math inline">\hat{\beta}_{(n+1)}</span> is obtained by modifying the old one <span class="math inline">\hat{\beta}_{(n+1)}</span>.</p></li>
+<li><p>The recursive estimation <span class="math inline">\hat{\beta}_{(n+1)} = \hat{\beta}_{(n)} + \bm{k}_n e_{n+1}</span> takes the form of a <span class="orange">linear filter</span>, in which the new estimate <span class="math inline">\hat{\beta}_{(n+1)}</span> is obtained by modifying the old one <span class="math inline">\hat{\beta}_{(n)}</span>.</p></li>
 <li><p>This is performed according to the <span class="blue">prediction error</span> <span class="math inline">\epsilon_{n+1}</span> and the <span class="orange">gain</span> <span class="math inline">k_n</span> of the filter.</p></li>
 <li><p>Using a terminology typical of the machine learning field, we say that the estimator “learns from its errors.”</p></li>
 <li><p>If <span class="math inline">n</span> is sufficiently high, it is also possible to get an <span class="orange">approximate</span> solution by initializing the algorithm by setting <span class="math inline">\bm{V}_{(0)} = I_p</span>, to avoid any matrix inversion / factorization.</p></li>
@@ -1145,11 +1145,11 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 </div>
 </div><div class="column" style="width:60%;">
 <ul>
-<li><p>Let us consider the South African <code>heart</code> <a href="https://hastie.su.domains/ElemStatLearn/datasets/SAheart.data">dataset</a>, described is <span class="blue">Section 4.4.2</span> of HTF (2009).</p></li>
+<li><p>Let us consider the South African <code>heart</code> <a href="https://hastie.su.domains/ElemStatLearn/datasets/SAheart.data">dataset</a>, described in <span class="blue">Section 4.4.2</span> of HTF (2009).</p></li>
 <li><p>We want to <span class="blue">predict</span> the insurgence of <span class="orange">coronary heart disease</span> (<code>chd</code>) as a function of known risk factors:</p>
 <ul>
 <li>Cholesterol level (<code>ldl</code>) and obesity (<code>obesity</code>)</li>
-<li>Consumption of tobacco (<code>tobacco</code>) and alcohol (<code>alcool</code>)</li>
+<li>Consumption of tobacco (<code>tobacco</code>) and alcohol (<code>alcohol</code>)</li>
 <li>Systolic blood pressure (<code>sbp</code>)</li>
 <li>Age (<code>age</code>) and family history (<code>famhist</code>)</li>
 </ul></li>
@@ -1165,7 +1165,7 @@ h_i = \sum_{j=1}^p q_{ij}^2, \qquad i=1,\dots,n,
 <h2>Generalized linear models</h2>
 <ul>
 <li><p>If the outcome is binary, a count, or if the errors are heteroscedastic, then the Gaussian linear regression model might be inappropriate.</p></li>
-<li><p>We let <span class="math inline">Y_i</span> be iid draws from an <span class="blue">exponentialy dispersion family</span>, which includes the Binomial, the Poisson, and the Gaussian distribution as special cases.</p></li>
+<li><p>We let <span class="math inline">Y_i</span> be iid draws from an <span class="blue">exponential dispersion family</span>, which includes the Binomial, the Poisson, and the Gaussian distribution as special cases.</p></li>
 <li><p>The canonical statistical solution are <span class="orange">generalized linear models</span>, which are usually taught in undergraduate courses (e.g.&nbsp;<a href="https://tommasorigon.github.io/StatIII/">Statistica III</a>). This is just a <span class="orange">short recap</span>.</p></li>
 </ul>
 <div class="fragment">
@@ -1433,10 +1433,10 @@ j(\beta) = - \frac{\partial^2}{\partial \beta\partial \beta^T}\ell(\beta) = -\su
 </ul>
 <div class="fragment">
 <ul>
-<li>The <span class="blue">true positive rate</span> (<span class="orange">specificity</span>) is defined as <span class="math display">
+<li>The <span class="blue">true negative rate</span> (<span class="orange">specificity</span>) is defined as <span class="math display">
 \text{specificity} = 1 - \mathbb{P}(``\text{false positive}") \approx \frac{n_{00}}{n_{00} + n_{10}} = \frac{255}{255 + 47} = 0.844.
 </span></li>
-<li>On the other hand, the <span class="blue">true negative rate</span> (<span class="orange">sensitivity</span>) is defined as <span class="math display">
+<li>On the other hand, the <span class="blue">true positive rate</span> (<span class="orange">sensitivity</span>) is defined as <span class="math display">
 \text{sensitivity} = 1 - \mathbb{P}(``\text{false negative}") \approx \frac{n_{11}}{n_{01} + n_{11}} = \frac{82}{72 + 82} = 0.532.
 </span></li>
 </ul>
