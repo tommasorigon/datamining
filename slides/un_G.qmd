@@ -57,13 +57,13 @@ styler:::style_file("../code/un_G.R")
 ::: {.column width="50%"}
 - This is not a normal unit and has a more dynamic nature. 
 
-- I will collect here [interesting]{.blue} questions made by students over the years.
+- I will collect here [interesting]{.blue} questions asked by students over the years.
 
 - The questions are organized by topic, but some overlap will occur.
 
 - Hopefully, this unit will form the basis of a [statistical culture]{.orange}. 
 
-- Indeed, it is based on the knowledge of several statisticians. 
+- Indeed, it draws on the knowledge of several statisticians. 
 :::
 :::
 
@@ -85,7 +85,7 @@ styler:::style_file("../code/un_G.R")
 
 - There might be other considerations to keep in mind, including the [interpretability]{.blue}, the [robustness]{.orange} of the method, and the [computational complexity]{.grey}.
 
-- Whenever different estimates display some differences, try to see it as an [opportunity]{.blue} to [learn something from the data]{.orange}. What could be the reason for such a discrepancy? What tells us about the data we are analyzing?
+- Whenever different estimates display some differences, try to see it as an [opportunity]{.blue} to [learn something from the data]{.orange}. What could be the reason for such a discrepancy? What does this tell us about the data we are analyzing?
 :::
 
 ::: {.callout-note collapse=true}
@@ -96,7 +96,7 @@ styler:::style_file("../code/un_G.R")
 
 - We can often say something about the [association]{.orange} between the response variable and the covariates, i.e., we can still try to [interpret]{.blue} the results. 
 
-- Finding association is appropriate even in the presence of biased estimates, do not be discouraged by this aspect. However, you must be aware that the fitted model is, at best, an [approximation of reality]{.orange} (especially the biased ones), therefore you need to be [prudent]{.blue} in your conclusions.
+- Finding association is appropriate even in the presence of biased estimates; do not be discouraged by this aspect. However, you must be aware that the fitted model is, at best, an [approximation of reality]{.orange} (especially the biased ones), therefore you need to be [prudent]{.blue} in your conclusions.
 
 - The specific [type of association]{.blue} reflects the [assumptions]{.blue} implied by the chosen model. For example, linear models capture the [linear part]{.orange} of the unknown and possibly more complex relationship $f(x)$, but they cannot capture interactions (unless manually included). 
 
@@ -145,7 +145,7 @@ styler:::style_file("../code/un_G.R")
 
 ...for example, what to do when simple models do not predict well?
 
-- In that case, of course, it is time to move on and try something more sophisticated. This often occurs in practice; only a few case-study can be solved with simple tools.
+- In that case, of course, it is time to move on and try something more sophisticated. This often occurs in practice; only a few case-studies can be solved with simple tools.
 
 - However, you [should not]{.orange} fit a sophisticated model without trying the simple ones first. In other terms, I would fit a [deep neural network]{.blue} only after [everything else has failed]{.orange}, as a last resort.
 
@@ -153,7 +153,7 @@ styler:::style_file("../code/un_G.R")
 
 - At the cost of being repetitive, especially when data are complex, you should first check whether a simple solution exists. Sometimes, this is the case because "simple" models tend to have low variance. 
 
-- A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error (i.e., the [button pressing culture](un_intro.html#press-the-button)). A skilled statistician is more like an [artisan]{.blue}, who uses her/his tools [when needed]{.orange} and with [intelligence]{.orange}, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of brutal trial and error. 
+- A skilled statistician is not somebody who runs thousands of sophisticated models seeking the one with the lowest error (i.e., the [button pressing culture](un_intro.html#press-the-button)). A skilled statistician is more like an [artisan]{.blue}, who uses her/his tools [when needed]{.orange} and with [intelligence]{.orange}, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of brutal trial and error. 
 
 - Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: ["Is it worth it?"]{.orange} The answer is often [context-dependent]{.blue}. 
 
@@ -176,7 +176,7 @@ styler:::style_file("../code/un_G.R")
 
 - Let me present you [dummy variables](https://en.wikipedia.org/wiki/Dummy_variable_(statistics))!
 
-- This question was not made during an M.Sc. level course such as Data Mining at CLAMSES (otherwise, it would have been a bit depressing), but it happened in [other contexts]{.orange}.
+- This question was not asked during an M.Sc. level course such as Data Mining at CLAMSES (otherwise, it would have been a bit depressing), but it happened in [other contexts]{.orange}.
 :::
 
 ::: {.callout-note collapse=true}
@@ -197,7 +197,7 @@ styler:::style_file("../code/un_G.R")
 
 - Alternatively, you could [merge]{.blue} the [rare values]{.blue} with other categories. However, the aggregation criterion is crucial. You could merge rare categories into a residual class called `Other`. Alternatively, you could use your judgment to make [smarter choices]{.blue} (e.g., merging `Isernia` with `Campobasso`, both in Molise). 
 
-- Other [details]{.orange}: is it preferable to perform the merging before estimating the model (using all the observations for fitting it) or after the estimation procedure (based on a reduced dataset) when making the predictions? This is another instance of the [bias-variance trade-off]{.orange}. Hence, there are no general answers. 
+- Other [details]{.orange}: is it preferable to perform the merging before estimating the model (using all the observations for fitting it) or after fitting the model on the reduced training set, when making predictions? This is another instance of the [bias-variance trade-off]{.orange}. Hence, there are no general answers. 
 
 - The story does not end here. For instance, taking a [Bayesian approach]{.blue} might be another principled possibility: prior information could be exploited to help the estimation, even without data points in the training.
 :::
@@ -220,7 +220,7 @@ and Wasserman, L. (2006), [*All of Nonparametric statistics*](https://link.sprin
 
 With that said, the word "kernel" has been used to indicate, more generally, a function that measures the [discrepancy]{.orange} between [two points]{.blue}, say $\bm{x}$ and $\bm{x}'$. 
 
-For instance, the definition given in Rasmussen, C. E. and  Williams, C. K. I. (2006), [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/chapters/) is extremely general:
+For instance, the definition given in Rasmussen, C. E. and Williams, C. K. I. (2006), [Gaussian Processes for Machine Learning](http://www.gaussianprocess.org/gpml/chapters/) is extremely general:
 
 ![](img/kernel_GP.png){width=70% fig-align="center"}
 :::

@@ -149,10 +149,10 @@ window.Quarto = {
 </div><div class="column" style="width:50%;">
 <ul>
 <li><p>This is not a normal unit and has a more dynamic nature.</p></li>
-<li><p>I will collect here <span class="blue">interesting</span> questions made by students over the years.</p></li>
+<li><p>I will collect here <span class="blue">interesting</span> questions asked by students over the years.</p></li>
 <li><p>The questions are organized by topic, but some overlap will occur.</p></li>
 <li><p>Hopefully, this unit will form the basis of a <span class="orange">statistical culture</span>.</p></li>
-<li><p>Indeed, it is based on the knowledge of several statisticians.</p></li>
+<li><p>Indeed, it draws on the knowledge of several statisticians.</p></li>
 </ul>
 </div>
 </div>
@@ -178,7 +178,7 @@ What to do when different estimators lead to dissimilar conclusions?
 <li><p>In any event, remember these are, indeed, <span class="orange">estimates</span>! By definition, there will be some variability; therefore, the <span class="blue">discrepancies</span> might be due to random <span class="orange">fluctuations</span>.</p></li>
 <li><p>To choose among different estimates, we need a criterion (or a combination of criteria), such as the <span class="blue">predictive performance</span>. However, the out-of-sample error is <span class="orange">not</span> the only relevant aspect!</p></li>
 <li><p>There might be other considerations to keep in mind, including the <span class="blue">interpretability</span>, the <span class="orange">robustness</span> of the method, and the <span class="grey">computational complexity</span>.</p></li>
-<li><p>Whenever different estimates display some differences, try to see it as an <span class="blue">opportunity</span> to <span class="orange">learn something from the data</span>. What could be the reason for such a discrepancy? What tells us about the data we are analyzing?</p></li>
+<li><p>Whenever different estimates display some differences, try to see it as an <span class="blue">opportunity</span> to <span class="orange">learn something from the data</span>. What could be the reason for such a discrepancy? What does this tell us about the data we are analyzing?</p></li>
 </ul>
 </div>
 </div>
@@ -198,7 +198,7 @@ How to interpret a wrong model?
 <ul>
 <li><p>First of all, by wrong, we mean “<span class="orange">biased</span>.” Therefore, being “wrong” could be an advantage <span class="orange">if</span> the <span class="blue">focus</span> is on <span class="blue">pure predictions</span>.</p></li>
 <li><p>We can often say something about the <span class="orange">association</span> between the response variable and the covariates, i.e., we can still try to <span class="blue">interpret</span> the results.</p></li>
-<li><p>Finding association is appropriate even in the presence of biased estimates, do not be discouraged by this aspect. However, you must be aware that the fitted model is, at best, an <span class="orange">approximation of reality</span> (especially the biased ones), therefore you need to be <span class="blue">prudent</span> in your conclusions.</p></li>
+<li><p>Finding association is appropriate even in the presence of biased estimates; do not be discouraged by this aspect. However, you must be aware that the fitted model is, at best, an <span class="orange">approximation of reality</span> (especially the biased ones), therefore you need to be <span class="blue">prudent</span> in your conclusions.</p></li>
 <li><p>The specific <span class="blue">type of association</span> reflects the <span class="blue">assumptions</span> implied by the chosen model. For example, linear models capture the <span class="orange">linear part</span> of the unknown and possibly more complex relationship <span class="math inline">f(x)</span>, but they cannot capture interactions (unless manually included).</p></li>
 <li><p>At the very least, we can often say something about the main factors affecting the predictions.</p></li>
 <li><p>Obviously, we must be <span class="orange">very careful</span> before making any <span class="orange">causal statement</span>. Remember that association <span class="math inline">\neq</span> causation even when the model is well-specified.</p></li>
@@ -255,11 +255,11 @@ What if simple models do not work well?
 <div class="callout-body-container callout-body">
 <p>…for example, what to do when simple models do not predict well?</p>
 <ul>
-<li><p>In that case, of course, it is time to move on and try something more sophisticated. This often occurs in practice; only a few case-study can be solved with simple tools.</p></li>
+<li><p>In that case, of course, it is time to move on and try something more sophisticated. This often occurs in practice; only a few case-studies can be solved with simple tools.</p></li>
 <li><p>However, you <span class="orange">should not</span> fit a sophisticated model without trying the simple ones first. In other terms, I would fit a <span class="blue">deep neural network</span> only after <span class="orange">everything else has failed</span>, as a last resort.</p></li>
 <li><p>The statement “<em>data are complicated, therefore I need a complex model</em>” is probably the result of <span class="orange">hype/over-excitement</span> for the new shiny machine learning tool.</p></li>
 <li><p>At the cost of being repetitive, especially when data are complex, you should first check whether a simple solution exists. Sometimes, this is the case because “simple” models tend to have low variance.</p></li>
-<li><p>A skilled statistician is not somebody who runs thousands of sophisticated models seeking for the one with the lowest error (i.e., the <a href="un_intro.html#press-the-button">button pressing culture</a>). A skilled statistician is more like an <span class="blue">artisan</span>, who uses her/his tools <span class="orange">when needed</span> and with <span class="orange">intelligence</span>, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of brutal trial and error.</p></li>
+<li><p>A skilled statistician is not somebody who runs thousands of sophisticated models seeking the one with the lowest error (i.e., the <a href="un_intro.html#press-the-button">button pressing culture</a>). A skilled statistician is more like an <span class="blue">artisan</span>, who uses her/his tools <span class="orange">when needed</span> and with <span class="orange">intelligence</span>, obtaining accurate predictions because she/he has a good understanding of the data, not as the result of brutal trial and error.</p></li>
 <li><p>Finally, even when it turns out that a complex model improves the predictive performance, always ask yourself: <span class="orange">“Is it worth it?”</span> The answer is often <span class="blue">context-dependent</span>.</p></li>
 <li><p>Once again, there might be other considerations to keep in mind: <span class="blue">interpretability</span>, <span class="orange">robustness</span>, <span class="grey">computational complexity</span>.</p></li>
 </ul>
@@ -288,7 +288,7 @@ I have been told that linear models cannot use categorical variables
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Let me present you <a href="https://en.wikipedia.org/wiki/Dummy_variable_(statistics)">dummy variables</a>!</p></li>
-<li><p>This question was not made during an M.Sc. level course such as Data Mining at CLAMSES (otherwise, it would have been a bit depressing), but it happened in <span class="orange">other contexts</span>.</p></li>
+<li><p>This question was not asked during an M.Sc. level course such as Data Mining at CLAMSES (otherwise, it would have been a bit depressing), but it happened in <span class="orange">other contexts</span>.</p></li>
 </ul>
 </div>
 </div>
@@ -313,7 +313,7 @@ In the test set, there are a few values that were not observed in the training, 
 <li><p>Fair enough, so what should we do? In general, it <span class="blue">depends</span>. As a general strategy: be <span class="orange">creative</span>, use your <span class="blue">judgment</span>.</p></li>
 <li><p>Obviously, an option is to <span class="orange">omit the variable</span> at the explicit cost of losing information. However, for example, if the variable is <span class="blue">binary</span>, this is typically your only option. In this case, the discarded information is limited because the variable would be nearly constant.</p></li>
 <li><p>Alternatively, you could <span class="blue">merge</span> the <span class="blue">rare values</span> with other categories. However, the aggregation criterion is crucial. You could merge rare categories into a residual class called <code>Other</code>. Alternatively, you could use your judgment to make <span class="blue">smarter choices</span> (e.g., merging <code>Isernia</code> with <code>Campobasso</code>, both in Molise).</p></li>
-<li><p>Other <span class="orange">details</span>: is it preferable to perform the merging before estimating the model (using all the observations for fitting it) or after the estimation procedure (based on a reduced dataset) when making the predictions? This is another instance of the <span class="orange">bias-variance trade-off</span>. Hence, there are no general answers.</p></li>
+<li><p>Other <span class="orange">details</span>: is it preferable to perform the merging before estimating the model (using all the observations for fitting it) or after fitting the model on the reduced training set, when making predictions? This is another instance of the <span class="orange">bias-variance trade-off</span>. Hence, there are no general answers.</p></li>
 <li><p>The story does not end here. For instance, taking a <span class="blue">Bayesian approach</span> might be another principled possibility: prior information could be exploited to help the estimation, even without data points in the training.</p></li>
 </ul>
 </div>
