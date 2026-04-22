@@ -5,23 +5,20 @@
 
 rm(list = ls())
 
-library(tidyverse)
-library(forcats)
+library(tidyverse) # forcats is included in tidyverse
 
 # Load data
-ames <- read.csv("../data/AmesHousing.csv")
-
 # Official paper: https://jse.amstat.org/v19n3/decock.pdf
 # Variable description: https://tommasorigon.github.io/datamining/data/ames_documentation.txt
+ames <- read.csv("../data/AmesHousing.csv")
 
-# Brief look at the dataset
 glimpse(ames)
 
 # ----------------------------------------
 # 1. Basic filtering
 # ----------------------------------------
 
-# Keep only residential, normal sales
+# Keep only residential zones and normal sale conditions
 ames <- ames %>%
   filter(
     !MS.Zoning %in% c("C (all)", "I (all)", "A (agr)", "FV"),
@@ -35,7 +32,7 @@ ames <- ames %>%
 
 summary(ames$SalePrice)
 
-par(mfrow = c(1,2))
+par(mfrow = c(1, 2))
 hist(ames$SalePrice, main = "SalePrice")
 hist(log(ames$SalePrice), main = "log(SalePrice)")
 
@@ -43,36 +40,42 @@ hist(log(ames$SalePrice), main = "log(SalePrice)")
 # 3. Missing values
 # ----------------------------------------
 
+# Count NAs per column; show only columns with at least one missing value
 ames %>%
   summarise(across(everything(), ~ sum(is.na(.x)))) %>%
   select(where(~ .x > 0))
 
-# It turns out (see the documentation) that NA here means "no alley"
+# In the documentation, NA for Alley means "no alley access" — not a true missing value
 table(ames$Alley, useNA = "always")
 
-# Categorical: "absence = meaningful"
+# Categorical variables: NA encodes absence of a feature
 ames <- ames %>%
   mutate(
-    Alley = replace_na(Alley, "No alley"),
-    Fence = replace_na(Fence, "No fence"),
-    Fireplace.Qu = replace_na(Fireplace.Qu, "No fireplace"),
+    Alley         = replace_na(Alley, "No alley"),
+    Fence         = replace_na(Fence, "No fence"),
+    Fireplace.Qu  = replace_na(Fireplace.Qu, "No fireplace"),
     Bsmt.Exposure = ifelse(Bsmt.Exposure == "" | is.na(Bsmt.Exposure), "No basement", Bsmt.Exposure),
-    Bsmt.Cond = replace_na(Bsmt.Cond, "No basement"),
-    Bsmt.Qual = replace_na(Bsmt.Qual, "No basement")
+    Bsmt.Cond     = replace_na(Bsmt.Cond, "No basement"),
+    Bsmt.Qual     = replace_na(Bsmt.Qual, "No basement")
   )
 
-# Drop complex basement vars (simplify)
+# Drop detailed basement finish variables to reduce complexity
 ames <- ames %>% select(-starts_with("BsmtFin"))
 
-# Garage: if any missing → no garage
+# Garage: if any garage variable is missing, the house has no garage
+garage_vars <- names(ames)[startsWith(names(ames), "Garage")]
+no_garage_rows <- ames %>%
+  select(all_of(garage_vars)) %>%
+  apply(1, anyNA)
+
 ames <- ames %>%
-  mutate(across(starts_with("Garage"), ~ replace(.x, if_any(starts_with("Garage"), is.na), "No garage")))
- 
-# Drop problematic variable
-ames <- ames %>% 
+  mutate(across(all_of(garage_vars), ~ ifelse(no_garage_rows, "No garage", .x)))
+
+# Garage.Yr.Blt is dropped: numeric but structurally missing for houses without a garage
+ames <- ames %>%
   select(-Garage.Yr.Blt)
 
-# Numeric imputations
+# Numeric variables: NA encodes zero (no feature present)
 ames <- ames %>%
   mutate(
     Bsmt.Full.Bath = replace_na(Bsmt.Full.Bath, 0),
@@ -81,7 +84,7 @@ ames <- ames %>%
     Mas.Vnr.Area   = replace_na(Mas.Vnr.Area, 0)
   )
 
-# Other fixes
+# Remaining fixes: empty strings treated as the dominant / "none" category
 ames <- ames %>%
   mutate(
     Electrical   = ifelse(Electrical == "", "SBrkr", Electrical),
@@ -94,13 +97,15 @@ ames <- ames %>%
 # 4. Reduce categorical complexity
 # ----------------------------------------
 
+# MS.SubClass is a numeric code representing a dwelling type — treat as character
 ames <- ames %>%
   mutate(MS.SubClass = as.character(MS.SubClass))
 
-# Lump rare levels (min frequency = 20)
+# Lump neighbourhoods with fewer than 20 observations into "Other"
 ames <- ames %>%
   mutate(Neighborhood = fct_lump_min(Neighborhood, 20))
 
+# For all remaining character columns, lump infrequent levels into "Other"
 ames <- ames %>%
   mutate(across(where(is.character), ~ fct_lump_lowfreq(.x)))
 
@@ -110,12 +115,12 @@ ames <- ames %>%
 
 ames <- ames %>%
   mutate(
-    Porch.SF = Open.Porch.SF + Enclosed.Porch + X3Ssn.Porch + Screen.Porch,
-    Tot.Bath = Full.Bath + 0.5*Half.Bath + Bsmt.Full.Bath + 0.5*Bsmt.Half.Bath,
+    Porch.SF  = Open.Porch.SF + Enclosed.Porch + X3Ssn.Porch + Screen.Porch,
+    Tot.Bath  = Full.Bath + 0.5 * Half.Bath + Bsmt.Full.Bath + 0.5 * Bsmt.Half.Bath,
     House.Age = Yr.Sold - Year.Remod.Add
   )
 
-# Remove redundant or "difficult" variables
+# Remove the original variables that were combined or are no longer needed
 ames <- ames %>%
   select(
     -c(Open.Porch.SF, Enclosed.Porch, X3Ssn.Porch, Screen.Porch),
@@ -125,7 +130,7 @@ ames <- ames %>%
   )
 
 # ----------------------------------------
-# 7. Save cleaned dataset
+# 6. Save cleaned dataset
 # ----------------------------------------
 
-write.csv(ames, "../data/ames.csv", row.names = FALSE)
+write.csv(ames, "../data/ames.csv")

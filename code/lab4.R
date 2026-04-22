@@ -9,7 +9,7 @@ library(tidymodels)
 source("https://tommasorigon.github.io/datamining/code/routines.R", echo = TRUE)
 
 # Data ---------------------------------------------------------------------------------------------
-# log_SalePrice is the model outcome; SalePrice is kept for final evaluation
+# log_SalePrice is the model outcome; SalePrice is kept for reference only.
 ames <- read_csv("https://tommasorigon.github.io/datamining/data/ames.csv")
 
 main_rec <- recipe(SalePrice ~ ., data = ames) %>%
@@ -18,17 +18,20 @@ main_rec <- recipe(SalePrice ~ ., data = ames) %>%
 ames <- bake(prep(main_rec), new_data = ames) %>%
   mutate(log_SalePrice = log(SalePrice))
 
-# Three-way split: 50 % train / 25 % validation / 25 % test ----------------------------------------
+# Three-way split: 50% train / 25% validation / 25% test ----------------------------------------
+# The validation set is used for hyperparameter selection.
+# The test set is kept untouched until the very end.
 set.seed(123)
 split <- initial_validation_split(ames, prop = c(0.5, 0.25))
 
 ames_tr <- training(split)
 ames_val <- validation(split)
-ames_te <- testing(split) # kept untouched until the very end
+ames_te <- testing(split)
+
+val_resample <- validation_set(split)
 
 # Recipes -------------------------------------------------------------------------------------------
 
-# Model
 m_linear <- linear_reg() %>%
   set_engine("lm")
 
@@ -37,17 +40,18 @@ base_recipe <- recipe(log_SalePrice ~ ., data = ames_tr) %>%
   step_rm(SalePrice) %>%
   step_dummy(all_factor_predictors())
 
-# Shrinkage methods additionally require centring and scaling
+# Shrinkage methods additionally require centring and scaling.
 shrinkage_recipe <- base_recipe %>%
   step_normalize(all_predictors())
 
-# Metrics (original dollar scale)
+# Metric: exponentiated MAE on the original dollar scale (defined in routines.R)
 my_metrics <- metric_set(exp_mae)
 
-# Benchmark: median prediction
+# Benchmark: median prediction on the validation set
 ames_val %>%
   mutate(.pred = log(median(ames_tr$SalePrice))) %>%
   my_metrics(truth = log_SalePrice, estimate = .pred)
+
 
 # Simple OLS -----------------------------------------------------------------------------------------
 
@@ -59,19 +63,19 @@ m_simple <- workflow() %>%
 tidy(m_simple)
 augment(m_simple, new_data = ames_val) %>% exp_mae(truth = log_SalePrice, estimate = .pred)
 
+
 # Full OLS -----------------------------------------------------------------------------------------
+
 m_full <- workflow() %>%
   add_recipe(base_recipe) %>%
   add_model(m_linear) %>%
   fit(ames_tr)
 
 print(tidy(m_full), n = 15)
-
 augment(m_full, new_data = ames_val) %>% exp_mae(truth = log_SalePrice, estimate = .pred)
 
-# PCR -----------------------------------------------------------------------------------------
 
-val_resample <- validation_set(split)
+# PCR -----------------------------------------------------------------------------------------
 
 wf_pcr <- workflow() %>%
   add_recipe(shrinkage_recipe %>% step_pca(all_predictors(), num_comp = tune())) %>%
@@ -80,23 +84,24 @@ wf_pcr <- workflow() %>%
 pcr_val <- tune_grid(
   wf_pcr,
   resamples = val_resample,
-  grid = tibble(num_comp = 1:113),
-  metrics = my_metrics,
-  control = control_grid(save_workflow = TRUE, verbose = TRUE)
+  grid      = tibble(num_comp = 1:113),
+  metrics   = my_metrics,
+  control   = control_grid(save_workflow = TRUE, verbose = TRUE)
 )
 
 collect_metrics(pcr_val)
-
 autoplot(pcr_val, metric = "exp_mae") + theme_bw()
 show_best(pcr_val, metric = "exp_mae")
 
-# Select final best model (including validation set)
+# Fit the selected model on the training set only
 best_pcr_val <- select_best(pcr_val, metric = "exp_mae")
 best_pcr_val <- finalize_workflow(wf_pcr, best_pcr_val) %>% fit(data = ames_tr)
 
 tidy(best_pcr_val)
 
+
 # Ridge -----------------------------------------------------------------------------------------
+
 wf_ridge <- workflow() %>%
   add_recipe(shrinkage_recipe) %>%
   add_model(linear_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet"))
@@ -109,17 +114,18 @@ ridge_val <- tune_grid(
 )
 
 collect_metrics(ridge_val)
-
 autoplot(ridge_val, metric = "exp_mae") + theme_bw()
 show_best(ridge_val, metric = "exp_mae")
 
-# Select final best model (including validation set)
+# Fit the selected model on the training set only
 best_ridge_val <- select_best(ridge_val, metric = "exp_mae")
 best_ridge_val <- finalize_workflow(wf_ridge, best_ridge_val) %>% fit(data = ames_tr)
 
 print(tidy(best_ridge_val), n = 15)
 
+
 # Lasso -----------------------------------------------------------------------------------------
+
 wf_lasso <- workflow() %>%
   add_recipe(shrinkage_recipe) %>%
   add_model(linear_reg(penalty = tune(), mixture = 1) %>% set_engine("glmnet"))
@@ -132,17 +138,18 @@ lasso_val <- tune_grid(
 )
 
 collect_metrics(lasso_val)
-
 autoplot(lasso_val, metric = "exp_mae") + theme_bw()
 show_best(lasso_val, metric = "exp_mae")
 
-# Select final best model (including validation set)
+# Fit the selected model on the training set only
 best_lasso_val <- select_best(lasso_val, metric = "exp_mae")
 best_lasso_val <- finalize_workflow(wf_lasso, best_lasso_val) %>% fit(data = ames_tr)
 
 print(tidy(best_lasso_val), n = 15)
 
-# Elastic Net -----------------------------------------------------------------------------------------
+
+# Elastic Net (mixture = 0.5) -----------------------------------------------------------------------------------------
+
 wf_en <- workflow() %>%
   add_recipe(shrinkage_recipe) %>%
   add_model(linear_reg(penalty = tune(), mixture = 0.5) %>% set_engine("glmnet"))
@@ -155,36 +162,41 @@ en_val <- tune_grid(
 )
 
 collect_metrics(en_val)
-
 autoplot(en_val, metric = "exp_mae") + theme_bw()
 show_best(en_val, metric = "exp_mae")
 
-# Select final best model (including validation set)
+# Fit the selected model on the training set only
 best_en_val <- select_best(en_val, metric = "exp_mae")
 best_en_val <- finalize_workflow(wf_en, best_en_val) %>% fit(data = ames_tr)
 
 print(tidy(best_en_val), n = 15)
 
+
 # Random Forest -----------------------------------------------------------------------------------------
+# Random forests are scale-invariant, so normalisation is not needed: base_recipe is used here.
 
 wf_rf <- workflow() %>%
-  add_recipe(shrinkage_recipe) %>%
-  add_model(rand_forest(trees = tune(), mtry = tune(), min_n = tune(), mode = "regression") %>% set_engine("ranger"))
+  add_recipe(base_recipe) %>%
+  add_model(rand_forest(trees = tune(), mtry = tune(), min_n = tune(), mode = "regression") %>%
+    set_engine("ranger"))
 
 rf_val <- tune_grid(
   wf_rf,
   resamples = val_resample,
-  grid = tibble(expand.grid(trees = c(1000, 2000, 5000), mtry = c(5, 10, 30, 50), min_n = c(10, 20, 50))),
+  grid = expand_grid(
+    trees = c(1000, 2000, 5000),
+    mtry  = c(5, 10, 30, 50),
+    min_n = c(10, 20, 50)
+  ),
   metrics = my_metrics,
   control = control_grid(verbose = TRUE)
 )
 
 collect_metrics(rf_val)
-
 autoplot(rf_val, metric = "exp_mae") + theme_bw()
 show_best(rf_val, metric = "exp_mae")
 
-# Select final best model (including validation set)
+# Fit the selected model on the training set only
 best_rf_val <- select_best(rf_val, metric = "exp_mae")
 best_rf_val <- finalize_workflow(wf_rf, best_rf_val) %>% fit(data = ames_tr)
 
