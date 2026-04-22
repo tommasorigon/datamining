@@ -1,5 +1,5 @@
 #' ---
-#' title: "LAB 5 (auto data, nonparametric regression)"
+#' title: "LAB 6 (auto data, nonparametric regression)"
 #' author: "Tommaso Rigon"
 #' ---
 #' 
