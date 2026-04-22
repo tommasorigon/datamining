@@ -5,8 +5,7 @@
 
 rm(list = ls())
 
-ames <- read.table("../data/ames.csv", header = TRUE, sep = ",", 
-                   stringsAsFactors = TRUE)
+ames <- read_csv("../data/ames.csv")
 source("routines.R")
 
 # Training, validation and test set ----------------------------------------------------------------------
@@ -14,14 +13,14 @@ source("routines.R")
 library(tidymodels)
 glimpse(ames)
 
-main_rec <- recipe(SalePrice ~ ., data = ames) %>% 
-  step_nzv(all_predictors(), freq_cut = 95/5, unique_cut = 10) 
+main_rec <- recipe(SalePrice ~ ., data = ames) %>%
+  step_nzv(all_predictors(), unique_cut = 10)
 
-ames <- bake(prep(main_rec), new_data = ames) 
+ames <- bake(prep(main_rec), new_data = ames)
 
 # Simple training and test
 set.seed(123)
-split <- initial_validation_split(ames, prop = c(0.6, 0.2))
+split <- initial_validation_split(ames, prop = c(0.5, 0.25))
 
 ames_tr <- training(split)
 ames_val <- validation(split)
@@ -29,56 +28,36 @@ ames_te <- testing(split) # kept untouched until the very end
 
 glimpse(ames_tr)
 
-# Some initial plots ------------------------------------------------------------------------------------
+# EDA plots ---------------------------------------------------------------------------------------------
 
-ggplot(ames_tr, aes(x = Gr.Liv.Area, y = SalePrice)) +
-  geom_point(alpha = 0.4) + theme_bw() +
-  labs(x = "Ground living area", y = "Sale Price")
+numeric_vars <- c(
+  "Gr.Liv.Area", "Total.Bsmt.SF",
+  "Porch.SF", "Tot.Bath", "House.Age"
+)
+factor_vars <- c(
+  "Overall.Qual", "Bsmt.Qual", "Exter.Qual",
+  "Kitchen.Qual", "MS.Zoning", "Roof.Style", "Neighborhood"
+)
 
-ggplot(ames_tr, aes(x = Total.Bsmt.SF, y = SalePrice)) +
-  geom_point(alpha = 0.4) + theme_bw() +
-  labs(x = "Total Basement SF", y = "Sale Price")
+ames_tr |>
+  select(SalePrice, all_of(numeric_vars)) |>
+  pivot_longer(-SalePrice) |>
+  ggplot(aes(value, SalePrice)) +
+  geom_point(alpha = 0.4, size = 0.8) +
+  facet_wrap(~name, scales = "free_x") +
+  labs(title = "SalePrice vs numeric predictors") +
+  theme_light()
 
-ggplot(ames_tr, aes(x = Porch.SF, y = SalePrice)) +
-  geom_point(alpha = 0.4) + theme_bw() +
-  labs(x = "Porch Square Feet", y = "Sale Price")
-
-ggplot(ames_tr, aes(x = Tot.Bath, y = SalePrice)) +
-  geom_point(alpha = 0.4) + theme_bw() +
-  labs(x = "Total Bathrooms", y = "Sale Price")
-
-ggplot(ames_tr, aes(x = House.Age, y = SalePrice)) +
-  geom_point(alpha = 0.4) + theme_bw() +
-  labs(x = "House Age (Years)", y = "Sale Price")
-
-ggplot(ames_tr, aes(x = factor(Overall.Qual), y = SalePrice)) +
-  geom_boxplot() + theme_bw() +
-  labs(x = "Overall Quality", y = "Sale Price")
-
-ggplot(ames_tr, aes(x = Bsmt.Qual, y = SalePrice)) +
-  geom_boxplot() + theme_bw() +
-  labs(x = "Basement Quality", y = "Sale Price")
-
-ggplot(ames_tr, aes(x = Exter.Qual, y = SalePrice)) +
-  geom_boxplot() + theme_bw() +
-  labs(x = "Exterior Quality", y = "Sale Price")
-
-ggplot(ames_tr, aes(x = Kitchen.Qual, y = SalePrice)) +
-  geom_boxplot() + theme_bw() +
-  labs(x = "Kitchen Quality", y = "Sale Price")
-
-ggplot(ames_tr, aes(x = MS.Zoning, y = SalePrice)) +
-  geom_boxplot() + theme_bw() +
-  labs(x = "MS Zoning", y = "Sale Price")
-
-ggplot(ames_tr, aes(x = Roof.Style, y = SalePrice)) +
-  geom_boxplot() + theme_bw() +
-  labs(x = "Roof Style", y = "Sale Price")
-
-ggplot(ames_tr, aes(x = Neighborhood, y = SalePrice)) +
-  geom_boxplot() + theme_bw() +
-  labs(x = "Neighborhood", y = "Sale Price") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ames_tr |>
+  select(SalePrice, all_of(factor_vars)) |>
+  mutate(across(all_of(factor_vars), as.factor)) |>
+  pivot_longer(-SalePrice) |>
+  ggplot(aes(value, SalePrice)) +
+  geom_boxplot() +
+  facet_wrap(~name, scales = "free_x") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(title = "SalePrice vs categorical predictors") +
+  theme_light()
 
 # Setting a benchmark ---------------------------------------------------------------------
 
@@ -138,7 +117,7 @@ round(MSLE(ames_val$SalePrice, y_hat_full), 5)
 library(leaps)
 
 # Maximum number of covariates included in the list ()
-p_max <- 113
+p_max <- length(m_full$coefficients) - 1
 
 # There are some collinear variables, therefore this will produce warnings!
 m_forward <- regsubsets(log(SalePrice) ~ .,
@@ -330,8 +309,10 @@ plot(m_lar, breaks = FALSE)
 plot(m_lar$df, m_lar$Cp, type = "b", xlab = "Degrees of freedom", ylab = "Cp of Mallow")
 abline(v = which.min(m_lar$Cp))
 
-y_hat_lar <- exp(predict(m_lar, newx = model.matrix(SalePrice ~ ., data = ames_val)[, -1], 
-                         s = which.min(m_lar$Cp))$fit)
+y_hat_lar <- exp(predict(m_lar,
+  newx = model.matrix(SalePrice ~ ., data = ames_val)[, -1],
+  s = which.min(m_lar$Cp)
+)$fit)
 
 # Optimal model on the validation set
 MAE(ames_val$SalePrice, y_hat_lar)
@@ -419,7 +400,7 @@ y_hat_back <- exp(predict(m_backward, data = ames_tr, newdata = ames_te, id = p_
 y_hat_pcr <- exp(predict(m_pcr, newdata = ames_te))[, , p_pcr_optimal]
 
 # Ridge
-y_hat_ridge <- exp(predict(m_ridge, newx = model.matrix(SalePrice ~ ., data = ames_te)[, -1], s = lambda_en_optimal))
+y_hat_ridge <- exp(predict(m_ridge, newx = model.matrix(SalePrice ~ ., data = ames_te)[, -1], s = lambda_ridge_optimal))
 
 # LAR
 y_hat_lar <- exp(predict(m_lar, newx = model.matrix(SalePrice ~ ., data = ames_te)[, -1], s = which.min(m_lar$Cp))$fit)
@@ -433,21 +414,20 @@ y_hat_rf <- exp(predict(m_rf, data = ames_te, type = "response")$predictions)
 # Final summary of the results ----------------------------------------------
 n_test <- nrow(ames_te)
 final_summary <- data.frame(
-  Predictions = c(y_hat_median, y_hat_simple, y_hat_full, y_hat_back, y_hat_pcr, y_hat_ridge, y_hat_lar, y_hat_en,  y_hat_rf),
-  Model = rep(c("Median", "Simple", "Full model", "Backward regression", "PCR", "Ridge", "Lar", "Elastic net",  "Random Forest"), each = n_test),
+  Predictions = c(y_hat_median, y_hat_simple, y_hat_full, y_hat_back, y_hat_pcr, y_hat_ridge, y_hat_lar, y_hat_en, y_hat_rf),
+  Model = rep(c("Median", "Simple", "Full model", "Backward regression", "PCR", "Ridge", "Lar", "Elastic net", "Random Forest"), each = n_test),
   Truth = ames_te$SalePrice
 )
 final_summary$Errors <- final_summary$Predictions - final_summary$Truth
 
-par(mfrow = c(1, 1))
-boxplot(Errors ~ Model, data = final_summary)
+library(knitr)
 
-# MAE
-tapply(final_summary$Errors, final_summary$Model, function(x) mean(abs(x)))
-
-# Standard deviations
-tapply(final_summary$Errors, final_summary$Model, sd)
-
-# Interquartile range
-tapply(final_summary$Errors, final_summary$Model, function(x) diff(quantile(x, probs = c(0.25, 0.75))))
-
+final_summary %>%
+  group_by(Model) %>%
+  summarise(
+    MAE = mean(abs(Errors)),
+    SD  = sd(Errors),
+    IQR = diff(quantile(Errors, c(0.25, 0.75)))
+  ) %>%
+  arrange(MAE) %>%
+  kable(digits = 1)
