@@ -7,9 +7,10 @@ rm(list = ls())
 
 library(tidyverse)
 library(tidymodels)
+source("https://tommasorigon.github.io/datamining/code/routines.R", echo = TRUE)
 
-ames <- read_csv("../data/ames.csv")
-source("routines.R")
+# Reading the clea data
+ames <- read_csv("https://tommasorigon.github.io/datamining/data/ames.csv")
 
 # Training, validation and test set ----------------------------------------------------------------------
 

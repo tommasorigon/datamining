@@ -31,34 +31,36 @@ predict.regsubsets <- function(object, data, newdata, id, ...) {
   pred
 }
 
-library(yardstick)
-library(rlang)
+# ---- Generic methods ------------------------------------------
 
+library(yardstick)
+
+# --- 1. The vector-level function (the actual computation) ---
 exp_mae_vec <- function(truth, estimate, na_rm = TRUE, ...) {
-  # Remove NA
+  # Check inputs
+  check_numeric_metric(truth, estimate, case_weights = NULL)
+  
   if (na_rm) {
-    idx      <- !is.na(truth) & !is.na(estimate)
-    truth    <- truth[idx]
-    estimate <- estimate[idx]
+    result <- stats::complete.cases(truth, estimate)
+    truth    <- truth[result]
+    estimate <- estimate[result]
   }
+  
   mean(abs(exp(truth) - exp(estimate)))
 }
 
-# ---- Generic methods ------------------------------------------
-
+# --- 2. The generic + register direction ---
 exp_mae <- function(data, ...) UseMethod("exp_mae")
-
-# Registra la metrica come "minimize" (minore = meglio)
 exp_mae <- new_numeric_metric(exp_mae, direction = "minimize")
 
+# --- 3. The data.frame method ---
 exp_mae.data.frame <- function(data, truth, estimate, na_rm = TRUE, ...) {
   numeric_metric_summarizer(
-    metric_nm = "exp_mae",
-    metric_fn = exp_mae_vec,
-    data      = data,
-    truth     = !!enquo(truth),
-    estimate  = !!enquo(estimate),
-    na_rm     = na_rm,
-    ...
+    name     = "exp_mae",        # <-- was metric_nm in old API
+    fn       = exp_mae_vec,      # <-- was metric_fn in old API
+    data     = data,
+    truth    = !!rlang::enquo(truth),
+    estimate = !!rlang::enquo(estimate),
+    na_rm    = na_rm
   )
 }
