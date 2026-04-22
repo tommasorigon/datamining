@@ -212,7 +212,7 @@ show_best(en_cv, metric = "mn_log_loss")
 best_en_cv <- select_best(en_cv, metric = "mn_log_loss")
 best_en_cv <- finalize_workflow(wf_en, best_en_cv) %>% fit(data = juice_tr)
 
-print(tidy(best_lasso_cv), n = 40)
+print(tidy(best_lasso_cv), n = 20)
 
 # Final comparison on the test set -----------------------------------------------------------------------------------------
 
