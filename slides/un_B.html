@@ -540,7 +540,7 @@ Error decomposition (reducible and irreducible)
 <li><p>The <span class="blue">best case scenario</span> is when the estimated function coincides with the mean of <span class="math inline">\tilde{Y}_i</span>, i.e.&nbsp;<span class="math display">
 \hat{f}(\bm{x}_i) =  f(\bm{x}_i) = \mathbb{E}(\tilde{Y}_i),
 </span> but even in this (overly optimistic) situation, we would still commit mistakes, due to the presence of <span class="math inline">\tilde{\epsilon}_i</span> (unless <span class="math inline">\sigma^2 = 0</span>). Hence, the variance <span class="math inline">\sigma^2</span> is called the <span class="orange">irreducible error</span>.</p></li>
-<li><p>Since we do not know <span class="math inline">f(\bm{x}_i)</span>, we seek for an estimate <span class="math inline">\hat{f}(\bm{x}_i) \approx f(\bm{x}_i)</span>, in the attempt of minimizing the <span class="blue">reducible error</span>.</p></li>
+<li><p>Since we do not know <span class="math inline">f(\bm{x}_i)</span>, we seek an estimate <span class="math inline">\hat{f}(\bm{x}_i) \approx f(\bm{x}_i)</span>, in the attempt of minimizing the <span class="blue">reducible error</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -818,7 +818,7 @@ Bias-variance decomposition
 <ul class="incremental">
 <li><p>In the <span class="blue"><span class="math inline">K</span>-fold cross validation</span> we compute for each fold <span class="math inline">k</span> we fit a model <span class="math inline">\hat{f}_{-V_k}(\bm{x})</span> without using the observations of <span class="math inline">V_k</span>.</p></li>
 <li><p>Hence, the model must be estimated <span class="orange"><span class="math inline">K</span> times</span>, which could be computationally challenging.</p></li>
-<li><p>The error of each on the <span class="math inline">k</span>th folds is computed as <span class="math display">\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
+<li><p>The error on each of the <span class="math inline">k</span>th folds is computed as <span class="math display">\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
 </span> where <span class="math inline">|V_k|</span> is the cardinality of <span class="math inline">V_k</span>, i.e. <span class="math inline">V_k \approx n / K</span>.</p></li>
 <li><p>We summarize the above errors using the mean, obtaining the following <span class="orange">estimate</span> for the <span class="orange">expected prediction error</span>: <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].</span></p></li>
 </ul>
@@ -908,7 +908,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <div class="incremental">
 <ul class="incremental">
 <li><p>Common choices are <span class="math inline">K = 5</span> or <span class="math inline">K = 10</span>. It is quite evident that a <span class="blue">larger <span class="math inline">K</span></span> requires more <span class="blue">computations</span>.</p></li>
-<li><p>A <span class="math inline">K</span>-fold CV with <span class="math inline">K=5</span> or <span class="math inline">K = 10</span> is a (upwords) <span class="orange">biased estimate</span> of <span class="math inline">\text{Err}</span> because it uses less observations than those available (either <span class="math inline">4/5</span> or <span class="math inline">9/10</span>).</p></li>
+<li><p>A <span class="math inline">K</span>-fold CV with <span class="math inline">K=5</span> or <span class="math inline">K = 10</span> is an upward-<span class="orange">biased estimate</span> of <span class="math inline">\text{Err}</span> because it uses less observations than those available (either <span class="math inline">4/5</span> or <span class="math inline">9/10</span>).</p></li>
 <li><p>The LOO-CV has a very <span class="blue">small bias</span>, since each fit uses <span class="math inline">n-1</span> observations, but it has <span class="orange">high variance</span>, being the average of <span class="math inline">n</span> highly positively correlated quantities.</p></li>
 <li><p>Indeed, the estimates <span class="math inline">\hat{f}_{-i}</span> and <span class="math inline">\hat{f}_{-i'}</span> have <span class="math inline">n - 2</span> observations in common. Recall that the variance of the sum is: <span class="math display">\text{var}(X + Y) = \text{var}(X) + \text{var}(Y) + 2\text{cov}(X, Y).</span></p></li>
 <li><p>Overall, the choice is very much context-dependent.</p></li>
@@ -926,7 +926,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <h2 class="anchored" data-anchor-id="goodness-of-fit-with-a-penalty-term">Goodness of fit with a penalty term</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>The main statistical method for estimating unknown parameters of a model is the <span class="blue">maximize the log-likelihood</span> <span class="math inline">\ell(\theta) = \ell(\theta; y_1,\dots,y_n)</span>.</p></li>
+<li><p>The main statistical method for estimating unknown parameters of a model is to <span class="blue">maximize the log-likelihood</span> <span class="math inline">\ell(\theta) = \ell(\theta; y_1,\dots,y_n)</span>.</p></li>
 <li><p>However, we cannot pick the value of <span class="math inline">p</span> that maximizes the log-likelihood (why not?)</p></li>
 <li><p>We must consider the different number of parameters, introducing a <span class="orange">penalty</span>: <span class="math display">
 \text{IC}(p) = -2 \ell(\hat{\theta}) + \text{penalty}(p),
@@ -1024,8 +1024,8 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 </tbody>
 </table>
 <ul>
-<li><p>The <span class="math inline">\text{AIC}_c</span> is an <span class="orange">higher order correction</span> of the <span class="math inline">\text{AIC}</span> and the differences tend to be negligible for high values of <span class="math inline">n</span>.</p></li>
-<li><p>The justification of <span class="math inline">\text{BIC}</span> is comes from <span class="blue">Bayesian statistics</span>.</p></li>
+<li><p>The <span class="math inline">\text{AIC}_c</span> is a <span class="orange">higher order correction</span> of the <span class="math inline">\text{AIC}</span> and the differences tend to be negligible for high values of <span class="math inline">n</span>.</p></li>
+<li><p>The justification of <span class="math inline">\text{BIC}</span> comes from <span class="blue">Bayesian statistics</span>.</p></li>
 <li><p>Since <span class="math inline">\log{n} &gt; 2</span> for any <span class="math inline">n &gt; 7</span>, it means that the <span class="math inline">\text{BIC}</span> <span class="blue">penalty</span> is typically <span class="orange">stronger</span> than the one of <span class="math inline">\text{AIC}</span> and it favors more parsimonious models.</p></li>
 </ul>
 </section>
@@ -1061,7 +1061,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - h_i}, \qquad i=1,\dots,n.
 <ul class="incremental">
 <li><p>In the <code>cholesterol</code> dataset, the various indices produced <span class="orange">different results</span>!</p>
 <ul class="incremental">
-<li>The BIC and and the <span class="math inline">10-</span>fold cross-validation selected <span class="math inline">p = 2</span> (linear model);</li>
+<li>The BIC and the <span class="math inline">10-</span>fold cross-validation selected <span class="math inline">p = 2</span> (linear model);</li>
 <li>The training/test split suggested <span class="math inline">p = 3</span> (quadratic model);</li>
 <li>All the others (LOO-CV, <span class="math inline">\text{GCV}</span>, <span class="math inline">\text{AIC}</span> and <span class="math inline">\text{AIC}_c</span>) concluded that <span class="math inline">p = 4</span> (cubic model).</li>
 </ul></li>

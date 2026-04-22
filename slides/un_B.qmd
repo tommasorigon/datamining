@@ -541,7 +541,7 @@ and for any $i = 1,\dots,n$.
     $\sigma^2 = 0$). Hence, the variance $\sigma^2$ is called the
     [irreducible error]{.orange}.
 
--   Since we do not know $f(\bm{x}_i)$, we seek for an estimate
+-   Since we do not know $f(\bm{x}_i)$, we seek an estimate
     $\hat{f}(\bm{x}_i) \approx f(\bm{x}_i)$, in the attempt of
     minimizing the [reducible error]{.blue}.
 :::
@@ -1047,7 +1047,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   Hence, the model must be estimated [$K$ times]{.orange}, which could
     be computationally challenging.
 
--   The error of each on the $k$th folds is computed as
+-   The error on each of the $k$th folds is computed as
     $$\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
     $$ where $|V_k|$ is the cardinality of $V_k$, i.e.
     $V_k \approx n / K$.
@@ -1221,7 +1221,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   Common choices are $K = 5$ or $K = 10$. It is quite evident that a
     [larger $K$]{.blue} requires more [computations]{.blue}.
 
--   A $K$-fold CV with $K=5$ or $K = 10$ is a (upwords) [biased
+-   A $K$-fold CV with $K=5$ or $K = 10$ is an upward-[biased
     estimate]{.orange} of $\text{Err}$ because it uses less observations
     than those available (either $4/5$ or $9/10$).
 
@@ -1251,7 +1251,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 
 ::: incremental
 -   The main statistical method for estimating unknown parameters of a
-    model is the [maximize the log-likelihood]{.blue}
+    model is to [maximize the log-likelihood]{.blue}
     $\ell(\theta) = \ell(\theta; y_1,\dots,y_n)$.
 
 -   However, we cannot pick the value of $p$ that maximizes the
@@ -1349,11 +1349,11 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 | $\text{AIC}_c$ | Sugiura, Hurvich-Tsay | $2p + \frac{2p(p+1)}{n - (p +1)}$ |
 | $\text{BIC}$   | Akaike, Schwarz       | $p \log{n}$                       |
 
--   The $\text{AIC}_c$ is an [higher order correction]{.orange} of the
+-   The $\text{AIC}_c$ is a [higher order correction]{.orange} of the
     $\text{AIC}$ and the differences tend to be negligible for high
     values of $n$.
 
--   The justification of $\text{BIC}$ is comes from [Bayesian
+-   The justification of $\text{BIC}$ comes from [Bayesian
     statistics]{.blue}.
 
 -   Since $\log{n} > 2$ for any $n > 7$, it means that the $\text{BIC}$
@@ -1415,7 +1415,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = Criterion)) +
 -   In the `cholesterol` dataset, the various indices produced
     [different results]{.orange}!
 
-    -   The BIC and and the $10-$fold cross-validation selected $p = 2$
+    -   The BIC and the $10-$fold cross-validation selected $p = 2$
         (linear model);
     -   The training/test split suggested $p = 3$ (quadratic model);
     -   All the others (LOO-CV, $\text{GCV}$, $\text{AIC}$ and
