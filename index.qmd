@@ -81,7 +81,7 @@ The slides are meant to be used in HTML.
 
 #### Rules
 
-The exam is made of [two parts]{.orange}:
+The exam consists of [two parts]{.orange}:
 
 - (20 / 30) [Written examination]{.blue}: a pen-and-paper exam about the theoretical aspects of the course.
 
@@ -112,15 +112,15 @@ and Advanced Statistics M is also highly recommended.
 ## Office hours
 
 To schedule a meeting, please write to `tommaso.rigon@unimib.it`. Office
-hours is every **Tuesday at 17.30**
+hours are every **Tuesday at 17.30**
 
 ## Acknowledgments
 
-The primary source of this website's content are the textbooks [Azzalini and Scarpa (2011)]{.blue} and [Hastie, Tibshirani, and Friedman (2009)]{.orange}. A few pictures have been taken from the textbooks; in these cases the original source is cited. 
+The primary source of this website's content is the textbooks [Azzalini and Scarpa (2011)]{.blue} and [Hastie, Tibshirani, and Friedman (2009)]{.orange}. A few pictures have been taken from the textbooks; in these cases the original source is cited. 
 
 I have made use of several other books, scientific articles, and datasets to complement the main textbooks. They are all cited at the end of each unit. Students are encouraged to consult the books: these slides are just a concise summary. 
 
-I am also grateful to Aldo Solari, who gracefully shared the material of the courses [Data Mining](https://aldosolari.github.io/DM/) and [Statistical Learning](https://aldosolari.github.io/SL/). These websites have been used to lay the basis of this course.
+I am also grateful to Aldo Solari, who generously shared the material of the courses [Data Mining](https://aldosolari.github.io/DM/) and [Statistical Learning](https://aldosolari.github.io/SL/). These websites have been used to lay the basis of this course.
 
 All the mistakes still present are mine. 
 
