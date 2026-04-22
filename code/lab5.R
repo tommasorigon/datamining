@@ -188,7 +188,7 @@ show_best(lasso_cv, metric = "mn_log_loss")
 best_lasso_cv <- select_best(lasso_cv, metric = "mn_log_loss")
 best_lasso_cv <- finalize_workflow(wf_lasso, best_lasso_cv) %>% fit(data = juice_tr)
 
-print(tidy(best_lasso_cv), n = 40)
+print(tidy(best_lasso_cv), n = 15)
 
 # Elastic Net -----------------------------------------------------------------------------------------
 wf_en <- workflow() %>%
