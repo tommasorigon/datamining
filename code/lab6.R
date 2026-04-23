@@ -1,9 +1,8 @@
-#' ---
-#' title: "LAB 6 (auto data, nonparametric regression)"
-#' author: "Tommaso Rigon"
-#' ---
-#' 
-#+ setup, include=FALSE
+# ----------------------------------------
+# Title: LAB 6 (auto data, nonparametric regression)
+# Author: Tommaso Rigon
+# ----------------------------------------
+
 rm(list = ls()) # Clean the environment
 
 # The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
@@ -13,10 +12,10 @@ auto <- subset(auto, select = c(city.distance, engine.size))
 # Summary
 str(auto)
 
-y <- auto$city.distance # As the name suggest: city distance
+y <- auto$city.distance # As the name suggests: city distance
 x <- auto$engine.size # And engine size (L)
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
 # Set of points at which the curve is evaluated
 newx <- data.frame(x = seq(min(x), max(x), length = 1000))
@@ -37,9 +36,9 @@ lines(newx$x, predict(lm(y ~ poly(x, degree = 10)), newdata = newx), lty = 6)
 # Nadaraya-Watson estimator ---------------------------------------------
 
 # Notice the bandwidth parametrization and the kernel used
-? ksmooth
+?ksmooth
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
 h_param <- 1 # Let us try a few parameters here
 band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
@@ -58,14 +57,14 @@ lines(m_nw3, col = "darkblue")
 
 # Local polynomial regression (KernSmooth)---------------------------------------
 
-# install.packages(KernSmooth)
+# install.packages("KernSmooth")
 library(KernSmooth)
 
-? locpoly
+?locpoly
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
-# Local linear regression (with a given bandwidith)
+# Local linear regression (with a given bandwidth)
 m_local_linear <- locpoly(x, y, degree = 1, bandwidth = 0.5, kernel = "normal", gridsize = 500)
 lines(m_local_linear)
 
@@ -79,32 +78,31 @@ lines(m_local_cubic, lty = 2, col = "darkblue")
 
 # Local polynomial regression (sm package) ------------------------------------------
 
-# install.packages(sm)
+# install.packages("sm")
 library(sm)
 
-? sm.regression
+?sm.regression
 
 sm.regression(x, y, h = 2, pch = 16, cex = 0.6)
 sm.regression(x, y, h = 0.5, pch = 16, cex = 0.6, lty = 2, col = "darkorange")
 sm.regression(x, y, h = 0.1, pch = 16, cex = 0.6, lty = 3, col = "darkblue")
 
-? h.select
+?h.select
 h.select(x, y, method = "cv", hstart = 0.05, hend = 3, ngrid = 50) # Cross-validation
 h.select(x, y, method = "aicc") # Corrected AIC
 
+# Note: h.select() is preferred over the older hcv(). The two are equivalent,
+# but hcv() may be removed in future releases of the sm package.
 hcv(x, y, display = "lines", hstart = 0.05, hend = 3, ngrid = 50)
-
-# From the documentation:
-# As from version 2.1 of the package, a similar effect can be obtained with the new function h.select, via h.select(x, method="cv"). Users are encouraged to adopt this route, since hcv might be not accessible directly in future releases of the package. When the sample size is large hcv uses the raw data while h.select(x, method="cv") uses binning. The latter is likely to produce a more stable choice for h.
 
 sm.regression(x, y, h = 0.42, pch = 16, cex = 0.6, lty = 2)
 
 # Loess -----------------------------------------------------------------------------
 
-? loess.smooth
-? loess
+?loess.smooth
+?loess
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
 # Estimate a loess model
 m_loess1 <- loess.smooth(x, y, span = 0.5, degree = 1, evaluation = 1000, family = "symmetric")
@@ -127,74 +125,77 @@ library(splines)
 xi <- seq(min(x), max(x), length = 4) # I select 4 knots in total, equally spaced
 xi_int <- xi[2:(length(xi) - 1)] # There are actually K = 2 INTERNAL knots
 
-# The new data points are based on the sequence points + the internal knots
+# newx is redefined here to include the internal knot locations. This ensures the
+# predicted curve is plotted correctly at the knots, where the spline may change slope.
 newx <- data.frame(x = sort(c(seq(min(x), max(x), length = 1000), xi_int)))
 
 # The intercept has been excluded, therefore there are K + 3 components (and not K + 4)
-B <- bs(x, knots = xi_int, degree = 3, intercept = F)
+B <- bs(x, knots = xi_int, degree = 3, intercept = FALSE)
 
 dim(B)
 head(B)
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
 # Spline regression is just a linear model!
-m_spl1 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = F))
+m_spl1 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = FALSE))
 lines(newx$x, predict(m_spl1, newx), lty = 2, col = "darkorange")
 
 # Vertical lines where the knots are placed
 abline(v = xi[2], lty = 3)
 abline(v = xi[3], lty = 3)
 
-# Regression splines - Nodes on the quantiles ----------------------
+# Regression splines - Knots on the quantiles ----------------------
 
 xi <- quantile(x, c(0, 0.333, 0.666, 1))
 xi_int <- xi[2:(length(xi) - 1)] # There are K = 2 INTERNAL knots
 
-# Draw the knots as vertical lines
-m_spl2 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = F))
+m_spl2 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = FALSE))
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 lines(newx$x, predict(m_spl2, newx), lty = 2, col = "darkblue")
 
 # Plot vertical lines on the internal knots
 abline(v = xi[2], lty = 3)
 abline(v = xi[3], lty = 3)
 
-# Regression splines - Degrees of freeedom specification ---------------
+# Regression splines - Degrees of freedom specification ---------------
 
 # Basis function of a B-spline (degree = 3, cubic splines)
-# The following relationship holds: df = length(knots) + degree
-# Knots are chosen using quantiles of the x distribution
+# The following relationship holds: df = length(internal knots) + degree
+# When intercept = FALSE, df = K + degree (here K = number of internal knots).
+# Knots are chosen using quantiles of the x distribution.
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
-# This is equivalent to the previous command
-m_spl2 <- lm(y ~ bs(x, df = 5, degree = 3, intercept = F))
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+# This is equivalent to the previous command (K = 2 internal knots, degree = 3, df = 5)
+m_spl2 <- lm(y ~ bs(x, df = 5, degree = 3, intercept = FALSE))
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 lines(newx$x, predict(m_spl2, newx), lty = 1, col = "black")
 
 # Let us change a bit the degrees of freedom
-m_spl3 <- lm(y ~ bs(x, df = 10, degree = 3, intercept = F))
+m_spl3 <- lm(y ~ bs(x, df = 10, degree = 3, intercept = FALSE))
 lines(newx$x, predict(m_spl3, newx), lty = 2, col = "darkorange")
 
-# This is, equite evidently, overfitting the data
-m_spl4 <- lm(y ~ bs(x, df = 15, degree = 3, intercept = F))
+# This is, quite evidently, overfitting the data
+m_spl4 <- lm(y ~ bs(x, df = 15, degree = 3, intercept = FALSE))
 lines(newx$x, predict(m_spl4, newx), lty = 3, col = "darkblue")
 
 
 # Smoothing Splines ------------------------------------------------
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
-? smooth.spline
+?smooth.spline
 m_smooth <- smooth.spline(x, y)
 m_smooth
 
-lines(m_smooth) # Ok, the default did not work!
+# The default uses GCV to select lambda, which here produces a very smooth fit.
+# Inspect m_smooth$lambda and m_smooth$df to see the selected values.
+lines(m_smooth)
 
-# Let us try some alternative values
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+# Let us try some alternative values of lambda (smaller = less smooth)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
 m_smooth1 <- smooth.spline(x, y, lambda = 0.0001)
 lines(predict(m_smooth1, x = newx$x), lty = 1, col = "black")
@@ -205,9 +206,8 @@ lines(predict(m_smooth2, x = newx$x), lty = 2, col = "darkorange")
 m_smooth3 <- smooth.spline(x, y, lambda = 0.01)
 lines(predict(m_smooth3, x = newx$x), lty = 2, col = "darkblue")
 
-# Let us use "spar" instead of lambda
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (mpg)", pch = 16, cex = 0.7)
+# Let us use "spar" instead of lambda (spar is a standardized version of lambda)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
 m_smooth <- smooth.spline(x, y, spar = 0.8)
 lines(predict(m_smooth, x = newx$x))
-
