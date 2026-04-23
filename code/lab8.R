@@ -1,183 +1,156 @@
-# LAB 7 (Ames Housing, GAM and MARS) --------------------------------------------------------------------------
-# Course: Data Mining
+# ----------------------------------------
+# Title: LAB 8 (Juice data, classification)
+#        GAM and MARS
 # Author: Tommaso Rigon
-
-# Predictive analysis ----------------------------------------------------------------------------
+# ----------------------------------------
 
 rm(list = ls())
-ames <- read.table("../data/ames.csv", header = TRUE, sep = ",", stringsAsFactors = TRUE)
 
-## Changing perspective - A classification problem
-ames$Luxury <- factor(ames$SalePrice > 120000)
-ames <- subset(ames, select = -c(SalePrice))
+library(tidyverse)
+library(tidymodels)
 
-table(ames$Luxury)
+# Data and preprocessing from LAB 5 ---------------------------------------------------------------
+# See lab5.R for a full description of the dataset and the collinearity structure of the predictors.
 
-# Training, validation and test set ----------------------------------------------------------------------------
+juice <- read_table("https://tommasorigon.github.io/StatIII/data/juice.txt")
 
-# Manual subdivision in training / test
+juice <- juice %>%
+  mutate(choice = factor(choice), store = factor(store), id.cust = factor(id.cust)) %>%
+  select(-c(StoreID, store7, buyCH))
+
 set.seed(123)
-# Randomly allocate the id of the variables into training and test
-id_train <- sort(sample(1:nrow(ames), size = floor(0.75 * nrow(ames)), replace = FALSE))
-id_test <- setdiff(1:nrow(ames), id_train)
+split    <- initial_split(juice, prop = 3 / 4)
+juice_tr <- training(split)
+juice_te <- testing(split)
 
-# Create two different datasets
-ames_train <- ames[id_train, ]
-ames_test <- ames[id_test, ]
+base_recipe <- recipe(choice ~ ., data = juice_tr) %>%
+  step_dummy(all_factor_predictors()) %>%
+  step_zv(all_predictors())
 
-# A first simple model --------------------------------------------------------------------------
-m_simple <- glm(Luxury ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bathrooms, 
-                data = ames_train, family = "binomial")
-summary(m_simple)
+my_metrics   <- metric_set(roc_auc, mn_log_loss)
+cv_samples   <- vfold_cv(juice_tr, v = 10)
 
-# Ridge regression ----------------------------------------------------------------------
+# GAM — simple model -------------------------------------------------------------------------------
+# Smooth terms are used for the two key continuous predictors.
+# loyaltyCH and pricediff enter linearly as they did in the simple logistic model in LAB 5.
+# k = 5 for loyaltyCH since it is bounded in [0, 1] and likely has limited curvature.
 
-library(glmnet)
+m_gam <- gen_additive_mod(select_features = FALSE) %>%
+  set_engine("mgcv") %>%
+  set_mode("classification")
 
-# The lambda parameter can be then conveniently selected via cross-validation
-X_shrinkage <- model.matrix(Luxury ~ ., data = ames_train)[, -1]
-y_shrinkage <- ames_train$Luxury
+m_gam_simple <- workflow() %>%
+  add_model(
+    m_gam,
+    formula = choice ~ s(loyaltyCH, k = 5) + s(pricediff) + store
+  ) %>%
+  add_formula(choice ~ loyaltyCH + pricediff + store) %>%
+  fit(data = juice_tr)
 
-# We need to set alpha = 0 to use the ridge
-fit_ridge <- glmnet(X_shrinkage, y_shrinkage, alpha = 0, family = "binomial")
+# Inspect the fitted smooth terms
+extract_fit_engine(m_gam_simple) %>% summary()
+extract_fit_engine(m_gam_simple) %>% plot(pages = 1)
 
-par(mfrow = c(1, 1))
-plot(fit_ridge, xvar = "lambda")
+# GAM — full model ---------------------------------------------------------------------------------
 
-## Cross-validation for ridge regression
-ridge_cv <- cv.glmnet(X_shrinkage, y_shrinkage, alpha = 0, family = "binomial")
-par(mfrow = c(1, 1))
-plot(ridge_cv)
+smooth_vars <- juice_tr %>%
+  select(-c(choice, id.cust)) %>%
+  select(where(is.numeric)) %>%
+  names()
 
-ridge_cv$lambda.min
-ridge_cv$lambda.1se
+all_vars <- juice_tr %>%
+  select(-c(choice)) %>%
+  names()
 
-# MSLE for lambda.min and lambda.1se
-ridge_cv$cvm[ridge_cv$index]
+mgcv_terms   <- ifelse(all_vars %in% smooth_vars, paste0("s(", all_vars, ")"), all_vars)
+mgcv_formula <- as.formula(paste("choice ~", paste(mgcv_terms, collapse = " + ")))
+plain_formula <- as.formula(paste("choice ~", paste(all_vars, collapse = " + ")))
 
-## Lasso -----------------------------------------------------------------------------------------
+m_gam_full <- workflow() %>%
+  add_model(m_gam, formula = mgcv_formula) %>%
+  add_formula(plain_formula) %>%
+  fit(data = juice_tr)
 
-# We need to set alpha = 1 to use the lasso
-fit_lasso <- glmnet(X_shrinkage, y_shrinkage, alpha = 1, family = "binomial")
+extract_fit_engine(m_gam_full) %>% summary()
 
-# Coefficient path
-plot(fit_lasso, xvar = "lambda")
+augment(m_gam_full, new_data = juice_tr) %>%
+  my_metrics(truth = choice, .pred_CH)
 
-## Cross-validation for ridge regression
-lasso_cv <- cv.glmnet(X_shrinkage, y_shrinkage, alpha = 1, family = "binomial")
-par(mfrow = c(1, 1))
-plot(lasso_cv)
+# CV evaluation of GAM models ----------------------------------------------------------------------
+# gen_additive_mod() does not support tune_grid(), so we use fit_resamples() with fixed specs.
 
-lasso_cv$lambda.min
-lasso_cv$lambda.1se
+cv_gam_simple <- workflow() %>%
+  add_model(m_gam, formula = choice ~ s(loyaltyCH, k = 5) + s(pricediff) + store) %>%
+  add_formula(choice ~ loyaltyCH + pricediff + store) %>%
+  fit_resamples(resamples = cv_samples, metrics = my_metrics)
 
-# MSLE for lambda.min and lambda.1se
-lasso_cv$cvm[lasso_cv$index]
+collect_metrics(cv_gam_simple)
 
-# GAM ----------------------------------------------------------------------------------------------------
+cv_gam_full <- workflow() %>%
+  add_model(m_gam, formula = mgcv_formula) %>%
+  add_formula(plain_formula) %>%
+  fit_resamples(resamples = cv_samples, metrics = my_metrics)
 
-library(mgcv)
-m_gam_simple <- gam(Luxury ~ s(Overall.Qual) + s(Gr.Liv.Area) + s(House.Age) + s(Tot.Bathrooms), 
-                data = ames_train, family = "binomial")
-summary(m_gam_simple)
-plot(m_gam_simple, scale = 0, se = FALSE)
+collect_metrics(cv_gam_full)
 
-m_gam <- gam(Luxury ~ s(Overall.Qual) + s(Gr.Liv.Area) + s(House.Age) + s(Tot.Bathrooms) + s(Porch.Sq.Feet) + s(Wood.Deck.SF) + Kitchen.Qual  + s(Garage.Area), 
-                    data = ames_train, family = "binomial", select = TRUE)
-summary(m_gam)
-plot(m_gam, scale = 0, se = FALSE)
+# MARS — exploratory fits --------------------------------------------------------------------------
+# Direct earth() calls for quick exploration and variable importance inspection.
+# base_recipe preprocessing (dummy encoding) is applied manually here via bake().
 
-# MARS ----------------------------------------------------------------------------------------------------
+juice_tr_baked <- bake(prep(base_recipe), new_data = juice_tr)
 
-library(earth)
-m_mars1 <- earth(Luxury ~ ., data = ames_train, glm=list(family=binomial), degree = 1)
-summary(m_mars1)
+m_mars1_expl <- earth(choice ~ ., data = juice_tr_baked, degree = 1, glm = list(family = binomial))
+m_mars2_expl <- earth(choice ~ ., data = juice_tr_baked, degree = 2, glm = list(family = binomial))
 
-m_mars2 <- earth(Luxury ~ ., data = ames_train, glm=list(family=binomial), degree = 2)
-summary(m_mars2)
+summary(m_mars1_expl)
+summary(m_mars2_expl)
 
-m_mars3 <- earth(Luxury ~ ., data = ames_train, glm=list(family=binomial), degree = 1, penalty = 5)
-summary(m_mars3)
+# Variable importance: GCV contribution of each predictor across all basis functions containing it
+evimp(m_mars1_expl)
+plot(evimp(m_mars1_expl), cex.axis = 0.7)
 
-# Random forests
-library(randomForest)
-m_rf <- randomForest(Luxury ~ ., data = ames_train)
-m_rf
+# MARS — tuning prod_degree and num_terms via 10-fold CV -------------------------------------------
 
-# Final choice --------------------------------------------------------------------------------------------
+wf_mars <- workflow() %>%
+  add_recipe(base_recipe) %>%
+  add_model(
+    mars(prod_degree = tune(), num_terms = tune(), mode = "classification") %>%
+      set_engine("earth")
+  )
 
-# Simple
-y_hat_simple <- predict(m_simple, newdata = ames_test, type = "response")
+cv_mars <- tune_grid(
+  wf_mars,
+  resamples = cv_samples,
+  grid      = expand_grid(prod_degree = c(1, 2, 3), num_terms = c(5, 10, 20, 50)),
+  metrics   = my_metrics
+)
 
-# Ridge
-y_hat_ridge <- c(predict(ridge_cv, newx = model.matrix(Luxury ~ ., data = ames_test)[, -1], type = "response"))
+collect_metrics(cv_mars)
+autoplot(cv_mars, metric = "mn_log_loss") + theme_bw()
+autoplot(cv_mars, metric = "roc_auc") + theme_bw()
 
-# Lasso
-y_hat_lasso <- c(predict(lasso_cv, newx = model.matrix(Luxury ~ ., data = ames_test)[, -1], type = "response"))
+show_best(cv_mars, metric = "mn_log_loss")
+show_best(cv_mars, metric = "roc_auc")
 
-# GAM
-y_hat_gam_simple <- c(predict(m_gam_simple, newdata = ames_test, type = "response"))
+best_cv_mars <- select_best(cv_mars, metric = "mn_log_loss")
+best_cv_mars <- finalize_workflow(wf_mars, best_cv_mars) %>% fit(data = juice_tr)
 
-y_hat_gam <- c(predict(m_gam, newdata = ames_test, type = "response"))
+# Final comparison on the test set -----------------------------------------------------------------
+# Results from LAB 5 are included for reference. Re-fit those models from scratch if needed,
+# or load them from a saved workspace.
 
-# MARS1
-y_hat_mars1 <- c(predict(m_mars1, newdata = ames_test, type = "response"))
+fitted_models <- list(
+  GAM_simple = m_gam_simple,
+  GAM_full   = m_gam_full,
+  MARS       = best_cv_mars
+)
 
-# MARS2
-y_hat_mars2 <- c(predict(m_mars2, newdata = ames_test, type = "response"))
+results <- imap_dfr(fitted_models, function(model, name) {
+  augment(model, new_data = juice_te) %>%
+    my_metrics(truth = choice, .pred_CH) %>%
+    mutate(model = name)
+})
 
-# MARS3
-y_hat_mars3 <- c(predict(m_mars3, newdata = ames_test, type = "response"))
-
-# RF
-y_hat_rf <- c(predict(m_rf, newdata = ames_test, type = "prob")[, 2])
-
-
-# Final summary of the results ----------------------------------------------
-
-metrics <- function(y, probs, cutoff = 0.5){
-  tab <- table(probs > cutoff, y)
-  acc <- sum(diag(tab)) / sum(tab)
-  fp <- tab[2, 1] / sum(tab[, 1])
-  fn <- tab[1, 2] / sum(tab[, 2])
-  bin <- sum(log(probs[y == TRUE])) + sum(log(1 - probs[y == FALSE]))
-  metrics <- c(acc, fp, fn, bin, AUC::auc(AUC::roc(probs, y)))
-  names(metrics) <- c("Accuracy", "False-Positive", "False-Negative", "Binomial loss", "AUC")
-  metrics
-}
-
-# Target variable
-y_test <- ames_test$Luxury
-
-cutoff <- 0.5
-metrics(y = y_test, probs = y_hat_simple, cutoff = cutoff)
-metrics(y = y_test, probs = y_hat_ridge, cutoff = cutoff)
-metrics(y = y_test, probs = y_hat_lasso, cutoff = cutoff)
-metrics(y = y_test, probs = y_hat_gam_simple, cutoff = cutoff)
-metrics(y = y_test, probs = y_hat_gam, cutoff = cutoff)
-metrics(y = y_test, probs = y_hat_mars1, cutoff = cutoff)
-metrics(y = y_test, probs = y_hat_mars2, cutoff = cutoff)
-metrics(y = y_test, probs = y_hat_mars3, cutoff = cutoff)
-metrics(y = y_test, probs = y_hat_rf, cutoff = cutoff)
-
-table(y_hat_lasso >  cutoff, y_test)
-
-library(ROCR)
-pred_lasso <- prediction(y_hat_lasso, y_test)
-perf_lasso <- performance(pred_lasso, "tpr","fpr")
-
-pred_simple <- prediction(y_hat_simple, y_test)
-perf_simple <- performance(pred_simple, "tpr","fpr")
-
-pred_gam <- prediction(y_hat_gam, y_test)
-perf_gam <- performance(pred_gam, "tpr","fpr")
-
-pred_mars3 <- prediction(y_hat_mars3, y_test)
-perf_mars3 <- performance(pred_mars3, "tpr","fpr")
-
-plot(perf_lasso, col = "darkblue")
-abline(c(0,1), lty = "dotted")
-plot(perf_gam, col = "darkgreen", add = TRUE)
-plot(perf_mars3, col = "black", add = TRUE, lty = "dotted")
-plot(perf_simple, col = "darkorange", add = TRUE, lty = "dashed")
-
+results %>%
+  pivot_wider(names_from = .metric, values_from = .estimate) %>%
+  arrange(mn_log_loss)
