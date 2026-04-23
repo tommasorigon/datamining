@@ -174,7 +174,6 @@ print(tidy(best_en_val), n = 15)
 
 
 # Random Forest -----------------------------------------------------------------------------------------
-# Random forests are scale-invariant, so normalisation is not needed: base_recipe is used here.
 
 wf_rf <- workflow() %>%
   add_recipe(base_recipe) %>%
