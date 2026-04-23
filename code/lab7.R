@@ -12,7 +12,6 @@ source("https://tommasorigon.github.io/datamining/code/routines.R", echo = TRUE)
 
 # Data ---------------------------------------------------------------------------------------------
 # The same preprocessing pipeline used in LAB 3 and LAB 4 is applied here.
-# Near-zero variance predictors are removed; the outcome is log(SalePrice).
 ames <- read_csv("https://tommasorigon.github.io/datamining/data/ames.csv")
 
 main_rec <- recipe(SalePrice ~ ., data = ames) %>%
@@ -22,8 +21,6 @@ ames <- bake(prep(main_rec), new_data = ames) %>%
   mutate(log_SalePrice = log(SalePrice))
 
 # Three-way split: 50% train / 25% validation / 25% test ----------------------------------------
-# The validation set is used for hyperparameter selection throughout this lab.
-# The test set is kept completely untouched until the very end.
 set.seed(123)
 split <- initial_validation_split(ames, prop = c(0.5, 0.25))
 
@@ -33,116 +30,96 @@ ames_te  <- testing(split)
 
 glimpse(ames_tr)
 
-# Metric helpers -----------------------------------------------------------------------------------
-# exp_mae is defined in routines.R and computes the MAE on the original dollar scale
-# from log-scale predictions: mean(|exp(truth) - exp(estimate)|).
-# We also define a compact wrapper to evaluate any fitted model on the validation set.
+m_linear <- linear_reg() %>%
+  set_engine("lm")
 
-evaluate_val <- function(model, newdata = ames_val) {
-  y_hat <- predict(model, newdata = newdata)
-  augment_df <- newdata %>% mutate(.pred = y_hat)
-  exp_mae(augment_df, truth = log_SalePrice, estimate = .pred)
-}
+# The outcome is log_SalePrice; SalePrice is dropped from the predictor set.
+base_recipe <- recipe(log_SalePrice ~ ., data = ames_tr) %>%
+  step_rm(SalePrice) %>%
+  step_dummy(all_factor_predictors())
 
-# Benchmark: median prediction on the validation set (no predictors used) -------------------------
-ames_val %>%
-  mutate(.pred = log(median(ames_tr$SalePrice))) %>%
-  exp_mae(truth = log_SalePrice, estimate = .pred)
+# Shrinkage methods additionally require centring and scaling.
+shrinkage_recipe <- base_recipe %>%
+  step_normalize(all_predictors())
 
-
-# Linear baseline ----------------------------------------------------------------------------------
-# A simple OLS model on a handful of informative predictors, used as a baseline throughout the lab.
-
-m_lm_simple <- lm(log_SalePrice ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bath, data = ames_tr)
-summary(m_lm_simple)
-
-y_hat_lm_simple <- predict(m_lm_simple, newdata = ames_val)
-ames_val %>%
-  mutate(.pred = y_hat_lm_simple) %>%
-  exp_mae(truth = log_SalePrice, estimate = .pred)
+# Metric: exponentiated MAE on the original dollar scale (defined in routines.R)
+my_metrics <- metric_set(exp_mae)
 
 
-# Full OLS model (all available predictors after preprocessing) ------------------------------------
+# Simple OLS -----------------------------------------------------------------------------------------
 
-m_lm_full <- lm(log_SalePrice ~ . - SalePrice, data = ames_tr)
-summary(m_lm_full)
+m_simple <- workflow() %>%
+  add_recipe(recipe(log_SalePrice ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bath, data = ames_tr)) %>%
+  add_model(m_linear) %>%
+  fit(ames_tr)
 
-y_hat_lm_full <- predict(m_lm_full, newdata = ames_val)
-ames_val %>%
-  mutate(.pred = y_hat_lm_full) %>%
-  exp_mae(truth = log_SalePrice, estimate = .pred)
+tidy(m_simple)
+augment(m_simple, new_data = ames_val) %>% exp_mae(truth = log_SalePrice, estimate = .pred)
+
+
+# Full OLS -----------------------------------------------------------------------------------------
+
+m_full <- workflow() %>%
+  add_recipe(base_recipe) %>%
+  add_model(m_linear) %>%
+  fit(ames_tr)
+
+print(tidy(m_full), n = 15)
+augment(m_full, new_data = ames_val) %>% exp_mae(truth = log_SalePrice, estimate = .pred)
+
 
 
 # GAM — Generalized Additive Models ---------------------------------------------------------------
-# Reference: Wood (2017) "Generalized Additive Models: An Introduction with R", 2nd ed.
-#
-# A GAM extends the linear model by replacing each linear term beta_j * x_j with a
-# smooth function f_j(x_j), estimated from the data:
-#
-#   E[Y | X] = alpha + f_1(x_1) + f_2(x_2) + ... + f_p(x_p)
-#
-# Each f_j is typically represented as a penalised regression spline. The amount of
-# smoothing is controlled by a penalty parameter lambda_j, selected by GCV or REML.
-# Categorical predictors enter the model as ordinary linear (parametric) terms.
 
 library(mgcv)
 
 # GAM — simple model -------------------------------------------------------------------------------
-# We start with a GAM that mirrors the simple OLS baseline.
-# Continuous predictors are given smooth terms s(); categorical predictors enter linearly.
-# By default, mgcv uses thin-plate regression splines with automatic smoothness selection (REML).
 
 m_gam_simple <- gam(
-  log_SalePrice ~ s(Overall.Qual) + s(Gr.Liv.Area) + s(House.Age) + s(Tot.Bath),
+  log_SalePrice ~ Overall.Qual + s(Gr.Liv.Area) + s(House.Age) + Tot.Bath,
   data   = ames_tr,
-  method = "REML"
+  method = "GCV.Cp"
 )
 summary(m_gam_simple)
 
-# The estimated degrees of freedom (edf) for each smooth indicate how non-linear it is:
-# edf ~ 1 means the smooth is nearly linear; higher values signal strong non-linearity.
+m_gam <- gen_additive_mod(select_features = FALSE) %>% set_engine("mgcv") %>% set_mode("regression")
 
-# Visualise the estimated smooth functions ---------------------------------------------------
-# Each panel shows one smooth f_j(x_j) with a pointwise 95% confidence band.
-# The rug at the bottom shows the distribution of observed x_j values.
-par(mfrow = c(2, 2))
-plot(m_gam_simple, residuals = TRUE, pch = 16, cex = 0.4,
-     shade = TRUE, shade.col = "lightblue",
-     pages = 0, scale = 0)
+m_gam_simple <- workflow() %>%
+  add_model(m_gam, formula = log_SalePrice ~ s(Overall.Qual, k = 3) + s(Gr.Liv.Area) + s(House.Age) + s(Tot.Bath)) %>%
+  add_formula(log_SalePrice ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bath) %>%
+  fit(data = ames_tr)
 
-# Validation performance
-y_hat_gam_simple <- predict(m_gam_simple, newdata = ames_val)
-ames_val %>%
-  mutate(.pred = y_hat_gam_simple) %>%
-  exp_mae(truth = log_SalePrice, estimate = .pred)
+tidy(m_gam_simple)
 
+augment(m_gam_simple, new_data = ames_val) %>% exp_mae(truth = log_SalePrice, estimate = .pred)
 
 # GAM — extended model with automatic variable selection -------------------------------------------
-# We include more continuous predictors as smooth terms plus several categorical predictors.
-# Setting select = TRUE adds an extra shrinkage penalty to each smooth: terms that are not
-# needed can be shrunk all the way to zero, performing automatic variable selection.
 
-m_gam_full <- gam(
-  log_SalePrice ~ s(Overall.Qual) + s(Gr.Liv.Area) + s(House.Age) + s(Tot.Bath) +
-    s(Total.Bsmt.SF)  +
-    Kitchen.Qual + Neighborhood + MS.Zoning,
-  data   = ames_tr,
-  method = "REML",
-  select = TRUE   # automatic smoothness-based variable selection
-)
-summary(m_gam_full)
+smooth_vars <- c("Gr.Liv.Area", "House.Age", "Lot.Area")
 
-# Visualise the smooth terms of the extended model -------------------------------------------------
-par(mfrow = c(2, 4))
-plot(m_gam_full, residuals = TRUE, pch = 16, cex = 0.3,
-     shade = TRUE, shade.col = "lightblue",
-     pages = 0, scale = 0)
+# All predictors (adjust as needed)
+all_vars <- c("Overall.Qual", "Gr.Liv.Area", "House.Age", "Tot.Bath", "Lot.Area", 
+              "Neighborhood", "MS.Zoning", "Bldg.Type")
 
-# Validation performance
-y_hat_gam_full <- predict(m_gam_full, newdata = ames_val)
-ames_val %>%
-  mutate(.pred = y_hat_gam_full) %>%
-  exp_mae(truth = log_SalePrice, estimate = .pred)
+# Build the mgcv formula with s() for smooth terms
+mgcv_terms <- ifelse(all_vars %in% smooth_vars, paste0("s(", all_vars, ")"), all_vars)
+mgcv_formula <- as.formula(paste("log_SalePrice ~", paste(mgcv_terms, collapse = " + ")))
+
+# Build the plain formula for add_formula()
+plain_formula <- as.formula(paste("log_SalePrice ~", paste(all_vars, collapse = " + ")))
+
+m_gam_full <- workflow() %>%
+  add_model(
+    gen_additive_mod() %>%
+      set_engine("mgcv") %>%
+      set_mode("regression"),
+    formula = mgcv_formula
+  ) %>%
+  add_formula(plain_formula) %>%
+  fit(data = ames_tr)
+
+tidy(m_gam_full)
+augment(m_gam_full, new_data = ames_val) %>% exp_mae(truth = log_SalePrice, estimate = .pred)
 
 
 # GAM — model comparison via AIC -------------------------------------------------------------------

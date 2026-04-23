@@ -1,6 +1,7 @@
 # ----------------------------------------
 # Title: LAB 4 (Ames Housing, regression)
 #        Rewritten with tidymodels
+# Author: Tommaso Rigon
 # ----------------------------------------
 
 rm(list = ls())

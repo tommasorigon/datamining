@@ -133,4 +133,4 @@ ames <- ames %>%
 # 6. Save cleaned dataset
 # ----------------------------------------
 
-write.csv(ames, "../data/ames.csv")
+write.csv(ames, "../data/ames.csv", row.names = FALSE)
