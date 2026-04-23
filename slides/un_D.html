@@ -357,7 +357,7 @@ Y_i = f(x_i) + \epsilon_i, \qquad i=1,\dots,n,
 </span> the best prediction <span class="math inline">\hat{f}(x_i)</span>, i.e.&nbsp;the one minimizing the loss, coincides with <span class="math display">
 \hat{f}(x_i) = \mathbb{E}(\tilde{Y}_i) = f(x_i),
 </span> which is the <span class="blue">conditional expectation</span> of <span class="math inline">Y_i</span> given the value <span class="math inline">x_i</span>, called <span class="blue">regression function</span>.</p></li>
-<li><p>The regression function <span class="math inline">f(x_i) = \mathbb{E}(\tilde{Y}_i)</span> is the <span class="blue">optimal prediction</span> even in presence of <span class="orange">heteroschedastic</span> data or when the above <span class="orange">additive</span> decomposition does <span class="orange">not hold</span>.</p></li>
+<li><p>The regression function <span class="math inline">f(x_i) = \mathbb{E}(\tilde{Y}_i)</span> is the <span class="blue">optimal prediction</span> even in presence of <span class="orange">heteroscedastic</span> data or when the above <span class="orange">additive</span> decomposition does <span class="orange">not hold</span>.</p></li>
 </ul>
 </div>
 </section>
@@ -734,7 +734,7 @@ Effective degrees of freedom for linear smoothers
 </ul>
 <ul>
 <li><p>A linear smoother is called <span class="orange">projective</span> if it has the above property.</p></li>
-<li><p><span class="orange">All</span> the <span class="orange">linear smoothers</span> presented in this unit (Nadaraya-Watson, local linear regression, regression an smoothing splines) are projective (see Exercises).</p></li>
+<li><p><span class="orange">All</span> the <span class="orange">linear smoothers</span> presented in this unit (Nadaraya-Watson, local linear regression, regression and smoothing splines) are projective (see Exercises).</p></li>
 </ul>
 </section>
 <section id="choice-of-the-bandwidth-iii" class="level2">
@@ -797,7 +797,7 @@ y_i - \hat{y}_{-i} = \frac{y_i - \hat{y}_i}{1 - [\bm{S}]_{ii}}, \qquad i=1,\dots
 </span> whose solution can be found using iteratively re-weighted least squares.</li>
 </ul>
 <ul>
-<li><p>The <span class="orange">computations</span> and the <span class="blue">theory</span> are not as straightforward and limpid as in the regression case, but they do hold in an <span class="orange">approximate</span> sense.</p></li>
+<li><p>The <span class="orange">computations</span> and the <span class="blue">theory</span> are not as straightforward and transparent as in the regression case, but they do hold in an <span class="orange">approximate</span> sense.</p></li>
 <li><p>Once again, the conceptual scheme is: (i) perform a <span class="orange">quadratic approximation</span> of the log-likelihood; (ii) proceed as in the <span class="blue">regression</span> case.</p></li>
 </ul>
 </section>
@@ -1274,7 +1274,7 @@ Cons
 <div class="callout-body-container callout-body">
 <ul>
 <li><p>Knot placement based on quantiles or other automatic choices could be inefficient.</p></li>
-<li><p>Manual placement of the knots is out of question because it is an almost impossible optimization problem.<br>
+<li><p>Manual placement of the knots is out of the question because it is an almost impossible optimization problem.<br>
 </p></li>
 </ul>
 </div>
@@ -1318,7 +1318,7 @@ Theorem (Green and Silverman, 1994)
 </div>
 </div>
 <ul>
-<li><p>The Green and Silverman theorem is remarkably <span class="orange">elegant</span> and <span class="blue">powerful</span>. A proof is offerered <a href="../extra/Proof_Optimal_Splines.pdf">here</a>.</p></li>
+<li><p>The Green and Silverman theorem is remarkably <span class="orange">elegant</span> and <span class="blue">powerful</span>. A proof is offered <a href="../extra/Proof_Optimal_Splines.pdf">here</a>.</p></li>
 <li><p>Since the solution is a <span class="blue">natural cubic spline</span>, we can write it as follows: <span class="math display">
 f(x; \beta) = \sum_{j=1}^{n_0} N_j(x)\beta_j,
 </span> whose coefficients <span class="math inline">\beta</span> still <span class="orange">needs</span> to be <span class="orange">determined</span>.</p></li>

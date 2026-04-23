@@ -765,7 +765,7 @@ ggplot(data = data_stepwise, aes(x = p, y = value, col = Stepwise)) +
 . . .
 
 -   [Remark]{.orange}. The centering operation is a mathematical trick
-    that facilitate the exposition but is unconsequential from an
+    that simplifies the derivation but is inconsequential from an
     estimation point of view.
 
 ## Centering the predictors II
@@ -1114,7 +1114,7 @@ ggplot(data = data_pcr, aes(x = Components, y = value, col = Covariate)) +
 . . .
 
 -   When the [complexity parameter]{.blue} $s$ is small, the
-    coefficients are explicitly [shrinked]{.orange}, i.e. biased,
+    coefficients are explicitly [shrunk]{.orange}, i.e. biased,
     [towards zero]{.orange}.
 
 -   On the other hand, if $s$ is large enough, then the ridge estimator
@@ -1831,7 +1831,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
 
 ## The [l]{.orange}east [a]{.orange}bsolute [s]{.orange}election and [s]{.orange}hrinkage [o]{.orange}perator
 
--   The [lasso]{.blue} appeared in the highly influential paper of Tibshirani (1996). It is a method that performs both [shrinkage]{.blue} and [variable selection]{.orange}
+-   The [lasso]{.blue} was introduced in the highly influential paper of Tibshirani (1996). It is a method that performs both [shrinkage]{.blue} and [variable selection]{.orange}
 
 . . .
 
@@ -1840,7 +1840,7 @@ ggplot(data = data_ridge, aes(x = df_ridge(lambda_tilde, X), y = value, col = Co
     \sum_{i=1}^n(y_i - \beta_0- \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p |\beta_j| \le s.
     $$ therefore when the [complexity parameter]{.blue} $s$ is small,
     the coefficients of $\hat{\beta}_\text{lasso}$ are
-    [shrinked]{.orange} and when $s$ is large enough
+    [shrunk]{.orange} and when $s$ is large enough
     $\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}$, as in ridge
     regression.
 
@@ -1931,7 +1931,7 @@ For lasso problems, we will assume the data have been previously
     such that $\hat{\beta}_\text{lasso} = 0$.
 
 -   For any intermediate value $0 < \lambda < \lambda_0$ we get
-    a combination of [shrinked]{.orange} but positive coefficients, and
+    a combination of [shrunk]{.orange} but positive coefficients, and
     a set of coefficients whose value is [exactly zero]{.blue}.
 
 . . .
@@ -2158,7 +2158,7 @@ ggplot(data = data_lasso, aes(x = lambda, y = value, col = Covariate)) +
 #### Main result of LAR
 
 -   The LAR algorithm provides a way to [compute]{.blue} the entire
-    [lasso path]{.orange} efficiently at the cost of a full
+    [lasso path]{.orange} efficiently at the computational cost of a single
     least-squares fit.
 
 -   LAR sheds light on important [statistical aspects]{.orange} of the
@@ -2485,7 +2485,7 @@ ggplot(data = data_lasso, aes(x = df, y = value, col = Covariate)) +
   - the mean-squared-error consistency of the lasso;
   - the recovery of the nonzero support set of the true regression parameters, sometimes called [sparsistency]{.orange}.
 
-- The interested reader work may have a look at the (very technical) Chapter 11 of Hastie, Tibshirani and Wainwright (2015)
+- The interested reader may have a look at the (very technical) Chapter 11 of Hastie, Tibshirani and Wainwright (2015)
 
 :::
 

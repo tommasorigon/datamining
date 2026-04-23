@@ -920,7 +920,7 @@ x_{ij} - \bar{x}_j, \qquad y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
 </span> and then compute the predictions via the formula <span class="math inline">\hat{\beta}_0 + \bm{x}_i^T\hat{\beta} = \hat{\alpha} + \bm{x}_{i}^T\hat{\beta}</span>.</li>
 </ul>
 <ul>
-<li><span class="orange">Remark</span>. The centering operation is a mathematical trick that facilitate the exposition but is unconsequential from an estimation point of view.</li>
+<li><span class="orange">Remark</span>. The centering operation is a mathematical trick that simplifies the derivation but is inconsequential from an estimation point of view.</li>
 </ul>
 </section>
 <section id="centering-the-predictors-ii" class="level2">
@@ -1156,7 +1156,7 @@ Cons
 </span></li>
 </ul>
 <ul>
-<li><p>When the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients are explicitly <span class="orange">shrinked</span>, i.e.&nbsp;biased, <span class="orange">towards zero</span>.</p></li>
+<li><p>When the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients are explicitly <span class="orange">shrunk</span>, i.e.&nbsp;biased, <span class="orange">towards zero</span>.</p></li>
 <li><p>On the other hand, if <span class="math inline">s</span> is large enough, then the ridge estimator coincides with ordinary least squares.</p></li>
 </ul>
 <ul>
@@ -1591,12 +1591,12 @@ Cons
 <section id="the-least-absolute-selection-and-shrinkage-operator" class="level2">
 <h2 class="anchored" data-anchor-id="the-least-absolute-selection-and-shrinkage-operator">The <span class="orange">l</span>east <span class="orange">a</span>bsolute <span class="orange">s</span>election and <span class="orange">s</span>hrinkage <span class="orange">o</span>perator</h2>
 <ul>
-<li>The <span class="blue">lasso</span> appeared in the highly influential paper of Tibshirani (1996). It is a method that performs both <span class="blue">shrinkage</span> and <span class="orange">variable selection</span></li>
+<li>The <span class="blue">lasso</span> was introduced in the highly influential paper of Tibshirani (1996). It is a method that performs both <span class="blue">shrinkage</span> and <span class="orange">variable selection</span></li>
 </ul>
 <ul>
 <li>The lasso estimator is the <span class="orange">minimizer</span> of the following system <span class="math display">
 \sum_{i=1}^n(y_i - \beta_0- \bm{x}_i^T\beta)^2 \qquad \text{subject to} \qquad \sum_{j=1}^p |\beta_j| \le s.
-</span> therefore when the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{lasso}</span> are <span class="orange">shrinked</span> and when <span class="math inline">s</span> is large enough <span class="math inline">\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}</span>, as in ridge regression.</li>
+</span> therefore when the <span class="blue">complexity parameter</span> <span class="math inline">s</span> is small, the coefficients of <span class="math inline">\hat{\beta}_\text{lasso}</span> are <span class="orange">shrunk</span> and when <span class="math inline">s</span> is large enough <span class="math inline">\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}</span>, as in ridge regression.</li>
 </ul>
 <ul>
 <li>The lasso is <span class="orange">deceptively similar</span> to ridge. However, the change from a quadratic penalty to an absolute value has a crucial <span class="blue">sparsity</span> implication.</li>
@@ -1655,7 +1655,7 @@ Cons
 </ul>
 <ul>
 <li><p>When <span class="math inline">\lambda = 0</span> the penalty term disappears and <span class="math inline">\hat{\beta}_\text{lasso} = \hat{\beta}_\text{ols}</span>. On the other hand, there exists a finite value of <span class="math inline">\lambda_0 &lt; \infty</span> such that <span class="math inline">\hat{\beta}_\text{lasso} = 0</span>.</p></li>
-<li><p>For any intermediate value <span class="math inline">0 &lt; \lambda &lt; \lambda_0</span> we get a combination of <span class="orange">shrinked</span> but positive coefficients, and a set of coefficients whose value is <span class="blue">exactly zero</span>.</p></li>
+<li><p>For any intermediate value <span class="math inline">0 &lt; \lambda &lt; \lambda_0</span> we get a combination of <span class="orange">shrunk</span> but positive coefficients, and a set of coefficients whose value is <span class="blue">exactly zero</span>.</p></li>
 </ul>
 <ul>
 <li>Unfortunately, there is <span class="orange">no closed-form expression</span> for the lasso solution.</li>
@@ -1765,7 +1765,7 @@ Main result of LAR
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li><p>The LAR algorithm provides a way to <span class="blue">compute</span> the entire <span class="orange">lasso path</span> efficiently at the cost of a full least-squares fit.</p></li>
+<li><p>The LAR algorithm provides a way to <span class="blue">compute</span> the entire <span class="orange">lasso path</span> efficiently at the computational cost of a single least-squares fit.</p></li>
 <li><p>LAR sheds light on important <span class="orange">statistical aspects</span> of the lasso. A nice <span class="blue">LAR - lasso - boosting</span> relationship is established, which is computationally and conceptually sound.</p></li>
 </ul>
 </div>
@@ -1983,7 +1983,7 @@ Degrees of freedom (Zhou, Hastie, and Tibshirani, 2007, Tibshirani and Taylor, 2
 <li>the mean-squared-error consistency of the lasso;</li>
 <li>the recovery of the nonzero support set of the true regression parameters, sometimes called <span class="orange">sparsistency</span>.</li>
 </ul></li>
-<li><p>The interested reader work may have a look at the (very technical) Chapter 11 of Hastie, Tibshirani and Wainwright (2015)</p></li>
+<li><p>The interested reader may have a look at the (very technical) Chapter 11 of Hastie, Tibshirani and Wainwright (2015)</p></li>
 </ul>
 </div>
 </section>

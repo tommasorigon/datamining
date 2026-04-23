@@ -319,7 +319,7 @@ ggplot(data = data_pred) +
 
 -   The regression function $f(x_i) = \mathbb{E}(\tilde{Y}_i)$ is the
     [optimal prediction]{.blue} even in presence of
-    [heteroschedastic]{.orange} data or when the above
+    [heteroscedastic]{.orange} data or when the above
     [additive]{.orange} decomposition does [not hold]{.orange}.
 :::
 
@@ -888,7 +888,7 @@ $$
     above property.
 
 -   [All]{.orange} the [linear smoothers]{.orange} presented in this
-    unit (Nadaraya-Watson, local linear regression, regression an
+    unit (Nadaraya-Watson, local linear regression, regression and
     smoothing splines) are projective (see Exercises).
 
 ## Choice of the bandwidth III 📖
@@ -977,7 +977,7 @@ ggplot(data = data_bv, aes(x = df, y = value, col = `Error term`)) +
 . . .
 
 -   The [computations]{.orange} and the [theory]{.blue} are not as
-    straightforward and limpid as in the regression case, but they do
+    straightforward and transparent as in the regression case, but they do
     hold in an [approximate]{.orange} sense.
 
 -   Once again, the conceptual scheme is: (i) perform a [quadratic
@@ -1639,7 +1639,7 @@ ggplot(data = data_plot, aes(x = times_seq, y = value, col = as.factor(Var2))) +
 -   Knot placement based on quantiles or other automatic choices could
     be inefficient.
 
--   Manual placement of the knots is out of question because it is an
+-   Manual placement of the knots is out of the question because it is an
     almost impossible optimization problem.\
 :::
 
@@ -1684,7 +1684,7 @@ knots at the distinct points.
 . . .
 
 -   The Green and Silverman theorem is remarkably [elegant]{.orange} and
-    [powerful]{.blue}. A proof is offerered [here](../extra/Proof_Optimal_Splines.pdf).
+    [powerful]{.blue}. A proof is offered [here](../extra/Proof_Optimal_Splines.pdf).
 
 -   Since the solution is a [natural cubic spline]{.blue}, we can write
     it as follows: $$
