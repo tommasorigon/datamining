@@ -115,7 +115,7 @@ styler:::style_file("../code/un_E.R")
 
 . . .
 
-- However, when $p$ grows, the data points becomes [sparse]{.orange}, even when $n$ is "big" in absolute terms. 
+- However, when $p$ grows, the data points become [sparse]{.orange}, even when $n$ is "big" in absolute terms. 
 
 - In other words, a neighborhood of a generic point $x$ contains a small fraction of observations.
 
@@ -127,13 +127,13 @@ styler:::style_file("../code/un_E.R")
 
 . . .
 
-- As a consequence, [much larger]{.orange} datasets are needed even for moderate $p$, because the sample size $n$ needs to grows [exponentially]{.blue} with $p$. 
+- As a consequence, [much larger]{.orange} datasets are needed even for moderate $p$, because the sample size $n$ needs to grow [exponentially]{.blue} with $p$. 
 
 ## The curse of dimensionality II
 
 ::: incremental
 
-- The following illustration may help clarify this notion of [sparsity]{.orange}. Let us consider data points that are uniformaly distributed on $(0, 1)^p$, that is $\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)$.
+- The following illustration may help clarify this notion of [sparsity]{.orange}. Let us consider data points that are uniformly distributed on $(0, 1)^p$, that is $\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)$.
 
 - Then, the [median distance]{.orange} from the origin $(0,\dots,0)^T$ to the [closest point]{.blue} is:
 $$
@@ -170,9 +170,9 @@ which is again exponentially increasing in $p$.
 
 - Hence, when $p = 1$, the expected amount of points in the [local sub-interval]{.orange} $(0, 1/10)$ is again $1/10$. 
 
-- Instead, when $p = 10$ the amount of point is the [local subcube]{.blue} $(0, 1)^{10}$ is
+- Instead, when $p = 10$ the number of points in the [local subcube]{.blue} $(0, 1)^{10}$ is
 $$
-n \left(\frac{1}{10}\right)^{10} = \frac{n}{1.000.000.000}.
+n \left(\frac{1}{10}\right)^{10} = \frac{n}{1{,}000{,}000{,}000}.
 $$
 
 :::
@@ -230,7 +230,7 @@ which is increasing [linearly]{.blue} in $p$, but [not exponentially]{.orange}.
 - These [assumptions]{.orange} differentiate because of:
     - The particular [nature]{.grey} of the knowledge they impose (e.g., no interactions, piecewise constant functions, etc.);
     - The [strength]{.orange} of this assumption;
-    - The [sensibility]{.blue} of the methods to a potential violation of the assumptions.
+    - The [sensitivity]{.blue} of the methods to a potential violation of the assumptions.
 
 - Thus, several alternative ideas and methods are needed; no single "best" algorithm exists. 
 

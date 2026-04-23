@@ -190,7 +190,7 @@ w_i(\bm{x}) = \prod_{j=1}^p \frac{1}{h_j} w\left(\frac{x_{ij} - x_j}{h_j}\right)
 <li>When the function <span class="math inline">f(x)</span> is entirely unspecified and a <span class="orange">local nonparametric</span> method is used, a <span class="blue">dense</span> dataset is needed to get a reasonably accurate estimate <span class="math inline">\hat{f}(x)</span>.</li>
 </ul>
 <ul>
-<li><p>However, when <span class="math inline">p</span> grows, the data points becomes <span class="orange">sparse</span>, even when <span class="math inline">n</span> is “big” in absolute terms.</p></li>
+<li><p>However, when <span class="math inline">p</span> grows, the data points become <span class="orange">sparse</span>, even when <span class="math inline">n</span> is “big” in absolute terms.</p></li>
 <li><p>In other words, a neighborhood of a generic point <span class="math inline">x</span> contains a small fraction of observations.</p></li>
 <li><p>Thus, a <span class="blue">neighborhood</span> with a fixed percentage of data points is <span class="orange">no longer local</span>.</p></li>
 </ul>
@@ -198,14 +198,14 @@ w_i(\bm{x}) = \prod_{j=1}^p \frac{1}{h_j} w\left(\frac{x_{ij} - x_j}{h_j}\right)
 <li>To put it another way, to get a local neighborhood with <span class="math inline">10</span> data points along each axis we need about <span class="math inline">10^p</span> data points.</li>
 </ul>
 <ul>
-<li>As a consequence, <span class="orange">much larger</span> datasets are needed even for moderate <span class="math inline">p</span>, because the sample size <span class="math inline">n</span> needs to grows <span class="blue">exponentially</span> with <span class="math inline">p</span>.</li>
+<li>As a consequence, <span class="orange">much larger</span> datasets are needed even for moderate <span class="math inline">p</span>, because the sample size <span class="math inline">n</span> needs to grow <span class="blue">exponentially</span> with <span class="math inline">p</span>.</li>
 </ul>
 </section>
 <section id="the-curse-of-dimensionality-ii" class="level2">
 <h2 class="anchored" data-anchor-id="the-curse-of-dimensionality-ii">The curse of dimensionality II</h2>
 <div class="incremental">
 <ul class="incremental">
-<li><p>The following illustration may help clarify this notion of <span class="orange">sparsity</span>. Let us consider data points that are uniformaly distributed on <span class="math inline">(0, 1)^p</span>, that is <span class="math inline">\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)</span>.</p></li>
+<li><p>The following illustration may help clarify this notion of <span class="orange">sparsity</span>. Let us consider data points that are uniformly distributed on <span class="math inline">(0, 1)^p</span>, that is <span class="math inline">\bm{x}_i \overset{\text{iid}}{\sim} \text{U}^p(0, 1)</span>.</p></li>
 <li><p>Then, the <span class="orange">median distance</span> from the origin <span class="math inline">(0,\dots,0)^T</span> to the <span class="blue">closest point</span> is: <span class="math display">
 \text{dist}(p, n) = \left\{1 - \left(\frac{1}{2}\right)^{1/n}\right\}^{1/p}.
 </span></p></li>
@@ -229,8 +229,8 @@ w_i(\bm{x}) = \prod_{j=1}^p \frac{1}{h_j} w\left(\frac{x_{ij} - x_j}{h_j}\right)
 \text{side}(r, p) = r^{1/p},
 </span> which is again exponentially increasing in <span class="math inline">p</span>.</p></li>
 <li><p>Hence, when <span class="math inline">p = 1</span>, the expected amount of points in the <span class="orange">local sub-interval</span> <span class="math inline">(0, 1/10)</span> is again <span class="math inline">1/10</span>.</p></li>
-<li><p>Instead, when <span class="math inline">p = 10</span> the amount of point is the <span class="blue">local subcube</span> <span class="math inline">(0, 1)^{10}</span> is <span class="math display">
-n \left(\frac{1}{10}\right)^{10} = \frac{n}{1.000.000.000}.
+<li><p>Instead, when <span class="math inline">p = 10</span> the number of points in the <span class="blue">local subcube</span> <span class="math inline">(0, 1)^{10}</span> is <span class="math display">
+n \left(\frac{1}{10}\right)^{10} = \frac{n}{1{,}000{,}000{,}000}.
 </span></p></li>
 </ul>
 </div>
@@ -283,7 +283,7 @@ n \left(\frac{1}{10}\right)^{10} = \frac{n}{1.000.000.000}.
 <ul class="incremental">
 <li>The particular <span class="grey">nature</span> of the knowledge they impose (e.g., no interactions, piecewise constant functions, etc.);</li>
 <li>The <span class="orange">strength</span> of this assumption;</li>
-<li>The <span class="blue">sensibility</span> of the methods to a potential violation of the assumptions.</li>
+<li>The <span class="blue">sensitivity</span> of the methods to a potential violation of the assumptions.</li>
 </ul></li>
 <li><p>Thus, several alternative ideas and methods are needed; no single “best” algorithm exists.</p></li>
 <li><p>This is why having a well-trained statistician on the team is important because they can identify the method that best suits the specific applied example.</p></li>

@@ -156,7 +156,7 @@ trawl_test <- trawl[id_test, ]
 
 ## Getting started: linear models
 
--   Let begin our analysis by trying to predict the `Score` using a
+-   Let us begin our analysis by trying to predict the `Score` using a
     [linear model]{.orange} of the form $$
     y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
     $$
@@ -208,7 +208,7 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
   ylab("Catch score")
 ```
 
-## Comments and cricism of linear models
+## Comments and criticism of linear models
 
 -   Is this a good model?
 
@@ -481,7 +481,7 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
 ## GAM and variable selection
 
 ::: incremental
--   When $p$ is large there is need to remove the potentially
+-   When $p$ is large there is a need to remove the potentially
     [irrelevant variables]{.orange}. There exist several [variable
     selection]{.blue} ideas for GAMs, but we will not cover the details
     here.
@@ -927,7 +927,7 @@ ggplot(data = data_plot, aes(x = x, y = y, col = basis, linetype = basis)) +
 ## Basis selection and backward regression
 
 -   The [degree $d$]{.orange} of the MARS algorithms allow to control
-    the number order of interactions of the model. Note that when
+    the order of interactions of the model. Note that when
     [$d = 1$]{.blue} it corresponds to a GAM ([no interactions]{.blue}).
 
 . . .
@@ -1131,7 +1131,7 @@ ggplot(data = trawl_train, aes(x = Longitude, y = Score1, col = Year)) +
 
 ## Results on the test set
 
-- We can now check the predictive performance on the [test set]{.orange}, to see which is model scored the best in terms of MAE and RMSE.
+- We can now check the predictive performance on the [test set]{.orange}, to see which model scored the best in terms of MAE and RMSE.
 
 . . .
 
@@ -1173,7 +1173,7 @@ knitr::kable(tab_results, digits = 3)
 
 - Somewhat surprisingly, the [best model]{.blue} is the extremely simple (yet effective) [MARS of degree $1$]{.orange}.
 
-- The weak interactions effects captured by the MARS of degree $2$ led an increased variance of the estimates, slightly deteriorating the fit. 
+- The weak interactions effects captured by the MARS of degree $2$ led to an increased variance of the estimates, slightly deteriorating the fit.
 
 ## Pros and cons of MARS
 

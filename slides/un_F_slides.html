@@ -216,7 +216,7 @@
 <section id="getting-started-linear-models" class="slide level2 center">
 <h2>Getting started: linear models</h2>
 <ul>
-<li><p>Let begin our analysis by trying to predict the <code>Score</code> using a <span class="orange">linear model</span> of the form <span class="math display">
+<li><p>Let us begin our analysis by trying to predict the <code>Score</code> using a <span class="orange">linear model</span> of the form <span class="math display">
 y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
 </span></p></li>
 <li><p>The above values correspond to the variables of the <code>trawl</code> dataset, so that <span class="math display">
@@ -289,8 +289,8 @@ y_i = \beta_0 + \beta_1 x_{i1} + \cdots + \beta_px_{ip}, \qquad i=1,\dots,n,
 <h2>Scatterplot with <code>loess</code> estimate</h2>
 
 <img data-src="un_F_files/figure-revealjs/unnamed-chunk-5-1.png" class="quarto-figure quarto-figure-center r-stretch" width="2250"></section>
-<section id="comments-and-cricism-of-linear-models" class="slide level2 center">
-<h2>Comments and cricism of linear models</h2>
+<section id="comments-and-criticism-of-linear-models" class="slide level2 center">
+<h2>Comments and criticism of linear models</h2>
 <ul>
 <li>Is this a good model?</li>
 </ul>
@@ -515,7 +515,7 @@ z_i = \hat{\eta}_i + \frac{y_i - \hat{\pi}_i}{\hat{\pi}_i(1 - \hat{\pi}_i)}, \qq
 <section id="gam-and-variable-selection" class="slide level2 center">
 <h2>GAM and variable selection</h2>
 <ul>
-<li class="fragment"><p>When <span class="math inline">p</span> is large there is need to remove the potentially <span class="orange">irrelevant variables</span>. There exist several <span class="blue">variable selection</span> ideas for GAMs, but we will not cover the details here.</p></li>
+<li class="fragment"><p>When <span class="math inline">p</span> is large there is a need to remove the potentially <span class="orange">irrelevant variables</span>. There exist several <span class="blue">variable selection</span> ideas for GAMs, but we will not cover the details here.</p></li>
 <li class="fragment"><p><span class="blue">Option 1</span>. <span class="orange">Stepwise regression</span>. Perhaps the simplest method, although it is not as efficient as in linear models because we cannot exploit the same computational tricks.</p></li>
 <li class="fragment"><p><span class="blue">Option 2</span>. <span class="orange">COSSO: Component Selection and Smoothing Operator</span> (Lin and Zhang, 2006). It’s an idea based on combining lasso-type penalties and GAMs.</p></li>
 <li class="fragment"><p><span class="blue">Option 3</span>. <span class="orange">SpAM: Sparse Additive Models</span> (Ravikumar, Liu, Lafferty and Wasserman, 2009). Similar to the above, but it exploits a variation of the non-negative garrote.</p></li>
@@ -835,7 +835,7 @@ f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1
 <section id="basis-selection-and-backward-regression" class="slide level2 center">
 <h2>Basis selection and backward regression</h2>
 <ul>
-<li>The <span class="orange">degree <span class="math inline">d</span></span> of the MARS algorithms allow to control the number order of interactions of the model. Note that when <span class="blue"><span class="math inline">d = 1</span></span> it corresponds to a GAM (<span class="blue">no interactions</span>).</li>
+<li>The <span class="orange">degree <span class="math inline">d</span></span> of the MARS algorithms allow to control the order of interactions of the model. Note that when <span class="blue"><span class="math inline">d = 1</span></span> it corresponds to a GAM (<span class="blue">no interactions</span>).</li>
 </ul>
 <div class="fragment">
 <ul>
@@ -1024,7 +1024,7 @@ f(\bm{x}_i; \hat{\beta}) = 1.382 - 4.275(\texttt{Longitude}_i - 143.28)_+ + 3.98
 <section id="results-on-the-test-set" class="slide level2 center">
 <h2>Results on the test set</h2>
 <ul>
-<li>We can now check the predictive performance on the <span class="orange">test set</span>, to see which is model scored the best in terms of MAE and RMSE.</li>
+<li>We can now check the predictive performance on the <span class="orange">test set</span>, to see which model scored the best in terms of MAE and RMSE.</li>
 </ul>
 <div class="fragment">
 <div class="cell">
@@ -1078,7 +1078,7 @@ f(\bm{x}_i; \hat{\beta}) = 1.382 - 4.275(\texttt{Longitude}_i - 143.28)_+ + 3.98
 <div class="fragment">
 <ul>
 <li><p>Somewhat surprisingly, the <span class="blue">best model</span> is the extremely simple (yet effective) <span class="orange">MARS of degree <span class="math inline">1</span></span>.</p></li>
-<li><p>The weak interactions effects captured by the MARS of degree <span class="math inline">2</span> led an increased variance of the estimates, slightly deteriorating the fit.</p></li>
+<li><p>The weak interactions effects captured by the MARS of degree <span class="math inline">2</span> led to an increased variance of the estimates, slightly deteriorating the fit.</p></li>
 </ul>
 </div>
 </section>
