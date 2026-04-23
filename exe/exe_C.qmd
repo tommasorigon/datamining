@@ -146,7 +146,7 @@ Consider this exercise only if you already know  [Support Vector Machines]{.blue
 $$
 \min_{\beta_0, \beta} \frac{1}{2}\sum_{j=1}^p\beta_j^2 + C \sum_{i=1}^n\xi_i, \quad \text{subject to}\quad  \xi_i \ge 0, \quad y_i(\beta_0 + \bm{x}_i^T\beta) \ge 1 - \xi_i, \quad \forall i,
 $$
-where $C > 0$ is a cost parameter and $y_i\in\{-1, 1\}$ the [categorical response]{.orange}. The SVM classifier is then obtained as $\hat{G}(x) = \text{sign}(\hat{f}(x))$, with $\hat{f}(x) = \hat{\beta}_0 + \bm{x}_i^T\hat{\beta}$.
+where $C > 0$ is a cost parameter and $y_i\in\{-1, 1\}$ the [categorical response]{.orange}. The SVM classifier is then obtained as $\hat{G}(\bm{x}) = \text{sign}(\hat{f}(\bm{x}))$, with $\hat{f}(\bm{x}) = \hat{\beta}_0 + \bm{x}^T\hat{\beta}$.
 
 [Show]{.orange} that the SVM estimates corresponds to the solution of the following ridge problem
 $$

@@ -29,6 +29,9 @@ editor_options:
 
 # [Homepage](../index.html)
 
+The theoretical exercises described below could be quite [difficult]{.orange}. At the [exam]{.blue}, you can expect a [simplified version]{.blue} of them; otherwise, they would represent a formidable challenge for most of you.
+
+
 ## Theoretical exercises
 
 :::{.callout-note collapse=true}
@@ -66,7 +69,7 @@ Does the same property hold for the Nadaraya-Watson estimator?
 :::
 
 :::{.callout-note collapse=true}
-#### Exercise D - Maximum penalized likelihood estimate for $\lambda$
+#### Exercise D - Maximum likelihood estimate for $\lambda$
 
 Every nonparametric regression model involves a [smoothing parameter]{.blue}. For example, consider the parameter $\lambda$ of smoothing splines or $h$ of local linear regression. 
 
@@ -88,7 +91,7 @@ Show that the theorem holds for the following estimators:
 :::{.callout-note collapse=true}
 #### Exercise F - Truncated power basis
 
-A cubic spline with one knots $\xi$ can be obtained using a basis of the form $x$, $x^2$, $x^3$ and ($x - \xi)_+$, as a consequence of the truncated power basis Theorem of [this slide](../slides/un_D.html#truncated-power-basis).
+A cubic spline with one knot $\xi$ can be obtained using a basis of the form $x$, $x^2$, $x^3$ and ($x - \xi)_+$, as a consequence of the truncated power basis Theorem of [this slide](../slides/un_D.html#truncated-power-basis).
 
 In this exercise we will show that a function 
 $$
