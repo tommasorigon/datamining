@@ -72,8 +72,7 @@ The slides are meant to be used in HTML.
 | *Exercises*                            | [Exercises D](exe/exe_D.html)                      |                                                    |     
 | **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html) ([pdf version](slides/un_E_slides.pdf))           |                          
 | **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html) ([pdf version](slides/un_F_slides.pdf))            |     
-| Lab 7 (`juice`)                        | [`lab7.R`](code/lab7.R)                                     |                                                    |  
-| Lab 8 (`ames`)                         | [`lab8.R`](code/lab8.R)                                     |                                                    | 
+| Lab 7 (`wesdr`)                        | [`lab7.R`](code/lab7.R)                                     |                                                    |  
 | *Exercises*                            | [Exercises F](exe/exe_F.html)                      |                                                    |             
 | **FAQ - The statistical culture**      | [Unit G](slides/un_G.html)                           |                                   |                         
 
