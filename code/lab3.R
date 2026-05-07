@@ -22,7 +22,7 @@ main_rec <- recipe(SalePrice ~ ., data = ames) %>%
 
 ames <- bake(prep(main_rec), new_data = ames)
 
-set.seed(123)
+set.seed(1234)
 split <- initial_validation_split(ames, prop = c(0.5, 0.25))
 
 ames_tr <- training(split)

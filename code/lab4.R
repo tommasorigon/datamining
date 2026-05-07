@@ -23,7 +23,7 @@ ames <- bake(prep(main_rec), new_data = ames) %>%
 # Three-way split: 50% train / 25% validation / 25% test ----------------------------------------
 # The validation set is used for hyperparameter selection.
 # The test set is kept untouched until the very end.
-set.seed(123)
+set.seed(1234)
 split <- initial_validation_split(ames, prop = c(0.5, 0.25))
 
 ames_tr <- training(split)
@@ -100,7 +100,7 @@ tidy(best_pcr_val)
 # Ridge -----------------------------------------------------------------------------------------
 
 wf_ridge <- workflow() %>%
-  add_recipe(base_recipe %>% step_dummy(all_factor_predictors()) %>% step_rm(c(Tot.Bath, House.Age, Total.Bsmt.SF))) %>%
+  add_recipe(base_recipe %>% step_dummy(all_factor_predictors())) %>%
   add_model(linear_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet"))
 
 ridge_val <- tune_grid(
