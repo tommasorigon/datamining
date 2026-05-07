@@ -100,7 +100,7 @@ tidy(best_pcr_val)
 # Ridge -----------------------------------------------------------------------------------------
 
 wf_ridge <- workflow() %>%
-  add_recipe(base_recipe %>% step_dummy(all_factor_predictors())) %>%
+  add_recipe(base_recipe %>% step_dummy(all_factor_predictors()) %>% step_rm(c(Tot.Bath, House.Age, Total.Bsmt.SF))) %>%
   add_model(linear_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet"))
 
 ridge_val <- tune_grid(
