@@ -39,12 +39,7 @@ m_linear <- linear_reg() %>%
 
 # The outcome is log_SalePrice; SalePrice is dropped from the predictor set.
 base_recipe <- recipe(log_SalePrice ~ ., data = ames_tr) %>%
-  step_rm(SalePrice) %>%
-  step_dummy(all_factor_predictors())
-
-# Shrinkage methods additionally require centring and scaling.
-shrinkage_recipe <- base_recipe %>%
-  step_normalize(all_predictors())
+  step_rm(SalePrice) 
 
 # Metric: exponentiated MAE on the original dollar scale (defined in routines.R)
 my_metrics <- metric_set(exp_mae)
@@ -73,14 +68,14 @@ m_full <- workflow() %>%
   add_model(m_linear) %>%
   fit(ames_tr)
 
-print(tidy(m_full), n = 15)
+print(tidy(m_full), n = 150)
 augment(m_full, new_data = ames_val) %>% exp_mae(truth = log_SalePrice, estimate = .pred)
 
 
 # PCR -----------------------------------------------------------------------------------------
 
 wf_pcr <- workflow() %>%
-  add_recipe(shrinkage_recipe %>% step_pca(all_predictors(), num_comp = tune())) %>%
+  add_recipe(base_recipe %>% step_dummy(all_factor_predictors()) %>% step_normalize(all_predictors()) %>% step_pca(all_predictors(), num_comp = tune())) %>%
   add_model(m_linear)
 
 pcr_val <- tune_grid(
@@ -105,7 +100,7 @@ tidy(best_pcr_val)
 # Ridge -----------------------------------------------------------------------------------------
 
 wf_ridge <- workflow() %>%
-  add_recipe(shrinkage_recipe) %>%
+  add_recipe(base_recipe %>% step_dummy(all_factor_predictors())) %>%
   add_model(linear_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet"))
 
 ridge_val <- tune_grid(
@@ -125,11 +120,10 @@ best_ridge_val <- finalize_workflow(wf_ridge, best_ridge_val) %>% fit(data = ame
 
 print(tidy(best_ridge_val), n = 15)
 
-
 # Lasso -----------------------------------------------------------------------------------------
 
 wf_lasso <- workflow() %>%
-  add_recipe(shrinkage_recipe) %>%
+  add_recipe(base_recipe %>% step_dummy(all_factor_predictors())) %>%
   add_model(linear_reg(penalty = tune(), mixture = 1) %>% set_engine("glmnet"))
 
 lasso_val <- tune_grid(
@@ -152,7 +146,7 @@ print(tidy(best_lasso_val), n = 15)
 # Elastic Net (mixture = 0.5) -----------------------------------------------------------------------------------------
 
 wf_en <- workflow() %>%
-  add_recipe(shrinkage_recipe) %>%
+  add_recipe(base_recipe %>% step_dummy(all_factor_predictors())) %>%
   add_model(linear_reg(penalty = tune(), mixture = 0.5) %>% set_engine("glmnet"))
 
 en_val <- tune_grid(
@@ -171,7 +165,6 @@ best_en_val <- select_best(en_val, metric = "exp_mae")
 best_en_val <- finalize_workflow(wf_en, best_en_val) %>% fit(data = ames_tr)
 
 print(tidy(best_en_val), n = 15)
-
 
 # Random Forest -----------------------------------------------------------------------------------------
 
