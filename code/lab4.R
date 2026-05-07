@@ -39,7 +39,7 @@ m_linear <- linear_reg() %>%
 
 # The outcome is log_SalePrice; SalePrice is dropped from the predictor set.
 base_recipe <- recipe(log_SalePrice ~ ., data = ames_tr) %>%
-  step_rm(SalePrice) 
+  step_rm(SalePrice)
 
 # Metric: exponentiated MAE on the original dollar scale (defined in routines.R)
 my_metrics <- metric_set(exp_mae)
@@ -60,8 +60,7 @@ m_simple <- workflow() %>%
 tidy(m_simple)
 augment(m_simple, new_data = ames_val) %>% exp_mae(truth = log_SalePrice, estimate = .pred)
 
-
-# Full OLS -----------------------------------------------------------------------------------------
+# Full OLS -------------------------------------------------------------------------------------
 
 m_full <- workflow() %>%
   add_recipe(base_recipe) %>%
@@ -70,7 +69,6 @@ m_full <- workflow() %>%
 
 print(tidy(m_full), n = 150)
 augment(m_full, new_data = ames_val) %>% exp_mae(truth = log_SalePrice, estimate = .pred)
-
 
 # PCR -----------------------------------------------------------------------------------------
 
@@ -96,17 +94,18 @@ best_pcr_val <- finalize_workflow(wf_pcr, best_pcr_val) %>% fit(data = ames_tr)
 
 tidy(best_pcr_val)
 
-
 # Ridge -----------------------------------------------------------------------------------------
+
+lambda_grid <- exp(seq(-6, 6, length.out = 100))
 
 wf_ridge <- workflow() %>%
   add_recipe(base_recipe %>% step_dummy(all_factor_predictors())) %>%
-  add_model(linear_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet"))
+  add_model(linear_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet", path_values = lambda_grid))
 
 ridge_val <- tune_grid(
   wf_ridge,
   resamples = val_resample,
-  grid      = tibble(penalty = exp(seq(-6, 6, length.out = 100))),
+  grid      = tibble(penalty = lambda_grid),
   metrics   = my_metrics
 )
 
@@ -122,14 +121,16 @@ print(tidy(best_ridge_val), n = 15)
 
 # Lasso -----------------------------------------------------------------------------------------
 
+lambda_grid <- exp(seq(-10, 0, length.out = 100))
+
 wf_lasso <- workflow() %>%
   add_recipe(base_recipe %>% step_dummy(all_factor_predictors())) %>%
-  add_model(linear_reg(penalty = tune(), mixture = 1) %>% set_engine("glmnet"))
+  add_model(linear_reg(penalty = tune(), mixture = 1) %>% set_engine("glmnet", path_values = lambda_grid))
 
 lasso_val <- tune_grid(
   wf_lasso,
   resamples = val_resample,
-  grid      = tibble(penalty = exp(seq(-10, 0, length.out = 100))),
+  grid      = tibble(penalty = lambda_grid),
   metrics   = my_metrics
 )
 
@@ -141,18 +142,27 @@ show_best(lasso_val, metric = "exp_mae")
 best_lasso_val <- select_best(lasso_val, metric = "exp_mae")
 best_lasso_val <- finalize_workflow(wf_lasso, best_lasso_val) %>% fit(data = ames_tr)
 
-print(tidy(best_lasso_val), n = 15)
+# Fit the selected model on the training set only
+pct_loss_lasso_val <- select_by_pct_loss(lasso_val,
+  metric = "exp_mae",
+  desc(penalty), limit = 10
+)
+pct_loss_lasso_val <- finalize_workflow(wf_lasso, pct_loss_lasso_val) %>% fit(data = ames_tr)
 
-# Elastic Net (mixture = 0.5) -----------------------------------------------------------------------------------------
+print(tidy(pct_loss_lasso_val), n = 25)
+
+# Elastic Net (mixture = 0.5) --------------------------------------------------------------------
+
+lambda_grid <- exp(seq(-10, 0, length.out = 100))
 
 wf_en <- workflow() %>%
   add_recipe(base_recipe %>% step_dummy(all_factor_predictors())) %>%
-  add_model(linear_reg(penalty = tune(), mixture = 0.5) %>% set_engine("glmnet"))
+  add_model(linear_reg(penalty = tune(), mixture = 0.5) %>% set_engine("glmnet", path_values = lambda_grid))
 
 en_val <- tune_grid(
   wf_en,
   resamples = val_resample,
-  grid      = tibble(penalty = exp(seq(-10, 0, length.out = 100))),
+  grid      = tibble(penalty = lambda_grid),
   metrics   = my_metrics
 )
 
@@ -166,45 +176,26 @@ best_en_val <- finalize_workflow(wf_en, best_en_val) %>% fit(data = ames_tr)
 
 print(tidy(best_en_val), n = 15)
 
-# Random Forest -----------------------------------------------------------------------------------------
-
-wf_rf <- workflow() %>%
-  add_recipe(base_recipe) %>%
-  add_model(rand_forest(trees = tune(), mtry = tune(), min_n = tune(), mode = "regression") %>%
-    set_engine("ranger"))
-
-rf_val <- tune_grid(
-  wf_rf,
-  resamples = val_resample,
-  grid = expand_grid(
-    trees = c(1000, 2000, 5000),
-    mtry  = c(5, 10, 30, 50),
-    min_n = c(10, 20, 50)
-  ),
-  metrics = my_metrics,
-  control = control_grid(verbose = TRUE)
+pct_loss_en_val <- select_by_pct_loss(en_val,
+  metric = "exp_mae",
+  desc(penalty), limit = 10
 )
+pct_loss_en_val <- finalize_workflow(wf_lasso, pct_loss_en_val) %>% fit(data = ames_tr)
 
-collect_metrics(rf_val)
-autoplot(rf_val, metric = "exp_mae") + theme_bw()
-show_best(rf_val, metric = "exp_mae")
-
-# Fit the selected model on the training set only
-best_rf_val <- select_best(rf_val, metric = "exp_mae")
-best_rf_val <- finalize_workflow(wf_rf, best_rf_val) %>% fit(data = ames_tr)
+print(tidy(pct_loss_en_val), n = 15)
 
 
 # Final comparison on the test set -----------------------------------------------------------------------------------------
 
 fitted_models <- list(
-  Simple        = m_simple,
-  Full          = m_full,
-  PCR           = best_pcr_val,
-  Ridge         = best_ridge_val,
-  Lasso         = best_lasso_val,
+  Simple = m_simple,
+  Full = m_full,
+  PCR = best_pcr_val,
+  Ridge = best_ridge_val,
+  Lasso = best_lasso_val,
+  `Simple Lasso` = pct_loss_lasso_val,
   `Elastic Net` = best_en_val,
-  `Rand Forest` = best_rf_val
-)
+  `Simple Elastic Net` = pct_loss_en_val)
 
 results <- imap_dfr(fitted_models, function(model, name) {
   augment(model, new_data = ames_te) %>%
