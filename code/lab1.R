@@ -48,32 +48,39 @@ ames %>%
 # In the documentation, NA for Alley means "no alley access" — not a true missing value
 table(ames$Alley, useNA = "always")
 
+ames %>%
+  select(starts_with("Bsmt")) %>%
+  head()
+
 # Categorical variables: NA encodes absence of a feature
 ames <- ames %>%
   mutate(
-    Alley         = replace_na(Alley, "No alley"),
-    Fence         = replace_na(Fence, "No fence"),
-    Fireplace.Qu  = replace_na(Fireplace.Qu, "No fireplace"),
-    Bsmt.Exposure = ifelse(Bsmt.Exposure == "" | is.na(Bsmt.Exposure), "No basement", Bsmt.Exposure),
-    Bsmt.Cond     = replace_na(Bsmt.Cond, "No basement"),
-    Bsmt.Qual     = replace_na(Bsmt.Qual, "No basement")
+    Alley = replace_na(Alley, "No alley"),
+    Fence = replace_na(Fence, "No fence"),
+    Fireplace.Qu = replace_na(Fireplace.Qu, "No fireplace"),
+    Bsmt.Exposure = if_else(Bsmt.Exposure == "" | is.na(Bsmt.Exposure), "No basement", Bsmt.Exposure),
+    Bsmt.Cond = replace_na(Bsmt.Cond, "No basement"),
+    Bsmt.Qual = replace_na(Bsmt.Qual, "No basement"),
+    BsmtFin.Type.1 = replace_na(BsmtFin.Type.1, "No basement"),
+    BsmtFin.Type.2 = replace_na(BsmtFin.Type.2, "No basement")
   )
 
-# Drop detailed basement finish variables to reduce complexity
-ames <- ames %>% select(-starts_with("BsmtFin"))
+# Visualize variables related to Garage
+ames %>%
+  select(starts_with("Garage")) %>%
+  head()
 
 # Garage: if any garage variable is missing, the house has no garage
-garage_vars <- names(ames)[startsWith(names(ames), "Garage")]
 no_garage_rows <- ames %>%
-  select(all_of(garage_vars)) %>%
+  select(starts_with("Garage")) %>%
   apply(1, anyNA)
 
 ames <- ames %>%
-  mutate(across(all_of(garage_vars), ~ ifelse(no_garage_rows, "No garage", .x)))
+  mutate(across(starts_with("Garage"), ~ ifelse(no_garage_rows, "No garage", .x)))
 
-# Garage.Yr.Blt is dropped: numeric but structurally missing for houses without a garage
+# Garage.Yr.Blt and Garage.Area are dropped: numeric but structurally missing for houses without a garage
 ames <- ames %>%
-  select(-Garage.Yr.Blt)
+  select(-c(Garage.Yr.Blt, Garage.Area))
 
 # Numeric variables: NA encodes zero (no feature present)
 ames <- ames %>%
@@ -101,6 +108,8 @@ ames <- ames %>%
 ames <- ames %>%
   mutate(MS.SubClass = as.character(MS.SubClass))
 
+ames %>% summarise(across(where(is_character), ~ n_distinct(.x)))
+
 # Lump neighbourhoods with fewer than 20 observations into "Other"
 ames <- ames %>%
   mutate(Neighborhood = fct_lump_min(Neighborhood, 20))
@@ -113,20 +122,13 @@ ames <- ames %>%
 # 5. Feature engineering
 # ----------------------------------------
 
+ames %>% select(contains("SF")) %>% head()
+
 ames <- ames %>%
   mutate(
-    Porch.SF  = Open.Porch.SF + Enclosed.Porch + X3Ssn.Porch + Screen.Porch,
-    Tot.Bath  = Full.Bath + 0.5 * Half.Bath + Bsmt.Full.Bath + 0.5 * Bsmt.Half.Bath,
+    Porch.SF = Open.Porch.SF + Enclosed.Porch + X3Ssn.Porch + Screen.Porch,
+    Tot.Bath = Full.Bath + 0.5 * Half.Bath + Bsmt.Full.Bath + 0.5 * Bsmt.Half.Bath,
     House.Age = Yr.Sold - Year.Remod.Add
-  )
-
-# Remove the original variables that were combined or are no longer needed
-ames <- ames %>%
-  select(
-    -c(Open.Porch.SF, Enclosed.Porch, X3Ssn.Porch, Screen.Porch),
-    -c(Full.Bath, Half.Bath, Bsmt.Full.Bath, Bsmt.Half.Bath),
-    -c(Mo.Sold, Yr.Sold, Year.Remod.Add, Year.Built),
-    -c(Garage.Area)
   )
 
 # ----------------------------------------

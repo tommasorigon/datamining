@@ -10,7 +10,8 @@ library(tidymodels)
 source("https://tommasorigon.github.io/datamining/code/routines.R", echo = TRUE)
 
 # Reading the clean data
-ames <- read_csv("https://tommasorigon.github.io/datamining/data/ames.csv")
+# ames <- read_csv("https://tommasorigon.github.io/datamining/data/ames.csv")
+ames <- read_csv("../data/ames.csv")
 
 # Preprocessing and three-way split: 50% train / 25% validation / 25% test ----------------------
 # Near-zero variance predictors are removed. The outcome is log(SalePrice), used directly
@@ -29,7 +30,6 @@ ames_val <- validation(split)
 ames_te <- testing(split) # kept untouched until the very end
 
 glimpse(ames_tr)
-
 
 # EDA plots ---------------------------------------------------------------------------------------------
 
@@ -79,7 +79,6 @@ y_hat_median <- rep(median(ames_tr$SalePrice), nrow(ames_val))
 round(MAE(ames_val$SalePrice, y_hat_median), 4)
 round(MSLE(ames_val$SalePrice, y_hat_median), 4)
 
-
 # A first simple model --------------------------------------------------------------------------
 
 m_simple <- lm(SalePrice ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bath, data = ames_tr)
@@ -93,7 +92,6 @@ y_hat_simple <- pmax(y_hat_simple, 30000)
 round(MAE(ames_val$SalePrice, y_hat_simple), 4)
 round(MSLE(ames_val$SalePrice, y_hat_simple), 4)
 
-
 # Taking the log scale -----------------------------------------------------------------------------------
 
 m_simple <- lm(log(SalePrice) ~ Overall.Qual + Gr.Liv.Area + House.Age + Tot.Bath, data = ames_tr)
@@ -104,7 +102,6 @@ y_hat_simple <- exp(predict(m_simple, newdata = ames_val))
 
 round(MAE(ames_val$SalePrice, y_hat_simple), 4)
 round(MSLE(ames_val$SalePrice, y_hat_simple), 4)
-
 
 # A larger model -----------------------------------------------------------------------------------------
 
@@ -121,13 +118,12 @@ y_hat_full <- exp(predict(m_full, newdata = ames_val))
 round(MAE(ames_val$SalePrice, y_hat_full), 5)
 round(MSLE(ames_val$SalePrice, y_hat_full), 5)
 
-
 # Forward and backward regression ----------------------------------------------------
 
 library(leaps)
 
 # Maximum number of covariates
-p_max <- length(m_full$coefficients) - 1
+p_max <- 125
 
 # Collinear variables will produce warnings
 m_forward <- regsubsets(log(SalePrice) ~ .,
@@ -165,7 +161,6 @@ round(coef(m_backward, 4, ames_tr), 6)
 
 # Quick sanity check on in-sample predictions
 head(exp(predict(m_backward, data = ames_tr, newdata = ames_tr, id = 2)))
-
 
 # Validation set — selection of p and performance comparisons ----------------------------------------
 
@@ -205,7 +200,6 @@ y_hat_back <- exp(predict(m_backward, data = ames_tr, newdata = ames_val, id = p
 
 MAE(ames_val$SalePrice, y_hat_back)
 MSLE(ames_val$SalePrice, y_hat_back)
-
 
 # Principal components regression ----------------------------------------------------------------------
 
@@ -248,7 +242,6 @@ abline(h = MSLE(ames_val$SalePrice, y_hat_simple), lty = "dotted")
 # Optimal PCR model on the validation set
 MAE(ames_val$SalePrice, y_hat_pcr[, , p_pcr_optimal])
 MSLE(ames_val$SalePrice, y_hat_pcr[, , p_pcr_optimal])
-
 
 # Ridge regression ----------------------------------------------------------------------
 
@@ -315,7 +308,6 @@ ridge_cv$lambda.1se
 # MSE (on log scale) for lambda.min and lambda.1se
 ridge_cv$cvm[ridge_cv$index]
 
-
 ## LARS --------------------------------------------------------------------------
 
 library(lars)
@@ -341,7 +333,6 @@ MSLE(ames_val$SalePrice, y_hat_lar)
 
 # Cross-validation for LAR
 lar_cv <- cv.lars(X_shrinkage, log(y_shrinkage), plot.it = TRUE)
-
 
 ## Elastic net (alpha = 0.5) -----------------------------------------------------------------------------------------
 
@@ -402,7 +393,6 @@ en_cv$lambda.1se
 # MSE (on log scale) for lambda.min and lambda.1se
 en_cv$cvm[en_cv$index]
 
-
 ## Random forests (spoiler!) ------------------------------------------------------------------------------
 
 library(ranger)
@@ -411,7 +401,6 @@ y_hat_rf <- exp(predict(m_rf, data = ames_val, type = "response")$predictions)
 
 MAE(ames_val$SalePrice, y_hat_rf)
 MSLE(ames_val$SalePrice, y_hat_rf)
-
 
 # Final comparison on the test set --------------------------------------------------------------------------------------------
 
