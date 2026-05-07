@@ -275,7 +275,7 @@ data_cv <- data.frame(
   MSLE   = apply(resid_log_ridge^2, 2, mean)
 )
 
-lambda_ridge_optimal <- lambda_ridge_grid[which.min(data_cv$MSLE)]
+lambda_ridge_optimal <- lambda_ridge_grid[which.min(data_cv$MAE)]
 lambda_ridge_optimal
 
 par(mfrow = c(1, 2))
@@ -359,7 +359,7 @@ data_cv <- data.frame(
   MSLE   = apply(resid_log_en^2, 2, mean)
 )
 
-lambda_en_optimal <- lambda_en_grid[which.min(data_cv$MSLE)]
+lambda_en_optimal <- lambda_en_grid[which.min(data_cv$MAE)]
 lambda_en_optimal
 
 par(mfrow = c(1, 2))
