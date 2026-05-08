@@ -58,6 +58,7 @@ ames <- ames %>%
     Alley = replace_na(Alley, "No alley"),
     Fence = replace_na(Fence, "No fence"),
     Fireplace.Qu = replace_na(Fireplace.Qu, "No fireplace"),
+    Misc.Feature = replace_na(Misc.Feature, "None"),
     Bsmt.Exposure = if_else(Bsmt.Exposure == "" | is.na(Bsmt.Exposure), "No basement", Bsmt.Exposure),
     Bsmt.Cond = replace_na(Bsmt.Cond, "No basement"),
     Bsmt.Qual = replace_na(Bsmt.Qual, "No basement"),
@@ -96,7 +97,6 @@ ames <- ames %>%
   mutate(
     Electrical   = ifelse(Electrical == "", "SBrkr", Electrical),
     Mas.Vnr.Type = ifelse(Mas.Vnr.Type == "", "None", Mas.Vnr.Type),
-    Misc.Feature = replace_na(Misc.Feature, "None"),
     Pool.QC      = ifelse(is.na(Pool.QC), "No", "Yes")
   )
 
