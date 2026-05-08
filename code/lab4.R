@@ -150,6 +150,7 @@ pct_loss_lasso_val <- select_by_pct_loss(lasso_val,
 pct_loss_lasso_val <- finalize_workflow(wf_lasso, pct_loss_lasso_val) %>% fit(data = ames_tr)
 
 print(tidy(pct_loss_lasso_val), n = 25)
+tidy(pct_loss_lasso_val) %>% filter(estimate > 0)
 
 # Elastic Net (mixture = 0.5) --------------------------------------------------------------------
 
@@ -181,9 +182,9 @@ pct_loss_en_val <- select_by_pct_loss(en_val,
   desc(penalty), limit = 10
 )
 pct_loss_en_val <- finalize_workflow(wf_lasso, pct_loss_en_val) %>% fit(data = ames_tr)
-
 print(tidy(pct_loss_en_val), n = 15)
 
+tidy(pct_loss_en_val) %>% filter(estimate > 0)
 
 # Final comparison on the test set -----------------------------------------------------------------------------------------
 
