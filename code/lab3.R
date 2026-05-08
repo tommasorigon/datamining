@@ -114,7 +114,7 @@ round(MAE(ames_val$SalePrice, y_hat_full), 5)
 library(leaps)
 
 # Maximum number of covariates
-p_max <- 125
+p_max <- length(coef(m_full)) - 1
 
 # Collinear variables will produce warnings
 m_forward <- regsubsets(log(SalePrice) ~ .,

@@ -131,6 +131,14 @@ ames <- ames %>%
     House.Age = Yr.Sold - Year.Remod.Add
   )
 
+# Drop potentially irrelevant features
+ames <- ames %>% select(
+  -c(Open.Porch.SF, Enclosed.Porch, X3Ssn.Porch, Screen.Porch),
+  -c(BsmtFin.SF.1, BsmtFin.SF.2, Bsmt.Unf.SF), # The variable Total.Bsmt.SF is already present
+  -c(Full.Bath, Half.Bath, Bsmt.Full.Bath, Bsmt.Half.Bath),
+  -c(Yr.Sold, Year.Remod.Add)
+)
+
 # ----------------------------------------
 # 6. Save cleaned dataset
 # ----------------------------------------

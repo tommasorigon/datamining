@@ -79,7 +79,7 @@ wf_pcr <- workflow() %>%
 pcr_val <- tune_grid(
   wf_pcr,
   resamples = val_resample,
-  grid      = tibble(num_comp = 1:125),
+  grid      = tibble(num_comp = 1:120),
   metrics   = my_metrics,
   control   = control_grid(save_workflow = TRUE, verbose = TRUE)
 )
