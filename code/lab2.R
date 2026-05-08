@@ -26,7 +26,6 @@ head(trawl_val)
 plot(trawl_tr$Longitude, trawl_tr$Score1, pch = 16, main = "Training set")
 plot(trawl_val$Longitude, trawl_val$Score1, pch = 16, main = "Validation set")
 
-
 # The tidymodels workflow ------------------------------------------------------------------------------
 
 m_linear <- linear_reg() %>%
