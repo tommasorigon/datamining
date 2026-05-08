@@ -119,7 +119,7 @@ ames <- ames %>%
   mutate(across(where(is.character), ~ fct_lump_lowfreq(.x)))
 
 # ----------------------------------------
-# 5. Feature engineering
+# 5. Feature engineering and variable selection
 # ----------------------------------------
 
 ames %>% select(contains("SF")) %>% head()
@@ -131,12 +131,12 @@ ames <- ames %>%
     House.Age = Yr.Sold - Year.Remod.Add
   )
 
-# Drop potentially irrelevant features
+# Drop potentially irrelevant features (this is a subjective choice, and it may be wrong!)
 ames <- ames %>% select(
-  -c(Open.Porch.SF, Enclosed.Porch, X3Ssn.Porch, Screen.Porch),
+  -c(Open.Porch.SF, Enclosed.Porch, X3Ssn.Porch, Screen.Porch), # Porch.SF is already present
   -c(BsmtFin.SF.1, BsmtFin.SF.2, Bsmt.Unf.SF), # The variable Total.Bsmt.SF is already present
-  -c(Full.Bath, Half.Bath, Bsmt.Full.Bath, Bsmt.Half.Bath),
-  -c(Yr.Sold, Year.Remod.Add)
+  -c(Full.Bath, Half.Bath, Bsmt.Full.Bath, Bsmt.Half.Bath), # Tot.Bath is already present
+  -c(Yr.Sold, Year.Remod.Add) # House.Age is already present
 )
 
 # ----------------------------------------
