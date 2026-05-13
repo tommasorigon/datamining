@@ -53,7 +53,6 @@ m_poly_3 <- wf_poly_3 %>%
 tidy(m_poly_3)
 
 augment(m_poly_3, new_data = trawl_val) %>% rmse(truth = Score1, estimate = .pred)
-augment(m_poly_3, new_data = trawl_val) %>% mae(truth = Score1, estimate = .pred)
 
 
 # Tunable recipe ----------------------------------------------------------------------------------------
@@ -67,7 +66,7 @@ wf_poly <- workflow() %>%
 
 val_resample <- validation_set(split)
 
-metric_list <- metric_set(rmse, mae)
+metric_list <- metric_set(rmse)
 
 grid_poly <- tibble(degree = 1:15)
 
@@ -83,10 +82,8 @@ poly_val <- tune_grid(
 collect_metrics(poly_val)
 
 autoplot(poly_val, metric = "rmse") + theme_bw()
-autoplot(poly_val, metric = "mae") + theme_bw()
 
 show_best(poly_val, metric = "rmse")
-show_best(poly_val, metric = "mae")
 
 # Fit the selected model on train + validation
 best_param_val <- select_best(poly_val, metric = "rmse")
@@ -114,10 +111,8 @@ poly_cv <- tune_grid(
 collect_metrics(poly_cv)
 
 autoplot(poly_cv, metric = "rmse") + theme_bw()
-autoplot(poly_cv, metric = "mae") + theme_bw()
 
 show_best(poly_cv, metric = "rmse")
-show_best(poly_cv, metric = "mae")
 
 # Fit the selected model on train + validation
 best_param_cv <- select_best(poly_cv, metric = "rmse")
@@ -130,10 +125,7 @@ tidy(best_lm_cv)
 # Final comparison on the test set --------------------------------------------------------------
 
 augment(best_lm_val, new_data = trawl_te) %>% rmse(truth = Score1, estimate = .pred)
-augment(best_lm_val, new_data = trawl_te) %>% mae(truth = Score1, estimate = .pred)
-
 augment(best_lm_cv, new_data = trawl_te) %>% rmse(truth = Score1, estimate = .pred)
-augment(best_lm_cv, new_data = trawl_te) %>% mae(truth = Score1, estimate = .pred)
 
 # Fitted curves on the test set
 seq_data <- tibble(Longitude = seq(142.5, 144, length.out = 200))
@@ -144,8 +136,4 @@ plot(trawl_te$Longitude, trawl_te$Score1,
 )
 lines(seq_data$Longitude, predict(best_lm_val, seq_data)$.pred, col = "red")
 lines(seq_data$Longitude, predict(best_lm_cv, seq_data)$.pred, col = "black")
-legend("topright",
-  legend = c("Validation-based", "CV-based"),
-  col = c("red", "black"),
-  lty = 1, bty = "n"
-)
+
