@@ -120,23 +120,7 @@ window.Quarto = {
   <li><a href="#naïve-bayes-classifier-and-gams" id="toc-naïve-bayes-classifier-and-gams" class="nav-link" data-scroll-target="#naïve-bayes-classifier-and-gams">☠️ - Naïve Bayes classifier and GAMs</a></li>
   <li><a href="#the-mgcv-r-package" id="toc-the-mgcv-r-package" class="nav-link" data-scroll-target="#the-mgcv-r-package">☠️ - The <code>mgcv</code> <strong>R</strong> package</a></li>
   <li><a href="#pros-and-cons-of-generalized-additive-models-gams" id="toc-pros-and-cons-of-generalized-additive-models-gams" class="nav-link" data-scroll-target="#pros-and-cons-of-generalized-additive-models-gams">Pros and cons of generalized additive models (GAMs)</a></li>
-  </ul></li>
-  <li><a href="#mars" id="toc-mars" class="nav-link" data-scroll-target="#mars">MARS</a>
-  <ul class="collapse">
-  <li><a href="#multivariate-adaptive-regression-splines" id="toc-multivariate-adaptive-regression-splines" class="nav-link" data-scroll-target="#multivariate-adaptive-regression-splines"><span class="orange">M</span>ultivariate <span class="orange">A</span>daptive <span class="orange">R</span>egression <span class="orange">S</span>plines</a></li>
-  <li><a href="#mars-additive-representation" id="toc-mars-additive-representation" class="nav-link" data-scroll-target="#mars-additive-representation">MARS additive representation</a></li>
-  <li><a href="#basis-functions-for-mars-reflected-pairs" id="toc-basis-functions-for-mars-reflected-pairs" class="nav-link" data-scroll-target="#basis-functions-for-mars-reflected-pairs">Basis functions for MARS (reflected pairs)</a></li>
-  <li><a href="#an-example-of-reflected-pair-basis" id="toc-an-example-of-reflected-pair-basis" class="nav-link" data-scroll-target="#an-example-of-reflected-pair-basis">An example of reflected pair basis</a></li>
-  <li><a href="#a-stepwise-construction" id="toc-a-stepwise-construction" class="nav-link" data-scroll-target="#a-stepwise-construction">A stepwise construction</a></li>
-  <li><a href="#an-example-of-tensor-product-basis" id="toc-an-example-of-tensor-product-basis" class="nav-link" data-scroll-target="#an-example-of-tensor-product-basis">An example of tensor product basis</a></li>
-  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
-  <li><a href="#basis-selection-and-backward-regression" id="toc-basis-selection-and-backward-regression" class="nav-link" data-scroll-target="#basis-selection-and-backward-regression">Basis selection and backward regression</a></li>
-  <li><a href="#heuristics-behind-mars" id="toc-heuristics-behind-mars" class="nav-link" data-scroll-target="#heuristics-behind-mars">Heuristics behind MARS</a></li>
-  <li><a href="#mars-modeling-of-trawl-data-d-1" id="toc-mars-modeling-of-trawl-data-d-1" class="nav-link" data-scroll-target="#mars-modeling-of-trawl-data-d-1">MARS modeling of <code>trawl</code> data (<span class="math inline">d = 1</span>)</a></li>
-  <li><a href="#mars-modeling-of-trawl-data-d-2" id="toc-mars-modeling-of-trawl-data-d-2" class="nav-link" data-scroll-target="#mars-modeling-of-trawl-data-d-2">MARS modeling of <code>trawl</code> data (<span class="math inline">d = 2</span>)</a></li>
-  <li><a href="#partial-effects" id="toc-partial-effects" class="nav-link" data-scroll-target="#partial-effects">Partial effects</a></li>
   <li><a href="#results-on-the-test-set" id="toc-results-on-the-test-set" class="nav-link" data-scroll-target="#results-on-the-test-set">Results on the test set</a></li>
-  <li><a href="#pros-and-cons-of-mars" id="toc-pros-and-cons-of-mars" class="nav-link" data-scroll-target="#pros-and-cons-of-mars">Pros and cons of MARS</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a>
   <ul class="collapse">
@@ -198,10 +182,9 @@ window.Quarto = {
 <li><p>In this unit we will cover the following <span class="orange">topics</span>:</p>
 <ul>
 <li>Generalized additive models (GAMs)</li>
-<li>Multivariate Adaptive Regression Splines (MARS)</li>
 </ul></li>
 <li><p>We have seen that <span class="blue">fully nonparametric</span> methods are plagued by the <span class="orange">curse of dimensionality</span>.</p></li>
-<li><p>GAMs and MARS are <span class="blue">semi-parametric</span> approaches that keep the model complexity under control so that:</p>
+<li><p>GAMs are <span class="blue">semi-parametric</span> approaches that keep the model complexity under control so that:</p>
 <ul>
 <li>they are more flexible than linear models;</li>
 <li>they are not hugely impacted by the curse of dimensionality.</li>
@@ -717,324 +700,6 @@ Cons
 </div>
 </div>
 </section>
-</section>
-<section id="mars" class="level1">
-<h1>MARS</h1>
-<section id="multivariate-adaptive-regression-splines" class="level2">
-<h2 class="anchored" data-anchor-id="multivariate-adaptive-regression-splines"><span class="orange">M</span>ultivariate <span class="orange">A</span>daptive <span class="orange">R</span>egression <span class="orange">S</span>plines</h2>
-<div class="columns">
-<div class="column" style="width:40%;">
-<p><img src="img/mars.png" class="img-fluid"></p>
-</div><div class="column" style="width:60%;">
-<ul>
-<li><p>MARS are a generalization of GAMs that avoid the <span class="orange">additivity assumption</span>.</p></li>
-<li><p>MARS allow modeling of <span class="blue">non–linear interactions</span> and not just non–linear marginal effects.</p></li>
-<li><p>MARS are at the same time:</p>
-<ul>
-<li>A generalization of <span class="blue">stepwise regression</span>;</li>
-<li>A method based on multi-dimensional <span class="orange">tensor splines</span>;</li>
-<li>A modification of <span class="blue">classification and regression trees</span> (CART).</li>
-</ul></li>
-<li><p>MARS combine many of the techniques we have seen in this course into a single sophisticated algorithm.</p></li>
-</ul>
-</div>
-</div>
-<!-- ```{r} -->
-<!-- #| fig-width: 7.8 -->
-<!-- #| fig-height: 4 -->
-<!-- #| fig-align: center -->
-<!-- x <- y <- seq(from = 0, to = 1, length = 50) -->
-<!-- xy_seq <- expand.grid(x, y) -->
-<!-- z <- matrix(apply(xy_seq, 1, function(x) pmax(0, x[1] - 0.5) * pmax(0, 0.75 - x[2])), nrow = length(x)) -->
-<!-- persp(x, y, z, theta = -60, phi = 20, col = "#FF8C00", shade = 0.5, xlab = "x1", ylab = "x2", zlab = "h(x)", ) -->
-<!-- ``` -->
-</section>
-<section id="mars-additive-representation" class="level2">
-<h2 class="anchored" data-anchor-id="mars-additive-representation">MARS additive representation</h2>
-<ul>
-<li>MARS is an <span class="blue">additive model</span> of the form: <span class="math display">
-f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^M \beta_m h_m(\bm{x}),
-</span> where <span class="math inline">h_m(\bm{x})</span> are <span class="orange">basis functions</span> and <span class="math inline">\beta = (\beta_1,\dots,\beta_M)^T</span> are regression coefficients.</li>
-</ul>
-<ul>
-<li><p>Once the basis functions are specified, the estimate for <span class="math inline">\hat{\beta}</span> is straightforward, using for example <span class="blue">least squares</span> or the IWLS algorithm in the classification case.</p></li>
-<li><p>The main distinction with GAMs is that in MARS the basis functions are <span class="orange">estimated</span> from the <span class="orange">data</span> and therefore they are <span class="orange">not pre-specified</span> in advance.</p></li>
-</ul>
-<ul>
-<li>MARS is essentially a smart <span class="blue">heuristic algorithm</span> for selecting a collection of basis functions <span class="math inline">h_1(\bm{x}),\dots, h_M(\bm{x})</span> that hopefully does not incur in the <span class="orange">curse of dimensionality</span>.</li>
-</ul>
-</section>
-<section id="basis-functions-for-mars-reflected-pairs" class="level2">
-<h2 class="anchored" data-anchor-id="basis-functions-for-mars-reflected-pairs">Basis functions for MARS (reflected pairs)</h2>
-<ul>
-<li>The MARS algorithm begins by including just the <span class="blue">intercept term</span>, i.e.&nbsp;<span class="math inline">f(\bm{x}; \beta) = \beta_0</span>. Then, we proceed by <span class="orange">iteratively</span> adding basis functions.</li>
-</ul>
-<ul>
-<li>In MARS the basis functions are always <span class="orange">coupled</span> (or <span class="orange">reflected</span>), meaning that we always add them in pairs to the additive specification.</li>
-</ul>
-<ul>
-<li><p>Let us consider the following set of <span class="blue">pairs</span> of <span class="blue">basis functions</span> (linear splines): <span class="math display">
-\mathcal{C} = \{(x_j - \xi)_+,  (\xi - x_j)_+ : \xi \in \{x_{1j},\dots,x_{nj}\}, \ j=1,\dots,p \}.
-</span> For example, two basis functions could be <span class="math inline">h_1(\bm{x}) = (x_1 - 0.5)_+</span> and <span class="math inline">h_2(\bm{x}) = (0.5 - x_1)_+</span>.</p></li>
-<li><p>The <span class="blue">knots</span> are placed in correspondence of the <span class="blue">observed data</span>. Hence, there are in <span class="orange">total</span> <span class="math inline">2 n p</span> <span class="orange">possible basis functions</span> among which we can choose.</p></li>
-</ul>
-<ul>
-<li>In the <span class="blue">first step</span> of the MARS algorithm, we identify the pair <span class="math inline">h_1(\bm{x}) = (x_j - \xi)_+</span> and <span class="math inline">h_2(\bm{x}) = (\xi - x_j)_+</span> that, together with the <span class="blue">intercept</span>, <span class="orange">minimize</span> the <span class="orange">loss function</span>.</li>
-</ul>
-</section>
-<section id="an-example-of-reflected-pair-basis" class="level2">
-<h2 class="anchored" data-anchor-id="an-example-of-reflected-pair-basis">An example of reflected pair basis</h2>
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="un_F_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="1950"></p>
-</figure>
-</div>
-</div>
-</div>
-<ul>
-<li>The function <span class="math inline">h_1(x) = (x - 0.5)_+</span> (<span class="blue">blue</span>) and its reflection <span class="math inline">h_2(x) = (0.5 - x)_+</span> (<span class="orange">orange</span>).</li>
-</ul>
-</section>
-<section id="a-stepwise-construction" class="level2">
-<h2 class="anchored" data-anchor-id="a-stepwise-construction">A stepwise construction</h2>
-<div class="incremental">
-<ul class="incremental">
-<li><p>Hence, <span class="orange">after</span> the <span class="orange">first step</span> of the MARS algorithm, our model for example could be <span class="math display">
-f(\bm{x}; \beta) = \beta_0 + \sum_{m=1}^2\beta_m h_m(\bm{x}) = \beta_0 + \beta_1 (x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+.
-</span></p></li>
-<li><p>In the subsequent step, we consider a <span class="blue">new pair</span> of basis functions <span class="math inline">(x_j - \xi)_+, (\xi - x_j)_+</span> in <span class="math inline">\mathcal{C}</span>, but this time we are allowed to perform two kind of operations:</p>
-<ol class="incremental" type="i">
-<li>We can include the new pair to the predictor in an <span class="orange">additive</span> way, obtaining for example <span class="math display">
-   f(\bm{x}; \beta) =  \beta_0 + \beta_1(x_1 - 0.5)_+ + \beta_2(0.5 - x_1)_+ + \beta_3\textcolor{red}{ (x_2 - 0.75)_+} + \beta_4\textcolor{red}{(0.75 - x_2)_+}.
-   </span></li>
-<li>We can include the new pair in a <span class="orange">multiplicative</span> way, by considering the products between the <span class="blue">new basis</span> and one of the <span class="blue">old bases</span> of the model, obtaining for instance <span class="math display">
-   \begin{aligned}
-   f(\bm{x}; \beta) =  \beta_0 &amp;+ \beta_1\textcolor{darkblue}{(x_1 - 0.5)_+} + \beta_2(0.5 - x_1)_+ \\
-   &amp;+ \beta_3 \textcolor{red}{(x_1 - 0.5)_+(x_2 - 0.75)_+} + \beta_4 \textcolor{red}{(x_1 - 0.5)_+(0.75 - x_2)_+}.
-   \end{aligned}
-   </span></li>
-</ol></li>
-</ul>
-</div>
-</section>
-<section id="an-example-of-tensor-product-basis" class="level2">
-<h2 class="anchored" data-anchor-id="an-example-of-tensor-product-basis">An example of tensor product basis</h2>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="img/mars.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:50.0%"></p>
-</figure>
-</div>
-<ul>
-<li>The <span class="orange">product</span> function <span class="math inline">h(\bm{x}) = (x_1 - 0.5)_+ (x_2 - 0.75)_+</span> in the range <span class="math inline">(0, 1)^2</span>.</li>
-</ul>
-</section>
-<section id="section" class="level2">
-<h2 class="anchored" data-anchor-id="section"></h2>
-<div class="callout callout-style-simple callout-note no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-MARS algorithm (degree <span class="math inline">d</span>)
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<div class="incremental">
-<ol class="incremental" type="1">
-<li><p>Initialize <span class="math inline">f(\bm{x}; \beta) = \beta_0</span> and let <span class="math inline">K</span> be <span class="orange">maximum number of pairs</span>, so that <span class="math inline">M = 2K</span>.</p></li>
-<li><p>Identify the <span class="blue">initial pair</span> of basis functions <span class="math inline">h_1</span> and <span class="math inline">h_2</span> in <span class="math inline">\mathcal{C}</span> that minimize the loss function. Then, let <span class="math inline">h_0(\bm{x}) = 1</span> and set <span class="math inline">\mathcal{M}_1 = \{h_0, h_1, h_2\}</span>.</p></li>
-<li><p>For <span class="math inline">k = 1,\dots,K - 1</span>, do:</p>
-<ol class="incremental" type="i">
-<li><p>Let <span class="math inline">\mathcal{M}_k = \{h_0, h_1,\dots,h_{2k}\}</span> be the basis functions already present in the model.</p></li>
-<li><p>Consider a <span class="blue">novel pair</span> of bases <span class="math inline">\tilde{h}_1,\tilde{h}_2 \in \mathcal{C} \setminus \mathcal{M}_k</span>. A <span class="orange">candidate pair</span> is obtained by <span class="orange">multiplying</span> <span class="math inline">\tilde{h}_1,\tilde{h}_2</span> with one of the bases in <span class="math inline">\mathcal{M}_k</span>. Note that <span class="math inline">h_0 \in \mathcal{M}_k</span>.</p></li>
-<li><p>A <span class="orange">valid</span> candidate basis does not contain the same variable <span class="math inline">x_j</span> more than once in the product, and it must involve at most <span class="blue"><span class="math inline">d</span> product terms</span>.</p></li>
-<li><p>Identify the <span class="blue">optimal pair</span> among the candidates at steps (ii)-(iii) that <span class="orange">reduces</span> the <span class="orange">loss function</span> the most. This results in a new pair of bases <span class="math inline">h_{2k+1}, h_{2k+2}</span>.</p></li>
-<li><p>Set <span class="math inline">\mathcal{M}_{k+1} \leftarrow \mathcal{M}_k \cup \{h_{2k+1}, h_{2k+2}\}</span>.</p></li>
-</ol></li>
-<li><p>Return the collection of models <span class="math inline">\mathcal{M}_1,\dots,\mathcal{M}_K</span>.</p></li>
-</ol>
-</div>
-</div>
-</div>
-</section>
-<section id="basis-selection-and-backward-regression" class="level2">
-<h2 class="anchored" data-anchor-id="basis-selection-and-backward-regression">Basis selection and backward regression</h2>
-<ul>
-<li>The <span class="orange">degree <span class="math inline">d</span></span> of the MARS algorithms allow to control the order of interactions of the model. Note that when <span class="blue"><span class="math inline">d = 1</span></span> it corresponds to a GAM (<span class="blue">no interactions</span>).</li>
-</ul>
-<ul>
-<li><p>The final model with <span class="math inline">M</span> terms is very likely <span class="orange">overfitting</span> the data. Hence, it is important to remove some of the bases using <span class="blue">backward regression</span> or best subset.</p></li>
-<li><p>The <span class="orange">optimal reduced model</span> can be selected via cross-validation, but generalized cross-validation is often preferred due to computational reasons.</p></li>
-</ul>
-<ul>
-<li><p>Unfortunately, it is not clear how to compute the <span class="orange">effective degrees of freedom</span> that are needed in the <span class="math inline">\text{GCV}</span> formula.</p></li>
-<li><p>In MARS, however, we do not have any miraculous simple formula like in LAR or ridge.</p></li>
-<li><p>Simulation studies suggest that, for every knot placed, we should pay a <span class="orange">price</span> of about <span class="orange"><span class="math inline">3</span> degrees of freedom</span>. However, this result is quite <span class="blue">heuristic</span>.</p></li>
-</ul>
-</section>
-<section id="heuristics-behind-mars" class="level2">
-<h2 class="anchored" data-anchor-id="heuristics-behind-mars">Heuristics behind MARS</h2>
-<ul>
-<li><p>The basis functions used in MARS have the advantage of <span class="orange">operating locally</span>.</p></li>
-<li><p>When the basis functions in <span class="math inline">\mathcal{C}</span> are multiplied together, the result is <span class="orange">nonzero</span> only over the small part of the feature space where <span class="blue">both component</span> functions are <span class="blue">nonzero</span>.</p></li>
-</ul>
-<ul>
-<li><p>Hence, the estimated function is built up <span class="blue">parsimoniously</span>, by making <span class="orange">small local modifications</span> to the fit obtained at the previous step.</p></li>
-<li><p>This is important, since one should “spend” degrees of freedom carefully in high dimensions, to avoid incurring into the <span class="orange">curse of dimensionality</span>.</p></li>
-</ul>
-<ul>
-<li><p>The constructional logic of the model is <span class="orange">hierarchical</span>. We can multiply new basis functions that involve new variables only to the basis functions already in the model.</p></li>
-<li><p>Hence, an <span class="blue">interaction</span> of a <span class="blue">higher order</span> can only be introduced <span class="orange">when</span> interactions of a <span class="orange">lower order are present</span>.</p></li>
-<li><p>This constraint, introduced for computational reasons, does not necessarily reflect the real behavior of the data, but it often helps in <span class="blue">interpreting the results</span>.</p></li>
-</ul>
-</section>
-<section id="mars-modeling-of-trawl-data-d-1" class="level2">
-<h2 class="anchored" data-anchor-id="mars-modeling-of-trawl-data-d-1">MARS modeling of <code>trawl</code> data (<span class="math inline">d = 1</span>)</h2>
-<ul>
-<li>We fit a MARS model with <span class="math inline">d = 1</span> (<span class="orange">no interactions</span>), using <span class="math inline">M = 20</span>. Then, the model was simplified using <span class="blue">best subset selection</span> and <span class="math inline">\text{GCV}</span>. The results are:</li>
-</ul>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Term</th>
-<th>Basis function</th>
-<th>Coefficient</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">h_0(\bm{x})</span></td>
-<td><span class="math inline">1</span></td>
-<td>1.382</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">h_1(\bm{x})</span></td>
-<td><span class="math inline">(\texttt{Longitude} - 143.28)_+</span></td>
-<td>-4.275</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">h_2(\bm{x})</span></td>
-<td><span class="math inline">(\texttt{Longitude} - 143.58)_+</span></td>
-<td>3.984</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li>To clarify, this specification corresponds to the following <span class="blue">estimated</span> regression <span class="blue">function</span>: <span class="math display">
-f(\bm{x}_i; \hat{\beta}) = 1.382 - 4.275(\texttt{Longitude}_i - 143.28)_+ + 3.984 (\texttt{Longitude}_i - 143.58)_+,
-</span> which has the structure of a GAM. However, the <span class="orange">estimation procedure</span> is <span class="orange">different</span>.</li>
-</ul>
-<ul>
-<li><p>The estimated function <span class="math inline">f(\bm{x}_i; \hat{\beta})</span> is <span class="blue">remarkably simple</span> and it involves only the <code>Longitude</code>. Moreover, the relationship between <code>Score</code> and <code>Longitude</code> is non-linear.</p></li>
-<li><p>Both these considerations are consistent with the previous findings, obtained using GAMs.</p></li>
-</ul>
-</section>
-<section id="mars-modeling-of-trawl-data-d-2" class="level2">
-<h2 class="anchored" data-anchor-id="mars-modeling-of-trawl-data-d-2">MARS modeling of <code>trawl</code> data (<span class="math inline">d = 2</span>)</h2>
-<ul>
-<li>We fit a MARS model with <span class="math inline">d = 2</span> (<span class="orange">first order interactions</span>), using <span class="math inline">M = 20</span>. As before, the model was simplified using <span class="blue">best subset selection</span> and <span class="math inline">\text{GCV}</span>. The results are:</li>
-</ul>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 12%">
-<col style="width: 56%">
-<col style="width: 30%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Term</th>
-<th>Basis function</th>
-<th>Coefficient</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">h_0(\bm{x})</span></td>
-<td><span class="math inline">1</span></td>
-<td>1.318</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">h_1(\bm{x})</span></td>
-<td><span class="math inline">(\texttt{Longitude} - 143.28)_+</span></td>
-<td>-5.388</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">h_2(\bm{x})</span></td>
-<td><span class="math inline">(\texttt{Longitude} - 143.58)_+</span></td>
-<td>4.172</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">h_3(\bm{x})</span></td>
-<td><span class="math inline">I(\texttt{Year} = \texttt{1993})(\texttt{Longitude} - 143.05)_+</span></td>
-<td>0.679</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">h_4(\bm{x})</span></td>
-<td><span class="math inline">[\texttt{Latitude} - (-11.72)]_+ (\texttt{Longitude} - 143.05)_+</span></td>
-<td>1.489</td>
-</tr>
-</tbody>
-</table>
-<ul>
-<li><p>As expected, a degree <span class="math inline">2</span> MARS lead to a more sophisticated fit involving <span class="blue">interactions</span> between <code>Year</code> and <code>Longitude</code> as well as between <code>Latitude</code> and <code>Longitude</code>.</p></li>
-<li><p>We can explore these effects using <span class="orange">partial plots</span>.</p></li>
-</ul>
-</section>
-<section id="partial-effects" class="level2">
-<h2 class="anchored" data-anchor-id="partial-effects">Partial effects</h2>
-<div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Linear model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">GAM model</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false" href="">MARS (degree 1)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-4-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-4" role="tab" aria-controls="tabset-1-4" aria-selected="false" href="">MARS (degree 2)</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="un_F_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="2250"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="un_F_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="2250"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="un_F_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="2250"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div id="tabset-1-4" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-4-tab">
-<div class="cell" data-layout-align="center">
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="un_F_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="2250"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
 <section id="results-on-the-test-set" class="level2">
 <h2 class="anchored" data-anchor-id="results-on-the-test-set">Results on the test set</h2>
 <ul>
@@ -1043,22 +708,12 @@ f(\bm{x}_i; \hat{\beta}) = 1.382 - 4.275(\texttt{Longitude}_i - 143.28)_+ + 3.98
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
-<colgroup>
-<col style="width: 7%">
-<col style="width: 16%">
-<col style="width: 19%">
-<col style="width: 8%">
-<col style="width: 23%">
-<col style="width: 23%">
-</colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: left;"></th>
 <th style="text-align: right;">Null model</th>
 <th style="text-align: right;">Linear model</th>
 <th style="text-align: right;">GAM</th>
-<th style="text-align: right;">MARS (degree 1)</th>
-<th style="text-align: right;">MARS (degree 2)</th>
 </tr>
 </thead>
 <tbody>
@@ -1067,16 +722,12 @@ f(\bm{x}_i; \hat{\beta}) = 1.382 - 4.275(\texttt{Longitude}_i - 143.28)_+ + 3.98
 <td style="text-align: right;">0.611</td>
 <td style="text-align: right;">0.361</td>
 <td style="text-align: right;">0.315</td>
-<td style="text-align: right;">0.305</td>
-<td style="text-align: right;">0.334</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">RMSE</td>
 <td style="text-align: right;">0.718</td>
 <td style="text-align: right;">0.463</td>
 <td style="text-align: right;">0.408</td>
-<td style="text-align: right;">0.390</td>
-<td style="text-align: right;">0.407</td>
 </tr>
 </tbody>
 </table>
@@ -1085,47 +736,23 @@ f(\bm{x}_i; \hat{\beta}) = 1.382 - 4.275(\texttt{Longitude}_i - 143.28)_+ + 3.98
 <ul>
 <li>It is quite clear that including a <span class="blue">non-linear</span> specification for the <code>Longitude</code> was indeed a good idea that improved the predictive performance.</li>
 </ul>
-<ul>
-<li><p>Somewhat surprisingly, the <span class="blue">best model</span> is the extremely simple (yet effective) <span class="orange">MARS of degree <span class="math inline">1</span></span>.</p></li>
-<li><p>The weak interactions effects captured by the MARS of degree <span class="math inline">2</span> led to an increased variance of the estimates, slightly deteriorating the fit.</p></li>
-</ul>
-</section>
-<section id="pros-and-cons-of-mars" class="level2">
-<h2 class="anchored" data-anchor-id="pros-and-cons-of-mars">Pros and cons of MARS</h2>
-<div class="callout callout-style-simple callout-tip no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Pros
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li>MARS constructs a sophisticated model by <span class="blue">sequentially refining</span> the previous fit.</li>
-<li>MARS can capture <span class="orange">interaction</span> effects.</li>
-<li>The MARS algorithm can be employed for both regression and classification problems.</li>
-<li>The final model is often interpretable. The order of the interactions can be controlled by fixing <span class="math inline">d</span>.</li>
-</ul>
-</div>
-</div>
-<div class="callout callout-style-simple callout-warning no-icon callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Cons
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<ul>
-<li><p>MARS can quickly <span class="orange">overfit</span> the data if the model complexity is not kept under control.</p></li>
-<li><p>Unfortunately, this is not always easy to do as there is <span class="orange">limited theoretical support</span> that guides us in the choice of the effective degree of freedom.</p></li>
-</ul>
-</div>
-</div>
+<!-- . . . -->
+<!-- - Somewhat surprisingly, the [best model]{.blue} is the extremely simple (yet effective) [MARS of degree $1$]{.orange}. -->
+<!-- - The weak interactions effects captured by the MARS of degree $2$ led to an increased variance of the estimates, slightly deteriorating the fit. -->
+<!-- ## Pros and cons of MARS -->
+<!-- ::: callout-tip -->
+<!-- #### Pros -->
+<!-- - MARS constructs a sophisticated model by [sequentially refining]{.blue} the previous fit. -->
+<!-- - MARS can capture [interaction]{.orange} effects. -->
+<!-- - The MARS algorithm can be employed for both regression and classification problems. -->
+<!-- - The final model is often interpretable. The order of the interactions can be controlled by fixing $d$. -->
+<!-- ::: -->
+<!-- . . . -->
+<!-- ::: callout-warning -->
+<!-- #### Cons -->
+<!-- - MARS can quickly [overfit]{.orange} the data if the model complexity is not kept under control. -->
+<!-- - Unfortunately, this is not always easy to do as there is [limited theoretical support]{.orange} that guides us in the choice of the effective degree of freedom.  -->
+<!-- ::: -->
 </section>
 </section>
 <section id="references" class="level1">
@@ -1141,7 +768,6 @@ Cons
 <li><span class="orange">Historical references</span>
 <ul>
 <li>Hastie, T., and Tibshirani, R. (1986). <a href="https://projecteuclid.org/journals/statistical-science/volume-1/issue-3/Generalized-Additive-Models/10.1214/ss/1177013604.full">Generalized Additive Models</a>. <em>Statistical Science</em> <strong>1</strong>(3), 209-318.</li>
-<li>Friedman, Jerome H. 1991. <a href="https://projecteuclid.org/journals/annals-of-statistics/volume-19/issue-1/Multivariate-Adaptive-Regression-Splines/10.1214/aos/1176347963.full">Multivariate Adaptive Regression Splines</a>. <em>Annals of Statistics</em> <strong>19</strong>(1), 1-141.</li>
 </ul></li>
 </ul>
 </section>

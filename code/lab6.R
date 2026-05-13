@@ -1,6 +1,6 @@
 # ----------------------------------------
 # Title: LAB 6 (Wisconsin Diabetic Retinopathy)
-#        GAM and MARS
+#        GAM
 # Author: Tommaso Rigon
 # ----------------------------------------
 
@@ -121,71 +121,12 @@ collect_metrics(cv_gam_full)
 
 m_gam_full <- wf_gam_full %>% fit(data = wesdr_tr)
 
-# ---- MARS — direct fit (for inspection) ----------------------------------------------------------
-
-library(earth)
-
-mars_fit <- earth(
-  ret ~ dur + gly + bmi,
-  data = wesdr_tr,
-  glm = list(family = binomial),
-  degree = 1
-)
-
-summary(mars_fit)
-print(mars_fit)
-
-# Variable importance: GCV contribution of each predictor across all basis functions.
-evimp(mars_fit)
-
-# MARS with two-way interactions (degree = 2)
-mars_fit2 <- earth(
-  ret ~ dur + gly + bmi,
-  data   = wesdr_tr,
-  glm    = list(family = binomial),
-  degree = 2
-)
-
-summary(mars_fit2)
-evimp(mars_fit2)
-
-# ---- MARS — tuning prod_degree and num_terms via 10-fold CV --------------------------------------
-
-base_recipe <- recipe(ret ~ dur + gly + bmi, data = wesdr_tr)
-
-wf_mars <- workflow() %>%
-  add_recipe(base_recipe) %>%
-  add_model(
-    mars(prod_degree = tune(), mode = "classification") %>%
-      set_engine("earth")
-  )
-
-cv_mars <- tune_grid(
-  wf_mars,
-  resamples = cv_samples,
-  grid      = expand_grid(prod_degree = c(1, 2, 3)),
-  metrics   = my_metrics
-)
-
-collect_metrics(cv_mars)
-autoplot(cv_mars, metric = "mn_log_loss") + theme_bw()
-autoplot(cv_mars, metric = "roc_auc") + theme_bw()
-
-show_best(cv_mars, metric = "mn_log_loss")
-show_best(cv_mars, metric = "roc_auc")
-
-best_cv_mars <- select_best(cv_mars, metric = "mn_log_loss")
-best_cv_mars <- finalize_workflow(wf_mars, best_cv_mars) %>% fit(data = wesdr_tr)
-best_cv_mars
-
 # ---- Final model fit and test-set evaluation -----------------------------------------------------
 
 fitted_models <- list(
   GLM = m_glm,
   GAM_simple = m_gam_simple,
-  GAM_full = m_gam_full,
-  MARS = best_cv_mars
-)
+  GAM_full = m_gam_full)
 
 results <- imap_dfr(fitted_models, function(model, name) {
   augment(model, new_data = wesdr_te) %>%
