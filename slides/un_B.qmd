@@ -1050,7 +1050,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
 -   The error on each of the $k$th folds is computed as
     $$\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
     $$ where $|V_k|$ is the cardinality of $V_k$, i.e.
-    $V_k \approx n / K$.
+    $|V_k| \approx n / K$.
 
 -   We summarize the above errors using the mean, obtaining the
     following [estimate]{.orange} for the [expected prediction
@@ -1069,7 +1069,7 @@ ggplot(data = data_bv, aes(x = p, y = value, col = `Error term`)) +
     r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
     $$ so that $\widehat{\text{Err}} = \bar{r}$. Does it coincide with
     the estimate $\widehat{\text{Err}}$ presented in the previous slide?
-    Recall that $V_k \approx n / K$...
+    Recall that $|V_k| \approx n / K$...
 
 -   Then, a simple estimate for the standard error of
     $\widehat{\text{Err}}$ is $$

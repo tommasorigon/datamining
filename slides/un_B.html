@@ -819,7 +819,7 @@ Bias-variance decomposition
 <li><p>In the <span class="blue"><span class="math inline">K</span>-fold cross validation</span> we compute for each fold <span class="math inline">k</span> we fit a model <span class="math inline">\hat{f}_{-V_k}(\bm{x})</span> without using the observations of <span class="math inline">V_k</span>.</p></li>
 <li><p>Hence, the model must be estimated <span class="orange"><span class="math inline">K</span> times</span>, which could be computationally challenging.</p></li>
 <li><p>The error on each of the <span class="math inline">k</span>th folds is computed as <span class="math display">\widehat{\text{Err}}_{V_k} = \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\},
-</span> where <span class="math inline">|V_k|</span> is the cardinality of <span class="math inline">V_k</span>, i.e. <span class="math inline">V_k \approx n / K</span>.</p></li>
+</span> where <span class="math inline">|V_k|</span> is the cardinality of <span class="math inline">V_k</span>, i.e. <span class="math inline">|V_k| \approx n / K</span>.</p></li>
 <li><p>We summarize the above errors using the mean, obtaining the following <span class="orange">estimate</span> for the <span class="orange">expected prediction error</span>: <span class="math display">\widehat{\mathrm{Err}} = \frac{1}{K} \sum_{k=1}^{K} \widehat{\text{Err}}_{V_k}= \frac{1}{K} \sum_{k=1}^{K}\left[ \frac{1}{|V_k|} \sum_{i \in V_k} \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\} \right].</span></p></li>
 </ul>
 </div>
@@ -831,7 +831,7 @@ Bias-variance decomposition
 <li><p>An advantage of CV is that <span class="blue">variance</span> of the Monte Carlo estimate <span class="math inline">\widehat{\mathrm{Err}}</span> can be quantified.</p></li>
 <li><p>Let us define cross-validated “<span class="orange">residuals</span>” of our procedure as follows <span class="math display">
 r_i = \mathscr{L}\{y_i; \hat{f}_{-V_k}(\bm{x}_i)\}, \qquad i=1,\dots,n.
-</span> so that <span class="math inline">\widehat{\text{Err}} = \bar{r}</span>. Does it coincide with the estimate <span class="math inline">\widehat{\text{Err}}</span> presented in the previous slide? Recall that <span class="math inline">V_k \approx n / K</span>…</p></li>
+</span> so that <span class="math inline">\widehat{\text{Err}} = \bar{r}</span>. Does it coincide with the estimate <span class="math inline">\widehat{\text{Err}}</span> presented in the previous slide? Recall that <span class="math inline">|V_k| \approx n / K</span>…</p></li>
 <li><p>Then, a simple estimate for the standard error of <span class="math inline">\widehat{\text{Err}}</span> is <span class="math display">
 \widehat{\text{se}} = \frac{1}{\sqrt{n}} \text{sd}(r) = \frac{1}{\sqrt{n}} \sqrt{\frac{1}{n-1}\sum_{i=1}^n (r_i - \bar{r})^2}.
 </span></p></li>
