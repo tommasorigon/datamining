@@ -1,238 +1,213 @@
 # ----------------------------------------
-# Title: LAB 5 (Juice data, classification)
+# Title: LAB 5 (auto data, nonparametric regression)
 # Author: Tommaso Rigon
 # ----------------------------------------
 
-rm(list = ls())
+rm(list = ls()) # Clean the environment
 
-# The data on fruit juice purchases are taken from Chapter 11 of
-# Foster, Stine and Waterman "Business Analysis Using Regression".
+# The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
+auto <- read.table("../data/auto.txt", header = TRUE)
+auto <- subset(auto, select = c(city.distance, engine.size))
 
-# The dataset records 1070 fruit juice purchases of two brands (MM and CH)
-# in US supermarkets. Variables:
-#
-# choice       purchased brand (factor, 2 levels: CH / MM)
-# id.cust      customer identifier
-# week         week of purchase
-# priceCH      shelf price for brand CH (USD)
-# priceMM      shelf price for brand MM (USD)
-# discountCH   discount applied to CH (USD)
-# discountMM   discount applied to MM (USD)
-# loyaltyCH    loyalty indicator for CH  (= 1 - loyaltyMM)
-# loyaltyMM    loyalty indicator for MM  (updated by +/- 20% of gap to 1/0 at each purchase)
-# store        store identifier (factor, 5 levels)
-# ...          other variables derived from the above
+# Summary
+str(auto)
 
-library(tidyverse)
-library(tidymodels)
+y <- auto$city.distance # As the name suggests: city distance
+x <- auto$engine.size # And engine size (L)
 
-juice <- read_table("https://tommasorigon.github.io/StatIII/data/juice.txt")
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
-glimpse(juice)
+# Set of points at which the curve is evaluated
+newx <- data.frame(x = seq(min(x), max(x), length = 1000))
 
-# buyCH and choice represent the same variable in different formats (factor vs int)
-# store, StoreID, store7 refer to the same quantity
-juice <- juice %>%
-  mutate(choice = factor(choice), store = factor(store), id.cust = factor(id.cust)) %>%
-  select(-c(StoreID, store7, buyCH))
+# p = 1 (linear regression)
+lines(newx$x, predict(lm(y ~ x), newdata = newx), lty = 1, col = "black")
 
-# salepriceCH = priceCH - discountCH  =>  perfect collinearity among the three
-plot(juice$priceCH - juice$discountCH, juice$salepriceCH)
-plot(juice$priceMM - juice$discountMM, juice$salepriceMM)
+# p = 2 (parabolic regression)
+lines(newx$x, predict(lm(y ~ x + I(x^2)), newdata = newx), lty = 2, col = "darkorange")
 
-# pricediff    = salepriceMM - salepriceCH  (collinear with its components)
-# listpricediff = priceMM - priceCH         (idem)
-plot(juice$salepriceMM - juice$salepriceCH, juice$pricediff)
-plot(juice$priceMM - juice$priceCH, juice$listpricediff)
+# p = 3 (cubic regression)
+# Here I am using the more convenient syntax "poly"
+lines(newx$x, predict(lm(y ~ poly(x, degree = 3)), newdata = newx), lty = 3, col = "darkblue")
 
-# pctdiscMM, pctdiscCH, specialCH are also potentially problematic
+# If I use an extreme value for the degree, it does not work well anymore
+lines(newx$x, predict(lm(y ~ poly(x, degree = 10)), newdata = newx), lty = 6)
 
+# Nadaraya-Watson estimator ---------------------------------------------
 
-# Train / test split: 75% train / 25% test ----------------------------------------
-# Model selection is performed via 10-fold CV on the training set (no separate validation set).
+# Notice the bandwidth parametrization and the kernel used
+?ksmooth
 
-set.seed(123)
-split <- initial_split(juice, prop = 3 / 4)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
-juice_tr <- training(split)
-juice_te <- testing(split) # kept untouched until the very end
+h_param <- 1 # Let us try a few parameters here
+band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
+m_nw1 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
+lines(m_nw1)
 
+h_param <- 0.2 # Let us try a few parameters here
+band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
+m_nw2 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
+lines(m_nw2, col = "darkorange")
 
-# Recipes -------------------------------------------------------------------------------------------
+h_param <- 0.1 # Let us try a few parameters here
+band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
+m_nw3 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
+lines(m_nw3, col = "darkblue")
 
-m_logit <- logistic_reg() %>%
-  set_engine("glm")
+# Local polynomial regression (KernSmooth)---------------------------------------
 
-# Base recipe: dummy-encode factors, remove zero-variance predictors
-base_recipe <- recipe(choice ~ ., data = juice_tr) %>%
-  step_dummy(all_factor_predictors()) %>%
-  step_zv(all_predictors())
+# install.packages("KernSmooth")
+library(KernSmooth)
 
-# Shrinkage methods additionally require centring and scaling
-shrinkage_recipe <- base_recipe %>%
-  step_normalize(all_predictors())
+?locpoly
 
-# Metrics
-my_metrics <- metric_set(roc_auc, mn_log_loss)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
-# 10-fold cross-validation on the training set
-cv_samples <- vfold_cv(juice_tr, v = 10)
+# Local linear regression (with a given bandwidth)
+m_local_linear <- locpoly(x, y, degree = 1, bandwidth = 0.5, kernel = "normal", gridsize = 500)
+lines(m_local_linear)
 
+# Local quadratic regression
+m_local_quadratic <- locpoly(x, y, degree = 2, bandwidth = 0.5, kernel = "normal", gridsize = 500)
+lines(m_local_quadratic, lty = 2, col = "darkorange")
 
-# Simple GLM -----------------------------------------------------------------------------------------
+# Local cubic regression
+m_local_cubic <- locpoly(x, y, degree = 3, bandwidth = 0.5, kernel = "normal", gridsize = 500)
+lines(m_local_cubic, lty = 2, col = "darkblue")
 
-wf_simple <- workflow() %>%
-  add_recipe(recipe(choice ~ loyaltyCH + pricediff + store, data = juice_tr)) %>%
-  add_model(m_logit)
+# Local polynomial regression (sm package) ------------------------------------------
 
-cv_simple <- wf_simple %>%
-  fit_resamples(resamples = cv_samples, metrics = my_metrics)
+# install.packages("sm")
+library(sm)
 
-collect_metrics(cv_simple)
+?sm.regression
 
-m_simple <- wf_simple %>% fit(data = juice_tr)
-tidy(m_simple)
+sm.regression(x, y, h = 2, pch = 16, cex = 0.6)
+sm.regression(x, y, h = 0.5, pch = 16, cex = 0.6, lty = 2, col = "darkorange")
+sm.regression(x, y, h = 0.1, pch = 16, cex = 0.6, lty = 3, col = "darkblue")
 
+?h.select
+h.select(x, y, method = "cv", hstart = 0.05, hend = 3, ngrid = 50) # Cross-validation
+h.select(x, y, method = "aicc") # Corrected AIC
 
-# Full GLM -----------------------------------------------------------------------------------------
+# Note: h.select() is preferred over the older hcv(). The two are equivalent,
+# but hcv() may be removed in future releases of the sm package.
+hcv(x, y, display = "lines", hstart = 0.05, hend = 3, ngrid = 50)
 
-wf_full <- workflow() %>%
-  add_recipe(base_recipe) %>%
-  add_model(m_logit)
+sm.regression(x, y, h = 0.42, pch = 16, cex = 0.6, lty = 2)
 
-cv_full <- wf_full %>%
-  fit_resamples(resamples = cv_samples, metrics = my_metrics)
+# Loess -----------------------------------------------------------------------------
 
-collect_metrics(cv_full)
+?loess.smooth
+?loess
 
-m_full <- wf_full %>% fit(data = juice_tr)
-tidy(m_full)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
+# Estimate a loess model
+m_loess1 <- loess.smooth(x, y, span = 0.5, degree = 1, evaluation = 1000, family = "symmetric")
+lines(m_loess1)
 
-# PCR -----------------------------------------------------------------------------------------
+# Over-smoothing
+m_loess2 <- loess.smooth(x, y, span = 0.8, degree = 1, evaluation = 1000, family = "symmetric")
+lines(m_loess2, col = "darkorange")
 
-wf_pcr <- workflow() %>%
-  add_recipe(shrinkage_recipe %>% step_pca(all_predictors(), num_comp = tune())) %>%
-  add_model(m_logit)
+# Under-smoothing
+m_loess3 <- loess.smooth(x, y, span = 0.33, degree = 1, evaluation = 1000, family = "symmetric")
+lines(m_loess3, col = "darkblue")
 
-cv_pcr <- tune_grid(
-  wf_pcr,
-  resamples = cv_samples,
-  grid      = tibble(num_comp = c(1:20, seq(from = 20, to = 90, by = 5))),
-  metrics   = my_metrics,
-  control   = control_grid(save_workflow = TRUE, verbose = TRUE)
-)
+# Regression splines ---------------------------------------------------
 
-collect_metrics(cv_pcr)
+# install.packages("splines")
+library(splines)
 
-autoplot(cv_pcr, metric = "roc_auc") + theme_bw()
-autoplot(cv_pcr, metric = "mn_log_loss") + theme_bw()
+# Knots selection
+xi <- seq(min(x), max(x), length = 4) # I select 4 knots in total, equally spaced
+xi_int <- xi[2:(length(xi) - 1)] # There are actually K = 2 INTERNAL knots
 
-show_best(cv_pcr, metric = "roc_auc")
-show_best(cv_pcr, metric = "mn_log_loss")
+# newx is redefined here to include the internal knot locations. This ensures the
+# predicted curve is plotted correctly at the knots, where the spline may change slope.
+newx <- data.frame(x = sort(c(seq(min(x), max(x), length = 1000), xi_int)))
 
-best_cv_pcr <- select_best(cv_pcr, metric = "mn_log_loss")
-best_cv_pcr <- finalize_workflow(wf_pcr, best_cv_pcr) %>% fit(data = juice_tr)
+# The intercept has been excluded, therefore there are K + 3 components (and not K + 4)
+B <- bs(x, knots = xi_int, degree = 3, intercept = FALSE)
 
-tidy(best_cv_pcr)
+dim(B)
+head(B)
 
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
-# Ridge -----------------------------------------------------------------------------------------
+# Spline regression is just a linear model!
+m_spl1 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = FALSE))
+lines(newx$x, predict(m_spl1, newx), lty = 2, col = "darkorange")
 
-wf_ridge <- workflow() %>%
-  add_recipe(shrinkage_recipe) %>%
-  add_model(logistic_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet"))
+# Vertical lines where the knots are placed
+abline(v = xi[2], lty = 3)
+abline(v = xi[3], lty = 3)
 
-cv_ridge <- tune_grid(
-  wf_ridge,
-  resamples = cv_samples,
-  grid      = tibble(penalty = exp(seq(-4, 5.5, length.out = 100))),
-  metrics   = my_metrics
-)
+# Regression splines - Knots on the quantiles ----------------------
 
-collect_metrics(cv_ridge)
+xi <- quantile(x, c(0, 0.333, 0.666, 1))
+xi_int <- xi[2:(length(xi) - 1)] # There are K = 2 INTERNAL knots
 
-autoplot(cv_ridge, metric = "roc_auc") + theme_bw()
-autoplot(cv_ridge, metric = "mn_log_loss") + theme_bw()
+m_spl2 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = FALSE))
 
-show_best(cv_ridge, metric = "roc_auc")
-show_best(cv_ridge, metric = "mn_log_loss")
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
+lines(newx$x, predict(m_spl2, newx), lty = 2, col = "darkblue")
 
-best_cv_ridge <- select_best(cv_ridge, metric = "mn_log_loss")
-best_cv_ridge <- finalize_workflow(wf_ridge, best_cv_ridge) %>% fit(data = juice_tr)
+# Plot vertical lines on the internal knots
+abline(v = xi[2], lty = 3)
+abline(v = xi[3], lty = 3)
 
-print(tidy(best_cv_ridge), n = 15)
+# Regression splines - Degrees of freedom specification ---------------
 
+# Basis function of a B-spline (degree = 3, cubic splines)
+# The following relationship holds: df = length(internal knots) + degree
+# When intercept = FALSE, df = K + degree (here K = number of internal knots).
+# Knots are chosen using quantiles of the x distribution.
 
-# Lasso -----------------------------------------------------------------------------------------
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
-wf_lasso <- workflow() %>%
-  add_recipe(shrinkage_recipe) %>%
-  add_model(logistic_reg(penalty = tune(), mixture = 1) %>% set_engine("glmnet"))
+# This is equivalent to the previous command (K = 2 internal knots, degree = 3, df = 5)
+m_spl2 <- lm(y ~ bs(x, df = 5, degree = 3, intercept = FALSE))
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
+lines(newx$x, predict(m_spl2, newx), lty = 1, col = "black")
 
-cv_lasso <- tune_grid(
-  wf_lasso,
-  resamples = cv_samples,
-  grid      = tibble(penalty = exp(seq(-10, -2, length.out = 100))),
-  metrics   = my_metrics
-)
+# Let us change a bit the degrees of freedom
+m_spl3 <- lm(y ~ bs(x, df = 10, degree = 3, intercept = FALSE))
+lines(newx$x, predict(m_spl3, newx), lty = 2, col = "darkorange")
 
-collect_metrics(cv_lasso)
+# This is, quite evidently, overfitting the data
+m_spl4 <- lm(y ~ bs(x, df = 15, degree = 3, intercept = FALSE))
+lines(newx$x, predict(m_spl4, newx), lty = 3, col = "darkblue")
 
-autoplot(cv_lasso, metric = "roc_auc") + theme_bw()
-autoplot(cv_lasso, metric = "mn_log_loss") + theme_bw()
 
-show_best(cv_lasso, metric = "roc_auc")
-show_best(cv_lasso, metric = "mn_log_loss")
+# Smoothing Splines ------------------------------------------------
 
-best_cv_lasso <- select_best(cv_lasso, metric = "mn_log_loss")
-best_cv_lasso <- finalize_workflow(wf_lasso, best_cv_lasso) %>% fit(data = juice_tr)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
-print(tidy(best_cv_lasso), n = 15)
+?smooth.spline
+m_smooth <- smooth.spline(x, y)
+m_smooth
 
+# The default uses GCV to select lambda, which here produces a very smooth fit.
+# Inspect m_smooth$lambda and m_smooth$df to see the selected values.
+lines(m_smooth)
 
-# Elastic Net (mixture = 0.5) -----------------------------------------------------------------------------------------
+# Let us try some alternative values of lambda (smaller = less smooth)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
-wf_en <- workflow() %>%
-  add_recipe(shrinkage_recipe) %>%
-  add_model(logistic_reg(penalty = tune(), mixture = 0.5) %>% set_engine("glmnet"))
+m_smooth1 <- smooth.spline(x, y, lambda = 0.0001)
+lines(predict(m_smooth1, x = newx$x), lty = 1, col = "black")
 
-cv_en <- tune_grid(
-  wf_en,
-  resamples = cv_samples,
-  grid      = tibble(penalty = exp(seq(-10, -2, length.out = 100))),
-  metrics   = my_metrics
-)
+m_smooth2 <- smooth.spline(x, y, lambda = 0.001)
+lines(predict(m_smooth2, x = newx$x), lty = 2, col = "darkorange")
 
-autoplot(cv_en, metric = "roc_auc") + theme_bw()
-autoplot(cv_en, metric = "mn_log_loss") + theme_bw()
+m_smooth3 <- smooth.spline(x, y, lambda = 0.01)
+lines(predict(m_smooth3, x = newx$x), lty = 2, col = "darkblue")
 
-show_best(cv_en, metric = "roc_auc")
-show_best(cv_en, metric = "mn_log_loss")
+# Let us use "spar" instead of lambda (spar is a standardized version of lambda)
+plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
 
-best_cv_en <- select_best(cv_en, metric = "mn_log_loss")
-best_cv_en <- finalize_workflow(wf_en, best_cv_en) %>% fit(data = juice_tr)
-
-print(tidy(best_cv_en), n = 20) # was erroneously printing best_cv_lasso
-
-
-# Final comparison on the test set -----------------------------------------------------------------------------------------
-
-fitted_models <- list(
-  Simple        = m_simple,
-  Full          = m_full,
-  PCR           = best_cv_pcr,
-  Ridge         = best_cv_ridge,
-  Lasso         = best_cv_lasso,
-  `Elastic Net` = best_cv_en
-)
-
-results <- imap_dfr(fitted_models, function(model, name) {
-  augment(model, new_data = juice_te) %>%
-    my_metrics(truth = choice, .pred_CH) %>%
-    mutate(model = name)
-})
-
-results %>%
-  pivot_wider(names_from = .metric, values_from = .estimate) %>%
-  arrange(mn_log_loss)
+m_smooth <- smooth.spline(x, y, spar = 0.8)
+lines(predict(m_smooth, x = newx$x))

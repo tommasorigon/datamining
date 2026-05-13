@@ -1,213 +1,198 @@
 # ----------------------------------------
-# Title: LAB 6 (auto data, nonparametric regression)
+# Title: LAB 6 (Wisconsin Diabetic Retinopathy)
+#        GAM and MARS
 # Author: Tommaso Rigon
 # ----------------------------------------
 
-rm(list = ls()) # Clean the environment
+rm(list = ls())
 
-# The dataset can be downloaded here: https://tommasorigon.github.io/datamining/data/auto.txt
-auto <- read.table("../data/auto.txt", header = TRUE)
-auto <- subset(auto, select = c(city.distance, engine.size))
+library(tidyverse)
+library(tidymodels)
+library(mgcv)
 
-# Summary
-str(auto)
+# Data ---------------------------------------------------------------------------------------------
 
-y <- auto$city.distance # As the name suggests: city distance
-x <- auto$engine.size # And engine size (L)
+# The wesdr dataset records diabetic retinopathy progression in 669 patients
+# from the Wisconsin Epidemiologic Study of Diabetic Retinopathy (Klein et al., 1988).
+#
+# Variables:
+#   dur   - duration of diabetes at baseline (years)
+#   gly   - glycosylated haemoglobin (HbA1c, %) — a marker of long-term glucose control
+#   bmi   - body mass index (kg/m²)
+#   ret   - retinopathy progression (0 = no, 1 = yes)  [binary response]
+#
+# Goal: model the probability of retinopathy progression as a function of
+# the three continuous predictors using a GAM with binomial family.
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
+library(gamair)
+data(wesdr)
 
-# Set of points at which the curve is evaluated
-newx <- data.frame(x = seq(min(x), max(x), length = 1000))
+glimpse(wesdr)
+summary(wesdr)
 
-# p = 1 (linear regression)
-lines(newx$x, predict(lm(y ~ x), newdata = newx), lty = 1, col = "black")
+wesdr <- wesdr %>%
+  mutate(ret = factor(ret, levels = c(0, 1), labels = c("no", "yes")))
 
-# p = 2 (parabolic regression)
-lines(newx$x, predict(lm(y ~ x + I(x^2)), newdata = newx), lty = 2, col = "darkorange")
+# Train / test split (75% / 25%) -------------------------------------------------------------------
 
-# p = 3 (cubic regression)
-# Here I am using the more convenient syntax "poly"
-lines(newx$x, predict(lm(y ~ poly(x, degree = 3)), newdata = newx), lty = 3, col = "darkblue")
+set.seed(123)
+split <- initial_split(wesdr, prop = 3 / 4)
+wesdr_tr <- training(split)
+wesdr_te <- testing(split)
 
-# If I use an extreme value for the degree, it does not work well anymore
-lines(newx$x, predict(lm(y ~ poly(x, degree = 10)), newdata = newx), lty = 6)
+# Cross-validation samples (10-fold, stratified) for model selection
+cv_samples <- vfold_cv(wesdr_tr, v = 10, strata = ret)
 
-# Nadaraya-Watson estimator ---------------------------------------------
+# Metrics: ROC-AUC and log-loss
+my_metrics <- metric_set(roc_auc, mn_log_loss)
 
-# Notice the bandwidth parametrization and the kernel used
-?ksmooth
+# ---- Exploratory analysis ------------------------------------------------------------------------
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
+wesdr_tr %>%
+  pivot_longer(c(dur, gly, bmi), names_to = "variable", values_to = "value") %>%
+  ggplot(aes(x = variable, y = value, fill = ret)) +
+  geom_boxplot() +
+  labs(
+    title = "Distribution of predictors by retinopathy progression",
+    fill = "Progression"
+  ) +
+  theme_light()
 
-h_param <- 1 # Let us try a few parameters here
-band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
-m_nw1 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
-lines(m_nw1)
+# ---- Logistic regression (linear baseline) -------------------------------------------------------
 
-h_param <- 0.2 # Let us try a few parameters here
-band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
-m_nw2 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
-lines(m_nw2, col = "darkorange")
+m_glm <- logistic_reg() %>%
+  set_engine("glm")
 
-h_param <- 0.1 # Let us try a few parameters here
-band <- 4 * qnorm(0.75) * h_param # Bandwidth as parametrized in ksmooth
-m_nw3 <- ksmooth(x, y, kernel = "normal", bandwidth = band, x.points = newx$x)
-lines(m_nw3, col = "darkblue")
+wf_glm <- workflow() %>%
+  add_model(m_glm) %>%
+  add_formula(ret ~ dur + gly + bmi)
 
-# Local polynomial regression (KernSmooth)---------------------------------------
+cv_glm <- fit_resamples(wf_glm, resamples = cv_samples, metrics = my_metrics)
+collect_metrics(cv_glm)
 
-# install.packages("KernSmooth")
-library(KernSmooth)
+m_glm <- wf_glm %>% fit(data = wesdr_tr)
+tidy(m_glm)
 
-?locpoly
+# ---- GAM — mgcv directly (for inspection) -------------------------------------------------------
 
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
+m_gam_simple <- gam(ret ~ s(dur) + s(gly) + s(bmi), family = binomial, method = "REML", data = wesdr_tr)
+summary(m_gam_simple)
 
-# Local linear regression (with a given bandwidth)
-m_local_linear <- locpoly(x, y, degree = 1, bandwidth = 0.5, kernel = "normal", gridsize = 500)
-lines(m_local_linear)
+plot(m_gam_simple,
+  pages = 1, scheme = 1, shade = TRUE,
+  shade.col = "lightblue", rug = TRUE,
+  main = "Partial effects (log-odds scale)"
+)
 
-# Local quadratic regression
-m_local_quadratic <- locpoly(x, y, degree = 2, bandwidth = 0.5, kernel = "normal", gridsize = 500)
-lines(m_local_quadratic, lty = 2, col = "darkorange")
+m_gam_full <- gam(
+  ret ~ s(dur) + s(gly) + s(bmi) + ti(dur, gly) + ti(dur, bmi) + ti(gly, bmi),
+  select = TRUE,
+  data = wesdr_tr, family = binomial(), method = "REML"
+)
 
-# Local cubic regression
-m_local_cubic <- locpoly(x, y, degree = 3, bandwidth = 0.5, kernel = "normal", gridsize = 500)
-lines(m_local_cubic, lty = 2, col = "darkblue")
+summary(m_gam_full)
+plot(m_gam_full, pages = 1, scheme = 1, zlim = c(-3, 3))
 
-# Local polynomial regression (sm package) ------------------------------------------
+# ---- GAM — tidymodels workflow -------------------------------------------------------------------
 
-# install.packages("sm")
-library(sm)
+m_gam <- gen_additive_mod(select_features = FALSE) %>%
+  set_engine("mgcv") %>%
+  set_mode("classification")
 
-?sm.regression
+# Simple GAM: all three predictors as smooth terms (default k and REML)
+wf_gam_simple <- workflow() %>%
+  add_model(m_gam, formula = ret ~ s(dur) + s(gly) + s(bmi)) %>%
+  add_formula(ret ~ dur + gly + bmi)
 
-sm.regression(x, y, h = 2, pch = 16, cex = 0.6)
-sm.regression(x, y, h = 0.5, pch = 16, cex = 0.6, lty = 2, col = "darkorange")
-sm.regression(x, y, h = 0.1, pch = 16, cex = 0.6, lty = 3, col = "darkblue")
-
-?h.select
-h.select(x, y, method = "cv", hstart = 0.05, hend = 3, ngrid = 50) # Cross-validation
-h.select(x, y, method = "aicc") # Corrected AIC
-
-# Note: h.select() is preferred over the older hcv(). The two are equivalent,
-# but hcv() may be removed in future releases of the sm package.
-hcv(x, y, display = "lines", hstart = 0.05, hend = 3, ngrid = 50)
-
-sm.regression(x, y, h = 0.42, pch = 16, cex = 0.6, lty = 2)
-
-# Loess -----------------------------------------------------------------------------
-
-?loess.smooth
-?loess
-
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
-
-# Estimate a loess model
-m_loess1 <- loess.smooth(x, y, span = 0.5, degree = 1, evaluation = 1000, family = "symmetric")
-lines(m_loess1)
-
-# Over-smoothing
-m_loess2 <- loess.smooth(x, y, span = 0.8, degree = 1, evaluation = 1000, family = "symmetric")
-lines(m_loess2, col = "darkorange")
-
-# Under-smoothing
-m_loess3 <- loess.smooth(x, y, span = 0.33, degree = 1, evaluation = 1000, family = "symmetric")
-lines(m_loess3, col = "darkblue")
-
-# Regression splines ---------------------------------------------------
-
-# install.packages("splines")
-library(splines)
-
-# Knots selection
-xi <- seq(min(x), max(x), length = 4) # I select 4 knots in total, equally spaced
-xi_int <- xi[2:(length(xi) - 1)] # There are actually K = 2 INTERNAL knots
-
-# newx is redefined here to include the internal knot locations. This ensures the
-# predicted curve is plotted correctly at the knots, where the spline may change slope.
-newx <- data.frame(x = sort(c(seq(min(x), max(x), length = 1000), xi_int)))
-
-# The intercept has been excluded, therefore there are K + 3 components (and not K + 4)
-B <- bs(x, knots = xi_int, degree = 3, intercept = FALSE)
-
-dim(B)
-head(B)
-
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
-
-# Spline regression is just a linear model!
-m_spl1 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = FALSE))
-lines(newx$x, predict(m_spl1, newx), lty = 2, col = "darkorange")
-
-# Vertical lines where the knots are placed
-abline(v = xi[2], lty = 3)
-abline(v = xi[3], lty = 3)
-
-# Regression splines - Knots on the quantiles ----------------------
-
-xi <- quantile(x, c(0, 0.333, 0.666, 1))
-xi_int <- xi[2:(length(xi) - 1)] # There are K = 2 INTERNAL knots
-
-m_spl2 <- lm(y ~ bs(x, knots = xi_int, degree = 3, intercept = FALSE))
-
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
-lines(newx$x, predict(m_spl2, newx), lty = 2, col = "darkblue")
-
-# Plot vertical lines on the internal knots
-abline(v = xi[2], lty = 3)
-abline(v = xi[3], lty = 3)
-
-# Regression splines - Degrees of freedom specification ---------------
-
-# Basis function of a B-spline (degree = 3, cubic splines)
-# The following relationship holds: df = length(internal knots) + degree
-# When intercept = FALSE, df = K + degree (here K = number of internal knots).
-# Knots are chosen using quantiles of the x distribution.
-
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
-
-# This is equivalent to the previous command (K = 2 internal knots, degree = 3, df = 5)
-m_spl2 <- lm(y ~ bs(x, df = 5, degree = 3, intercept = FALSE))
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
-lines(newx$x, predict(m_spl2, newx), lty = 1, col = "black")
-
-# Let us change a bit the degrees of freedom
-m_spl3 <- lm(y ~ bs(x, df = 10, degree = 3, intercept = FALSE))
-lines(newx$x, predict(m_spl3, newx), lty = 2, col = "darkorange")
-
-# This is, quite evidently, overfitting the data
-m_spl4 <- lm(y ~ bs(x, df = 15, degree = 3, intercept = FALSE))
-lines(newx$x, predict(m_spl4, newx), lty = 3, col = "darkblue")
-
-
-# Smoothing Splines ------------------------------------------------
-
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
-
-?smooth.spline
-m_smooth <- smooth.spline(x, y)
-m_smooth
-
-# The default uses GCV to select lambda, which here produces a very smooth fit.
-# Inspect m_smooth$lambda and m_smooth$df to see the selected values.
-lines(m_smooth)
-
-# Let us try some alternative values of lambda (smaller = less smooth)
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
-
-m_smooth1 <- smooth.spline(x, y, lambda = 0.0001)
-lines(predict(m_smooth1, x = newx$x), lty = 1, col = "black")
-
-m_smooth2 <- smooth.spline(x, y, lambda = 0.001)
-lines(predict(m_smooth2, x = newx$x), lty = 2, col = "darkorange")
-
-m_smooth3 <- smooth.spline(x, y, lambda = 0.01)
-lines(predict(m_smooth3, x = newx$x), lty = 2, col = "darkblue")
-
-# Let us use "spar" instead of lambda (spar is a standardized version of lambda)
-plot(x, y, xlab = "Engine size (L)", ylab = "City distance (km/L)", pch = 16, cex = 0.7)
-
-m_smooth <- smooth.spline(x, y, spar = 0.8)
-lines(predict(m_smooth, x = newx$x))
+cv_gam_simple <- wf_gam_simple %>%
+  fit_resamples(resamples = cv_samples, metrics = my_metrics)
+collect_metrics(cv_gam_simple)
+
+m_gam_simple <- wf_gam_simple %>% fit(data = wesdr_tr)
+
+# GAM: all three predictors as smooth terms + interaction term
+wf_gam_full <- workflow() %>%
+  add_model(m_gam, formula = ret ~ s(dur) + s(gly) + s(bmi) + ti(gly, bmi)) %>%
+  add_formula(ret ~ dur + gly + bmi)
+
+cv_gam_full <- wf_gam_full %>%
+  fit_resamples(resamples = cv_samples, metrics = my_metrics)
+collect_metrics(cv_gam_full)
+
+m_gam_full <- wf_gam_full %>% fit(data = wesdr_tr)
+
+# ---- MARS — direct fit (for inspection) ----------------------------------------------------------
+
+library(earth)
+
+mars_fit <- earth(
+  ret ~ dur + gly + bmi,
+  data = wesdr_tr,
+  glm = list(family = binomial),
+  degree = 1
+)
+
+summary(mars_fit)
+print(mars_fit)
+
+# Variable importance: GCV contribution of each predictor across all basis functions.
+evimp(mars_fit)
+
+# MARS with two-way interactions (degree = 2)
+mars_fit2 <- earth(
+  ret ~ dur + gly + bmi,
+  data   = wesdr_tr,
+  glm    = list(family = binomial),
+  degree = 2
+)
+
+summary(mars_fit2)
+evimp(mars_fit2)
+
+# ---- MARS — tuning prod_degree and num_terms via 10-fold CV --------------------------------------
+
+base_recipe <- recipe(ret ~ dur + gly + bmi, data = wesdr_tr)
+
+wf_mars <- workflow() %>%
+  add_recipe(base_recipe) %>%
+  add_model(
+    mars(prod_degree = tune(), mode = "classification") %>%
+      set_engine("earth")
+  )
+
+cv_mars <- tune_grid(
+  wf_mars,
+  resamples = cv_samples,
+  grid      = expand_grid(prod_degree = c(1, 2, 3)),
+  metrics   = my_metrics
+)
+
+collect_metrics(cv_mars)
+autoplot(cv_mars, metric = "mn_log_loss") + theme_bw()
+autoplot(cv_mars, metric = "roc_auc") + theme_bw()
+
+show_best(cv_mars, metric = "mn_log_loss")
+show_best(cv_mars, metric = "roc_auc")
+
+best_cv_mars <- select_best(cv_mars, metric = "mn_log_loss")
+best_cv_mars <- finalize_workflow(wf_mars, best_cv_mars) %>% fit(data = wesdr_tr)
+best_cv_mars
+
+# ---- Final model fit and test-set evaluation -----------------------------------------------------
+
+fitted_models <- list(
+  GLM = m_glm,
+  GAM_simple = m_gam_simple,
+  GAM_full = m_gam_full,
+  MARS = best_cv_mars
+)
+
+results <- imap_dfr(fitted_models, function(model, name) {
+  augment(model, new_data = wesdr_te) %>%
+    my_metrics(truth = ret, .pred_no) %>%
+    mutate(model = name)
+})
+
+results %>%
+  pivot_wider(names_from = .metric, values_from = .estimate) %>%
+  arrange(mn_log_loss)
