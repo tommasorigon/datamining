@@ -34,46 +34,46 @@ Università degli Studi di Milano-Bicocca.
 
 #### Required
 
--   Azzalini, A. and Scarpa, B. (2011), [*Data Analysis and Data
-    Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford University
-    Press.
--   Hastie, T., Tibshirani, R. and Friedman, J. (2009), [*The Elements
-    of Statistical Learning*](https://hastie.su.domains/ElemStatLearn/),
-    Second Edition, Springer.
+- Azzalini, A. and Scarpa, B. (2011), [*Data Analysis and Data
+  Mining*](http://azzalini.stat.unipd.it/Book-DM/), Oxford University
+  Press.
+- Hastie, T., Tibshirani, R. and Friedman, J. (2009), [*The Elements of
+  Statistical Learning*](https://hastie.su.domains/ElemStatLearn/),
+  Second Edition, Springer.
 
 #### Optional
 
--   Efron, B. and Hastie, T. (2016), [*Computer Age Statistical
-    Inference*](https://hastie.su.domains/CASI/), Cambridge University
-    Press.
--   Lewis, Kane, Arnold (2019) *A Computational Approach to Statistical
-    Learning*. Chapman And Hall/Crc.
+- Efron, B. and Hastie, T. (2016), [*Computer Age Statistical
+  Inference*](https://hastie.su.domains/CASI/), Cambridge University
+  Press.
+- Lewis, Kane, Arnold (2019) *A Computational Approach to Statistical
+  Learning*. Chapman And Hall/Crc.
 
 #### Slides and lecture notes
 
-The slides are meant to be used in HTML. 
+The slides are meant to be used in HTML.
 
-| Topic                                  | Notes                                | Slides                                             | 
-|----------------------------------------|--------------------------------------|----------------------------------------------------|
-| **Introduction**                       | [Introduction](slides/un_intro.html) | [Slides Introduction](slides/un_intro_slides.html) ([pdf version](slides/un_intro_slides.pdf)) |                      
-| **A-B-C**                              | [Unit A](slides/un_A.html)           | [Slides Unit A](slides/un_A_slides.html) ([pdf version](slides/un_A_slides.pdf)) |
-| Lab 1 (`ames`)                         | [`lab1.R`](code/lab1.R)              |                                                    | 
-| *Exercises*                            | [Exercises A](exe/exe_A.html)                      |                                                    |                       
-| **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html)           | [Slides Unit B](slides/un_B_slides.html) ([pdf version](slides/un_B_slides.pdf))           |    
-| Lab 2 (`trawl`)               | [`lab2.R`](code/lab2.R)              |                                                    | 
-| *Exercises*                            | [Exercises B](exe/exe_B.html)                      |                                                    |                    
-| **Shrinkage and variable selection**   | [Unit C](slides/un_C.html)           | [Slides Unit C](slides/un_C_slides.html) ([pdf version](slides/un_C_slides.pdf))          |   
-| Lab 3 (`ames`)                        | [`lab3.R`](code/lab3.R)                                     |                                                    |  
-| Lab 4 (`juice`)                        | [`lab4.R`](code/lab4.R)                                     |                                                    |  
-| *Exercises*                            | [Exercises C](exe/exe_C.html)                      |                                                    |           
-| **Nonparametric regression**           | [Unit D](slides/un_D.html)           | [Slides Unit D](slides/un_D_slides.html)  ([pdf version](slides/un_D_slides.pdf))          |    
-| Lab 5 (`auto`)                         | [`lab5.R`](code/lab5.R)                                    |                                                    |        
-| *Exercises*                            | [Exercises D](exe/exe_D.html)                      |                                                    |     
-| **The curse of dimensionality**        | [Unit E](slides/un_E.html)           | [Slides Unit E](slides/un_E_slides.html) ([pdf version](slides/un_E_slides.pdf))           |                          
-| **Additive models**                    | [Unit F](slides/un_F.html)           | [Slides Unit F](slides/un_F_slides.html) ([pdf version](slides/un_F_slides.pdf))            |     
-| Lab 6 (`wesdr`)                        | [`lab6.R`](code/lab6.R)                                     |                                                    |  
-| *Exercises*                            | [Exercises F](exe/exe_F.html)                      |                                                    |             
-| **FAQ - The statistical culture**      | [Unit G](slides/un_G.html)                           |                                   |                         
+| Topic | Notes | Slides and other material |
+|----------------------|---------------------|-----------------------------|
+| **Introduction** | [Introduction](slides/un_intro.html) | [Slides Introduction](slides/un_intro_slides.html) ([pdf version](slides/un_intro_slides.pdf)) |
+| **A-B-C** | [Unit A](slides/un_A.html) | [Slides Unit A](slides/un_A_slides.html) ([pdf version](slides/un_A_slides.pdf)) |
+| Lab 1 (`ames`) | [`lab1.R`](code/lab1.R) |  |
+| *Exercises* | [Exercises A](exe/exe_A.html) |  |
+| **Optimism, conflicts and trade-offs** | [Unit B](slides/un_B.html) | [Slides Unit B](slides/un_B_slides.html) ([pdf version](slides/un_B_slides.pdf)) |
+| Lab 2 (`trawl`) | [`lab2.R`](code/lab2.R) |  |
+| *Exercises* | [Exercises B](exe/exe_B.html) |  |
+| **Shrinkage and variable selection** | [Unit C](slides/un_C.html) | [Slides Unit C](slides/un_C_slides.html) ([pdf version](slides/un_C_slides.pdf)) |
+| Lab 3 (`ames`) | [`lab3.R`](code/lab3.R) | [`lab3_bis.R`](code/lab3_bis.R) |
+| Lab 4 (`juice`) | [`lab4.R`](code/lab4.R) |  |
+| *Exercises* | [Exercises C](exe/exe_C.html) |  |
+| **Nonparametric regression** | [Unit D](slides/un_D.html) | [Slides Unit D](slides/un_D_slides.html) ([pdf version](slides/un_D_slides.pdf)) |
+| Lab 5 (`auto`) | [`lab5.R`](code/lab5.R) |  |
+| *Exercises* | [Exercises D](exe/exe_D.html) |  |
+| **The curse of dimensionality** | [Unit E](slides/un_E.html) | [Slides Unit E](slides/un_E_slides.html) ([pdf version](slides/un_E_slides.pdf)) |
+| **Additive models** | [Unit F](slides/un_F.html) | [Slides Unit F](slides/un_F_slides.html) ([pdf version](slides/un_F_slides.pdf)) |
+| Lab 6 (`wesdr`) | [`lab6.R`](code/lab6.R) |  |
+| *Exercises* | [Exercises F](exe/exe_F.html) |  |
+| **FAQ - The statistical culture** | [Unit G](slides/un_G.html) |  |
 
 ## Exam
 
@@ -81,23 +81,31 @@ The slides are meant to be used in HTML.
 
 The exam consists of [two parts]{.orange}:
 
-- (20 / 30) [Written examination]{.blue}: a pen-and-paper exam about the theoretical aspects of the course.
+- (20 / 30) [Written examination]{.blue}: a pen-and-paper exam about the
+  theoretical aspects of the course.
 
-- (10 / 30) [Individual assignment]{.blue}: a data challenge. 
-   - You will be given a prediction task, and you will need to submit your [predictions]{.orange} and produce a [report]{.orange} of maximum 4 pages;
-   - You will make use of the [Kaggle](https://www.kaggle.com) platform ([optional]{.blue});
-   - Further info will be provided in due time.
-  
-Both parts are [mandatory]{.orange}, and you need to submit the assignment [before]{.orange} attempting the written part. The report expires after one year from the end of the course. The final grade is obtained as the [sum]{.blue} of the above scores. 
+- (10 / 30) [Individual assignment]{.blue}: a data challenge.
+
+  - You will be given a prediction task, and you will need to submit
+    your [predictions]{.orange} and produce a [report]{.orange} of
+    maximum 4 pages;
+  - You will make use of the [Kaggle](https://www.kaggle.com) platform
+    ([optional]{.blue});
+  - Further info will be provided in due time.
+
+Both parts are [mandatory]{.orange}, and you need to submit the
+assignment [before]{.orange} attempting the written part. The report
+expires after one year from the end of the course. The final grade is
+obtained as the [sum]{.blue} of the above scores.
 
 #### Past written examinations
 
-| Date | Exam |
-|------------|----------|
-| 18 November 2025  | [Exam](exams/2025_11_18.html) |
-| 4 July 2025  | [Exam](exams/2025_07_04.html) |
-| 19 June 2025  | [Exam](exams/2025_06_19.html) |
-| -    | [Mock exam](exe/exe_exam.html) |
+| Date             | Exam                           |
+|------------------|--------------------------------|
+| 18 November 2025 | [Exam](exams/2025_11_18.html)  |
+| 4 July 2025      | [Exam](exams/2025_07_04.html)  |
+| 19 June 2025     | [Exam](exams/2025_06_19.html)  |
+| \-               | [Mock exam](exe/exe_exam.html) |
 
 ## Prerequisites
 
@@ -114,13 +122,21 @@ hours are every **Tuesday at 17.30**
 
 ## Acknowledgments
 
-The primary source of this website's content is the textbooks [Azzalini and Scarpa (2011)]{.blue} and [Hastie, Tibshirani, and Friedman (2009)]{.orange}. A few pictures have been taken from the textbooks; in these cases the original source is cited. 
+The primary source of this website's content is the textbooks [Azzalini
+and Scarpa (2011)]{.blue} and [Hastie, Tibshirani, and Friedman
+(2009)]{.orange}. A few pictures have been taken from the textbooks; in
+these cases the original source is cited.
 
-I have made use of several other books, scientific articles, and datasets to complement the main textbooks. They are all cited at the end of each unit. Students are encouraged to consult the books: these slides are just a concise summary. 
+I have made use of several other books, scientific articles, and
+datasets to complement the main textbooks. They are all cited at the end
+of each unit. Students are encouraged to consult the books: these slides
+are just a concise summary.
 
-I am also grateful to Aldo Solari, who generously shared the material of the courses [Data Mining](https://aldosolari.github.io/DM/) and [Statistical Learning](https://aldosolari.github.io/SL/). These websites have been used to lay the basis of this course.
+I am also grateful to Aldo Solari, who generously shared the material of
+the courses [Data Mining](https://aldosolari.github.io/DM/) and
+[Statistical Learning](https://aldosolari.github.io/SL/). These websites
+have been used to lay the basis of this course.
 
-All the mistakes still present are mine. 
+All the mistakes still present are mine.
 
 ------------------------------------------------------------------------
-

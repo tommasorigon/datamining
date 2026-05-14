@@ -917,7 +917,7 @@ x_{ij} - \bar{x}_j, \qquad y_i - \bar{y}, \qquad i=1,\dots,n; \ \ j=1,\dots,p.
 <ul>
 <li>In the end, we will make predictions in the <span class="blue">original scale</span>, which requires a simple <span class="orange">final adjustment</span>. One need to compute the intercept term <span class="math display">
 \hat{\beta}_0 = \bar{y} - \bar{\bm{x}}\hat{\beta},
-</span> and then compute the predictions via the formula <span class="math inline">\hat{\beta}_0 + \bm{x}_i^T\hat{\beta} = \hat{\alpha} + \bm{x}_{i}^T\hat{\beta}</span>.</li>
+</span> and then compute the predictions via the formula <span class="math inline">\hat{\beta}_0 + \bm{x}_i^T\hat{\beta} = \hat{\alpha} + (\bm{x}_{i}^T - \bar{\bm{x}})\hat{\beta}</span>.</li>
 </ul>
 <ul>
 <li><span class="orange">Remark</span>. The centering operation is a mathematical trick that simplifies the derivation but is inconsequential from an estimation point of view.</li>
