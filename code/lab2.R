@@ -28,12 +28,12 @@ plot(trawl_val$Longitude, trawl_val$Score1, pch = 16, main = "Validation set")
 
 # The tidymodels workflow ------------------------------------------------------------------------------
 
-m_linear <- linear_reg() %>%
-  set_engine("lm")
-
 # Direct fit (no recipe)
 m_poly_3 <- fit(m_linear, Score1 ~ poly(Longitude, 3), data = trawl_tr)
 tidy(m_poly_3)
+
+m_linear <- linear_reg() %>%
+  set_engine("lm")
 
 # Equivalent recipe-based syntax
 rec_poly_3 <- recipe(Score1 ~ Longitude, data = trawl_tr) %>%
@@ -53,7 +53,6 @@ m_poly_3 <- wf_poly_3 %>%
 tidy(m_poly_3)
 
 augment(m_poly_3, new_data = trawl_val) %>% rmse(truth = Score1, estimate = .pred)
-
 
 # Tunable recipe ----------------------------------------------------------------------------------------
 
@@ -91,7 +90,6 @@ best_lm_val <- finalize_workflow(wf_poly, best_param_val) %>%
   fit(data = bind_rows(trawl_tr, trawl_val))
 
 tidy(best_lm_val)
-
 
 # Cross-validation ------------------------------------------------------------------------------------
 
@@ -136,4 +134,3 @@ plot(trawl_te$Longitude, trawl_te$Score1,
 )
 lines(seq_data$Longitude, predict(best_lm_val, seq_data)$.pred, col = "red")
 lines(seq_data$Longitude, predict(best_lm_cv, seq_data)$.pred, col = "black")
-
