@@ -28,12 +28,12 @@ plot(trawl_val$Longitude, trawl_val$Score1, pch = 16, main = "Validation set")
 
 # The tidymodels workflow ------------------------------------------------------------------------------
 
+m_linear <- linear_reg() %>%
+  set_engine("lm")
+
 # Direct fit (no recipe)
 m_poly_3 <- fit(m_linear, Score1 ~ poly(Longitude, 3), data = trawl_tr)
 tidy(m_poly_3)
-
-m_linear <- linear_reg() %>%
-  set_engine("lm")
 
 # Equivalent recipe-based syntax
 rec_poly_3 <- recipe(Score1 ~ Longitude, data = trawl_tr) %>%
@@ -81,7 +81,6 @@ poly_val <- tune_grid(
 collect_metrics(poly_val)
 
 autoplot(poly_val, metric = "rmse") + theme_bw()
-
 show_best(poly_val, metric = "rmse")
 
 # Fit the selected model on train + validation
@@ -118,7 +117,6 @@ best_lm_cv <- finalize_workflow(wf_poly, best_param_cv) %>%
   fit(data = trawl_tr2)
 
 tidy(best_lm_cv)
-
 
 # Final comparison on the test set --------------------------------------------------------------
 
