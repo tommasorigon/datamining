@@ -11,8 +11,8 @@ source("https://tommasorigon.github.io/datamining/code/routines.R", echo = TRUE)
 
 # Data ---------------------------------------------------------------------------------------------
 # log_SalePrice is the model outcome; SalePrice is kept for reference only.
-# ames <- read_csv("https://tommasorigon.github.io/datamining/data/ames.csv")
-ames <- read_csv("../data/ames.csv")
+ames <- read_csv("https://tommasorigon.github.io/datamining/data/ames.csv")
+# ames <- read_csv("../data/ames.csv")
 
 main_rec <- recipe(SalePrice ~ ., data = ames) %>%
   step_nzv(all_predictors(), unique_cut = 10)
