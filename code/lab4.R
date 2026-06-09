@@ -168,7 +168,7 @@ print(tidy(best_cv_ridge), n = 15)
 
 # Lasso -----------------------------------------------------------------------------------------
 
-lambda_grid <- exp(seq(-10, -2, length.out = 100))
+lambda_grid <- exp(seq(-10, -1, length.out = 100))
 
 wf_lasso <- workflow() %>%
   add_recipe(shrinkage_recipe) %>%
@@ -193,18 +193,20 @@ best_cv_lasso <- select_best(cv_lasso, metric = "mn_log_loss")
 best_cv_lasso <- finalize_workflow(wf_lasso, best_cv_lasso) %>% fit(data = juice_tr)
 
 print(tidy(best_cv_lasso), n = 15)
-
+tidy(best_cv_lasso) %>% filter(abs(estimate) > 0)
 
 # Elastic Net (mixture = 0.5) -----------------------------------------------------------------------------------------
 
+lambda_grid <- exp(seq(-10, -1, length.out = 100))
+
 wf_en <- workflow() %>%
   add_recipe(shrinkage_recipe) %>%
-  add_model(logistic_reg(penalty = tune(), mixture = 0.5) %>% set_engine("glmnet"))
+  add_model(logistic_reg(penalty = tune(), mixture = 0.5) %>% set_engine("glmnet", path_values = lambda_grid))
 
 cv_en <- tune_grid(
   wf_en,
   resamples = cv_samples,
-  grid      = tibble(penalty = exp(seq(-10, -2, length.out = 100))),
+  grid      = tibble(penalty = lambda_grid),
   metrics   = my_metrics
 )
 
@@ -217,8 +219,8 @@ show_best(cv_en, metric = "mn_log_loss")
 best_cv_en <- select_best(cv_en, metric = "mn_log_loss")
 best_cv_en <- finalize_workflow(wf_en, best_cv_en) %>% fit(data = juice_tr)
 
-print(tidy(best_cv_en), n = 20) # was erroneously printing best_cv_lasso
-
+print(tidy(best_cv_en), n = 20)
+tidy(best_cv_en) %>% filter(abs(estimate) > 0)
 
 # Final comparison on the test set -----------------------------------------------------------------------------------------
 
