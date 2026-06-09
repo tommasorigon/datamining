@@ -31,41 +31,41 @@ editor_options:
 
 ## Coding exercises
 
+<!-- :::{.callout-note collapse=true} -->
+<!-- #### Exercise A - Degrees of freedom of MARS -->
+
+<!-- Given the data $y_i$ with mean $f(x_i)$ and variance $\sigma^2$ and a -->
+<!-- fitting operation $\hat{y}_i = \hat{f}(x_i)$, let us define the -->
+<!-- [effective degrees of freedom]{.blue} as -->
+<!-- $1/\sigma^2\sum_{i=1}^n \text{cov}(Y_i, \hat{f}(x_i))$, as in the -->
+<!-- slides. -->
+
+<!-- Consider the estimate $\hat{f}(x_i)$ of a [MARS]{.orange}, using a set -->
+<!-- of predictors $\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p$. -->
+
+<!-- 1.  Generate $n = 100$ observations with predictors -->
+<!--     $\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p$ as independent standard -->
+<!--     Gaussian variates and fix these values. -->
+
+<!-- 2.  Generate response values $y_i$ also as standard Gaussian -->
+<!--     ($\sigma^2 = 1$), independent of the predictors.  -->
+
+<!-- 3. Fit several MARS models using the `earth` R package and compare the final [number of basis -->
+<!--     functions]{.orange} of each model with the associated -->
+<!--     [effective degrees of freedom]{.blue}.  Do about 50 simulations of the response and average the results to get a decent Monte Carlo approximation of the degrees of freedom.  -->
+<!--     Perform this operation as a function of the following tuning parameters: -->
+
+<!--     i.  A sufficiently large grid of values for `nk`, the maximum -->
+<!--         number of terms to be included in the forward pass. -->
+
+<!--     ii. Different maximum degrees of MARS:  `degree = 1`, `degree = 2`, and `degree = 3`. -->
+
+<!--     iii. Different pruning strategies: `pmethod = "none"` (no pruning) and -->
+<!--         `pmethod = "backward"` (backward regression). -->
+<!-- ::: -->
+
 :::{.callout-note collapse=true}
-#### Exercise A - Degrees of freedom of MARS
-
-Given the data $y_i$ with mean $f(x_i)$ and variance $\sigma^2$ and a
-fitting operation $\hat{y}_i = \hat{f}(x_i)$, let us define the
-[effective degrees of freedom]{.blue} as
-$1/\sigma^2\sum_{i=1}^n \text{cov}(Y_i, \hat{f}(x_i))$, as in the
-slides.
-
-Consider the estimate $\hat{f}(x_i)$ of a [MARS]{.orange}, using a set
-of predictors $\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p$.
-
-1.  Generate $n = 100$ observations with predictors
-    $\tilde{\bm{x}}_1,\dots,\tilde{\bm{x}}_p$ as independent standard
-    Gaussian variates and fix these values.
-
-2.  Generate response values $y_i$ also as standard Gaussian
-    ($\sigma^2 = 1$), independent of the predictors. 
-    
-3. Fit several MARS models using the `earth` R package and compare the final [number of basis
-    functions]{.orange} of each model with the associated
-    [effective degrees of freedom]{.blue}.  Do about 50 simulations of the response and average the results to get a decent Monte Carlo approximation of the degrees of freedom. 
-    Perform this operation as a function of the following tuning parameters:
-
-    i.  A sufficiently large grid of values for `nk`, the maximum
-        number of terms to be included in the forward pass.
-
-    ii. Different maximum degrees of MARS:  `degree = 1`, `degree = 2`, and `degree = 3`.
-
-    iii. Different pruning strategies: `pmethod = "none"` (no pruning) and
-        `pmethod = "backward"` (backward regression).
-:::
-
-:::{.callout-note collapse=true}
-#### Exercise B - Implementation of the backfitting algorithm
+#### Exercise A - Implementation of the backfitting algorithm
 
 Implement the [backfitting algorithm]{.orange} that is described in [this slide](../slides/un_F.html#the-backfitting-algorithm-regression). Use it to predict the `Salary` of the baseball players on the `Hitters` dataset.
 :::
