@@ -139,14 +139,16 @@ tidy(best_cv_pcr)
 
 # Ridge -----------------------------------------------------------------------------------------
 
+lambda_grid <- exp(seq(-8, 7.5, length.out = 100))
+
 wf_ridge <- workflow() %>%
   add_recipe(shrinkage_recipe) %>%
-  add_model(logistic_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet"))
+  add_model(logistic_reg(penalty = tune(), mixture = 0) %>% set_engine("glmnet", path_values = lambda_grid))
 
 cv_ridge <- tune_grid(
   wf_ridge,
   resamples = cv_samples,
-  grid      = tibble(penalty = exp(seq(-4, 5.5, length.out = 100))),
+  grid      = tibble(penalty = lambda_grid),
   metrics   = my_metrics
 )
 
@@ -166,14 +168,16 @@ print(tidy(best_cv_ridge), n = 15)
 
 # Lasso -----------------------------------------------------------------------------------------
 
+lambda_grid <- exp(seq(-10, -2, length.out = 100))
+
 wf_lasso <- workflow() %>%
   add_recipe(shrinkage_recipe) %>%
-  add_model(logistic_reg(penalty = tune(), mixture = 1) %>% set_engine("glmnet"))
+  add_model(logistic_reg(penalty = tune(), mixture = 1) %>% set_engine("glmnet", path_values = lambda_grid))
 
 cv_lasso <- tune_grid(
   wf_lasso,
   resamples = cv_samples,
-  grid      = tibble(penalty = exp(seq(-10, -2, length.out = 100))),
+  grid      = tibble(penalty = lambda_grid),
   metrics   = my_metrics
 )
 
