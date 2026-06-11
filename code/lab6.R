@@ -79,7 +79,7 @@ m_gam_simple <- gam(ret ~ s(dur) + s(gly) + s(bmi), family = binomial, method = 
 summary(m_gam_simple)
 
 plot(m_gam_simple,
-  pages = 1, scheme = 1, shade = TRUE,
+  pages = 1, scheme = 1, 
   shade.col = "lightblue", rug = TRUE,
   main = "Partial effects (log-odds scale)"
 )
@@ -91,7 +91,7 @@ m_gam_full <- gam(
 )
 
 summary(m_gam_full)
-plot(m_gam_full, pages = 1, scheme = 1, zlim = c(-3, 3))
+plot(m_gam_full, pages = 1, scheme = 1)
 
 # ---- GAM — tidymodels workflow -------------------------------------------------------------------
 
