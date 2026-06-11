@@ -118,7 +118,8 @@ wf_pcr <- workflow() %>%
 cv_pcr <- tune_grid(
   wf_pcr,
   resamples = cv_samples,
-  grid      = tibble(num_comp = c(1:19, seq(from = 20, to = 90, by = 5))),
+  grid      = tibble(num_comp = c(1:19, 
+                                  seq(from = 20, to = 90, by = 5))),
   metrics   = my_metrics,
   control   = control_grid(save_workflow = TRUE, verbose = TRUE)
 )
@@ -131,15 +132,15 @@ autoplot(cv_pcr, metric = "mn_log_loss") + theme_bw()
 show_best(cv_pcr, metric = "roc_auc")
 show_best(cv_pcr, metric = "mn_log_loss")
 
-best_cv_pcr <- select_best(cv_pcr, metric = "mn_log_loss")
+best_cv_pcr <- select_by_one_std_err(cv_pcr, metric = "mn_log_loss", num_comp)
+
 best_cv_pcr <- finalize_workflow(wf_pcr, best_cv_pcr) %>% fit(data = juice_tr)
 
 tidy(best_cv_pcr)
 
-
 # Ridge -----------------------------------------------------------------------------------------
 
-lambda_grid <- exp(seq(-8, 7.5, length.out = 100))
+lambda_grid <- exp(seq(-8, 10, length.out = 100))
 
 wf_ridge <- workflow() %>%
   add_recipe(shrinkage_recipe) %>%
@@ -160,7 +161,7 @@ autoplot(cv_ridge, metric = "mn_log_loss") + theme_bw()
 show_best(cv_ridge, metric = "roc_auc")
 show_best(cv_ridge, metric = "mn_log_loss")
 
-best_cv_ridge <- select_best(cv_ridge, metric = "mn_log_loss")
+best_cv_ridge <- select_by_one_std_err(cv_ridge, metric = "mn_log_loss", desc(penalty))
 best_cv_ridge <- finalize_workflow(wf_ridge, best_cv_ridge) %>% fit(data = juice_tr)
 
 print(tidy(best_cv_ridge), n = 15)
@@ -168,7 +169,7 @@ print(tidy(best_cv_ridge), n = 15)
 
 # Lasso -----------------------------------------------------------------------------------------
 
-lambda_grid <- exp(seq(-10, -1, length.out = 100))
+lambda_grid <- exp(seq(-10, -1.5, length.out = 100))
 
 wf_lasso <- workflow() %>%
   add_recipe(shrinkage_recipe) %>%
@@ -189,11 +190,11 @@ autoplot(cv_lasso, metric = "mn_log_loss") + theme_bw()
 show_best(cv_lasso, metric = "roc_auc")
 show_best(cv_lasso, metric = "mn_log_loss")
 
-best_cv_lasso <- select_best(cv_lasso, metric = "mn_log_loss")
+best_cv_lasso <- select_by_one_std_err(cv_lasso, metric = "mn_log_loss", desc(penalty))
 best_cv_lasso <- finalize_workflow(wf_lasso, best_cv_lasso) %>% fit(data = juice_tr)
 
 print(tidy(best_cv_lasso), n = 15)
-tidy(best_cv_lasso) %>% filter(abs(estimate) > 0)
+tidy(best_cv_lasso) %>% filter(abs(estimate) > 1e-10)
 
 # Elastic Net (mixture = 0.5) -----------------------------------------------------------------------------------------
 
@@ -216,7 +217,7 @@ autoplot(cv_en, metric = "mn_log_loss") + theme_bw()
 show_best(cv_en, metric = "roc_auc")
 show_best(cv_en, metric = "mn_log_loss")
 
-best_cv_en <- select_best(cv_en, metric = "mn_log_loss")
+best_cv_en <- select_by_one_std_err(cv_en, metric = "mn_log_loss", desc(penalty))
 best_cv_en <- finalize_workflow(wf_en, best_cv_en) %>% fit(data = juice_tr)
 
 print(tidy(best_cv_en), n = 20)
