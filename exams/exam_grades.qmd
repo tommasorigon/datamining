@@ -1,6 +1,6 @@
 ---
 title: "Data Mining - Exam"
-subtitle: "Date: 25-06-2026"
+subtitle: "Date: 20-07-2026"
 author: "[Tommaso Rigon]{.orange}"
 institute: "_Università degli Studi di Milano-Bicocca_"
 lang: en
