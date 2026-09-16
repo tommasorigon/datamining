@@ -37,7 +37,9 @@ The theoretical exercises described below could be quite [difficult]{.orange}. A
 :::{.callout-note collapse=true}
 #### Exercise A - Bias-variance of KNN - Solution: [`notes.pdf`](exe_D_A.pdf)
 
-Consider the [$k$-nearest neighbours]{.blue} estimator $\hat{f}(x)$ for a regression problem $Y_i = f(x_i) + \epsilon_i$, under the usual assumptions. [Find]{.orange} the bias and the variance of $\hat{f}(x)$ and discuss their behavior as function of $k$.
+Consider the [$k$-nearest neighbours]{.blue} estimator $\hat{f}(x)$ for a regression problem $Y_i = f(x_i) + \epsilon_i$, under the usual assumptions. 
+
+[Find]{.orange} the bias, the variance, and effective degrees of freedom of $\hat{f}(x)$ and discuss their behavior as function of $k$. 
 
 :::
 
